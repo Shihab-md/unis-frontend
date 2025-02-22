@@ -42,7 +42,7 @@ const Login = () => {
     bg-gradient-to-b from-teal-600 from-50% to-gray-100 to-50% space-y-6"
     >
       <h2 className="font-pacific text-3xl text-white">
-        Employee Management System
+        Niswan Management System
       </h2>
       <div className="border shadow p-6 w-80 bg-white">
         <h2 className="text-2xl font-bold mb-4">Login</h2>
