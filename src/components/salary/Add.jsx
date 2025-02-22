@@ -38,7 +38,7 @@ const Add = () => {
 
     try {
       const response = await axios.post(
-        `https://unis-server.vercel.app//api/salary/add`,
+        `https://unis-server.vercel.app/api/salary/add`,
         salary,
         {
           headers: {

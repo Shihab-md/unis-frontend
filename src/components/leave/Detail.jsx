@@ -11,7 +11,7 @@ const Detail = () => {
     const fetchLeave = async () => {
       try {
         const responnse = await axios.get(
-          `https://unis-server.vercel.app//api/leave/detail/${id}`,
+          `https://unis-server.vercel.app/api/leave/detail/${id}`,
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -35,7 +35,7 @@ const Detail = () => {
   const changeStatus = async (id, status) => {
     try {
         const responnse = await axios.put(
-          `https://unis-server.vercel.app//api/leave/${id}`, {status},
+          `https://unis-server.vercel.app/api/leave/${id}`, {status},
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,
