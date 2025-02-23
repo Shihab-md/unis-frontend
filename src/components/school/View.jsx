@@ -45,19 +45,17 @@ const View = () => {
             </div>
             <div>
               <div className="flex space-x-3 mb-5">
-                <p className="text-lg font-bold">Name:</p>
+                <p className="text-lg font-bold">Code:</p>
                 <p className="font-medium">{school.code}</p>
               </div>
               <div className="flex space-x-3 mb-5">
-                <p className="text-lg font-bold">School ID:</p>
+                <p className="text-lg font-bold">Name:</p>
                 <p className="font-medium">{school.name}</p>
               </div>
 
               <div className="flex space-x-3 mb-5">
-                <p className="text-lg font-bold">Date of Birth:</p>
-                <p className="font-medium">
-                  {/*new Date(school.dob).toLocaleDateString()*/}
-                </p>
+                <p className="text-lg font-bold">Address:</p>
+                <p className="font-medium">{school.address}</p>
               </div>
             </div>
           </div>
