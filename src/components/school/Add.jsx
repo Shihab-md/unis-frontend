@@ -3,7 +3,6 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 const Add = () => {
-  const [departments, setDepartments] = useState([]);
   const [formData, setFormData] = useState({});
   const navigate = useNavigate()
 
@@ -21,7 +20,7 @@ const Add = () => {
 
     const formDataObj = new FormData()
     Object.keys(formData).forEach((key) => {
-        formDataObj.append(key, formData[key])
+      formDataObj.append(key, formData[key])
     })
 
     try {
@@ -42,7 +41,7 @@ const Add = () => {
         alert(error.response.data.error);
       }
     }
-      
+
   };
 
   return (
@@ -50,6 +49,21 @@ const Add = () => {
       <h2 className="text-2xl font-bold mb-6">Add New School</h2>
       <form onSubmit={handleSubmit}>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {/* Code */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Code
+            </label>
+            <input
+              type="text"
+              name="code"
+              onChange={handleChange}
+              placeholder="Insert Code"
+              className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+              required
+            />
+          </div>
+
           {/* Name */}
           <div>
             <label className="block text-sm font-medium text-gray-700">
@@ -60,6 +74,36 @@ const Add = () => {
               name="name"
               onChange={handleChange}
               placeholder="Insert Name"
+              className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+              required
+            />
+          </div>
+
+          {/* Address */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Address
+            </label>
+            <input
+              type="text"
+              name="address"
+              onChange={handleChange}
+              placeholder="Insert Address"
+              className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+              required
+            />
+          </div>
+
+          {/* Contact Number */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+            Contact Number
+            </label>
+            <input
+              type="text"
+              name="contactNumber"
+              onChange={handleChange}
+              placeholder="Insert Contact Number"
               className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
               required
             />
