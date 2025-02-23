@@ -10,7 +10,7 @@ const View = () => {
     const fetchSchool = async () => {
       try {
         const responnse = await axios.get(
-          `https://unis-server.vercel.app/api/schools/${id}`,
+          `https://unis-server.vercel.app/api/school/${id}`,
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,
