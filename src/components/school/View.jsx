@@ -38,12 +38,12 @@ const View = () => {
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-0">
             <div>
-              <h3 className="text-lg font-bold text-left">Code:</h3>
-              <h4 className="font-medium text-left">{school.code}</h4>
+              <h3 className="text-lg font-bold text-left">Code:</h3></div>
+            <div><h4 className="font-medium text-left">{school.code}</h4>
             </div>
             <div>
-              <p className="text-lg font-bold text-left">Name:
-              <p className="font-medium text-left">{school.name}</p></p>
+              <p className="text-lg font-bold text-left">Name:</p></div>
+            <div><p className="font-medium text-left">{school.name}</p>
             </div>
           </div>
         </div>
