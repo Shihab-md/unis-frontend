@@ -26,11 +26,6 @@ const List = () => {
               const data = await responnse.data.schools.map((emp) => ({
                 _id: emp._id,
                 sno: sno++,
-                dep_name: emp.department.dep_name,
-                name: emp.userId.name,
-                dob: new Date(emp.dob).toLocaleDateString(),
-                profileImage: <img width={40} className='rounded-full' src={`https://unis-server.vercel.app/${emp.userId.profileImage}`} />,
-                action: (<SchoolButtons Id={emp._id} />),
               }));
               setSchools(data);
               setFilteredSchools(data)
