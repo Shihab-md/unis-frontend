@@ -97,10 +97,10 @@ const Add = () => {
           {/* Contact Number */}
           <div>
             <label className="block text-sm font-medium text-gray-700">
-            Contact Number
+              Contact Number
             </label>
             <input
-              type="text"
+              type="number"
               name="contactNumber"
               onChange={handleChange}
               placeholder="Insert Contact Number"
@@ -124,167 +124,81 @@ const Add = () => {
             />
           </div>
 
-          {/* School ID */}
+          {/* Incharge1 */}
           <div>
             <label className="block text-sm font-medium text-gray-700">
-              School ID
+              Incharge1 Name
             </label>
             <input
               type="text"
-              name="schoolId"
+              name="incharge1"
               onChange={handleChange}
-              placeholder="School ID"
+              placeholder="Incharge1 Name"
               className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
               required
             />
           </div>
 
-          {/* Date of Birth */}
+          {/* Incharge1 Number */}
           <div>
             <label className="block text-sm font-medium text-gray-700">
-              Date of Birth
-            </label>
-            <input
-              type="date"
-              name="dob"
-              onChange={handleChange}
-              placeholder="DOB"
-              className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-              required
-            />
-          </div>
-
-          {/* Gender */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Gender
-            </label>
-            <select
-              name="gender"
-              onChange={handleChange}
-              className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-              required
-            >
-              <option value="">Select Gender</option>
-              <option value="male">Male</option>
-              <option value="female">Female</option>
-              <option value="other">Other</option>
-            </select>
-          </div>
-
-          {/* Marital Status */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Marital Status
-            </label>
-            <select
-              name="maritalStatus"
-              onChange={handleChange}
-              placeholder="Marital Status"
-              className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-              required
-            >
-              <option value="">Select Status</option>
-              <option value="single">Single</option>
-              <option value="married">Married</option>
-            </select>
-          </div>
-
-          {/* Designation */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Designation
-            </label>
-            <input
-              type="text"
-              name="designation"
-              onChange={handleChange}
-              placeholder="Designation"
-              className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-              required
-            />
-          </div>
-
-          {/* Department */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Department
-            </label>
-            <select
-              name="department"
-              onChange={handleChange}
-              className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-              required
-            >
-              <option value="">Select Department</option>
-              {departments.map((dep) => (
-                <option key={dep._id} value={dep._id}>
-                  {dep.dep_name}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          {/* Salary */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Salary
+              Incharge1 Number
             </label>
             <input
               type="number"
-              name="salary"
+              name="incharge1Number"
               onChange={handleChange}
-              placeholder="Salary"
+              placeholder="Incharge1 Number"
               className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
               required
             />
           </div>
 
-          {/* Password */}
+          {/* Incharge2 */}
           <div>
             <label className="block text-sm font-medium text-gray-700">
-              Password
+              Incharge2 Name
             </label>
             <input
-              type="password"
-              name="password"
-              placeholder="******"
+              type="text"
+              name="incharge2"
               onChange={handleChange}
+              placeholder="Incharge2 Name"
               className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
               required
             />
           </div>
 
-          {/* Role */}
+          {/* Incharge2 Number */}
           <div>
             <label className="block text-sm font-medium text-gray-700">
-              Role
+              Incharge2 Number
+            </label>
+            <input
+              type="number"
+              name="incharge2Number"
+              onChange={handleChange}
+              placeholder="Incharge2 Number"
+              className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+              required
+            />
+          </div>
+
+          {/* Active */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Active
             </label>
             <select
-              name="role"
+              name="active"
               onChange={handleChange}
               className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
               required
             >
-              <option value="">Select Role</option>
-              <option value="admin">Admin</option>
-              <option value="school">School</option>
+              <option value="">Select</option>
+              <option value="active">Active</option>
+              <option value="inActive">In-Active</option>
             </select>
-          </div>
-
-          {/* Image Upload */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Upload Image
-            </label>
-            <input
-              type="file"
-              name="image"
-              onChange={handleChange}
-              placeholder="Upload Image"
-              accept="image/*"
-              className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-            />
           </div>
         </div>
 
