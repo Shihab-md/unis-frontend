@@ -26,6 +26,9 @@ const List = () => {
               const data = await responnse.data.schools.map((sch) => ({
                 _id: sch._id,
                 sno: sno++,
+                code: sch.code,
+                name: sch.name,
+                action: (<SchoolButtons Id={sch._id} />),
               }));
               setSchools(data);
               setFilteredSchools(data)
