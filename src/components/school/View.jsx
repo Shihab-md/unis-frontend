@@ -32,7 +32,7 @@ const View = () => {
   return (
     <>
       {school ? (
-        <div className="max-w-3xl mx-auto mt-10 bg-white p-8 rounded-md shadow-md">
+        <div className="max-w-3xl mx-auto mt-10 bg-white p-6 rounded-md shadow-md">
           <h2 className="text-2xl font-bold mb-6 text-center">
             School Details
           </h2>
