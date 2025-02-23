@@ -10,18 +10,18 @@ export const columns = [
   },
   {
     name: "Code",
-    selector: (row) => row.name,
+    selector: (row) => row.code,
     sortable: true,
     width: "100px",
   },
   {
     name: "Name",
-    selector: (row) => row.profileImage,
+    selector: (row) => row.name,
     width: "120px",
   },
   {
     name: "Address",
-    selector: (row) => row.dep_name,
+    selector: (row) => row.address,
     width: "120px",
   },
   {
