@@ -28,6 +28,7 @@ const List = () => {
                 sno: sno++,
                 code: sch.code,
                 name: sch.name,
+                address: sch.address,
                 action: (<SchoolButtons Id={sch._id} />),
               }));
               setSchools(data);

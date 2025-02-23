@@ -17,12 +17,12 @@ export const columns = [
   {
     name: "Name",
     selector: (row) => row.name,
-    width: "120px",
+    width: "250px",
   },
   {
     name: "Address",
     selector: (row) => row.address,
-    width: "120px",
+    width: "160px",
   },
   {
     name: "Action",
