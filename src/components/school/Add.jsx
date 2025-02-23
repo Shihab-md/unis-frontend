@@ -212,7 +212,7 @@ const Add = () => {
             value="admin@gmail.com"
             onChange={handleChange}
             placeholder="createdBy"
-            className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+            className="mt-1 p-1 block w-full border border-gray-300 rounded-md"
           //required
           />
         </div>
