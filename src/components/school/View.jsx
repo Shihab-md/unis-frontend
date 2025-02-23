@@ -39,10 +39,10 @@ const View = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div />
             <div>
-              <p className="text-lg font-bold">Code:</p>
+              <p className="text-lg font-bold text-left">Code:</p>
             </div>
             <div>
-              <p className="font-medium">{school.code}</p>
+              <p className="font-medium text-left">{school.code}</p>
             </div>
             <div>
               <div className="flex space-x-3 mb-5">
