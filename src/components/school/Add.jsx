@@ -140,81 +140,81 @@ const Add = () => {
               <option value="inActive">In-Active</option>
             </select>
           </div>
-        </div>
 
-        {/* Incharge1 */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700">
-            Incharge1 Name
-          </label>
-          <input
-            type="text"
-            name="incharge1"
-            onChange={handleChange}
-            placeholder="Incharge1 Name"
-            className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-            required
-          />
-        </div>
+          {/* Incharge1 */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Incharge1 Name
+            </label>
+            <input
+              type="text"
+              name="incharge1"
+              onChange={handleChange}
+              placeholder="Incharge1 Name"
+              className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+              required
+            />
+          </div>
 
-        {/* Incharge1 Number */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700">
-            Incharge1 Number
-          </label>
-          <input
-            type="number"
-            name="incharge1Number"
-            onChange={handleChange}
-            placeholder="Incharge1 Number"
-            className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-            required
-          />
-        </div>
+          {/* Incharge1 Number */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Incharge1 Number
+            </label>
+            <input
+              type="number"
+              name="incharge1Number"
+              onChange={handleChange}
+              placeholder="Incharge1 Number"
+              className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+              required
+            />
+          </div>
 
-        {/* Incharge2 */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700">
-            Incharge2 Name
-          </label>
-          <input
-            type="text"
-            name="incharge2"
-            onChange={handleChange}
-            placeholder="Incharge2 Name"
-            className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-          //required
-          />
-        </div>
+          {/* Incharge2 */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Incharge2 Name
+            </label>
+            <input
+              type="text"
+              name="incharge2"
+              onChange={handleChange}
+              placeholder="Incharge2 Name"
+              className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+            //required
+            />
+          </div>
 
-        {/* Incharge2 Number */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700">
-            Incharge2 Number
-          </label>
-          <input
-            type="number"
-            name="incharge2Number"
-            onChange={handleChange}
-            placeholder="Incharge2 Number"
-            className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-          //required
-          />
-        </div>
-        {/* Logged in user */}
-        <div visible = "false">
-          <label className="block text-sm font-medium text-gray-700">
-            User
-          </label>
-          <input
-            type="text"
-            name="createdBy"
-            value="admin@gmail.com"
-            onChange={handleChange}
-            placeholder="createdBy"
-            className="mt-1 p-1 block w-full border border-gray-300 rounded-md"
-          //required
-          />
+          {/* Incharge2 Number */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Incharge2 Number
+            </label>
+            <input
+              type="number"
+              name="incharge2Number"
+              onChange={handleChange}
+              placeholder="Incharge2 Number"
+              className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+            //required
+            />
+          </div>
+          {/* Logged in user */}
+          <div visible="false">
+            <label className="block text-sm font-medium text-gray-700">
+              User
+            </label>
+            <input
+              type="text"
+              name="createdBy"
+              value="admin@gmail.com"
+              onChange={handleChange}
+              placeholder="createdBy"
+              className="mt-1 p-1 block w-full border border-gray-300 rounded-md"
+            //required
+            />
+          </div>
         </div>
         <button
           type="submit"
