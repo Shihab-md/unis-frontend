@@ -36,8 +36,12 @@ const View = () => {
           <h2 className="text-2xl font-bold mb-8 text-center">
             School Details
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-1 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
+              <p className="text-lg font-bold">Code:</p>
+            </div>
+            <div>
+              <p className="font-medium">{school.code}</p>
             </div>
             <div>
               <div className="flex space-x-3 mb-5">
