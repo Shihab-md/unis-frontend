@@ -41,9 +41,7 @@ const View = () => {
             </div>
             <div>
               <div className="flex space-x-3 mb-5">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <p className="text-lg font-bold">Code:</p>
-                </div>
+                <p className="text-lg font-bold">Code:</p>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <p className="font-medium">{school.code}</p>
                 </div>
