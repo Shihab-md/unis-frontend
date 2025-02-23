@@ -71,7 +71,7 @@ export const SchoolButtons = ({ Id, onSchoolDelete }) => {
           }
         );
         if (responnse.data.success) {
-          onDepartmentDelete();
+          onSchoolDelete();
         }
       } catch (error) {
         if (error.response && !error.response.data.success) {
