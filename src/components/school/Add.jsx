@@ -136,8 +136,8 @@ const Add = () => {
               required
             >
               <option value="">Select</option>
-              <option value="active">Active</option>
-              <option value="inActive">In-Active</option>
+              <option value="Active">Active</option>
+              <option value="InActive">In-Active</option>
             </select>
           </div>
 
