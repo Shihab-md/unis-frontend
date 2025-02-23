@@ -6,15 +6,15 @@ import axios from 'axios'
 
 const List = () => {
     const [schools, setSchools] = useState([])
-    const [empLoading, setEmpLoading] = useState(false)
+    const [schLoading, setSchLoading] = useState(false)
     const [filteredSchool, setFilteredSchools] = useState(null)
 
     useEffect(() => {
         const fetchSchools = async () => {
-            setEmpLoading(true)
+            setSchLoading(true)
           try {
             const responnse = await axios.get(
-              "https://unis-server.vercel.app/api/school",
+              "https://unis-server.vercel.app/api/schools",
               {
                 headers: {
                   Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -23,8 +23,8 @@ const List = () => {
             );
             if (responnse.data.success) {
               let sno = 1;
-              const data = await responnse.data.schools.map((emp) => ({
-                _id: emp._id,
+              const data = await responnse.data.schools.map((sch) => ({
+                _id: sch._id,
                 sno: sno++,
               }));
               setSchools(data);
@@ -36,7 +36,7 @@ const List = () => {
               alert(error.response.data.error)
           }
           } finally {
-            setEmpLoading(false)
+            setSchLoading(false)
           }
         };
     
@@ -44,8 +44,8 @@ const List = () => {
       }, []);
 
       const handleFilter = (e) => {
-        const records = schools.filter((emp) => (
-          emp.name.toLowerCase().includes(e.target.value.toLowerCase())
+        const records = schools.filter((sch) => (
+          sch.name.toLowerCase().includes(e.target.value.toLowerCase())
         ))
         setFilteredSchools(records)
       }
