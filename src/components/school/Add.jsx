@@ -200,21 +200,6 @@ const Add = () => {
             //required
             />
           </div>
-          {/* Logged in user */}
-          <div visible="false">
-            <label className="block text-sm font-medium text-gray-700">
-              User
-            </label>
-            <input
-              type="text"
-              name="createdBy"
-              value="admin@gmail.com"
-              onChange={handleChange}
-              placeholder="createdBy"
-              className="mt-1 p-1 block w-full border border-gray-300 rounded-md"
-            //required
-            />
-          </div>
         </div>
         <button
           type="submit"
