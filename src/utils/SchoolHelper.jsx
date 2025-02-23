@@ -62,7 +62,7 @@ export const SchoolButtons = ({ Id }) => {
     <div className="flex space-x-3">
       <button
         className="px-3 py-1 bg-teal-600 text-white"
-        onClick={() => navigate(`/admin-dashboard/schools/${Id}`)}
+        onClick={() => navigate(`/admin-dashboard/schools/view/${Id}`)}
       >
         View
       </button>
