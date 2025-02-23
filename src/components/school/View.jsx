@@ -44,8 +44,8 @@ const View = () => {
             <div>
               <p className="font-medium text-left">{school.code}</p>
             </div>
-            <div />
-            
+            <div /><div /><div />
+
             <div />
             <div>
               <p className="text-lg font-bold text-left">Name:</p>
@@ -53,7 +53,7 @@ const View = () => {
             <div>
               <p className="font-medium text-left">{school.name}</p>
             </div>
-            <div />
+            <div /><div /><div />
 
           </div>
         </div>
