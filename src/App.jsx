@@ -8,6 +8,10 @@ import AdminSummary from "./components/dashboard/AdminSummary";
 import DepartmentList from "./components/department/DepartmentList";
 import AddDepartment from "./components/department/AddDepartment";
 import EditDepartment from "./components/department/EditDepartment";
+import SchoolList from "./components/school/List";
+import SchoolAdd from "./components/school/Add";
+import SchoolView from "./components/school/View";
+import SchoolEdit from "./components/school/Edit";
 import List from "./components/employee/List";
 import Add from "./components/employee/Add";
 import View from "./components/employee/View";
@@ -55,15 +59,15 @@ function App() {
           ></Route>
 
           
-          <Route path="/admin-dashboard/schools" element={<List />}></Route>
-          <Route path="/admin-dashboard/add-school" element={<Add />}></Route>
+          <Route path="/admin-dashboard/schools" element={<SchoolList />}></Route>
+          <Route path="/admin-dashboard/add-school" element={<SchoolAdd />}></Route>
           <Route
             path="/admin-dashboard/schools/:id"
-            element={<View />}
+            element={<SchoolView />}
           ></Route>
           <Route
             path="/admin-dashboard/schools/edit/:id"
-            element={<Edit />}
+            element={<SchoolEdit />}
           ></Route>
 
           <Route path="/admin-dashboard/employees" element={<List />}></Route>
