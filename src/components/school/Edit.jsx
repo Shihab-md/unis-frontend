@@ -7,13 +7,10 @@ const Edit = () => {
     code: "",
     name: "",
     address: "",
-    contactNumber: 0,
     email: "",
     active: "",
     incharge1: "",
-    incharge1Number: 0,
     incharge2: "",
-    incharge2Number: 0,
   });
 
   const navigate = useNavigate();
@@ -88,7 +85,7 @@ const Edit = () => {
     <>
       {school ? (
         <div className="max-w-4xl mx-auto mt-10 bg-white p-8 rounded-md shadow-md">
-          <h2 className="text-2xl font-bold mb-6">Edit School</h2>
+          <h2 className="text-2xl font-bold mb-6">Update School</h2>
           <form onSubmit={handleSubmit}>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {/* Code */}
@@ -258,7 +255,7 @@ const Edit = () => {
               type="submit"
               className="w-full mt-6 bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded"
             >
-              Edit School
+              Update School
             </button>
           </form>
         </div>
