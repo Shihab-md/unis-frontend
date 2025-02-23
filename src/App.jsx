@@ -54,6 +54,18 @@ function App() {
             element={<EditDepartment />}
           ></Route>
 
+          
+          <Route path="/admin-dashboard/schools" element={<List />}></Route>
+          <Route path="/admin-dashboard/add-school" element={<Add />}></Route>
+          <Route
+            path="/admin-dashboard/schools/:id"
+            element={<View />}
+          ></Route>
+          <Route
+            path="/admin-dashboard/schools/edit/:id"
+            element={<Edit />}
+          ></Route>
+
           <Route path="/admin-dashboard/employees" element={<List />}></Route>
           <Route path="/admin-dashboard/add-employee" element={<Add />}></Route>
           <Route
