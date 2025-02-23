@@ -4,6 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 
 const Edit = () => {
   const [school, setSchool] = useState({
+    code: "",
     name: "",
     maritalStatus: "",
     designation: "",
@@ -92,10 +93,11 @@ const Edit = () => {
                   required
                 />
               </div>
+
               {/* Name */}
               <div>
                 <label className="block text-sm font-medium text-gray-700">
-                  Code
+                  Name
                 </label>
                 <input
                   type="text"
