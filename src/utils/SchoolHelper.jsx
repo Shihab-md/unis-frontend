@@ -12,7 +12,7 @@ export const columns = [
     name: "Code",
     selector: (row) => row.code,
     sortable: true,
-    width: "100px",
+    width: "160px",
   },
   {
     name: "Name",
