@@ -36,25 +36,19 @@ const View = () => {
           <h2 className="text-2xl font-bold mb-8 text-center">
             School Details
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-6 gap-1">
-            <div />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-0">
             <div>
               <p className="text-lg font-bold text-left">Code:</p>
             </div>
             <div>
               <p className="font-medium text-left">{school.code}</p>
             </div>
-            <div /><div /><div />
-
-            <div />
-            <div>
+             <div>
               <p className="text-lg font-bold text-left">Name:</p>
             </div>
             <div>
               <p className="font-medium text-left">{school.name}</p>
             </div>
-            <div /><div /><div />
-
           </div>
         </div>
       ) : (
