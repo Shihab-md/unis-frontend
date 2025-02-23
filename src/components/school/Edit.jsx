@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { fetchDepartments } from "../../utils/SchoolHelper";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 
@@ -16,14 +15,6 @@ const Edit = () => {
   const { id } = useParams();
 
   useEffect(() => {
-    const getDepartments = async () => {
-      const departments = await fetchDepartments();
-      setDepartments(departments);
-    };
-    getDepartments();
-  }, []);
-
-  useEffect(() => {
     const fetchSchool = async () => {
       try {
         const responnse = await axios.get(
@@ -38,11 +29,7 @@ const Edit = () => {
           const school = responnse.data.school;
           setSchool((prev) => ({
             ...prev,
-            name: school.userId.name,
-            maritalStatus: school.maritalStatus,
-            designation: school.designation,
-            salary: school.salary,
-            department: school.department
+            name: school.name
           }));
         }
       } catch (error) {
@@ -158,26 +145,7 @@ const Edit = () => {
               </div>
 
               {/* Department */}
-              <div className="col-span-2">
-                <label className="block text-sm font-medium text-gray-700">
-                  Department
-                </label>
-                <select
-                  name="department"
-                  onChange={handleChange}
-                  value={school.department}
-                  className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-                  required
-                >
-                  <option value="">Select Department</option>
-                  {departments.map((dep) => (
-                    <option key={dep._id} value={dep._id}>
-                      {dep.dep_name}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            </div>
+                          </div>
 
             <button
               type="submit"
