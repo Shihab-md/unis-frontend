@@ -6,10 +6,14 @@ const Edit = () => {
   const [school, setSchool] = useState({
     code: "",
     name: "",
-    maritalStatus: "",
-    designation: "",
-    salary: 0,
-    department: "",
+    address: "",
+    contactNumber: 0,
+    email: "",
+    active: "",
+    incharge1: "",
+    incharge1Number: 0,
+    incharge2: "",
+    incharge2Number: 0,
   });
 
   const navigate = useNavigate();
@@ -30,7 +34,16 @@ const Edit = () => {
           const school = responnse.data.school;
           setSchool((prev) => ({
             ...prev,
-            name: school.name
+            code: school.code,
+            name: school.name,
+            address: school.address,
+            contactNumber: school.contactNumber,
+            email: school.email,
+            active: school.active,
+            incharge1: school.incharge1,
+            incharge1Number: school.incharge1Number,
+            incharge2: school.incharge2,
+            incharge2Number: school.incharge2Number,
           }));
         }
       } catch (error) {
