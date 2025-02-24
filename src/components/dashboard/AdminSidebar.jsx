@@ -42,6 +42,17 @@ const AdminSidebar = () => {
           <span>School</span>
         </NavLink>
         <NavLink
+          to="/admin-dashboard/classSections"
+          className={({ isActive }) =>
+            `${
+              isActive ? "bg-teal-500 " : " "
+            } flex items-center space-x-4 block py-2.5 px-4 rounded`
+          }
+        >
+          <FaUsers />
+          <span>ClassSection</span>
+        </NavLink>
+        <NavLink
           to="/admin-dashboard/employees"
           className={({ isActive }) =>
             `${

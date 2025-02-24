@@ -3,19 +3,28 @@ import Login from "./pages/Login";
 import AdminDashboard from "./pages/AdminDashboard";
 import EmployeeDashboard from "./pages/EmployeeDashboard";
 import PrivateRoutes from "./utils/PrivateRoutes";
-import RoleBaseRoutes from "./utils/RoleBaseRoutes"; 
+import RoleBaseRoutes from "./utils/RoleBaseRoutes";
 import AdminSummary from "./components/dashboard/AdminSummary";
+
 import DepartmentList from "./components/department/DepartmentList";
 import AddDepartment from "./components/department/AddDepartment";
 import EditDepartment from "./components/department/EditDepartment";
+
 import SchoolList from "./components/school/List";
 import SchoolAdd from "./components/school/Add";
 import SchoolView from "./components/school/View";
 import SchoolEdit from "./components/school/Edit";
+
+import ClassSectionList from "./components/classSection/List";
+import ClassSectionAdd from "./components/classSection/Add";
+import ClassSectionView from "./components/classSection/View";
+import ClassSectionEdit from "./components/classSection/Edit";
+
 import List from "./components/employee/List";
 import Add from "./components/employee/Add";
 import View from "./components/employee/View";
 import Edit from "./components/employee/Edit";
+
 import AddSalary from "./components/salary/Add";
 import ViewSalary from "./components/salary/View";
 import Summary from './components/EmployeeDashboard/Summary'
@@ -58,17 +67,15 @@ function App() {
             element={<EditDepartment />}
           ></Route>
 
-          
           <Route path="/admin-dashboard/schools" element={<SchoolList />}></Route>
           <Route path="/admin-dashboard/add-school" element={<SchoolAdd />}></Route>
-          <Route
-            path="/admin-dashboard/schools/:id"
-            element={<SchoolView />}
-          ></Route>
-          <Route
-            path="/admin-dashboard/schools/edit/:id"
-            element={<SchoolEdit />}
-          ></Route>
+          <Route path="/admin-dashboard/schools/:id" element={<SchoolView />}></Route>
+          <Route path="/admin-dashboard/schools/edit/:id" element={<SchoolEdit />}></Route>
+
+          <Route path="/admin-dashboard/classSections" element={<ClassSectionList />}></Route>
+          <Route path="/admin-dashboard/add-classSection" element={<ClassSectionAdd />}></Route>
+          <Route path="/admin-dashboard/classSections/:id" element={<ClassSectionView />}></Route>
+          <Route path="/admin-dashboard/classSections/edit/:id" element={<ClassSectionEdit />}></Route>
 
           <Route path="/admin-dashboard/employees" element={<List />}></Route>
           <Route path="/admin-dashboard/add-employee" element={<Add />}></Route>
