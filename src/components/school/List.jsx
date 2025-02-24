@@ -34,6 +34,7 @@ const List = () => {
             code: sch.code,
             name: sch.name,
             address: sch.address,
+            active: schLoading.active,
             action: (<SchoolButtons Id={sch._id} onSchoolDelete={onSchoolDelete} />),
           }));
           setSchools(data);
