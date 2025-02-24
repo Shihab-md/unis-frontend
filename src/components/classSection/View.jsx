@@ -36,7 +36,7 @@ const View = () => {
       {classSection ? (
         <div className="max-w-3xl mx-auto mt-10 bg-white p-8 rounded-md shadow-md">
           <h2 className="text-2xl font-bold mb-8 text-center">
-            ClassSection Detail
+            Class Section Detail
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
@@ -44,44 +44,12 @@ const View = () => {
             </div>
             <div>
               <div className="flex space-x-3 mb-5">
-                <p className="text-lg font-bold">Code:</p>
-                <p className="font-medium">{classSection.code}</p>
+                <p className="text-lg font-bold">Class:</p>
+                <p className="font-medium">{classSection.classs}</p>
               </div>
               <div className="flex space-x-3 mb-5">
-                <p className="text-lg font-bold">Name:</p>
-                <p className="font-medium">{classSection.name}</p>
-              </div>
-              <div className="flex space-x-3 mb-5">
-                <p className="text-lg font-bold">Address:</p>
-                <p className="font-medium">{classSection.address}</p>
-              </div>
-              <div className="flex space-x-3 mb-5">
-                <p className="text-lg font-bold">Contact Number:</p>
-                <p className="font-medium">{classSection.contactNumber}</p>
-              </div>
-              <div className="flex space-x-3 mb-5">
-                <p className="text-lg font-bold">Email:</p>
-                <p className="font-medium">{classSection.email}</p>
-              </div>
-              <div className="flex space-x-3 mb-5">
-                <p className="text-lg font-bold">Status:</p>
-                <p className="font-medium">{classSection.active}</p>
-              </div>
-              <div className="flex space-x-3 mb-5">
-                <p className="text-lg font-bold">Incharge1:</p>
-                <p className="font-medium">{classSection.incharge1}</p>
-              </div>
-              <div className="flex space-x-3 mb-5">
-                <p className="text-lg font-bold">Incharge1 Number:</p>
-                <p className="font-medium">{classSection.incharge1Number}</p>
-              </div>
-              <div className="flex space-x-3 mb-5">
-                <p className="text-lg font-bold">Incharge2:</p>
-                <p className="font-medium">{classSection.incharge2}</p>
-              </div>
-              <div className="flex space-x-3 mb-5">
-                <p className="text-lg font-bold">Incharge2 Number:</p>
-                <p className="font-medium">{classSection.incharge2Number}</p>
+                <p className="text-lg font-bold">Section:</p>
+                <p className="font-medium">{classSection.section}</p>
               </div>
             </div>
           </div>
