@@ -25,6 +25,11 @@ export const columns = [
     width: "160px",
   },
   {
+    name: "Status",
+    selector: (row) => row.active,
+    width: "120px",
+  },
+  {
     name: "Action",
     selector: (row) => row.action,
     center: "true",
