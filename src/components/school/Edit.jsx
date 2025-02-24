@@ -93,11 +93,10 @@ const Edit = () => {
                 <label className="block text-sm font-medium text-gray-700">
                   Code
                 </label>
-                <input
+                <input Edit="false"
                   type="text"
                   name="code"
                   value={school.code}
-                  contentEditable="false"
                   onChange={handleChange}
                   placeholder="Insert Code"
                   className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
