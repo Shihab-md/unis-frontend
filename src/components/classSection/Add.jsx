@@ -67,13 +67,13 @@ const Add = () => {
           {/* Section */}
           <div>
             <label className="block text-sm font-medium text-gray-700">
-              Name
+              Section
             </label>
             <input
               type="text"
-              name="name"
+              name="section"
               onChange={handleChange}
-              placeholder="Insert Name"
+              placeholder="Insert Section"
               className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
               required
             />
