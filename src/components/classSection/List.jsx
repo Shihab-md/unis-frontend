@@ -53,7 +53,7 @@ const List = () => {
 
   const handleFilter = (e) => {
     const records = classSections.filter((sch) => (
-      sch.name.toLowerCase().includes(e.target.value.toLowerCase())
+      sch.classs.toLowerCase().includes(e.target.value.toLowerCase())
     ))
     setFilteredClassSections(records)
   }
@@ -70,7 +70,7 @@ const List = () => {
       <div className="flex justify-between items-center">
         <input
           type="text"
-          placeholder="Seach By ClassSection"
+          placeholder="Seach By Class"
           className="px-4 py-0.5 border"
           onChange={handleFilter}
         />
