@@ -137,7 +137,7 @@ const Add = () => {
             >
               <option value="">Select</option>
               <option value="Active">Active</option>
-              <option value="InActive">In-Active</option>
+              <option value="In-Active">In-Active</option>
             </select>
           </div>
 
