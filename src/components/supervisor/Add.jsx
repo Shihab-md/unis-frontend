@@ -274,7 +274,7 @@ const Add = () => {
               name="role"
              // onChange={handleChange}
               value={"supervisor"}
-              disabled={true}
+              //disabled={true}
               placeholder="Role"
               className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
               required
