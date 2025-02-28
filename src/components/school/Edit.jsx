@@ -97,7 +97,7 @@ const Edit = () => {
                   type="text"
                   name="code"
                   value={school.code}
-                  disabled="disabled"
+                  disabled={true}
                   onChange={handleChange}
                   placeholder="Insert Code"
                   className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
