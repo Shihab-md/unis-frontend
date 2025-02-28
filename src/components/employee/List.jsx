@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { columns, EmployeeButtons } from '../../utils/EmployeeHelper'
 import DataTable from 'react-data-table-component'
 import axios from 'axios'
@@ -8,6 +8,7 @@ const List = () => {
     const [employees, setEmployees] = useState([])
     const [empLoading, setEmpLoading] = useState(false)
     const [filteredEmployee, setFilteredEmployees] = useState(null)
+    const navigate = useNavigate()
 
     useEffect(() => {
         const fetchEmployees = async () => {
@@ -38,8 +39,8 @@ const List = () => {
           } catch (error) {
             console.log(error.message)
             if(error.response && !error.response.data.success) {
-              alert("HIIIIIII" & error.response.data.error)
-              return <Navigate to="/login" />
+              alert(error.response.data.error)
+              navigate('/login')
           }
           } finally {
             setEmpLoading(false)
