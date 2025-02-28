@@ -6,6 +6,7 @@ const PrivateRoutes = ({children}) => {
   const {user, loading} = useAuth()
 
   if(loading) {
+    alert("Hi...")
     return <div>Loading ....</div>
   }
 
