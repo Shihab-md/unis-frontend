@@ -272,7 +272,7 @@ const Add = () => {
             <input
               type="text"
               name="role"
-              // onChange={handleChange}
+              onChange={handleChange}
               value="supervisor"
               //disabled={true}
               placeholder="Role"
