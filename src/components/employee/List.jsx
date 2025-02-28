@@ -39,6 +39,7 @@ const List = () => {
             console.log(error.message)
             if(error.response && !error.response.data.success) {
               alert(error.response.data.error)
+              return <Navigate to="/login" />
           }
           } finally {
             setEmpLoading(false)
