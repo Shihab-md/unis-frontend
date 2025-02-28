@@ -9,25 +9,14 @@ export const columns = [
     width: "70px",
   },
   {
-    name: "Code",
-    selector: (row) => row.code,
-    sortable: true,
-    width: "160px",
-  },
-  {
     name: "Name",
     selector: (row) => row.name,
     width: "250px",
   },
   {
-    name: "Address",
-    selector: (row) => row.address,
+    name: "Route",
+    selector: (row) => row.routeName,
     width: "160px",
-  },
-  {
-    name: "Status",
-    selector: (row) => row.active,
-    width: "120px",
   },
   {
     name: "Action",
