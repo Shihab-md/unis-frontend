@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { fetchDepartments } from "../../utils/SupervisorHelper";
+//import { fetchDepartments } from "../../utils/SupervisorHelper";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
@@ -214,7 +214,7 @@ const Add = () => {
             />
           </div>
 
-          {/* Department */}
+          {/* Department 
           <div>
             <label className="block text-sm font-medium text-gray-700">
               Department
@@ -232,7 +232,7 @@ const Add = () => {
                 </option>
               ))}
             </select>
-          </div>
+          </div>*/}
 
           {/* Salary */}
           <div>
