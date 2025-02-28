@@ -14,11 +14,6 @@ export const columns = [
     width: "250px",
   },
   {
-    name: "Route",
-    selector: (row) => row.routeName,
-    width: "160px",
-  },
-  {
     name: "Action",
     selector: (row) => row.action,
     center: "true",
