@@ -179,15 +179,15 @@ const Add = () => {
               required
             >
               <option value="">Select Status</option>
-              <option value="single">Single</option>
-              <option value="married">Married</option>
+              <option value="Single">Single</option>
+              <option value="Married">Married</option>
             </select>
           </div>
 
           {/* Date of Joining */}
           <div>
             <label className="block text-sm font-medium text-gray-700">
-              Date of Birth
+              Date of Joining
             </label>
             <input
               type="date"
