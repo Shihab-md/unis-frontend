@@ -8,13 +8,13 @@ const Add = () => {
   const [formData, setFormData] = useState({});
   const navigate = useNavigate()
 
-  useEffect(() => {
+  {/* useEffect(() => {
     const getDepartments = async () => {
       const departments = await fetchDepartments();
       setDepartments(departments);
     };
     getDepartments();
-  }, []);
+  }, []);*/}
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
@@ -272,8 +272,8 @@ const Add = () => {
             <input
               type="text"
               name="role"
-             // onChange={handleChange}
-              value={"supervisor"}
+              // onChange={handleChange}
+              value="supervisor"
               //disabled={true}
               placeholder="Role"
               className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
