@@ -10,6 +10,11 @@ import DepartmentList from "./components/department/DepartmentList";
 import AddDepartment from "./components/department/AddDepartment";
 import EditDepartment from "./components/department/EditDepartment";
 
+import SupervisorList from "./components/supervisor/List";
+import SupervisorAdd from "./components/supervisor/Add";
+import SupervisorView from "./components/supervisor/View";
+import SupervisorEdit from "./components/supervisor/Edit";
+
 import SchoolList from "./components/school/List";
 import SchoolAdd from "./components/school/Add";
 import SchoolView from "./components/school/View";
@@ -66,6 +71,11 @@ function App() {
             path="/admin-dashboard/department/:id"
             element={<EditDepartment />}
           ></Route>
+
+          <Route path="/admin-dashboard/supervisors" element={<SupervisorList />}></Route>
+          <Route path="/admin-dashboard/add-supervisor" element={<SupervisorAdd />}></Route>
+          <Route path="/admin-dashboard/supervisors/:id" element={<SupervisorView />}></Route>
+          <Route path="/admin-dashboard/supervisors/edit/:id" element={<SupervisorEdit />}></Route>
 
           <Route path="/admin-dashboard/schools" element={<SchoolList />}></Route>
           <Route path="/admin-dashboard/add-school" element={<SchoolAdd />}></Route>
