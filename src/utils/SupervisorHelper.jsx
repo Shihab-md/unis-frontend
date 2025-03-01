@@ -20,12 +20,12 @@ export const columns = [
   {
     name: "Contact Number",
     selector: (row) => row.contactNumber,
-    width: "160px",
+    width: "190px",
   },
   {
     name: "Route",
     selector: (row) => row.routeName,
-    width: "190px",
+    width: "250px",
   },
   {
     name: "No. of Niswans",
