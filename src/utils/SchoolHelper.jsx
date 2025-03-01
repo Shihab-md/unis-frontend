@@ -4,7 +4,7 @@ import { useAuth } from "../context/AuthContext";
 import {
   FaEye,
   FaEdit,
-  FaTrash,
+  FaTrashAlt,
 } from "react-icons/fa";
 
 export const columns = [
@@ -103,21 +103,18 @@ export const SchoolButtons = ({ Id, onSchoolDelete }) => {
         onClick={() => navigate(`/admin-dashboard/schools/${Id}`)}
       >
         <FaEye />
-        View
       </button>
       <button
         className="px-3 py-1 bg-blue-600 text-white"
         onClick={() => navigate(`/admin-dashboard/schools/edit/${Id}`)}
       >
         <FaEdit />
-        Edit
       </button>
       <button
         className="px-3 py-1 bg-red-600 text-white"
         onClick={() => handleDelete(Id)}
       >
-        <FaTrash />
-        Delete
+        <FaTrashAlt />
       </button>
     </div>
   );
