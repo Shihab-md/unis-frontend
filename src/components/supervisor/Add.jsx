@@ -270,10 +270,10 @@ const Add = () => {
             {/*  Role*/}
             </label>
             <input
-              type="hidden"
+              type="text"
               name="role"
               value="supervisor"
-              //onChange={handleChange}
+              onChange={handleChange}
               placeholder="Role"
               className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
               required
