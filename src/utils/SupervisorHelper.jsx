@@ -1,6 +1,10 @@
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../context/AuthContext";
+import {
+  FaEye,
+  FaEdit,
+  FaTrashAlt,
+} from "react-icons/fa";
 
 export const columns = [
   {
@@ -11,22 +15,22 @@ export const columns = [
   {
     name: "Name",
     selector: (row) => row.name,
-    width: "250px",
+    width: "320px",
   },
   {
     name: "Contact Number",
     selector: (row) => row.contactNumber,
-    width: "250px",
+    width: "160px",
   },
   {
     name: "Route",
     selector: (row) => row.routeName,
-    width: "250px",
+    width: "190px",
   },
   {
-    name: "DOB",
+    name: "No. of Niswans",
     selector: (row) => row.dob,
-    width: "250px",
+    width: "190px",
   },
   {
     name: "Action",
@@ -91,19 +95,19 @@ export const SupervisorButtons = ({ Id, onSupervisorDelete }) => {
         className="px-3 py-1 bg-teal-600 text-white"
         onClick={() => navigate(`/admin-dashboard/supervisors/${Id}`)}
       >
-        View
+        <FaEye />
       </button>
       <button
         className="px-3 py-1 bg-blue-600 text-white"
         onClick={() => navigate(`/admin-dashboard/supervisors/edit/${Id}`)}
       >
-        Edit
+        <FaEdit />
       </button>
       <button
         className="px-3 py-1 bg-red-600 text-white"
         onClick={() => handleDelete(Id)}
       >
-        Delete
+        <FaTrashAlt />
       </button>
     </div>
   );
