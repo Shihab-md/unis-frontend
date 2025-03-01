@@ -15,7 +15,7 @@ const Add = () => {
 
       const file = files[0];
       const base64 = convertToBase64(file);
-      alert(base64.resolve);
+      alert(base64.Promise.getItem());
       setFormData((prevData) => ({ ...prevData, [name]: base64 }));
 
       console.log(base64)
