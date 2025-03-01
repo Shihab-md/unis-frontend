@@ -228,7 +228,7 @@ const Edit = () => {
                 <input
                   type="date"
                   name="dob"
-                  //value={Moment(new Date(supervisor.dob)).format("yyyy-mm-dd")}
+                  value={moment(new Date(supervisor.dob)).format("yyyy-mm-dd")}
                   onChange={handleChange}
                   placeholder="DOB"
                   className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
