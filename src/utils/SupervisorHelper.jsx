@@ -13,6 +13,11 @@ export const columns = [
     width: "70px",
   },
   {
+    name: "Image",
+    selector: (row) => row.profileImage,
+    width: "90px",
+  },
+  {
     name: "Name",
     selector: (row) => row.name,
     width: "320px",
