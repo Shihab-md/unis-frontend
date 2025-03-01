@@ -6,16 +6,23 @@ import { useNavigate, useParams } from "react-router-dom";
 const Edit = () => {
   const [supervisor, setSupervisor] = useState({
     name: "",
+    email: "",
+    contactNumber: 0,
+    address: "",
+    routeName: "",
+    qualification: "",
+    dob: "",
+    gender: "",
     maritalStatus: "",
+    doj: "",
     designation: "",
-    salary: 0,
-    department: "",
+    salary: 0
   });
- // const [departments, setDepartments] = useState(null);
+  // const [departments, setDepartments] = useState(null);
   const navigate = useNavigate();
   const { id } = useParams();
 
- {/*} useEffect(() => {
+  {/*} useEffect(() => {
     const getDepartments = async () => {
       const departments = await fetchDepartments();
       setDepartments(departments);
