@@ -94,6 +94,21 @@ const Add = () => {
             />
           </div>
 
+          {/* District / State */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Address
+            </label>
+            <input
+              type="text"
+              name="district"
+              onChange={handleChange}
+              placeholder="Insert District / State"
+              className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+              required
+            />
+          </div>
+
           {/* Contact Number */}
           <div>
             <label className="block text-sm font-medium text-gray-700">
@@ -196,6 +211,96 @@ const Add = () => {
               name="incharge2Number"
               onChange={handleChange}
               placeholder="Incharge2 Number"
+              className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+            //required
+            />
+          </div>
+
+          {/* Incharge3 */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Incharge3 Name
+            </label>
+            <input
+              type="text"
+              name="incharge3"
+              onChange={handleChange}
+              placeholder="Incharge3 Name"
+              className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+            //required
+            />
+          </div>
+
+          {/* Incharge3 Number */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Incharge3 Number
+            </label>
+            <input
+              type="number"
+              name="incharge3Number"
+              onChange={handleChange}
+              placeholder="Incharge3 Number"
+              className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+            //required
+            />
+          </div>
+
+          {/* Incharge4 */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Incharge4 Name
+            </label>
+            <input
+              type="text"
+              name="incharge4"
+              onChange={handleChange}
+              placeholder="Incharge4 Name"
+              className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+            //required
+            />
+          </div>
+
+          {/* Incharge4 Number */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Incharge4 Number
+            </label>
+            <input
+              type="number"
+              name="incharge4Number"
+              onChange={handleChange}
+              placeholder="Incharge4 Number"
+              className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+            //required
+            />
+          </div>
+
+          {/* Incharge5 */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Incharge5 Name
+            </label>
+            <input
+              type="text"
+              name="incharge5"
+              onChange={handleChange}
+              placeholder="Incharge5 Name"
+              className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+            //required
+            />
+          </div>
+
+          {/* Incharge5 Number */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Incharge5 Number
+            </label>
+            <input
+              type="number"
+              name="incharge5Number"
+              onChange={handleChange}
+              placeholder="Incharge5 Number"
               className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
             //required
             />

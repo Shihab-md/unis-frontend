@@ -56,6 +56,10 @@ const View = () => {
                 <p className="font-medium">{school.address}</p>
               </div>
               <div className="flex space-x-3 mb-5">
+                <p className="text-lg font-bold">District / State:</p>
+                <p className="font-medium">{school.address}</p>
+              </div>
+              <div className="flex space-x-3 mb-5">
                 <p className="text-lg font-bold">Contact Number:</p>
                 <p className="font-medium">{school.contactNumber}</p>
               </div>
@@ -82,6 +86,30 @@ const View = () => {
               <div className="flex space-x-3 mb-5">
                 <p className="text-lg font-bold">Incharge2 Number:</p>
                 <p className="font-medium">{school.incharge2Number}</p>
+              </div>
+              <div className="flex space-x-3 mb-5">
+                <p className="text-lg font-bold">Incharge3:</p>
+                <p className="font-medium">{school.incharge3}</p>
+              </div>
+              <div className="flex space-x-3 mb-5">
+                <p className="text-lg font-bold">Incharge3 Number:</p>
+                <p className="font-medium">{school.incharge3Number}</p>
+              </div>
+              <div className="flex space-x-3 mb-5">
+                <p className="text-lg font-bold">Incharge4:</p>
+                <p className="font-medium">{school.incharge4}</p>
+              </div>
+              <div className="flex space-x-3 mb-5">
+                <p className="text-lg font-bold">Incharge4 Number:</p>
+                <p className="font-medium">{school.incharge4Number}</p>
+              </div>
+              <div className="flex space-x-3 mb-5">
+                <p className="text-lg font-bold">Incharge5:</p>
+                <p className="font-medium">{school.incharge1}</p>
+              </div>
+              <div className="flex space-x-3 mb-5">
+                <p className="text-lg font-bold">Incharge5 Number:</p>
+                <p className="font-medium">{school.incharge1Number}</p>
               </div>
             </div>
           </div>

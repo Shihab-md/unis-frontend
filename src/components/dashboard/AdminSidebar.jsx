@@ -50,7 +50,7 @@ const AdminSidebar = () => {
           }
         >
           <FaUsers />
-          <span>School</span>
+          <span>Niswan</span>
         </NavLink>
         <NavLink
           to="/admin-dashboard/classSections"

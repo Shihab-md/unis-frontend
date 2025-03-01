@@ -12,16 +12,21 @@ export const columns = [
     name: "Code",
     selector: (row) => row.code,
     sortable: true,
-    width: "160px",
+    width: "140px",
   },
   {
     name: "Name",
     selector: (row) => row.name,
-    width: "250px",
+    width: "320px",
   },
   {
     name: "Address",
     selector: (row) => row.address,
+    width: "160px",
+  },
+  {
+    name: "District / State",
+    selector: (row) => row.district,
     width: "160px",
   },
   {
