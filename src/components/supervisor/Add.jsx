@@ -269,15 +269,16 @@ const Add = () => {
             <label className="block text-sm font-medium text-gray-700">
               Role
             </label>
-            <input
-              type="text"
+            <select
               name="role"
-              //value={"supervisor"}
               onChange={handleChange}
               placeholder="Role"
               className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
               required
-            />
+            >
+              <option value="">Select Role</option>
+              <option value="supervisor">Supervisor</option>
+            </select>
           </div>
 
           {/* Image Upload */}
