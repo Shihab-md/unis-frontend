@@ -55,7 +55,7 @@ const Edit = () => {
             dob: supervisor.dob,
             gender: supervisor.gender,
             maritalStatus: supervisor.maritalStatus,
-            doj: supervisor.doj,
+            doj: new Date(supervisor.doj).toLocaleDateString(),
             designation: supervisor.designation,
             salary: supervisor.salary
           }));
