@@ -49,10 +49,29 @@ const View = () => {
                 <p className="font-medium">{supervisor.userId.name}</p>
               </div>
               <div className="flex space-x-3 mb-5">
+                <p className="text-lg font-bold">Email:</p>
+                <p className="font-medium">{supervisor.userId.email}</p>
+              </div>
+              <div className="flex space-x-3 mb-5">
                 <p className="text-lg font-bold">Supervisor ID:</p>
                 <p className="font-medium">{supervisor.supervisorId}</p>
               </div>
-
+              <div className="flex space-x-3 mb-5">
+                <p className="text-lg font-bold">Contact Number:</p>
+                <p className="font-medium">{supervisor.contactNumber}</p>
+              </div>
+              <div className="flex space-x-3 mb-5">
+                <p className="text-lg font-bold">Address:</p>
+                <p className="font-medium">{supervisor.address}</p>
+              </div>
+              <div className="flex space-x-3 mb-5">
+                <p className="text-lg font-bold">Route:</p>
+                <p className="font-medium">{supervisor.routeName}</p>
+              </div>
+              <div className="flex space-x-3 mb-5">
+                <p className="text-lg font-bold">Qualification:</p>
+                <p className="font-medium">{supervisor.qualification}</p>
+              </div>
               <div className="flex space-x-3 mb-5">
                 <p className="text-lg font-bold">Date of Birth:</p>
                 <p className="font-medium">
@@ -63,14 +82,19 @@ const View = () => {
                 <p className="text-lg font-bold">Gender:</p>
                 <p className="font-medium">{supervisor.gender}</p>
               </div>
-
-              <div className="flex space-x-3 mb-5">
-                <p className="text-lg font-bold">Department:</p>
-                <p className="font-medium">{supervisor.department.dep_name}</p>
-              </div>
               <div className="flex space-x-3 mb-5">
                 <p className="text-lg font-bold">Marital Status:</p>
                 <p className="font-medium">{supervisor.maritalStatus}</p>
+              </div>
+              <div className="flex space-x-3 mb-5">
+                <p className="text-lg font-bold">Date of Joining:</p>
+                <p className="font-medium">
+                  {new Date(supervisor.doj).toLocaleDateString()}
+                </p>
+              </div>
+              <div className="flex space-x-3 mb-5">
+                <p className="text-lg font-bold">Salary:</p>
+                <p className="font-medium">{supervisor.salary}</p>
               </div>
             </div>
           </div>

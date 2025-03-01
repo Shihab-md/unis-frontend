@@ -229,21 +229,6 @@ const Add = () => {
             />
           </div>
 
-          {/* Designation */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Designation
-            </label>
-            <input
-              type="text"
-              name="designation"
-              onChange={handleChange}
-              placeholder="Designation"
-              className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-              required
-            />
-          </div>
-
           {/* Department 
           <div>
             <label className="block text-sm font-medium text-gray-700">

@@ -289,22 +289,6 @@ const Edit = () => {
                 />
               </div>
 
-              {/* Designation */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700">
-                  Designation
-                </label>
-                <input
-                  type="text"
-                  name="designation"
-                  value={supervisor.designation}
-                  onChange={handleChange}
-                  placeholder="Designation"
-                  className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-                  required
-                />
-              </div>
-
               {/* Salary */}
               <div>
                 <label className="block text-sm font-medium text-gray-700">
