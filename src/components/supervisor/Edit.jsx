@@ -281,8 +281,7 @@ const Edit = () => {
                 <input
                   type="date"
                   name="doj"
-                  selected={supervisor.doj}
-                  //format="mm/dd/yyyy"
+                  value={moment(new Date(supervisor.doj)).format("YYYY-MM-DD")}
                   onChange={handleChange}
                   placeholder="DOJ"
                   className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
