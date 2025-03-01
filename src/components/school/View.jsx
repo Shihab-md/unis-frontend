@@ -1,7 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 
 const View = () => {
   const { id } = useParams();
@@ -114,7 +113,7 @@ const View = () => {
             </div>
           </div>
           <button
-            className="px-3 py-1 bg-blue-600 text-white"
+            className="px-7 py-1 bg-blue-600 text-white"
             data-ripple-light="true"
             onClick={() => navigate(`/admin-dashboard/schools`)}
           >  Back

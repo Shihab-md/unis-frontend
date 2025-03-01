@@ -1,10 +1,11 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 
 const View = () => {
   const { id } = useParams();
   const [supervisor, setSupervisor] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchSupervisor = async () => {
@@ -98,6 +99,12 @@ const View = () => {
               </div>
             </div>
           </div>
+          <button
+            className="px-7 py-1 bg-blue-600 text-white"
+            data-ripple-light="true"
+            onClick={() => navigate(`/admin-dashboard/supervisors`)}
+          >  Back
+          </button>
         </div>
       ) : (
         <div> Loading ....</div>
