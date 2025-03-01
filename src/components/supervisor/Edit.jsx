@@ -11,8 +11,10 @@ const Edit = () => {
     address: "",
     routeName: "",
     qualification: "",
+    dob: "",
     gender: "",
     maritalStatus: "",
+    doj: "",
     designation: "",
     salary: "",
   });
@@ -224,7 +226,7 @@ const Edit = () => {
                 <input
                   type="date"
                   name="dob"
-                  value={new Date(supervisor.dob).getDate()}
+                  value={moment(supervisor.dob).format("YYYY-MM-DD")}
                   onChange={handleChange}
                   placeholder="DOB"
                   className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
