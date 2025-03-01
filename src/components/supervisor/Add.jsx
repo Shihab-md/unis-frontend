@@ -11,7 +11,7 @@ const Add = () => {
   const handleChange = (e) => {
     const { name, value, files } = e.target;
 
-    if (name === "image") {
+    if (name === "profileImage") {
       setFormData((prevData) => ({ ...prevData, [name]: files[0] }));
       alert("Hi");
       //console.log(base64)
@@ -296,7 +296,7 @@ const Add = () => {
             <label className="block text-sm font-medium text-gray-700">
               Upload Image
             </label>
-            <FileBase64 type="file" multiple={false} onDone={({ base64 }) => setFormData({ selectedFile: base64 })} onChange={(e) => e.target.files[0]} />
+          {/*  <FileBase64 type="file" multiple={false} onDone={({ base64 }) => setFormData({ selectedFile: base64 })} onChange={(e) => e.target.files[0]} />*/}
             <input
               type="file"
               name="profileImage"
