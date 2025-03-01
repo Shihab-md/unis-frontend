@@ -14,8 +14,11 @@ const Add = () => {
       //setFormData((prevData) => ({ ...prevData, [name]: files[0] }));
 
       const file = files[0];
-      const base64 = convertToBase64(file);
-      alert(base64.value());
+      const fileReader = new FileReader();
+      fileReader.readAsDataURL(file);
+
+      const base64 = fileReader.readAsDataURL(file);
+      alert(base64);
       setFormData((prevData) => ({ ...prevData, [name]: base64 }));
 
       console.log(base64)
