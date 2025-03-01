@@ -9,11 +9,11 @@ const Add = () => {
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
-    alert(name);
-    alert(value);
+
     if (name === "image") {
       //setFormData((prevData) => ({ ...prevData, [name]: files[0] }));
-
+      alert(name);
+      alert(value);
       const file = files[0];
       const base64 = convertToBase64(file);
       alert("File");
