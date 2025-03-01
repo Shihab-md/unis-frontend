@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 //import { fetchDepartments } from "../../utils/SupervisorHelper";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
-import Moment from 'moment';
+import { Moment } from 'moment'
+
 
 const Edit = () => {
   const [supervisor, setSupervisor] = useState({
