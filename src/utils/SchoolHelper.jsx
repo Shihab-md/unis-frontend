@@ -6,23 +6,23 @@ export const columns = [
   {
     name: "S No",
     selector: (row) => row.sno,
-    width: "70px",
+    width: "50px",
   },
   {
     name: "Code",
     selector: (row) => row.code,
     sortable: true,
-    width: "140px",
+    width: "120px",
   },
   {
     name: "Name",
     selector: (row) => row.name,
-    width: "320px",
+    width: "340px",
   },
   {
     name: "Address",
     selector: (row) => row.address,
-    width: "160px",
+    width: "190px",
   },
   {
     name: "District / State",
@@ -32,7 +32,7 @@ export const columns = [
   {
     name: "Status",
     selector: (row) => row.active,
-    width: "120px",
+    width: "110px",
   },
   {
     name: "Action",
