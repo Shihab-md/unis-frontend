@@ -1,25 +1,23 @@
 import React, { useEffect, useState } from "react";
-//import { fetchDepartments } from "../../utils/SupervisorHelper";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 const Add = () => {
- // const [departments, setDepartments] = useState([]);
+
   const [formData, setFormData] = useState({});
   const navigate = useNavigate()
-
-  {/* useEffect(() => {
-    const getDepartments = async () => {
-      const departments = await fetchDepartments();
-      setDepartments(departments);
-    };
-    getDepartments();
-  }, []);*/}
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
     if (name === "image") {
-      setFormData((prevData) => ({ ...prevData, [name]: files[0] }));
+      //setFormData((prevData) => ({ ...prevData, [name]: files[0] }));
+
+      const file = e.target.files[0];
+      const base64 = convertToBase64(file);
+      alert("File");
+      setFormData((prevData) => ({ ...prevData, [name]: base64 }));
+
+      console.log(base64)
     } else {
       setFormData((prevData) => ({ ...prevData, [name]: value }));
     }
@@ -308,6 +306,7 @@ const Add = () => {
               placeholder="Upload Image"
               accept="image/*"
               className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+            //onChange={(e) => handleFileUpload(e)}
             />
           </div>
         </div>
@@ -324,3 +323,16 @@ const Add = () => {
 };
 
 export default Add;
+
+function convertToBase64(file) {
+  return new Promise((resolve, reject) => {
+    const fileReader = new FileReader();
+    fileReader.readAsDataURL(file);
+    fileReader.onload = () => {
+      resolve(fileReader.result)
+    };
+    fileReader.onerror = (error) => {
+      reject(error)
+    }
+  })
+}
