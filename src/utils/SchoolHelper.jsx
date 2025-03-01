@@ -4,9 +4,9 @@ import { useAuth } from "../context/AuthContext";
 
 export const columns = [
   {
-    name: "S No",
+    name: "S.No",
     selector: (row) => row.sno,
-    width: "50px",
+    width: "70px",
   },
   {
     name: "Code",
