@@ -31,7 +31,7 @@ const List = () => {
                 name: sup.userId.name,
                 contactNumber: sup.contactNumber,
                 routeName: sup.routeName,
-                //dob: new Date(sup.dob).toLocaleDateString(),
+                dob: new Date(sup.dob).toLocaleDateString(),
                 profileImage: <img width={40} className='rounded-full' src={`https://unis-server.vercel.app/${sup.userId.profileImage}`} />,
                 action: (<SupervisorButtons Id={sup._id} />),
               }));

@@ -24,6 +24,11 @@ export const columns = [
     width: "250px",
   },
   {
+    name: "DOB",
+    selector: (row) => row.dob,
+    width: "250px",
+  },
+  {
     name: "Action",
     selector: (row) => row.action,
     center: "true",
