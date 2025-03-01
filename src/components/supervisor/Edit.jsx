@@ -226,7 +226,7 @@ const Edit = () => {
                 <input
                   type="date"
                   name="dob"
-                  value={new Date(supervisor.dob).toString()}
+                  value={new Date(supervisor.dob)}
                   onChange={handleChange}
                   placeholder="DOB"
                   className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
