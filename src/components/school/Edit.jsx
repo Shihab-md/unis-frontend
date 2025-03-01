@@ -46,12 +46,12 @@ const Edit = () => {
             incharge1Number: school.incharge1Number,
             incharge2: school.incharge2,
             incharge2Number: school.incharge2Number,
-            incharge1: school.incharge3,
-            incharge1Number: school.incharge3Number,
-            incharge2: school.incharge4,
-            incharge2Number: school.incharge4Number,
-            incharge1: school.incharge5,
-            incharge1Number: school.incharge5Number,
+            incharge3: school.incharge3,
+            incharge3Number: school.incharge3Number,
+            incharge4: school.incharge4,
+            incharge4Number: school.incharge4Number,
+            incharge5: school.incharge5,
+            incharge5Number: school.incharge5Number,
           }));
         }
       } catch (error) {
@@ -152,7 +152,7 @@ const Edit = () => {
               {/* District / State */}
               <div>
                 <label className="block text-sm font-medium text-gray-700">
-                  Address
+                  District / State
                 </label>
                 <input
                   type="text"
@@ -214,6 +214,8 @@ const Edit = () => {
                   <option value="In-Active">In-Active</option>
                 </select>
               </div>
+
+              <div />
 
               {/* Incharge1 */}
               <div>

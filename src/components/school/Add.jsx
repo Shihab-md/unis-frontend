@@ -97,7 +97,7 @@ const Add = () => {
           {/* District / State */}
           <div>
             <label className="block text-sm font-medium text-gray-700">
-              Address
+              District / State
             </label>
             <input
               type="text"
@@ -155,6 +155,8 @@ const Add = () => {
               <option value="In-Active">In-Active</option>
             </select>
           </div>
+
+          <div />
 
           {/* Incharge1 */}
           <div>
