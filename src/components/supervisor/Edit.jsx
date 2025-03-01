@@ -39,10 +39,17 @@ const Edit = () => {
           setSupervisor((prev) => ({
             ...prev,
             name: supervisor.userId.name,
+            email: supervisor.userId.email,
+            contactNumber: supervisor.contactNumber,
+            address: supervisor.address,
+            routeName: supervisor.routeName,
+            qualification: supervisor.qualification,
+            dob: supervisor.dob,
+            gender: supervisor.gender,
             maritalStatus: supervisor.maritalStatus,
+            doj: supervisor.doj,
             designation: supervisor.designation,
-            salary: supervisor.salary,
-            department: supervisor.department
+            salary: supervisor.salary
           }));
         }
       } catch (error) {
@@ -106,6 +113,137 @@ const Edit = () => {
                 />
               </div>
 
+              {/* Email */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700">
+                  Email
+                </label>
+                <input
+                  type="email"
+                  name="email"
+                  value={supervisor.email}
+                  onChange={handleChange}
+                  disabled={true}
+                  placeholder="Insert Email"
+                  className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                  required
+                />
+              </div>
+
+              {/* Supervisor ID */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700">
+                  Supervisor ID
+                </label>
+                <input
+                  type="text"
+                  name="supervisorId"
+                  value={supervisor.supervisorId}
+                  onChange={handleChange}
+                  placeholder="Supervisor ID"
+                  className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                  required
+                />
+              </div>
+
+              {/* Contact Number */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700">
+                  Contact Number
+                </label>
+                <input
+                  type="number"
+                  name="contactNumber"
+                  value={supervisor.contactNumber}
+                  onChange={handleChange}
+                  placeholder="Contact Number"
+                  className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                  required
+                />
+              </div>
+
+              {/* Address */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700">
+                  Address
+                </label>
+                <input
+                  type="text"
+                  name="address"
+                  value={supervisor.address}
+                  onChange={handleChange}
+                  placeholder="Address"
+                  className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                  required
+                />
+              </div>
+
+              {/* Route Name */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700">
+                  Route Name
+                </label>
+                <input
+                  type="text"
+                  name="routeName"
+                  value={supervisor.routeName}
+                  onChange={handleChange}
+                  placeholder="Route Name"
+                  className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                  required
+                />
+              </div>
+
+              {/* Qualification */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700">
+                  Qualification
+                </label>
+                <input
+                  type="text"
+                  name="qualification"
+                  value={supervisor.qualification}
+                  onChange={handleChange}
+                  placeholder="Qualification"
+                  className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                  required
+                />
+              </div>
+
+              {/* Date of Birth */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700">
+                  Date of Birth
+                </label>
+                <input
+                  type="date"
+                  name="dob"
+                  value={supervisor.dob}
+                  onChange={handleChange}
+                  placeholder="DOB"
+                  className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                  required
+                />
+              </div>
+
+              {/* Gender */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700">
+                  Gender
+                </label>
+                <select
+                  name="gender"
+                  value={supervisor.gender}
+                  onChange={handleChange}
+                  className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                  required
+                >
+                  <option value="">Select Gender</option>
+                  <option value="Male">Male</option>
+                  <option value="Female">Female</option>
+                </select>
+              </div>
+
               {/* Marital Status */}
               <div>
                 <label className="block text-sm font-medium text-gray-700">
@@ -113,16 +251,32 @@ const Edit = () => {
                 </label>
                 <select
                   name="maritalStatus"
-                  onChange={handleChange}
                   value={supervisor.maritalStatus}
+                  onChange={handleChange}
                   placeholder="Marital Status"
                   className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                   required
                 >
                   <option value="">Select Status</option>
-                  <option value="single">Single</option>
-                  <option value="married">Married</option>
+                  <option value="Single">Single</option>
+                  <option value="Married">Married</option>
                 </select>
+              </div>
+
+              {/* Date of Joining */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700">
+                  Date of Joining
+                </label>
+                <input
+                  type="date"
+                  name="doj"
+                  value={supervisor.doj}
+                  onChange={handleChange}
+                  placeholder="DOJ"
+                  className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                  required
+                />
               </div>
 
               {/* Designation */}
@@ -133,8 +287,8 @@ const Edit = () => {
                 <input
                   type="text"
                   name="designation"
-                  onChange={handleChange}
                   value={supervisor.designation}
+                  onChange={handleChange}
                   placeholder="Designation"
                   className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                   required
@@ -157,25 +311,19 @@ const Edit = () => {
                 />
               </div>
 
-              {/* Department 
-              <div className="col-span-2">
+              {/* Image Upload 
+              <div>
                 <label className="block text-sm font-medium text-gray-700">
-                  Department
+                  Upload Image
                 </label>
-                <select
-                  name="department"
+                <input
+                  type="file"
+                  name="image"
                   onChange={handleChange}
-                  value={supervisor.department}
+                  placeholder="Upload Image"
+                  accept="image/*"
                   className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-                  required
-                >
-                  <option value="">Select Department</option>
-                  {departments.map((dep) => (
-                    <option key={dep._id} value={dep._id}>
-                      {dep.dep_name}
-                    </option>
-                  ))}
-                </select>
+                />
               </div>*/}
             </div>
 
