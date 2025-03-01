@@ -296,8 +296,8 @@ const Add = () => {
             <label className="block text-sm font-medium text-gray-700">
               Upload Image
             </label>
-          {/*  <FileBase64 type="file" multiple={false} onDone={({ base64 }) => setFormData({ selectedFile: base64 })} onChange={(e) => e.target.files[0]} />*/}
-            <input
+            <FileBase64 type="file" className="mt-1 p-2 block w-full border border-gray-300 rounded-md" multiple={false} onDone={({ base64 }) => setFormData({ profileImage: base64 })} onChange={(e) => e.target.files[0]} />
+            {/*  <input
               type="file"
               name="profileImage"
               onChange={handleChange}
@@ -305,7 +305,7 @@ const Add = () => {
               accept="image/*"
               className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
             //onChange={(e) => handleFileUpload(e)}
-            />
+            />*/}
           </div>
         </div>
 
