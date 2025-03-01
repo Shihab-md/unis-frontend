@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import FileBase64 from 'react-file-base64';
 
 const Add = () => {
 
@@ -11,17 +12,17 @@ const Add = () => {
     const { name, value, files } = e.target;
 
     if (name === "image") {
-      //setFormData((prevData) => ({ ...prevData, [name]: files[0] }));
+      setFormData((prevData) => ({ ...prevData, [name]: files[0] }));
 
-      const file = files[0];
-      const fileReader = new FileReader();
+      //const file = files[0];
+      // const fileReader = new FileReader();
       //fileReader.readAsDataURL(file);
 
-      const base64 = fileReader.readAsDataURL(file);
-      alert(base64);
-      setFormData((prevData) => ({ ...prevData, [name]: base64 }));
+      //const base64 = fileReader.readAsDataURL(file);
+      //alert(base64);
+      //setFormData((prevData) => ({ ...prevData, [name]: base64 }));
 
-      console.log(base64)
+      //console.log(base64)
     } else {
       setFormData((prevData) => ({ ...prevData, [name]: value }));
     }
@@ -303,6 +304,7 @@ const Add = () => {
             <label className="block text-sm font-medium text-gray-700">
               Upload Image
             </label>
+            <FileBase type="file" multiple={false} onDone={({ base64 }) => setSingleFile({ selectedFile: base64 })} onChange={(e) => e.target.files[0]} />
             <input
               type="file"
               name="image"
