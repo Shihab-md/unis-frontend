@@ -47,6 +47,7 @@ const Edit = () => {
             ...prev,
             name: supervisor.userId.name,
             email: supervisor.userId.email,
+            supervisorId: supervisor.supervisorId,
             contactNumber: supervisor.contactNumber,
             address: supervisor.address,
             routeName: supervisor.routeName,
