@@ -2,9 +2,9 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import {
-  FaView,
+  FaEye,
   FaEdit,
-  FaDelete,
+  FaTrash,
 } from "react-icons/fa";
 
 export const columns = [
@@ -102,7 +102,7 @@ export const SchoolButtons = ({ Id, onSchoolDelete }) => {
         className="px-3 py-1 bg-teal-600 text-white"
         onClick={() => navigate(`/admin-dashboard/schools/${Id}`)}
       >
-        <FaView />
+        <FaEye />
         View
       </button>
       <button
@@ -116,7 +116,7 @@ export const SchoolButtons = ({ Id, onSchoolDelete }) => {
         className="px-3 py-1 bg-red-600 text-white"
         onClick={() => handleDelete(Id)}
       >
-        <FaDelete />
+        <FaTrash />
         Delete
       </button>
     </div>
