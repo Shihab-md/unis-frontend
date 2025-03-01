@@ -226,7 +226,7 @@ const Edit = () => {
                 <input
                   type="date"
                   name="dob"
-                  value={new Date(supervisor.dob).toLocaleDateString()}
+                  value={supervisor.dob}
                   onChange={handleChange}
                   placeholder="DOB"
                   className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
@@ -279,7 +279,7 @@ const Edit = () => {
                 <input
                   type="date"
                   name="doj"
-                  value={new Date(supervisor.doj).toLocaleDateString()}
+                  value={supervisor.doj}
                   onChange={handleChange}
                   placeholder="DOJ"
                   className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
