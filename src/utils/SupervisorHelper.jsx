@@ -15,7 +15,7 @@ export const columns = [
   },
   {
     name: "Route",
-    selector: (row) => row.route_name,
+    selector: (row) => row.routeName,
     width: "250px",
   },
   {
