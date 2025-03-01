@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 //import { fetchDepartments } from "../../utils/SupervisorHelper";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
+import Moment from 'moment';
 
 const Edit = () => {
   const [supervisor, setSupervisor] = useState({
@@ -226,8 +227,7 @@ const Edit = () => {
                 <input
                   type="date"
                   name="dob"
-                  value={new Date(supervisor.dob)}
-                  format={"yyyy-mm-dd"}
+                  value={Moment(new Date(supervisor.dob)).format("yyyy-mm-dd")}
                   onChange={handleChange}
                   placeholder="DOB"
                   className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
