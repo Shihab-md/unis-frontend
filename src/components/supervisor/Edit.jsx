@@ -280,6 +280,7 @@ const Edit = () => {
                   type="date"
                   name="doj"
                   value={supervisor.doj}
+                  format="mm/dd/yyyy"
                   onChange={handleChange}
                   placeholder="DOJ"
                   className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
