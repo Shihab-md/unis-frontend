@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 //import { fetchDepartments } from "../../utils/SupervisorHelper";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
-import moment from 'react-moment';
+import moment from "moment";
 
 
 const Edit = () => {
