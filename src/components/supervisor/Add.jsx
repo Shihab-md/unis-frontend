@@ -15,7 +15,7 @@ const Add = () => {
 
       const file = files[0];
       const fileReader = new FileReader();
-      fileReader.readAsDataURL(file);
+      //fileReader.readAsDataURL(file);
 
       const base64 = fileReader.readAsDataURL(file);
       alert(base64);
