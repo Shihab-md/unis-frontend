@@ -4,7 +4,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 const Add = () => {
-  const [departments, setDepartments] = useState([]);
+ // const [departments, setDepartments] = useState([]);
   const [formData, setFormData] = useState({});
   const navigate = useNavigate()
 

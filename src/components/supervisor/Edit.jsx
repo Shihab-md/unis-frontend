@@ -16,7 +16,7 @@ const Edit = () => {
     maritalStatus: "",
     doj: "",
     designation: "",
-    salary: 0
+    salary: 0,
   });
   // const [departments, setDepartments] = useState(null);
   const navigate = useNavigate();

@@ -10,7 +10,7 @@ const RoleBaseRoutes = ({children, requiredRole}) => {
     }
 
     if(!requiredRole.includes(user.role)) {
-        alert("ok");
+       // alert("ok");
        <Navigate to="/unauthorized"/> 
     }
   
