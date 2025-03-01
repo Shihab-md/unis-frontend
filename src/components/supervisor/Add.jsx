@@ -294,7 +294,7 @@ const Add = () => {
             />
           </div>
 
-          {/* Role */}
+          {/* Role 
           <div>
             <label className="block text-sm font-medium text-gray-700">
               Role
@@ -309,7 +309,7 @@ const Add = () => {
               <option value="">Select Role</option>
               <option value="supervisor">Supervisor</option>
             </select>
-          </div>
+          </div>*/}
 
           {/* Image Upload */}
           <div>
