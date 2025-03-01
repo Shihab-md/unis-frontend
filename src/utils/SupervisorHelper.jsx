@@ -14,6 +14,11 @@ export const columns = [
     width: "250px",
   },
   {
+    name: "Contact",
+    selector: (row) => row.contactNumber,
+    width: "250px",
+  },
+  {
     name: "Route",
     selector: (row) => row.routeName,
     width: "250px",

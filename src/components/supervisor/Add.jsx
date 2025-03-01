@@ -104,6 +104,36 @@ const Add = () => {
             />
           </div>
 
+          {/* Contact Number */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Contact Number
+            </label>
+            <input
+              type="number"
+              name="contactNumber"
+              onChange={handleChange}
+              placeholder="Contact Number"
+              className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+              required
+            />
+          </div>
+
+          {/* Address */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Address
+            </label>
+            <input
+              type="text"
+              name="address"
+              onChange={handleChange}
+              placeholder="Address"
+              className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+              required
+            />
+          </div>
+
           {/* Route Name */}
           <div>
             <label className="block text-sm font-medium text-gray-700">
