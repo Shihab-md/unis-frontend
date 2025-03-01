@@ -11,17 +11,17 @@ const Edit = () => {
     salary: 0,
     department: "",
   });
-  const [departments, setDepartments] = useState(null);
+ // const [departments, setDepartments] = useState(null);
   const navigate = useNavigate();
   const { id } = useParams();
 
-  useEffect(() => {
+ {/*} useEffect(() => {
     const getDepartments = async () => {
       const departments = await fetchDepartments();
       setDepartments(departments);
     };
     getDepartments();
-  }, []);
+  }, []); */}
 
   useEffect(() => {
     const fetchSupervisor = async () => {
@@ -310,21 +310,6 @@ const Edit = () => {
                   required
                 />
               </div>
-
-              {/* Image Upload 
-              <div>
-                <label className="block text-sm font-medium text-gray-700">
-                  Upload Image
-                </label>
-                <input
-                  type="file"
-                  name="image"
-                  onChange={handleChange}
-                  placeholder="Upload Image"
-                  accept="image/*"
-                  className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-                />
-              </div>*/}
             </div>
 
             <button
