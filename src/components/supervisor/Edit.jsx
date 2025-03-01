@@ -11,10 +11,10 @@ const Edit = () => {
     address: "",
     routeName: "",
     qualification: "",
-    dob: "",
+    //dob: "",
     gender: "",
     maritalStatus: "",
-    doj: "",
+    //doj: "",
     designation: "",
     salary: "",
   });
