@@ -12,11 +12,10 @@ const Add = () => {
 
     if (name === "image") {
       //setFormData((prevData) => ({ ...prevData, [name]: files[0] }));
-      alert(name);
-      alert(value);
+
       const file = files[0];
       const base64 = convertToBase64(file);
-      alert("File");
+      alert(base64);
       setFormData((prevData) => ({ ...prevData, [name]: base64 }));
 
       console.log(base64)
