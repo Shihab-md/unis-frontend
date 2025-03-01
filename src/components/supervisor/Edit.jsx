@@ -7,16 +7,14 @@ const Edit = () => {
   const [supervisor, setSupervisor] = useState({
     name: "",
     email: "",
-    contactNumber: 0,
+    contactNumber: "",
     address: "",
     routeName: "",
     qualification: "",
-    dob: "",
     gender: "",
     maritalStatus: "",
-    doj: "",
     designation: "",
-    salary: 0,
+    salary: "",
   });
   // const [departments, setDepartments] = useState(null);
   const navigate = useNavigate();
