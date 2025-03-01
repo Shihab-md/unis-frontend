@@ -267,7 +267,7 @@ const Add = () => {
           {/* Role */}
           <div>
             <label className="block text-sm font-medium text-gray-700">
-            {/*  Role*/}
+              Role
             </label>
             <input
               type="text"
