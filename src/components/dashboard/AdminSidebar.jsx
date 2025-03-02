@@ -8,22 +8,29 @@ import {
   FaRegCalendarAlt,
   FaTachometerAlt,
   FaUsers,
-} from "react-icons/fa";
-import {AiOutlineFileText} from 'react-icons/ai'
+} from "react-icons/fa"; tretrtrt
+import 
+{BsCart3, BsGrid1X2Fill, BsFillArchiveFill, BsFillGrid3X3GapFill, BsPeopleFill, 
+  BsListCheck, BsMenuButtonWideFill, BsFillGearFill}
+ from 'react-icons/bs'
+import { AiOutlineFileText } from 'react-icons/ai'
 
 const AdminSidebar = () => {
   return (
-    <div className="bg-gray-800 text-white h-screen fixed left-0 top-0 bottom-0 space-y-2 w-64">
-      <div className="bg-teal-600 h-12 flex items-center justify-center">
-        <h3 className="text-2xl text-center font-pacific">Niswan MS</h3>
+    <aside id="sidebar" className={openSidebarToggle ? "sidebar-responsive" : ""}>
+      <div className='sidebar-title'>
+        <div className='sidebar-brand'>
+          <BsCart3 className='icon_header' /> Niswan MS
+        </div>
+        <span className='icon close_icon' onClick={OpenSidebar}>X</span>
       </div>
-      <div className="px-4">
+
+      <div className="sidebar-list">
         <NavLink
           to="/admin-dashboard"
           className={({ isActive }) =>
-            `${
-              isActive ? "bg-teal-500 " : " "
-            } flex items-center space-x-4 block py-2.5 px-4 rounded`
+            `${isActive ? "bg-teal-500 " : " "
+            } sidebar-list-item`
           }
           end
         >
@@ -33,9 +40,8 @@ const AdminSidebar = () => {
         <NavLink
           to="/admin-dashboard/supervisors"
           className={({ isActive }) =>
-            `${
-              isActive ? "bg-teal-500 " : " "
-            } flex items-center space-x-4 block py-2.5 px-4 rounded`
+            `${isActive ? "bg-teal-500 " : " "
+            } sidebar-list-item`
           }
         >
           <FaUsers />
@@ -44,9 +50,8 @@ const AdminSidebar = () => {
         <NavLink
           to="/admin-dashboard/schools"
           className={({ isActive }) =>
-            `${
-              isActive ? "bg-teal-500 " : " "
-            } flex items-center space-x-4 block py-2.5 px-4 rounded`
+            `${isActive ? "bg-teal-500 " : " "
+            } sidebar-list-item`
           }
         >
           <FaUsers />
@@ -55,9 +60,8 @@ const AdminSidebar = () => {
         <NavLink
           to="/admin-dashboard/classSections"
           className={({ isActive }) =>
-            `${
-              isActive ? "bg-teal-500 " : " "
-            } flex items-center space-x-4 block py-2.5 px-4 rounded`
+            `${isActive ? "bg-teal-500 " : " "
+            } sidebar-list-item`
           }
         >
           <FaUsers />
@@ -66,9 +70,8 @@ const AdminSidebar = () => {
         <NavLink
           to="/admin-dashboard/employees"
           className={({ isActive }) =>
-            `${
-              isActive ? "bg-teal-500 " : " "
-            } flex items-center space-x-4 block py-2.5 px-4 rounded`
+            `${isActive ? "bg-teal-500 " : " "
+            } sidebar-list-item`
           }
         >
           <FaUsers />
@@ -77,9 +80,8 @@ const AdminSidebar = () => {
         <NavLink
           to="/admin-dashboard/departments"
           className={({ isActive }) =>
-            `${
-              isActive ? "bg-teal-500 " : " "
-            } flex items-center space-x-4 block py-2.5 px-4 rounded`
+            `${isActive ? "bg-teal-500 " : " "
+            } sidebar-list-item`
           }
         >
           <FaBuilding />
@@ -88,9 +90,8 @@ const AdminSidebar = () => {
         <NavLink
           to="/admin-dashboard/leaves"
           className={({ isActive }) =>
-            `${
-              isActive ? "bg-teal-500 " : " "
-            } flex items-center space-x-4 block py-2.5 px-4 rounded`
+            `${isActive ? "bg-teal-500 " : " "
+            } sidebar-list-item`
           }
         >
           <FaCalendarAlt />
@@ -99,9 +100,8 @@ const AdminSidebar = () => {
         <NavLink
           to="/admin-dashboard/salary/add"
           className={({ isActive }) =>
-            `${
-              isActive ? "bg-teal-500 " : " "
-            } flex items-center space-x-4 block py-2.5 px-4 rounded`
+            `${isActive ? "bg-teal-500 " : " "
+            } sidebar-list-item`
           }
         >
           <FaMoneyBillWave />
@@ -110,9 +110,8 @@ const AdminSidebar = () => {
         <NavLink
           to={`/admin-dashboard/attendance`}
           className={({ isActive }) =>
-            `${
-              isActive ? "bg-teal-500 " : " "
-            } flex items-center space-x-4 block py-2.5 px-4 rounded`
+            `${isActive ? "bg-teal-500 " : " "
+            } sidebar-list-item`
           }
         >
           <FaRegCalendarAlt />
@@ -121,9 +120,8 @@ const AdminSidebar = () => {
         <NavLink
           to={`/admin-dashboard/attendance-report`}
           className={({ isActive }) =>
-            `${
-              isActive ? "bg-teal-500 " : " "
-            } flex items-center space-x-4 block py-2.5 px-4 rounded`
+            `${isActive ? "bg-teal-500 " : " "
+            } sidebar-list-item`
           }
         >
           <AiOutlineFileText />
@@ -131,13 +129,13 @@ const AdminSidebar = () => {
         </NavLink>
         <NavLink
           to="/admin-dashboard/setting"
-          className="flex items-center space-x-4 block py-2.5 px-4 rounded"
+          className="sidebar-list-item"
         >
           <FaCogs />
           <span>Settings</span>
         </NavLink>
       </div>
-    </div>
+    </aside>
   );
 };
 
