@@ -41,9 +41,9 @@ const Login = () => {
       className="flex flex-col items-center h-screen justify-center 
     bg-gradient-to-b from-teal-600 from-50% to-gray-100 to-50% space-y-6"
     >
-      <div className="border shadow p-6 w-80 bg-white">
-        
-      </div>
+      
+        <img width={160} className='rounded-md' src="./Logo - UNIS.PNG" />
+      
       <h2 className="font-pacific text-3xl text-white">
         Niswan Management System
       </h2>
