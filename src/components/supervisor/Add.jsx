@@ -9,7 +9,7 @@ const Add = () => {
   const navigate = useNavigate()
 
   const handleChange = (e) => {
-    const { name, value, files } = e.target;
+    const { name, value, files, profileImage } = e.target;
 
   //  if (name === "profileImage") {
   //   setFormData((prevData) => ({ ...prevData, [name]: files[0] }));
