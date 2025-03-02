@@ -5,17 +5,17 @@ import FileBase64 from 'react-file-base64';
 
 const Add = () => {
 
-  const [formData, setFormData] = useState({});
+  const [formData, setFormData, profileImage] = useState({});
   const navigate = useNavigate()
 
   const handleChange = (e) => {
     const { name, value, files, profileImage } = e.target;
 
-  //  if (name === "profileImage") {
-  //   setFormData((prevData) => ({ ...prevData, [name]: files[0] }));
+    if (name === "profileImage") {
+     setFormData((prevData) => ({ ...prevData, [name]: files[0] }));
   //    alert("Hi");
       //console.log(base64)
-  //  } else {
+    } else {
       setFormData((prevData) => ({ ...prevData, [name]: value }));
   //  }
   };
