@@ -12,7 +12,7 @@ const Add = () => {
     const { name, value, files } = e.target;
 
     if (name === "profileImage") {
-      //setFormData((prevData) => ({ ...prevData, [name]: files[0] }));
+      setFormData((prevData) => ({ ...prevData, [name]: files[0] }));
       alert("Hi");
       //console.log(base64)
     } else {
@@ -46,7 +46,6 @@ const Add = () => {
         alert(error.response.data.error);
       }
     }
-
   };
 
   return (
@@ -224,26 +223,6 @@ const Add = () => {
             />
           </div>
 
-          {/* Department 
-          <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Department
-            </label>
-            <select
-              name="department"
-              onChange={handleChange}
-              className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-              required
-            >
-              <option value="">Select Department</option>
-              {departments.map((dep) => (
-                <option key={dep._id} value={dep._id}>
-                  {dep.dep_name}
-                </option>
-              ))}
-            </select>
-          </div>*/}
-
           {/* Salary */}
           <div>
             <label className="block text-sm font-medium text-gray-700">
@@ -273,23 +252,6 @@ const Add = () => {
               required
             />
           </div>
-
-          {/* Role 
-          <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Role
-            </label>
-            <select
-              name="role"
-              onChange={handleChange}
-              placeholder="Role"
-              className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-              required
-            >
-              <option value="">Select Role</option>
-              <option value="supervisor">Supervisor</option>
-            </select>
-          </div>*/}
 
           {/* Image Upload */}
           <div>
