@@ -12,9 +12,9 @@ const Add = () => {
     const { name, value, files } = e.target;
 
     if (name === "profileImage") {
-     // setFormData((prevData) => ({ ...prevData, [name]: files[0] }));
+     setFormData((prevData) => ({ ...prevData, [name]: files[0] }));
       alert("Hi");
-      //console.log(base64)
+      console.log(base64)
     } else {
       setFormData((prevData) => ({ ...prevData, [name]: value }));
     }
