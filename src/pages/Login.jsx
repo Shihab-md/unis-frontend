@@ -42,7 +42,6 @@ const Login = () => {
     bg-gradient-to-b from-teal-600 from-50% to-gray-100 to-50% space-y-6"
     >
       <img width={160} className='rounded-md' src="./Logo - UNIS.PNG" />
-
       <h2 className="font-pacific font-bold text-3xl text-red">
         Niswan Management System
       </h2>
