@@ -14,7 +14,7 @@ import {AiOutlineFileText} from 'react-icons/ai'
 const AdminSidebar = () => {
   return (
     <div className="flex">
-    <div className="bg-gray-800 text-white h-screen fixed left-0 top-0 bottom-0 space-y-2 w-64">
+    <div className="bg-gray-800 text-white h-screen fixed left-0 top-0 bottom-0 space-y-2 w-20 md:64">
       <div className="bg-teal-600 h-12 flex items-center justify-center">
         <h3 className="text-2xl text-center font-pacific">Niswan MS</h3>
       </div>
@@ -135,7 +135,7 @@ const AdminSidebar = () => {
           className="flex items-center space-x-4 block py-2.5 px-4 rounded"
         >
           <FaCogs />
-          <span>Settings</span>
+          <span className='hidden md:inline'>Settings</span>
         </NavLink>
       </div>
     </div></div>
