@@ -29,7 +29,7 @@ const AdminSidebar = () => {
           end
         >
           <FaTachometerAlt />
-          <span>Dashboard</span>
+          <span className='hidden md:inline'>Dashboard</span>
         </NavLink>
         <NavLink
           to="/admin-dashboard/supervisors"
@@ -40,7 +40,7 @@ const AdminSidebar = () => {
           }
         >
           <FaUsers />
-          <span>Supervisor</span>
+          <span className='hidden md:inline'>Supervisors</span>
         </NavLink>
         <NavLink
           to="/admin-dashboard/schools"
@@ -51,7 +51,7 @@ const AdminSidebar = () => {
           }
         >
           <FaUsers />
-          <span>Niswan</span>
+          <span className='hidden md:inline'>Niswans</span>
         </NavLink>
         <NavLink
           to="/admin-dashboard/classSections"
@@ -62,7 +62,7 @@ const AdminSidebar = () => {
           }
         >
           <FaUsers />
-          <span>ClassSection</span>
+          <span className='hidden md:inline'>ClassSection</span>
         </NavLink>
         <NavLink
           to="/admin-dashboard/employees"
@@ -73,7 +73,7 @@ const AdminSidebar = () => {
           }
         >
           <FaUsers />
-          <span>Employee</span>
+          <span className='hidden md:inline'>Employee</span>
         </NavLink>
         <NavLink
           to="/admin-dashboard/departments"
@@ -84,7 +84,7 @@ const AdminSidebar = () => {
           }
         >
           <FaBuilding />
-          <span>Department</span>
+          <span className='hidden md:inline'>Department</span>
         </NavLink>
         <NavLink
           to="/admin-dashboard/leaves"
@@ -95,7 +95,7 @@ const AdminSidebar = () => {
           }
         >
           <FaCalendarAlt />
-          <span>Leave</span>
+          <span className='hidden md:inline'>Leave</span>
         </NavLink>
         <NavLink
           to="/admin-dashboard/salary/add"
@@ -106,7 +106,7 @@ const AdminSidebar = () => {
           }
         >
           <FaMoneyBillWave />
-          <span>Salary</span>
+          <span className='hidden md:inline'>Salary</span>
         </NavLink>
         <NavLink
           to={`/admin-dashboard/attendance`}
@@ -117,7 +117,7 @@ const AdminSidebar = () => {
           }
         >
           <FaRegCalendarAlt />
-          <span>Attendance</span>
+          <span className='hidden md:inline'>Attendance</span>
         </NavLink>
         <NavLink
           to={`/admin-dashboard/attendance-report`}
@@ -128,7 +128,7 @@ const AdminSidebar = () => {
           }
         >
           <AiOutlineFileText />
-          <span>Attendance Report</span>
+          <span className='hidden md:inline'>Attendance Report</span>
         </NavLink>
         <NavLink
           to="/admin-dashboard/setting"
