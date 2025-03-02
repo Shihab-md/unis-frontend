@@ -7,18 +7,12 @@ import { Outlet } from 'react-router-dom'
 
 const AdminDashboard = () => {
   const {user} = useAuth()
-
-  const [openSidebarToggle, setOpenSidebarToggle] = useState(false)
-
-  const OpenSidebar = () => {
-    setOpenSidebarToggle(!openSidebarToggle)
-  }
  
   return (
-    <div className='grid-container'>
-      <AdminSidebar openSidebarToggle={openSidebarToggle} OpenSidebar={OpenSidebar}/>
+    <div className='flex'>
+      <AdminSidebar />
       <div className='flex-1 ml-64 bg-gray-100 h-screen'>
-        <Navbar OpenSidebar={OpenSidebar}/>
+        <Navbar />
         <Outlet />
       </div>
     </div>
