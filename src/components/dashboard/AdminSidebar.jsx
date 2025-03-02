@@ -13,10 +13,10 @@ import {AiOutlineFileText} from 'react-icons/ai'
 
 const AdminSidebar = () => {
   return (
-    <div className="flex">
-    <div className="bg-gray-800 text-white h-screen fixed left-0 top-0 bottom-0 space-y-2 w-20 md:64">
+    <div className="flex w-16 md:w-64" >
+    <div className="bg-gray-800 text-white h-screen fixed left-0 top-0 bottom-0 space-y-2 w-16 md:w-64">
       <div className="bg-teal-600 h-12 flex items-center justify-center">
-        <h3 className="text-2xl text-center font-pacific">Niswan MS</h3>
+        <h3 className="text-2xl hidden md:block mt-4 text-center font-pacific">Niswan MS</h3>
       </div>
       <div className="px-4">
         <NavLink
