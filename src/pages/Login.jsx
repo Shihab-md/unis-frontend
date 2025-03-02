@@ -29,7 +29,6 @@ const Login = () => {
       }
     } catch (error) {
       if(error.response && !error.response.data.success) {
-        alert("Hi")
         setError(error.response.data.error)
       } else {
         setError("Server Error")

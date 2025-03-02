@@ -4,7 +4,6 @@ import AdminSidebar from '../components/dashboard/AdminSidebar'
 import Navbar from '../components/dashboard/Navbar'
 import AdminSummary from '../components/dashboard/AdminSummary'
 import { Outlet } from 'react-router-dom'
-import './App.css'
 
 const AdminDashboard = () => {
   const {user} = useAuth()
