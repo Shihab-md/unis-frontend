@@ -43,7 +43,7 @@ const Login = () => {
     >
       <img width={160} className='rounded-md' src="./Logo - UNIS.PNG" />
 
-      <h2 className="font-pacific font-bold text-5xl text-red">
+      <h2 className="font-pacific font-bold text-3xl text-red">
         Niswan Management System
       </h2>
       <div className="border shadow p-6 w-80 bg-white">
