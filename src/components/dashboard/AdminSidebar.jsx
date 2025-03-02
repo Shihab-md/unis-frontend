@@ -8,7 +8,7 @@ import {
   FaRegCalendarAlt,
   FaTachometerAlt,
   FaUsers,
-} from "react-icons/fa";tretrtrt
+} from "react-icons/fa";
 import {AiOutlineFileText} from 'react-icons/ai'
 
 const AdminSidebar = () => {
