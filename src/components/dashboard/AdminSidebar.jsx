@@ -13,8 +13,7 @@ import {AiOutlineFileText} from 'react-icons/ai'
 
 const AdminSidebar = () => {
   return (
-    <div className="flex" >
-    <div className="bg-gray-800 text-white h-screen fixed left-0 top-0 bottom-0 space-y-2 w-20 md:64">
+    <div className="bg-gray-800 text-white h-screen fixed left-0 top-0 bottom-0 space-y-2 w-64">
       <div className="bg-teal-600 h-12 flex items-center justify-center">
         <h3 className="text-2xl text-center font-pacific">Niswan MS</h3>
       </div>
@@ -29,7 +28,7 @@ const AdminSidebar = () => {
           end
         >
           <FaTachometerAlt />
-          <span className='hidden md:inline'>Dashboard</span>
+          <span>Dashboard</span>
         </NavLink>
         <NavLink
           to="/admin-dashboard/supervisors"
@@ -40,7 +39,7 @@ const AdminSidebar = () => {
           }
         >
           <FaUsers />
-          <span className='hidden md:inline'>Supervisors</span>
+          <span>Supervisors</span>
         </NavLink>
         <NavLink
           to="/admin-dashboard/schools"
@@ -51,7 +50,7 @@ const AdminSidebar = () => {
           }
         >
           <FaUsers />
-          <span className='hidden md:inline'>Niswans</span>
+          <span>Niswans</span>
         </NavLink>
         <NavLink
           to="/admin-dashboard/classSections"
@@ -62,7 +61,7 @@ const AdminSidebar = () => {
           }
         >
           <FaUsers />
-          <span className='hidden md:inline'>ClassSection</span>
+          <span>ClassSection</span>
         </NavLink>
         <NavLink
           to="/admin-dashboard/employees"
@@ -73,7 +72,7 @@ const AdminSidebar = () => {
           }
         >
           <FaUsers />
-          <span className='hidden md:inline'>Employee</span>
+          <span>Employee</span>
         </NavLink>
         <NavLink
           to="/admin-dashboard/departments"
@@ -84,7 +83,7 @@ const AdminSidebar = () => {
           }
         >
           <FaBuilding />
-          <span className='hidden md:inline'>Department</span>
+          <span>Department</span>
         </NavLink>
         <NavLink
           to="/admin-dashboard/leaves"
@@ -95,7 +94,7 @@ const AdminSidebar = () => {
           }
         >
           <FaCalendarAlt />
-          <span className='hidden md:inline'>Leave</span>
+          <span>Leave</span>
         </NavLink>
         <NavLink
           to="/admin-dashboard/salary/add"
@@ -106,7 +105,7 @@ const AdminSidebar = () => {
           }
         >
           <FaMoneyBillWave />
-          <span className='hidden md:inline'>Salary</span>
+          <span>Salary</span>
         </NavLink>
         <NavLink
           to={`/admin-dashboard/attendance`}
@@ -117,7 +116,7 @@ const AdminSidebar = () => {
           }
         >
           <FaRegCalendarAlt />
-          <span className='hidden md:inline'>Attendance</span>
+          <span>Attendance</span>
         </NavLink>
         <NavLink
           to={`/admin-dashboard/attendance-report`}
@@ -128,17 +127,17 @@ const AdminSidebar = () => {
           }
         >
           <AiOutlineFileText />
-          <span className='hidden md:inline'>Attendance Report</span>
+          <span>Attendance Report</span>
         </NavLink>
         <NavLink
           to="/admin-dashboard/setting"
           className="flex items-center space-x-4 block py-2.5 px-4 rounded"
         >
           <FaCogs />
-          <span className='hidden md:inline'>Settings</span>
+          <span>Settings</span>
         </NavLink>
       </div>
-    </div></div>
+    </div>
   );
 };
 
