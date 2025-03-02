@@ -9,11 +9,10 @@ import {
   FaTachometerAlt,
   FaUsers,
 } from "react-icons/fa";
-import {AiOutlineFileText} from 'react-icons/ai'
+import { AiOutlineFileText } from 'react-icons/ai'
 
 const AdminSidebar = () => {
   return (
-    <div className="flex w-16 md:w-64" >
     <div className="bg-gray-800 text-white h-screen fixed left-0 top-0 bottom-0 space-y-2 w-16 md:64">
       <div className="bg-teal-600 h-12 flex items-center justify-center">
         <h3 className="text-2xl text-center font-pacific">Niswan MS</h3>
@@ -22,8 +21,7 @@ const AdminSidebar = () => {
         <NavLink
           to="/admin-dashboard"
           className={({ isActive }) =>
-            `${
-              isActive ? "bg-teal-500 " : " "
+            `${isActive ? "bg-teal-500 " : " "
             } flex items-center space-x-4 block py-2.5 px-4 rounded`
           }
           end
@@ -34,8 +32,7 @@ const AdminSidebar = () => {
         <NavLink
           to="/admin-dashboard/supervisors"
           className={({ isActive }) =>
-            `${
-              isActive ? "bg-teal-500 " : " "
+            `${isActive ? "bg-teal-500 " : " "
             } flex items-center space-x-4 block py-2.5 px-4 rounded`
           }
         >
@@ -45,8 +42,7 @@ const AdminSidebar = () => {
         <NavLink
           to="/admin-dashboard/schools"
           className={({ isActive }) =>
-            `${
-              isActive ? "bg-teal-500 " : " "
+            `${isActive ? "bg-teal-500 " : " "
             } flex items-center space-x-4 block py-2.5 px-4 rounded`
           }
         >
@@ -56,8 +52,7 @@ const AdminSidebar = () => {
         <NavLink
           to="/admin-dashboard/classSections"
           className={({ isActive }) =>
-            `${
-              isActive ? "bg-teal-500 " : " "
+            `${isActive ? "bg-teal-500 " : " "
             } flex items-center space-x-4 block py-2.5 px-4 rounded`
           }
         >
@@ -67,8 +62,7 @@ const AdminSidebar = () => {
         <NavLink
           to="/admin-dashboard/employees"
           className={({ isActive }) =>
-            `${
-              isActive ? "bg-teal-500 " : " "
+            `${isActive ? "bg-teal-500 " : " "
             } flex items-center space-x-4 block py-2.5 px-4 rounded`
           }
         >
@@ -78,8 +72,7 @@ const AdminSidebar = () => {
         <NavLink
           to="/admin-dashboard/departments"
           className={({ isActive }) =>
-            `${
-              isActive ? "bg-teal-500 " : " "
+            `${isActive ? "bg-teal-500 " : " "
             } flex items-center space-x-4 block py-2.5 px-4 rounded`
           }
         >
@@ -89,8 +82,7 @@ const AdminSidebar = () => {
         <NavLink
           to="/admin-dashboard/leaves"
           className={({ isActive }) =>
-            `${
-              isActive ? "bg-teal-500 " : " "
+            `${isActive ? "bg-teal-500 " : " "
             } flex items-center space-x-4 block py-2.5 px-4 rounded`
           }
         >
@@ -100,8 +92,7 @@ const AdminSidebar = () => {
         <NavLink
           to="/admin-dashboard/salary/add"
           className={({ isActive }) =>
-            `${
-              isActive ? "bg-teal-500 " : " "
+            `${isActive ? "bg-teal-500 " : " "
             } flex items-center space-x-4 block py-2.5 px-4 rounded`
           }
         >
@@ -111,8 +102,7 @@ const AdminSidebar = () => {
         <NavLink
           to={`/admin-dashboard/attendance`}
           className={({ isActive }) =>
-            `${
-              isActive ? "bg-teal-500 " : " "
+            `${isActive ? "bg-teal-500 " : " "
             } flex items-center space-x-4 block py-2.5 px-4 rounded`
           }
         >
@@ -122,8 +112,7 @@ const AdminSidebar = () => {
         <NavLink
           to={`/admin-dashboard/attendance-report`}
           className={({ isActive }) =>
-            `${
-              isActive ? "bg-teal-500 " : " "
+            `${isActive ? "bg-teal-500 " : " "
             } flex items-center space-x-4 block py-2.5 px-4 rounded`
           }
         >
@@ -138,7 +127,7 @@ const AdminSidebar = () => {
           <span className='hidden md:inline'>Settings</span>
         </NavLink>
       </div>
-    </div></div>
+    </div>
   );
 };
 
