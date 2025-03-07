@@ -15,7 +15,8 @@ const Login = () => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "https://unis-server.vercel.app/api/auth/login",
+        //"https://unis-server.vercel.app/api/auth/login",
+        "https://unis.org.in/api/auth/login",
         { email, password }
       );
       if (response.data.success) {
