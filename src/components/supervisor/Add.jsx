@@ -273,7 +273,7 @@ const Add = () => {
 
             <input
               type="file"
-              name="file`"
+              name="profileImage`"
               onChange={handleChange}
               placeholder="Upload Image"
               accept="image/*"
