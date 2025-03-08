@@ -13,7 +13,7 @@ const AuthContext = ({ children }) => {
         const token = localStorage.getItem("token");
         if (token) {
           const response = await axios.get(
-            "https://unis-server.vercel.app/api/auth/verify",
+            "https://www.uni.org.in/api/auth/verify",
             {
               headers: {
                 Authorization: `Bearer ${token}`,
