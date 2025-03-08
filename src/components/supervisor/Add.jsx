@@ -28,13 +28,22 @@ const Add = () => {
     })
 
     try {
+
+      const headers = {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem("token")}`,
+        'Access-Control-Allow-Origin': '*',
+        'Accept': 'application/json'
+      }
+ 
       const response = await axios.post(
         "https://unis-server.vercel.app/api/supervisor/add",
         formDataObj,
         {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
+          headers: headers
+          //headers: {
+          //  Authorization: `Bearer ${localStorage.getItem("token")}`,
+         //},
         }
       );
       if (response.data.success) {
