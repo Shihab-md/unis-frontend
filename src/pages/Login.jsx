@@ -15,7 +15,7 @@ const Login = () => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "https://www.uni.org.in/api/auth/login",
+        "https://www.unis.org.in/api/auth/login",
         { email, password }
       );
       if (response.data.success) {
