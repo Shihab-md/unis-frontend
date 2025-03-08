@@ -11,7 +11,7 @@ const Login = () => {
   const navigate = useNavigate()
 
   const handleSubmit = async (e) => {
-//"https://unis-server.vercel.app/api/auth/login",
+
     e.preventDefault();
     try {
       const response = await axios.post(
