@@ -13,7 +13,7 @@ const Add = () => {
 
     if (name === "image") {
       alert("file found")
-     setFormData((prevData) => ({ ...prevData, [name]: files[0] }));
+      setFormData((prevData) => ({ ...prevData, [name]: files[0] }));
     } else {
       setFormData((prevData) => ({ ...prevData, [name]: value }));
     }
@@ -262,7 +262,7 @@ const Add = () => {
            <FileBase64 type="file" className="mt-1 p-2 block w-full border border-gray-300 rounded-md" multiple={false} onDone={({ base64 }) => setFormData({ profileImage: base64 })} onChange={(e) => e.target.files[0]} />
            */}
 
-           <input
+            <input
               type="file"
               name="image"
               onChange={handleChange}
