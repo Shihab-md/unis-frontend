@@ -37,7 +37,7 @@ const Add = () => {
       }
  
       const response = await axios.post(
-        "https://unis-server.vercel.app/api/supervisor/add",
+        "https://unis-server.vercel.app/api/supervisor/add12",
         formDataObj,
         {
           headers: headers
