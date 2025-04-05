@@ -58,22 +58,52 @@ const Add = () => {
               type="text"
               name="code"
               onChange={handleChange}
-              placeholder="Insert Code"
+              placeholder=""
               className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
               required
             />
           </div>
 
-          {/* Name */}
+          {/* Name English*/}
           <div>
             <label className="block text-sm font-medium text-gray-700">
-              Name
+              Name in English
             </label>
             <input
               type="text"
-              name="name"
+              name="nameEnglish"
               onChange={handleChange}
-              placeholder="Insert Name"
+              placeholder=""
+              className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+              required
+            />
+          </div>
+
+          {/* Name Arabic*/}
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Name in Arabic
+            </label>
+            <input
+              type="text"
+              name="nameArabic"
+              onChange={handleChange}
+              placeholder=""
+              className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+              required
+            />
+          </div>
+
+          {/* Name Native*/}
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Name in Native
+            </label>
+            <input
+              type="text"
+              name="nameNative"
+              onChange={handleChange}
+              placeholder=""
               className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
               required
             />
@@ -88,7 +118,7 @@ const Add = () => {
               type="text"
               name="address"
               onChange={handleChange}
-              placeholder="Insert Address"
+             // placeholder="Insert Address"
               className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
               required
             />
@@ -103,7 +133,7 @@ const Add = () => {
               type="text"
               name="district"
               onChange={handleChange}
-              placeholder="Insert District / State"
+            //  placeholder="Insert District / State"
               className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
               required
             />
@@ -118,7 +148,7 @@ const Add = () => {
               type="number"
               name="contactNumber"
               onChange={handleChange}
-              placeholder="Insert Contact Number"
+            //  placeholder="Insert Contact Number"
               className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
             //required
             />
@@ -133,7 +163,7 @@ const Add = () => {
               type="email"
               name="email"
               onChange={handleChange}
-              placeholder="Insert Email"
+            //  placeholder="Insert Email"
               className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
             //required
             />
@@ -161,13 +191,13 @@ const Add = () => {
           {/* Incharge1 */}
           <div>
             <label className="block text-sm font-medium text-gray-700">
-              Incharge1 Name
+              Incharge-1 Name
             </label>
             <input
               type="text"
               name="incharge1"
               onChange={handleChange}
-              placeholder="Incharge1 Name"
+            //  placeholder="Incharge1 Name"
               className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
               required
             />
@@ -176,13 +206,13 @@ const Add = () => {
           {/* Incharge1 Number */}
           <div>
             <label className="block text-sm font-medium text-gray-700">
-              Incharge1 Number
+              Incharge-1 Number
             </label>
             <input
               type="number"
               name="incharge1Number"
               onChange={handleChange}
-              placeholder="Incharge1 Number"
+            //  placeholder="Incharge1 Number"
               className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
               required
             />
@@ -191,13 +221,13 @@ const Add = () => {
           {/* Incharge2 */}
           <div>
             <label className="block text-sm font-medium text-gray-700">
-              Incharge2 Name
+              Incharge-2 Name
             </label>
             <input
               type="text"
               name="incharge2"
               onChange={handleChange}
-              placeholder="Incharge2 Name"
+            //  placeholder="Incharge2 Name"
               className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
             //required
             />
@@ -206,13 +236,13 @@ const Add = () => {
           {/* Incharge2 Number */}
           <div>
             <label className="block text-sm font-medium text-gray-700">
-              Incharge2 Number
+              Incharge-2 Number
             </label>
             <input
               type="number"
               name="incharge2Number"
               onChange={handleChange}
-              placeholder="Incharge2 Number"
+            //  placeholder="Incharge2 Number"
               className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
             //required
             />
@@ -221,13 +251,13 @@ const Add = () => {
           {/* Incharge3 */}
           <div>
             <label className="block text-sm font-medium text-gray-700">
-              Incharge3 Name
+              Incharge-3 Name
             </label>
             <input
               type="text"
               name="incharge3"
               onChange={handleChange}
-              placeholder="Incharge3 Name"
+            //  placeholder="Incharge3 Name"
               className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
             //required
             />
@@ -236,13 +266,13 @@ const Add = () => {
           {/* Incharge3 Number */}
           <div>
             <label className="block text-sm font-medium text-gray-700">
-              Incharge3 Number
+              Incharge-3 Number
             </label>
             <input
               type="number"
               name="incharge3Number"
               onChange={handleChange}
-              placeholder="Incharge3 Number"
+            //  placeholder="Incharge3 Number"
               className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
             //required
             />
@@ -251,13 +281,13 @@ const Add = () => {
           {/* Incharge4 */}
           <div>
             <label className="block text-sm font-medium text-gray-700">
-              Incharge4 Name
+              Incharge-4 Name
             </label>
             <input
               type="text"
               name="incharge4"
               onChange={handleChange}
-              placeholder="Incharge4 Name"
+            //  placeholder="Incharge4 Name"
               className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
             //required
             />
@@ -266,13 +296,13 @@ const Add = () => {
           {/* Incharge4 Number */}
           <div>
             <label className="block text-sm font-medium text-gray-700">
-              Incharge4 Number
+              Incharge-4 Number
             </label>
             <input
               type="number"
               name="incharge4Number"
               onChange={handleChange}
-              placeholder="Incharge4 Number"
+            //  placeholder="Incharge4 Number"
               className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
             //required
             />
@@ -281,13 +311,13 @@ const Add = () => {
           {/* Incharge5 */}
           <div>
             <label className="block text-sm font-medium text-gray-700">
-              Incharge5 Name
+              Incharge-5 Name
             </label>
             <input
               type="text"
               name="incharge5"
               onChange={handleChange}
-              placeholder="Incharge5 Name"
+            //  placeholder="Incharge5 Name"
               className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
             //required
             />
@@ -296,13 +326,13 @@ const Add = () => {
           {/* Incharge5 Number */}
           <div>
             <label className="block text-sm font-medium text-gray-700">
-              Incharge5 Number
+              Incharge-5 Number
             </label>
             <input
               type="number"
               name="incharge5Number"
               onChange={handleChange}
-              placeholder="Incharge5 Number"
+            //  placeholder="Incharge5 Number"
               className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
             //required
             />
