@@ -101,9 +101,9 @@ const Edit = () => {
       {school ? (
         <div className="max-w-4xl mx-auto mt-10 bg-white p-8 rounded-md shadow-md">
           <div className="w-full mt-6 bg-teal-700 text-white font-bold py-2 px-4 rounded">
-          <h2 className="text-xl font-bold text-center">Update School</h2></div>
+            <h2 className="text-xl font-bold text-center">Update School</h2></div>
           <form onSubmit={handleSubmit}>
-          <div className="flex space-x-3 mb-5" />
+            <div className="flex space-x-3 mb-5" />
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {/* Code */}
               <div>
@@ -133,7 +133,7 @@ const Edit = () => {
                   value={school.nameEnglish}
                   onChange={handleChange}
                   disabled={true}
-                //  placeholder="Insert Name"
+                  //  placeholder="Insert Name"
                   className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                   required
                 />
@@ -149,8 +149,8 @@ const Edit = () => {
                   name="nameArabic"
                   value={school.nameArabic}
                   onChange={handleChange}
-                //  disabled={true}
-                //  placeholder="Insert Name"
+                  //  disabled={true}
+                  //  placeholder="Insert Name"
                   className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                 //  required
                 />
@@ -166,8 +166,8 @@ const Edit = () => {
                   name="nameNative"
                   value={school.nameNative}
                   onChange={handleChange}
-                //  disabled={true}
-                //  placeholder="Insert Name"
+                  //  disabled={true}
+                  //  placeholder="Insert Name"
                   className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                 //  required
                 />
@@ -183,7 +183,7 @@ const Edit = () => {
                   name="address"
                   value={school.address}
                   onChange={handleChange}
-                //  placeholder="Insert Address"
+                  //  placeholder="Insert Address"
                   className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                   required
                 />
@@ -199,7 +199,7 @@ const Edit = () => {
                   name="district"
                   value={school.district}
                   onChange={handleChange}
-                //  placeholder="Insert District / State"
+                  //  placeholder="Insert District / State"
                   className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                   required
                 />
@@ -215,7 +215,7 @@ const Edit = () => {
                   name="contactNumber"
                   value={school.contactNumber}
                   onChange={handleChange}
-                //  placeholder="Insert Contact Number"
+                  //  placeholder="Insert Contact Number"
                   className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                 //required
                 />
@@ -231,7 +231,7 @@ const Edit = () => {
                   name="email"
                   value={school.email}
                   onChange={handleChange}
-                //  placeholder="Insert Email"
+                  //  placeholder="Insert Email"
                   className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                 //required
                 />
@@ -267,7 +267,7 @@ const Edit = () => {
                   name="incharge1"
                   value={school.incharge1}
                   onChange={handleChange}
-                //  placeholder="Incharge1 Name"
+                  //  placeholder="Incharge1 Name"
                   className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                   required
                 />
@@ -283,7 +283,7 @@ const Edit = () => {
                   name="incharge1Number"
                   value={school.incharge1Number}
                   onChange={handleChange}
-                //  placeholder="Incharge1 Number"
+                  //  placeholder="Incharge1 Number"
                   className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                   required
                 />
@@ -299,7 +299,7 @@ const Edit = () => {
                   name="incharge2"
                   value={school.incharge2}
                   onChange={handleChange}
-                //  placeholder="Incharge2 Name"
+                  //  placeholder="Incharge2 Name"
                   className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                 //required
                 />
@@ -315,7 +315,7 @@ const Edit = () => {
                   name="incharge2Number"
                   value={school.incharge2Number}
                   onChange={handleChange}
-                //  placeholder="Incharge2 Number"
+                  //  placeholder="Incharge2 Number"
                   className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                 //required
                 />
@@ -331,7 +331,7 @@ const Edit = () => {
                   name="incharge3"
                   value={school.incharge3}
                   onChange={handleChange}
-                //  placeholder="Incharge3 Name"
+                  //  placeholder="Incharge3 Name"
                   className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                 //required
                 />
@@ -347,7 +347,7 @@ const Edit = () => {
                   name="incharge3Number"
                   value={school.incharge3Number}
                   onChange={handleChange}
-                //  placeholder="Incharge3 Number"
+                  //  placeholder="Incharge3 Number"
                   className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                 //required
                 />
@@ -363,7 +363,7 @@ const Edit = () => {
                   name="incharge4"
                   value={school.incharge4}
                   onChange={handleChange}
-                //  placeholder="Incharge4 Name"
+                  //  placeholder="Incharge4 Name"
                   className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                 //required
                 />
@@ -379,7 +379,7 @@ const Edit = () => {
                   name="incharge4Number"
                   value={school.incharge4Number}
                   onChange={handleChange}
-                //  placeholder="Incharge4 Number"
+                  //  placeholder="Incharge4 Number"
                   className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                 //required
                 />
@@ -395,7 +395,7 @@ const Edit = () => {
                   name="incharge5"
                   value={school.incharge5}
                   onChange={handleChange}
-                //  placeholder="Incharge5 Name"
+                  //  placeholder="Incharge5 Name"
                   className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                 //required
                 />
@@ -411,34 +411,26 @@ const Edit = () => {
                   name="incharge5Number"
                   value={school.incharge5Number}
                   onChange={handleChange}
-                //  placeholder="Incharge5 Number"
+                  //  placeholder="Incharge5 Number"
                   className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                 //required
                 />
               </div>
               <button
-              type="submit"
-              data-ripple-light="true"
-              className="w-full mt-6 bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded"
-            >
-              Update School
-            </button>
-            <button
-              type="submit"
-              data-ripple-light="true"
-              className="w-full mt-6 bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded"
-            >
-              Update School
-            </button>
+                data-ripple-light="true"
+                className="w-full mt-6 bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded"
+                onClick={() => navigate(`/admin-dashboard/schools`)}
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                data-ripple-light="true"
+                className="w-full mt-6 bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded"
+              >
+                Update School
+              </button>
             </div>
-
-            <button
-              type="submit"
-              data-ripple-light="true"
-              className="w-full mt-6 bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded"
-            >
-              Update School
-            </button>
           </form>
         </div>
       ) : (
