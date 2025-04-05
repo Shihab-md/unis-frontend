@@ -11,18 +11,18 @@ export const columns = [
   {
     name: "S.No",
     selector: (row) => row.sno,
-    width: "70px",
+    width: "50px",
   },
   {
     name: "Code",
     selector: (row) => row.code,
     sortable: true,
-    width: "120px",
+    width: "110px",
   },
   {
     name: "Name",
     selector: (row) => row.name,
-    width: "340px",
+    width: "370px",
   },
   {
     name: "Address",
