@@ -43,6 +43,7 @@ const View = () => {
                 <p className="text-lg font-bold">Code :</p>
                 <p className="font-medium">{school.code}</p>
               </div>
+              <div className="flex space-x-3 mb-5"/>
               <div className="flex space-x-3 mb-5">
                 <p className="text-lg font-bold">Name in English :</p>
                 <p className="font-medium">{school.nameEnglish}</p>
@@ -55,6 +56,7 @@ const View = () => {
                 <p className="text-lg font-bold">Name in Native :</p>
                 <p className="font-medium">{school.nameNative}</p>
               </div>
+              <div className="flex space-x-3 mb-5"/>
               <div className="flex space-x-3 mb-5">
                 <p className="text-lg font-bold">Address :</p>
                 <p className="font-medium">{school.address}</p>
@@ -83,7 +85,8 @@ const View = () => {
               <div className="flex space-x-3 mb-5">
                 <p className="text-lg font-bold">Incharge-1 Number :</p>
                 <p className="font-medium">{school.incharge1Number}</p>
-              </div><div/>
+              </div>
+              <div className="flex space-x-3 mb-5"/>
               <div className="flex space-x-3 mb-5">
                 <p className="text-lg font-bold">Incharge-2 Name :</p>
                 <p className="font-medium">{school.incharge2}</p>
@@ -91,7 +94,8 @@ const View = () => {
               <div className="flex space-x-3 mb-5">
                 <p className="text-lg font-bold">Incharge-2 Number :</p>
                 <p className="font-medium">{school.incharge2Number}</p>
-              </div><div/>
+              </div>
+              <div className="flex space-x-3 mb-5"/>
               <div className="flex space-x-3 mb-5">
                 <p className="text-lg font-bold">Incharge-3 Name :</p>
                 <p className="font-medium">{school.incharge3}</p>
@@ -99,7 +103,8 @@ const View = () => {
               <div className="flex space-x-3 mb-5">
                 <p className="text-lg font-bold">Incharge-3 Number :</p>
                 <p className="font-medium">{school.incharge3Number}</p>
-              </div><div/>
+              </div>
+              <div className="flex space-x-3 mb-5"/>
               <div className="flex space-x-3 mb-5">
                 <p className="text-lg font-bold">Incharge-4 Name :</p>
                 <p className="font-medium">{school.incharge4}</p>
@@ -107,7 +112,8 @@ const View = () => {
               <div className="flex space-x-3 mb-5">
                 <p className="text-lg font-bold">Incharge-4 Number :</p>
                 <p className="font-medium">{school.incharge4Number}</p>
-              </div><div/>
+              </div>
+              <div className="flex space-x-3 mb-5"/>
               <div className="flex space-x-3 mb-5">
                 <p className="text-lg font-bold">Incharge-5 Name :</p>
                 <p className="font-medium">{school.incharge1}</p>
@@ -115,11 +121,12 @@ const View = () => {
               <div className="flex space-x-3 mb-5">
                 <p className="text-lg font-bold">Incharge-5 Number :</p>
                 <p className="font-medium">{school.incharge1Number}</p>
-              </div><div/>
+              </div>
+              <div className="flex space-x-3 mb-5"/>
             </div>
           </div>
           <button
-            className="px-7 py-1 bg-blue-600 text-white"
+            className="w-half px-7 py-1 bg-blue-600 text-white"
             data-ripple-light="true"
             onClick={() => navigate(`/admin-dashboard/schools`)}
           >  Back
