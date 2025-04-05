@@ -147,7 +147,7 @@ const Edit = () => {
                   name="nameArabic"
                   value={school.nameArabic}
                   onChange={handleChange}
-                  disabled={true}
+                //  disabled={true}
                 //  placeholder="Insert Name"
                   className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                 //  required
@@ -164,7 +164,7 @@ const Edit = () => {
                   name="nameNative"
                   value={school.nameNative}
                   onChange={handleChange}
-                  disabled={true}
+                //  disabled={true}
                 //  placeholder="Insert Name"
                   className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                 //  required
