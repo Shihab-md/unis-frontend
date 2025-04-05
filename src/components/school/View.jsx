@@ -75,7 +75,7 @@ const View = () => {
                 <p className="text-lg font-bold">Status :</p>
                 <p className="font-medium">{school.active}</p>
               </div>
-              <div><p/></div>
+              <div><p className="text-lg font-bold"> </p></div>
               <div className="flex space-x-3 mb-5">
                 <p className="text-lg font-bold">Incharge-1 Name :</p>
                 <p className="font-medium">{school.incharge1}</p>
