@@ -56,7 +56,7 @@ const List = () => {
 
   const handleFilter = (e) => {
     const records = schools.filter((sch) => (
-      sch.name.toLowerCase().includes(e.target.value.toLowerCase())
+      sch.nameEnglish.toLowerCase().includes(e.target.value.toLowerCase())
     ))
     setFilteredSchools(records)
   }
@@ -68,12 +68,12 @@ const List = () => {
   return (
     <div className='p-6'>
       <div className="text-center">
-        <h3 className="text-2xl font-bold">Manage School</h3>
+        <h3 className="text-2xl font-bold">Manage Niswans</h3>
       </div>
       <div className="flex justify-between items-center">
         <input
           type="text"
-          placeholder="Seach By School Name"
+          placeholder="Seach By Niswan Name"
           className="px-4 py-0.5 border"
           onChange={handleFilter}
         />
@@ -81,7 +81,7 @@ const List = () => {
           to="/admin-dashboard/add-school"
           className="px-4 py-1 bg-teal-600 rounded text-white"
         >
-          Add New School
+          Add New Niswan
         </Link>
       </div>
       <div className='mt-6'>

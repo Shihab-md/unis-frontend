@@ -46,8 +46,10 @@ const Add = () => {
 
   return (
     <div className="max-w-4xl mx-auto mt-10 bg-white p-8 rounded-md shadow-md">
-      <h2 className="text-2xl font-bold mb-6">Add New School</h2>
+      <div className="w-full mt-6 bg-teal-700 text-white font-bold py-2 px-4 rounded">
+        <h2 className="text-xl font-bold text-center">Add New Niswan</h2></div>
       <form onSubmit={handleSubmit}>
+        <div className="flex space-x-3 mb-5" />
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {/* Code */}
           <div>
@@ -118,7 +120,7 @@ const Add = () => {
               type="text"
               name="address"
               onChange={handleChange}
-             // placeholder="Insert Address"
+              // placeholder="Insert Address"
               className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
               required
             />
@@ -133,7 +135,7 @@ const Add = () => {
               type="text"
               name="district"
               onChange={handleChange}
-            //  placeholder="Insert District / State"
+              //  placeholder="Insert District / State"
               className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
               required
             />
@@ -148,7 +150,7 @@ const Add = () => {
               type="number"
               name="contactNumber"
               onChange={handleChange}
-            //  placeholder="Insert Contact Number"
+              //  placeholder="Insert Contact Number"
               className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
             //required
             />
@@ -163,7 +165,7 @@ const Add = () => {
               type="email"
               name="email"
               onChange={handleChange}
-            //  placeholder="Insert Email"
+              //  placeholder="Insert Email"
               className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
             //required
             />
@@ -197,7 +199,7 @@ const Add = () => {
               type="text"
               name="incharge1"
               onChange={handleChange}
-            //  placeholder="Incharge1 Name"
+              //  placeholder="Incharge1 Name"
               className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
               required
             />
@@ -212,7 +214,7 @@ const Add = () => {
               type="number"
               name="incharge1Number"
               onChange={handleChange}
-            //  placeholder="Incharge1 Number"
+              //  placeholder="Incharge1 Number"
               className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
               required
             />
@@ -227,7 +229,7 @@ const Add = () => {
               type="text"
               name="incharge2"
               onChange={handleChange}
-            //  placeholder="Incharge2 Name"
+              //  placeholder="Incharge2 Name"
               className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
             //required
             />
@@ -242,7 +244,7 @@ const Add = () => {
               type="number"
               name="incharge2Number"
               onChange={handleChange}
-            //  placeholder="Incharge2 Number"
+              //  placeholder="Incharge2 Number"
               className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
             //required
             />
@@ -257,7 +259,7 @@ const Add = () => {
               type="text"
               name="incharge3"
               onChange={handleChange}
-            //  placeholder="Incharge3 Name"
+              //  placeholder="Incharge3 Name"
               className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
             //required
             />
@@ -272,7 +274,7 @@ const Add = () => {
               type="number"
               name="incharge3Number"
               onChange={handleChange}
-            //  placeholder="Incharge3 Number"
+              //  placeholder="Incharge3 Number"
               className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
             //required
             />
@@ -287,7 +289,7 @@ const Add = () => {
               type="text"
               name="incharge4"
               onChange={handleChange}
-            //  placeholder="Incharge4 Name"
+              //  placeholder="Incharge4 Name"
               className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
             //required
             />
@@ -302,7 +304,7 @@ const Add = () => {
               type="number"
               name="incharge4Number"
               onChange={handleChange}
-            //  placeholder="Incharge4 Number"
+              //  placeholder="Incharge4 Number"
               className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
             //required
             />
@@ -317,7 +319,7 @@ const Add = () => {
               type="text"
               name="incharge5"
               onChange={handleChange}
-            //  placeholder="Incharge5 Name"
+              //  placeholder="Incharge5 Name"
               className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
             //required
             />
@@ -332,7 +334,7 @@ const Add = () => {
               type="number"
               name="incharge5Number"
               onChange={handleChange}
-            //  placeholder="Incharge5 Number"
+              //  placeholder="Incharge5 Number"
               className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
             //required
             />
@@ -343,7 +345,7 @@ const Add = () => {
           data-ripple-light="true"
           className="w-full mt-6 bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded"
         >
-          Add School
+          Add Niswan
         </button>
       </form>
     </div>
