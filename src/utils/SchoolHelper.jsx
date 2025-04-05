@@ -11,7 +11,7 @@ export const columns = [
   {
     name: "S.No",
     selector: (row) => row.sno,
-    width: "50px",
+    width: "60px",
   },
   {
     name: "Code",
