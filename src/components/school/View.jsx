@@ -35,9 +35,9 @@ const View = () => {
       {school ? (
         <div className="max-w-3xl mx-auto mt-10 bg-white p-8 rounded-md shadow-md">
           <div className="w-full mt-6 bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded">
-          <h2 className="text-2xl font-bold mb-8 text-center">
+          <h4 className="text-2xl font-bold mb-8 text-center">
             School Detail
-          </h2></div>
+          </h4></div>
           <div className="grid grid-cols-1 md:grid-cols-1 gap-6">
             <div>
               <div className="flex space-x-3 mb-5">
