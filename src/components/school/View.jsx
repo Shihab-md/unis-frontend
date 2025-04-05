@@ -60,7 +60,7 @@ const View = () => {
               </div>
               <div className="flex space-x-3 mb-5" />
               <div className="flex space-x-3 mb-5">
-                <p className="font-medium">Address :</p>
+                <p className="font-medium">Area :</p>
                 <p className="font-normal">{school.address}</p>
               </div>
               <div className="flex space-x-3 mb-5">
