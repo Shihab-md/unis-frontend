@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import multer from "multer";
-import { FileBase64 } from "react-file-base64";
+///import multer from "multer";
+//import { FileBase64 } from "react-file-base64";
 
 const Add = () => {
 
@@ -30,7 +30,7 @@ const Add = () => {
 
     try {
 
-      //const upload = multer({ dest: './public/' })
+      // const upload = multer({ dest: './public/' })
 
       const headers = {
         'Content-Type': 'multipart/form-data',
