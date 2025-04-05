@@ -47,8 +47,8 @@ const View = () => {
               </div>
               <div className="flex space-x-3 mb-5" />
               <div className="flex space-x-3 mb-5">
-                <p className="text-lg font-bold">Name in English :</p>
-                <p className="font-medium">{school.nameEnglish}</p>
+                <p className="text-lg font-medium">Name in English :</p>
+                <p className="font-normal">{school.nameEnglish}</p>
               </div>
               <div className="flex space-x-3 mb-5">
                 <p className="text-lg font-bold">Name in Arabic :</p>
