@@ -35,16 +35,17 @@ const View = () => {
       {school ? (
         <div className="max-w-3xl mx-auto mt-10 bg-white p-8 rounded-md shadow-md">
           <div className="w-full mt-6 bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded">
-          <h4 className="text-xl font-bold text-center">
-            School Detail
-          </h4></div>
+            <h4 className="text-xl font-bold text-center">
+              School Detail
+            </h4></div>
           <div className="grid grid-cols-1 md:grid-cols-1 gap-6">
             <div>
+              <div className="flex space-x-3 mb-5" />
               <div className="flex space-x-3 mb-5">
                 <p className="text-lg font-bold">Code :</p>
                 <p className="font-medium">{school.code}</p>
               </div>
-              <div className="flex space-x-3 mb-5"/>
+              <div className="flex space-x-3 mb-5" />
               <div className="flex space-x-3 mb-5">
                 <p className="text-lg font-bold">Name in English :</p>
                 <p className="font-medium">{school.nameEnglish}</p>
@@ -57,7 +58,7 @@ const View = () => {
                 <p className="text-lg font-bold">Name in Native :</p>
                 <p className="font-medium">{school.nameNative}</p>
               </div>
-              <div className="flex space-x-3 mb-5"/>
+              <div className="flex space-x-3 mb-5" />
               <div className="flex space-x-3 mb-5">
                 <p className="text-lg font-bold">Address :</p>
                 <p className="font-medium">{school.address}</p>
@@ -78,7 +79,7 @@ const View = () => {
                 <p className="text-lg font-bold">Status :</p>
                 <p className="font-medium">{school.active}</p>
               </div>
-              <div className="flex space-x-3 mb-5"/>
+              <div className="flex space-x-3 mb-5" />
               <div className="flex space-x-3 mb-5">
                 <p className="text-lg font-bold">Incharge-1 Name :</p>
                 <p className="font-medium">{school.incharge1}</p>
@@ -87,7 +88,7 @@ const View = () => {
                 <p className="text-lg font-bold">Incharge-1 Number :</p>
                 <p className="font-medium">{school.incharge1Number}</p>
               </div>
-              <div className="flex space-x-3 mb-5"/>
+              <div className="flex space-x-3 mb-5" />
               <div className="flex space-x-3 mb-5">
                 <p className="text-lg font-bold">Incharge-2 Name :</p>
                 <p className="font-medium">{school.incharge2}</p>
@@ -96,7 +97,7 @@ const View = () => {
                 <p className="text-lg font-bold">Incharge-2 Number :</p>
                 <p className="font-medium">{school.incharge2Number}</p>
               </div>
-              <div className="flex space-x-3 mb-5"/>
+              <div className="flex space-x-3 mb-5" />
               <div className="flex space-x-3 mb-5">
                 <p className="text-lg font-bold">Incharge-3 Name :</p>
                 <p className="font-medium">{school.incharge3}</p>
@@ -105,7 +106,7 @@ const View = () => {
                 <p className="text-lg font-bold">Incharge-3 Number :</p>
                 <p className="font-medium">{school.incharge3Number}</p>
               </div>
-              <div className="flex space-x-3 mb-5"/>
+              <div className="flex space-x-3 mb-5" />
               <div className="flex space-x-3 mb-5">
                 <p className="text-lg font-bold">Incharge-4 Name :</p>
                 <p className="font-medium">{school.incharge4}</p>
@@ -114,7 +115,7 @@ const View = () => {
                 <p className="text-lg font-bold">Incharge-4 Number :</p>
                 <p className="font-medium">{school.incharge4Number}</p>
               </div>
-              <div className="flex space-x-3 mb-5"/>
+              <div className="flex space-x-3 mb-5" />
               <div className="flex space-x-3 mb-5">
                 <p className="text-lg font-bold">Incharge-5 Name :</p>
                 <p className="font-medium">{school.incharge1}</p>
@@ -123,7 +124,7 @@ const View = () => {
                 <p className="text-lg font-bold">Incharge-5 Number :</p>
                 <p className="font-medium">{school.incharge1Number}</p>
               </div>
-              <div className="flex space-x-3 mb-5"/>
+              <div className="flex space-x-3 mb-5" />
             </div>
           </div>
           <button
