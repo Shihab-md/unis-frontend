@@ -116,20 +116,54 @@ const Edit = () => {
                 />
               </div>
 
-              {/* Name */}
+              {/* Name English*/}
               <div>
                 <label className="block text-sm font-medium text-gray-700">
-                  Name
+                  Name in English
                 </label>
                 <input
                   type="text"
-                  name="name"
-                  value={school.name}
+                  name="nameEnglish"
+                  value={school.nameEnglish}
                   onChange={handleChange}
                   disabled={true}
-                  placeholder="Insert Name"
+                //  placeholder="Insert Name"
                   className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                   required
+                />
+              </div>
+
+              {/* Name Arabic*/}
+              <div>
+                <label className="block text-sm font-medium text-gray-700">
+                  Name in Arabic
+                </label>
+                <input
+                  type="text"
+                  name="nameArabic"
+                  value={school.nameArabic}
+                  onChange={handleChange}
+                  disabled={true}
+                //  placeholder="Insert Name"
+                  className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                //  required
+                />
+              </div>
+
+              {/* Name Native*/}
+              <div>
+                <label className="block text-sm font-medium text-gray-700">
+                  Name in Native
+                </label>
+                <input
+                  type="text"
+                  name="nameNative"
+                  value={school.nameNative}
+                  onChange={handleChange}
+                  disabled={true}
+                //  placeholder="Insert Name"
+                  className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                //  required
                 />
               </div>
 
@@ -217,161 +251,161 @@ const Edit = () => {
 
               <div />
 
-              {/* Incharge1 */}
+              {/* Incharge-1 */}
               <div>
                 <label className="block text-sm font-medium text-gray-700">
-                  Incharge1 Name
+                  Incharge-1 Name
                 </label>
                 <input
                   type="text"
                   name="incharge1"
                   value={school.incharge1}
                   onChange={handleChange}
-                  placeholder="Incharge1 Name"
+                //  placeholder="Incharge1 Name"
                   className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                   required
                 />
               </div>
 
-              {/* Incharge1 Number */}
+              {/* Incharge-1 Number */}
               <div>
                 <label className="block text-sm font-medium text-gray-700">
-                  Incharge1 Number
+                  Incharge-1 Number
                 </label>
                 <input
                   type="number"
                   name="incharge1Number"
                   value={school.incharge1Number}
                   onChange={handleChange}
-                  placeholder="Incharge1 Number"
+                //  placeholder="Incharge1 Number"
                   className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                   required
                 />
               </div>
 
-              {/* Incharge2 */}
+              {/* Incharge-2 */}
               <div>
                 <label className="block text-sm font-medium text-gray-700">
-                  Incharge2 Name
+                  Incharge-2 Name
                 </label>
                 <input
                   type="text"
                   name="incharge2"
                   value={school.incharge2}
                   onChange={handleChange}
-                  placeholder="Incharge2 Name"
+                //  placeholder="Incharge2 Name"
                   className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                 //required
                 />
               </div>
 
-              {/* Incharge2 Number */}
+              {/* Incharge-2 Number */}
               <div>
                 <label className="block text-sm font-medium text-gray-700">
-                  Incharge2 Number
+                  Incharge-2 Number
                 </label>
                 <input
                   type="number"
                   name="incharge2Number"
                   value={school.incharge2Number}
                   onChange={handleChange}
-                  placeholder="Incharge2 Number"
+                //  placeholder="Incharge2 Number"
                   className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                 //required
                 />
               </div>
 
-              {/* Incharge3 */}
+              {/* Incharge-3 */}
               <div>
                 <label className="block text-sm font-medium text-gray-700">
-                  Incharge3 Name
+                  Incharge-3 Name
                 </label>
                 <input
                   type="text"
                   name="incharge3"
                   value={school.incharge3}
                   onChange={handleChange}
-                  placeholder="Incharge3 Name"
+                //  placeholder="Incharge3 Name"
                   className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                 //required
                 />
               </div>
 
-              {/* Incharge3 Number */}
+              {/* Incharge-3 Number */}
               <div>
                 <label className="block text-sm font-medium text-gray-700">
-                  Incharge3 Number
+                  Incharge-3 Number
                 </label>
                 <input
                   type="number"
                   name="incharge3Number"
                   value={school.incharge3Number}
                   onChange={handleChange}
-                  placeholder="Incharge3 Number"
+                //  placeholder="Incharge3 Number"
                   className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                 //required
                 />
               </div>
 
-              {/* Incharge4 */}
+              {/* Incharge-4 */}
               <div>
                 <label className="block text-sm font-medium text-gray-700">
-                  Incharge4 Name
+                  Incharge-4 Name
                 </label>
                 <input
                   type="text"
                   name="incharge4"
                   value={school.incharge4}
                   onChange={handleChange}
-                  placeholder="Incharge4 Name"
+                //  placeholder="Incharge4 Name"
                   className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                 //required
                 />
               </div>
 
-              {/* Incharge4 Number */}
+              {/* Incharge-4 Number */}
               <div>
                 <label className="block text-sm font-medium text-gray-700">
-                  Incharge4 Number
+                  Incharge-4 Number
                 </label>
                 <input
                   type="number"
                   name="incharge4Number"
                   value={school.incharge4Number}
                   onChange={handleChange}
-                  placeholder="Incharge4 Number"
+                //  placeholder="Incharge4 Number"
                   className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                 //required
                 />
               </div>
 
-              {/* Incharge5 */}
+              {/* Incharge-5 */}
               <div>
                 <label className="block text-sm font-medium text-gray-700">
-                  Incharge5 Name
+                  Incharge-5 Name
                 </label>
                 <input
                   type="text"
                   name="incharge5"
                   value={school.incharge5}
                   onChange={handleChange}
-                  placeholder="Incharge5 Name"
+                //  placeholder="Incharge5 Name"
                   className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                 //required
                 />
               </div>
 
-              {/* Incharge5 Number */}
+              {/* Incharge-5 Number */}
               <div>
                 <label className="block text-sm font-medium text-gray-700">
-                  Incharge5 Number
+                  Incharge-5 Number
                 </label>
                 <input
                   type="number"
                   name="incharge5Number"
                   value={school.incharge5Number}
                   onChange={handleChange}
-                  placeholder="Incharge5 Number"
+                //  placeholder="Incharge5 Number"
                   className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                 //required
                 />
