@@ -126,7 +126,7 @@ const View = () => {
             </div>
           </div>
           <button
-            className="w-full px-7 py-1 bg-blue-600 text-white"
+            className="w-full px-7 py-1 bg-blue-600 text-white rounded"
             data-ripple-light="true"
             onClick={() => navigate(`/admin-dashboard/schools`)}
           >  Back
