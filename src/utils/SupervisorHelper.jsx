@@ -84,6 +84,7 @@ export const SupervisorButtons = ({ Id, onSupervisorDelete }) => {
           }
         );
         if (responnse.data.success) {
+          alert("Deleted Successfully...");
           onSupervisorDelete();
         }
       } catch (error) {
