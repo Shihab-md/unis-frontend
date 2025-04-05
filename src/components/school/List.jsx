@@ -32,7 +32,7 @@ const List = () => {
             _id: sch._id,
             sno: sno++,
             code: sch.code,
-            name: sch.nameEnglish,
+            name: sch.nameEnglish+"/nrtret",
             address: sch.address,
             district: sch.district,
             active: sch.active,
