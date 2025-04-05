@@ -171,8 +171,8 @@ const Add = () => {
             />
           </div>
 
-          <div className="flex space-x-3 mb-5" />
-          <div className="flex space-x-3 mb-5" />
+          <div className="flex space-x-3 mb-2" />
+          <div className="flex space-x-3 mb-2" />
 
           {/* Active */}
           <div>
@@ -205,9 +205,9 @@ const Add = () => {
               required
             />
           </div>
-          
-          <div className="flex space-x-3 mb-5" />
-          <div className="flex space-x-3 mb-5" />
+
+          <div className="flex space-x-3 mb-2" />
+          <div className="flex space-x-3 mb-2" />
 
           {/* Incharge1 */}
           <div>
