@@ -10,7 +10,12 @@ const List = () => {
     const [filteredSupervisor, setFilteredSupervisors] = useState(null)
     const navigate = useNavigate()
 
-    useEffect(() => {
+    useEffect(() => { 
+
+      const onSupervisorDelete = () => {
+        fetchSupervisors()
+      }
+
         const fetchSupervisors = async () => {
             setSupLoading(true)
           try {
@@ -33,7 +38,7 @@ const List = () => {
                 routeName: sup.routeName,
                 dob: new Date(sup.dob).toLocaleDateString(),
                 profileImage: <img width={40} className='rounded-full' src={`https://unis-server.vercel.app/${sup.userId.profileImage}`} />,
-                action: (<SupervisorButtons Id={sup._id} />),
+                action: (<SupervisorButtons Id={sup._id} onSupervisorDelete={onSupervisorDelete}/>),
               }));
               setSupervisors(data);
               setFilteredSupervisors(data)
