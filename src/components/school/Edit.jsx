@@ -12,6 +12,7 @@ const Edit = () => {
     district: "",
     email: "",
     active: "",
+    supervisorId: "",
     incharge1: "",
     incharge2: "",
     incharge3: "",
@@ -46,6 +47,7 @@ const Edit = () => {
             contactNumber: school.contactNumber,
             email: school.email,
             active: school.active,
+            supervisorId: school.supervisorId,
             incharge1: school.incharge1,
             incharge1Number: school.incharge1Number,
             incharge2: school.incharge2,
@@ -255,7 +257,21 @@ const Edit = () => {
                 </select>
               </div>
 
-              <div />
+              {/* Supervisor Id */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+            Supervisor Id
+            </label>
+            <input
+              type="text"
+              name="supervisorId"
+              value={school.supervisorId}
+              onChange={handleChange}
+              //  placeholder="Incharge1 Name"
+              className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+              required
+            />
+          </div>
 
               {/* Incharge-1 */}
               <div>

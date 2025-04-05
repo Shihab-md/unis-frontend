@@ -36,6 +36,7 @@ const List = () => {
             address: sch.address,
             district: sch.district,
             active: sch.active,
+            supervisorId: sch.supervisorId,
             action: (<SchoolButtons Id={sch._id} onSchoolDelete={onSchoolDelete} />),
           }));
           setSchools(data);

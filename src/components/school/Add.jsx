@@ -170,7 +170,7 @@ const Add = () => {
             //required
             />
           </div>
-
+          <div className="flex space-x-3 mb-5" />
           {/* Active */}
           <div>
             <label className="block text-sm font-medium text-gray-700">
@@ -188,7 +188,20 @@ const Add = () => {
             </select>
           </div>
 
-          <div />
+          {/* Supervisor Id */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+            Supervisor Id
+            </label>
+            <input
+              type="text"
+              name="supervisorId"
+              onChange={handleChange}
+              //  placeholder="Incharge1 Name"
+              className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+              required
+            />
+          </div>
 
           {/* Incharge1 */}
           <div>

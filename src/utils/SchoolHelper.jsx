@@ -25,13 +25,13 @@ export const columns = [
     width: "370px",
   },
   {
-    name: "Address",
-    selector: (row) => row.address,
+    name: "Area, District / State",
+    selector: (row) => row.address + ", " + row.district,
     width: "190px",
   },
   {
-    name: "District / State",
-    selector: (row) => row.district,
+    name: "Supervisor Id",
+    selector: (row) => row.supervisorId,
     width: "160px",
   },
   {
