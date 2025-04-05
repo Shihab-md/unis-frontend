@@ -118,11 +118,11 @@ const View = () => {
               <div className="flex space-x-3 mb-5" />
               <div className="flex space-x-3 mb-5">
                 <p className="text-lg font-bold">Incharge-5 Name :</p>
-                <p className="font-medium">{school.incharge1}</p>
+                <p className="font-medium">{school.incharge5}</p>
               </div>
               <div className="flex space-x-3 mb-5">
                 <p className="text-lg font-bold">Incharge-5 Number :</p>
-                <p className="font-medium">{school.incharge1Number}</p>
+                <p className="font-medium">{school.incharge5Number}</p>
               </div>
               <div className="flex space-x-3 mb-5" />
             </div>
