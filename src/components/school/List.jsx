@@ -56,7 +56,7 @@ const List = () => {
 
   const handleFilter = (e) => {
     const records = schools.filter((sch) => (
-      sch.nameEnglish.toLowerCase().includes(e.target.value.toLowerCase())
+      sch.name.toLowerCase().includes(e.target.value.toLowerCase())
     ))
     setFilteredSchools(records)
   }
