@@ -61,8 +61,10 @@ const Add = () => {
 
   return (
     <div className="max-w-4xl mx-auto mt-10 bg-white p-8 rounded-md shadow-md">
-      <h2 className="text-2xl font-bold mb-6">Add New Supervisor</h2>
+      <div className="w-full mt-6 bg-teal-700 text-white font-bold py-2 px-4 rounded">
+      <h2 className="text-2xl font-bold text-center">Add New Supervisor</h2></div>
       <form onSubmit={handleSubmit}>
+      <div className="flex space-x-3 mb-5" />
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {/* Name */}
           <div>
@@ -283,14 +285,19 @@ const Add = () => {
               className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
             />
           </div>
-        </div>
-
+          <button
+          className="w-full mt-6 bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded"
+          onClick={() => navigate(`/admin-dashboard/supervisors`)}
+        >
+          Cancel
+        </button>
         <button
           type="submit"
           className="w-full mt-6 bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded"
         >
           Add Supervisor
         </button>
+        </div>
       </form>
     </div>
   );

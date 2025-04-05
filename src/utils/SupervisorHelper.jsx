@@ -10,13 +10,13 @@ export const columns = [
   {
     name: "S No",
     selector: (row) => row.sno,
-    width: "70px",
+    width: "60px",
   },
-  {
+  /*{
     name: "Image",
     selector: (row) => row.profileImage,
     width: "90px",
-  },
+  }, */
   {
     name: "Name",
     selector: (row) => row.name,
