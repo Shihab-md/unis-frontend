@@ -48,15 +48,15 @@ const View = () => {
               </div>
               <div className="flex space-x-3 mb-5">
                 <p className="text-lg font-bold">Name in English :</p>
-                <p className="font-medium">{school.name}</p>
+                <p className="font-medium">{school.nameEnglish}</p>
               </div>
               <div className="flex space-x-3 mb-5">
                 <p className="text-lg font-bold">Name in Arabic :</p>
-                <p className="font-medium">{school.name}</p>
+                <p className="font-medium">{school.nameArabic}</p>
               </div>
               <div className="flex space-x-3 mb-5">
                 <p className="text-lg font-bold">Name in Native :</p>
-                <p className="font-medium">{school.name}</p>
+                <p className="font-medium">{school.nameNative}</p>
               </div>
               <div className="flex space-x-3 mb-5">
                 <p className="text-lg font-bold">Address :</p>
