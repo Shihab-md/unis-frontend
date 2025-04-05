@@ -5,7 +5,9 @@ import { useNavigate, useParams } from "react-router-dom";
 const Edit = () => {
   const [school, setSchool] = useState({
     code: "",
-    name: "",
+    nameEnglish: "",
+    nameArabic: "",
+    nameNative: "",
     address: "",
     district: "",
     email: "",
@@ -36,7 +38,9 @@ const Edit = () => {
           setSchool((prev) => ({
             ...prev,
             code: school.code,
-            name: school.name,
+            nameEnglish: school.nameEnglish,
+            nameArabic: school.nameArabic,
+            nameNative: school.nameNative,
             address: school.address,
             district: school.district,
             contactNumber: school.contactNumber,
