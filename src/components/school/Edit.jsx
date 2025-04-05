@@ -175,10 +175,10 @@ const Edit = () => {
                 />
               </div>
 
-              {/* Address */}
+              {/* Area */}
               <div>
                 <label className="block text-sm font-medium text-gray-700">
-                  Address
+                  Area
                 </label>
                 <input
                   type="text"
