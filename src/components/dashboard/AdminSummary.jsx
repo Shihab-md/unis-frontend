@@ -11,9 +11,11 @@ import {
   FaUsers,
 } from "react-icons/fa";
 import axios from 'axios'
+import { useNavigate } from "react-router-dom";
 
 const AdminSummary = () => {
   const [summary, setSummary] = useState(null)
+  const navigate = useNavigate()
 
   useEffect(() => {
     const fetchSummary = async () => {
@@ -48,6 +50,7 @@ const AdminSummary = () => {
           text="Supervisors"
           // number={summary.totalEmployees}
           color="bg-teal-600"
+          onClick={() => navigate(`/admin-dashboard/schools`)}
         />
         <NavLink
           to="/admin-dashboard/supervisors"

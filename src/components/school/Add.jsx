@@ -194,7 +194,7 @@ const Add = () => {
           {/* Supervisor Id */}
           <div>
             <label className="block text-sm font-medium text-gray-700">
-            Supervisor Id
+              Supervisor Id
             </label>
             <input
               type="text"
@@ -420,19 +420,19 @@ const Add = () => {
           </div>
 
           <button
-          data-ripple-light="true"
-          className="w-full mt-6 bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded"
-          onClick={() => navigate(`/admin-dashboard/schools`)}
-        >
-          Cancel
-        </button>
-        <button
-          type="submit"
-          data-ripple-light="true"
-          className="w-full mt-6 bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded"
-        >
-          Add Niswan
-        </button>
+            data-ripple-light="true"
+            className="w-full mt-6 bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded"
+            onClick={() => navigate(`/admin-dashboard/schools`)}
+          >
+            Cancel
+          </button>
+          <button
+            type="submit"
+            data-ripple-light="true"
+            className="w-full mt-6 bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded"
+          >
+            Add Niswan
+          </button>
         </div>
       </form>
     </div>
