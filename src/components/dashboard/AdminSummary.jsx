@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 import SummaryCard from "./SummaryCard";
+import { Link } from 'react-router-dom';
 import {
   FaBuilding,
   FaCheckCircle,
@@ -44,6 +45,7 @@ const AdminSummary = () => {
   return (
     <div className="p-6">
       <h3 className="text-2xl font-bold">Dashboard Overview</h3>
+      <Link to="/admin-dashboard/supervisors" >
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
         <SummaryCard
           icon={<FaUsers />}
@@ -87,7 +89,8 @@ const AdminSummary = () => {
           color="bg-red-600"
         />
       </div>
-
+      </Link>
+      
       <div className="mt-12">
         <h4 className="text-center text-2xl font-bold">Leave Details</h4>
 
