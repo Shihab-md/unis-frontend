@@ -47,16 +47,13 @@ const AdminSummary = () => {
       <h3 className="text-2xl font-bold">Dashboard Overview</h3>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
-        <Link to="/admin-dashboard/supervisors" >
-        
+        <Link to="/admin-dashboard/supervisors" >  
             <SummaryCard
               icon={<FaUsers />}
               text="Supervisors"
-              // number={summary.totalEmployees}
+              number={summary.totalEmployees}
               color="bg-teal-600"
-              onClick={() => navigate(`/admin-dashboard/schools`)}
             />
-         
         </Link>
 
         <SummaryCard
