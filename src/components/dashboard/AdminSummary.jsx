@@ -48,7 +48,7 @@ const AdminSummary = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
         <Link to="/admin-dashboard/supervisors" >
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
+          <div className="mt-6">
             <SummaryCard
               icon={<FaUsers />}
               text="Supervisors"
