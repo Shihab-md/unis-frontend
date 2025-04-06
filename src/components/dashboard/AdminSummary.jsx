@@ -45,25 +45,20 @@ const AdminSummary = () => {
   return (
     <div className="p-6">
       <h3 className="text-2xl font-bold">Dashboard Overview</h3>
-      <Link to="/admin-dashboard/supervisors" >
+
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
-        <SummaryCard
-          icon={<FaUsers />}
-          text="Supervisors"
-          // number={summary.totalEmployees}
-          color="bg-teal-600"
-          onClick={() => navigate(`/admin-dashboard/schools`)}
-        />
-        <NavLink
-          to="/admin-dashboard/supervisors"
-          className={({ isActive }) =>
-            `${isActive ? "bg-teal-500 " : " "
-            } flex items-center space-x-4 block py-2.5 px-4 rounded`
-          }
-        >
-          <FaUsers />
-          <span>Supervisors</span>
-        </NavLink>
+        <Link to="/admin-dashboard/supervisors" >
+          <div>
+            <SummaryCard
+              icon={<FaUsers />}
+              text="Supervisors"
+              // number={summary.totalEmployees}
+              color="bg-teal-600"
+              onClick={() => navigate(`/admin-dashboard/schools`)}
+            />
+          </div>
+        </Link>
+
         <SummaryCard
           icon={<FaBuilding />}
           text="Niswans"
@@ -89,8 +84,8 @@ const AdminSummary = () => {
           color="bg-red-600"
         />
       </div>
-      </Link>
-      
+
+
       <div className="mt-12">
         <h4 className="text-center text-2xl font-bold">Leave Details</h4>
 
