@@ -50,7 +50,7 @@ const AdminSummary = () => {
         <Link to="/admin-dashboard/supervisors" >
           <SummaryCard
             icon={<FaUsers />}
-            text="Supervisors"
+            text="Manage Supervisors"
             number={summary.totalSupervisors}
             color="bg-teal-600"
           />
@@ -58,32 +58,22 @@ const AdminSummary = () => {
         <Link to="/admin-dashboard/schools" >
           <SummaryCard
             icon={<FaBuilding />}
-            text="Niswans"
+            text="Manage Niswans"
             number={summary.totalSchools}
             color="bg-yellow-600"
           />
         </Link>
-        <SummaryCard
-          icon={<FaUsers />}
-          text="Total Employees"
-          number={summary.totalEmployees}
-          color="bg-teal-600"
-        />
-        <SummaryCard
-          icon={<FaBuilding />}
-          text="Total Departments"
-          number={summary.totalDepartments}
-          color="bg-yellow-600"
-        />
-        <SummaryCard
-          icon={<FaMoneyBillWave />}
-          text="Monthly Salary"
-          number={`$${summary.totalSalary}`}
-          color="bg-red-600"
-        />
+        <Link to="/admin-dashboard/employees" >
+          <SummaryCard
+            icon={<FaUsers />}
+            text="Manage Employees"
+            number={summary.totalEmployees}
+            color="bg-teal-600"
+          />
+        </Link>
       </div>
 
-
+      {/*
       <div className="mt-12">
         <h4 className="text-center text-2xl font-bold">Leave Details</h4>
 
@@ -114,6 +104,7 @@ const AdminSummary = () => {
           />
         </div>
       </div>
+      */}
     </div>
   );
 };
