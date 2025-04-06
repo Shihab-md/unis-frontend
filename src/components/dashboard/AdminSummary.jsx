@@ -18,14 +18,14 @@ const AdminSummary = () => {
     const fetchSummary = async () => {
       try {
         const summary = await axios.get('https://unis-server.vercel.app/api/dashboard/summary', {
-          headers : {
-            "Authorization" : `Bearer ${localStorage.getItem('token')}`
+          headers: {
+            "Authorization": `Bearer ${localStorage.getItem('token')}`
           }
         })
         console.log(summary.data)
         setSummary(summary.data)
-      } catch(error) {
-        if(error.response) {
+      } catch (error) {
+        if (error.response) {
           alert(error.response.data.error)
         }
         console.log(error.messsage)
@@ -34,7 +34,7 @@ const AdminSummary = () => {
     fetchSummary()
   }, [])
 
-  if(!summary) {
+  if (!summary) {
     return <div> Loading...</div>
   }
 
@@ -42,6 +42,28 @@ const AdminSummary = () => {
     <div className="p-6">
       <h3 className="text-2xl font-bold">Dashboard Overview</h3>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
+        <SummaryCard
+          icon={<FaUsers />}
+          text="Supervisors"
+          // number={summary.totalEmployees}
+          color="bg-teal-600"
+        />
+        <NavLink
+          to="/admin-dashboard/supervisors"
+          className={({ isActive }) =>
+            `${isActive ? "bg-teal-500 " : " "
+            } flex items-center space-x-4 block py-2.5 px-4 rounded`
+          }
+        >
+          <FaUsers />
+          <span>Supervisors</span>
+        </NavLink>
+        <SummaryCard
+          icon={<FaBuilding />}
+          text="Niswans"
+          // number={summary.totalDepartments}
+          color="bg-yellow-600"
+        />
         <SummaryCard
           icon={<FaUsers />}
           text="Total Employees"
