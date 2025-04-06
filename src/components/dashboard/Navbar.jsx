@@ -2,12 +2,6 @@ import React from 'react'
 import { useAuth } from '../../context/AuthContext'
 import { Link } from 'react-router-dom';
 import {
-  FaBuilding,
-  FaCheckCircle,
-  FaFileAlt,
-  FaHourglassHalf,
-  FaMoneyBillWave,
-  FaTimesCircle,
   FaHome,
 } from "react-icons/fa";
 
