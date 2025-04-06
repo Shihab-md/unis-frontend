@@ -18,6 +18,8 @@ const Edit = () => {
     incharge3: "",
     incharge4: "",
     incharge5: "",
+    incharge6: "",
+    incharge7: "",
   });
 
   const navigate = useNavigate();
@@ -58,6 +60,10 @@ const Edit = () => {
             incharge4Number: school.incharge4Number,
             incharge5: school.incharge5,
             incharge5Number: school.incharge5Number,
+            incharge6: school.incharge6,
+            incharge6Number: school.incharge6Number,
+            incharge7: school.incharge7,
+            incharge7Number: school.incharge7Number,
           }));
         }
       } catch (error) {
@@ -438,6 +444,71 @@ const Edit = () => {
                 //required
                 />
               </div>
+
+              {/* Incharge-6 */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700">
+                  Incharge-6 Name
+                </label>
+                <input
+                  type="text"
+                  name="incharge6"
+                  value={school.incharge6}
+                  onChange={handleChange}
+                  //  placeholder="Incharge5 Name"
+                  className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                //required
+                />
+              </div>
+
+              {/* Incharge-6 Number */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700">
+                  Incharge-6 Number
+                </label>
+                <input
+                  type="number"
+                  name="incharge6Number"
+                  value={school.incharge6Number}
+                  onChange={handleChange}
+                  //  placeholder="Incharge5 Number"
+                  className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                //required
+                />
+              </div>
+
+              {/* Incharge-7 */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700">
+                  Incharge-7 Name
+                </label>
+                <input
+                  type="text"
+                  name="incharge7"
+                  value={school.incharge7}
+                  onChange={handleChange}
+                  //  placeholder="Incharge5 Name"
+                  className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                //required
+                />
+              </div>
+
+              {/* Incharge-7 Number */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700">
+                  Incharge-7 Number
+                </label>
+                <input
+                  type="number"
+                  name="incharge7Number"
+                  value={school.incharge7Number}
+                  onChange={handleChange}
+                  //  placeholder="Incharge5 Number"
+                  className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                //required
+                />
+              </div>
+
               <button
                 data-ripple-light="true"
                 className="w-full mt-6 bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded"

@@ -358,6 +358,67 @@ const Add = () => {
             //required
             />
           </div>
+
+          {/* Incharge6 */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Incharge-6 Name
+            </label>
+            <input
+              type="text"
+              name="incharge6"
+              onChange={handleChange}
+              //  placeholder="Incharge5 Name"
+              className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+            //required
+            />
+          </div>
+
+          {/* Incharge6 Number */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Incharge-6 Number
+            </label>
+            <input
+              type="number"
+              name="incharge6Number"
+              onChange={handleChange}
+              //  placeholder="Incharge5 Number"
+              className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+            //required
+            />
+          </div>
+
+          {/* Incharge7 */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Incharge-7 Name
+            </label>
+            <input
+              type="text"
+              name="incharge7"
+              onChange={handleChange}
+              //  placeholder="Incharge5 Name"
+              className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+            //required
+            />
+          </div>
+
+          {/* Incharge7 Number */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Incharge-7 Number
+            </label>
+            <input
+              type="number"
+              name="incharge7Number"
+              onChange={handleChange}
+              //  placeholder="Incharge5 Number"
+              className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+            //required
+            />
+          </div>
+
           <button
           data-ripple-light="true"
           className="w-full mt-6 bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded"

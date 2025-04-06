@@ -34,7 +34,7 @@ export const columns = [
   },
   {
     name: "No. of Niswans",
-    selector: (row) => row.dob,
+    selector: (row) => "ALL",
     width: "190px",
   },
   {

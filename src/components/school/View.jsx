@@ -128,9 +128,26 @@ const View = () => {
                 <p className="font-medium">Incharge-5 Number :</p>
                 <p className="font-normal">{school.incharge5Number}</p>
               </div>
+              <div className="flex space-x-3 mb-5">
+                <p className="font-medium">Incharge-6 Name :</p>
+                <p className="font-normal">{school.incharge6}</p>
+              </div>
+              <div className="flex space-x-3 mb-5">
+                <p className="font-medium">Incharge-6 Number :</p>
+                <p className="font-normal">{school.incharge6Number}</p>
+              </div>
+              <div className="flex space-x-3 mb-5">
+                <p className="font-medium">Incharge-7 Name :</p>
+                <p className="font-normal">{school.incharge7}</p>
+              </div>
+              <div className="flex space-x-3 mb-5">
+                <p className="font-medium">Incharge-7 Number :</p>
+                <p className="font-normal">{school.incharge7Number}</p>
+              </div>
               <div className="flex space-x-3 mb-5" />
             </div>
           </div>
+
           <button
             className="w-full mt-6 bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded"
             data-ripple-light="true"
