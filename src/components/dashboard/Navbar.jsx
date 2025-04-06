@@ -14,7 +14,7 @@ import {
 const Navbar = () => {
   const { user, logout } = useAuth()
   return (
-    <div className='flex items-left text-white justify-between h-12 bg-teal-600 px-5'>
+    <div className='flex items-center text-white justify-left h-12 bg-teal-600 px-5'>
       <Link to="/admin-dashboard" >
         <FaHome />
       </Link>
