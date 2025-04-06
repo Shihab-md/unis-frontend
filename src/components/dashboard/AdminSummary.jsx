@@ -66,7 +66,7 @@ const AdminSummary = () => {
         <Link to="/admin-dashboard/employees" >
           <SummaryCard
             icon={<FaUsers />}
-            text="Manage Employees "
+            text="Manage Employees"
             number={summary.totalEmployees}
             color="bg-teal-600"
           />
