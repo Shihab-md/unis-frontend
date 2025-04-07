@@ -43,11 +43,8 @@ const Login = () => {
     >
       <img width={140} className='rounded-md' src="./Logo - UNIS.PNG" />
       <h2 className="font-pacific font-bold text-2xl text-red">
-        UNIS Academy
+        UNIS APP
       </h2>
-      <h4 className="font-pacific font-bold text-xl text-red">
-        Niswan Management System
-      </h4>
       <div className="border shadow p-6 w-80 bg-white">
         <h2 className="text-2xl font-bold mb-4">Login</h2>
         {error && <p className="text-red-500">{error}</p>}
