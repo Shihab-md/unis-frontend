@@ -45,12 +45,12 @@ const AdminSummary = () => {
   }
 //p-6
   return (
-    <div className="p-7 items-center">
+    <div className="p-5 items-center">
       <h5 className="text-center">Welcome, {user.name}</h5>
-      <h4 ></h4>
+      <h4 > </h4>
       <h3 className="text-2xl font-bold text-center">Dashboard</h3>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6 border shadow">
         <Link to="/admin-dashboard/supervisors" >
           <SummaryCard
             icon={<FaUsers />}
@@ -67,71 +67,17 @@ const AdminSummary = () => {
             color="bg-yellow-600"
           />
         </Link>
-        <Link to="/admin-dashboard/employees" >
-          <SummaryCard
-            icon={<FaUsers />}
-            text="Manage Employees"
-            number={summary.totalEmployees}
-            color="bg-teal-600"
-          />
-        </Link>
 
-        <Link to="/admin-dashboard/employees" >
+      {/*  <Link to="/admin-dashboard/employees" >
           <SummaryCard
             icon={<FaUsers />}
             text="Manage Employees"
             number={summary.totalEmployees}
             color="bg-teal-600"
           />
-        </Link>
-        <Link to="/admin-dashboard/employees" >
-          <SummaryCard
-            icon={<FaUsers />}
-            text="Manage Employees"
-            number={summary.totalEmployees}
-            color="bg-teal-600"
-          />
-        </Link>
-        <Link to="/admin-dashboard/employees" >
-          <SummaryCard
-            icon={<FaUsers />}
-            text="Manage Employees"
-            number={summary.totalEmployees}
-            color="bg-teal-600"
-          />
-        </Link>
-        <Link to="/admin-dashboard/employees" >
-          <SummaryCard
-            icon={<FaUsers />}
-            text="Manage Employees"
-            number={summary.totalEmployees}
-            color="bg-teal-600"
-          />
-        </Link>
-        <Link to="/admin-dashboard/employees" >
-          <SummaryCard
-            icon={<FaUsers />}
-            text="Manage Employees"
-            number={summary.totalEmployees}
-            color="bg-teal-600"
-          />
-        </Link>
-        <Link to="/admin-dashboard/employees" >
-          <SummaryCard
-            icon={<FaUsers />}
-            text="Manage Employees"
-            number={summary.totalEmployees}
-            color="bg-teal-600"
-          />
-        </Link>
-        <Link to="/admin-dashboard/employees" >
-          <SummaryCard
-            icon={<FaUsers />}
-            text="Manage Employees"
-            number={summary.totalEmployees}
-            color="bg-teal-600"
-          />
-        </Link>
+        </Link> */}
+
+        
       </div>
 
       {/*
