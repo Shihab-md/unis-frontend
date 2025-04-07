@@ -45,7 +45,7 @@ const AdminSummary = () => {
   }
 //p-6
   return (
-    <div className="flex items-center">
+    <div className="grid items-center">
       <p >Welcome, {user.name}</p>
       <p ></p>
       <h3 className="text-2xl font-bold">Dashboard</h3>
