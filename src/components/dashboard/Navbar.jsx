@@ -11,7 +11,7 @@ const Navbar = () => {
     <div className='flex items-center text-white justify-between h-12 bg-teal-600 px-5'>
       <Link to="/admin-dashboard" >
         <FaHome />
-      <p className="font-bold">UNIS MS</p>
+      <p className="font-bold text-red">UNIS MS</p>
       </Link>
       <p >     </p>
       <p >Welcome, {user.name}</p>
