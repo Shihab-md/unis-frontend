@@ -48,7 +48,7 @@ const AdminSummary = () => {
     <div className="p-7 items-center">
       <p classname="align-center justify-center">Welcome, {user.name}</p>
       <p ></p>
-      <h3 className="text-2xl font-bold">Dashboard</h3>
+      <h3 className="text-2xl font-bold text-center">Dashboard</h3>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
         <Link to="/admin-dashboard/supervisors" >
