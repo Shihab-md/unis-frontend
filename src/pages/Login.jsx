@@ -41,9 +41,9 @@ const Login = () => {
       className="flex flex-col items-center h-screen justify-center 
     bg-gradient-to-b from-teal-600 from-50% to-gray-100 to-50% space-y-6"
     >
-      <img width={140} className='rounded-md' src="./Logo - UNIS.PNG" />
+      <img width={140} className='rounded-md shadow' src="./Logo - UNIS.PNG" />
       <h2 className="font-pacific font-bold text-2xl text-red">
-        UNIS APP
+        UNIS ACADEMY APP
       </h2>
       <div className="border shadow p-6 w-80 bg-white">
         <h2 className="text-2xl font-bold mb-4">Login</h2>
