@@ -13,7 +13,7 @@ const Navbar = () => {
         <FaHome />
       </Link>
       <Link to="/admin-dashboard" >
-        <p className="font-bold">UNIS MS</p>
+        <p className="text-3xl font-bold">UNIS APP</p>
       </Link>
       <button className='px-4 py-1 bg-teal-700 hover:bg-teal-800' onClick={logout}>Logout</button>
     </div>
