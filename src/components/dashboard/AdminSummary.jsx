@@ -43,9 +43,9 @@ const AdminSummary = () => {
   if (!summary) {
     return <div> Loading...</div>
   }
-
+//p-6
   return (
-    <div className="p-6 items-center">
+    <div className="flex items-center">
       <p >Welcome, {user.name}</p>
       <p ></p>
       <h3 className="text-2xl font-bold">Dashboard</h3>
