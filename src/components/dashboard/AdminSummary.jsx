@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 import SummaryCard from "./SummaryCard";
 import { Link } from 'react-router-dom';
+import { useAuth } from '../../context/AuthContext'
 import {
   FaBuilding,
   FaCheckCircle,
@@ -17,6 +18,7 @@ import { useNavigate } from "react-router-dom";
 const AdminSummary = () => {
   const [summary, setSummary] = useState(null)
   const navigate = useNavigate()
+  const { user } = useAuth()
 
   useEffect(() => {
     const fetchSummary = async () => {
@@ -44,6 +46,7 @@ const AdminSummary = () => {
 
   return (
     <div className="p-6">
+      <p >Welcome, {user.name}</p>
       <h3 className="text-2xl font-bold">Dashboard</h3>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
