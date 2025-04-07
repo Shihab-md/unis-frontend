@@ -74,7 +74,7 @@ const List = () => {
       <div className="flex justify-between items-center">
         <input
           type="text"
-          placeholder="Seach By Niswan Name"
+          placeholder="Seach By Niswan"
           className="px-4 py-0.5 border"
           onChange={handleFilter}
         />
@@ -82,7 +82,7 @@ const List = () => {
           to="/admin-dashboard/add-school"
           className="px-4 py-1 bg-teal-600 rounded text-white"
         >
-          Add New Niswan
+          Add Niswan
         </Link>
       </div>
       <div className='mt-6'>

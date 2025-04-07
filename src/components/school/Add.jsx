@@ -47,7 +47,7 @@ const Add = () => {
   return (
     <div className="max-w-4xl mx-auto mt-10 bg-white p-8 rounded-md shadow-md">
       <div className="w-full mt-6 bg-teal-700 text-white font-bold py-2 px-4 rounded">
-        <h2 className="text-xl font-bold text-center">Add New Niswan</h2></div>
+        <h2 className="text-xl font-bold text-center">Add Niswan</h2></div>
       <form onSubmit={handleSubmit}>
         <div className="flex space-x-3 mb-5" />
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
