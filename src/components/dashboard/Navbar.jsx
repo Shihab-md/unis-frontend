@@ -12,7 +12,7 @@ const Navbar = () => {
       <Link to="/admin-dashboard" >
         <FaHome className="text-2xl text-white" />
       </Link>
-      <p className="text-xl font-bold text-green-700">UNIS ACADEMY APP</p>
+      <p className="text-xl font-bold text-gray-700">UNIS ACADEMY APP</p>
       <FaPowerOff className="text-2xl text-red-700" onClick={logout} />
       {/*<button className='px-4 py-1 bg-teal-700 hover:bg-teal-800' onClick={logout}>Logout</button> */}
     </div>
