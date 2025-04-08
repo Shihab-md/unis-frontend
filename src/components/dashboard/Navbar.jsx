@@ -14,7 +14,7 @@ const Navbar = () => {
       </Link>
       <img width={57} className='rounded-md' src="./Logo - UNIS.PNG" />
       <p className="text-xl font-bold">UNIS ACADEMY APP</p>
-      <FaPowerOff className="text-2xl text-red-570" onClick={logout} />
+      <FaPowerOff className="text-2xl text-red-500" onClick={logout} />
       {/*<button className='px-4 py-1 bg-teal-700 hover:bg-teal-800' onClick={logout}>Logout</button> */}
     </div>
   )
