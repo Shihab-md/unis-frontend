@@ -43,7 +43,7 @@ const AdminSummary = () => {
   if (!summary) {
     return <div> Loading...</div>
   }
-//p-6
+  //p-6
   return (
     <div className="p-5 items-center">
       <h5 className="text-center">Welcome, {user.name}</h5>
@@ -67,17 +67,23 @@ const AdminSummary = () => {
             color="bg-yellow-600"
           />
         </Link>
-
-      {/*  <Link to="/admin-dashboard/employees" >
+        <Link to="#" >
           <SummaryCard
             icon={<FaUsers />}
-            text="Manage Employees"
+            text="Manage Students"
             number={summary.totalEmployees}
             color="bg-teal-600"
           />
-        </Link> */}
+        </Link>
+        <Link to="#" >
+          <SummaryCard
+            icon={<FaBuilding />}
+            text="Manage Institutions"
+            number={summary.totalEmployees}
+            color="bg-yellow-600"
+          />
+        </Link>
 
-        
       </div>
 
       {/*
