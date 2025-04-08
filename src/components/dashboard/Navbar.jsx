@@ -12,7 +12,6 @@ const Navbar = () => {
       <Link to="/admin-dashboard" >
         <FaHome className="text-2xl text-white" />
       </Link>
-      <img width={57} className='rounded-md' src="./Logo - UNIS.PNG" />
       <p className="text-xl font-bold">UNIS ACADEMY APP</p>
       <FaPowerOff className="text-2xl text-red-700" onClick={logout} />
       {/*<button className='px-4 py-1 bg-teal-700 hover:bg-teal-800' onClick={logout}>Logout</button> */}
