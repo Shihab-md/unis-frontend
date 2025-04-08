@@ -10,11 +10,11 @@ const Navbar = () => {
   return (
     <div className='flex items-center text-white justify-between h-12 bg-teal-600 px-5'>
       <Link to="/admin-dashboard" >
-        <FaHome className="text-2xl text-green-900" />
+        <FaHome className="text-2xl text-white" />
       </Link>
-      <img width={57} className='rounded-md shadow w-34' src="./Logo - UNIS.PNG" />
+      <img width={57} className='rounded-md' src="./Logo - UNIS.PNG" />
       <p className="text-xl font-bold">UNIS ACADEMY APP</p>
-      <FaPowerOff className="text-2xl text-red-900" onClick={logout} />
+      <FaPowerOff className="text-2xl text-red-100" onClick={logout} />
       {/*<button className='px-4 py-1 bg-teal-700 hover:bg-teal-800' onClick={logout}>Logout</button> */}
     </div>
   )
