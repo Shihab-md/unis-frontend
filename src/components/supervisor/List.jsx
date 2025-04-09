@@ -90,7 +90,7 @@ const List = () => {
           Add Supervisor
         </Link> */}
         <Link to="/admin-dashboard/add-supervisor" >
-          <FaPlusSquare className="text-2xl text-white" />
+          <FaPlusSquare className="text-2xl bg-teal-700 text-white" />
         </Link>
       </div>
       <div className='mt-6'>
