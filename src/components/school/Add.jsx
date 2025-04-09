@@ -59,7 +59,7 @@ const Add = () => {
 
       <div className="grid grid-cols-2 mt-6 bg-teal-700 text-white font-bold py-2 px-4 rounded">
         <div> <h2 className="text-xl font-bold text-center justify-center">Add Niswan</h2></div>
-        <div className="text-right justify-right pl-127">
+        <div className="flex text-right items-right align-right pl-127">
           <Link to="/admin-dashboard/schools" >
             <FaArrowAltCircleLeft className="text-2xl bg-blue-700 text-white rounded" />
           </Link>
