@@ -3,6 +3,9 @@ import { Link } from 'react-router-dom'
 import { columns, SchoolButtons } from '../../utils/SchoolHelper'
 import DataTable from 'react-data-table-component'
 import axios from 'axios'
+import {
+  FaPlusSquare, FaArrowAltCircleLeft
+} from "react-icons/fa";
 
 const List = () => {
   const [schools, setSchools] = useState([])
