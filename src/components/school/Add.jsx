@@ -61,7 +61,7 @@ const Add = () => {
         <div> <h2 className="text-xl font-bold text-center justify-center">Add Niswan</h2></div>
         <div className="text-right justify-right">
           <Link to="/admin-dashboard/schools" >
-            <FaArrowAltCircleLeft className="text-2xl bg-blue-700 text-white rounded px-50" />
+            <FaArrowAltCircleLeft className="text-2xl bg-blue-700 text-white rounded pl-127" />
           </Link>
         </div>
       </div>
