@@ -74,7 +74,7 @@ const List = () => {
   return (
     <div className='p-6'>
       <div className="text-center">
-        <h3 className="text-2xl font-bold">Manage Supervisor</h3>
+        <h3 className="text-2xl font-bold p-3">Manage Supervisor</h3>
       </div>
       <div className="text-center">
         <h3 className="text-2xl font-bold"> </h3>
