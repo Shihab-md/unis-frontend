@@ -3,74 +3,77 @@ import { Link, useNavigate } from 'react-router-dom'
 import { columns, SupervisorButtons } from '../../utils/SupervisorHelper'
 import DataTable from 'react-data-table-component'
 import axios from 'axios'
+import {
+  FaPlusSquare
+} from "react-icons/fa";
 
 const List = () => {
-    const [supervisors, setSupervisors] = useState([])
-    const [supLoading, setSupLoading] = useState(false)
-    const [filteredSupervisor, setFilteredSupervisors] = useState(null)
-    const navigate = useNavigate()
+  const [supervisors, setSupervisors] = useState([])
+  const [supLoading, setSupLoading] = useState(false)
+  const [filteredSupervisor, setFilteredSupervisors] = useState(null)
+  const navigate = useNavigate()
 
-    useEffect(() => { 
+  useEffect(() => {
 
-      const onSupervisorDelete = () => {
-        fetchSupervisors()
-      }
+    const onSupervisorDelete = () => {
+      fetchSupervisors()
+    }
 
-        const fetchSupervisors = async () => {
-            setSupLoading(true)
-          try {
-            const responnse = await axios.get(
-              "https://unis-server.vercel.app/api/supervisor",
-              {
-                headers: {
-                  Authorization: `Bearer ${localStorage.getItem("token")}`,
-                },
-              }
-            );
-            if (responnse.data.success) {
-              let sno = 1;
-              const data = await responnse.data.supervisors.map((sup) => ({
-                _id: sup._id,
-                sno: sno++,
-               // dep_name: sup.department.dep_name,
-                name: sup.userId.name,
-                contactNumber: sup.contactNumber,
-                routeName: sup.routeName,
-                dob: new Date(sup.dob).toLocaleDateString(),
-                profileImage: <img width={40} className='rounded-full' src={`https://unis-server.vercel.app/${sup.userId.profileImage}`} />,
-                action: (<SupervisorButtons Id={sup._id} onSupervisorDelete={onSupervisorDelete}/>),
-              }));
-              setSupervisors(data);
-              setFilteredSupervisors(data)
-            }
-          } catch (error) {
-            console.log(error.message)
-            if(error.response && !error.response.data.success) {
-              alert(error.response.data.error)
-              navigate('/login')
+    const fetchSupervisors = async () => {
+      setSupLoading(true)
+      try {
+        const responnse = await axios.get(
+          "https://unis-server.vercel.app/api/supervisor",
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
           }
-          } finally {
-            setSupLoading(false)
-          }
-        };
-    
-        fetchSupervisors();
-      }, []);
-
-      const handleFilter = (e) => {
-        const records = supervisors.filter((sup) => (
-          sup.name.toLowerCase().includes(e.target.value.toLowerCase())
-        ))
-        setFilteredSupervisors(records)
+        );
+        if (responnse.data.success) {
+          let sno = 1;
+          const data = await responnse.data.supervisors.map((sup) => ({
+            _id: sup._id,
+            sno: sno++,
+            // dep_name: sup.department.dep_name,
+            name: sup.userId.name,
+            contactNumber: sup.contactNumber,
+            routeName: sup.routeName,
+            dob: new Date(sup.dob).toLocaleDateString(),
+            profileImage: <img width={40} className='rounded-full' src={`https://unis-server.vercel.app/${sup.userId.profileImage}`} />,
+            action: (<SupervisorButtons Id={sup._id} onSupervisorDelete={onSupervisorDelete} />),
+          }));
+          setSupervisors(data);
+          setFilteredSupervisors(data)
+        }
+      } catch (error) {
+        console.log(error.message)
+        if (error.response && !error.response.data.success) {
+          alert(error.response.data.error)
+          navigate('/login')
+        }
+      } finally {
+        setSupLoading(false)
       }
+    };
 
-      if(!filteredSupervisor) {
-        return <div>Loading ...</div>
-      }
+    fetchSupervisors();
+  }, []);
+
+  const handleFilter = (e) => {
+    const records = supervisors.filter((sup) => (
+      sup.name.toLowerCase().includes(e.target.value.toLowerCase())
+    ))
+    setFilteredSupervisors(records)
+  }
+
+  if (!filteredSupervisor) {
+    return <div>Loading ...</div>
+  }
 
   return (
     <div className='p-6'>
-        <div className="text-center">
+      <div className="text-center">
         <h3 className="text-2xl font-bold">Manage Supervisor</h3>
       </div>
       <div className="flex justify-between items-center">
@@ -80,15 +83,18 @@ const List = () => {
           className="px-4 py-0.5 border"
           onChange={handleFilter}
         />
-        <Link
+        {/*<Link
           to="/admin-dashboard/add-supervisor"
           className="px-4 py-1 bg-teal-600 rounded text-white"
         >
           Add Supervisor
+        </Link> */}
+        <Link to="/admin-dashboard/add-supervisor" >
+          <FaPlusSquare className="text-2xl text-white" />
         </Link>
       </div>
       <div className='mt-6'>
-        <DataTable columns={columns} data={filteredSupervisor} pagination/>
+        <DataTable columns={columns} data={filteredSupervisor} pagination />
       </div>
     </div>
   )
