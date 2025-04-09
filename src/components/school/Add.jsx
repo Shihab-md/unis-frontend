@@ -50,16 +50,19 @@ const Add = () => {
 
   return (
     <div className="max-w-4xl mx-auto mt-10 bg-white p-5 rounded-md shadow-md">
-      <div className="w-full mt-6 bg-teal-700 text-white font-bold py-2 px-4 rounded">
-        <h2 className="text-xl font-bold text-center">Add Niswan</h2>
-        <Link to="/admin-dashboard/schools" >
-          <FaArrowAltCircleLeft className="text-2xl bg-blue-700 text-white rounded" />
-        </Link>
-      </div>
 
       <div className="grid grid-cols-3 mt-6 bg-teal-700 text-white font-bold py-2 px-4 rounded">
         <div><h2 className="grid text-xl font-bold items-center justify-end">Add</h2></div>
         <div><h2 className="grid text-xl font-bold items-center justify-center">Niswan</h2></div>
+        <div className="grid items-center justify-end">
+          <Link to="/admin-dashboard/schools" >
+            <FaArrowAltCircleLeft className="text-2xl bg-blue-700 text-white rounded" />
+          </Link>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-2 mt-6 bg-teal-700 text-white font-bold py-2 px-4 rounded">
+        <div><h2 className="grid text-xl font-bold items-center justify-end">Add Niswan</h2></div>
         <div className="grid items-center justify-end">
           <Link to="/admin-dashboard/schools" >
             <FaArrowAltCircleLeft className="text-2xl bg-blue-700 text-white rounded" />
