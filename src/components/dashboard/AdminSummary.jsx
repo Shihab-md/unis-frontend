@@ -46,15 +46,15 @@ const AdminSummary = () => {
   //p-6
   return (
     <div className="p-5 items-center">
-      <h5 className="text-center">Welcome, {user.name}</h5>
+      <h5 className="p-5 text-center">Welcome, {user.name}</h5>
       <h4 > </h4>
       <h3 className="text-2xl font-bold text-center">Dashboard</h3>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-5">
         <Link to="/admin-dashboard/supervisors" >
           <SummaryCard
             icon={<FaUsers />}
-            text="Manage Supervisors"
+            text="Supervisors"
             number={summary.totalSupervisors}
             color="bg-teal-600"
           />
@@ -62,7 +62,7 @@ const AdminSummary = () => {
         <Link to="/admin-dashboard/schools" >
           <SummaryCard
             icon={<FaBuilding />}
-            text="Manage Niswans"
+            text="Niswans"
             number={summary.totalSchools}
             color="bg-yellow-600"
           />
@@ -70,7 +70,7 @@ const AdminSummary = () => {
         <Link to="#" >
           <SummaryCard
             icon={<FaUsers />}
-            text="Manage Students"
+            text="Students"
             number={summary.totalEmployees}
             color="bg-teal-600"
           />
@@ -78,7 +78,7 @@ const AdminSummary = () => {
         <Link to="#" >
           <SummaryCard
             icon={<FaBuilding />}
-            text="Manage Institutions"
+            text="Institutions"
             number={summary.totalEmployees}
             color="bg-yellow-600"
           />
