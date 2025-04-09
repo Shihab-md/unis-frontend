@@ -49,7 +49,7 @@ const Add = () => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto mt-10 bg-white p-5 rounded-md shadow-md">
+    <div className="max-w-4xl mx-auto mt-10 bg-white rounded-md shadow-md">
       <div className="grid items-center justify-end">
         <Link to="/admin-dashboard/schools" >
           <FaArrowAltCircleLeft className="text-2xl bg-blue-700 text-white rounded" />
