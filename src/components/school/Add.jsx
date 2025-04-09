@@ -57,9 +57,10 @@ const Add = () => {
         </Link>
       </div>
 
-      <div className="grid grid-cols-2 mt-6 bg-teal-700 text-white font-bold py-2 px-4 rounded">
-        <div> <h2 className="text-xl font-bold text-center justify-center">Add Niswan</h2></div>
-        <div className="grid text-right items-right align-right py-127">
+      <div className="grid grid-cols-3 mt-6 bg-teal-700 text-white font-bold py-2 px-4 rounded">
+        <div></div>
+        <div> <h2 className="text-xl font-bold text-center items-center justify-center">Add Niswan</h2></div>
+        <div className="grid items-center justify-end">
           <Link to="/admin-dashboard/schools" >
             <FaArrowAltCircleLeft className="text-2xl bg-blue-700 text-white rounded" />
           </Link>
