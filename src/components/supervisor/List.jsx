@@ -4,7 +4,7 @@ import { columns, SupervisorButtons } from '../../utils/SupervisorHelper'
 import DataTable from 'react-data-table-component'
 import axios from 'axios'
 import {
-  FaPlusSquare
+  FaPlusSquare, FaArrowAltCircleLeft
 } from "react-icons/fa";
 
 const List = () => {
@@ -76,7 +76,13 @@ const List = () => {
       <div className="text-center">
         <h3 className="text-2xl font-bold">Manage Supervisor</h3>
       </div>
+      <div className="text-center">
+        <h3 className="text-2xl font-bold"> </h3>
+      </div>
       <div className="flex justify-between items-center">
+        <Link to="/admin-dashboard" >
+          <FaArrowAltCircleLeft className="text-2xl bg-blue-700 text-white" />
+        </Link>
         <input
           type="text"
           placeholder="Seach By Supervisor"
