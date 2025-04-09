@@ -61,7 +61,8 @@ const Add = () => {
         </div>
       </div>
 
-      <div className="grid grid-cols-2 mt-6 bg-teal-700 text-white font-bold py-2 px-4 rounded">
+     {/* <div className="grid grid-cols-2 mt-6 bg-teal-700 text-white font-bold py-2 px-4 rounded">*/}
+      <div className="rounded flex bg-white border shadow">
         <div><h2 className="grid text-xl font-bold items-center justify-end">Add Niswan</h2></div>
         <div className="grid items-center justify-end">
           <Link to="/admin-dashboard/schools" >
