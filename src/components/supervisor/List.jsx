@@ -76,9 +76,6 @@ const List = () => {
       <div className="text-center">
         <h3 className="text-2xl font-bold p-5">Manage Supervisors</h3>
       </div>
-      <div className="text-center">
-        <h3 className="text-2xl font-bold"> </h3>
-      </div>
       <div className="flex justify-between items-center">
         <Link to="/admin-dashboard" >
           <FaArrowAltCircleLeft className="text-2xl bg-blue-700 text-white rounded" />
