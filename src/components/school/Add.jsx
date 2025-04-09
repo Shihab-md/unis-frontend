@@ -58,8 +58,8 @@ const Add = () => {
       </div>
 
       <div className="grid grid-cols-3 mt-6 bg-teal-700 text-white font-bold py-2 px-4 rounded">
-        <div><h2 className="grid text-xl font-bold items-center justify-end mr-5">Add </h2></div>
-        <div><h2 className="grid text-xl font-bold items-center justify-start"> Niswan</h2></div>
+        <div><h2 className="grid text-xl font-bold items-center justify-end">Add</h2></div>
+        <div><h2 className="grid text-xl font-bold items-center justify-center">Niswan</h2></div>
         <div className="grid items-center justify-end">
           <Link to="/admin-dashboard/schools" >
             <FaArrowAltCircleLeft className="text-2xl bg-blue-700 text-white rounded" />
