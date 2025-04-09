@@ -67,22 +67,28 @@ const List = () => {
   }
 
   return (
-    <div className='p-6'>
+    <div className='p-5'>
       <div className="text-center">
-        <h3 className="text-2xl font-bold">Manage Niswans</h3>
+        <h3 className="text-2xl font-bold p-5">Manage Niswans</h3>
       </div>
       <div className="flex justify-between items-center">
+        <Link to="/admin-dashboard" >
+          <FaArrowAltCircleLeft className="text-2xl bg-blue-700 text-white rounded" />
+        </Link>
         <input
           type="text"
           placeholder="Seach By Niswan"
           className="px-4 py-0.5 border"
           onChange={handleFilter}
         />
-        <Link
+        {/*<Link
           to="/admin-dashboard/add-school"
           className="px-4 py-1 bg-teal-600 rounded text-white"
         >
           Add Niswan
+        </Link>*/}
+        <Link to="/admin-dashboard/add-school" >
+          <FaPlusSquare className="text-2xl bg-teal-700 text-white rounded" />
         </Link>
       </div>
       <div className='mt-6'>
