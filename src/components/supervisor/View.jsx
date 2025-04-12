@@ -1,6 +1,9 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
+import {
+  FaWindowClose
+} from "react-icons/fa";
 
 const View = () => {
   const { id } = useParams();
@@ -33,13 +36,18 @@ const View = () => {
   return (
     <>
       {supervisor ? (
-        <div className="max-w-3xl mx-auto mt-10 bg-white p-8 rounded-md shadow-md">
-          <div className="w-full mt-6 bg-teal-700 text-white font-bold py-2 px-4 rounded">
-          <h2 className="text-2xl font-bold text-center">
-            Supervisor Details
-          </h2></div>
+        <div className="max-w-3xl mx-auto mt-2 bg-white p-8 rounded-md shadow-md">
+          <div className="grid items-center justify-end px-1 py-1">
+            <Link to="/admin-dashboard/supervisors" >
+              <FaWindowClose className="text-xl bg-red-700 text-white rounded shadow-md" />
+            </Link>
+          </div>
+          <div className="grid grid-cols-1 mt-2 bg-teal-700 text-white font-bold py-2 px-4 rounded">
+            <div><h2 className="grid text-xl font-bold items-center justify-center">Supervisor Detail</h2></div>
+          </div>
+
           <div className="grid grid-cols-1 md:grid-cols-1 gap-6">
-          <div className="flex space-x-3 mb-5" />
+            <div className="flex space-x-3 mb-5" />
             <div>
               <img
                 src={`https://unis-server.vercel.app/${supervisor.userId.profileImage}`}
@@ -47,7 +55,7 @@ const View = () => {
               />
             </div>
             <div>
-            <div className="flex space-x-3 mb-5" />
+              <div className="flex space-x-3 mb-5" />
               <div className="flex space-x-3 mb-5">
                 <p className="font-medium">Name:</p>
                 <p className="font-normal">{supervisor.userId.name}</p>
