@@ -2,9 +2,6 @@ import axios from "axios";
 import React, { useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
-import {
-  FaKey,
-} from "react-icons/fa";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -42,17 +39,14 @@ const Login = () => {
   return (
     <div
       className="flex flex-col items-center h-screen justify-center 
-    bg-gradient-to-b from-teal-600 from-50% to-gray-100 to-50% space-y-6"
+      bg-gradient-to-b from-teal-600 from-50% to-gray-100 to-50% space-y-6 h-100"
     >
       <img width={140} className='rounded-md shadow w-34' src="./Logo - UNIS.PNG" />
       <h2 className="font-bold text-4xl">
         UNIS ACADEMY
       </h2>
       <div className="border shadow p-6 w-80 bg-white">
-        <div className="grid grid-cols-2 gap-4">
-          <h2 className="text-2xl font-bold mb-4">Login </h2>
-          <h2 className="mt-2 text-end justify-end"> <FaKey className="mt-2 text-end justify-end"/></h2>
-        </div>
+        <h2 className="text-2xl font-bold mb-4">Login</h2>
         {error && <p className="text-red-500">{error}</p>}
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
