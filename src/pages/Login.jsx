@@ -93,7 +93,7 @@ const Login = () => {
                 type="submit"
                 className="flex w-full bg-teal-600 text-white py-2 items-center justify-center"
               >
-                بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيْم
+                بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيْم 
               </button>
 
               {/*   <div className="rounded flex bg-teal-600 border">
