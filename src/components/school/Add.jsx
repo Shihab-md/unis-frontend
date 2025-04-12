@@ -50,7 +50,7 @@ const Add = () => {
 
   return (
     <div className="max-w-4xl mx-auto mt-2 bg-white p-5 rounded-md shadow-md">
-      <div className="grid items-center justify-end">
+      <div className="grid items-center justify-end mt-3 mb-3">
         <Link to="/admin-dashboard/schools" >
           <FaArrowAltCircleLeft className="text-2xl bg-blue-700 text-white rounded" />
         </Link>
