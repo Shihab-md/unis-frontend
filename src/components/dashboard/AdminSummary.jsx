@@ -5,11 +5,8 @@ import { Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext'
 import {
   FaBuilding,
-  FaCheckCircle,
-  FaFileAlt,
-  FaHourglassHalf,
-  FaMoneyBillWave,
-  FaTimesCircle,
+  FaSchool,
+  FaUserFriends,
   FaUsers,
 } from "react-icons/fa";
 import axios from 'axios'
@@ -52,18 +49,18 @@ const AdminSummary = () => {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-5">
         <Link to="/admin-dashboard/supervisors" >
           <SummaryCard
-            icon={<FaUsers />}
+            icon={<FaUserFriends />}
             text="Muaavins (Supervisors)"
             number={summary.totalSupervisors}
-            color="bg-teal-600"
+            color="bg-blue-700"
           />
         </Link>
         <Link to="/admin-dashboard/schools" >
           <SummaryCard
-            icon={<FaBuilding />}
+            icon={<FaSchool />}
             text="Niswans"
             number={summary.totalSchools}
-            color="bg-pink-600"
+            color="bg-pink-700"
           />
         </Link>
         <Link to="#" >
@@ -71,7 +68,7 @@ const AdminSummary = () => {
             icon={<FaUsers />}
             text="Students"
             number={summary.totalEmployees}
-            color="bg-teal-600"
+            color="bg-teal-700"
           />
         </Link>
         <Link to="#" >
