@@ -90,7 +90,7 @@ const Login = () => {
               type="submit"
               className="w-full bg-teal-600 text-white py-2 "
             >
-              Login
+              Login (بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيْمِ)
             </button>
           </div>
         </form>
