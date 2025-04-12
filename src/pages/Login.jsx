@@ -97,8 +97,8 @@ const Login = () => {
               </button>
 
               <div className="rounded flex bg-teal-600 border">
-                <div className="pl-1 py-1 px-5">
-                  <p className="text-lg font-bold">بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيْم </p>
+                <div className="pl-4 py-1 px-5">
+                  <p className="text-lg font-semibold text-white">بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيْم </p>
                 </div>
 
                 <div className={`text-3xl flex justify-center items-center text-white px-2`}>
