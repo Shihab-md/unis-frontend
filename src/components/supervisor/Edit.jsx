@@ -121,7 +121,7 @@ const Edit = () => {
               {/* Name */}
               <div>
                 <label className="block text-sm font-medium text-gray-700">
-                  Name
+                  Name <span className="text-red-700">*</span>
                 </label>
                 <input
                   type="text"
@@ -137,7 +137,7 @@ const Edit = () => {
               {/* Email */}
               <div>
                 <label className="block text-sm font-medium text-gray-700">
-                  Email
+                  Email <span className="text-red-700">*</span>
                 </label>
                 <input
                   type="email"
@@ -154,7 +154,7 @@ const Edit = () => {
               {/* Supervisor ID */}
               <div>
                 <label className="block text-sm font-medium text-gray-700">
-                  Supervisor ID
+                  Supervisor ID <span className="text-red-700">*</span>
                 </label>
                 <input
                   type="text"
@@ -171,7 +171,7 @@ const Edit = () => {
               {/* Contact Number */}
               <div>
                 <label className="block text-sm font-medium text-gray-700">
-                  Contact Number
+                  Contact Number <span className="text-red-700">*</span>
                 </label>
                 <input
                   type="number"
@@ -187,7 +187,7 @@ const Edit = () => {
               {/* Address */}
               <div>
                 <label className="block text-sm font-medium text-gray-700">
-                  Address
+                  Address <span className="text-red-700">*</span>
                 </label>
                 <input
                   type="text"
@@ -203,7 +203,7 @@ const Edit = () => {
               {/* Route Name */}
               <div>
                 <label className="block text-sm font-medium text-gray-700">
-                  Route Name
+                  Route Name <span className="text-red-700">*</span>
                 </label>
                 <input
                   type="text"
@@ -219,7 +219,7 @@ const Edit = () => {
               {/* Qualification */}
               <div>
                 <label className="block text-sm font-medium text-gray-700">
-                  Qualification
+                  Qualification <span className="text-red-700">*</span>
                 </label>
                 <input
                   type="text"
@@ -235,7 +235,7 @@ const Edit = () => {
               {/* Date of Birth */}
               <div>
                 <label className="block text-sm font-medium text-gray-700">
-                  Date of Birth
+                  Date of Birth <span className="text-red-700">*</span>
                 </label>
                 <input
                   type="date"
@@ -251,7 +251,7 @@ const Edit = () => {
               {/* Gender */}
               <div>
                 <label className="block text-sm font-medium text-gray-700">
-                  Gender
+                  Gender <span className="text-red-700">*</span>
                 </label>
                 <select
                   name="gender"
@@ -269,7 +269,7 @@ const Edit = () => {
               {/* Marital Status */}
               <div>
                 <label className="block text-sm font-medium text-gray-700">
-                  Marital Status
+                  Marital Status <span className="text-red-700">*</span>
                 </label>
                 <select
                   name="maritalStatus"
@@ -288,7 +288,7 @@ const Edit = () => {
               {/* Date of Joining */}
               <div>
                 <label className="block text-sm font-medium text-gray-700">
-                  Date of Joining
+                  Date of Joining <span className="text-red-700">*</span>
                 </label>
                 <input
                   type="date"
@@ -304,7 +304,7 @@ const Edit = () => {
               {/* Salary */}
               <div>
                 <label className="block text-sm font-medium text-gray-700">
-                  Salary
+                  Salary <span className="text-red-700">*</span>
                 </label>
                 <input
                   type="number"

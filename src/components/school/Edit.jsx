@@ -126,7 +126,7 @@ const Edit = () => {
               {/* Code */}
               <div>
                 <label className="block text-sm font-medium text-gray-700">
-                  Code
+                  Code <span className="text-red-700">*</span>
                 </label>
                 <input
                   type="text"
@@ -143,7 +143,7 @@ const Edit = () => {
               {/* Name English*/}
               <div>
                 <label className="block text-sm font-medium text-gray-700">
-                  Name in English
+                  Name in English <span className="text-red-700">*</span>
                 </label>
                 <input
                   type="text"
@@ -194,7 +194,7 @@ const Edit = () => {
               {/* Area */}
               <div>
                 <label className="block text-sm font-medium text-gray-700">
-                  Area
+                  Area <span className="text-red-700">*</span>
                 </label>
                 <input
                   type="text"
@@ -210,7 +210,7 @@ const Edit = () => {
               {/* District / State */}
               <div>
                 <label className="block text-sm font-medium text-gray-700">
-                  District / State
+                  District / State <span className="text-red-700">*</span>
                 </label>
                 <input
                   type="text"
@@ -261,7 +261,7 @@ const Edit = () => {
               {/* Active */}
               <div>
                 <label className="block text-sm font-medium text-gray-700">
-                  Active
+                  Active <span className="text-red-700">*</span>
                 </label>
                 <select
                   name="active"
@@ -279,7 +279,7 @@ const Edit = () => {
               {/* Supervisor Id */}
               <div>
                 <label className="block text-sm font-medium text-gray-700">
-                  Supervisor Id
+                  Supervisor Id <span className="text-red-700">*</span>
                 </label>
                 <input
                   type="text"
@@ -298,7 +298,7 @@ const Edit = () => {
               {/* Incharge-1 */}
               <div>
                 <label className="block text-sm font-medium text-gray-700">
-                  Incharge-1 Name
+                  Incharge-1 Name <span className="text-red-700">*</span>
                 </label>
                 <input
                   type="text"
@@ -314,7 +314,7 @@ const Edit = () => {
               {/* Incharge-1 Number */}
               <div>
                 <label className="block text-sm font-medium text-gray-700">
-                  Incharge-1 Number
+                  Incharge-1 Number <span className="text-red-700">*</span>
                 </label>
                 <input
                   type="number"
