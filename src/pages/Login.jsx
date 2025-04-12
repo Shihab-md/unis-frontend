@@ -38,7 +38,7 @@ const Login = () => {
 
   return (
     <div
-      className="flex flex-col items-center h-screen justify-center 
+      className="flex flex-col items-center h-100 w-100 h-screen justify-center 
     bg-gradient-to-b from-teal-600 from-50% to-gray-100 to-50% space-y-6"
     >
       <img width={140} className='rounded-md shadow w-34' src="./Logo - UNIS.PNG" />
