@@ -46,7 +46,7 @@ const AdminSummary = () => {
       <h5 className="p-3 text-center">Welcome, {user.name}</h5>
       <h3 className="text-2xl font-bold text-center">Dashboard</h3>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-5 rounded">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-7 mt-7 rounded">
         <Link to="/admin-dashboard/supervisors" >
           <SummaryCard
             icon={<FaUserFriends />}
