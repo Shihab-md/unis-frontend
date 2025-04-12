@@ -68,9 +68,9 @@ const AdminSummary = () => {
         <Link to="/admin-dashboard/employees" >
           <SummaryCard
             icon={<FaHouseUser />}
-            text="Teachers"
+            text="Admins, Teachers"
             number={summary.totalEmployees}
-            color="bg-green-700"
+            color="bg-lime-700"
           />
         </Link>
         <Link to="#" >
