@@ -70,7 +70,7 @@ const AdminSummary = () => {
             icon={<FaHouseUser />}
             text="Admins, Teachers"
             number={summary.totalEmployees}
-            color="bg-lime-700"
+            color="bg-cyan-700"
           />
         </Link>
         <Link to="#" >
