@@ -89,14 +89,8 @@ function App() {
 
           <Route path="/admin-dashboard/employees" element={<List />}></Route>
           <Route path="/admin-dashboard/add-employee" element={<Add />}></Route>
-          <Route
-            path="/admin-dashboard/employees/:id"
-            element={<View />}
-          ></Route>
-          <Route
-            path="/admin-dashboard/employees/edit/:id"
-            element={<Edit />}
-          ></Route>
+          <Route path="/admin-dashboard/employees/:id" element={<View />}></Route>
+          <Route path="/admin-dashboard/employees/edit/:id" element={<Edit />}></Route>
           <Route
             path="/admin-dashboard/employees/salary/:id"
             element={<ViewSalary />}

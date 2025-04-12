@@ -3,85 +3,95 @@ import { Link, useNavigate } from 'react-router-dom'
 import { columns, EmployeeButtons } from '../../utils/EmployeeHelper'
 import DataTable from 'react-data-table-component'
 import axios from 'axios'
+import {
+  FaPlusSquare, FaArrowAltCircleLeft
+} from "react-icons/fa";
 
 const List = () => {
-    const [employees, setEmployees] = useState([])
-    const [empLoading, setEmpLoading] = useState(false)
-    const [filteredEmployee, setFilteredEmployees] = useState(null)
-    const navigate = useNavigate()
+  const [employees, setEmployees] = useState([])
+  const [supLoading, setSupLoading] = useState(false)
+  const [filteredEmployee, setFilteredEmployees] = useState(null)
+  const navigate = useNavigate()
 
-    useEffect(() => {
-        const fetchEmployees = async () => {
-            setEmpLoading(true)
-          try {
-            const responnse = await axios.get(
-              "https://unis-server.vercel.app/api/employee",
-              {
-                headers: {
-                  Authorization: `Bearer ${localStorage.getItem("token")}`,
-                },
-              }
-            );
-            if (responnse.data.success) {
-              let sno = 1;
-              const data = await responnse.data.employees.map((emp) => ({
-                _id: emp._id,
-                sno: sno++,
-                dep_name: emp.department.dep_name,
-                name: emp.userId.name,
-                dob: new Date(emp.dob).toLocaleDateString(),
-                profileImage: <img width={40} className='rounded-full' src={`https://unis-server.vercel.app/${emp.userId.profileImage}`} />,
-                action: (<EmployeeButtons Id={emp._id} />),
-              }));
-              setEmployees(data);
-              setFilteredEmployees(data)
-            }
-          } catch (error) {
-            console.log(error.message)
-            if(error.response && !error.response.data.success) {
-              alert(error.response.data.error)
-              navigate('/login')
+  useEffect(() => {
+
+    const onEmployeeDelete = () => {
+      fetchEmployees()
+    }
+
+    const fetchEmployees = async () => {
+      setSupLoading(true)
+      try {
+        const responnse = await axios.get(
+          "https://unis-server.vercel.app/api/employee",
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
           }
-          } finally {
-            setEmpLoading(false)
-          }
-        };
-    
-        fetchEmployees();
-      }, []);
-
-      const handleFilter = (e) => {
-        const records = employees.filter((emp) => (
-          emp.name.toLowerCase().includes(e.target.value.toLowerCase())
-        ))
-        setFilteredEmployees(records)
+        );
+        if (responnse.data.success) {
+          let sno = 1;
+          const data = await responnse.data.employees.map((sup) => ({
+            _id: sup._id,
+            sno: sno++,
+            // dep_name: sup.department.dep_name,
+            name: sup.userId.name,
+            contactNumber: sup.contactNumber,
+            routeName: sup.routeName,
+            dob: new Date(sup.dob).toLocaleDateString(),
+            profileImage: <img width={40} className='rounded-full' src={`https://unis-server.vercel.app/${sup.userId.profileImage}`} />,
+            action: (<EmployeeButtons Id={sup._id} onEmployeeDelete={onEmployeeDelete} />),
+          }));
+          setEmployees(data);
+          setFilteredEmployees(data)
+        }
+      } catch (error) {
+        console.log(error.message)
+        if (error.response && !error.response.data.success) {
+          alert(error.response.data.error)
+          navigate('/login')
+        }
+      } finally {
+        setSupLoading(false)
       }
+    };
 
-      if(!filteredEmployee) {
-        return <div>Loading ...</div>
-      }
+    fetchEmployees();
+  }, []);
+
+  const handleFilter = (e) => {
+    const records = employees.filter((sup) => (
+      sup.name.toLowerCase().includes(e.target.value.toLowerCase())
+    ))
+    setFilteredEmployees(records)
+  }
+
+  if (!filteredEmployee) {
+    return <div>Loading ...</div>
+  }
 
   return (
-    <div className='p-6'>
-        <div className="text-center">
-        <h3 className="text-2xl font-bold">Manage Employee</h3>
+    <div className="mt-3 p-5">
+      <div className="text-center">
+        <h3 className="text-2xl font-bold px-5 py-0">Manage Employees</h3>
       </div>
-      <div className="flex justify-between items-center">
+      <div className="flex justify-between items-center mt-5">
+        <Link to="/admin-dashboard" >
+          <FaArrowAltCircleLeft className="text-2xl bg-blue-700 text-white rounded" />
+        </Link>
         <input
           type="text"
-          placeholder="Seach By Dep Name"
+          placeholder="Seach By Employee"
           className="px-4 py-0.5 border"
           onChange={handleFilter}
         />
-        <Link
-          to="/admin-dashboard/add-employee"
-          className="px-4 py-1 bg-teal-600 rounded text-white"
-        >
-          Add New Employee
+        <Link to="/admin-dashboard/add-employee" >
+          <FaPlusSquare className="text-2xl bg-teal-700 text-white rounded" />
         </Link>
       </div>
       <div className='mt-6'>
-        <DataTable columns={columns} data={filteredEmployee} pagination/>
+        <DataTable columns={columns} data={filteredEmployee} pagination />
       </div>
     </div>
   )
