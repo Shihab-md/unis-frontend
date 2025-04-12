@@ -2,6 +2,9 @@ import axios from "axios";
 import React, { useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import {
+  FaKey,
+} from "react-icons/fa";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -47,6 +50,7 @@ const Login = () => {
       </h2>
       <div className="border shadow p-6 w-80 bg-white">
         <h2 className="text-2xl font-bold mb-4">Login</h2>
+        icon={<FaKey />}
         {error && <p className="text-red-500">{error}</p>}
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
