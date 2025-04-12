@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import {
+  FaWindowClose
+} from "react-icons/fa";
 ///import multer from "multer";
 //import { FileBase64 } from "react-file-base64";
 
@@ -38,7 +41,7 @@ const Add = () => {
         'Access-Control-Allow-Origin': '*',
         'Accept': 'application/json'
       }
- 
+
       const response = await axios.post(
         "https://unis-server.vercel.app/api/supervisor/add12",
         formDataObj,
@@ -46,7 +49,7 @@ const Add = () => {
           headers: headers
           //headers: {
           //  Authorization: `Bearer ${localStorage.getItem("token")}`,
-         //},
+          //},
         }
       );
       if (response.data.success) {
@@ -60,11 +63,18 @@ const Add = () => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto mt-10 bg-white p-8 rounded-md shadow-md">
-      <div className="w-full mt-6 bg-teal-700 text-white font-bold py-2 px-4 rounded">
-      <h2 className="text-2xl font-bold text-center">Add Supervisor</h2></div>
+    <div className="max-w-4xl mx-auto mt-2 bg-white p-5 rounded-md shadow-md">
+      <div className="grid items-center justify-end px-1 py-1">
+        <Link to="/admin-dashboard/supervisors" >
+          <FaWindowClose className="text-xl bg-red-700 text-white rounded shadow-md" />
+        </Link>
+      </div>
+      <div className="grid grid-cols-1 mt-2 bg-teal-700 text-white font-bold py-2 px-4 rounded">
+        <div><h2 className="grid text-xl font-bold items-center justify-center">Enter Supervisor Details</h2></div>
+      </div>
+
       <form onSubmit={handleSubmit}>
-      <div className="flex space-x-3 mb-5" />
+        <div className="flex space-x-3 mb-5" />
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {/* Name */}
           <div>
@@ -285,19 +295,13 @@ const Add = () => {
               className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
             />
           </div>
-          <button
-          className="w-full mt-6 bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded"
-          onClick={() => navigate(`/admin-dashboard/supervisors`)}
-        >
-          Cancel
-        </button>
+        </div>
         <button
           type="submit"
           className="w-full mt-6 bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded"
         >
           Add Supervisor
         </button>
-        </div>
       </form>
     </div>
   );
