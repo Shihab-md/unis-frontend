@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useState } from "react";
 import { useAuth } from "../context/AuthContext";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import {
   FaArrowAltCircleRight,
 } from "react-icons/fa";
@@ -89,23 +89,24 @@ const Login = () => {
               </a>
             </div>
 
-              {/* <button
+            {/* <button
                 type="submit"
                 className="flex w-full bg-teal-600 text-white py-2 items-center justify-center"
               >
                 بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيْم <span><FaArrowAltCircleRight classname="text-bold justify-end" /></span>
               </button>
 */}
-              <div className="rounded flex bg-teal-600 border">
-                <div className="pl-4 py-2 px-5 justify-end items-center">
+            <div className="rounded flex bg-teal-600 border">
+              <Link type="submit" >
+                <div className="py-2 px-6 justify-end items-center">
                   <p className="text-white justify-end">بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيْم </p>
                 </div>
 
-                <div className="text-2xl flex justify-end items-center text-white px-3">
+                <div className="text-2xl flex justify-end items-center text-white px-5">
                   <FaArrowAltCircleRight classname="text-bold justify-end" />
                 </div>
-
-              </div>
+              </Link>
+            </div>
 
 
           </form>
