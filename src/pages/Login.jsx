@@ -88,15 +88,15 @@ const Login = () => {
                 Forgot password?
               </a>
             </div>
-
-            {/* <button
+            <div className="mb-4">
+              <button
                 type="submit"
                 className="flex w-full bg-teal-600 text-white py-2 items-center justify-center"
               >
-                بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيْم <span><FaArrowAltCircleRight classname="text-bold justify-end" /></span>
+                بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيْم
               </button>
-*/}
-            <div className="rounded flex bg-teal-600 border">
+
+              {/*   <div className="rounded flex bg-teal-600 border">
               <Link type="submit" >
                 <div className="py-2 px-6 justify-end items-center">
                   <p className="text-white justify-end">بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيْم </p>
@@ -105,7 +105,7 @@ const Login = () => {
                 <div className="text-2xl flex justify-end items-center text-white px-5">
                   <FaArrowAltCircleRight classname="text-bold justify-end" />
                 </div>
-              </Link>
+              </Link>*/}
             </div>
 
 
