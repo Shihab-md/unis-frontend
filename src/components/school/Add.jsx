@@ -51,7 +51,7 @@ const Add = () => {
     <div className="max-w-4xl mx-auto mt-2 bg-white p-5 rounded-md shadow-md">
       <div className="grid items-center justify-end">
         <Link to="/admin-dashboard/schools" >
-          <FaWindowClose className="text-2xl bg-red-700 text-white rounded shadow-md" />
+          <FaWindowClose className="text-xl bg-red-700 text-white rounded shadow-md" />
         </Link>
       </div>
       <div className="grid grid-cols-1 mt-3 bg-teal-700 text-white font-bold py-2 px-4 rounded">
@@ -428,14 +428,14 @@ const Add = () => {
             //required
             />
           </div>
-          <button
-            type="submit"
-            data-ripple-light="true"
-            className="w-full mt-6 bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded"
-          >
-            Add Niswan
-          </button>
         </div>
+        <button
+          type="submit"
+          data-ripple-light="true"
+          className="w-full mt-6 bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded"
+        >
+          Add Niswan
+        </button>
       </form>
     </div>
   );
