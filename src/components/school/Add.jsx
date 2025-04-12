@@ -49,7 +49,7 @@ const Add = () => {
 
   return (
     <div className="max-w-4xl mx-auto mt-2 bg-white p-5 rounded-md shadow-md">
-      <div className="grid items-center justify-end px-2">
+      <div className="grid items-center justify-end px-2 py-2">
         <Link to="/admin-dashboard/schools" >
           <FaWindowClose className="text-xl bg-red-700 text-white rounded shadow-md" />
         </Link>
