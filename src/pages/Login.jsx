@@ -24,10 +24,27 @@ const Login = () => {
       if (response.data.success) {
         login(response.data.user)
         localStorage.setItem("token", response.data.token)
-        if (response.data.user.role === "admin") {
+        if (response.data.user.role === "superadmin") {
+          navigate('/superadmin-dashboard')
+
+        } else if (response.data.user.role === "admin") {
           navigate('/admin-dashboard')
+
+        } else if (response.data.user.role === "supervisor") {
+          navigate('/supervisor-dashboard')
+
+        } else if (response.data.user.role === "teacher") {
+          navigate('/teacher-dashboard')
+
+        } else if (response.data.user.role === "student") {
+          navigate('/student-dashboard')
+
+        } else if (response.data.user.role === "parent") {
+          navigate('/parent-dashboard')
+
         } else {
-          navigate("/employee-dashboard")
+          alert("Login Expired OR Failed.")
+          navigate("/login")
         }
       }
     } catch (error) {
@@ -93,7 +110,7 @@ const Login = () => {
                 type="submit"
                 className="flex w-full bg-teal-600 text-white py-2 items-center justify-center"
               >
-                بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيْم 
+                بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيْم
               </button>
 
               {/*   <div className="rounded flex bg-teal-600 border">
