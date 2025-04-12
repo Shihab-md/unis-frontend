@@ -7,8 +7,8 @@ const SummaryCard = ({icon, text, number, color}) => {
             {icon}
         </div>
         <div className="pl-4 py-1">
-            <p className="text-lg font-semibold">{text}</p>
-            <p className="text-xl font-bold">{number}</p>
+            <p className="text-lg font-bold">{text}</p>
+            <p className="text-lg font-bold text-gray-500">{number}</p>
         </div>
     </div>
   )
