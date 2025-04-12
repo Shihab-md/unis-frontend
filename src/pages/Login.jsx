@@ -51,7 +51,7 @@ const Login = () => {
       <div className="border shadow p-6 w-80 bg-white">
         <div className="grid grid-cols-2 gap-4">
           <h2 className="text-2xl font-bold mb-4">Login </h2>
-          <FaKey />
+          <FaKey className="mt-2 text-end justify-end"/>
         </div>
         {error && <p className="text-red-500">{error}</p>}
         <form onSubmit={handleSubmit}>
