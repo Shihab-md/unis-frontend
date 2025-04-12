@@ -86,12 +86,6 @@ const List = () => {
           className="px-4 py-0.5 border"
           onChange={handleFilter}
         />
-        {/*<Link
-          to="/admin-dashboard/add-supervisor"
-          className="px-4 py-1 bg-teal-600 rounded text-white"
-        >
-          Add Supervisor
-        </Link> */}
         <Link to="/admin-dashboard/add-supervisor" >
           <FaPlusSquare className="text-2xl bg-teal-700 text-white rounded" />
         </Link>
