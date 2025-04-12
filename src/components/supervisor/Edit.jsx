@@ -93,6 +93,7 @@ const Edit = () => {
         }
       );
       if (response.data.success) {
+        alert("Updated Successfully...");
         navigate("/admin-dashboard/supervisors");
       }
     } catch (error) {

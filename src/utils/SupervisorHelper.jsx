@@ -56,8 +56,8 @@ export const getSupervisors = async (id) => {
         },
       }
     );
-    console.log(responnse)
     if (responnse.data.success) {
+      alert("Deleted Successfully...");
       supervisors = responnse.data.supervisors;
     }
   } catch (error) {

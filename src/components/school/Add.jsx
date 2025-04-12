@@ -37,6 +37,7 @@ const Add = () => {
         }
       );
       if (response.data.success) {
+        alert("Added Successfully...");
         navigate("/admin-dashboard/schools");
       }
     } catch (error) {

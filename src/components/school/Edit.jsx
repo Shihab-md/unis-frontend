@@ -98,6 +98,7 @@ const Edit = () => {
         }
       );
       if (response.data.success) {
+        alert("Updated Successfully...");
         navigate("/admin-dashboard/schools");
       }
     } catch (error) {
