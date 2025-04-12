@@ -54,8 +54,8 @@ const Add = () => {
           <FaArrowAltCircleLeft className="text-2xl bg-blue-700 text-white rounded" />
         </Link>
       </div>
-      <div className="grid grid-cols-1 bg-teal-700 text-white font-bold py-2 px-4 rounded">
-        <div><h2 className="grid text-xl font-bold items-center justify-end">Add Niswan</h2></div>
+      <div className="grid grid-cols-1 mt-3 bg-teal-700 text-white font-bold py-2 px-4 rounded">
+        <div><h2 className="grid text-xl font-bold items-center justify-center">Add Niswan</h2></div>
       </div>
 
       <form onSubmit={handleSubmit}>
