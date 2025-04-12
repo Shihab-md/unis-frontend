@@ -9,6 +9,8 @@ import {
   FaUserFriends,
   FaUsers,
   FaHouseUser,
+  FaFolderPlus,
+  FaFileAlt,
 } from "react-icons/fa";
 import axios from 'axios'
 import { useNavigate } from "react-router-dom";
@@ -87,6 +89,22 @@ const AdminSummary = () => {
             text="Institutions"
             number={summary.totalEmployees}
             color="bg-yellow-600"
+          />
+        </Link>
+        <Link to="#" >
+          <SummaryCard
+            icon={<FaFolderPlus />}
+            text="Courses"
+            number={summary.totalEmployees}
+            color="bg-purple-600"
+          />
+        </Link>
+        <Link to="#" >
+          <SummaryCard
+            icon={<FaFileAlt />}
+            text="Subjects"
+            number={summary.totalEmployees}
+            color="bg-green-600"
           />
         </Link>
 
