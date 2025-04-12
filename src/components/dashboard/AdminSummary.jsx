@@ -45,7 +45,7 @@ const AdminSummary = () => {
   }
   //p-6
   return (
-    <div className="p-5 items-center">
+    <div className="p-7 items-center">
       <h5 className="p-3 text-center">Welcome, {user.name}</h5>
       <h3 className="text-2xl font-bold text-center">Dashboard</h3>
 
@@ -53,7 +53,7 @@ const AdminSummary = () => {
         <Link to="/admin-dashboard/supervisors" >
           <SummaryCard
             icon={<FaUsers />}
-            text="Supervisors"
+            text="Muaavins (Supervisors)"
             number={summary.totalSupervisors}
             color="bg-teal-600"
           />
@@ -63,7 +63,7 @@ const AdminSummary = () => {
             icon={<FaBuilding />}
             text="Niswans"
             number={summary.totalSchools}
-            color="bg-yellow-600"
+            color="bg-pink-600"
           />
         </Link>
         <Link to="#" >
