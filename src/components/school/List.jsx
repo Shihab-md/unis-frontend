@@ -70,7 +70,7 @@ const List = () => {
   }
 
   return (
-    <div className='p-5'>
+    <div className="mt-2 p-5">
       <div className="text-center">
         <h3 className="text-2xl font-bold p-5">Manage Niswans</h3>
       </div>

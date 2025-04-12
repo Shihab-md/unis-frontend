@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, Link } from "react-router-dom";
+import {
+  FaWindowClose
+} from "react-icons/fa";
 
 const Edit = () => {
   const [school, setSchool] = useState({
@@ -107,9 +110,15 @@ const Edit = () => {
   return (
     <>
       {school ? (
-        <div className="max-w-4xl mx-auto mt-10 bg-white p-8 rounded-md shadow-md">
-          <div className="w-full mt-6 bg-teal-700 text-white font-bold py-2 px-4 rounded">
-            <h2 className="text-xl font-bold text-center">Update Niswan</h2></div>
+        <div className="max-w-4xl mx-auto mt-2 bg-white p-5 rounded-md shadow-md">
+          <div className="grid items-center justify-end px-1 py-1">
+            <Link to="/admin-dashboard/schools" >
+              <FaWindowClose className="text-xl bg-red-700 text-white rounded shadow-md" />
+            </Link>
+          </div>
+          <div className="grid grid-cols-1 mt-2 bg-teal-700 text-white font-bold py-2 px-4 rounded">
+            <div><h2 className="grid text-xl font-bold items-center justify-center">Update Niswan Details</h2></div>
+          </div>
           <form onSubmit={handleSubmit}>
             <div className="flex space-x-3 mb-5" />
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -508,22 +517,14 @@ const Edit = () => {
                 //required
                 />
               </div>
-
-              <button
-                data-ripple-light="true"
-                className="w-full mt-6 bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded"
-                onClick={() => navigate(`/admin-dashboard/schools`)}
-              >
-                Cancel
-              </button>
-              <button
-                type="submit"
-                data-ripple-light="true"
-                className="w-full mt-6 bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded"
-              >
-                Update Niswan
-              </button>
             </div>
+            <button
+              type="submit"
+              data-ripple-light="true"
+              className="w-full mt-6 bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded"
+            >
+              Update Niswan
+            </button>
           </form>
         </div>
       ) : (

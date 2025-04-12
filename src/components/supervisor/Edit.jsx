@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
 //import { fetchDepartments } from "../../utils/SupervisorHelper";
 import axios from "axios";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, Link } from "react-router-dom";
 import moment from "moment";
-
+import {
+  FaWindowClose
+} from "react-icons/fa";
 
 const Edit = () => {
   const [supervisor, setSupervisor] = useState({
@@ -103,9 +105,15 @@ const Edit = () => {
   return (
     <>
       {supervisor ? (
-        <div className="max-w-4xl mx-auto mt-10 bg-white p-8 rounded-md shadow-md">
-          <div className="w-full mt-6 bg-teal-700 text-white font-bold py-2 px-4 rounded">
-            <h2 className="text-2xl font-bold text-center">Edit Supervisor</h2></div>
+        <div className="max-w-4xl mx-auto mt-2 bg-white p-5 rounded-md shadow-md">
+          <div className="grid items-center justify-end px-1 py-1">
+            <Link to="/admin-dashboard/supervisors" >
+              <FaWindowClose className="text-xl bg-red-700 text-white rounded shadow-md" />
+            </Link>
+          </div>
+          <div className="grid grid-cols-1 mt-2 bg-teal-700 text-white font-bold py-2 px-4 rounded">
+            <div><h2 className="grid text-xl font-bold items-center justify-center">Update Supervisor Details</h2></div>
+          </div>
           <form onSubmit={handleSubmit}>
             <div className="flex space-x-3 mb-5" />
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -119,7 +127,7 @@ const Edit = () => {
                   name="name"
                   value={supervisor.name}
                   onChange={handleChange}
-                  placeholder="Insert Name"
+                  //      placeholder="Insert Name"
                   className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                   required
                 />
@@ -136,7 +144,7 @@ const Edit = () => {
                   value={supervisor.email}
                   onChange={handleChange}
                   disabled={true}
-                  placeholder="Insert Email"
+                  //      placeholder="Insert Email"
                   className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                   required
                 />
@@ -153,7 +161,7 @@ const Edit = () => {
                   value={supervisor.supervisorId}
                   onChange={handleChange}
                   disabled={true}
-                  placeholder="Supervisor ID"
+                  //      placeholder="Supervisor ID"
                   className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                   required
                 />
@@ -169,7 +177,7 @@ const Edit = () => {
                   name="contactNumber"
                   value={supervisor.contactNumber}
                   onChange={handleChange}
-                  placeholder="Contact Number"
+                  //     placeholder="Contact Number"
                   className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                   required
                 />
@@ -185,7 +193,7 @@ const Edit = () => {
                   name="address"
                   value={supervisor.address}
                   onChange={handleChange}
-                  placeholder="Address"
+                  //    placeholder="Address"
                   className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                   required
                 />
@@ -201,7 +209,7 @@ const Edit = () => {
                   name="routeName"
                   value={supervisor.routeName}
                   onChange={handleChange}
-                  placeholder="Route Name"
+                  //    placeholder="Route Name"
                   className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                   required
                 />
@@ -217,7 +225,7 @@ const Edit = () => {
                   name="qualification"
                   value={supervisor.qualification}
                   onChange={handleChange}
-                  placeholder="Qualification"
+                  //    placeholder="Qualification"
                   className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                   required
                 />
@@ -233,7 +241,7 @@ const Edit = () => {
                   name="dob"
                   value={moment(new Date(supervisor.dob)).format("YYYY-MM-DD")}
                   onChange={handleChange}
-                  placeholder="DOB"
+                  //    placeholder="DOB"
                   className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                   required
                 />
@@ -286,7 +294,7 @@ const Edit = () => {
                   name="doj"
                   value={moment(new Date(supervisor.doj)).format("YYYY-MM-DD")}
                   onChange={handleChange}
-                  placeholder="DOJ"
+                  //     placeholder="DOJ"
                   className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                   required
                 />
@@ -302,24 +310,18 @@ const Edit = () => {
                   name="salary"
                   onChange={handleChange}
                   value={supervisor.salary}
-                  placeholder="Salary"
+                  //    placeholder="Salary"
                   className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                   required
                 />
               </div>
-              <button
-                className="w-full mt-6 bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded"
-                onClick={() => navigate(`/admin-dashboard/supervisors`)}
-              >
-                Cancel
-              </button>
-              <button
-                type="submit"
-                className="w-full mt-6 bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded"
-              >
-                Update Supervisor
-              </button>
             </div>
+            <button
+              type="submit"
+              className="w-full mt-6 bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded"
+            >
+              Update Supervisor
+            </button>
           </form>
         </div>
       ) : (
