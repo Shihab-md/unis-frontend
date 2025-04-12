@@ -67,7 +67,7 @@ const Login = () => {
                 required
               />
             </div>
-            <div className="mb-4">
+            <div className="mb-5">
               <label htmlFor="password" className="block text-gray-700">
                 Password
               </label>
@@ -79,7 +79,7 @@ const Login = () => {
                 required
               />
             </div>
-            <div className="mb-4 flex items-center justify-between">
+            <div className="mb-5 flex items-center justify-between">
               <label className="inline-flex items-center">
                 <input type="checkbox" className="form-checkbox" />
                 <span className="ml-2 text-gray-700">Remember me</span>
@@ -88,7 +88,7 @@ const Login = () => {
                 Forgot password?
               </a>
             </div>
-            <div className="mb-4">
+            <div className="mb-3">
               <button
                 type="submit"
                 className="flex w-full bg-teal-600 text-white py-2 items-center justify-center"

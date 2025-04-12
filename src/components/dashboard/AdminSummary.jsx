@@ -43,9 +43,9 @@ const AdminSummary = () => {
   //p-6
   return (
     <div className="p-7 items-center">
-      <h5 className="p-1 text-center font-semibold">ربِّ زِدْنِي عِلْماً</h5>
+      <h5 className="p-1 text-center font-semibold text-gray-700">ربِّ زِدْنِي عِلْماً</h5>
       <h5 className="p-1 text-center">Welcome, {user.name}</h5>
-      <h5 className="text-2xl mt-3 font-bold text-center">Dashboard</h5>
+      <h5 className="text-2xl mt-3 font-bold text-center text-gray-500">Dashboard</h5>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mt-5 rounded">
         <Link to="/admin-dashboard/supervisors" >
