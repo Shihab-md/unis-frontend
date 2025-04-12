@@ -96,7 +96,7 @@ const Login = () => {
                 بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيْم <span><FaArrowAltCircleRight classname="text-bold justify-end" /></span>
               </button>
 
-              <div className="rounded flex bg-white border">
+              <div className="rounded flex bg-teal-600 border">
                 <div className="pl-4 py-1">
                   <p className="text-lg font-bold">بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيْم </p>
                 </div>
