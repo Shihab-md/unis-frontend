@@ -71,7 +71,7 @@ const Add = () => {
         </Link>
       </div>
       <div className="grid grid-cols-1 mt-2 bg-teal-700 text-white font-bold py-2 px-4 rounded">
-        <div><h2 className="grid text-xl font-bold items-center justify-center">Enter Supervisor Details</h2></div>
+        <div><h2 className="grid text-xl font-semibold items-center justify-center">Enter Supervisor Details</h2></div>
       </div>
 
       <form onSubmit={handleSubmit}>

@@ -43,7 +43,7 @@ const View = () => {
             </Link>
           </div>
           <div className="grid grid-cols-1 mt-2 bg-teal-700 text-white font-bold py-2 px-4 rounded">
-            <div><h2 className="grid text-xl font-bold items-center justify-center">Supervisor Detail</h2></div>
+            <div><h2 className="grid text-xl font-semibold items-center justify-center">Supervisor Detail</h2></div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-1 gap-6">
