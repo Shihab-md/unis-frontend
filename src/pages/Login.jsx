@@ -45,7 +45,7 @@ const Login = () => {
       bg-gradient-to-b from-teal-600 from-50% to-gray-100 to-50% space-y-6 h-75"
     >
       <img width={140} className='rounded-md shadow w-34' src="./Logo - UNIS.PNG" />
-      <h2 className="font-bold text-4xl">
+      <h2 className="p-5 font-bold text-4xl">
         UNIS ACADEMY
       </h2>
       <div className="border shadow p-6 w-80 bg-white">
