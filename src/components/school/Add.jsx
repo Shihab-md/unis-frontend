@@ -55,7 +55,7 @@ const Add = () => {
         </Link>
       </div>
       <div className="grid grid-cols-1 mt-2 bg-teal-700 text-white font-bold py-2 px-4 rounded">
-        <div><h2 className="grid text-xl font-bold items-center justify-center">Enter Niswan Details</h2></div>
+        <div><h2 className="grid text-xl font-semibold items-center justify-center">Enter Niswan Details</h2></div>
       </div>
 
       <form onSubmit={handleSubmit}>
@@ -79,7 +79,7 @@ const Add = () => {
           {/* Name English*/}
           <div>
             <label className="block text-sm font-medium text-gray-700">
-              Name in English
+              Name in English <span className="text-red-700">*</span>
             </label>
             <input
               type="text"
@@ -124,7 +124,7 @@ const Add = () => {
           {/* Area */}
           <div>
             <label className="block text-sm font-medium text-gray-700">
-              Area
+              Area <span className="text-red-700">*</span>
             </label>
             <input
               type="text"
@@ -139,7 +139,7 @@ const Add = () => {
           {/* District / State */}
           <div>
             <label className="block text-sm font-medium text-gray-700">
-              District / State
+              District / State <span className="text-red-700">*</span>
             </label>
             <input
               type="text"
@@ -187,7 +187,7 @@ const Add = () => {
           {/* Active */}
           <div>
             <label className="block text-sm font-medium text-gray-700">
-              Active
+              Active <span className="text-red-700">*</span>
             </label>
             <select
               name="active"
@@ -204,7 +204,7 @@ const Add = () => {
           {/* Supervisor Id */}
           <div>
             <label className="block text-sm font-medium text-gray-700">
-              Supervisor Id
+              Supervisor Id <span className="text-red-700">*</span>
             </label>
             <input
               type="text"
@@ -222,7 +222,7 @@ const Add = () => {
           {/* Incharge1 */}
           <div>
             <label className="block text-sm font-medium text-gray-700">
-              Incharge-1 Name
+              Incharge-1 Name <span className="text-red-700">*</span>
             </label>
             <input
               type="text"
@@ -237,7 +237,7 @@ const Add = () => {
           {/* Incharge1 Number */}
           <div>
             <label className="block text-sm font-medium text-gray-700">
-              Incharge-1 Number
+              Incharge-1 Number <span className="text-red-700">*</span>
             </label>
             <input
               type="number"
