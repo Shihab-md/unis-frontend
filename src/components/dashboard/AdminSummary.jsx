@@ -43,6 +43,7 @@ const AdminSummary = () => {
   //p-6
   return (
     <div className="p-7 items-center">
+      <h4 className="p-1 text-center font-bold">ربِّ زِدْنِي عِلْماً </h4>
       <h5 className="p-1 text-center">Welcome, {user.name}</h5>
       <h3 className="text-2xl mt-3 font-bold text-center">Dashboard</h3>
 
