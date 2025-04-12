@@ -49,8 +49,8 @@ const Login = () => {
         UNIS ACADEMY
       </h2>
       <div className="border shadow p-6 w-80 bg-white">
-        <h2 className="text-2xl font-bold mb-4">Login</h2>
-        icon={<FaKey />}
+        <h2 className="text-2xl font-bold mb-4">Login <FaKey /></h2>
+        
         {error && <p className="text-red-500">{error}</p>}
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
