@@ -43,7 +43,7 @@ const Login = () => {
     >
       <img width={140} className='rounded-md shadow w-34' src="./Logo - UNIS.PNG" />
       <h2 className="font-bold text-4xl">
-        UNIS APP
+        UNIS ACADEMY
       </h2>
       <div className="border shadow p-6 w-80 bg-white">
         <h2 className="text-2xl font-bold mb-4">Login</h2>
