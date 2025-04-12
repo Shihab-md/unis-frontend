@@ -93,8 +93,20 @@ const Login = () => {
                 type="submit"
                 className="flex w-full bg-teal-600 text-white py-2 items-center justify-center"
               >
-                بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيْم <span><FaArrowAltCircleRight classname="text-bold justify-end"/></span>
+                بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيْم <span><FaArrowAltCircleRight classname="text-bold justify-end" /></span>
               </button>
+
+              <div className="rounded flex bg-white border">
+                <div className="pl-4 py-1">
+                  <p className="text-lg font-bold">بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيْم </p>
+                </div>
+
+                <div className={`text-3xl flex justify-center items-center text-white px-4`}>
+                <FaArrowAltCircleRight classname="text-bold justify-end" />
+                </div>
+
+              </div>
+
             </div>
           </form>
         </div>
