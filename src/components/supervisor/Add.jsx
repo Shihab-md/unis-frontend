@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Link } from 'react-router-dom'
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import {
   FaWindowClose
 } from "react-icons/fa";
@@ -86,7 +85,7 @@ const Add = () => {
               type="text"
               name="name"
               onChange={handleChange}
-              placeholder="Insert Name"
+            //  placeholder="Insert Name"
               className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
               required
             />
@@ -101,7 +100,7 @@ const Add = () => {
               type="email"
               name="email"
               onChange={handleChange}
-              placeholder="Insert Email"
+            //  placeholder="Insert Email"
               className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
               required
             />
@@ -116,7 +115,7 @@ const Add = () => {
               type="text"
               name="supervisorId"
               onChange={handleChange}
-              placeholder="Supervisor ID"
+            //  placeholder="Supervisor ID"
               className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
               required
             />
@@ -131,7 +130,7 @@ const Add = () => {
               type="number"
               name="contactNumber"
               onChange={handleChange}
-              placeholder="Contact Number"
+            //  placeholder="Contact Number"
               className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
               required
             />
@@ -146,7 +145,7 @@ const Add = () => {
               type="text"
               name="address"
               onChange={handleChange}
-              placeholder="Address"
+            //  placeholder="Address"
               className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
               required
             />
@@ -161,7 +160,7 @@ const Add = () => {
               type="text"
               name="routeName"
               onChange={handleChange}
-              placeholder="Route Name"
+            //  placeholder="Route Name"
               className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
               required
             />
@@ -176,7 +175,7 @@ const Add = () => {
               type="text"
               name="qualification"
               onChange={handleChange}
-              placeholder="Qualification"
+          //    placeholder="Qualification"
               className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
               required
             />
@@ -191,7 +190,7 @@ const Add = () => {
               type="date"
               name="dob"
               onChange={handleChange}
-              placeholder="DOB"
+          //    placeholder="DOB"
               className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
               required
             />
@@ -241,7 +240,7 @@ const Add = () => {
               type="date"
               name="doj"
               onChange={handleChange}
-              placeholder="DOJ"
+        //      placeholder="DOJ"
               className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
               required
             />
@@ -256,7 +255,7 @@ const Add = () => {
               type="number"
               name="salary"
               onChange={handleChange}
-              placeholder="Salary"
+          //    placeholder="Salary"
               className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
               required
             />
@@ -290,7 +289,7 @@ const Add = () => {
             <input
               type="file"
               name="image"
-              onChange={handleChange}
+         //     onChange={handleChange}
               placeholder="Upload Image"
               accept="image/*"
               className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
