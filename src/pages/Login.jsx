@@ -42,7 +42,7 @@ const Login = () => {
       <meta name="mobile-web-app-capable" content="yes" />
     <div
       className="flex flex-col items-center h-screen justify-center 
-      bg-gradient-to-b from-teal-600 from-50% to-gray-100 to-50% space-y-6 h-100"
+      bg-gradient-to-b from-blue-600 from-50% to-gray-100 to-50% space-y-6 h-75"
     >
       <img width={140} className='rounded-md shadow w-34' src="./Logo - UNIS.PNG" />
       <h2 className="font-bold text-4xl">
