@@ -8,6 +8,7 @@ import {
   FaSchool,
   FaUserFriends,
   FaUsers,
+  FaHouseUser,
 } from "react-icons/fa";
 import axios from 'axios'
 import { useNavigate } from "react-router-dom";
@@ -62,6 +63,14 @@ const AdminSummary = () => {
             text="Niswans"
             number={summary.totalSchools}
             color="bg-pink-700"
+          />
+        </Link>
+        <Link to="/admin-dashboard/employees" >
+          <SummaryCard
+            icon={<FaHouseUser />}
+            text="Teachers"
+            number={summary.totalEmployees}
+            color="bg-green-700"
           />
         </Link>
         <Link to="#" >
