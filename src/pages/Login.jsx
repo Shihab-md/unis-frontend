@@ -37,6 +37,8 @@ const Login = () => {
   };
 
   return (
+    <div>
+      <meta name="apple-mobile-web-app-capable" content="yes" />
     <div
       className="flex flex-col items-center h-screen justify-center 
       bg-gradient-to-b from-teal-600 from-50% to-gray-100 to-50% space-y-6 h-75"
@@ -92,6 +94,7 @@ const Login = () => {
           </div>
         </form>
       </div>
+    </div>
     </div>
   );
 };
