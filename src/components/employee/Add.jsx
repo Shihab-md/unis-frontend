@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
+import { getSchools } from "../../utils/SchoolHelper";
 import {
   FaWindowClose
 } from "react-icons/fa";
@@ -10,7 +11,16 @@ import {
 const Add = () => {
 
   const [formData, setFormData] = useState({});
+  const [schools, setSchools] = useState(null);
   const navigate = useNavigate()
+
+  useEffect(() => {
+    const getSchools = async () => {
+      const schools = await getSchools();
+      setSchools(schools);
+    };
+    getSchools();
+  }, []);
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
@@ -43,7 +53,7 @@ const Add = () => {
       }
 
       const response = await axios.post(
-        "https://unis-server.vercel.app/api/employee/add12",
+        "https://unis-server.vercel.app/api/employee/add",
         formDataObj,
         {
           headers: headers
@@ -86,7 +96,7 @@ const Add = () => {
               type="text"
               name="name"
               onChange={handleChange}
-            //  placeholder="Insert Name"
+              //  placeholder="Insert Name"
               className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
               required
             />
@@ -101,10 +111,30 @@ const Add = () => {
               type="email"
               name="email"
               onChange={handleChange}
-            //  placeholder="Insert Email"
+              //  placeholder="Insert Email"
               className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
               required
             />
+          </div>
+
+          {/* School */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Select Niswan
+            </label>
+            <select
+              name="schoolId"
+              onChange={handleChange}
+              className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+              required
+            >
+              <option value="">Select School</option>
+              {schools.map((school) => (
+                <option key={school._id} value={school._id}>
+                  {school.nameEnglish}
+                </option>
+              ))}
+            </select>
           </div>
 
           {/* Employee ID */}
@@ -116,10 +146,27 @@ const Add = () => {
               type="text"
               name="employeeId"
               onChange={handleChange}
-            //  placeholder="Employee ID"
+              //  placeholder="Employee ID"
               className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
               required
             />
+          </div>
+
+          {/* Role */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Role <span className="text-red-700">*</span>
+            </label>
+            <select
+              name="role"
+              onChange={handleChange}
+              className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+              required
+            >
+              <option value="">Select Role</option>
+              <option value="admin">Admin</option>
+              <option value="teacher">Teacher</option>
+            </select>
           </div>
 
           {/* Contact Number */}
@@ -131,7 +178,7 @@ const Add = () => {
               type="number"
               name="contactNumber"
               onChange={handleChange}
-            //  placeholder="Contact Number"
+              //  placeholder="Contact Number"
               className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
               required
             />
@@ -146,24 +193,24 @@ const Add = () => {
               type="text"
               name="address"
               onChange={handleChange}
-            //  placeholder="Address"
+              //  placeholder="Address"
               className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
               required
             />
           </div>
 
-          {/* Route Name */}
+          {/* Designation */}
           <div>
             <label className="block text-sm font-medium text-gray-700">
-              Route Name <span className="text-red-700">*</span>
+              Designation
             </label>
             <input
               type="text"
-              name="routeName"
+              name="designation"
               onChange={handleChange}
-            //  placeholder="Route Name"
+              //  placeholder="Route Name"
               className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-              required
+            //  required
             />
           </div>
 
@@ -176,7 +223,7 @@ const Add = () => {
               type="text"
               name="qualification"
               onChange={handleChange}
-          //    placeholder="Qualification"
+              //    placeholder="Qualification"
               className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
               required
             />
@@ -191,7 +238,7 @@ const Add = () => {
               type="date"
               name="dob"
               onChange={handleChange}
-          //    placeholder="DOB"
+              //    placeholder="DOB"
               className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
               required
             />
@@ -241,7 +288,7 @@ const Add = () => {
               type="date"
               name="doj"
               onChange={handleChange}
-        //      placeholder="DOJ"
+              //      placeholder="DOJ"
               className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
               required
             />
@@ -256,7 +303,7 @@ const Add = () => {
               type="number"
               name="salary"
               onChange={handleChange}
-          //    placeholder="Salary"
+              //    placeholder="Salary"
               className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
               required
             />
@@ -290,7 +337,7 @@ const Add = () => {
             <input
               type="file"
               name="image"
-         //     onChange={handleChange}
+              //     onChange={handleChange}
               placeholder="Upload Image"
               accept="image/*"
               className="mt-1 p-2 block w-full border border-gray-300 rounded-md"

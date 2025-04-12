@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-//import { fetchDepartments } from "../../utils/EmployeeHelper";
+import { getSchools } from "../../utils/SchoolHelper";
 import axios from "axios";
 import { useNavigate, useParams, Link } from "react-router-dom";
 import moment from "moment";
