@@ -45,7 +45,7 @@ const AdminSummary = () => {
   }
   //p-6
   return (
-    <div className="p-3 items-center">
+    <div className="p-5 items-center">
       <h5 className="p-3 text-center">Welcome, {user.name}</h5>
       <h3 className="text-2xl font-bold text-center">Dashboard</h3>
 
