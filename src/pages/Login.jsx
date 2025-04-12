@@ -2,6 +2,9 @@ import axios from "axios";
 import React, { useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import {
+  FaArrowAltCircleRight,
+} from "react-icons/fa";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -90,7 +93,7 @@ const Login = () => {
               type="submit"
               className="w-full bg-teal-600 text-white py-2 "
             >
-              Login (بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيْمِ)
+              Login (بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيْمِ) <FaArrowAltCircleRight/>
             </button>
           </div>
         </form>
