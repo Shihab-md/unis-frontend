@@ -55,7 +55,7 @@ const Add = () => {
           <FaArrowAltCircleLeft className="text-2xl bg-blue-700 text-white rounded" />
         </Link>
       </div>
-      <div className="grid grid-cols-3 mt-2 bg-teal-700 text-white font-bold py-2 px-4 rounded">
+      <div className="grid grid-cols-3 bg-teal-700 text-white font-bold rounded">
         <div><h2 className="grid text-xl font-bold items-center justify-end">Add</h2></div>
         <div><h2 className="grid text-xl font-bold items-center justify-center">Niswan</h2></div>
         <div className="grid items-center justify-end">
