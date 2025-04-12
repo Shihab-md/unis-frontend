@@ -70,8 +70,8 @@ const List = () => {
   }
 
   return (
-    <div className="mt-2 p-5">
-      <div className="text-center">
+    <div className="p-5">
+      <div className="text-center mt-1">
         <h3 className="text-2xl font-bold p-5">Manage Niswans</h3>
       </div>
       <div className="flex justify-between items-center">
