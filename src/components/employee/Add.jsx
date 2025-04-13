@@ -5,8 +5,6 @@ import { getSchools } from "../../utils/SchoolHelper";
 import {
   FaWindowClose
 } from "react-icons/fa";
-///import multer from "multer";
-//import { FileBase64 } from "react-file-base64";
 
 const Add = () => {
 
@@ -42,9 +40,6 @@ const Add = () => {
     })
 
     try {
-
-      // const upload = multer({ dest: './public/' })
-
       const headers = {
         'Content-Type': 'multipart/form-data',
         'Authorization': `Bearer ${localStorage.getItem("token")}`,
@@ -57,9 +52,6 @@ const Add = () => {
         formDataObj,
         {
           headers: headers
-          //headers: {
-          //  Authorization: `Bearer ${localStorage.getItem("token")}`,
-          //},
         }
       );
       if (response.data.success) {
@@ -96,7 +88,6 @@ const Add = () => {
               type="text"
               name="name"
               onChange={handleChange}
-              //  placeholder="Insert Name"
               className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
               required
             />
@@ -111,7 +102,6 @@ const Add = () => {
               type="email"
               name="email"
               onChange={handleChange}
-              //  placeholder="Insert Email"
               className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
               required
             />
@@ -146,7 +136,6 @@ const Add = () => {
               type="text"
               name="employeeId"
               onChange={handleChange}
-              //  placeholder="Employee ID"
               className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
               required
             />
