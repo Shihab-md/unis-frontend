@@ -30,6 +30,11 @@ import Add from "./components/employee/Add";
 import View from "./components/employee/View";
 import Edit from "./components/employee/Edit";
 
+import InstituteList from "./components/institute/List";
+import InstituteAdd from "./components/institute/Add";
+import InstituteView from "./components/institute/View";
+import InstituteEdit from "./components/institute/Edit";
+
 import AddSalary from "./components/salary/Add";
 import ViewSalary from "./components/salary/View";
 import Summary from './components/EmployeeDashboard/Summary'
@@ -95,6 +100,10 @@ function App() {
             path="/admin-dashboard/employees/salary/:id"
             element={<ViewSalary />}
           ></Route>
+          <Route path="/admin-dashboard/institutes" element={<InstituteList />}></Route>
+          <Route path="/admin-dashboard/add-institute" element={<InstituteAdd />}></Route>
+          <Route path="/admin-dashboard/institutes/:id" element={<InstituteView />}></Route>
+          <Route path="/admin-dashboard/institutes/edit/:id" element={<InstituteEdit />}></Route>
 
           <Route
             path="/admin-dashboard/salary/add"

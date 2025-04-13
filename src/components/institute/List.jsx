@@ -1,0 +1,99 @@
+import React, { useEffect, useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
+import { columns, InstituteButtons } from '../../utils/InstituteHelper'
+import DataTable from 'react-data-table-component'
+import axios from 'axios'
+import {
+  FaPlusSquare, FaArrowAltCircleLeft
+} from "react-icons/fa";
+
+const List = () => {
+  const [institutes, setInstitutes] = useState([])
+  const [supLoading, setSupLoading] = useState(false)
+  const [filteredInstitute, setFilteredInstitutes] = useState(null)
+  const navigate = useNavigate()
+
+  useEffect(() => {
+
+    const onInstituteDelete = () => {
+      fetchInstitutes()
+    }
+
+    const fetchInstitutes = async () => {
+      setSupLoading(true)
+      try {
+        const responnse = await axios.get(
+          "https://unis-server.vercel.app/api/institute",
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        );
+        if (responnse.data.success) {
+          let sno = 1;
+          const data = await responnse.data.institutes.map((sup) => ({
+            _id: sup._id,
+            sno: sno++,
+            code: sup.code,
+            name: sup.name,
+            contactNumber: sup.contactNumber,
+            email: sup.email,
+            district: sup.district,
+            action: (<InstituteButtons Id={sup._id} onInstituteDelete={onInstituteDelete} />),
+          }));
+          setInstitutes(data);
+          setFilteredInstitutes(data)
+        }
+      } catch (error) {
+        console.log(error.message)
+        if (error.response && !error.response.data.success) {
+          alert(error.response.data.error)
+          navigate('/login')
+        }
+      } finally {
+        setSupLoading(false)
+      }
+    };
+
+    fetchInstitutes();
+  }, []);
+
+  const handleFilter = (e) => {
+    const records = institutes.filter((sup) => (
+      sup.name.toLowerCase().includes(e.target.value.toLowerCase())
+    ))
+    setFilteredInstitutes(records)
+  }
+
+  if (!filteredInstitute) {
+    return <div>Loading ...</div>
+  }
+
+  return (
+    <div className="mt-3 p-5">
+      <div className="text-center">
+        <h3 className="text-2xl font-bold px-5 py-0">Manage Institutes</h3>
+      </div>
+      <div className="flex justify-between items-center mt-5">
+        <Link to="/admin-dashboard" >
+          <FaArrowAltCircleLeft className="text-2xl bg-blue-700 text-white rounded" />
+        </Link>
+        <input
+          type="text"
+          placeholder="Seach By Institute"
+          className="px-4 py-0.5 border"
+          onChange={handleFilter}
+        />
+        <Link to="/admin-dashboard/add-institute" >
+          <FaPlusSquare className="text-2xl bg-teal-700 text-white rounded" />
+        </Link>
+      </div>
+      <div className='mt-6'>
+        <DataTable columns={columns} data={filteredInstitute} pagination />
+      </div>
+    </div>
+  )
+}
+
+export default List

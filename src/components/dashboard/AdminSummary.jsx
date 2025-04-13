@@ -51,7 +51,7 @@ const AdminSummary = () => {
       <h5 className="p-1 text-center">Welcome, {user.name}</h5>
       <h5 className="text-2xl mt-5 mb-10 font-bold text-center text-gray-500">Dashboard</h5>
 
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-14 mt-10 rounded">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-7 mt-10 rounded">
         <Link to="/admin-dashboard/supervisors" >
           <SummaryCard
             icon={<FaUserFriends />}
@@ -84,11 +84,11 @@ const AdminSummary = () => {
             color="bg-blue-500"
           />
         </Link>
-        <Link to="#" >
+        <Link to="/admin-dashboard/institutes" >
           <SummaryCard
             icon={<FaBuilding />}
-            text="Institutions"
-            number={summary.totalEmployees}
+            text="Institutes"
+            number={summary.totalInstitutes}
             color="bg-yellow-700"
           />
         </Link>

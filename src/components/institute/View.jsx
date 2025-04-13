@@ -1,0 +1,115 @@
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { useParams, useNavigate, Link } from "react-router-dom";
+import {
+  FaWindowClose
+} from "react-icons/fa";
+
+const View = () => {
+  const { id } = useParams();
+  const [institute, setInstitute] = useState(null);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchInstitute = async () => {
+      try {
+        const responnse = await axios.get(
+          `https://unis-server.vercel.app/api/institute/${id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        );
+        if (responnse.data.success) {
+          setInstitute(responnse.data.institute);
+        }
+      } catch (error) {
+        if (error.response && !error.response.data.success) {
+          alert(error.response.data.error);
+        }
+      }
+    };
+
+    fetchInstitute();
+  }, []);
+  return (
+    <>
+      {institute ? (
+        <div className="max-w-3xl mx-auto mt-2 bg-white p-8 rounded-md shadow-md">
+          <div className="grid items-center justify-end px-1 py-1">
+            <Link to="/admin-dashboard/institutes" >
+              <FaWindowClose className="text-xl bg-red-700 text-white rounded shadow-md" />
+            </Link>
+          </div>
+          <div className="grid grid-cols-1 mt-2 bg-teal-700 text-white font-bold py-2 px-4 rounded">
+            <div><h2 className="grid text-xl font-semibold items-center justify-center">Institute Detail</h2></div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-1 gap-6">
+            <div className="flex space-x-3 mb-5" />
+            <div>
+              <img
+                src={`https://unis-server.vercel.app/${institute.userId.profileImage}`}
+                className="rounded-full border w-72"
+              />
+            </div>
+            <div>
+              <div className="flex space-x-3 mb-5" />
+              <div className="flex space-x-3 mb-5">
+                <p className="font-medium">Code:</p>
+                <p className="font-normal">{institute.code}</p>
+              </div>
+              <div className="flex space-x-3 mb-5">
+                <p className="font-medium">Name:</p>
+                <p className="font-normal">{institute.name}</p>
+              </div>
+              <div className="flex space-x-3 mb-5">
+                <p className="font-medium">Email:</p>
+                <p className="font-normal">{institute.email}</p>
+              </div>
+              <div className="flex space-x-3 mb-5">
+                <p className="font-medium">Contact Number:</p>
+                <p className="font-normal">{institute.contactNumber}</p>
+              </div>
+              <div className="flex space-x-3 mb-5">
+                <p className="font-medium">Address:</p>
+                <p className="font-normal">{institute.address}</p>
+              </div>
+              <div className="flex space-x-3 mb-5">
+                <p className="font-medium">District:</p>
+                <p className="font-normal">{institute.district}</p>
+              </div>
+              <div className="flex space-x-3 mb-5">
+                <p className="font-medium">Incharge-1 Name :</p>
+                <p className="font-normal">{school.incharge1}</p>
+              </div>
+              <div className="flex space-x-3 mb-5">
+                <p className="font-medium">Incharge-1 Number :</p>
+                <p className="font-normal">{school.incharge1Number}</p>
+              </div>
+              <div className="flex space-x-3 mb-5">
+                <p className="font-medium">Incharge-2 Name :</p>
+                <p className="font-normal">{school.incharge2}</p>
+              </div>
+              <div className="flex space-x-3 mb-5">
+                <p className="font-medium">Incharge-2 Number :</p>
+                <p className="font-normal">{school.incharge2Number}</p>
+              </div>
+            </div>
+          </div>
+          <button
+            className="w-full mt-6 bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded"
+            data-ripple-light="true"
+            onClick={() => navigate(`/admin-dashboard/institutes`)}
+          >  Back
+          </button>
+        </div>
+      ) : (
+        <div> Loading ....</div>
+      )}
+    </>
+  );
+};
+
+export default View;
