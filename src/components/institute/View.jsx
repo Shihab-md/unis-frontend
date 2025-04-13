@@ -76,19 +76,19 @@ const View = () => {
               </div>
               <div className="flex space-x-3 mb-5">
                 <p className="font-medium">Incharge-1 Name :</p>
-                <p className="font-normal">{school.incharge1}</p>
+                <p className="font-normal">{institute.incharge1}</p>
               </div>
               <div className="flex space-x-3 mb-5">
                 <p className="font-medium">Incharge-1 Number :</p>
-                <p className="font-normal">{school.incharge1Number}</p>
+                <p className="font-normal">{institute.incharge1Number}</p>
               </div>
               <div className="flex space-x-3 mb-5">
                 <p className="font-medium">Incharge-2 Name :</p>
-                <p className="font-normal">{school.incharge2}</p>
+                <p className="font-normal">{institute.incharge2}</p>
               </div>
               <div className="flex space-x-3 mb-5">
                 <p className="font-medium">Incharge-2 Number :</p>
-                <p className="font-normal">{school.incharge2Number}</p>
+                <p className="font-normal">{institute.incharge2Number}</p>
               </div>
             </div>
           </div>
