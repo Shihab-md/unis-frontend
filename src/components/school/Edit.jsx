@@ -150,7 +150,7 @@ const Edit = () => {
                   name="nameEnglish"
                   value={school.nameEnglish}
                   onChange={handleChange}
-                  disabled={true}
+                  // disabled={true}
                   //  placeholder="Insert Name"
                   className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                   required
