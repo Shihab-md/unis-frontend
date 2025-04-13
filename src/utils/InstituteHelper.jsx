@@ -15,22 +15,22 @@ export const columns = [
   { 
     name: "Code",
     selector: (row) => row.iCode,
-    width: "90px",
+    width: "160px",
   }, 
   {
     name: "Name",
     selector: (row) => row.name,
-    width: "280px",
+    width: "270px",
   },
   {
     name: "Address",
     selector: (row) => row.address,
-    width: "250px",
+    width: "230px",
   },
   {
     name: "District",
     selector: (row) => row.district,
-    width: "190px",
+    width: "100px",
   },
   {
     name: "Action",
