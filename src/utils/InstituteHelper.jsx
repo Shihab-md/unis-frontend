@@ -23,9 +23,9 @@ export const columns = [
     width: "280px",
   },
   {
-    name: "Contact Number",
-    selector: (row) => row.contactNumber,
-    width: "190px",
+    name: "Address",
+    selector: (row) => row.address,
+    width: "250px",
   },
   {
     name: "District",

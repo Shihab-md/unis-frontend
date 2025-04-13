@@ -9,8 +9,8 @@ import {
   FaUserFriends,
   FaUsers,
   FaHouseUser,
-  FaFolderPlus,
-  FaFileAlt,
+  FaClipboardCheck,
+  FaClipboardList,
   FaRupeeSign,
 } from "react-icons/fa";
 import axios from 'axios'
@@ -94,7 +94,7 @@ const AdminSummary = () => {
         </Link>
         <Link to="#" >
           <SummaryCard
-            icon={<FaFolderPlus />}
+            icon={<FaClipboardList />}
             text="Courses"
             number={summary.totalEmployees}
             color="bg-purple-700"
@@ -102,8 +102,8 @@ const AdminSummary = () => {
         </Link>
         <Link to="#" >
           <SummaryCard
-            icon={<FaFileAlt />}
-            text="Subjects"
+            icon={<FaClipboardCheck />}
+            text="Examination"
             number={summary.totalEmployees}
             color="bg-green-700"
           />

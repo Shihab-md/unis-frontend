@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
-//import { fetchDepartments } from "../../utils/InstituteHelper";
 import axios from "axios";
 import { useNavigate, useParams, Link } from "react-router-dom";
-import moment from "moment";
 import {
   FaWindowClose
 } from "react-icons/fa";

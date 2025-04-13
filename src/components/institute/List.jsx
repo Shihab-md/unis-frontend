@@ -39,6 +39,7 @@ const List = () => {
             name: sup.name,
             contactNumber: sup.contactNumber,
             email: sup.email,
+            address: sup.address,
             district: sup.district,
             action: (<InstituteButtons Id={sup._id} onInstituteDelete={onInstituteDelete} />),
           }));
