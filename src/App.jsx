@@ -35,10 +35,10 @@ import InstituteAdd from "./components/institute/Add";
 import InstituteView from "./components/institute/View";
 import InstituteEdit from "./components/institute/Edit";
 
-import InstituteList from "./components/course/List";
-import InstituteAdd from "./components/course/Add";
-import InstituteView from "./components/course/View";
-import InstituteEdit from "./components/course/Edit";
+import CourseList from "./components/course/List";
+import CourseAdd from "./components/course/Add";
+import CourseView from "./components/course/View";
+import CourseEdit from "./components/course/Edit";
 
 import AddSalary from "./components/salary/Add";
 import ViewSalary from "./components/salary/View";
