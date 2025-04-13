@@ -119,7 +119,7 @@ const Edit = () => {
                 <input
                   type="text"
                   name="code"
-                  value={institute.name}
+                  value={institute.code}
                   onChange={handleChange}
                   disabled={true}
                   className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
@@ -150,7 +150,7 @@ const Edit = () => {
                 <input
                   type="number"
                   name="contactNumber"
-                  value={institute.name}
+                  value={institute.contactNumber}
                   onChange={handleChange}
                   className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                 //    required
@@ -165,7 +165,7 @@ const Edit = () => {
                 <input
                   type="email"
                   name="email"
-                  value={institute.name}
+                  value={institute.email}
                   onChange={handleChange}
                   className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                 // required
@@ -180,7 +180,7 @@ const Edit = () => {
                 <input
                   type="text"
                   name="address"
-                  value={institute.name}
+                  value={institute.address}
                   onChange={handleChange}
                   className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                   required
@@ -194,8 +194,8 @@ const Edit = () => {
                 </label>
                 <input
                   type="text"
-                  name="routeName"
-                  value={institute.name}
+                  name="district"
+                  value={institute.district}
                   onChange={handleChange}
                   className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                   required
@@ -210,7 +210,7 @@ const Edit = () => {
                 <input
                   type="text"
                   name="incharge1"
-                  value={institute.name}
+                  value={institute.incharge1}
                   onChange={handleChange}
                   className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                   required
@@ -225,7 +225,7 @@ const Edit = () => {
                 <input
                   type="number"
                   name="incharge1Number"
-                  value={institute.name}
+                  value={institute.incharge1Number}
                   onChange={handleChange}
                   className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                   required
@@ -240,7 +240,7 @@ const Edit = () => {
                 <input
                   type="text"
                   name="incharge2"
-                  value={institute.name}
+                  value={institute.incharge2}
                   onChange={handleChange}
                   className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                 />
@@ -254,7 +254,7 @@ const Edit = () => {
                 <input
                   type="number"
                   name="incharge2Number"
-                  value={institute.name}
+                  value={institute.incharge2Number}
                   onChange={handleChange}
                   className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                 />
