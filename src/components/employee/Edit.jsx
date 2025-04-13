@@ -51,16 +51,16 @@ const Edit = () => {
             ...prev,
             name: employee.userId.name,
             email: employee.userId.email,
+            schoolId: employee.schoolId.nameEnglish,
             employeeId: employee.employeeId,
             contactNumber: employee.contactNumber,
             address: employee.address,
-            routeName: employee.routeName,
+            designation: employee.designation,
             qualification: employee.qualification,
             dob: employee.dob,
             gender: employee.gender,
             maritalStatus: employee.maritalStatus,
             doj: employee.doj,
-            designation: employee.designation,
             salary: employee.salary
           }));
         }
