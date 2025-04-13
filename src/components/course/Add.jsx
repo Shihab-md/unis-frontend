@@ -142,7 +142,7 @@ const Add = () => {
               required
             />
           </div>
-          <div className="grid grid-cols-2 justify-between">
+          <div className="grid grid-cols-2 gap-5 justify-between">
             {/* Subject-1 Max Marks */}
             <div>
               <label className="block text-sm font-medium text-gray-700">
