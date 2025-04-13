@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
-import { fetchSchools } from "../../school/List";
+import { fetchSchools } from "../school/List";
 import {
   FaWindowClose
 } from "react-icons/fa";
