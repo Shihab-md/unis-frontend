@@ -62,16 +62,17 @@ const View = () => {
               </div>
 
               <div className="flex space-x-3 mb-5" />
+
               <div className="flex space-x-3 mb-5">
                 <p className="font-medium">Subject-1 :</p>
                 <p className="font-normal">{course.subject1}</p>
               </div>
               <div className="flex space-x-3 mb-5">
-                <p className="font-medium">Subject-1 Max Marks :</p>
+                <p className="font-medium">Max Marks :</p>
                 <p className="font-normal">{course.subject1MaxMark}</p>
               </div>
               <div className="flex space-x-3 mb-5">
-                <p className="font-medium">Subject-1 Pass Marks :</p>
+                <p className="font-medium">Pass Marks :</p>
                 <p className="font-normal">{course.subject1PassMark}</p>
               </div>
 
@@ -81,11 +82,11 @@ const View = () => {
                 <p className="font-normal">{course.subject2}</p>
               </div>
               <div className="flex space-x-3 mb-5">
-                <p className="font-medium">Subject-2 Max Marks :</p>
+                <p className="font-medium">Max Marks :</p>
                 <p className="font-normal">{course.subject2MaxMark}</p>
               </div>
               <div className="flex space-x-3 mb-5">
-                <p className="font-medium">Subject-2 Pass Marks :</p>
+                <p className="font-medium">Pass Marks :</p>
                 <p className="font-normal">{course.subject2PassMark}</p>
               </div>
 
@@ -95,11 +96,11 @@ const View = () => {
                 <p className="font-normal">{course.subject3}</p>
               </div>
               <div className="flex space-x-3 mb-5">
-                <p className="font-medium">Subject-3 Max Marks :</p>
+                <p className="font-medium">Max Marks :</p>
                 <p className="font-normal">{course.subject3MaxMark}</p>
               </div>
               <div className="flex space-x-3 mb-5">
-                <p className="font-medium">Subject-3 Pass Marks :</p>
+                <p className="font-medium">Pass Marks :</p>
                 <p className="font-normal">{course.subject3PassMark}</p>
               </div>
 
@@ -109,11 +110,11 @@ const View = () => {
                 <p className="font-normal">{course.subject4}</p>
               </div>
               <div className="flex space-x-3 mb-5">
-                <p className="font-medium">Subject-4 Max Marks :</p>
+                <p className="font-medium">Max Marks :</p>
                 <p className="font-normal">{course.subject4MaxMark}</p>
               </div>
               <div className="flex space-x-3 mb-5">
-                <p className="font-medium">Subject-4 Pass Marks :</p>
+                <p className="font-medium">Pass Marks :</p>
                 <p className="font-normal">{course.subject4PassMark}</p>
               </div>
 
@@ -123,11 +124,11 @@ const View = () => {
                 <p className="font-normal">{course.subject5}</p>
               </div>
               <div className="flex space-x-3 mb-5">
-                <p className="font-medium">Subject-5 Max Marks :</p>
+                <p className="font-medium">Max Marks :</p>
                 <p className="font-normal">{course.subject5MaxMark}</p>
               </div>
               <div className="flex space-x-3 mb-5">
-                <p className="font-medium">Subject-5 Pass Marks :</p>
+                <p className="font-medium">Pass Marks :</p>
                 <p className="font-normal">{course.subject5PassMark}</p>
               </div>
 
@@ -137,11 +138,11 @@ const View = () => {
                 <p className="font-normal">{course.subject6}</p>
               </div>
               <div className="flex space-x-3 mb-5">
-                <p className="font-medium">Subject-6 Max Marks :</p>
+                <p className="font-medium">Max Marks :</p>
                 <p className="font-normal">{course.subject6MaxMark}</p>
               </div>
               <div className="flex space-x-3 mb-5">
-                <p className="font-medium">Subject-6 Pass Marks :</p>
+                <p className="font-medium">Pass Marks :</p>
                 <p className="font-normal">{course.subject6PassMark}</p>
               </div>
 
@@ -151,11 +152,11 @@ const View = () => {
                 <p className="font-normal">{course.subject7}</p>
               </div>
               <div className="flex space-x-3 mb-5">
-                <p className="font-medium">Subject-7 Max Marks :</p>
+                <p className="font-medium">Max Marks :</p>
                 <p className="font-normal">{course.subject7MaxMark}</p>
               </div>
               <div className="flex space-x-3 mb-5">
-                <p className="font-medium">Subject-7 Pass Marks :</p>
+                <p className="font-medium">Pass Marks :</p>
                 <p className="font-normal">{course.subject7PassMark}</p>
               </div>
 
@@ -165,11 +166,11 @@ const View = () => {
                 <p className="font-normal">{course.subject8}</p>
               </div>
               <div className="flex space-x-3 mb-5">
-                <p className="font-medium">Subject-8 Max Marks :</p>
+                <p className="font-medium">Max Marks :</p>
                 <p className="font-normal">{course.subject8MaxMark}</p>
               </div>
               <div className="flex space-x-3 mb-5">
-                <p className="font-medium">Subject-8 Pass Marks :</p>
+                <p className="font-medium">Pass Marks :</p>
                 <p className="font-normal">{course.subject8PassMark}</p>
               </div>
 
@@ -179,11 +180,11 @@ const View = () => {
                 <p className="font-normal">{course.subject9}</p>
               </div>
               <div className="flex space-x-3 mb-5">
-                <p className="font-medium">Subject-9 Max Marks :</p>
+                <p className="font-medium">Max Marks :</p>
                 <p className="font-normal">{course.subject9MaxMark}</p>
               </div>
               <div className="flex space-x-3 mb-5">
-                <p className="font-medium">Subject-9 Pass Marks :</p>
+                <p className="font-medium">Pass Marks :</p>
                 <p className="font-normal">{course.subject9PassMark}</p>
               </div>
 
@@ -193,11 +194,11 @@ const View = () => {
                 <p className="font-normal">{course.subject10}</p>
               </div>
               <div className="flex space-x-3 mb-5">
-                <p className="font-medium">Subject-10 Max Marks :</p>
+                <p className="font-medium">Max Marks :</p>
                 <p className="font-normal">{course.subject10MaxMark}</p>
               </div>
               <div className="flex space-x-3 mb-5">
-                <p className="font-medium">Subject-10 Pass Marks :</p>
+                <p className="font-medium">Pass Marks :</p>
                 <p className="font-normal">{course.subject10PassMark}</p>
               </div>
 
