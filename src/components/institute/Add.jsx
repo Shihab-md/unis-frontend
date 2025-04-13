@@ -7,37 +7,35 @@ import {
 
 const Add = () => {
 
-  const [formData, setFormData] = useState({});
+  const [institute, setInstitute] = useState({
+    iCode: "",
+    name: "",
+    email: "",
+    contactNumber: "",
+    address: "",
+    district: "",
+    incharge1: "",
+    incharge1Number: "",
+    incharge2: "",
+    incharge2Number: "",
+  });
+
   const navigate = useNavigate()
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prevData) => ({ ...prevData, [name]: value }));
+    setInstitute({ ...institute, [name]: value })
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const formDataObj = new FormData()
-    Object.keys(formData).forEach((key) => {
-      formDataObj.append(key, formData[key])
-    })
-
     try {
-      const headers = {
-       // 'Content-Type': 'multipart/form-data',
-        'Authorization': `Bearer ${localStorage.getItem("token")}`,
-        'Access-Control-Allow-Origin': '*',
-        'Accept': 'application/json'
-      }
-
-      const response = await axios.post(
-        "https://unis-server.vercel.app/api/institute/add",
-        formDataObj,
-        {
-          headers: headers
+      const response = await axios.post('https://unis-server.vercel.app/api/institute/add', institute, {
+        headers: {
+          "Authorization": `Bearer ${localStorage.getItem('token')}`
         }
-      );
+      })
       if (response.data.success) {
         alert("Added Successfully...");
         navigate("/admin-dashboard/institutes");
