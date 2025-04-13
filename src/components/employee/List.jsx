@@ -37,9 +37,11 @@ const List = () => {
             sno: sno++,
             // dep_name: sup.department.dep_name,
             name: sup.userId.name,
+            role: sup.userId.role,
             contactNumber: sup.contactNumber,
-            routeName: sup.routeName,
-            dob: new Date(sup.dob).toLocaleDateString(),
+            schoolName: sup.schoolId.nameEnglish,
+            designation: sup.designation,
+            //dob: new Date(sup.dob).toLocaleDateString(),
             profileImage: <img width={40} className='rounded-full' src={`https://unis-server.vercel.app/${sup.userId.profileImage}`} />,
             action: (<EmployeeButtons Id={sup._id} onEmployeeDelete={onEmployeeDelete} />),
           }));

@@ -69,6 +69,10 @@ const View = () => {
                 <p className="font-normal">{employee.employeeId}</p>
               </div>
               <div className="flex space-x-3 mb-5">
+                <p className="font-medium">Niswan Name:</p>
+                <p className="font-normal">{employee.schoolId.nameEnglish}</p>
+              </div>
+              <div className="flex space-x-3 mb-5">
                 <p className="font-medium">Contact Number:</p>
                 <p className="font-normal">{employee.contactNumber}</p>
               </div>
@@ -77,8 +81,8 @@ const View = () => {
                 <p className="font-normal">{employee.address}</p>
               </div>
               <div className="flex space-x-3 mb-5">
-                <p className="font-medium">Route:</p>
-                <p className="font-normal">{employee.routeName}</p>
+                <p className="font-medium">Designation:</p>
+                <p className="font-normal">{employee.designation}</p>
               </div>
               <div className="flex space-x-3 mb-5">
                 <p className="font-medium">Qualification:</p>

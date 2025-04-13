@@ -11,6 +11,7 @@ const Edit = () => {
   const [employee, setEmployee] = useState({
     name: "",
     email: "",
+    role: "",
     contactNumber: "",
     address: "",
     routeName: "",
@@ -25,14 +26,15 @@ const Edit = () => {
   // const [departments, setDepartments] = useState(null);
   const navigate = useNavigate();
   const { id } = useParams();
+  const [schools, setSchools] = useState([]);
 
-  {/*} useEffect(() => {
-    const getDepartments = async () => {
-      const departments = await fetchDepartments();
-      setDepartments(departments);
+  useEffect(() => {
+    const getSchoolsMap = async (id) => {
+      const schools = await getSchools(id);
+      setSchools(schools);
     };
-    getDepartments();
-  }, []); */}
+    getSchoolsMap();
+  }, []);
 
   useEffect(() => {
     const fetchEmployee = async () => {
@@ -51,6 +53,7 @@ const Edit = () => {
             ...prev,
             name: employee.userId.name,
             email: employee.userId.email,
+            role: employee.userId.role,
             schoolId: employee.schoolId.nameEnglish,
             employeeId: employee.employeeId,
             contactNumber: employee.contactNumber,
@@ -118,6 +121,28 @@ const Edit = () => {
           <form onSubmit={handleSubmit}>
             <div className="flex space-x-3 mb-5" />
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+              {/* School */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700">
+                  Select Niswan <span className="text-red-700">*</span>
+                </label>
+                <select
+                  name="schoolId"
+                  value={employee.schoolId}
+                  onChange={handleChange}
+                  className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                  required
+                >
+                  <option value="">Select Niswan</option>
+                  {schools.map((school) => (
+                    <option key={school._id} value={school._id}>
+                      {school.nameEnglish}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
               {/* Name */}
               <div>
                 <label className="block text-sm font-medium text-gray-700">
@@ -168,6 +193,24 @@ const Edit = () => {
                 />
               </div>
 
+              {/* Role */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700">
+                  Role <span className="text-red-700">*</span>
+                </label>
+                <select
+                  name="role"
+                  value={employee.role}
+                  onChange={handleChange}
+                  className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                  required
+                >
+                  <option value="">Select Role</option>
+                  <option value="admin">Admin</option>
+                  <option value="teacher">Teacher</option>
+                </select>
+              </div>
+
               {/* Contact Number */}
               <div>
                 <label className="block text-sm font-medium text-gray-700">
@@ -200,19 +243,19 @@ const Edit = () => {
                 />
               </div>
 
-              {/* Route Name */}
+              {/* Designation */}
               <div>
                 <label className="block text-sm font-medium text-gray-700">
-                  Route Name <span className="text-red-700">*</span>
+                  Designation
                 </label>
                 <input
                   type="text"
-                  name="routeName"
-                  value={employee.routeName}
+                  name="designation"
+                  value={employee.designation}
                   onChange={handleChange}
-                  //    placeholder="Route Name"
+                  //  placeholder="Route Name"
                   className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-                  required
+                //  required
                 />
               </div>
 

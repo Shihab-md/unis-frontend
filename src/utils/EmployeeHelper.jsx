@@ -1,34 +1,36 @@
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../context/AuthContext";
+import {
+  FaEye,
+  FaEdit,
+  FaTrashAlt,
+} from "react-icons/fa";
 
 export const columns = [
   {
     name: "S No",
     selector: (row) => row.sno,
-    width: "70px",
+    width: "60px",
   },
   {
     name: "Name",
     selector: (row) => row.name,
-    sortable: true,
-    width: "100px",
+    width: "320px",
   },
   {
-    name: "Image",
-    selector: (row) => row.profileImage,
-    width: "90px",
+    name: "Role",
+    selector: (row) => row.role,
+    width: "320px",
   },
   {
-    name: "Department",
-    selector: (row) => row.dep_name,
-    width: "120px",
+    name: "Contact Number",
+    selector: (row) => row.contactNumber,
+    width: "190px",
   },
   {
-    name: "DOB",
-    selector: (row) => row.dob,
-    sortable: true,
-    width: "130px",
+    name: "Niswan",
+    selector: (row) => row.schoolName,
+    width: "250px",
   },
   {
     name: "Action",
@@ -37,39 +39,20 @@ export const columns = [
   },
 ];
 
-export const fetchDepartments = async () => {
-  let departments;
-  try {
-    const responnse = await axios.get("https://unis-server.vercel.app/api/department", {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-    });
-    if (responnse.data.success) {
-      departments = responnse.data.departments;
-    }
-  } catch (error) {
-    if (error.response && !error.response.data.success) {
-      alert(error.response.data.error);
-    }
-  }
-  return departments;
-};
-
 // employees for salary form
 export const getEmployees = async (id) => {
   let employees;
   try {
     const responnse = await axios.get(
-      `https://unis-server.vercel.app/api/employee/department/${id}`,
+      `https://unis-server.vercel.app/api/employees/`,
       {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       }
     );
-    console.log(responnse)
     if (responnse.data.success) {
+      alert("Deleted Successfully...");
       employees = responnse.data.employees;
     }
   } catch (error) {
@@ -80,8 +63,32 @@ export const getEmployees = async (id) => {
   return employees;
 };
 
-export const EmployeeButtons = ({ Id }) => {
+export const EmployeeButtons = ({ Id, onEmployeeDelete }) => {
   const navigate = useNavigate();
+
+  const handleDelete = async (id) => {
+    const confirm = window.confirm("Do you want to delete?");
+    if (confirm) {
+      try {
+        const responnse = await axios.delete(
+          `https://unis-server.vercel.app/api/employee/${id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        );
+        if (responnse.data.success) {
+          alert("Deleted Successfully...");
+          onEmployeeDelete();
+        }
+      } catch (error) {
+        if (error.response && !error.response.data.success) {
+          alert(error.response.data.error);
+        }
+      }
+    }
+  };
 
   return (
     <div className="flex space-x-3">
@@ -89,19 +96,20 @@ export const EmployeeButtons = ({ Id }) => {
         className="px-3 py-1 bg-teal-600 text-white"
         onClick={() => navigate(`/admin-dashboard/employees/${Id}`)}
       >
-        View
+        <FaEye />
       </button>
       <button
         className="px-3 py-1 bg-blue-600 text-white"
         onClick={() => navigate(`/admin-dashboard/employees/edit/${Id}`)}
       >
-        Edit
+        <FaEdit />
       </button>
-      <button className="px-3 py-1 bg-yellow-600 text-white"
-        onClick={() => navigate(`/admin-dashboard/employees/salary/${Id}`)}
-      >Salary</button>
-      <button className="px-3 py-1 bg-red-600 text-white"
-      onClick={() => navigate(`/admin-dashboard/employees/leaves/${Id}`)}>Leave</button>
+      <button
+        className="px-3 py-1 bg-red-600 text-white"
+        onClick={() => handleDelete(Id)}
+      >
+        <FaTrashAlt />
+      </button>
     </div>
   );
 };
