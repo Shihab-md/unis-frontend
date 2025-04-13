@@ -12,12 +12,12 @@ const Add = () => {
   const [schools, setSchools] = useState([]);
   const navigate = useNavigate()
 
-  useState(() => {
-    const getSchools = async (id) => {
-      const schools = await getSchools();
+  useEffect(() => {
+    const getSchoolsMap = async (id) => {
+      const schools = await getSchools(id);
       setSchools(schools);
     };
-    getSchools();
+    getSchoolsMap();
   }, []);
 
   const handleChange = (e) => {
