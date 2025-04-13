@@ -15,12 +15,12 @@ export const columns = [
   {
     name: "Name",
     selector: (row) => row.name,
-    width: "320px",
+    width: "250px",
   },
   {
     name: "Role",
     selector: (row) => row.role,
-    width: "320px",
+    width: "160px",
   },
   {
     name: "Contact Number",
@@ -30,7 +30,7 @@ export const columns = [
   {
     name: "Niswan",
     selector: (row) => row.schoolName,
-    width: "250px",
+    width: "320px",
   },
   {
     name: "Action",
