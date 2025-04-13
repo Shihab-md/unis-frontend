@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
-import { getSchools } from "../../utils/SchoolHelper";
+import { fetchSchools } from "../../school/List";
 import {
   FaWindowClose
 } from "react-icons/fa";
@@ -14,8 +14,7 @@ const Add = () => {
 
   useState(() => {
     const getSchools = async (id) => {
-      const schools = await getSchools();
-      alert(schools.map)
+      const schools = await fetchSchools();
       setSchools(schools);
     };
     getSchools();
@@ -80,6 +79,26 @@ const Add = () => {
 
         <form onSubmit={handleSubmit}>
           <div className="flex space-x-3 mb-5" />
+          {/* School */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Select Niswan
+            </label>
+            <select
+              name="schoolId"
+              onChange={handleChange}
+              className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+              required
+            >
+              <option value="">Select Niswan</option>
+              {schools.map((school) => (
+                <option key={school._id} value={school._id}>
+                  {school.nameEnglish}
+                </option>
+              ))}
+            </select>
+          </div>
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {/* Name */}
             <div>
@@ -107,26 +126,6 @@ const Add = () => {
                 className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                 required
               />
-            </div>
-
-            {/* School */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700">
-                Select Niswan
-              </label>
-              <select
-                name="schoolId"
-                onChange={handleChange}
-                className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-                required
-              >
-                <option value="">Select School</option>
-                {schools.map((school) => (
-                  <option key={school._id} value={school._id}>
-                    {school.nameEnglish}
-                  </option>
-                ))}
-              </select>
             </div>
 
             {/* Employee ID */}
