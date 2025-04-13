@@ -196,6 +196,8 @@ const Edit = () => {
                 />
               </div>
 
+              <div className="flex space-x-3 mb-5" />
+
               {/* Subject-1 */}
               <div>
                 <label className="block text-sm font-medium text-gray-700">
@@ -240,6 +242,8 @@ const Edit = () => {
                   required
                 />
               </div>
+
+              <div className="flex space-x-3 mb-5" />
 
               {/* Subject-2 */}
               <div>
@@ -286,6 +290,8 @@ const Edit = () => {
                 />
               </div>
 
+              <div className="flex space-x-3 mb-5" />
+
               {/* Subject-3 */}
               <div>
                 <label className="block text-sm font-medium text-gray-700">
@@ -330,6 +336,8 @@ const Edit = () => {
                   required
                 />
               </div>
+
+              <div className="flex space-x-3 mb-5" />
 
               {/* Subject-4 */}
               <div>
@@ -376,6 +384,8 @@ const Edit = () => {
                 />
               </div>
 
+              <div className="flex space-x-3 mb-5" />
+
               {/* Subject-5 */}
               <div>
                 <label className="block text-sm font-medium text-gray-700">
@@ -420,6 +430,8 @@ const Edit = () => {
                   required
                 />
               </div>
+
+              <div className="flex space-x-3 mb-5" />
 
               {/* Subject-6 */}
               <div>
@@ -466,6 +478,8 @@ const Edit = () => {
                 />
               </div>
 
+              <div className="flex space-x-3 mb-5" />
+
               {/* Subject-7 */}
               <div>
                 <label className="block text-sm font-medium text-gray-700">
@@ -510,6 +524,8 @@ const Edit = () => {
                 //  required
                 />
               </div>
+
+              <div className="flex space-x-3 mb-5" />
 
               {/* Subject-8 */}
               <div>
@@ -556,6 +572,8 @@ const Edit = () => {
                 />
               </div>
 
+              <div className="flex space-x-3 mb-5" />
+
               {/* Subject-9 */}
               <div>
                 <label className="block text-sm font-medium text-gray-700">
@@ -600,6 +618,8 @@ const Edit = () => {
                 //  required
                 />
               </div>
+
+              <div className="flex space-x-3 mb-5" />
 
               {/* Subject-10 */}
               <div>
