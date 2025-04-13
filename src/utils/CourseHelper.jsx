@@ -14,7 +14,7 @@ export const columns = [
   },
   { 
     name: "Code",
-    selector: (row) => row.iCode,
+    selector: (row) => row.code,
     width: "90px",
   }, 
   {

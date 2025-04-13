@@ -8,14 +8,37 @@ import {
 const Edit = () => {
   const [course, setCourse] = useState({
     name: "",
-    email: "",
-    contactNumber: "",
-    address: "",
-    district: "",
-    incharge1: "",
-    incharge1Number: "",
-    incharge2: "",
-    incharge2Number: "",
+    remarks: "",
+    subject1: "",
+    subject1MaxMark: "",
+    subject1PassMark: "",
+    subject2: "",
+    subject2MaxMark: "",
+    subject2PassMark: "",
+    subject3: "",
+    subject3MaxMark: "",
+    subject3PassMark: "",
+    subject4: "",
+    subject4MaxMark: "",
+    subject4PassMark: "",
+    subject5: "",
+    subject5MaxMark: "",
+    subject5PassMark: "",
+    subject6: "",
+    subject6MaxMark: "",
+    subject6PassMark: "",
+    subject7: "",
+    subject7MaxMark: "",
+    subject7PassMark: "",
+    subject8: "",
+    subject8MaxMark: "",
+    subject8PassMark: "",
+    subject9: "",
+    subject9MaxMark: "",
+    subject9PassMark: "",
+    subject10: "",
+    subject10MaxMark: "",
+    subject10PassMark: "",
   });
 
   const navigate = useNavigate();
@@ -36,16 +59,40 @@ const Edit = () => {
           const course = responnse.data.course;
           setCourse((prev) => ({
             ...prev,
-            iCode: course.iCode,
+            code: course.code,
             name: course.name,
-            email: course.email,
-            contactNumber: course.contactNumber,
-            address: course.address,
-            district: course.district,
-            incharge1: course.incharge1,
-            incharge1Number: course.incharge1Number,
-            incharge2: course.incharge2,
-            incharge2Number: course.incharge2Number,
+            remarks: course.remarks,
+
+            subject1: course.subject1,
+            subject1MaxMark: course.subject1MaxMark,
+            subject1PassMark: course.subject1PassMark,
+            subject2: course.subject2,
+            subject2MaxMark: course.subject2MaxMark,
+            subject2PassMark: course.subject2PassMark,
+            subject3: course.subject3,
+            subject3MaxMark: course.subject3MaxMark,
+            subject3PassMark: course.subject3PassMark,
+            subject4: course.subject4,
+            subject4MaxMark: course.subject4MaxMark,
+            subject4PassMark: course.subject4PassMark,
+            subject5: course.subject5,
+            subject5MaxMark: course.subject5MaxMark,
+            subject5PassMark: course.subject5PassMark,
+            subject6: course.subject6,
+            subject6MaxMark: course.subject6MaxMark,
+            subject6PassMark: course.subject6PassMark,
+            subject7: course.subject7,
+            subject7MaxMark: course.subject7MaxMark,
+            subject7PassMark: course.subject7PassMark,
+            subject8: course.subject8,
+            subject8MaxMark: course.subject8MaxMark,
+            subject8PassMark: course.subject8PassMark,
+            subject9: course.subject9,
+            subject9MaxMark: course.subject9MaxMark,
+            subject9PassMark: course.subject9PassMark,
+            subject10: course.subject10,
+            subject10MaxMark: course.subject10MaxMark,
+            subject10PassMark: course.subject10PassMark,
           }));
         }
       } catch (error) {
@@ -110,8 +157,8 @@ const Edit = () => {
                 </label>
                 <input
                   type="text"
-                  name="iCode"
-                  value={course.iCode}
+                  name="code"
+                  value={course.code}
                   onChange={handleChange}
                   disabled={true}
                   className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
@@ -134,121 +181,468 @@ const Edit = () => {
                 />
               </div>
 
-              {/* Contact Number */}
+              {/* Remarks */}
               <div>
                 <label className="block text-sm font-medium text-gray-700">
-                  Contact Number
+                  Remarks <span className="text-red-700">*</span>
                 </label>
                 <input
-                  type="number"
-                  name="contactNumber"
-                  value={course.contactNumber}
-                  onChange={handleChange}
-                  className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-                //    required
-                />
-              </div>
-
-              {/* Email */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700">
-                  Email
-                </label>
-                <input
-                  type="email"
-                  name="email"
-                  value={course.email}
+                  type="text"
+                  name="remarks"
+                  value={course.remarks}
                   onChange={handleChange}
                   className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                 // required
                 />
               </div>
 
-              {/* Address */}
+              {/* Subject-1 */}
               <div>
                 <label className="block text-sm font-medium text-gray-700">
-                  Address <span className="text-red-700">*</span>
+                  Subject-1 <span className="text-red-700">*</span>
                 </label>
                 <input
                   type="text"
-                  name="address"
-                  value={course.address}
+                  name="subject1"
+                  value={course.subject1}
                   onChange={handleChange}
                   className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                   required
                 />
               </div>
 
-              {/* District */}
+              {/* Subject-1 Max Marks */}
               <div>
                 <label className="block text-sm font-medium text-gray-700">
-                  District <span className="text-red-700">*</span>
-                </label>
-                <input
-                  type="text"
-                  name="district"
-                  value={course.district}
-                  onChange={handleChange}
-                  className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-                  required
-                />
-              </div>
-
-              {/* Incharge1 */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700">
-                  Incharge-1 Name <span className="text-red-700">*</span>
-                </label>
-                <input
-                  type="text"
-                  name="incharge1"
-                  value={course.incharge1}
-                  onChange={handleChange}
-                  className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-                  required
-                />
-              </div>
-
-              {/* Incharge1 Number */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700">
-                  Incharge-1 Number <span className="text-red-700">*</span>
+                  Subject-1 Max Marks <span className="text-red-700">*</span>
                 </label>
                 <input
                   type="number"
-                  name="incharge1Number"
-                  value={course.incharge1Number}
+                  name="subject1MaxMark"
+                  value={course.subject1MaxMark}
                   onChange={handleChange}
                   className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                   required
                 />
               </div>
 
-              {/* Incharge2 */}
+              {/* Subject-1 Pass Marks */}
               <div>
                 <label className="block text-sm font-medium text-gray-700">
-                  Incharge-2 Name
-                </label>
-                <input
-                  type="text"
-                  name="incharge2"
-                  value={course.incharge2}
-                  onChange={handleChange}
-                  className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-                />
-              </div>
-
-              {/* Incharge2 Number */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700">
-                  Incharge-2 Number
+                  Subject-1 Pass Marks <span className="text-red-700">*</span>
                 </label>
                 <input
                   type="number"
-                  name="incharge2Number"
-                  value={course.incharge2Number}
+                  name="subject1PassMark"
+                  value={course.subject1PassMark}
                   onChange={handleChange}
                   className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                  required
+                />
+              </div>
+
+              {/* Subject-2 */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700">
+                  Subject-2 <span className="text-red-700">*</span>
+                </label>
+                <input
+                  type="text"
+                  name="subject2"
+                  value={course.subject2}
+                  onChange={handleChange}
+                  className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                  required
+                />
+              </div>
+
+              {/* Subject-2 Max Marks */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700">
+                  Subject-2 Max Marks <span className="text-red-700">*</span>
+                </label>
+                <input
+                  type="number"
+                  name="subject2MaxMark"
+                  value={course.subject2MaxMark}
+                  onChange={handleChange}
+                  className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                  required
+                />
+              </div>
+
+              {/* Subject-2 Pass Marks */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700">
+                  Subject-2 Pass Marks <span className="text-red-700">*</span>
+                </label>
+                <input
+                  type="number"
+                  name="subject2PassMark"
+                  value={course.subject2PassMark}
+                  onChange={handleChange}
+                  className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                  required
+                />
+              </div>
+
+              {/* Subject-3 */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700">
+                  Subject-3 <span className="text-red-700">*</span>
+                </label>
+                <input
+                  type="text"
+                  name="subject3"
+                  value={course.subject3}
+                  onChange={handleChange}
+                  className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                  required
+                />
+              </div>
+
+              {/* Subject-3 Max Marks */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700">
+                  Subject-3 Max Marks <span className="text-red-700">*</span>
+                </label>
+                <input
+                  type="number"
+                  name="subject3MaxMark"
+                  value={course.subject3MaxMark}
+                  onChange={handleChange}
+                  className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                  required
+                />
+              </div>
+
+              {/* Subject-3 Pass Marks */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700">
+                  Subject-3 Pass Marks <span className="text-red-700">*</span>
+                </label>
+                <input
+                  type="number"
+                  name="subject3PassMark"
+                  value={course.subject3PassMark}
+                  onChange={handleChange}
+                  className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                  required
+                />
+              </div>
+
+              {/* Subject-4 */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700">
+                  Subject-4 <span className="text-red-700">*</span>
+                </label>
+                <input
+                  type="text"
+                  name="subject4"
+                  value={course.subject4}
+                  onChange={handleChange}
+                  className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                  required
+                />
+              </div>
+
+              {/* Subject-4 Max Marks */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700">
+                  Subject-4 Max Marks <span className="text-red-700">*</span>
+                </label>
+                <input
+                  type="number"
+                  name="subject4MaxMark"
+                  value={course.subject4MaxMark}
+                  onChange={handleChange}
+                  className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                  required
+                />
+              </div>
+
+              {/* Subject-4 Pass Marks */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700">
+                  Subject-4 Pass Marks <span className="text-red-700">*</span>
+                </label>
+                <input
+                  type="number"
+                  name="subject4PassMark"
+                  value={course.subject4PassMark}
+                  onChange={handleChange}
+                  className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                  required
+                />
+              </div>
+
+              {/* Subject-5 */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700">
+                  Subject-5 <span className="text-red-700">*</span>
+                </label>
+                <input
+                  type="text"
+                  name="subject5"
+                  value={course.subject5}
+                  onChange={handleChange}
+                  className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                  required
+                />
+              </div>
+
+              {/* Subject-5 Max Marks */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700">
+                  Subject-5 Max Marks <span className="text-red-700">*</span>
+                </label>
+                <input
+                  type="number"
+                  name="subject5MaxMark"
+                  value={course.subject5MaxMark}
+                  onChange={handleChange}
+                  className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                  required
+                />
+              </div>
+
+              {/* Subject-5 Pass Marks */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700">
+                  Subject-5 Pass Marks <span className="text-red-700">*</span>
+                </label>
+                <input
+                  type="number"
+                  name="subject5PassMark"
+                  value={course.subject5PassMark}
+                  onChange={handleChange}
+                  className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                  required
+                />
+              </div>
+
+              {/* Subject-6 */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700">
+                  Subject-6
+                </label>
+                <input
+                  type="text"
+                  name="subject6"
+                  value={course.subject6}
+                  onChange={handleChange}
+                  className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                //  required
+                />
+              </div>
+
+              {/* Subject-6 Max Marks */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700">
+                  Subject-6 Max Marks
+                </label>
+                <input
+                  type="number"
+                  name="subject6MaxMark"
+                  value={course.subject6MaxMark}
+                  onChange={handleChange}
+                  className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                //  required
+                />
+              </div>
+
+              {/* Subject-6 Pass Marks */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700">
+                  Subject-6 Pass Marks
+                </label>
+                <input
+                  type="number"
+                  name="subject6PassMark"
+                  value={course.subject6PassMark}
+                  onChange={handleChange}
+                  className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                //  required
+                />
+              </div>
+
+              {/* Subject-7 */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700">
+                  Subject-7
+                </label>
+                <input
+                  type="text"
+                  name="subject7"
+                  value={course.subject7}
+                  onChange={handleChange}
+                  className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                //  required
+                />
+              </div>
+
+              {/* Subject-7 Max Marks */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700">
+                  Subject-7 Max Marks
+                </label>
+                <input
+                  type="number"
+                  name="subject7MaxMark"
+                  value={course.subject7MaxMark}
+                  onChange={handleChange}
+                  className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                //  required
+                />
+              </div>
+
+              {/* Subject-7 Pass Marks */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700">
+                  Subject-7 Pass Marks
+                </label>
+                <input
+                  type="number"
+                  name="subject7PassMark"
+                  value={course.subject7PassMark}
+                  onChange={handleChange}
+                  className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                //  required
+                />
+              </div>
+
+              {/* Subject-8 */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700">
+                  Subject-8
+                </label>
+                <input
+                  type="text"
+                  name="subject8"
+                  value={course.subject8}
+                  onChange={handleChange}
+                  className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                //  required
+                />
+              </div>
+
+              {/* Subject-8 Max Marks */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700">
+                  Subject-8 Max Marks
+                </label>
+                <input
+                  type="number"
+                  name="subject8MaxMark"
+                  value={course.subject8MaxMark}
+                  onChange={handleChange}
+                  className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                //  required
+                />
+              </div>
+
+              {/* Subject-8 Pass Marks */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700">
+                  Subject-8 Pass Marks
+                </label>
+                <input
+                  type="number"
+                  name="subject8PassMark"
+                  value={course.subject8PassMark}
+                  onChange={handleChange}
+                  className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                //  required
+                />
+              </div>
+
+              {/* Subject-9 */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700">
+                  Subject-9
+                </label>
+                <input
+                  type="text"
+                  name="subject9"
+                  value={course.subject9}
+                  onChange={handleChange}
+                  className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                //  required
+                />
+              </div>
+
+              {/* Subject-9 Max Marks */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700">
+                  Subject-9 Max Marks
+                </label>
+                <input
+                  type="number"
+                  name="subject9MaxMark"
+                  value={course.subject9MaxMark}
+                  onChange={handleChange}
+                  className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                //  required
+                />
+              </div>
+
+              {/* Subject-9 Pass Marks */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700">
+                  Subject-9 Pass Marks
+                </label>
+                <input
+                  type="number"
+                  name="subject9PassMark"
+                  value={course.subject9PassMark}
+                  onChange={handleChange}
+                  className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                //  required
+                />
+              </div>
+
+              {/* Subject-10 */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700">
+                  Subject-10
+                </label>
+                <input
+                  type="text"
+                  name="subject10"
+                  value={course.subject10}
+                  onChange={handleChange}
+                  className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                //  required
+                />
+              </div>
+
+              {/* Subject-10 Max Marks */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700">
+                  Subject-10 Max Marks
+                </label>
+                <input
+                  type="number"
+                  name="subject10MaxMark"
+                  value={course.subject10MaxMark}
+                  onChange={handleChange}
+                  className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                //  required
+                />
+              </div>
+
+              {/* Subject-10 Pass Marks */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700">
+                  Subject-10 Pass Marks
+                </label>
+                <input
+                  type="number"
+                  name="subject10PassMark"
+                  value={course.subject10PassMark}
+                  onChange={handleChange}
+                  className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                //  required
                 />
               </div>
             </div>
