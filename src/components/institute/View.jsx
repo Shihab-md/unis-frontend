@@ -49,12 +49,6 @@ const View = () => {
           <div className="grid grid-cols-1 md:grid-cols-1 gap-6">
             <div className="flex space-x-3 mb-5" />
             <div>
-              <img
-                src={`https://unis-server.vercel.app/${institute.userId.profileImage}`}
-                className="rounded-full border w-72"
-              />
-            </div>
-            <div>
               <div className="flex space-x-3 mb-5" />
               <div className="flex space-x-3 mb-5">
                 <p className="font-medium">Code:</p>
