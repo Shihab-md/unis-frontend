@@ -142,33 +142,34 @@ const Add = () => {
               required
             />
           </div>
+          <div className="grid grid-cols-2 justify-between">
+            {/* Subject-1 Max Marks */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700">
+                Subject-1 Max Marks <span className="text-red-700">*</span>
+              </label>
+              <input
+                type="number"
+                name="subject1MaxMark"
+                onChange={handleChange}
+                className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                required
+              />
+            </div>
 
-          {/* Subject-1 Max Marks */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Subject-1 Max Marks <span className="text-red-700">*</span>
-            </label>
-            <input
-              type="number"
-              name="subject1MaxMark"
-              onChange={handleChange}
-              className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-              required
-            />
-          </div>
-
-          {/* Subject-1 Pass Marks */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Subject-1 Pass Marks <span className="text-red-700">*</span>
-            </label>
-            <input
-              type="number"
-              name="subject1PassMark"
-              onChange={handleChange}
-              className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-              required
-            />
+            {/* Subject-1 Pass Marks */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700">
+                Subject-1 Pass Marks <span className="text-red-700">*</span>
+              </label>
+              <input
+                type="number"
+                name="subject1PassMark"
+                onChange={handleChange}
+                className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                required
+              />
+            </div>
           </div>
 
           <div className="flex space-x-3 mb-5" />
@@ -524,7 +525,7 @@ const Add = () => {
           </div>
 
           <div className="flex space-x-3 mb-5" />
-          
+
           {/* Subject-10 */}
           <div>
             <label className="block text-sm font-medium text-gray-700">
