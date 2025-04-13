@@ -38,6 +38,7 @@ const Edit = () => {
           const institute = responnse.data.institute;
           setInstitute((prev) => ({
             ...prev,
+            iCode: institute.iCode,
             name: institute.name,
             email: institute.email,
             contactNumber: institute.contactNumber,
