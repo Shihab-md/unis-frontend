@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
-import { fetchSchools } from "../school/List";
+import { getSchools } from '../../utils/SchoolHelper'
 import {
   FaWindowClose
 } from "react-icons/fa";
@@ -14,7 +14,7 @@ const Add = () => {
 
   useState(() => {
     const getSchools = async (id) => {
-      const schools = await fetchSchools();
+      const schools = await getSchools();
       setSchools(schools);
     };
     getSchools();

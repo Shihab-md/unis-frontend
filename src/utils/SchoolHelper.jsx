@@ -46,7 +46,6 @@ export const columns = [
   },
 ];
 
-// schools for salary form
 export const getSchools = async (id) => {
   let schools;
   try {
