@@ -96,7 +96,7 @@ const AdminSummary = () => {
             icon={<FaFolderPlus />}
             text="Courses"
             number={summary.totalEmployees}
-            color="bg-purple-500"
+            color="bg-purple-700"
           />
         </Link>
         <Link to="#" >
@@ -104,7 +104,7 @@ const AdminSummary = () => {
             icon={<FaFileAlt />}
             text="Subjects"
             number={summary.totalEmployees}
-            color="bg-green-500"
+            color="bg-green-700"
           />
         </Link>
 

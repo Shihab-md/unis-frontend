@@ -12,8 +12,8 @@ const Add = () => {
   const [schools, setSchools] = useState(null);
   const navigate = useNavigate()
 
-  useEffect(() => {
-    const getSchools = async () => {
+  useState(() => {
+    const getSchools = async (id) => {
       const schools = await getSchools();
       setSchools(schools);
     };
