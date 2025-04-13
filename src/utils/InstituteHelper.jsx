@@ -12,9 +12,9 @@ export const columns = [
     selector: (row) => row.sno,
     width: "60px",
   },
-  {
+  { 
     name: "Code",
-    selector: (row) => row.code,
+    selector: (row) => row.iCode,
     width: "90px",
   }, 
   {

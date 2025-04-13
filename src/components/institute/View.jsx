@@ -58,7 +58,7 @@ const View = () => {
               <div className="flex space-x-3 mb-5" />
               <div className="flex space-x-3 mb-5">
                 <p className="font-medium">Code:</p>
-                <p className="font-normal">{institute.code}</p>
+                <p className="font-normal">{institute.iCode}</p>
               </div>
               <div className="flex space-x-3 mb-5">
                 <p className="font-medium">Name:</p>

@@ -35,7 +35,7 @@ const List = () => {
           const data = await responnse.data.institutes.map((sup) => ({
             _id: sup._id,
             sno: sno++,
-            code: sup.code,
+            iCode: sup.iCode,
             name: sup.name,
             contactNumber: sup.contactNumber,
             email: sup.email,
