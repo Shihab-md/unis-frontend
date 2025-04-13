@@ -56,7 +56,7 @@ const AdminSummary = () => {
             icon={<FaUserFriends />}
             text="Muaavins (Supervisors)"
             number={summary.totalSupervisors}
-            color="bg-teal-700"
+            color="bg-teal-600"
           />
         </Link>
         <Link to="/admin-dashboard/schools" >
@@ -64,7 +64,7 @@ const AdminSummary = () => {
             icon={<FaSchool />}
             text="Niswans"
             number={summary.totalSchools}
-            color="bg-pink-700"
+            color="bg-pink-600"
           />
         </Link>
         <Link to="/admin-dashboard/employees" >
@@ -72,7 +72,7 @@ const AdminSummary = () => {
             icon={<FaHouseUser />}
             text="Admins, Teachers"
             number={summary.totalEmployees}
-            color="bg-cyan-400"
+            color="bg-cyan-600"
           />
         </Link>
         <Link to="#" >
@@ -80,7 +80,7 @@ const AdminSummary = () => {
             icon={<FaUsers />}
             text="Students"
             number={summary.totalEmployees}
-            color="bg-blue-400"
+            color="bg-blue-600"
           />
         </Link>
         <Link to="#" >
@@ -88,7 +88,7 @@ const AdminSummary = () => {
             icon={<FaBuilding />}
             text="Institutions"
             number={summary.totalEmployees}
-            color="bg-yellow-600"
+            color="bg-yellow-700"
           />
         </Link>
         <Link to="#" >
@@ -96,7 +96,7 @@ const AdminSummary = () => {
             icon={<FaFolderPlus />}
             text="Courses"
             number={summary.totalEmployees}
-            color="bg-purple-600"
+            color="bg-purple-700"
           />
         </Link>
         <Link to="#" >
@@ -104,7 +104,7 @@ const AdminSummary = () => {
             icon={<FaFileAlt />}
             text="Subjects"
             number={summary.totalEmployees}
-            color="bg-green-600"
+            color="bg-green-700"
           />
         </Link>
 
