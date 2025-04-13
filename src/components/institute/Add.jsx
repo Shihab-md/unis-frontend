@@ -25,7 +25,7 @@ const Add = () => {
 
     try {
       const headers = {
-        'Content-Type': 'multipart/form-data',
+       // 'Content-Type': 'multipart/form-data',
         'Authorization': `Bearer ${localStorage.getItem("token")}`,
         'Access-Control-Allow-Origin': '*',
         'Accept': 'application/json'
