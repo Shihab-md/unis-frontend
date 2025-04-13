@@ -92,18 +92,18 @@ const AdminSummary = () => {
             color="bg-yellow-700"
           />
         </Link>
-        <Link to="#" >
+        <Link to="/admin-dashboard/courses" >
           <SummaryCard
             icon={<FaClipboardList />}
             text="Courses"
-            number={summary.totalEmployees}
+            number={summary.totalCourses}
             color="bg-purple-700"
           />
         </Link>
         <Link to="#" >
           <SummaryCard
             icon={<FaClipboardCheck />}
-            text="Examination"
+            text="Exams"
             number={summary.totalEmployees}
             color="bg-green-700"
           />

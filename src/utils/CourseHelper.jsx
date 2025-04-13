@@ -1,0 +1,115 @@
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import {
+  FaEye,
+  FaEdit,
+  FaTrashAlt,
+} from "react-icons/fa";
+
+export const columns = [
+  {
+    name: "S No",
+    selector: (row) => row.sno,
+    width: "60px",
+  },
+  { 
+    name: "Code",
+    selector: (row) => row.iCode,
+    width: "90px",
+  }, 
+  {
+    name: "Name",
+    selector: (row) => row.name,
+    width: "280px",
+  },
+  {
+    name: "Remarks",
+    selector: (row) => row.remarks,
+    width: "250px",
+  },
+  {
+    name: "No. of Subjects",
+    selector: (row) => row.subjectsCount,
+    width: "190px",
+  },
+  {
+    name: "Action",
+    selector: (row) => row.action,
+    center: "true",
+  },
+];
+
+// courses for salary form
+export const getCourses = async (id) => {
+  let courses;
+  try {
+    const responnse = await axios.get(
+      `https://unis-server.vercel.app/api/courses/`,
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      }
+    );
+    if (responnse.data.success) {
+      alert("Deleted Successfully...");
+      courses = responnse.data.courses;
+    }
+  } catch (error) {
+    if (error.response && !error.response.data.success) {
+      alert(error.response.data.error);
+    }
+  }
+  return courses;
+};
+
+export const CourseButtons = ({ Id, onCourseDelete }) => {
+  const navigate = useNavigate();
+
+  const handleDelete = async (id) => {
+    const confirm = window.confirm("Do you want to delete?");
+    if (confirm) {
+      try {
+        const responnse = await axios.delete(
+          `https://unis-server.vercel.app/api/course/${id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        );
+        if (responnse.data.success) {
+          alert("Deleted Successfully...");
+          onCourseDelete();
+        }
+      } catch (error) {
+        if (error.response && !error.response.data.success) {
+          alert(error.response.data.error);
+        }
+      }
+    }
+  };
+
+  return (
+    <div className="flex space-x-3">
+      <button
+        className="px-3 py-1 bg-teal-600 text-white"
+        onClick={() => navigate(`/admin-dashboard/courses/${Id}`)}
+      >
+        <FaEye />
+      </button>
+      <button
+        className="px-3 py-1 bg-blue-600 text-white"
+        onClick={() => navigate(`/admin-dashboard/courses/edit/${Id}`)}
+      >
+        <FaEdit />
+      </button>
+      <button
+        className="px-3 py-1 bg-red-600 text-white"
+        onClick={() => handleDelete(Id)}
+      >
+        <FaTrashAlt />
+      </button>
+    </div>
+  );
+};

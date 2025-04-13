@@ -35,6 +35,11 @@ import InstituteAdd from "./components/institute/Add";
 import InstituteView from "./components/institute/View";
 import InstituteEdit from "./components/institute/Edit";
 
+import InstituteList from "./components/course/List";
+import InstituteAdd from "./components/course/Add";
+import InstituteView from "./components/course/View";
+import InstituteEdit from "./components/course/Edit";
+
 import AddSalary from "./components/salary/Add";
 import ViewSalary from "./components/salary/View";
 import Summary from './components/EmployeeDashboard/Summary'
@@ -100,10 +105,16 @@ function App() {
             path="/admin-dashboard/employees/salary/:id"
             element={<ViewSalary />}
           ></Route>
+
           <Route path="/admin-dashboard/institutes" element={<InstituteList />}></Route>
           <Route path="/admin-dashboard/add-institute" element={<InstituteAdd />}></Route>
           <Route path="/admin-dashboard/institutes/:id" element={<InstituteView />}></Route>
           <Route path="/admin-dashboard/institutes/edit/:id" element={<InstituteEdit />}></Route>
+
+          <Route path="/admin-dashboard/courses" element={<CourseList />}></Route>
+          <Route path="/admin-dashboard/add-course" element={<CourseAdd />}></Route>
+          <Route path="/admin-dashboard/courses/:id" element={<CourseView />}></Route>
+          <Route path="/admin-dashboard/courses/edit/:id" element={<CourseEdit />}></Route>
 
           <Route
             path="/admin-dashboard/salary/add"
