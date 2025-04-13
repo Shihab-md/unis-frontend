@@ -146,7 +146,7 @@ const Add = () => {
             {/* Subject-1 Max Marks */}
             <div>
               <label className="block text-sm font-medium text-gray-700">
-                Subject-1 Max Marks <span className="text-red-700">*</span>
+                Max Marks <span className="text-red-700">*</span>
               </label>
               <input
                 type="number"
@@ -160,7 +160,7 @@ const Add = () => {
             {/* Subject-1 Pass Marks */}
             <div>
               <label className="block text-sm font-medium text-gray-700">
-                Subject-1 Pass Marks <span className="text-red-700">*</span>
+                Pass Marks <span className="text-red-700">*</span>
               </label>
               <input
                 type="number"
@@ -171,8 +171,6 @@ const Add = () => {
               />
             </div>
           </div>
-
-          <div className="flex space-x-3 mb-5" />
 
           {/* Subject-2 */}
           <div>
@@ -192,7 +190,7 @@ const Add = () => {
             {/* Subject-2 Max Marks */}
             <div>
               <label className="block text-sm font-medium text-gray-700">
-                Subject-2 Max Marks <span className="text-red-700">*</span>
+                Max Marks <span className="text-red-700">*</span>
               </label>
               <input
                 type="number"
@@ -206,7 +204,7 @@ const Add = () => {
             {/* Subject-2 Pass Marks */}
             <div>
               <label className="block text-sm font-medium text-gray-700">
-                Subject-2 Pass Marks <span className="text-red-700">*</span>
+                Pass Marks <span className="text-red-700">*</span>
               </label>
               <input
                 type="number"
@@ -217,7 +215,6 @@ const Add = () => {
               />
             </div>
           </div>
-          <div className="flex space-x-3 mb-5" />
 
           {/* Subject-3 */}
           <div>
@@ -237,7 +234,7 @@ const Add = () => {
             {/* Subject-3 Max Marks */}
             <div>
               <label className="block text-sm font-medium text-gray-700">
-                Subject-3 Max Marks <span className="text-red-700">*</span>
+                Max Marks <span className="text-red-700">*</span>
               </label>
               <input
                 type="number"
@@ -251,7 +248,7 @@ const Add = () => {
             {/* Subject-3 Pass Marks */}
             <div>
               <label className="block text-sm font-medium text-gray-700">
-                Subject-3 Pass Marks <span className="text-red-700">*</span>
+                Pass Marks <span className="text-red-700">*</span>
               </label>
               <input
                 type="number"
@@ -262,7 +259,6 @@ const Add = () => {
               />
             </div>
           </div>
-          <div className="flex space-x-3 mb-5" />
 
           {/* Subject-4 */}
           <div>
@@ -282,7 +278,7 @@ const Add = () => {
             {/* Subject-4 Max Marks */}
             <div>
               <label className="block text-sm font-medium text-gray-700">
-                Subject-4 Max Marks <span className="text-red-700">*</span>
+                Max Marks <span className="text-red-700">*</span>
               </label>
               <input
                 type="number"
@@ -296,7 +292,7 @@ const Add = () => {
             {/* Subject-4 Pass Marks */}
             <div>
               <label className="block text-sm font-medium text-gray-700">
-                Subject-4 Pass Marks <span className="text-red-700">*</span>
+                Pass Marks <span className="text-red-700">*</span>
               </label>
               <input
                 type="number"
@@ -307,7 +303,6 @@ const Add = () => {
               />
             </div>
           </div>
-          <div className="flex space-x-3 mb-5" />
 
           {/* Subject-5 */}
           <div>
@@ -327,7 +322,7 @@ const Add = () => {
             {/* Subject-5 Max Marks */}
             <div>
               <label className="block text-sm font-medium text-gray-700">
-                Subject-5 Max Marks <span className="text-red-700">*</span>
+                Max Marks <span className="text-red-700">*</span>
               </label>
               <input
                 type="number"
@@ -341,7 +336,7 @@ const Add = () => {
             {/* Subject-5 Pass Marks */}
             <div>
               <label className="block text-sm font-medium text-gray-700">
-                Subject-5 Pass Marks <span className="text-red-700">*</span>
+                Pass Marks <span className="text-red-700">*</span>
               </label>
               <input
                 type="number"
@@ -352,7 +347,6 @@ const Add = () => {
               />
             </div>
           </div>
-          <div className="flex space-x-3 mb-5" />
 
           {/* Subject-6 */}
           <div>
@@ -372,7 +366,7 @@ const Add = () => {
             {/* Subject-6 Max Marks */}
             <div>
               <label className="block text-sm font-medium text-gray-700">
-                Subject-6 Max Marks
+                Max Marks
               </label>
               <input
                 type="number"
@@ -386,7 +380,7 @@ const Add = () => {
             {/* Subject-6 Pass Marks */}
             <div>
               <label className="block text-sm font-medium text-gray-700">
-                Subject-6 Pass Marks
+                Pass Marks
               </label>
               <input
                 type="number"
@@ -397,7 +391,6 @@ const Add = () => {
               />
             </div>
           </div>
-          <div className="flex space-x-3 mb-5" />
 
           {/* Subject-7 */}
           <div>
@@ -417,7 +410,7 @@ const Add = () => {
             {/* Subject-7 Max Marks */}
             <div>
               <label className="block text-sm font-medium text-gray-700">
-                Subject-7 Max Marks
+                Max Marks
               </label>
               <input
                 type="number"
@@ -431,7 +424,7 @@ const Add = () => {
             {/* Subject-7 Pass Marks */}
             <div>
               <label className="block text-sm font-medium text-gray-700">
-                Subject-7 Pass Marks
+                Pass Marks
               </label>
               <input
                 type="number"
@@ -442,7 +435,6 @@ const Add = () => {
               />
             </div>
           </div>
-          <div className="flex space-x-3 mb-5" />
 
           {/* Subject-8 */}
           <div>
@@ -462,7 +454,7 @@ const Add = () => {
             {/* Subject-8 Max Marks */}
             <div>
               <label className="block text-sm font-medium text-gray-700">
-                Subject-8 Max Marks
+                Max Marks
               </label>
               <input
                 type="number"
@@ -476,7 +468,7 @@ const Add = () => {
             {/* Subject-8 Pass Marks */}
             <div>
               <label className="block text-sm font-medium text-gray-700">
-                Subject-8 Pass Marks
+                Pass Marks
               </label>
               <input
                 type="number"
@@ -487,7 +479,6 @@ const Add = () => {
               />
             </div>
           </div>
-          <div className="flex space-x-3 mb-5" />
 
           {/* Subject-9 */}
           <div>
@@ -507,7 +498,7 @@ const Add = () => {
             {/* Subject-9 Max Marks */}
             <div>
               <label className="block text-sm font-medium text-gray-700">
-                Subject-9 Max Marks
+                Max Marks
               </label>
               <input
                 type="number"
@@ -521,7 +512,7 @@ const Add = () => {
             {/* Subject-9 Pass Marks */}
             <div>
               <label className="block text-sm font-medium text-gray-700">
-                Subject-9 Pass Marks
+                Pass Marks
               </label>
               <input
                 type="number"
@@ -532,7 +523,6 @@ const Add = () => {
               />
             </div>
           </div>
-          <div className="flex space-x-3 mb-5" />
 
           {/* Subject-10 */}
           <div>
@@ -552,7 +542,7 @@ const Add = () => {
             {/* Subject-10 Max Marks */}
             <div>
               <label className="block text-sm font-medium text-gray-700">
-                Subject-10 Max Marks
+                Max Marks
               </label>
               <input
                 type="number"
@@ -566,7 +556,7 @@ const Add = () => {
             {/* Subject-10 Pass Marks */}
             <div>
               <label className="block text-sm font-medium text-gray-700">
-                Subject-10 Pass Marks
+                Pass Marks
               </label>
               <input
                 type="number"
