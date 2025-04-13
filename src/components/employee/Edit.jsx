@@ -54,7 +54,7 @@ const Edit = () => {
             name: employee.userId.name,
             email: employee.userId.email,
             role: employee.userId.role,
-            schoolId: employee.schoolId,
+            schoolId: employee.schoolId._id,
             employeeId: employee.employeeId,
             contactNumber: employee.contactNumber,
             address: employee.address,
