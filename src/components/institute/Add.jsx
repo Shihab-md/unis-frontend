@@ -71,7 +71,7 @@ const Add = () => {
             </label>
             <input
               type="text"
-              name="code"
+              name="iCode"
               onChange={handleChange}
               className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
               required

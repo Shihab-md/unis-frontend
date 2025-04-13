@@ -13,14 +13,11 @@ const Edit = () => {
     email: "",
     contactNumber: "",
     address: "",
-    routeName: "",
-    qualification: "",
-    dob: "",
-    gender: "",
-    maritalStatus: "",
-    doj: "",
-    designation: "",
-    salary: "",
+    district: "",
+    incharge1: "",
+    incharge1Number: "",
+    incharge2: "",
+    incharge2Number: "",
   });
 
   const navigate = useNavigate();
@@ -41,19 +38,15 @@ const Edit = () => {
           const institute = responnse.data.institute;
           setInstitute((prev) => ({
             ...prev,
-            name: institute.userId.name,
-            email: institute.userId.email,
-            instituteId: institute.instituteId,
+            name: institute.name,
+            email: institute.email,
             contactNumber: institute.contactNumber,
             address: institute.address,
-            routeName: institute.routeName,
-            qualification: institute.qualification,
-            dob: institute.dob,
-            gender: institute.gender,
-            maritalStatus: institute.maritalStatus,
-            doj: institute.doj,
-            designation: institute.designation,
-            salary: institute.salary
+            district: institute.district,
+            incharge1: institute.incharge1,
+            incharge1Number: institute.incharge1Number,
+            incharge2: institute.incharge2,
+            incharge2Number: institute.incharge2Number,
           }));
         }
       } catch (error) {
@@ -118,8 +111,8 @@ const Edit = () => {
                 </label>
                 <input
                   type="text"
-                  name="code"
-                  value={institute.code}
+                  name="iCode"
+                  value={institute.iCode}
                   onChange={handleChange}
                   disabled={true}
                   className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
