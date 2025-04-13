@@ -11,8 +11,8 @@ const Add = () => {
   const navigate = useNavigate()
 
   const handleChange = (e) => {
-    const { name, value, files } = e.target;
-
+    const { name, value } = e.target;
+    setFormData((prevData) => ({ ...prevData, [name]: value }));
   };
 
   const handleSubmit = async (e) => {
