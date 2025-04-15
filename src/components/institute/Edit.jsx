@@ -98,161 +98,162 @@ const Edit = () => {
             </Link>
           </div>
           <form onSubmit={handleSubmit}>
-            <div className="flex space-x-3 mb-5" />
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="py-2 px-4 border mt-5 mb-3 items-center justify-center rounded-lg shadow-lg">
+              <div className="grid mt-3 grid-cols-1 md:grid-cols-2 gap-4">
 
-              {/* Code */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700">
-                  Code <span className="text-red-700">*</span>
-                </label>
-                <input
-                  type="text"
-                  name="iCode"
-                  value={institute.iCode}
-                  onChange={handleChange}
-                  disabled={true}
-                  className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-                  required
-                />
-              </div>
+                {/* Code */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Code <span className="text-red-700">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    name="iCode"
+                    value={institute.iCode}
+                    onChange={handleChange}
+                    disabled={true}
+                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                    required
+                  />
+                </div>
 
-              {/* Name */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700">
-                  Name <span className="text-red-700">*</span>
-                </label>
-                <input
-                  type="text"
-                  name="name"
-                  value={institute.name}
-                  onChange={handleChange}
-                  className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-                  required
-                />
-              </div>
+                {/* Name */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Name <span className="text-red-700">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    name="name"
+                    value={institute.name}
+                    onChange={handleChange}
+                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                    required
+                  />
+                </div>
 
-              {/* Contact Number */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700">
-                  Contact Number
-                </label>
-                <input
-                  type="number"
-                  name="contactNumber"
-                  value={institute.contactNumber}
-                  onChange={handleChange}
-                  className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-                //    required
-                />
-              </div>
+                {/* Contact Number */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Contact Number
+                  </label>
+                  <input
+                    type="number"
+                    name="contactNumber"
+                    value={institute.contactNumber}
+                    onChange={handleChange}
+                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                  //    required
+                  />
+                </div>
 
-              {/* Email */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700">
-                  Email
-                </label>
-                <input
-                  type="email"
-                  name="email"
-                  value={institute.email}
-                  onChange={handleChange}
-                  className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-                // required
-                />
-              </div>
+                {/* Email */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Email
+                  </label>
+                  <input
+                    type="email"
+                    name="email"
+                    value={institute.email}
+                    onChange={handleChange}
+                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                  // required
+                  />
+                </div>
 
-              {/* Address */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700">
-                  Address <span className="text-red-700">*</span>
-                </label>
-                <input
-                  type="text"
-                  name="address"
-                  value={institute.address}
-                  onChange={handleChange}
-                  className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-                  required
-                />
-              </div>
+                {/* Address */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Address <span className="text-red-700">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    name="address"
+                    value={institute.address}
+                    onChange={handleChange}
+                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                    required
+                  />
+                </div>
 
-              {/* District */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700">
-                  District <span className="text-red-700">*</span>
-                </label>
-                <input
-                  type="text"
-                  name="district"
-                  value={institute.district}
-                  onChange={handleChange}
-                  className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-                  required
-                />
-              </div>
+                {/* District */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">
+                    District <span className="text-red-700">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    name="district"
+                    value={institute.district}
+                    onChange={handleChange}
+                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                    required
+                  />
+                </div>
 
-              {/* Incharge1 */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700">
-                  Incharge-1 Name <span className="text-red-700">*</span>
-                </label>
-                <input
-                  type="text"
-                  name="incharge1"
-                  value={institute.incharge1}
-                  onChange={handleChange}
-                  className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-                  required
-                />
-              </div>
+                {/* Incharge1 */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Incharge-1 Name <span className="text-red-700">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    name="incharge1"
+                    value={institute.incharge1}
+                    onChange={handleChange}
+                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                    required
+                  />
+                </div>
 
-              {/* Incharge1 Number */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700">
-                  Incharge-1 Number <span className="text-red-700">*</span>
-                </label>
-                <input
-                  type="number"
-                  name="incharge1Number"
-                  value={institute.incharge1Number}
-                  onChange={handleChange}
-                  className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-                  required
-                />
-              </div>
+                {/* Incharge1 Number */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Incharge-1 Number <span className="text-red-700">*</span>
+                  </label>
+                  <input
+                    type="number"
+                    name="incharge1Number"
+                    value={institute.incharge1Number}
+                    onChange={handleChange}
+                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                    required
+                  />
+                </div>
 
-              {/* Incharge2 */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700">
-                  Incharge-2 Name
-                </label>
-                <input
-                  type="text"
-                  name="incharge2"
-                  value={institute.incharge2}
-                  onChange={handleChange}
-                  className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-                />
-              </div>
+                {/* Incharge2 */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Incharge-2 Name
+                  </label>
+                  <input
+                    type="text"
+                    name="incharge2"
+                    value={institute.incharge2}
+                    onChange={handleChange}
+                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                  />
+                </div>
 
-              {/* Incharge2 Number */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700">
-                  Incharge-2 Number
-                </label>
-                <input
-                  type="number"
-                  name="incharge2Number"
-                  value={institute.incharge2Number}
-                  onChange={handleChange}
-                  className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-                />
+                {/* Incharge2 Number */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Incharge-2 Number
+                  </label>
+                  <input
+                    type="number"
+                    name="incharge2Number"
+                    value={institute.incharge2Number}
+                    onChange={handleChange}
+                    className="mt-1 mb-3 p-2 block w-full border border-gray-300 rounded-md"
+                  />
+                </div>
               </div>
             </div>
             <button
               type="submit"
-              className="w-full mt-6 bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded-lg shadow-lg"
+              className="w-full mt-3 bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded-lg shadow-lg"
             >
               Update Institute
             </button>

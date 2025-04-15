@@ -119,8 +119,8 @@ const Edit = () => {
             </Link>
           </div>
           <form onSubmit={handleSubmit}>
-            <div className="flex space-x-3 mb-5" />
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="py-2 px-4 border mt-5 mb-3 items-center justify-center rounded-lg shadow-lg">
+            <div className="grid mt-3 grid-cols-1 md:grid-cols-2 gap-4">
               {/* Code */}
               <div>
                 <label className="block text-sm font-medium text-gray-700">
@@ -512,15 +512,16 @@ const Edit = () => {
                   value={school.incharge7Number}
                   onChange={handleChange}
                   //  placeholder="Incharge5 Number"
-                  className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                  className="mt-1 mb-3 p-2 block w-full border border-gray-300 rounded-md"
                 //required
                 />
+              </div>
               </div>
             </div>
             <button
               type="submit"
               data-ripple-light="true"
-              className="w-full mt-6 bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded-lg shadow-lg"
+              className="w-full mt-3 bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded-lg shadow-lg"
             >
               Update Niswan
             </button>
