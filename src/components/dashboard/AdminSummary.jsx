@@ -113,7 +113,7 @@ const AdminSummary = () => {
             icon={<FaRupeeSign />}
             text="Accounts"
             number={summary.totalEmployees}
-            color="bg-green-500"
+            color="bg-orange-800"
           />
         </Link>
         <Link to="#" >
@@ -121,7 +121,7 @@ const AdminSummary = () => {
             icon={<FaMedal />}
             text="Certificates"
             number={summary.totalEmployees}
-            color="bg-yello-600"
+            color="bg-yellow-600"
           />
         </Link>
         <Link to="#" >
@@ -129,7 +129,7 @@ const AdminSummary = () => {
             icon={<FaFileContract />}
             text="Reports"
             number={summary.totalEmployees}
-            color="bg-purple-600"
+            color="bg-violet-600"
           />
         </Link>
       </div>
