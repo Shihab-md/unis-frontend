@@ -12,8 +12,8 @@ const Navbar = () => {
       <Link to="/admin-dashboard" >
         <FaHome className="text-2xl text-green-300 text-shadow-lg" />
       </Link>
-      <p className="text-xl font-bold text-shadow-lg">UNIS ACADEMY</p>
-      <FaPowerOff className="text-2xl text-red-900 text-shadow-lg" onClick={logout} />
+      <p className="text-xl mt-1 font-bold text-shadow-lg">UNIS ACADEMY</p>
+      <FaPowerOff className="text-2xl text-red-700 text-shadow-lg" onClick={logout} />
     </div>
   )
 }
