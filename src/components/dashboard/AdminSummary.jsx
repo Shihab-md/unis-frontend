@@ -11,7 +11,7 @@ import {
   FaHouseUser,
   FaClipboardCheck,
   FaClipboardList,
-  FaRupeeSign,
+  FaRupeeSign,FaMedal, FaFileContract,
 } from "react-icons/fa";
 import axios from 'axios'
 import { useNavigate } from "react-router-dom";
@@ -116,7 +116,22 @@ const AdminSummary = () => {
             color="bg-indigo-700"
           />
         </Link>
-
+        <Link to="#" >
+          <SummaryCard
+            icon={<FaMedal />}
+            text="Certificates"
+            number={summary.totalEmployees}
+            color="bg-yellow-400"
+          />
+        </Link>
+        <Link to="#" >
+          <SummaryCard
+            icon={<FaFileContract />}
+            text="Reports"
+            number={summary.totalEmployees}
+            color="bg-blue-400"
+          />
+        </Link>
       </div>
 
       {/*
