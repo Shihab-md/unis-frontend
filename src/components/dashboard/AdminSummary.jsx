@@ -129,7 +129,7 @@ const AdminSummary = () => {
             icon={<FaFileContract />}
             text="Reports"
             number={summary.totalEmployees}
-            color="bg-gray-300"
+            color="bg-gray-600"
           />
         </Link>
       </div>
