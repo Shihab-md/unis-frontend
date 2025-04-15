@@ -4,7 +4,7 @@ import axios from "axios";
 import { useNavigate, useParams, Link } from "react-router-dom";
 import moment from "moment";
 import {
-  FaWindowClose
+  FaRegTimesCircle
 } from "react-icons/fa";
 
 const Edit = () => {
@@ -107,13 +107,11 @@ const Edit = () => {
     <>
       {supervisor ? (
         <div className="max-w-4xl mx-auto mt-2 bg-white p-5 rounded-md shadow-md">
-          <div className="grid items-center justify-end px-1 py-1">
+          <div className="flex py-2 px-4 items-center justify-center bg-teal-700 text-white rounded-lg shadow-lg">
+            <h2 className="text-xl font-semibold items-center justify-center">Update Supervisor Details</h2>
             <Link to="/admin-dashboard/supervisors" >
-              <FaWindowClose className="text-xl bg-red-700 text-white rounded shadow-md" />
+              <FaRegTimesCircle className="text-2xl ml-7 text-red-700 bg-gray-200 rounded-xl shadow-md items-center justify-end" />
             </Link>
-          </div>
-          <div className="grid grid-cols-1 mt-2 bg-teal-700 text-white font-bold py-2 px-4 rounded">
-            <div><h2 className="grid text-xl font-semibold items-center justify-center">Update Supervisor Details</h2></div>
           </div>
           <form onSubmit={handleSubmit}>
             <div className="flex space-x-3 mb-5" />
