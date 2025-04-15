@@ -311,18 +311,18 @@ const Edit = () => {
                     onChange={handleChange}
                     value={supervisor.salary}
                     //    placeholder="Salary"
-                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                    className="mt-1 p-2 mb-3 block w-full border border-gray-300 rounded-md"
                     required
                   />
                 </div>
               </div>
-              <button
-                type="submit"
-                className="w-full mt-6 mb-3 bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded-lg shadow-lg"
-              >
-                Update Supervisor
-              </button>
             </div>
+            <button
+              type="submit"
+              className="w-full mt-6 bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded-lg shadow-lg"
+            >
+              Update Supervisor
+            </button>
           </form>
         </div>
       ) : (
