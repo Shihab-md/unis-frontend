@@ -2,7 +2,7 @@ import React from 'react'
 import { useAuth } from '../../context/AuthContext'
 import { Link } from 'react-router-dom';
 import {
-  FaHome, FaSignOutAlt
+  FaHome, FaSignOutAlt, FaPowerOff
 } from "react-icons/fa";
 
 const Navbar = () => {
@@ -13,7 +13,7 @@ const Navbar = () => {
         <FaHome className="text-2xl text-green-300 text-shadow-lg" />
       </Link>
       <p className="text-xl font-bold text-shadow-lg">UNIS ACADEMY</p>
-      <FaSignOutAlt className="text-xl text-red-800 text-shadow-lg" onClick={logout} />
+      <FaPowerOff className="text-2xl text-red-900 text-shadow-lg" onClick={logout} />
     </div>
   )
 }
