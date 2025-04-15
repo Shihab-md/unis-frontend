@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
 import {
-  FaWindowClose
+  FaRegTimesCircle
 } from "react-icons/fa";
 
 const Add = () => {
@@ -49,13 +49,11 @@ const Add = () => {
 
   return (
     <div className="max-w-4xl mx-auto mt-2 bg-white p-5 rounded-md shadow-md">
-      <div className="grid items-center justify-end px-1 py-1">
-        <Link to="/admin-dashboard/schools" >
-          <FaWindowClose className="text-xl bg-red-700 text-white rounded shadow-md" />
+      <div className="flex py-2 px-4 items-center justify-center bg-teal-700 text-white rounded-lg shadow-lg">
+        <h2 className="text-xl font-semibold items-center justify-center">Enter Niswan Details</h2>
+        <Link to="/admin-dashboard/supervisors" >
+          <FaRegTimesCircle className="text-2xl ml-7 text-red-700 bg-gray-200 rounded-xl shadow-md items-center justify-end" />
         </Link>
-      </div>
-      <div className="grid grid-cols-1 mt-2 bg-teal-700 text-white font-bold py-2 px-4 rounded">
-        <div><h2 className="grid text-xl font-semibold items-center justify-center">Enter Niswan Details</h2></div>
       </div>
 
       <form onSubmit={handleSubmit}>
