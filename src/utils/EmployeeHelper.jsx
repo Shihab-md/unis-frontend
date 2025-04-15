@@ -15,11 +15,13 @@ export const columns = [
   {
     name: "Name",
     selector: (row) => row.name,
+    sortable: true,
     width: "250px",
   },
   {
     name: "Role",
     selector: (row) => row.role,
+    sortable: true,
     width: "160px",
   },
   {
@@ -30,6 +32,7 @@ export const columns = [
   {
     name: "Niswan",
     selector: (row) => row.schoolName,
+    sortable: true,
     width: "320px",
   },
   {

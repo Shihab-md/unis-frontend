@@ -20,6 +20,7 @@ export const columns = [
   {
     name: "Name",
     selector: (row) => row.name,
+    sortable: true,
     width: "320px",
   },
   {
@@ -30,11 +31,13 @@ export const columns = [
   {
     name: "Route",
     selector: (row) => row.routeName,
+    sortable: true,
     width: "250px",
   },
   {
     name: "No. of Niswans",
     selector: (row) => "ALL",
+    sortable: true,
     width: "190px",
   },
   {

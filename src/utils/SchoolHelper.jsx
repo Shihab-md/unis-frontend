@@ -22,21 +22,25 @@ export const columns = [
   {
     name: "Name",
     selector: (row) => row.name,
+    sortable: true,
     width: "370px",
   },
   {
     name: "Area, District / State",
     selector: (row) => row.address + ", " + row.district,
+    sortable: true,
     width: "190px",
   },
   {
     name: "Supervisor Id",
     selector: (row) => row.supervisorId,
+    sortable: true,
     width: "160px",
   },
   {
     name: "Status",
     selector: (row) => row.active,
+    sortable: true,
     width: "110px",
   },
   {

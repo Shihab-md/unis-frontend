@@ -15,11 +15,13 @@ export const columns = [
   { 
     name: "Code",
     selector: (row) => row.iCode,
+    sortable: true,
     width: "160px",
   }, 
   {
     name: "Name",
     selector: (row) => row.name,
+    sortable: true,
     width: "270px",
   },
   {
@@ -30,6 +32,7 @@ export const columns = [
   {
     name: "District",
     selector: (row) => row.district,
+    sortable: true,
     width: "100px",
   },
   {
