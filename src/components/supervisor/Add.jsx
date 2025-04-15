@@ -74,7 +74,7 @@ const Add = () => {
         <div className="flex justify-between">
           <h2 className="text-xl ml-7 font-semibold items-center justify-center">Enter Supervisor Details</h2>
           <Link to="/admin-dashboard/supervisors" >
-            <FaWindowClose className="text-xl mt-1 bg-red-700 text-gray-200 rounded shadow-md" />
+            <FaWindowClose className="text-xl mt-1 bg-red-700 text-gray-500 rounded shadow-md" />
           </Link></div>
       </div>
 
