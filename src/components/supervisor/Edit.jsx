@@ -114,213 +114,215 @@ const Edit = () => {
             </Link>
           </div>
           <form onSubmit={handleSubmit}>
-            <div className="flex space-x-3 mb-5" />
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {/* Name */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700">
-                  Name <span className="text-red-700">*</span>
-                </label>
-                <input
-                  type="text"
-                  name="name"
-                  value={supervisor.name}
-                  onChange={handleChange}
-                  //      placeholder="Insert Name"
-                  className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-                  required
-                />
-              </div>
+            <div className="flex py-2 px-4 border mt-5 mb-3 items-center justify-center rounded-lg shadow-lg">
+              <div className="flex mt-3 space-x-3 mb-5" />
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {/* Name */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Name <span className="text-red-700">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    name="name"
+                    value={supervisor.name}
+                    onChange={handleChange}
+                    //      placeholder="Insert Name"
+                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                    required
+                  />
+                </div>
 
-              {/* Email */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700">
-                  Email <span className="text-red-700">*</span>
-                </label>
-                <input
-                  type="email"
-                  name="email"
-                  value={supervisor.email}
-                  onChange={handleChange}
-                  disabled={true}
-                  //      placeholder="Insert Email"
-                  className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-                  required
-                />
-              </div>
+                {/* Email */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Email <span className="text-red-700">*</span>
+                  </label>
+                  <input
+                    type="email"
+                    name="email"
+                    value={supervisor.email}
+                    onChange={handleChange}
+                    disabled={true}
+                    //      placeholder="Insert Email"
+                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                    required
+                  />
+                </div>
 
-              {/* Supervisor ID */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700">
-                  Supervisor ID <span className="text-red-700">*</span>
-                </label>
-                <input
-                  type="text"
-                  name="supervisorId"
-                  value={supervisor.supervisorId}
-                  onChange={handleChange}
-                  disabled={true}
-                  //      placeholder="Supervisor ID"
-                  className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-                  required
-                />
-              </div>
+                {/* Supervisor ID */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Supervisor ID <span className="text-red-700">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    name="supervisorId"
+                    value={supervisor.supervisorId}
+                    onChange={handleChange}
+                    disabled={true}
+                    //      placeholder="Supervisor ID"
+                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                    required
+                  />
+                </div>
 
-              {/* Contact Number */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700">
-                  Contact Number <span className="text-red-700">*</span>
-                </label>
-                <input
-                  type="number"
-                  name="contactNumber"
-                  value={supervisor.contactNumber}
-                  onChange={handleChange}
-                  //     placeholder="Contact Number"
-                  className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-                  required
-                />
-              </div>
+                {/* Contact Number */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Contact Number <span className="text-red-700">*</span>
+                  </label>
+                  <input
+                    type="number"
+                    name="contactNumber"
+                    value={supervisor.contactNumber}
+                    onChange={handleChange}
+                    //     placeholder="Contact Number"
+                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                    required
+                  />
+                </div>
 
-              {/* Address */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700">
-                  Address <span className="text-red-700">*</span>
-                </label>
-                <input
-                  type="text"
-                  name="address"
-                  value={supervisor.address}
-                  onChange={handleChange}
-                  //    placeholder="Address"
-                  className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-                  required
-                />
-              </div>
+                {/* Address */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Address <span className="text-red-700">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    name="address"
+                    value={supervisor.address}
+                    onChange={handleChange}
+                    //    placeholder="Address"
+                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                    required
+                  />
+                </div>
 
-              {/* Route Name */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700">
-                  Route Name <span className="text-red-700">*</span>
-                </label>
-                <input
-                  type="text"
-                  name="routeName"
-                  value={supervisor.routeName}
-                  onChange={handleChange}
-                  //    placeholder="Route Name"
-                  className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-                  required
-                />
-              </div>
+                {/* Route Name */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Route Name <span className="text-red-700">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    name="routeName"
+                    value={supervisor.routeName}
+                    onChange={handleChange}
+                    //    placeholder="Route Name"
+                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                    required
+                  />
+                </div>
 
-              {/* Qualification */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700">
-                  Qualification <span className="text-red-700">*</span>
-                </label>
-                <input
-                  type="text"
-                  name="qualification"
-                  value={supervisor.qualification}
-                  onChange={handleChange}
-                  //    placeholder="Qualification"
-                  className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-                  required
-                />
-              </div>
+                {/* Qualification */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Qualification <span className="text-red-700">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    name="qualification"
+                    value={supervisor.qualification}
+                    onChange={handleChange}
+                    //    placeholder="Qualification"
+                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                    required
+                  />
+                </div>
 
-              {/* Date of Birth */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700">
-                  Date of Birth <span className="text-red-700">*</span>
-                </label>
-                <input
-                  type="date"
-                  name="dob"
-                  value={moment(new Date(supervisor.dob)).format("YYYY-MM-DD")}
-                  onChange={handleChange}
-                  //    placeholder="DOB"
-                  className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-                  required
-                />
-              </div>
+                {/* Date of Birth */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Date of Birth <span className="text-red-700">*</span>
+                  </label>
+                  <input
+                    type="date"
+                    name="dob"
+                    value={moment(new Date(supervisor.dob)).format("YYYY-MM-DD")}
+                    onChange={handleChange}
+                    //    placeholder="DOB"
+                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                    required
+                  />
+                </div>
 
-              {/* Gender */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700">
-                  Gender <span className="text-red-700">*</span>
-                </label>
-                <select
-                  name="gender"
-                  value={supervisor.gender}
-                  onChange={handleChange}
-                  className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-                  required
-                >
-                  <option value="">Select Gender</option>
-                  <option value="Male">Male</option>
-                  <option value="Female">Female</option>
-                </select>
-              </div>
+                {/* Gender */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Gender <span className="text-red-700">*</span>
+                  </label>
+                  <select
+                    name="gender"
+                    value={supervisor.gender}
+                    onChange={handleChange}
+                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                    required
+                  >
+                    <option value="">Select Gender</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                  </select>
+                </div>
 
-              {/* Marital Status */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700">
-                  Marital Status <span className="text-red-700">*</span>
-                </label>
-                <select
-                  name="maritalStatus"
-                  value={supervisor.maritalStatus}
-                  onChange={handleChange}
-                  placeholder="Marital Status"
-                  className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-                  required
-                >
-                  <option value="">Select Status</option>
-                  <option value="Single">Single</option>
-                  <option value="Married">Married</option>
-                </select>
-              </div>
+                {/* Marital Status */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Marital Status <span className="text-red-700">*</span>
+                  </label>
+                  <select
+                    name="maritalStatus"
+                    value={supervisor.maritalStatus}
+                    onChange={handleChange}
+                    placeholder="Marital Status"
+                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                    required
+                  >
+                    <option value="">Select Status</option>
+                    <option value="Single">Single</option>
+                    <option value="Married">Married</option>
+                  </select>
+                </div>
 
-              {/* Date of Joining */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700">
-                  Date of Joining <span className="text-red-700">*</span>
-                </label>
-                <input
-                  type="date"
-                  name="doj"
-                  value={moment(new Date(supervisor.doj)).format("YYYY-MM-DD")}
-                  onChange={handleChange}
-                  //     placeholder="DOJ"
-                  className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-                  required
-                />
-              </div>
+                {/* Date of Joining */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Date of Joining <span className="text-red-700">*</span>
+                  </label>
+                  <input
+                    type="date"
+                    name="doj"
+                    value={moment(new Date(supervisor.doj)).format("YYYY-MM-DD")}
+                    onChange={handleChange}
+                    //     placeholder="DOJ"
+                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                    required
+                  />
+                </div>
 
-              {/* Salary */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700">
-                  Salary <span className="text-red-700">*</span>
-                </label>
-                <input
-                  type="number"
-                  name="salary"
-                  onChange={handleChange}
-                  value={supervisor.salary}
-                  //    placeholder="Salary"
-                  className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-                  required
-                />
+                {/* Salary */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Salary <span className="text-red-700">*</span>
+                  </label>
+                  <input
+                    type="number"
+                    name="salary"
+                    onChange={handleChange}
+                    value={supervisor.salary}
+                    //    placeholder="Salary"
+                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                    required
+                  />
+                </div>
               </div>
+              <button
+                type="submit"
+                className="w-full mt-6 mb-3 bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded-lg shadow-lg"
+              >
+                Update Supervisor
+              </button>
             </div>
-            <button
-              type="submit"
-              className="w-full mt-6 bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded-lg shadow-lg"
-            >
-              Update Supervisor
-            </button>
           </form>
         </div>
       ) : (
