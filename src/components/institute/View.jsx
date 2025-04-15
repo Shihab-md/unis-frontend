@@ -44,52 +44,54 @@ const View = () => {
             </Link>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-1 gap-6">
-            <div className="flex space-x-3 mb-5" />
-            <div>
-              <div className="flex space-x-3 mb-5">
-                <p className="font-medium">Code:</p>
-                <p className="font-normal">{institute.iCode}</p>
-              </div>
-              <div className="flex space-x-3 mb-5">
-                <p className="font-medium">Name:</p>
-                <p className="font-normal">{institute.name}</p>
-              </div>
-              <div className="flex space-x-3 mb-5">
-                <p className="font-medium">Email:</p>
-                <p className="font-normal">{institute.email}</p>
-              </div>
-              <div className="flex space-x-3 mb-5">
-                <p className="font-medium">Contact Number:</p>
-                <p className="font-normal">{institute.contactNumber}</p>
-              </div>
-              <div className="flex space-x-3 mb-5">
-                <p className="font-medium">Address:</p>
-                <p className="font-normal">{institute.address}</p>
-              </div>
-              <div className="flex space-x-3 mb-5">
-                <p className="font-medium">District:</p>
-                <p className="font-normal">{institute.district}</p>
-              </div>
-              <div className="flex space-x-3 mb-5">
-                <p className="font-medium">Incharge-1 Name :</p>
-                <p className="font-normal">{institute.incharge1}</p>
-              </div>
-              <div className="flex space-x-3 mb-5">
-                <p className="font-medium">Incharge-1 Number :</p>
-                <p className="font-normal">{institute.incharge1Number}</p>
-              </div>
-              <div className="flex space-x-3 mb-5">
-                <p className="font-medium">Incharge-2 Name :</p>
-                <p className="font-normal">{institute.incharge2}</p>
-              </div>
-              <div className="flex space-x-3 mb-5">
-                <p className="font-medium">Incharge-2 Number :</p>
-                <p className="font-normal">{institute.incharge2Number}</p>
+            <div className="py-2 px-4 border mt-5 mb-1 items-center justify-center rounded-lg shadow-lg">
+              <div className="flex space-x-3 mb-5" />
+              <div>
+                <div className="flex space-x-3 mb-5">
+                  <p className="font-medium">Code:</p>
+                  <p className="font-normal">{institute.iCode}</p>
+                </div>
+                <div className="flex space-x-3 mb-5">
+                  <p className="font-medium">Name:</p>
+                  <p className="font-normal">{institute.name}</p>
+                </div>
+                <div className="flex space-x-3 mb-5">
+                  <p className="font-medium">Email:</p>
+                  <p className="font-normal">{institute.email}</p>
+                </div>
+                <div className="flex space-x-3 mb-5">
+                  <p className="font-medium">Contact Number:</p>
+                  <p className="font-normal">{institute.contactNumber}</p>
+                </div>
+                <div className="flex space-x-3 mb-5">
+                  <p className="font-medium">Address:</p>
+                  <p className="font-normal">{institute.address}</p>
+                </div>
+                <div className="flex space-x-3 mb-5">
+                  <p className="font-medium">District:</p>
+                  <p className="font-normal">{institute.district}</p>
+                </div>
+                <div className="flex space-x-3 mb-5">
+                  <p className="font-medium">Incharge-1 Name :</p>
+                  <p className="font-normal">{institute.incharge1}</p>
+                </div>
+                <div className="flex space-x-3 mb-5">
+                  <p className="font-medium">Incharge-1 Number :</p>
+                  <p className="font-normal">{institute.incharge1Number}</p>
+                </div>
+                <div className="flex space-x-3 mb-5">
+                  <p className="font-medium">Incharge-2 Name :</p>
+                  <p className="font-normal">{institute.incharge2}</p>
+                </div>
+                <div className="flex space-x-3 mb-5">
+                  <p className="font-medium">Incharge-2 Number :</p>
+                  <p className="font-normal">{institute.incharge2Number}</p>
+                </div>
               </div>
             </div>
           </div>
           <button
-            className="w-full mt-6 bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded-lg shadow-lg"
+            className="w-full mt-1 mb-3 bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded-lg shadow-lg"
             data-ripple-light="true"
             onClick={() => navigate(`/admin-dashboard/institutes`)}
           >  Back

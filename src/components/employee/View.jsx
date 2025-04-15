@@ -45,75 +45,77 @@ const View = () => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-1 gap-6">
-            <div className="flex space-x-3 mb-5" />
-            <div>
-              <img
-                src={`https://unis-server.vercel.app/${employee.userId.profileImage}`}
-                className="rounded-full border w-72"
-              />
-            </div>
-            <div>
+            <div className="py-2 px-4 border mt-5 mb-1 items-center justify-center rounded-lg shadow-lg">
               <div className="flex space-x-3 mb-5" />
-              <div className="flex space-x-3 mb-5">
-                <p className="font-medium">Name:</p>
-                <p className="font-normal">{employee.userId.name}</p>
+              <div>
+                <img
+                  src={`https://unis-server.vercel.app/${employee.userId.profileImage}`}
+                  className="rounded-full border w-72"
+                />
               </div>
-              <div className="flex space-x-3 mb-5">
-                <p className="font-medium">Email:</p>
-                <p className="font-normal">{employee.userId.email}</p>
-              </div>
-              <div className="flex space-x-3 mb-5">
-                <p className="font-medium">Employee ID:</p>
-                <p className="font-normal">{employee.employeeId}</p>
-              </div>
-              <div className="flex space-x-3 mb-5">
-                <p className="font-medium">Niswan Name:</p>
-                <p className="font-normal">{employee.schoolId.nameEnglish}</p>
-              </div>
-              <div className="flex space-x-3 mb-5">
-                <p className="font-medium">Contact Number:</p>
-                <p className="font-normal">{employee.contactNumber}</p>
-              </div>
-              <div className="flex space-x-3 mb-5">
-                <p className="font-medium">Address:</p>
-                <p className="font-normal">{employee.address}</p>
-              </div>
-              <div className="flex space-x-3 mb-5">
-                <p className="font-medium">Designation:</p>
-                <p className="font-normal">{employee.designation}</p>
-              </div>
-              <div className="flex space-x-3 mb-5">
-                <p className="font-medium">Qualification:</p>
-                <p className="font-normal">{employee.qualification}</p>
-              </div>
-              <div className="flex space-x-3 mb-5">
-                <p className="font-medium">Date of Birth:</p>
-                <p className="font-normal">
-                  {new Date(employee.dob).toLocaleDateString()}
-                </p>
-              </div>
-              <div className="flex space-x-3 mb-5">
-                <p className="font-medium">Gender:</p>
-                <p className="font-normal">{employee.gender}</p>
-              </div>
-              <div className="flex space-x-3 mb-5">
-                <p className="font-medium">Marital Status:</p>
-                <p className="font-normal">{employee.maritalStatus}</p>
-              </div>
-              <div className="flex space-x-3 mb-5">
-                <p className="font-medium">Date of Joining:</p>
-                <p className="font-normal">
-                  {new Date(employee.doj).toLocaleDateString()}
-                </p>
-              </div>
-              <div className="flex space-x-3 mb-5">
-                <p className="font-medium">Salary:</p>
-                <p className="font-normal">{employee.salary}</p>
+              <div>
+                <div className="flex space-x-3 mb-5" />
+                <div className="flex space-x-3 mb-5">
+                  <p className="font-medium">Name:</p>
+                  <p className="font-normal">{employee.userId.name}</p>
+                </div>
+                <div className="flex space-x-3 mb-5">
+                  <p className="font-medium">Email:</p>
+                  <p className="font-normal">{employee.userId.email}</p>
+                </div>
+                <div className="flex space-x-3 mb-5">
+                  <p className="font-medium">Employee ID:</p>
+                  <p className="font-normal">{employee.employeeId}</p>
+                </div>
+                <div className="flex space-x-3 mb-5">
+                  <p className="font-medium">Niswan Name:</p>
+                  <p className="font-normal">{employee.schoolId.nameEnglish}</p>
+                </div>
+                <div className="flex space-x-3 mb-5">
+                  <p className="font-medium">Contact Number:</p>
+                  <p className="font-normal">{employee.contactNumber}</p>
+                </div>
+                <div className="flex space-x-3 mb-5">
+                  <p className="font-medium">Address:</p>
+                  <p className="font-normal">{employee.address}</p>
+                </div>
+                <div className="flex space-x-3 mb-5">
+                  <p className="font-medium">Designation:</p>
+                  <p className="font-normal">{employee.designation}</p>
+                </div>
+                <div className="flex space-x-3 mb-5">
+                  <p className="font-medium">Qualification:</p>
+                  <p className="font-normal">{employee.qualification}</p>
+                </div>
+                <div className="flex space-x-3 mb-5">
+                  <p className="font-medium">Date of Birth:</p>
+                  <p className="font-normal">
+                    {new Date(employee.dob).toLocaleDateString()}
+                  </p>
+                </div>
+                <div className="flex space-x-3 mb-5">
+                  <p className="font-medium">Gender:</p>
+                  <p className="font-normal">{employee.gender}</p>
+                </div>
+                <div className="flex space-x-3 mb-5">
+                  <p className="font-medium">Marital Status:</p>
+                  <p className="font-normal">{employee.maritalStatus}</p>
+                </div>
+                <div className="flex space-x-3 mb-5">
+                  <p className="font-medium">Date of Joining:</p>
+                  <p className="font-normal">
+                    {new Date(employee.doj).toLocaleDateString()}
+                  </p>
+                </div>
+                <div className="flex space-x-3 mb-5">
+                  <p className="font-medium">Salary:</p>
+                  <p className="font-normal">{employee.salary}</p>
+                </div>
               </div>
             </div>
           </div>
           <button
-            className="w-full mt-6 bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded-lg shadow-lg"
+            className="w-full mt-1 mb-3 bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded-lg shadow-lg"
             data-ripple-light="true"
             onClick={() => navigate(`/admin-dashboard/employees`)}
           >  Back

@@ -45,119 +45,120 @@ const View = () => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-1 gap-6">
-            <div>
-              <div className="flex space-x-3 mb-5" />
-              <div className="flex space-x-3 mb-5">
-                <p className="font-medium">Code :</p>
-                <p className="font-medium">{school.code}</p>
+            <div className="py-2 px-4 border mt-5 mb-1 items-center justify-center rounded-lg shadow-lg">
+              <div>
+                <div className="flex space-x-3 mb-5" />
+                <div className="flex space-x-3 mb-5">
+                  <p className="font-medium">Code :</p>
+                  <p className="font-medium">{school.code}</p>
+                </div>
+                <div className="flex space-x-3 mb-5" />
+                <div className="flex space-x-3 mb-5">
+                  <p className="font-medium">Name in English :</p>
+                  <p className="font-normal">{school.nameEnglish}</p>
+                </div>
+                <div className="flex space-x-3 mb-5">
+                  <p className="font-medium">Name in Arabic :</p>
+                  <p className="font-normal">{school.nameArabic}</p>
+                </div>
+                <div className="flex space-x-3 mb-5">
+                  <p className="font-medium">Name in Native :</p>
+                  <p className="font-normal">{school.nameNative}</p>
+                </div>
+                <div className="flex space-x-3 mb-5" />
+                <div className="flex space-x-3 mb-5">
+                  <p className="font-medium">Area :</p>
+                  <p className="font-normal">{school.address}</p>
+                </div>
+                <div className="flex space-x-3 mb-5">
+                  <p className="font-medium">District / State :</p>
+                  <p className="font-normal">{school.district}</p>
+                </div>
+                <div className="flex space-x-3 mb-5">
+                  <p className="font-medium">Contact Number :</p>
+                  <p className="font-normal">{school.contactNumber}</p>
+                </div>
+                <div className="flex space-x-3 mb-5">
+                  <p className="font-medium">Email :</p>
+                  <p className="font-normal">{school.email}</p>
+                </div>
+                <div className="flex space-x-3 mb-5">
+                  <p className="font-medium">Status :</p>
+                  <p className="font-normal">{school.active}</p>
+                </div>
+                <div className="flex space-x-3 mb-5">
+                  <p className="font-medium">Supervisor Id :</p>
+                  <p className="font-normal">{school.supervisorId}</p>
+                </div>
+                <div className="flex space-x-3 mb-5" />
+                <div className="flex space-x-3 mb-5">
+                  <p className="font-medium">Incharge-1 Name :</p>
+                  <p className="font-normal">{school.incharge1}</p>
+                </div>
+                <div className="flex space-x-3 mb-5">
+                  <p className="font-medium">Incharge-1 Number :</p>
+                  <p className="font-normal">{school.incharge1Number}</p>
+                </div>
+                <div className="flex space-x-3 mb-5" />
+                <div className="flex space-x-3 mb-5">
+                  <p className="font-medium">Incharge-2 Name :</p>
+                  <p className="font-normal">{school.incharge2}</p>
+                </div>
+                <div className="flex space-x-3 mb-5">
+                  <p className="font-medium">Incharge-2 Number :</p>
+                  <p className="font-normal">{school.incharge2Number}</p>
+                </div>
+                <div className="flex space-x-3 mb-5" />
+                <div className="flex space-x-3 mb-5">
+                  <p className="font-medium">Incharge-3 Name :</p>
+                  <p className="font-normal">{school.incharge3}</p>
+                </div>
+                <div className="flex space-x-3 mb-5">
+                  <p className="font-medium">Incharge-3 Number :</p>
+                  <p className="font-normal">{school.incharge3Number}</p>
+                </div>
+                <div className="flex space-x-3 mb-5" />
+                <div className="flex space-x-3 mb-5">
+                  <p className="font-medium">Incharge-4 Name :</p>
+                  <p className="font-normal">{school.incharge4}</p>
+                </div>
+                <div className="flex space-x-3 mb-5">
+                  <p className="font-medium">Incharge-4 Number :</p>
+                  <p className="font-normal">{school.incharge4Number}</p>
+                </div>
+                <div className="flex space-x-3 mb-5" />
+                <div className="flex space-x-3 mb-5">
+                  <p className="font-medium">Incharge-5 Name :</p>
+                  <p className="font-normal">{school.incharge5}</p>
+                </div>
+                <div className="flex space-x-3 mb-5">
+                  <p className="font-medium">Incharge-5 Number :</p>
+                  <p className="font-normal">{school.incharge5Number}</p>
+                </div>
+                <div className="flex space-x-3 mb-5" />
+                <div className="flex space-x-3 mb-5">
+                  <p className="font-medium">Incharge-6 Name :</p>
+                  <p className="font-normal">{school.incharge6}</p>
+                </div>
+                <div className="flex space-x-3 mb-5">
+                  <p className="font-medium">Incharge-6 Number :</p>
+                  <p className="font-normal">{school.incharge6Number}</p>
+                </div>
+                <div className="flex space-x-3 mb-5" />
+                <div className="flex space-x-3 mb-5">
+                  <p className="font-medium">Incharge-7 Name :</p>
+                  <p className="font-normal">{school.incharge7}</p>
+                </div>
+                <div className="flex space-x-3 mb-5">
+                  <p className="font-medium">Incharge-7 Number :</p>
+                  <p className="font-normal">{school.incharge7Number}</p>
+                </div>
+                <div className="flex space-x-3 mb-5" />
               </div>
-              <div className="flex space-x-3 mb-5" />
-              <div className="flex space-x-3 mb-5">
-                <p className="font-medium">Name in English :</p>
-                <p className="font-normal">{school.nameEnglish}</p>
-              </div>
-              <div className="flex space-x-3 mb-5">
-                <p className="font-medium">Name in Arabic :</p>
-                <p className="font-normal">{school.nameArabic}</p>
-              </div>
-              <div className="flex space-x-3 mb-5">
-                <p className="font-medium">Name in Native :</p>
-                <p className="font-normal">{school.nameNative}</p>
-              </div>
-              <div className="flex space-x-3 mb-5" />
-              <div className="flex space-x-3 mb-5">
-                <p className="font-medium">Area :</p>
-                <p className="font-normal">{school.address}</p>
-              </div>
-              <div className="flex space-x-3 mb-5">
-                <p className="font-medium">District / State :</p>
-                <p className="font-normal">{school.district}</p>
-              </div>
-              <div className="flex space-x-3 mb-5">
-                <p className="font-medium">Contact Number :</p>
-                <p className="font-normal">{school.contactNumber}</p>
-              </div>
-              <div className="flex space-x-3 mb-5">
-                <p className="font-medium">Email :</p>
-                <p className="font-normal">{school.email}</p>
-              </div>
-              <div className="flex space-x-3 mb-5">
-                <p className="font-medium">Status :</p>
-                <p className="font-normal">{school.active}</p>
-              </div>
-              <div className="flex space-x-3 mb-5">
-                <p className="font-medium">Supervisor Id :</p>
-                <p className="font-normal">{school.supervisorId}</p>
-              </div>
-              <div className="flex space-x-3 mb-5" />
-              <div className="flex space-x-3 mb-5">
-                <p className="font-medium">Incharge-1 Name :</p>
-                <p className="font-normal">{school.incharge1}</p>
-              </div>
-              <div className="flex space-x-3 mb-5">
-                <p className="font-medium">Incharge-1 Number :</p>
-                <p className="font-normal">{school.incharge1Number}</p>
-              </div>
-              <div className="flex space-x-3 mb-5" />
-              <div className="flex space-x-3 mb-5">
-                <p className="font-medium">Incharge-2 Name :</p>
-                <p className="font-normal">{school.incharge2}</p>
-              </div>
-              <div className="flex space-x-3 mb-5">
-                <p className="font-medium">Incharge-2 Number :</p>
-                <p className="font-normal">{school.incharge2Number}</p>
-              </div>
-              <div className="flex space-x-3 mb-5" />
-              <div className="flex space-x-3 mb-5">
-                <p className="font-medium">Incharge-3 Name :</p>
-                <p className="font-normal">{school.incharge3}</p>
-              </div>
-              <div className="flex space-x-3 mb-5">
-                <p className="font-medium">Incharge-3 Number :</p>
-                <p className="font-normal">{school.incharge3Number}</p>
-              </div>
-              <div className="flex space-x-3 mb-5" />
-              <div className="flex space-x-3 mb-5">
-                <p className="font-medium">Incharge-4 Name :</p>
-                <p className="font-normal">{school.incharge4}</p>
-              </div>
-              <div className="flex space-x-3 mb-5">
-                <p className="font-medium">Incharge-4 Number :</p>
-                <p className="font-normal">{school.incharge4Number}</p>
-              </div>
-              <div className="flex space-x-3 mb-5" />
-              <div className="flex space-x-3 mb-5">
-                <p className="font-medium">Incharge-5 Name :</p>
-                <p className="font-normal">{school.incharge5}</p>
-              </div>
-              <div className="flex space-x-3 mb-5">
-                <p className="font-medium">Incharge-5 Number :</p>
-                <p className="font-normal">{school.incharge5Number}</p>
-              </div>
-              <div className="flex space-x-3 mb-5" />
-              <div className="flex space-x-3 mb-5">
-                <p className="font-medium">Incharge-6 Name :</p>
-                <p className="font-normal">{school.incharge6}</p>
-              </div>
-              <div className="flex space-x-3 mb-5">
-                <p className="font-medium">Incharge-6 Number :</p>
-                <p className="font-normal">{school.incharge6Number}</p>
-              </div>
-              <div className="flex space-x-3 mb-5" />
-              <div className="flex space-x-3 mb-5">
-                <p className="font-medium">Incharge-7 Name :</p>
-                <p className="font-normal">{school.incharge7}</p>
-              </div>
-              <div className="flex space-x-3 mb-5">
-                <p className="font-medium">Incharge-7 Number :</p>
-                <p className="font-normal">{school.incharge7Number}</p>
-              </div>
-              <div className="flex space-x-3 mb-5" />
             </div>
           </div>
-
           <button
-            className="w-full mt-6 bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded-lg shadow-lg"
+            className="w-full mt-1 mb-3 bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded-lg shadow-lg"
             data-ripple-light="true"
             onClick={() => navigate(`/admin-dashboard/schools`)}
           >  Back
