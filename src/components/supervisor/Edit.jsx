@@ -116,8 +116,7 @@ const Edit = () => {
           
           <form onSubmit={handleSubmit}>
             <div className="py-2 px-4 border mt-5 mb-3 items-center justify-center rounded-lg shadow-lg">
-              <div className="flex mt-3 space-x-3 mb-5" />
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid mt-3 grid-cols-1 md:grid-cols-2 gap-4">
                 {/* Name */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700">
@@ -320,7 +319,7 @@ const Edit = () => {
             </div>
             <button
               type="submit"
-              className="w-full mt-6 bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded-lg shadow-lg"
+              className="w-full mt-3 bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded-lg shadow-lg"
             >
               Update Supervisor
             </button>

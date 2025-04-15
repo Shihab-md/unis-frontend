@@ -45,7 +45,7 @@ const View = () => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-1 gap-6">
-            <div className="flex py-2 px-4 border mt-5 mb-3 items-center justify-center rounded-lg shadow-lg">
+            <div className="py-2 px-4 border mt-5 mb-3 items-center justify-center rounded-lg shadow-lg">
               <div className="flex mt-3 space-x-3 mb-5" />
               <div>
                 <img
@@ -110,7 +110,7 @@ const View = () => {
               </div>
             </div>
             <button
-              className="w-full mt-6 mb-3 bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded-lg shadow-lg"
+              className="w-full mt-3 mb-3 bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded-lg shadow-lg"
               data-ripple-light="true"
               onClick={() => navigate(`/admin-dashboard/supervisors`)}
             >  Back
