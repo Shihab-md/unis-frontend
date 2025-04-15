@@ -105,7 +105,7 @@ const AdminSummary = () => {
             icon={<FaClipboardCheck />}
             text="Exams"
             number={summary.totalEmployees}
-            color="bg-green-700"
+            color="bg-zinc-700"
           />
         </Link>
         <Link to="#" >
