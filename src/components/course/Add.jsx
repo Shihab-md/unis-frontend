@@ -81,7 +81,6 @@ const Add = () => {
 
       <form onSubmit={handleSubmit}>
         <div className="py-2 px-4 border mt-5 mb-3 items-center justify-center rounded-lg shadow-lg">
-          <div className="flex mt-3 space-x-3 mb-5" />
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 
             {/* Code */}
