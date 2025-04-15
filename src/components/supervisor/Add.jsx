@@ -70,13 +70,12 @@ const Add = () => {
           <FaRegTimesCircle className="text-xl bg-red-700 text-white rounded shadow-md" />
         </Link>
       </div>
-      <div className="grid grid-cols-1 mt-2 bg-teal-700 text-white font-bold py-2 px-4 rounded">
-        <div className="flex justify-center">
+      {/*<div className="grid grid-cols-1 mt-2 bg-teal-700 text-white font-bold py-2 px-4 rounded"> */}
+        <div className="flex items-center justify-center bg-teal-700 text-white rounded-lg">
           <h2 className="text-xl font-semibold items-center justify-center">Enter Supervisor Details</h2>
           <Link to="/admin-dashboard/supervisors" >
-            <FaRegTimesCircle className="text-2xl ml-7 text-red-700 bg-gray-200 rounded-xl shadow-md items-center justify-end" />
+            <FaRegTimesCircle className="text-2xl ml-7 mt-1 text-red-700 bg-gray-200 rounded-xl shadow-md items-center justify-end" />
           </Link></div>
-      </div>
 
       <form onSubmit={handleSubmit}>
         <div className="flex space-x-3 mb-5" />
