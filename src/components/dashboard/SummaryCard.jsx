@@ -2,7 +2,7 @@ import React from 'react'
 
 const SummaryCard = ({icon, text, number, color}) => {
   return (
-    <div className="rounded flex bg-white border shadow-lg">
+    <div className="rounded flex bg-white border shadow-lg rounded-lg">
         <div className={`text-2xl flex justify-center items-center ${color} text-gray-100 px-2 rounded-l-lg`}>
             {icon}
         </div>

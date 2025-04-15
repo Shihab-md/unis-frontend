@@ -64,11 +64,11 @@ const Login = () => {
         className="flex flex-col items-center h-screen justify-center 
       bg-gradient-to-b from-teal-600 from-50% to-gray-100 to-50% space-y-6 h-75"
       >
-        <img width={140} className='rounded-md shadow w-34' src="./Logo - UNIS.PNG" />
-        <h2 className="p-5 font-bold text-4xl">
+        <img width={140} className='rounded-md shadow-lg w-34' src="./Logo - UNIS.PNG" />
+        <h2 className="p-5 font-bold text-4xl text-shadow-lg">
           UNIS ACADEMY
         </h2>
-        <div className="border shadow p-6 w-80 bg-white">
+        <div className="border p-6 w-80 bg-white shadow-lg rounded-lg">
           <h2 className="text-2xl font-bold mb-4">Login</h2>
           {error && <p className="text-red-500">{error}</p>}
           <form onSubmit={handleSubmit}>
