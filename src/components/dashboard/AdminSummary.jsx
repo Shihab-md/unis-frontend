@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext'
 import {
   FaBuilding,
-  FaSchool,
+  FaMosque,
   FaUserFriends,
   FaUsers,
   FaHouseUser,
@@ -62,7 +62,7 @@ const AdminSummary = () => {
         </Link>
         <Link to="/admin-dashboard/schools" >
           <SummaryCard
-            icon={<FaSchool />}
+            icon={<FaMosque />}
             text="Niswans"
             number={summary.totalSchools}
             color="bg-pink-600"
