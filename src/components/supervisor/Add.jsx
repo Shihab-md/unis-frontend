@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
 import {
-  FaWindowClose
+  FaRegWindowClose
 } from "react-icons/fa";
 ///import multer from "multer";
 //import { FileBase64 } from "react-file-base64";
@@ -74,7 +74,7 @@ const Add = () => {
         <div className="flex justify-center">
           <h2 className="text-xl font-semibold items-center justify-center">Enter Supervisor Details</h2>
           <Link to="/admin-dashboard/supervisors" >
-            <FaWindowClose className="text-xl ml-7 mt-1 bg-red-700 text-teal-700 rounded shadow-md justify-end" />
+            <FaRegWindowClose className="text-xl ml-7 mt-1 bg-red-700 text-teal-700 rounded shadow-md justify-end" />
           </Link></div>
       </div>
 
