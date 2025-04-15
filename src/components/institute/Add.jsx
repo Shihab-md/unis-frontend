@@ -57,145 +57,147 @@ const Add = () => {
       </div>
 
       <form onSubmit={handleSubmit}>
-        <div className="flex space-x-3 mb-5" />
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="flex py-2 px-4 border mt-5 mb-3 items-center justify-center rounded-lg shadow-lg">
+          <div className="flex mt-3 space-x-3 mb-5" />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 
-          {/* Code */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Code <span className="text-red-700">*</span>
-            </label>
-            <input
-              type="text"
-              name="iCode"
-              onChange={handleChange}
-              className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-              required
-            />
-          </div>
+            {/* Code */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700">
+                Code <span className="text-red-700">*</span>
+              </label>
+              <input
+                type="text"
+                name="iCode"
+                onChange={handleChange}
+                className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                required
+              />
+            </div>
 
-          {/* Name */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Name <span className="text-red-700">*</span>
-            </label>
-            <input
-              type="text"
-              name="name"
-              onChange={handleChange}
-              className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-              required
-            />
-          </div>
+            {/* Name */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700">
+                Name <span className="text-red-700">*</span>
+              </label>
+              <input
+                type="text"
+                name="name"
+                onChange={handleChange}
+                className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                required
+              />
+            </div>
 
-          {/* Contact Number */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Contact Number
-            </label>
-            <input
-              type="number"
-              name="contactNumber"
-              onChange={handleChange}
-              className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-            //    required
-            />
-          </div>
+            {/* Contact Number */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700">
+                Contact Number
+              </label>
+              <input
+                type="number"
+                name="contactNumber"
+                onChange={handleChange}
+                className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+              //    required
+              />
+            </div>
 
-          {/* Email */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Email
-            </label>
-            <input
-              type="email"
-              name="email"
-              onChange={handleChange}
-              className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-            // required
-            />
-          </div>
+            {/* Email */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700">
+                Email
+              </label>
+              <input
+                type="email"
+                name="email"
+                onChange={handleChange}
+                className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+              // required
+              />
+            </div>
 
-          {/* Address */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Address <span className="text-red-700">*</span>
-            </label>
-            <input
-              type="text"
-              name="address"
-              onChange={handleChange}
-              className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-              required
-            />
-          </div>
+            {/* Address */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700">
+                Address <span className="text-red-700">*</span>
+              </label>
+              <input
+                type="text"
+                name="address"
+                onChange={handleChange}
+                className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                required
+              />
+            </div>
 
-          {/* District */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700">
-              District <span className="text-red-700">*</span>
-            </label>
-            <input
-              type="text"
-              name="district"
-              onChange={handleChange}
-              className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-              required
-            />
-          </div>
+            {/* District */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700">
+                District <span className="text-red-700">*</span>
+              </label>
+              <input
+                type="text"
+                name="district"
+                onChange={handleChange}
+                className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                required
+              />
+            </div>
 
-          {/* Incharge1 */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Incharge-1 Name <span className="text-red-700">*</span>
-            </label>
-            <input
-              type="text"
-              name="incharge1"
-              onChange={handleChange}
-              className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-              required
-            />
-          </div>
+            {/* Incharge1 */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700">
+                Incharge-1 Name <span className="text-red-700">*</span>
+              </label>
+              <input
+                type="text"
+                name="incharge1"
+                onChange={handleChange}
+                className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                required
+              />
+            </div>
 
-          {/* Incharge1 Number */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Incharge-1 Number <span className="text-red-700">*</span>
-            </label>
-            <input
-              type="number"
-              name="incharge1Number"
-              onChange={handleChange}
-              className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-              required
-            />
-          </div>
+            {/* Incharge1 Number */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700">
+                Incharge-1 Number <span className="text-red-700">*</span>
+              </label>
+              <input
+                type="number"
+                name="incharge1Number"
+                onChange={handleChange}
+                className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                required
+              />
+            </div>
 
-          {/* Incharge2 */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Incharge-2 Name
-            </label>
-            <input
-              type="text"
-              name="incharge2"
-              onChange={handleChange}
-              className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-            />
-          </div>
+            {/* Incharge2 */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700">
+                Incharge-2 Name
+              </label>
+              <input
+                type="text"
+                name="incharge2"
+                onChange={handleChange}
+                className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+              />
+            </div>
 
-          {/* Incharge2 Number */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Incharge-2 Number
-            </label>
-            <input
-              type="number"
-              name="incharge2Number"
-              onChange={handleChange}
-              className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-            />
+            {/* Incharge2 Number */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700">
+                Incharge-2 Number
+              </label>
+              <input
+                type="number"
+                name="incharge2Number"
+                onChange={handleChange}
+                className="mt-1 mb-5 p-2 block w-full border border-gray-300 rounded-md"
+              />
+            </div>
           </div>
         </div>
         <button
