@@ -62,7 +62,7 @@ const Add = () => {
 
             {/* Code */}
             <div>
-              <label className="block text-sm font-medium text-gray-700">
+              <label className="block mt-3 text-sm font-medium text-gray-700">
                 Code <span className="text-red-700">*</span>
               </label>
               <input

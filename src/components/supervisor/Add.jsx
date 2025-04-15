@@ -75,7 +75,7 @@ const Add = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {/* Name */}
             <div>
-              <label className="block text-sm font-medium text-gray-700">
+              <label className="block mt-3 text-sm font-medium text-gray-700">
                 Name <span className="text-red-700">*</span>
               </label>
               <input
@@ -296,7 +296,7 @@ const Add = () => {
         </div>
         <button
           type="submit"
-          className="w-full mt-6 bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded-lg shadow-lg"
+          className="w-full mt-4 bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded-lg shadow-lg"
         >
           Add Supervisor
         </button>
