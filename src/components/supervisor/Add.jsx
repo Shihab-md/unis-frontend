@@ -71,8 +71,8 @@ const Add = () => {
       </div>
 
       <form onSubmit={handleSubmit}>
-        <div className="flex py-2 px-4 mt-7 mb-5 items-center justify-center rounded-lg shadow-lg">
-          <div className="flex space-x-3 mb-5" />
+        <div className="flex py-2 px-4 border mt-5 mb-5 items-center justify-center rounded-lg shadow-lg">
+          <div className="flex mt-3 space-x-3 mb-5" />
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {/* Name */}
             <div>
@@ -290,7 +290,7 @@ const Add = () => {
                 //     onChange={handleChange}
                 placeholder="Upload Image"
                 accept="image/*"
-                className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                className="mt-1 p-2 mb-5 block w-full border border-gray-300 rounded-md"
               />
             </div>
           </div>
