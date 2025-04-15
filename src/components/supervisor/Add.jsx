@@ -74,7 +74,7 @@ const Add = () => {
         <div className="flex justify-center">
           <h2 className="text-xl font-semibold items-center justify-center">Enter Supervisor Details</h2>
           <Link to="/admin-dashboard/supervisors" >
-            <FaRegTimesCircle className="text-xl ml-7 mt-1 text-red-700 bg-gray-200 rounded shadow-md justify-end" />
+            <FaRegTimesCircle className="text-xl ml-7 mt-1 text-red-700 bg-gray-200 rounded-xl shadow-md justify-end" />
           </Link></div>
       </div>
 
