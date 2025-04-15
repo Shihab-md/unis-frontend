@@ -72,9 +72,9 @@ const Add = () => {
       </div>
       <div className="grid grid-cols-1 mt-2 bg-teal-700 text-white font-bold py-2 px-4 rounded">
         <div className="flex justify-center">
-          <h2 className="text-xl ml-7 font-semibold items-center justify-center">Enter Supervisor Details</h2>
+          <h2 className="text-xl font-semibold items-center justify-center">Enter Supervisor Details</h2>
           <Link to="/admin-dashboard/supervisors" >
-            <FaWindowClose className="text-xl ml-7 mt-1 bg-red-700 text-gray-300 rounded shadow-md justify-end" />
+            <FaWindowClose className="text-xl ml-7 mt-1 bg-red-700 text-teal-700 rounded shadow-md justify-end" />
           </Link></div>
       </div>
 
