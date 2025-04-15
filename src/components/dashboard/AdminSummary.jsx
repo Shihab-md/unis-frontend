@@ -49,7 +49,7 @@ const AdminSummary = () => {
     <div className="p-7 items-center">
       <h5 className="p-1 text-center font-semibold text-gray-700">ربِّ زِدْنِي عِلْماً</h5>
       <h5 className="p-1 text-center">Welcome, {user.name}</h5>
-      <h5 className="text-xl mt-4 mb-7 font-bold text-center text-gray-500">Super Admin Dashboard</h5>
+      <h5 className="text-xl mt-4 mb-7 font-bold text-center text-gray-500 text-shadow-lg/20">Super Admin Dashboard</h5>
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-7 mt-10 rounded">
         <Link to="/admin-dashboard/supervisors" >
