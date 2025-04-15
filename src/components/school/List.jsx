@@ -81,7 +81,7 @@ const List = () => {
         <input
           type="text"
           placeholder="Seach By Niswan"
-          className="px-4 py-0.5 border"
+          className="px-4 py-0.5 border rounded shadow-lg"
           onChange={handleFilter}
         />
         <Link to="/admin-dashboard/add-school" >
