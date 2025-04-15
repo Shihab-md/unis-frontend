@@ -111,9 +111,9 @@ const AdminSummary = () => {
         <Link to="#" >
           <SummaryCard
             icon={<FaRupeeSign />}
-            text="Finance"
+            text="Accounts"
             number={summary.totalEmployees}
-            color="bg-indigo-700"
+            color="bg-indigo-500"
           />
         </Link>
         <Link to="#" >
@@ -121,7 +121,7 @@ const AdminSummary = () => {
             icon={<FaMedal />}
             text="Certificates"
             number={summary.totalEmployees}
-            color="bg-yellow-500"
+            color="bg-yellow-600"
           />
         </Link>
         <Link to="#" >
