@@ -10,7 +10,7 @@ const Navbar = () => {
   return (
     <div className='flex items-center text-white justify-between h-12 bg-teal-600 px-5 text-shadow-lg'>
       <Link to="/admin-dashboard" >
-        <FaHome className="text-2xl text-green-400 text-shadow-lg" />
+        <FaHome className="text-2xl text-green-300 text-shadow-lg" />
       </Link>
       <p className="text-xl font-bold text-shadow-lg">UNIS ACADEMY</p>
       <FaSignOutAlt className="text-2xl text-red-600 text-shadow-lg" onClick={logout} />
