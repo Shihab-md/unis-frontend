@@ -45,8 +45,8 @@ const View = () => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-1 gap-6">
-            <div className="py-2 px-4 border mt-5 mb-3 items-center justify-center rounded-lg shadow-lg">
-              <div className="flex mt-3 space-x-3 mb-5" />
+            <div className="py-2 px-4 border mt-5 mb-1 items-center justify-center rounded-lg shadow-lg">
+              <div className="flex space-x-3 mb-5" />
               <div>
                 <img
                   src={`https://unis-server.vercel.app/${supervisor.userId.profileImage}`}
@@ -54,7 +54,7 @@ const View = () => {
                 />
               </div>
               <div>
-                <div className="flex space-x-3 mb-5" />
+                <div className="flex mt-1 space-x-3 mb-5" />
                 <div className="flex space-x-3 mb-5">
                   <p className="font-medium">Name:</p>
                   <p className="font-normal">{supervisor.userId.name}</p>
