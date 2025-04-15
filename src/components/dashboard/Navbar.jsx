@@ -13,7 +13,7 @@ const Navbar = () => {
         <FaHome className="text-2xl text-green-300 text-shadow-lg" />
       </Link>
       <p className="text-xl font-bold text-shadow-lg">UNIS ACADEMY</p>
-      <FaSignOutAlt className="text-xl text-red-500 text-shadow-lg" onClick={logout} />
+      <FaSignOutAlt className="text-xl text-red-800 text-shadow-lg" onClick={logout} />
     </div>
   )
 }
