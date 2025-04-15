@@ -92,7 +92,7 @@ const List = () => {
           <FaPlusSquare className="text-2xl bg-teal-700 text-white rounded shadow-lg" />
         </Link>
       </div>
-      <div className='mt-6'>
+      <div className='mt-6 rounded-lg shadow-lg'>
         <DataTable columns={columns} data={filteredEmployee} pagination />
       </div>
     </div>
