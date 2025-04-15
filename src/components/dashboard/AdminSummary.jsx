@@ -89,7 +89,7 @@ const AdminSummary = () => {
             icon={<FaBuilding />}
             text="Institutes"
             number={summary.totalInstitutes}
-            color="bg-yellow-700"
+            color="bg-slate-700"
           />
         </Link>
         <Link to="/admin-dashboard/courses" >
@@ -105,7 +105,7 @@ const AdminSummary = () => {
             icon={<FaClipboardCheck />}
             text="Exams"
             number={summary.totalEmployees}
-            color="bg-neutral-700"
+            color="bg-emerald-700"
           />
         </Link>
         <Link to="#" >
@@ -113,7 +113,7 @@ const AdminSummary = () => {
             icon={<FaRupeeSign />}
             text="Accounts"
             number={summary.totalEmployees}
-            color="bg-indigo-500"
+            color="bg-green-500"
           />
         </Link>
         <Link to="#" >
@@ -121,7 +121,7 @@ const AdminSummary = () => {
             icon={<FaMedal />}
             text="Certificates"
             number={summary.totalEmployees}
-            color="bg-emerald-600"
+            color="bg-yello-600"
           />
         </Link>
         <Link to="#" >
@@ -129,7 +129,7 @@ const AdminSummary = () => {
             icon={<FaFileContract />}
             text="Reports"
             number={summary.totalEmployees}
-            color="bg-slate-500"
+            color="bg-purple-600"
           />
         </Link>
       </div>
