@@ -103,19 +103,19 @@ export const SchoolButtons = ({ Id, onSchoolDelete }) => {
   return (
     <div className="flex space-x-3">
       <button
-        className="px-3 py-1 bg-teal-600 text-white"
+        className="px-3 py-1 bg-teal-600 text-white rounded-sm text-shadow-lg"
         onClick={() => navigate(`/admin-dashboard/schools/${Id}`)}
       >
         <FaEye />
       </button>
       <button
-        className="px-3 py-1 bg-blue-600 text-white"
+        className="px-3 py-1 bg-blue-600 text-white rounded-sm text-shadow-lg"
         onClick={() => navigate(`/admin-dashboard/schools/edit/${Id}`)}
       >
         <FaEdit />
       </button>
       <button
-        className="px-3 py-1 bg-red-600 text-white"
+        className="px-3 py-1 bg-red-600 text-white rounded-sm text-shadow-lg"
         onClick={() => handleDelete(Id)}
       >
         <FaTrashAlt />
