@@ -74,11 +74,11 @@ const List = () => {
   return (
     <div className="mt-3 p-5">
       <div className="text-center">
-        <h3 className="text-2xl font-bold px-5 py-0">Manage Supervisors</h3>
+        <h3 className="text-2xl font-bold px-5 py-0 text-shadow-lg">Manage Supervisors</h3>
       </div>
       <div className="flex justify-between items-center mt-5">
         <Link to="/admin-dashboard" >
-          <FaArrowAltCircleLeft className="text-xl py-1 bg-blue-700 text-white rounded-md text-shadow-lg" />
+          <FaArrowAltCircleLeft className="text-xl bg-blue-700 text-white rounded-sm text-shadow-lg" />
         </Link>
         <input
           type="text"
@@ -87,7 +87,7 @@ const List = () => {
           onChange={handleFilter}
         />
         <Link to="/admin-dashboard/add-supervisor" >
-          <FaPlusSquare className="text-xl py-1 bg-teal-700 text-white rounded-md text-shadow-lg" />
+          <FaPlusSquare className="text-xl bg-teal-700 text-white rounded-sm text-shadow-lg" />
         </Link>
       </div>
       <div className='mt-6 rounded-lg shadow-lg'>
