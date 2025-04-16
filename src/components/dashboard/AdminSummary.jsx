@@ -94,7 +94,7 @@ const AdminSummary = () => {
         </Link>
         <Link to="/admin-dashboard/courses" >
           <SummaryCard
-            icon={<FaBookOpen />}
+            icon={<FaBookOpen /> }
             text="Courses"
             number={summary.totalCourses}
             color="bg-purple-700"
