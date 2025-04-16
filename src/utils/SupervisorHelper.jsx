@@ -104,19 +104,19 @@ export const SupervisorButtons = ({ Id, onSupervisorDelete }) => {
         className="px-3 py-1 bg-teal-600 text-white rounded-sm text-shadow-lg"
         onClick={() => navigate(`/admin-dashboard/supervisors/${Id}`)}
       >
-        <FaEye />
+        <FaEye className="px-3 py-1 bg-blue-600 text-white rounded-sm text-shadow-lg" />
       </button>
       <button
         className="px-3 py-1 bg-blue-600 text-white rounded-sm text-shadow-lg"
         onClick={() => navigate(`/admin-dashboard/supervisors/edit/${Id}`)}
       >
-        <FaEdit />
+        <FaEdit className="px-3 py-1 bg-blue-600 text-white rounded-sm text-shadow-lg" />
       </button>
       <button
         className="px-3 py-1 bg-red-600 text-white rounded-sm text-shadow-lg"
         onClick={() => handleDelete(Id)}
       >
-        <FaTrashAlt />
+        <FaTrashAlt className="px-3 py-1 bg-blue-600 text-white rounded-sm text-shadow-lg" />
       </button>
     </div>
   );
