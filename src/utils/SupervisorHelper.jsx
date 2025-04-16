@@ -99,21 +99,21 @@ export const SupervisorButtons = ({ Id, onSupervisorDelete }) => {
   };
 
   return (
-    <div className="flex space-x-3 shadow-lg">
+    <div className="flex space-x-3 text-shadow-lg">
       <button
-        className="px-3 py-1 bg-teal-600 text-white rounded-lg shadow-lg"
+        className="px-3 py-1 bg-teal-600 text-white rounded-sm text-shadow-lg"
         onClick={() => navigate(`/admin-dashboard/supervisors/${Id}`)}
       >
         <FaEye />
       </button>
       <button
-        className="px-3 py-1 bg-blue-600 text-white rounded-lg shadow-lg"
+        className="px-3 py-1 bg-blue-600 text-white rounded-sm text-shadow-lg"
         onClick={() => navigate(`/admin-dashboard/supervisors/edit/${Id}`)}
       >
         <FaEdit />
       </button>
       <button
-        className="px-3 py-1 bg-red-600 text-white rounded-lg shadow-lg"
+        className="px-3 py-1 bg-red-600 text-white rounded-sm text-shadow-lg"
         onClick={() => handleDelete(Id)}
       >
         <FaTrashAlt />

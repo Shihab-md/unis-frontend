@@ -78,7 +78,7 @@ const List = () => {
       </div>
       <div className="flex justify-between items-center mt-5">
         <Link to="/admin-dashboard" >
-          <FaArrowAltCircleLeft className="text-xl bg-blue-700 text-white rounded-sm text-shadow-lg" />
+          <FaArrowAltCircleLeft className="text-xl bg-blue-700 text-white" />
         </Link>
         <input
           type="text"
@@ -87,7 +87,7 @@ const List = () => {
           onChange={handleFilter}
         />
         <Link to="/admin-dashboard/add-supervisor" >
-          <FaPlusSquare className="text-xl bg-teal-700 text-white rounded-sm text-shadow-lg" />
+          <FaPlusSquare className="text-xl bg-teal-700 text-white" />
         </Link>
       </div>
       <div className='mt-6 rounded-lg shadow-lg'>
