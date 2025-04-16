@@ -35,7 +35,6 @@ const List = () => {
           const data = await responnse.data.employees.map((sup) => ({
             _id: sup._id,
             sno: sno++,
-            // dep_name: sup.department.dep_name,
             name: sup.userId.name,
             role: sup.userId.role,
             contactNumber: sup.contactNumber,
@@ -64,7 +63,7 @@ const List = () => {
 
   const handleFilter = (e) => {
     const records = employees.filter((sup) => (
-      sup.name.toLowerCase().includes(e.target.value.toLowerCase())
+      sup.userId.name.toLowerCase().includes(e.target.value.toLowerCase())
     ))
     setFilteredEmployees(records)
   }
