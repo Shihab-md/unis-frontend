@@ -192,7 +192,7 @@ const Edit = () => {
               {/* Area */}
               <div>
                 <label className="block text-sm font-medium text-gray-700">
-                  Area <span className="text-red-700">*</span>
+                  Address <span className="text-red-700">*</span>
                 </label>
                 <input
                   type="text"

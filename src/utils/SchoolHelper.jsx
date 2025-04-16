@@ -26,7 +26,7 @@ export const columns = [
     width: "370px",
   },
   {
-    name: "Area, District / State",
+    name: "Address, District / State",
     selector: (row) => row.address + ", " + row.district,
     sortable: true,
     width: "190px",
