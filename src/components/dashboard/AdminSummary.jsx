@@ -10,8 +10,8 @@ import {
   FaUsers,
   FaHouseUser,
   FaClipboardCheck,
-  FaClipboardList,
-  FaRupeeSign,FaMedal, FaFileContract,
+  FaClipboardList, FaBookOpen,
+  FaRupeeSign, FaMedal, FaFileContract,
 } from "react-icons/fa";
 import axios from 'axios'
 import { useNavigate } from "react-router-dom";
@@ -94,7 +94,7 @@ const AdminSummary = () => {
         </Link>
         <Link to="/admin-dashboard/courses" >
           <SummaryCard
-            icon={<FaClipboardList />}
+            icon={<FaBookOpen />}
             text="Courses"
             number={summary.totalCourses}
             color="bg-purple-700"
@@ -102,7 +102,7 @@ const AdminSummary = () => {
         </Link>
         <Link to="#" >
           <SummaryCard
-            icon={<FaClipboardCheck />}
+            icon={<FaClipboardList />}
             text="Exams"
             number={summary.totalEmployees}
             color="bg-emerald-700"
