@@ -80,7 +80,7 @@ const Add = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {/* School */}
               <div>
-                <label className="block mt-5 text-sm font-medium text-gray-700">
+                <label className="block mt-2 text-sm font-medium text-gray-700">
                   Select Niswan <span className="text-red-700">*</span>
                 </label>
                 <select
@@ -100,7 +100,7 @@ const Add = () => {
 
               {/* Name */}
               <div>
-                <label className="block text-sm font-medium text-gray-700">
+                <label className="block mt-2 text-sm font-medium text-gray-700">
                   Name <span className="text-red-700">*</span>
                 </label>
                 <input
