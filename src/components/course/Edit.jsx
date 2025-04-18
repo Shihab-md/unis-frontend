@@ -194,7 +194,20 @@ const Edit = () => {
                   />
                 </div>
 
-                <div className="flex space-x-3 mb-5" />
+                {/* Fees */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Fees <span className="text-red-700">*</span>
+                  </label>
+                  <input
+                    type="number"
+                    name="fees"
+                    value={course.fees}
+                    onChange={handleChange}
+                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                    required
+                  />
+                </div>
 
                 {/* Subject-1 */}
                 <div>

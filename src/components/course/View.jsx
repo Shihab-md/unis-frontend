@@ -59,6 +59,10 @@ const View = () => {
                   <p className="font-medium">Remarks:</p>
                   <p className="font-normal">{course.remarks}</p>
                 </div>
+                <div className="flex space-x-3 mb-5">
+                  <p className="font-medium">Fees:</p>
+                  <p className="font-normal">{course.fees}</p>
+                </div>
 
                 <div className="flex space-x-3 mb-5" />
 

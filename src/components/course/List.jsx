@@ -38,6 +38,7 @@ const List = () => {
             code: sup.code,
             name: sup.name,
             remarks: sup.remarks,
+            fees: sup.fees,
             subjectsCount: 0,
             action: (<CourseButtons Id={sup._id} onCourseDelete={onCourseDelete} />),
           }));

@@ -30,9 +30,14 @@ export const columns = [
     width: "250px",
   },
   {
-    name: "No. of Subjects",
+    name: "Fees",
+    selector: (row) => row.fees,
+    width: "160px",
+  },
+  {
+    name: "Subjects #",
     selector: (row) => row.subjectsCount,
-    width: "190px",
+    width: "120px",
   },
   {
     name: "Action",
