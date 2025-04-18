@@ -89,7 +89,7 @@ const List = () => {
         </Link>
       </div>
       <div className='mt-6 rounded-lg shadow-lg'>
-        <DataTable columns={columns} data={filteredSchool} pagination />
+        <DataTable columns={columns} data={filteredSchool} pagination stripedRows />
       </div>
     </div>
   )
