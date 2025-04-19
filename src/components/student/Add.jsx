@@ -274,7 +274,7 @@ const Add = () => {
                   name="fatherName"
                   onChange={handleChange}
                   className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-                //    required
+                  required
                 />
               </div>
 
@@ -288,7 +288,7 @@ const Add = () => {
                   name="fatherNumber"
                   onChange={handleChange}
                   className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-                //    required
+                  required
                 />
               </div>
 
