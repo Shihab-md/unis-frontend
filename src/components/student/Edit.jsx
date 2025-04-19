@@ -80,7 +80,7 @@ const Edit = () => {
 
         if (responnse.data.success) {
           const student = responnse.data.student;
-          const academic = await axios.get(
+          const academicResponse = await axios.get(
             `https://unis-server.vercel.app/api/student/${student._id}/${'680390ae200583d3d5c01f87'}`,
             {
               headers: {
@@ -89,6 +89,7 @@ const Edit = () => {
             }
           );
 
+          const academic = academicResponse.data.academic;
           setStudent((prev) => ({
             ...prev,
             name: student.userId.name,
