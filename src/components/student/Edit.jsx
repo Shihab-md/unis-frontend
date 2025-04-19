@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { getSchools } from "../../utils/SchoolHelper";
+import { getAcademicYears } from '../../utils/AcademicYearHelper'
+import { getInstitutes } from '../../utils/InstituteHelper'
+import { getCourses } from '../../utils/CourseHelper'
 import axios from "axios";
 import { useNavigate, useParams, Link } from "react-router-dom";
 import moment from "moment";
