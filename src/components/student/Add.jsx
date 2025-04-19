@@ -269,7 +269,9 @@ const Add = () => {
 
               <div className="flex space-x-3 mb-5" />
               <div className="flex space-x-3 mb-5" />
+            </div>
 
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               {/* Father's Name */}
               <div>
                 <label className="block text-sm font-medium text-gray-700">
@@ -397,7 +399,9 @@ const Add = () => {
                   required
                 />
               </div>
+            </div>
 
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="flex space-x-3 mb-5" />
               <div className="flex space-x-3 mb-5" />
               <div className="flex space-x-3 mb-5" />
