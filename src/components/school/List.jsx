@@ -61,9 +61,20 @@ const List = () => {
   }, []);
 
   const handleFilter = (e) => {
-    const records = schools.filter((sch) => (
-      sch.name.toLowerCase().includes(e.target.value.toLowerCase())
-    ))
+
+    let searchValue;
+    let nameData;
+    let fullNameValue;
+
+    const records = schools.filter((sch) => ({
+
+      nameData: sch.name.toLowerCase().includes(e.target.value.toLowerCase()),
+
+      if(personIDValue) {
+        records = nameData;
+      }
+
+    }))
     setFilteredSchools(records)
   }
 
