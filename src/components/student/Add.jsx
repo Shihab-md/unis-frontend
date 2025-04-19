@@ -688,7 +688,7 @@ const Add = () => {
               </div>
 
               <div className="grid grid-cols-2 gap-7 justify-between">
-                {/* Fees */}
+                {/* Fees 2 */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700">
                     Fees
@@ -702,7 +702,7 @@ const Add = () => {
                   />
                 </div>
 
-                {/* Discount */}
+                {/* Discount 2 */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700">
                     Discount
@@ -718,7 +718,7 @@ const Add = () => {
               </div>
 
               <div className="grid grid-cols-2 gap-7 justify-between">
-                {/* Final Fees */}
+                {/* Final Fees 2 */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700">
                     Final Fees
@@ -732,7 +732,7 @@ const Add = () => {
                   />
                 </div>
 
-                {/* Paid */}
+                {/* Paid 2 */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700">
                     Paid
@@ -748,7 +748,7 @@ const Add = () => {
               </div>
 
               <div className="grid grid-cols-2 gap-7 justify-between">
-                {/* Paid Date */}
+                {/* Paid Date 2 */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700">
                     Paid Date
@@ -763,7 +763,7 @@ const Add = () => {
                   />
                 </div>
 
-                {/* Balance */}
+                {/* Balance 2 */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700">
                     Balance
@@ -771,6 +771,471 @@ const Add = () => {
                   <input
                     type="number"
                     name="balance2"
+                    onChange={handleChange}
+                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                  //    required
+                  />
+                </div>
+              </div>
+
+              <div className="flex space-x-3 mb-5" />
+              <div className="flex space-x-3 mb-5" />
+              <div className="flex space-x-3 mt-5 justify-center" >
+                <label className="block mt-2 text-sm font-bold text-gray-400">
+                  *****   SELECT COURSE-3   *****
+                </label>
+              </div>
+              <div className="flex space-x-3 mb-5" />
+
+              {/* Institute 3 --------------------------------------------- */}
+              <div>
+                <label className="block mt-2 text-sm font-medium text-gray-700">
+                  Select Institute <span className="text-red-700">*</span>
+                </label>
+                <select
+                  name="instituteId3"
+                  onChange={handleChange}
+                  className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                  required
+                >
+                  <option value="">Select Institute</option>
+                  {institutes.map((institute) => (
+                    <option key={institute._id} value={institute._id}>
+                      {institute.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              {/* Course 3 */}
+              <div>
+                <label className="block mt-2 text-sm font-medium text-gray-700">
+                  Select Course <span className="text-red-700">*</span>
+                </label>
+                <select
+                  name="courseId3"
+                  onChange={handleChange}
+                  className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                  required
+                >
+                  <option value="">Select Course</option>
+                  {courses.map((course) => (
+                    <option key={course._id} value={course._id}>
+                      {course.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              {/* Reference Number-3 */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700">
+                  Reference Number <span className="text-red-700">*</span>
+                </label>
+                <input
+                  type="text"
+                  name="refNumber3"
+                  onChange={handleChange}
+                  //    placeholder="Qualification"
+                  className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                  required
+                />
+              </div>
+
+              <div className="grid grid-cols-2 gap-7 justify-between">
+                {/* Fees 3 */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Fees
+                  </label>
+                  <input
+                    type="number"
+                    name="fees3"
+                    onChange={handleChange}
+                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                  //    required
+                  />
+                </div>
+
+                {/* Discount 3 */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Discount
+                  </label>
+                  <input
+                    type="number"
+                    name="discount3"
+                    onChange={handleChange}
+                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                  //    required
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-7 justify-between">
+                {/* Final Fees 3 */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Final Fees
+                  </label>
+                  <input
+                    type="number"
+                    name="finalFees3"
+                    onChange={handleChange}
+                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                  //    required
+                  />
+                </div>
+
+                {/* Paid 3 */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Paid
+                  </label>
+                  <input
+                    type="number"
+                    name="paid3"
+                    onChange={handleChange}
+                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                  //    required
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-7 justify-between">
+                {/* Paid Date 3 */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Paid Date
+                  </label>
+                  <input
+                    type="date"
+                    name="paidDate3"
+                    onChange={handleChange}
+                    //    placeholder="DOB"
+                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                    required
+                  />
+                </div>
+
+                {/* Balance 3 */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Balance
+                  </label>
+                  <input
+                    type="number"
+                    name="balance3"
+                    onChange={handleChange}
+                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                  //    required
+                  />
+                </div>
+              </div>
+
+              <div className="flex space-x-3 mb-5" />
+              <div className="flex space-x-3 mb-5" />
+              <div className="flex space-x-3 mt-5 justify-center" >
+                <label className="block mt-2 text-sm font-bold text-gray-400">
+                  *****   SELECT COURSE-4   *****
+                </label>
+              </div>
+              <div className="flex space-x-3 mb-5" />
+
+              {/* Institute 4 --------------------------------------------- */}
+              <div>
+                <label className="block mt-2 text-sm font-medium text-gray-700">
+                  Select Institute <span className="text-red-700">*</span>
+                </label>
+                <select
+                  name="instituteId4"
+                  onChange={handleChange}
+                  className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                  required
+                >
+                  <option value="">Select Institute</option>
+                  {institutes.map((institute) => (
+                    <option key={institute._id} value={institute._id}>
+                      {institute.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              {/* Course 4 */}
+              <div>
+                <label className="block mt-2 text-sm font-medium text-gray-700">
+                  Select Course <span className="text-red-700">*</span>
+                </label>
+                <select
+                  name="courseId4"
+                  onChange={handleChange}
+                  className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                  required
+                >
+                  <option value="">Select Course</option>
+                  {courses.map((course) => (
+                    <option key={course._id} value={course._id}>
+                      {course.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              {/* Reference Number-4 */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700">
+                  Reference Number <span className="text-red-700">*</span>
+                </label>
+                <input
+                  type="text"
+                  name="refNumber4"
+                  onChange={handleChange}
+                  //    placeholder="Qualification"
+                  className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                  required
+                />
+              </div>
+
+              <div className="grid grid-cols-2 gap-7 justify-between">
+                {/* Fees 4 */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Fees
+                  </label>
+                  <input
+                    type="number"
+                    name="fees4"
+                    onChange={handleChange}
+                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                  //    required
+                  />
+                </div>
+
+                {/* Discount 4 */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Discount
+                  </label>
+                  <input
+                    type="number"
+                    name="discount4"
+                    onChange={handleChange}
+                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                  //    required
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-7 justify-between">
+                {/* Final Fees 4 */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Final Fees
+                  </label>
+                  <input
+                    type="number"
+                    name="finalFees4"
+                    onChange={handleChange}
+                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                  //    required
+                  />
+                </div>
+
+                {/* Paid 4 */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Paid
+                  </label>
+                  <input
+                    type="number"
+                    name="paid4"
+                    onChange={handleChange}
+                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                  //    required
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-7 justify-between">
+                {/* Paid Date 4 */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Paid Date
+                  </label>
+                  <input
+                    type="date"
+                    name="paidDate4"
+                    onChange={handleChange}
+                    //    placeholder="DOB"
+                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                    required
+                  />
+                </div>
+
+                {/* Balance 4 */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Balance
+                  </label>
+                  <input
+                    type="number"
+                    name="balance4"
+                    onChange={handleChange}
+                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                  //    required
+                  />
+                </div>
+              </div>
+
+              <div className="flex space-x-3 mb-5" />
+              <div className="flex space-x-3 mb-5" />
+              <div className="flex space-x-3 mt-5 justify-center" >
+                <label className="block mt-2 text-sm font-bold text-gray-400">
+                  *****   SELECT COURSE-5   *****
+                </label>
+              </div>
+              <div className="flex space-x-3 mb-5" />
+
+              {/* Institute 5 --------------------------------------------- */}
+              <div>
+                <label className="block mt-2 text-sm font-medium text-gray-700">
+                  Select Institute <span className="text-red-700">*</span>
+                </label>
+                <select
+                  name="instituteId5"
+                  onChange={handleChange}
+                  className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                  required
+                >
+                  <option value="">Select Institute</option>
+                  {institutes.map((institute) => (
+                    <option key={institute._id} value={institute._id}>
+                      {institute.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              {/* Course 5 */}
+              <div>
+                <label className="block mt-2 text-sm font-medium text-gray-700">
+                  Select Course <span className="text-red-700">*</span>
+                </label>
+                <select
+                  name="courseId5"
+                  onChange={handleChange}
+                  className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                  required
+                >
+                  <option value="">Select Course</option>
+                  {courses.map((course) => (
+                    <option key={course._id} value={course._id}>
+                      {course.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              {/* Reference Number-5 */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700">
+                  Reference Number <span className="text-red-700">*</span>
+                </label>
+                <input
+                  type="text"
+                  name="refNumber5"
+                  onChange={handleChange}
+                  //    placeholder="Qualification"
+                  className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                  required
+                />
+              </div>
+
+              <div className="grid grid-cols-2 gap-7 justify-between">
+                {/* Fees 5 */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Fees
+                  </label>
+                  <input
+                    type="number"
+                    name="fees5"
+                    onChange={handleChange}
+                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                  //    required
+                  />
+                </div>
+
+                {/* Discount 5 */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Discount
+                  </label>
+                  <input
+                    type="number"
+                    name="discount5"
+                    onChange={handleChange}
+                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                  //    required
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-7 justify-between">
+                {/* Final Fees 5 */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Final Fees
+                  </label>
+                  <input
+                    type="number"
+                    name="finalFees5"
+                    onChange={handleChange}
+                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                  //    required
+                  />
+                </div>
+
+                {/* Paid 5 */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Paid
+                  </label>
+                  <input
+                    type="number"
+                    name="paid5"
+                    onChange={handleChange}
+                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                  //    required
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-7 justify-between">
+                {/* Paid Date 5 */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Paid Date
+                  </label>
+                  <input
+                    type="date"
+                    name="paidDate5"
+                    onChange={handleChange}
+                    //    placeholder="DOB"
+                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                    required
+                  />
+                </div>
+
+                {/* Balance 5 */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Balance
+                  </label>
+                  <input
+                    type="number"
+                    name="balance5"
                     onChange={handleChange}
                     className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                   //    required
