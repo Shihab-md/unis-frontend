@@ -79,6 +79,7 @@ const Edit = () => {
         );
         if (responnse.data.success) {
           const student = responnse.data.student;
+          const academic = student.academic;
           setStudent((prev) => ({
             ...prev,
             name: student.userId.name,
@@ -91,6 +92,7 @@ const Edit = () => {
             bloodGroup: student.bloodGroup,
             idMark1: student.idMark1,
             idMark2: student.idMark2,
+
             fatherName: student.fatherName,
             fatherNumber: student.fatherNumber,
             fatherOccupation: student.fatherOccupation,
@@ -103,6 +105,58 @@ const Edit = () => {
             guardianRelation: student.guardianRelation,
             address: student.address,
             district: student.district,
+
+            acYear: academic.acYear,
+
+            instituteId1: academic.instituteId1,
+            courseId1: academic.courseId1,
+            refNumber1: academic.refNumber1,
+            fees1: academic.fees1,
+            discount1: academic.discount1,
+            finalFees1: academic.finalFees1,
+            paid1: academic.paid1,
+            paidDate1: academic.paidDate1,
+            balance1: academic.balance1,
+
+            instituteId2: academic.instituteId2,
+            courseId2: academic.courseId2,
+            refNumber2: academic.refNumber2,
+            fees2: academic.fees2,
+            discount2: academic.discount2,
+            finalFees2: academic.finalFees2,
+            paid2: academic.paid2,
+            paidDate2: academic.paidDate2,
+            balance2: academic.balance2,
+
+            instituteId3: academic.instituteId3,
+            courseId3: academic.courseId3,
+            refNumber3: academic.refNumber3,
+            fees3: academic.fees3,
+            discount3: academic.discount3,
+            finalFees3: academic.finalFees3,
+            paid3: academic.paid3,
+            paidDate3: academic.paidDate3,
+            balance3: academic.balance3,
+
+            instituteId4: academic.instituteId4,
+            courseId4: academic.courseId4,
+            refNumber4: academic.refNumber4,
+            fees4: academic.fees4,
+            discount4: academic.discount4,
+            finalFees4: academic.finalFees4,
+            paid4: academic.paid4,
+            paidDate4: academic.paidDate4,
+            balance4: academic.balance4,
+
+            instituteId5: academic.instituteId5,
+            courseId5: academic.courseId5,
+            refNumber5: academic.refNumber5,
+            fees5: academic.fees5,
+            discount5: academic.discount5,
+            finalFees5: academic.finalFees5,
+            paid5: academic.paid5,
+            paidDate5: academic.paidDate5,
+            balance5: academic.balance5,
           }));
         }
       } catch (error) {
@@ -217,7 +271,7 @@ const Edit = () => {
                   <input
                     type="date"
                     name="doa"
-                    value={student.doa}
+                    value={moment(new Date(student.doa)).format("YYYY-MM-DD")}
                     onChange={handleChange}
                     //    placeholder="DOB"
                     className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
@@ -236,7 +290,7 @@ const Edit = () => {
                   <input
                     type="date"
                     name="dob"
-                    value={student.dob}
+                    value={moment(new Date(student.dob)).format("YYYY-MM-DD")}
                     onChange={handleChange}
                     //    placeholder="DOB"
                     className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
@@ -680,7 +734,7 @@ const Edit = () => {
                     <input
                       type="date"
                       name="paidDate1"
-                      value={student.paidDate1}
+                      value={moment(new Date(student.paidDate1)).format("YYYY-MM-DD")}
                       onChange={handleChange}
                       //    placeholder="DOB"
                       className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
@@ -844,7 +898,7 @@ const Edit = () => {
                     <input
                       type="date"
                       name="paidDate2"
-                      value={student.paidDate2}
+                      value={moment(new Date(student.paidDate2)).format("YYYY-MM-DD")}
                       onChange={handleChange}
                       //    placeholder="DOB"
                       className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
@@ -1008,7 +1062,7 @@ const Edit = () => {
                     <input
                       type="date"
                       name="paidDate3"
-                      value={student.paidDate3}
+                      value={moment(new Date(student.paidDate3)).format("YYYY-MM-DD")}
                       onChange={handleChange}
                       //    placeholder="DOB"
                       className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
@@ -1172,7 +1226,7 @@ const Edit = () => {
                     <input
                       type="date"
                       name="paidDate4"
-                      value={student.paidDate4}
+                      value={moment(new Date(student.paidDate4)).format("YYYY-MM-DD")}
                       onChange={handleChange}
                       //    placeholder="DOB"
                       className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
@@ -1336,7 +1390,7 @@ const Edit = () => {
                     <input
                       type="date"
                       name="paidDate5"
-                      value={student.paidDate5}
+                      value={moment(new Date(student.paidDate5)).format("YYYY-MM-DD")}
                       onChange={handleChange}
                       //    placeholder="DOB"
                       className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
