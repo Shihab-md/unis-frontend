@@ -131,7 +131,7 @@ const Add = () => {
 
               {/* Roll Number (Email) */}
               <div>
-                <label className="block text-sm font-medium text-gray-700">
+                <label className="block mt-2 text-sm font-medium text-gray-700">
                   Roll Number <span className="text-red-700">*</span>
                 </label>
                 <input
@@ -399,6 +399,8 @@ const Add = () => {
               </div>
 
               <div className="flex space-x-3 mb-5" />
+              <div className="flex space-x-3 mb-5" />
+              <div className="flex space-x-3 mb-5" />
 
               {/* Academic Year */}
               <div>
@@ -420,6 +422,8 @@ const Add = () => {
                 </select>
               </div>
 
+              <div className="flex space-x-3 mb-5" />
+              <div className="flex space-x-3 mb-5" />
               <div className="flex space-x-3 mb-5" />
 
               {/* Institute 1 --------------------------------------------- */}
@@ -570,7 +574,7 @@ const Add = () => {
 
               <div className="flex space-x-3 mb-5" />
               <div className="flex space-x-3 mb-5" />
-              
+
               {/* Image Upload */}
               <div>
                 <label className="block text-sm font-medium text-gray-700">
