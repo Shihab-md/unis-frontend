@@ -12,7 +12,7 @@ const List = () => {
   const [schools, setSchools] = useState([])
   const [schLoading, setSchLoading] = useState(false)
   const [filteredSchool, setFilteredSchools] = useState(null)
-  const actionsMemo = React.useMemo(() => <Export onExport={() => downloadCSV(data)} />, []);
+  const actionsMemo = React.useMemo(() => <Export onExport={() => downloadCSV(filteredSchool)} />, []);
 
   useEffect(() => {
 
