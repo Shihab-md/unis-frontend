@@ -38,7 +38,7 @@ const View = () => {
       {academicYear ? (
         <div className="max-w-3xl mx-auto mt-2 bg-white p-8 rounded-md shadow-md">
           <div className="flex py-2 px-4 items-center justify-center bg-teal-700 text-white rounded-lg shadow-lg">
-            <h2 className="text-xl font-semibold items-center justify-center">AcademicYear Details</h2>
+            <h2 className="text-xl font-semibold items-center justify-center">Academic Year Details</h2>
             <Link to="/admin-dashboard/academicYears" >
               <FaRegTimesCircle className="text-2xl ml-7 text-red-700 bg-gray-200 rounded-xl shadow-md items-center justify-end" />
             </Link>

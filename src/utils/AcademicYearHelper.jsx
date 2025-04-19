@@ -16,13 +16,13 @@ export const columns = [
     name: "Academic year",
     selector: (row) => row.acYear,
     sortable: true,
-    width: "120px",
+    width: "190px",
   }, 
   {
     name: "Description",
     selector: (row) => row.desc,
     sortable: true,
-    width: "160px",
+    width: "250px",
   },
   {
     name: "New Admissions #",
