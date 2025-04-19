@@ -9,7 +9,7 @@ import {
   FaUserFriends,
   FaUsers,
   FaHouseUser,
-  FaClipboardList, FaTasks, 
+  FaClipboardList, FaTasks, FaCalendarAlt, 
   FaRupeeSign, FaMedal, FaFileContract,
 } from "react-icons/fa";
 import axios from 'axios'
@@ -105,6 +105,14 @@ const AdminSummary = () => {
             text="Exams"
             number={summary.totalEmployees}
             color="bg-emerald-700"
+          />
+        </Link>
+        <Link to="/admin-dashboard/academicYears" >
+          <SummaryCard
+            icon={<FaCalendarAlt />}
+            text="AC Year"
+            number={summary.totalEmployees}
+            color="bg-blue-700"
           />
         </Link>
         <Link to="#" >
