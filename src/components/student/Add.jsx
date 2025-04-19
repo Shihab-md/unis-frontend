@@ -129,20 +129,6 @@ const Add = () => {
                 </select>
               </div>
 
-              {/* Name */}
-              <div>
-                <label className="block mt-2 text-sm font-medium text-gray-700">
-                  Name <span className="text-red-700">*</span>
-                </label>
-                <input
-                  type="text"
-                  name="name"
-                  onChange={handleChange}
-                  className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-                  required
-                />
-              </div>
-
               {/* Roll Number (Email) */}
               <div>
                 <label className="block text-sm font-medium text-gray-700">
@@ -151,6 +137,20 @@ const Add = () => {
                 <input
                   type="text"
                   name="rollNumber"
+                  onChange={handleChange}
+                  className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                  required
+                />
+              </div>
+
+              {/* Name */}
+              <div>
+                <label className="block mt-2 text-sm font-medium text-gray-700">
+                  Name <span className="text-red-700">*</span>
+                </label>
+                <input
+                  type="text"
+                  name="name"
                   onChange={handleChange}
                   className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                   required
@@ -171,6 +171,9 @@ const Add = () => {
                   required
                 />
               </div>
+
+              <div className="flex space-x-3 mb-5" />
+              <div className="flex space-x-3 mb-5" />
 
               {/* Date of Birth */}
               <div>
@@ -263,6 +266,9 @@ const Add = () => {
                 //    required
                 />
               </div>
+
+              <div className="flex space-x-3 mb-5" />
+              <div className="flex space-x-3 mb-5" />
 
               {/* Father's Name */}
               <div>
@@ -392,6 +398,9 @@ const Add = () => {
                 />
               </div>
 
+              <div className="flex space-x-3 mb-5" />
+              <div className="flex space-x-3 mb-5" />
+
               {/* Academic Year */}
               <div>
                 <label className="block mt-2 text-sm font-medium text-gray-700">
@@ -412,6 +421,9 @@ const Add = () => {
                 </select>
               </div>
 
+              <div className="flex space-x-3 mb-5" />
+              <div className="flex space-x-3 mb-5" />
+              
               {/* Institute 1 --------------------------------------------- */}
               <div>
                 <label className="block mt-2 text-sm font-medium text-gray-700">
