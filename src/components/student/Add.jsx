@@ -471,8 +471,8 @@ const Add = () => {
 
               <div className="flex space-x-3 mb-5" />
               <div className="flex space-x-3 mt-5" >
-                <label className="block mt-2 text-sm font-bold text-gray-400">
-                  *****   COURSE-1   *****
+                <label className="block mt-2 text-sm font-bold text-gray-400 justify-center">
+                  *****   SELECT COURSE-1   *****
                 </label>
               </div>
               <div className="flex space-x-3 mb-5" />
