@@ -59,21 +59,12 @@ const List = () => {
   }, []);
 
   const handleFilter = (e) => {
-    const schoolsWithName = schools.filter((sup) => (
-
-      sup.nameEnglish != null && sup.nameEnglish != ''
-
+    const records = schools.filter((sup) => (
+      sup.code.toLowerCase().includes(e.target.value.toLowerCase())
     ))
-
-    const records = schoolsWithName.filter((sup) => (
-
-      sup.nameEnglish.toLowerCase().includes(e.target.value.toLowerCase())
-
-    )
-    )
     setFilteredSchools(records)
   }
-
+  
   if (!filteredSchool) {
     return <div>Loading ...</div>
   }
@@ -89,7 +80,7 @@ const List = () => {
         </Link>
         <input
           type="text"
-          placeholder="Seach By Niswan"
+          placeholder="Seach By Niswan Code"
           className="px-4 py-0.5 border rounded shadow-lg"
           onChange={handleFilter}
         />
