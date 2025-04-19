@@ -112,7 +112,7 @@ const AdminSummary = () => {
             icon={<FaCalendarAlt />}
             text="AC Year"
             number={summary.totalAcademicYears}
-            color="bg-blue-700"
+            color="bg-blue-800"
           />
         </Link>
         <Link to="#" >
