@@ -239,7 +239,7 @@ const Add = () => {
               {/* Identification Mark-1 */}
               <div>
                 <label className="block text-sm font-medium text-gray-700">
-                  Identification Mark-1
+                  Identification Mark-1 <span className="text-red-700">*</span>
                 </label>
                 <input
                   type="text"
@@ -380,7 +380,7 @@ const Add = () => {
               {/* State / District */}
               <div>
                 <label className="block text-sm font-medium text-gray-700">
-                  State / District
+                  State / District <span className="text-red-700">*</span>
                 </label>
                 <input
                   type="text"
