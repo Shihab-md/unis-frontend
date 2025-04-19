@@ -428,7 +428,7 @@ const Add = () => {
               </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-1 gap-4">
+            <div className="grid mt-3 grid-cols-1 md:grid-cols-1 gap-4 ">
               {/* Address */}
               <div>
                 <label className="block text-sm font-medium text-gray-700">
@@ -451,7 +451,7 @@ const Add = () => {
 
               {/* Academic Year */}
               <div>
-                <label className="block mt-2 text-sm font-medium text-gray-700">
+                <label className="block mt-2 text-sm font-medium text-gray-700 bg-blue-300">
                   Select Academic Year <span className="text-red-700">*</span>
                 </label>
                 <select
