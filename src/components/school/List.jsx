@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { columns, SchoolButtons } from '../../utils/SchoolHelper'
 import DataTable from 'react-data-table-component'
-import Export from "react-data-table-component"
 import axios from 'axios'
 import {
   FaPlusSquare, FaArrowAltCircleLeft
@@ -12,7 +11,6 @@ const List = () => {
   const [schools, setSchools] = useState([])
   const [schLoading, setSchLoading] = useState(false)
   const [filteredSchool, setFilteredSchools] = useState(null)
-  const actionsMemo = React.useMemo(() => <Export onExport={() => downloadCSV(filteredSchool)} />, []);
 
   useEffect(() => {
 
@@ -61,12 +59,9 @@ const List = () => {
   }, []);
 
   const handleFilter = (e) => {
-
-    const records = schools.filter((sch) => (
-      sch.name.toLowerCase().includes(e.target.value.toLowerCase())
+    const records = schools.filter((sup) => (
+      sup.name.toLowerCase().includes(e.target.value.toLowerCase())
     ))
-
-
     setFilteredSchools(records)
   }
 
