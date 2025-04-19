@@ -61,7 +61,7 @@ const List = () => {
   const handleFilter = (e) => {
     const schoolsWithName = schools.filter((sup) => (
 
-      sup.nameEnglish(Boolean)
+      sup.nameEnglish != null && sup.nameEnglish != ''
 
     ))
 
