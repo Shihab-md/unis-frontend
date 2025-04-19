@@ -61,7 +61,7 @@ const List = () => {
   const handleFilter = (e) => {
     const records = schools.filter((sup) => {
 
-      if (sup.code != null) {
+      if (sup.code) {
         sup.code.toLowerCase().includes(e.target.value.toLowerCase())
       }
     }
