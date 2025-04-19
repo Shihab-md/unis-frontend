@@ -13,27 +13,28 @@ export const columns = [
     width: "60px",
   },
   {
+    name: "Roll Number",
+    selector: (row) => row.rollNumber,
+    sortable: true,
+    width: "160px",
+  },
+  {
     name: "Name",
     selector: (row) => row.name,
     sortable: true,
     width: "250px",
   },
   {
-    name: "Role",
-    selector: (row) => row.role,
-    sortable: true,
-    width: "160px",
-  },
-  {
-    name: "Contact Number",
-    selector: (row) => row.contactNumber,
-    width: "190px",
-  },
-  {
-    name: "Niswan",
+    name: "Niswan Name",
     selector: (row) => row.schoolName,
     sortable: true,
-    width: "320px",
+    width: "250px",
+  },
+  {
+    name: "State / District",
+    selector: (row) => row.district,
+    sortable: true,
+    width: "190px",
   },
   {
     name: "Action",
@@ -42,12 +43,12 @@ export const columns = [
   },
 ];
 
-// employees for salary form
-export const getEmployees = async (id) => {
-  let employees;
+// students for salary form
+export const getSudents = async (id) => {
+  let students;
   try {
     const responnse = await axios.get(
-      `https://unis-server.vercel.app/api/employees/`,
+      `https://unis-server.vercel.app/api/students/`,
       {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -56,17 +57,17 @@ export const getEmployees = async (id) => {
     );
     if (responnse.data.success) {
       alert("Deleted Successfully...");
-      employees = responnse.data.employees;
+      students = responnse.data.students;
     }
   } catch (error) {
     if (error.response && !error.response.data.success) {
       alert(error.response.data.error);
     }
   }
-  return employees;
+  return students;
 };
 
-export const EmployeeButtons = ({ Id, onEmployeeDelete }) => {
+export const SudentButtons = ({ Id, onSudentDelete }) => {
   const navigate = useNavigate();
 
   const handleDelete = async (id) => {
@@ -74,7 +75,7 @@ export const EmployeeButtons = ({ Id, onEmployeeDelete }) => {
     if (confirm) {
       try {
         const responnse = await axios.delete(
-          `https://unis-server.vercel.app/api/employee/${id}`,
+          `https://unis-server.vercel.app/api/student/${id}`,
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -83,7 +84,7 @@ export const EmployeeButtons = ({ Id, onEmployeeDelete }) => {
         );
         if (responnse.data.success) {
           alert("Deleted Successfully...");
-          onEmployeeDelete();
+          onSudentDelete();
         }
       } catch (error) {
         if (error.response && !error.response.data.success) {
@@ -97,13 +98,13 @@ export const EmployeeButtons = ({ Id, onEmployeeDelete }) => {
     <div className="flex space-x-3">
       <button
         className="px-3 py-1 bg-teal-600 text-white rounded-sm text-shadow-lg"
-        onClick={() => navigate(`/admin-dashboard/employees/${Id}`)}
+        onClick={() => navigate(`/admin-dashboard/students/${Id}`)}
       >
         <FaEye />
       </button>
       <button
         className="px-3 py-1 bg-blue-600 text-white rounded-sm text-shadow-lg"
-        onClick={() => navigate(`/admin-dashboard/employees/edit/${Id}`)}
+        onClick={() => navigate(`/admin-dashboard/students/edit/${Id}`)}
       >
         <FaEdit />
       </button>

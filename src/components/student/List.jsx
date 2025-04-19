@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { columns, EmployeeButtons } from '../../utils/EmployeeHelper'
+import { columns, SudentButtons } from '../../utils/SudentHelper'
 import DataTable from 'react-data-table-component'
 import axios from 'axios'
 import {
@@ -8,22 +8,22 @@ import {
 } from "react-icons/fa";
 
 const List = () => {
-  const [employees, setEmployees] = useState([])
+  const [students, setSudents] = useState([])
   const [supLoading, setSupLoading] = useState(false)
-  const [filteredEmployee, setFilteredEmployees] = useState(null)
+  const [filteredSudent, setFilteredSudents] = useState(null)
   const navigate = useNavigate()
 
   useEffect(() => {
 
-    const onEmployeeDelete = () => {
-      fetchEmployees()
+    const onSudentDelete = () => {
+      fetchSudents()
     }
 
-    const fetchEmployees = async () => {
+    const fetchSudents = async () => {
       setSupLoading(true)
       try {
         const responnse = await axios.get(
-          "https://unis-server.vercel.app/api/employee",
+          "https://unis-server.vercel.app/api/student",
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -32,20 +32,19 @@ const List = () => {
         );
         if (responnse.data.success) {
           let sno = 1;
-          const data = await responnse.data.employees.map((sup) => ({
+          const data = await responnse.data.students.map((sup) => ({
             _id: sup._id,
             sno: sno++,
             name: sup.userId.name,
-            role: sup.userId.role,
-            contactNumber: sup.contactNumber,
             schoolName: sup.schoolId.nameEnglish,
-            designation: sup.designation,
+            rollNumber: sup.rollNumber,
+            district: sup.district,
             //dob: new Date(sup.dob).toLocaleDateString(),
             profileImage: <img width={40} className='rounded-full' src={`https://unis-server.vercel.app/${sup.userId.profileImage}`} />,
-            action: (<EmployeeButtons Id={sup._id} onEmployeeDelete={onEmployeeDelete} />),
+            action: (<SudentButtons Id={sup._id} onSudentDelete={onSudentDelete} />),
           }));
-          setEmployees(data);
-          setFilteredEmployees(data)
+          setSudents(data);
+          setFilteredSudents(data)
         }
       } catch (error) {
         console.log(error.message)
@@ -58,24 +57,24 @@ const List = () => {
       }
     };
 
-    fetchEmployees();
+    fetchSudents();
   }, []);
 
   const handleFilter = (e) => {
-    const records = employees.filter((sup) => (
+    const records = students.filter((sup) => (
       sup.name.toLowerCase().includes(e.target.value.toLowerCase())
     ))
-    setFilteredEmployees(records)
+    setFilteredSudents(records)
   }
 
-  if (!filteredEmployee) {
+  if (!filteredSudent) {
     return <div>Loading ...</div>
   }
 
   return (
     <div className="mt-3 p-5">
       <div className="text-center">
-        <h3 className="text-2xl font-bold px-5 py-0">Manage Employees</h3>
+        <h3 className="text-2xl font-bold px-5 py-0">Manage Sudents</h3>
       </div>
       <div className="flex justify-between items-center mt-5">
         <Link to="/admin-dashboard" >
@@ -83,16 +82,16 @@ const List = () => {
         </Link>
         <input
           type="text"
-          placeholder="Seach By Employee"
+          placeholder="Seach By Sudent"
           className="px-4 py-0.5 border rounded shadow-lg"
           onChange={handleFilter}
         />
-        <Link to="/admin-dashboard/add-employee" >
+        <Link to="/admin-dashboard/add-student" >
           <FaPlusSquare className="text-2xl bg-teal-700 text-white rounded shadow-lg" />
         </Link>
       </div>
       <div className='mt-6 rounded-lg shadow-lg'>
-        <DataTable columns={columns} data={filteredEmployee} pagination />
+        <DataTable columns={columns} data={filteredSudent} pagination />
       </div>
     </div>
   )

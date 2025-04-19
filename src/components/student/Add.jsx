@@ -2,6 +2,9 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
 import { getSchools } from '../../utils/SchoolHelper'
+import { getAcademicYears } from '../../utils/AcademicYearHelper'
+import { getInstitutes } from '../../utils/InstituteHelper'
+import { getCourses } from '../../utils/CourseHelper'
 import {
   FaRegTimesCircle
 } from "react-icons/fa";
@@ -10,6 +13,9 @@ const Add = () => {
 
   const [formData, setFormData] = useState({});
   const [schools, setSchools] = useState([]);
+  const [academicYears, setAcademicYears] = useState([]);
+  const [institutes, setInstitutes] = useState([]);
+  const [courses, setCourses] = useState([]);
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -18,6 +24,30 @@ const Add = () => {
       setSchools(schools);
     };
     getSchoolsMap();
+  }, []);
+
+  useEffect(() => {
+    const getAcademicYearsMap = async (id) => {
+      const academicYears = await getAcademicYears(id);
+      setAcademicYears(academicYears);
+    };
+    getAcademicYearsMap();
+  }, []);
+
+  useEffect(() => {
+    const getInstitutesMap = async (id) => {
+      const institutes = await getInstitutes(id);
+      setInstitutes(institutes);
+    };
+    getInstitutesMap();
+  }, []);
+
+  useEffect(() => {
+    const getCoursesMap = async (id) => {
+      const courses = await getCourses(id);
+      setCourses(courses);
+    };
+    getCoursesMap();
   }, []);
 
   const handleChange = (e) => {
@@ -69,7 +99,7 @@ const Add = () => {
     <>
       <div className="max-w-4xl mx-auto mt-2 bg-white p-5 rounded-md shadow-md">
         <div className="flex py-2 px-4 items-center justify-center bg-teal-700 text-white rounded-lg shadow-lg">
-          <h2 className="text-xl font-semibold items-center justify-center">Enter Staff Details</h2>
+          <h2 className="text-xl font-semibold items-center justify-center">Enter Student Details</h2>
           <Link to="/admin-dashboard/students" >
             <FaRegTimesCircle className="text-2xl ml-7 text-red-700 bg-gray-200 rounded-xl shadow-md items-center justify-end" />
           </Link>
@@ -78,6 +108,7 @@ const Add = () => {
         <form onSubmit={handleSubmit}>
           <div className="py-2 px-4 border mt-5 mb-3 items-center justify-center rounded-lg shadow-lg">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+
               {/* School */}
               <div>
                 <label className="block mt-2 text-sm font-medium text-gray-700">
@@ -112,13 +143,13 @@ const Add = () => {
                 />
               </div>
 
-              {/* Email */}
+              {/* Roll Number (Email) */}
               <div>
                 <label className="block text-sm font-medium text-gray-700">
-                  Email <span className="text-red-700">*</span>
+                  Roll Number <span className="text-red-700">*</span>
                 </label>
                 <input
-                  type="email"
+                  type="text"
                   name="email"
                   onChange={handleChange}
                   className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
@@ -126,92 +157,16 @@ const Add = () => {
                 />
               </div>
 
-              {/* Student ID */}
+              {/* Date of Addmission */}
               <div>
                 <label className="block text-sm font-medium text-gray-700">
-                  Student ID <span className="text-red-700">*</span>
+                  Date of Addmission <span className="text-red-700">*</span>
                 </label>
                 <input
-                  type="text"
-                  name="studentId"
+                  type="date"
+                  name="doa"
                   onChange={handleChange}
-                  className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-                  required
-                />
-              </div>
-
-              {/* Role */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700">
-                  Role <span className="text-red-700">*</span>
-                </label>
-                <select
-                  name="role"
-                  onChange={handleChange}
-                  className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-                  required
-                >
-                  <option value="">Select Role</option>
-                  <option value="admin">Admin</option>
-                  <option value="teacher">Teacher</option>
-                </select>
-              </div>
-
-              {/* Contact Number */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700">
-                  Contact Number <span className="text-red-700">*</span>
-                </label>
-                <input
-                  type="number"
-                  name="contactNumber"
-                  onChange={handleChange}
-                  //  placeholder="Contact Number"
-                  className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-                  required
-                />
-              </div>
-
-              {/* Address */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700">
-                  Address <span className="text-red-700">*</span>
-                </label>
-                <input
-                  type="text"
-                  name="address"
-                  onChange={handleChange}
-                  //  placeholder="Address"
-                  className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-                  required
-                />
-              </div>
-
-              {/* Designation */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700">
-                  Designation
-                </label>
-                <input
-                  type="text"
-                  name="designation"
-                  onChange={handleChange}
-                  //  placeholder="Route Name"
-                  className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-                //  required
-                />
-              </div>
-
-              {/* Qualification */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700">
-                  Qualification <span className="text-red-700">*</span>
-                </label>
-                <input
-                  type="text"
-                  name="qualification"
-                  onChange={handleChange}
-                  //    placeholder="Qualification"
+                  //    placeholder="DOB"
                   className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                   required
                 />
@@ -267,50 +222,251 @@ const Add = () => {
                 </select>
               </div>
 
-              {/* Date of Joining */}
+              {/* Blood Group */}
               <div>
                 <label className="block text-sm font-medium text-gray-700">
-                  Date of Joining <span className="text-red-700">*</span>
+                  Blood Group
                 </label>
                 <input
-                  type="date"
-                  name="doj"
+                  type="text"
+                  name="bloodGroup"
                   onChange={handleChange}
-                  //      placeholder="DOJ"
                   className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-                  required
+                //    required
                 />
               </div>
 
-              {/* Salary */}
+              {/* Identification Mark-1 */}
               <div>
                 <label className="block text-sm font-medium text-gray-700">
-                  Salary <span className="text-red-700">*</span>
+                  Identification Mark-1
+                </label>
+                <input
+                  type="text"
+                  name="idMark1"
+                  onChange={handleChange}
+                  className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                //    required
+                />
+              </div>
+
+              {/* Identification Mark-2 */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700">
+                  Identification Mark-2
+                </label>
+                <input
+                  type="text"
+                  name="idMark2"
+                  onChange={handleChange}
+                  className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                //    required
+                />
+              </div>
+
+              {/* Father's Name */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700">
+                  Father's Name
+                </label>
+                <input
+                  type="text"
+                  name="fatherName"
+                  onChange={handleChange}
+                  className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                //    required
+                />
+              </div>
+
+              {/* Father's Number */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700">
+                  Father's Number
                 </label>
                 <input
                   type="number"
-                  name="salary"
+                  name="fatherNumber"
                   onChange={handleChange}
-                  //    placeholder="Salary"
+                  className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                //    required
+                />
+              </div>
+
+              {/* Mother's Name */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700">
+                  Mother's Name
+                </label>
+                <input
+                  type="text"
+                  name="motherName"
+                  onChange={handleChange}
+                  className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                //    required
+                />
+              </div>
+
+              {/* Mother's Number */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700">
+                  Mother's Number
+                </label>
+                <input
+                  type="number"
+                  name="motherNumber"
+                  onChange={handleChange}
+                  className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                //    required
+                />
+              </div>
+
+              {/* Guardian's Name */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700">
+                  Guardian's Name
+                </label>
+                <input
+                  type="text"
+                  name="guardianName"
+                  onChange={handleChange}
+                  className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                //    required
+                />
+              </div>
+
+              {/* Guardian's Number */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700">
+                  Guardian's Number
+                </label>
+                <input
+                  type="number"
+                  name="guardianNumber"
+                  onChange={handleChange}
+                  className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                //    required
+                />
+              </div>
+
+              {/* Guardian's Relationship */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700">
+                  Guardian's Relationship
+                </label>
+                <input
+                  type="text"
+                  name="guardianRelation"
+                  onChange={handleChange}
+                  className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                //    required
+                />
+              </div>
+
+              {/* Address */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700">
+                  Address <span className="text-red-700">*</span>
+                </label>
+                <input
+                  type="text"
+                  name="address"
+                  onChange={handleChange}
+                  //  placeholder="Address"
                   className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                   required
                 />
               </div>
 
-              {/* Password */}
+              {/* State / District */}
               <div>
                 <label className="block text-sm font-medium text-gray-700">
-                  Password <span className="text-red-700">*</span>
+                  State / District
                 </label>
                 <input
-                  type="password"
-                  name="password"
-                  placeholder="******"
+                  type="text"
+                  name="district"
                   onChange={handleChange}
+                  //  placeholder="Route Name"
+                  className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                //  required
+                />
+              </div>
+
+              {/* Academic Year */}
+              <div>
+                <label className="block mt-2 text-sm font-medium text-gray-700">
+                  Select Academic Year <span className="text-red-700">*</span>
+                </label>
+                <select
+                  name="acYear"
+                  onChange={handleChange}
+                  className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                  required
+                >
+                  <option value="">Select Academic Year</option>
+                  {academicYears.map((acYear) => (
+                    <option key={acYear._id} value={acYear._id}>
+                      {acYear.acYear}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              {/* Institute 1 */}
+              <div>
+                <label className="block mt-2 text-sm font-medium text-gray-700">
+                  Select Institute <span className="text-red-700">*</span>
+                </label>
+                <select
+                  name="instituteId1"
+                  onChange={handleChange}
+                  className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                  required
+                >
+                  <option value="">Select Institute</option>
+                  {institutes.map((institute) => (
+                    <option key={institute._id} value={institute._id}>
+                      {institute.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              {/* Course 1 */}
+              <div>
+                <label className="block mt-2 text-sm font-medium text-gray-700">
+                  Select Course <span className="text-red-700">*</span>
+                </label>
+                <select
+                  name="courseId1"
+                  onChange={handleChange}
+                  className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                  required
+                >
+                  <option value="">Select Course</option>
+                  {courses.map((course) => (
+                    <option key={course._id} value={course._id}>
+                      {course.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              {/* Reference Number-1 */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700">
+                  Reference Number <span className="text-red-700">*</span>
+                </label>
+                <input
+                  type="text"
+                  name="refNumber1"
+                  onChange={handleChange}
+                  //    placeholder="Qualification"
                   className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                   required
                 />
               </div>
+
 
               {/* Image Upload */}
               <div>
