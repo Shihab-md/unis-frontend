@@ -45,6 +45,11 @@ import CourseAdd from "./components/course/Add";
 import CourseView from "./components/course/View";
 import CourseEdit from "./components/course/Edit";
 
+import AcademicYearList from "./components/academicYear/List";
+import AcademicYearAdd from "./components/academicYear/Add";
+import AcademicYearView from "./components/academicYear/View";
+import AcademicYearEdit from "./components/academicYear/Edit";
+
 import AddSalary from "./components/salary/Add";
 import ViewSalary from "./components/salary/View";
 import Summary from './components/EmployeeDashboard/Summary'
@@ -125,6 +130,11 @@ function App() {
           <Route path="/admin-dashboard/add-course" element={<CourseAdd />}></Route>
           <Route path="/admin-dashboard/courses/:id" element={<CourseView />}></Route>
           <Route path="/admin-dashboard/courses/edit/:id" element={<CourseEdit />}></Route>
+
+          <Route path="/admin-dashboard/academicYears" element={<AcademicYearList />}></Route>
+          <Route path="/admin-dashboard/add-academicYear" element={<AcademicYearAdd />}></Route>
+          <Route path="/admin-dashboard/academicYears/:id" element={<AcademicYearView />}></Route>
+          <Route path="/admin-dashboard/academicYears/edit/:id" element={<AcademicYearEdit />}></Route>
 
           <Route
             path="/admin-dashboard/salary/add"
