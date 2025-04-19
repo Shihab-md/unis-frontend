@@ -77,9 +77,18 @@ const Edit = () => {
             },
           }
         );
+
         if (responnse.data.success) {
           const student = responnse.data.student;
-          const academic = student.academic;
+          const academic = await axios.get(
+            `https://unis-server.vercel.app/api/student/${student._id}/${'680390ae200583d3d5c01f87'}`,
+            {
+              headers: {
+                Authorization: `Bearer ${localStorage.getItem("token")}`,
+              },
+            }
+          );
+
           setStudent((prev) => ({
             ...prev,
             name: student.userId.name,
