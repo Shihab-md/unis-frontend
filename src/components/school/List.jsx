@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { columns, SchoolButtons } from '../../utils/SchoolHelper'
 import DataTable from 'react-data-table-component'
+import Export from "react-data-table-component"
 import axios from 'axios'
 import {
   FaPlusSquare, FaArrowAltCircleLeft
