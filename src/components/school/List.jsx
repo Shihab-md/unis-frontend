@@ -59,7 +59,13 @@ const List = () => {
   }, []);
 
   const handleFilter = (e) => {
-    const records = schools.filter(Boolean).filter((sup) => (
+    const schoolsWithName = schools.filter((sup) => (
+
+      sup.nameEnglish(Boolean)
+
+    ))
+
+    const records = schoolsWithName.filter((sup) => (
 
       sup.nameEnglish.toLowerCase().includes(e.target.value.toLowerCase())
 
