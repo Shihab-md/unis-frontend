@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { columns, SudentButtons } from '../../utils/SudentHelper'
+import { columns, StudentButtons } from '../../utils/StudentHelper'
 import DataTable from 'react-data-table-component'
 import axios from 'axios'
 import {
