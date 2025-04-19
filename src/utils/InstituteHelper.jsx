@@ -55,7 +55,6 @@ export const getInstitutes = async (id) => {
       }
     );
     if (responnse.data.success) {
-      alert("Deleted Successfully...");
       institutes = responnse.data.institutes;
     }
   } catch (error) {

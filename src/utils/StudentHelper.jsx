@@ -48,7 +48,7 @@ export const getStudents = async (id) => {
   let students;
   try {
     const responnse = await axios.get(
-      `https://unis-server.vercel.app/api/students/`,
+      `https://unis-server.vercel.app/api/student/`,
       {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -56,7 +56,6 @@ export const getStudents = async (id) => {
       }
     );
     if (responnse.data.success) {
-      alert("Deleted Successfully...");
       students = responnse.data.students;
     }
   } catch (error) {

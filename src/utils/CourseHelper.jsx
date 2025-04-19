@@ -59,7 +59,6 @@ export const getCourses = async (id) => {
       }
     );
     if (responnse.data.success) {
-      alert("Deleted Successfully...");
       courses = responnse.data.courses;
     }
   } catch (error) {

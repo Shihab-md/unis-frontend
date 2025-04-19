@@ -54,7 +54,6 @@ export const getAcademicYears = async (id) => {
       }
     );
     if (responnse.data.success) {
-      alert("Deleted Successfully...");
       academicYears = responnse.data.academicYears;
     }
   } catch (error) {
