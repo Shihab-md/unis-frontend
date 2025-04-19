@@ -27,6 +27,9 @@ const Edit = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const [schools, setSchools] = useState([]);
+  const [academicYears, setAcademicYears] = useState([]);
+  const [institutes, setInstitutes] = useState([]);
+  const [courses, setCourses] = useState([]);
 
   useEffect(() => {
     const getSchoolsMap = async (id) => {
@@ -34,6 +37,30 @@ const Edit = () => {
       setSchools(schools);
     };
     getSchoolsMap();
+  }, []);
+
+  useEffect(() => {
+    const getAcademicYearsMap = async (id) => {
+      const academicYears = await getAcademicYears(id);
+      setAcademicYears(academicYears);
+    };
+    getAcademicYearsMap();
+  }, []);
+
+  useEffect(() => {
+    const getInstitutesMap = async (id) => {
+      const institutes = await getInstitutes(id);
+      setInstitutes(institutes);
+    };
+    getInstitutesMap();
+  }, []);
+
+  useEffect(() => {
+    const getCoursesMap = async (id) => {
+      const courses = await getCourses(id);
+      setCourses(courses);
+    };
+    getCoursesMap();
   }, []);
 
   useEffect(() => {
