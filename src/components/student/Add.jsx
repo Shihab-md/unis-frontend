@@ -246,7 +246,7 @@ const Add = () => {
                   name="idMark1"
                   onChange={handleChange}
                   className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-                //    required
+                  required
                 />
               </div>
 
@@ -274,7 +274,7 @@ const Add = () => {
                   name="fatherName"
                   onChange={handleChange}
                   className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-                  required
+                //  required
                 />
               </div>
 
@@ -288,7 +288,7 @@ const Add = () => {
                   name="fatherNumber"
                   onChange={handleChange}
                   className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-                  required
+                //  required
                 />
               </div>
 
@@ -388,7 +388,7 @@ const Add = () => {
                   onChange={handleChange}
                   //  placeholder="Route Name"
                   className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-                //  required
+                  required
                 />
               </div>
 
