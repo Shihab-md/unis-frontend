@@ -61,7 +61,7 @@ const List = () => {
   const handleFilter = (e) => {
     const records = schools.filter((sup) => (
 
-        sup.code?.toLowerCase().includes(e.target.value.toLowerCase())
+        sup.nameEnglish?.toLowerCase().includes(e.target.value.toLowerCase())
     )
     )
     setFilteredSchools(records)
