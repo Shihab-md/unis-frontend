@@ -75,11 +75,11 @@ const AdminSummary = () => {
             color="bg-cyan-600"
           />
         </Link>
-        <Link to="#" >
+        <Link to="/admin-dashboard/students" >
           <SummaryCard
             icon={<FaUsers />}
             text="Students"
-            number={summary.totalEmployees}
+            number={summary.totalStudents}
             color="bg-blue-500"
           />
         </Link>
@@ -111,7 +111,7 @@ const AdminSummary = () => {
           <SummaryCard
             icon={<FaCalendarAlt />}
             text="AC Year"
-            number={summary.totalEmployees}
+            number={summary.totalAcademicYears}
             color="bg-blue-700"
           />
         </Link>
