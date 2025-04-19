@@ -607,7 +607,7 @@ const Edit = () => {
 
                 <div className="flex space-x-3 mb-5" />
                 <div className="flex space-x-3 mt-5 justify-center" >
-                  <label className="block mt-2 text-sm font-bold text-gray-400">
+                  <label className="block mt-2 text-sm font-bold text-blue-500">
                     *****   SELECT COURSE-1   *****
                   </label>
                 </div>
@@ -771,7 +771,7 @@ const Edit = () => {
                 <div className="flex space-x-3 mb-5" />
                 <div className="flex space-x-3 mb-5" />
                 <div className="flex space-x-3 mt-5 justify-center" >
-                  <label className="block mt-2 text-sm font-bold text-gray-400">
+                  <label className="block mt-2 text-sm font-bold text-blue-500">
                     *****   SELECT COURSE-2   *****
                   </label>
                 </div>
@@ -935,7 +935,7 @@ const Edit = () => {
                 <div className="flex space-x-3 mb-5" />
                 <div className="flex space-x-3 mb-5" />
                 <div className="flex space-x-3 mt-5 justify-center" >
-                  <label className="block mt-2 text-sm font-bold text-gray-400">
+                  <label className="block mt-2 text-sm font-bold text-blue-500">
                     *****   SELECT COURSE-3   *****
                   </label>
                 </div>
@@ -1099,7 +1099,7 @@ const Edit = () => {
                 <div className="flex space-x-3 mb-5" />
                 <div className="flex space-x-3 mb-5" />
                 <div className="flex space-x-3 mt-5 justify-center" >
-                  <label className="block mt-2 text-sm font-bold text-gray-400">
+                  <label className="block mt-2 text-sm font-bold text-blue-500">
                     *****   SELECT COURSE-4   *****
                   </label>
                 </div>
@@ -1263,7 +1263,7 @@ const Edit = () => {
                 <div className="flex space-x-3 mb-5" />
                 <div className="flex space-x-3 mb-5" />
                 <div className="flex space-x-3 mt-5 justify-center" >
-                  <label className="block mt-2 text-sm font-bold text-gray-400">
+                  <label className="block mt-2 text-sm font-bold text-blue-500">
                     *****   SELECT COURSE-5   *****
                   </label>
                 </div>
