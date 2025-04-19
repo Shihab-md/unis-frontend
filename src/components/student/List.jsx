@@ -8,18 +8,18 @@ import {
 } from "react-icons/fa";
 
 const List = () => {
-  const [students, setSudents] = useState([])
+  const [students, setStudents] = useState([])
   const [supLoading, setSupLoading] = useState(false)
-  const [filteredSudent, setFilteredSudents] = useState(null)
+  const [filteredStudent, setFilteredStudents] = useState(null)
   const navigate = useNavigate()
 
   useEffect(() => {
 
-    const onSudentDelete = () => {
-      fetchSudents()
+    const onStudentDelete = () => {
+      fetchStudents()
     }
 
-    const fetchSudents = async () => {
+    const fetchStudents = async () => {
       setSupLoading(true)
       try {
         const responnse = await axios.get(
@@ -41,10 +41,10 @@ const List = () => {
             district: sup.district,
             //dob: new Date(sup.dob).toLocaleDateString(),
             profileImage: <img width={40} className='rounded-full' src={`https://unis-server.vercel.app/${sup.userId.profileImage}`} />,
-            action: (<SudentButtons Id={sup._id} onSudentDelete={onSudentDelete} />),
+            action: (<StudentButtons Id={sup._id} onStudentDelete={onStudentDelete} />),
           }));
-          setSudents(data);
-          setFilteredSudents(data)
+          setStudents(data);
+          setFilteredStudents(data)
         }
       } catch (error) {
         console.log(error.message)
@@ -57,24 +57,24 @@ const List = () => {
       }
     };
 
-    fetchSudents();
+    fetchStudents();
   }, []);
 
   const handleFilter = (e) => {
     const records = students.filter((sup) => (
       sup.name.toLowerCase().includes(e.target.value.toLowerCase())
     ))
-    setFilteredSudents(records)
+    setFilteredStudents(records)
   }
 
-  if (!filteredSudent) {
+  if (!filteredStudent) {
     return <div>Loading ...</div>
   }
 
   return (
     <div className="mt-3 p-5">
       <div className="text-center">
-        <h3 className="text-2xl font-bold px-5 py-0">Manage Sudents</h3>
+        <h3 className="text-2xl font-bold px-5 py-0">Manage Students</h3>
       </div>
       <div className="flex justify-between items-center mt-5">
         <Link to="/admin-dashboard" >
@@ -82,7 +82,7 @@ const List = () => {
         </Link>
         <input
           type="text"
-          placeholder="Seach By Sudent"
+          placeholder="Seach By Student"
           className="px-4 py-0.5 border rounded shadow-lg"
           onChange={handleFilter}
         />
@@ -91,7 +91,7 @@ const List = () => {
         </Link>
       </div>
       <div className='mt-6 rounded-lg shadow-lg'>
-        <DataTable columns={columns} data={filteredSudent} pagination />
+        <DataTable columns={columns} data={filteredStudent} pagination />
       </div>
     </div>
   )
