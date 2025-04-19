@@ -412,21 +412,6 @@ const Add = () => {
                 />
               </div>
 
-              {/* Address */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700">
-                  Address <span className="text-red-700">*</span>
-                </label>
-                <input
-                  type="text"
-                  name="address"
-                  onChange={handleChange}
-                  //  placeholder="Address"
-                  className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-                  required
-                />
-              </div>
-
               {/* State / District */}
               <div>
                 <label className="block text-sm font-medium text-gray-700">
@@ -443,8 +428,24 @@ const Add = () => {
               </div>
             </div>
 
+            <div className="grid grid-cols-1 md:grid-cols-1 gap-4">
+              {/* Address */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700">
+                  Address <span className="text-red-700">*</span>
+                </label>
+                <input
+                  type="text"
+                  name="address"
+                  onChange={handleChange}
+                  //  placeholder="Address"
+                  className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                  required
+                />
+              </div>
+            </div>
+
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="flex space-x-3 mb-5" />
               <div className="flex space-x-3 mb-5" />
               <div className="flex space-x-3 mb-5" />
 
@@ -468,7 +469,6 @@ const Add = () => {
                 </select>
               </div>
 
-              <div className="flex space-x-3 mb-5" />
               <div className="flex space-x-3 mb-5" />
               <div className="flex space-x-3 mb-5" />
 
