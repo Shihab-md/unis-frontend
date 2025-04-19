@@ -63,7 +63,7 @@ const List = () => {
 
   const handleFilter = (e) => {
     const records = employees.filter((sup) => (
-      sup.userId.name.toLowerCase().includes(e.target.value.toLowerCase())
+      sup.name.toLowerCase().includes(e.target.value.toLowerCase())
     ))
     setFilteredEmployees(records)
   }
