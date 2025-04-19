@@ -59,12 +59,20 @@ const List = () => {
   }, []);
 
   const handleFilter = (e) => {
-    const records = schools.filter((sup) => (
-      sup.name.toLowerCase().includes(e.target.value.toLowerCase())
-    ))
+    let finalValue;
+    let byName;
+
+    const records = schools.filter((sup) => ({
+
+      byName: sup.name.toLowerCase().includes(e.target.value.toLowerCase()),
+
+      if(byName) {
+        records = byName
+      }
+    }))
     setFilteredSchools(records)
   }
-  
+
   if (!filteredSchool) {
     return <div>Loading ...</div>
   }
