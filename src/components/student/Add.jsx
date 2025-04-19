@@ -471,6 +471,7 @@ const Add = () => {
 
               <div className="flex space-x-3 mb-5" />
               <div className="flex space-x-3 mb-5" />
+              <div className="flex space-x-3 mb-5" />
 
               {/* Institute 1 --------------------------------------------- */}
               <div>
