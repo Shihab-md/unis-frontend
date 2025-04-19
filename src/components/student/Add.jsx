@@ -159,7 +159,7 @@ const Add = () => {
 
               {/* Date of Addmission */}
               <div>
-                <label className="block text-sm font-medium text-gray-700">
+                <label className="block mt-2 text-sm font-medium text-gray-700">
                   Date of Addmission <span className="text-red-700">*</span>
                 </label>
                 <input
