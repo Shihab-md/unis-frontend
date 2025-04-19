@@ -44,7 +44,7 @@ export const columns = [
 ];
 
 // students for salary form
-export const getSudents = async (id) => {
+export const getStudents = async (id) => {
   let students;
   try {
     const responnse = await axios.get(
@@ -67,7 +67,7 @@ export const getSudents = async (id) => {
   return students;
 };
 
-export const SudentButtons = ({ Id, onSudentDelete }) => {
+export const StudentButtons = ({ Id, onStudentDelete }) => {
   const navigate = useNavigate();
 
   const handleDelete = async (id) => {
@@ -84,7 +84,7 @@ export const SudentButtons = ({ Id, onSudentDelete }) => {
         );
         if (responnse.data.success) {
           alert("Deleted Successfully...");
-          onSudentDelete();
+          onStudentDelete();
         }
       } catch (error) {
         if (error.response && !error.response.data.success) {
