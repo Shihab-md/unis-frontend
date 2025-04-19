@@ -399,7 +399,6 @@ const Add = () => {
               </div>
 
               <div className="flex space-x-3 mb-5" />
-              <div className="flex space-x-3 mb-5" />
 
               {/* Academic Year */}
               <div>
@@ -422,8 +421,7 @@ const Add = () => {
               </div>
 
               <div className="flex space-x-3 mb-5" />
-              <div className="flex space-x-3 mb-5" />
-              
+
               {/* Institute 1 --------------------------------------------- */}
               <div>
                 <label className="block mt-2 text-sm font-medium text-gray-700">
@@ -570,6 +568,9 @@ const Add = () => {
                 </div>
               </div>
 
+              <div className="flex space-x-3 mb-5" />
+              <div className="flex space-x-3 mb-5" />
+              
               {/* Image Upload */}
               <div>
                 <label className="block text-sm font-medium text-gray-700">
