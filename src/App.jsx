@@ -30,10 +30,10 @@ import Add from "./components/employee/Add";
 import View from "./components/employee/View";
 import Edit from "./components/employee/Edit";
 
-import List from "./components/student/List";
-import Add from "./components/student/Add";
-import View from "./components/student/View";
-import Edit from "./components/student/Edit";
+import StudentList from "./components/student/List";
+import StudentAdd from "./components/student/Add";
+import StudentView from "./components/student/View";
+import StudentEdit from "./components/student/Edit";
 
 import InstituteList from "./components/institute/List";
 import InstituteAdd from "./components/institute/Add";
@@ -116,10 +116,10 @@ function App() {
             element={<ViewSalary />}
           ></Route>
 
-          <Route path="/admin-dashboard/students" element={<List />}></Route>
-          <Route path="/admin-dashboard/add-student" element={<Add />}></Route>
-          <Route path="/admin-dashboard/students/:id" element={<View />}></Route>
-          <Route path="/admin-dashboard/students/edit/:id" element={<Edit />}></Route>
+          <Route path="/admin-dashboard/students" element={<StudentList />}></Route>
+          <Route path="/admin-dashboard/add-student" element={<StudentAdd />}></Route>
+          <Route path="/admin-dashboard/students/:id" element={<StudentView />}></Route>
+          <Route path="/admin-dashboard/students/edit/:id" element={<StudentEdit />}></Route>
 
           <Route path="/admin-dashboard/institutes" element={<InstituteList />}></Route>
           <Route path="/admin-dashboard/add-institute" element={<InstituteAdd />}></Route>
