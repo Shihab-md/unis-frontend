@@ -11,6 +11,7 @@ const List = () => {
   const [schools, setSchools] = useState([])
   const [schLoading, setSchLoading] = useState(false)
   const [filteredSchool, setFilteredSchools] = useState(null)
+  const actionsMemo = React.useMemo(() => <Export onExport={() => downloadCSV(data)} />, []);
 
   useEffect(() => {
 
@@ -89,7 +90,7 @@ const List = () => {
         </Link>
       </div>
       <div className='mt-6 rounded-lg shadow-lg'>
-        <DataTable columns={columns} data={filteredSchool} pagination highlightOnHover stripedRows />
+        <DataTable columns={columns} data={filteredSchool} pagination highlightOnHover actions={actionsMemo} />
       </div>
     </div>
   )
