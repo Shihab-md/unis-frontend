@@ -273,14 +273,14 @@ const Add = () => {
             {/* Subject-4 */}
             <div>
               <label className="block text-sm font-medium text-gray-700">
-                Subject-4 <span className="text-red-700">*</span>
+                Subject-4 
               </label>
               <input
                 type="text"
                 name="subject4"
                 onChange={handleChange}
                 className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-                required
+              //  required
               />
             </div>
 
@@ -288,28 +288,28 @@ const Add = () => {
               {/* Subject-4 Max Marks */}
               <div>
                 <label className="block text-sm font-medium text-gray-700">
-                  Max Marks <span className="text-red-700">*</span>
+                  Max Marks
                 </label>
                 <input
                   type="number"
                   name="subject4MaxMark"
                   onChange={handleChange}
                   className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-                  required
+               //   required
                 />
               </div>
 
               {/* Subject-4 Pass Marks */}
               <div>
                 <label className="block text-sm font-medium text-gray-700">
-                  Pass Marks <span className="text-red-700">*</span>
+                  Pass Marks 
                 </label>
                 <input
                   type="number"
                   name="subject4PassMark"
                   onChange={handleChange}
                   className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-                  required
+                //  required
                 />
               </div>
             </div>
@@ -317,14 +317,14 @@ const Add = () => {
             {/* Subject-5 */}
             <div>
               <label className="block text-sm font-medium text-gray-700">
-                Subject-5 <span className="text-red-700">*</span>
+                Subject-5
               </label>
               <input
                 type="text"
                 name="subject5"
                 onChange={handleChange}
                 className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-                required
+             //   required
               />
             </div>
 
@@ -332,28 +332,28 @@ const Add = () => {
               {/* Subject-5 Max Marks */}
               <div>
                 <label className="block text-sm font-medium text-gray-700">
-                  Max Marks <span className="text-red-700">*</span>
+                  Max Marks 
                 </label>
                 <input
                   type="number"
                   name="subject5MaxMark"
                   onChange={handleChange}
                   className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-                  required
+                //  required
                 />
               </div>
 
               {/* Subject-5 Pass Marks */}
               <div>
                 <label className="block text-sm font-medium text-gray-700">
-                  Pass Marks <span className="text-red-700">*</span>
+                  Pass Marks 
                 </label>
                 <input
                   type="number"
                   name="subject5PassMark"
                   onChange={handleChange}
                   className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-                  required
+               //   required
                 />
               </div>
             </div>

@@ -1,6 +1,5 @@
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../context/AuthContext";
 import {
   FaEye,
   FaEdit,
@@ -9,51 +8,32 @@ import {
 
 export const columns = [
   {
-    name: "S.No",
+    name: "S No",
     selector: (row) => row.sno,
     width: "60px",
-  },
-  {
-    name: "Code",
-    /*  name: (
-        <div>
-          Title
-          <input
-            type="text"
-            placeholder="Code"
-            value={row.code}
-            onChange={(e) => onChange(e)}
-            style={{ width: "80%" }}
-          />
-        </div>
-      ),*/
-    selector: (row) => row.code,
-    sortable: true,
-    width: "110px",
   },
   {
     name: "Name",
     selector: (row) => row.name,
     sortable: true,
-    width: "370px",
+    width: "250px",
   },
   {
-    name: "Address, District / State",
-    selector: (row) => row.address + ", " + row.district,
-    sortable: true,
-    width: "190px",
-  },
-  {
-    name: "Supervisor Id",
-    selector: (row) => row.supervisorId,
+    name: "Role",
+    selector: (row) => row.role,
     sortable: true,
     width: "160px",
   },
   {
-    name: "Status",
-    selector: (row) => row.active,
+    name: "Contact Number",
+    selector: (row) => row.contactNumber,
+    width: "190px",
+  },
+  {
+    name: "Niswan",
+    selector: (row) => row.schoolName,
     sortable: true,
-    width: "110px",
+    width: "320px",
   },
   {
     name: "Action",
@@ -62,30 +42,31 @@ export const columns = [
   },
 ];
 
-export const getSchools = async (id) => {
-  let schools;
+// employees for salary form
+export const getEmployees = async (id) => {
+  let employees;
   try {
     const responnse = await axios.get(
-      `https://unis-server.vercel.app/api/school/`,
+      `https://unis-server.vercel.app/api/employees/`,
       {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       }
     );
-    console.log(responnse)
     if (responnse.data.success) {
-      schools = responnse.data.schools;
+      alert("Deleted Successfully...");
+      employees = responnse.data.employees;
     }
   } catch (error) {
     if (error.response && !error.response.data.success) {
       alert(error.response.data.error);
     }
   }
-  return schools;
+  return employees;
 };
 
-export const SchoolButtons = ({ Id, onSchoolDelete }) => {
+export const EmployeeButtons = ({ Id, onEmployeeDelete }) => {
   const navigate = useNavigate();
 
   const handleDelete = async (id) => {
@@ -93,7 +74,7 @@ export const SchoolButtons = ({ Id, onSchoolDelete }) => {
     if (confirm) {
       try {
         const responnse = await axios.delete(
-          `https://unis-server.vercel.app/api/school/${id}`,
+          `https://unis-server.vercel.app/api/employee/${id}`,
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -102,7 +83,7 @@ export const SchoolButtons = ({ Id, onSchoolDelete }) => {
         );
         if (responnse.data.success) {
           alert("Deleted Successfully...");
-          onSchoolDelete();
+          onEmployeeDelete();
         }
       } catch (error) {
         if (error.response && !error.response.data.success) {
@@ -116,13 +97,13 @@ export const SchoolButtons = ({ Id, onSchoolDelete }) => {
     <div className="flex space-x-3">
       <button
         className="px-3 py-1 bg-teal-600 text-white rounded-sm text-shadow-lg"
-        onClick={() => navigate(`/admin-dashboard/schools/${Id}`)}
+        onClick={() => navigate(`/admin-dashboard/employees/${Id}`)}
       >
         <FaEye />
       </button>
       <button
         className="px-3 py-1 bg-blue-600 text-white rounded-sm text-shadow-lg"
-        onClick={() => navigate(`/admin-dashboard/schools/edit/${Id}`)}
+        onClick={() => navigate(`/admin-dashboard/employees/edit/${Id}`)}
       >
         <FaEdit />
       </button>
