@@ -47,7 +47,7 @@ export const getInstitutes = async (id) => {
   let institutes;
   try {
     const responnse = await axios.get(
-      `https://unis-server.vercel.app/api/institutes/`,
+      `https://unis-server.vercel.app/api/institute/`,
       {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,

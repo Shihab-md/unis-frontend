@@ -46,7 +46,7 @@ export const getAcademicYears = async (id) => {
   let academicYears;
   try {
     const responnse = await axios.get(
-      `https://unis-server.vercel.app/api/academicYears/`,
+      `https://unis-server.vercel.app/api/academicYear/`,
       {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,

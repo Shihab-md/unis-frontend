@@ -51,7 +51,7 @@ export const getCourses = async (id) => {
   let courses;
   try {
     const responnse = await axios.get(
-      `https://unis-server.vercel.app/api/courses/`,
+      `https://unis-server.vercel.app/api/course/`,
       {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
