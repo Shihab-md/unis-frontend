@@ -300,6 +300,20 @@ const Add = () => {
                 />
               </div>
 
+              {/* Father's Occupation */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700">
+                  Father's Occupation
+                </label>
+                <input
+                  type="number"
+                  name="fatherOccupation"
+                  onChange={handleChange}
+                  className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                //  required
+                />
+              </div>
+
               {/* Mother's Name */}
               <div>
                 <label className="block text-sm font-medium text-gray-700">
@@ -328,6 +342,20 @@ const Add = () => {
                 />
               </div>
 
+              {/* Mother's Occupation */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700">
+                  Mother's Occupation
+                </label>
+                <input
+                  type="number"
+                  name="motherOccupation"
+                  onChange={handleChange}
+                  className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                //  required
+                />
+              </div>
+
               {/* Guardian's Name */}
               <div>
                 <label className="block text-sm font-medium text-gray-700">
@@ -353,6 +381,20 @@ const Add = () => {
                   onChange={handleChange}
                   className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                 //    required
+                />
+              </div>
+
+              {/* Guardian's Occupation */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700">
+                  Father's Occupation
+                </label>
+                <input
+                  type="number"
+                  name="guardianOccupation"
+                  onChange={handleChange}
+                  className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                //  required
                 />
               </div>
 
