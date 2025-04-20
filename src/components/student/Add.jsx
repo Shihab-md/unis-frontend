@@ -16,8 +16,13 @@ const Add = () => {
   const [academicYears, setAcademicYears] = useState([]);
   const [institutes, setInstitutes] = useState([]);
   const [courses, setCourses] = useState([]);
-  //let courseId1Val, courseId2Val, courseId3Val, courseId4Val, courseId5Val = useState(null);
+
   const [courseId1Val, setCourseId1Val] = useState("");
+  const [courseId2Val, setCourseId2Val] = useState("");
+  const [courseId3Val, setCourseId3Val] = useState("");
+  const [courseId4Val, setCourseId4Val] = useState("");
+  const [courseId5Val, setCourseId5Val] = useState("");
+
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -56,11 +61,15 @@ const Add = () => {
     const { name, value, files } = e.target;
 
     if (name === "courseId1") {
-      alert("Value : " + courseId1Val)
-      alert("Fees : " + courses.filter(course => course._id === value).map(course => course.fees))
-      
       setCourseId1Val(courses.filter(course => course._id === value).map(course => course.fees));
-      alert("Value : " + courseId1Val)
+    } else if (name === "courseId2") {
+      setCourseId2Val(courses.filter(course => course._id === value).map(course => course.fees));
+    } else if (name === "courseId3") {
+      setCourseId3Val(courses.filter(course => course._id === value).map(course => course.fees));
+    } else if (name === "courseId4") {
+      setCourseId4Val(courses.filter(course => course._id === value).map(course => course.fees));
+    } else if (name === "courseId5") {
+      setCourseId5Val(courses.filter(course => course._id === value).map(course => course.fees));
     }
 
     if (name === "image") {
@@ -552,7 +561,7 @@ const Add = () => {
                     type="number"
                     name="fees1"
                     value={courseId1Val}
-                    // disabled={true}
+                    disabled={true}
                     onChange={handleChange}
                     className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                   //    required
@@ -708,6 +717,8 @@ const Add = () => {
                   <input
                     type="number"
                     name="fees2"
+                    value={courseId2Val}
+                    disabled={true}
                     onChange={handleChange}
                     className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                   //    required
@@ -863,6 +874,8 @@ const Add = () => {
                   <input
                     type="number"
                     name="fees3"
+                    value={courseId3Val}
+                    disabled={true}
                     onChange={handleChange}
                     className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                   //    required
@@ -1018,6 +1031,8 @@ const Add = () => {
                   <input
                     type="number"
                     name="fees4"
+                    value={courseId4Val}
+                    disabled={true}
                     onChange={handleChange}
                     className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                   //    required
@@ -1173,6 +1188,8 @@ const Add = () => {
                   <input
                     type="number"
                     name="fees5"
+                    value={courseId5Val}
+                    disabled={true}
                     onChange={handleChange}
                     className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                   //    required
