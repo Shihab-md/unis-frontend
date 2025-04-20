@@ -8,6 +8,7 @@ import {
 const View = () => {
   const { id } = useParams();
   const [student, setStudent] = useState(null);
+  const [academic] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -23,6 +24,18 @@ const View = () => {
         );
         if (responnse.data.success) {
           setStudent(responnse.data.student);
+
+          const academicResponse = await axios.get(
+            `https://unis-server.vercel.app/api/student/${student._id}/${'777'}`,
+            {
+              headers: {
+                Authorization: `Bearer ${localStorage.getItem("token")}`,
+              },
+            }
+          );
+          if (academicResponse.data.success) {
+            academic = academicResponse.data.academic;
+          }
         }
       } catch (error) {
         if (error.response && !error.response.data.success) {
@@ -68,7 +81,9 @@ const View = () => {
                   <p className="font-medium">Name:</p>
                   <p className="font-normal">{student.userId.name}</p>
                 </div>
-                
+
+                <div className="flex space-x-3 mb-5" />
+
                 <div className="flex space-x-3 mb-5">
                   <p className="font-medium">Date of Addmission:</p>
                   <p className="font-normal">{new Date(student.doa).toLocaleDateString()}</p>
@@ -141,8 +156,6 @@ const View = () => {
                   <p className="font-normal">{student.guardianRelation}</p>
                 </div>
 
-
-
                 <div className="flex space-x-3 mb-5">
                   <p className="font-medium">Address:</p>
                   <p className="font-normal">{student.address}</p>
@@ -151,10 +164,229 @@ const View = () => {
                   <p className="font-medium">State / District:</p>
                   <p className="font-normal">{student.district}</p>
                 </div>
-                
-                
-                
-                
+
+                <div className="flex space-x-3 mb-5" />
+
+                <div className="flex space-x-3 mb-5">
+                  <p className="font-medium">Academic Year:</p>
+                  <p className="font-normal">{academic.acYear}</p>
+                </div>
+
+                <div className="flex space-x-3 mb-5" />
+
+                <div className="flex space-x-3 mb-5">
+                  <p className="font-medium">***** COURCE-1 DETAILS</p>
+                  <p className="font-normal"></p>
+                </div>
+                <div className="flex space-x-3 mb-5">
+                  <p className="font-medium">Institute Name:</p>
+                  <p className="font-normal">{academic.instituteId1}</p>
+                </div>
+                <div className="flex space-x-3 mb-5">
+                  <p className="font-medium">Course Name :</p>
+                  <p className="font-normal">{academic.courseId1}</p>
+                </div>
+                <div className="flex space-x-3 mb-5">
+                  <p className="font-medium">Reference Number :</p>
+                  <p className="font-normal">{academic.refNumber1}</p>
+                </div>
+                <div className="flex space-x-3 mb-5">
+                  <p className="font-medium">Fees :</p>
+                  <p className="font-normal">{academic.fees1}</p>
+                </div>
+                <div className="flex space-x-3 mb-5">
+                  <p className="font-medium">Discount :</p>
+                  <p className="font-normal">{academic.discount1}</p>
+                </div>
+                <div className="flex space-x-3 mb-5">
+                  <p className="font-medium">Final Fees :</p>
+                  <p className="font-normal">{academic.finalFees1}</p>
+                </div>
+                <div className="flex space-x-3 mb-5">
+                  <p className="font-medium">Paid :</p>
+                  <p className="font-normal">{academic.paid1}</p>
+                </div>
+                <div className="flex space-x-3 mb-5">
+                  <p className="font-medium">Paid Date  :</p>
+                  <p className="font-normal">{academic.paidDate1}</p>
+                </div>
+                <div className="flex space-x-3 mb-5">
+                  <p className="font-medium">Balance Fees :</p>
+                  <p className="font-normal">{academic.balance1}</p>
+                </div>
+
+                <div className="flex space-x-3 mb-5" />
+
+                <div className="flex space-x-3 mb-5">
+                  <p className="font-medium">***** COURCE-2 DETAILS</p>
+                  <p className="font-normal"></p>
+                </div>
+                <div className="flex space-x-3 mb-5">
+                  <p className="font-medium">Institute Name:</p>
+                  <p className="font-normal">{academic.instituteId2}</p>
+                </div>
+                <div className="flex space-x-3 mb-5">
+                  <p className="font-medium">Course Name :</p>
+                  <p className="font-normal">{academic.courseId2}</p>
+                </div>
+                <div className="flex space-x-3 mb-5">
+                  <p className="font-medium">Reference Number :</p>
+                  <p className="font-normal">{academic.refNumber2}</p>
+                </div>
+                <div className="flex space-x-3 mb-5">
+                  <p className="font-medium">Fees :</p>
+                  <p className="font-normal">{academic.fees2}</p>
+                </div>
+                <div className="flex space-x-3 mb-5">
+                  <p className="font-medium">Discount :</p>
+                  <p className="font-normal">{academic.discount2}</p>
+                </div>
+                <div className="flex space-x-3 mb-5">
+                  <p className="font-medium">Final Fees :</p>
+                  <p className="font-normal">{academic.finalFees2}</p>
+                </div>
+                <div className="flex space-x-3 mb-5">
+                  <p className="font-medium">Paid :</p>
+                  <p className="font-normal">{academic.paid2}</p>
+                </div>
+                <div className="flex space-x-3 mb-5">
+                  <p className="font-medium">Paid Date  :</p>
+                  <p className="font-normal">{academic.paidDate2}</p>
+                </div>
+                <div className="flex space-x-3 mb-5">
+                  <p className="font-medium">Balance Fees :</p>
+                  <p className="font-normal">{academic.balance2}</p>
+                </div>
+
+                <div className="flex space-x-3 mb-5" />
+
+                <div className="flex space-x-3 mb-5">
+                  <p className="font-medium">***** COURCE-3 DETAILS</p>
+                  <p className="font-normal"></p>
+                </div>
+                <div className="flex space-x-3 mb-5">
+                  <p className="font-medium">Institute Name:</p>
+                  <p className="font-normal">{academic.instituteId3}</p>
+                </div>
+                <div className="flex space-x-3 mb-5">
+                  <p className="font-medium">Course Name :</p>
+                  <p className="font-normal">{academic.courseId3}</p>
+                </div>
+                <div className="flex space-x-3 mb-5">
+                  <p className="font-medium">Reference Number :</p>
+                  <p className="font-normal">{academic.refNumber3}</p>
+                </div>
+                <div className="flex space-x-3 mb-5">
+                  <p className="font-medium">Fees :</p>
+                  <p className="font-normal">{academic.fees3}</p>
+                </div>
+                <div className="flex space-x-3 mb-5">
+                  <p className="font-medium">Discount :</p>
+                  <p className="font-normal">{academic.discount3}</p>
+                </div>
+                <div className="flex space-x-3 mb-5">
+                  <p className="font-medium">Final Fees :</p>
+                  <p className="font-normal">{academic.finalFees3}</p>
+                </div>
+                <div className="flex space-x-3 mb-5">
+                  <p className="font-medium">Paid :</p>
+                  <p className="font-normal">{academic.paid3}</p>
+                </div>
+                <div className="flex space-x-3 mb-5">
+                  <p className="font-medium">Paid Date  :</p>
+                  <p className="font-normal">{academic.paidDate3}</p>
+                </div>
+                <div className="flex space-x-3 mb-5">
+                  <p className="font-medium">Balance Fees :</p>
+                  <p className="font-normal">{academic.balance3}</p>
+                </div>
+
+                <div className="flex space-x-3 mb-5" />
+
+                <div className="flex space-x-3 mb-5">
+                  <p className="font-medium">***** COURCE-4 DETAILS</p>
+                  <p className="font-normal"></p>
+                </div>
+                <div className="flex space-x-3 mb-5">
+                  <p className="font-medium">Institute Name:</p>
+                  <p className="font-normal">{academic.instituteId4}</p>
+                </div>
+                <div className="flex space-x-3 mb-5">
+                  <p className="font-medium">Course Name :</p>
+                  <p className="font-normal">{academic.courseId4}</p>
+                </div>
+                <div className="flex space-x-3 mb-5">
+                  <p className="font-medium">Reference Number :</p>
+                  <p className="font-normal">{academic.refNumber4}</p>
+                </div>
+                <div className="flex space-x-3 mb-5">
+                  <p className="font-medium">Fees :</p>
+                  <p className="font-normal">{academic.fees4}</p>
+                </div>
+                <div className="flex space-x-3 mb-5">
+                  <p className="font-medium">Discount :</p>
+                  <p className="font-normal">{academic.discount4}</p>
+                </div>
+                <div className="flex space-x-3 mb-5">
+                  <p className="font-medium">Final Fees :</p>
+                  <p className="font-normal">{academic.finalFees4}</p>
+                </div>
+                <div className="flex space-x-3 mb-5">
+                  <p className="font-medium">Paid :</p>
+                  <p className="font-normal">{academic.paid4}</p>
+                </div>
+                <div className="flex space-x-3 mb-5">
+                  <p className="font-medium">Paid Date  :</p>
+                  <p className="font-normal">{academic.paidDate4}</p>
+                </div>
+                <div className="flex space-x-3 mb-5">
+                  <p className="font-medium">Balance Fees :</p>
+                  <p className="font-normal">{academic.balance4}</p>
+                </div>
+
+                <div className="flex space-x-3 mb-5" />
+
+                <div className="flex space-x-3 mb-5">
+                  <p className="font-medium">***** COURCE-5 DETAILS</p>
+                  <p className="font-normal"></p>
+                </div>
+                <div className="flex space-x-3 mb-5">
+                  <p className="font-medium">Institute Name:</p>
+                  <p className="font-normal">{academic.instituteId5}</p>
+                </div>
+                <div className="flex space-x-3 mb-5">
+                  <p className="font-medium">Course Name :</p>
+                  <p className="font-normal">{academic.courseId5}</p>
+                </div>
+                <div className="flex space-x-3 mb-5">
+                  <p className="font-medium">Reference Number :</p>
+                  <p className="font-normal">{academic.refNumber5}</p>
+                </div>
+                <div className="flex space-x-3 mb-5">
+                  <p className="font-medium">Fees :</p>
+                  <p className="font-normal">{academic.fees5}</p>
+                </div>
+                <div className="flex space-x-3 mb-5">
+                  <p className="font-medium">Discount :</p>
+                  <p className="font-normal">{academic.discount5}</p>
+                </div>
+                <div className="flex space-x-3 mb-5">
+                  <p className="font-medium">Final Fees :</p>
+                  <p className="font-normal">{academic.finalFees5}</p>
+                </div>
+                <div className="flex space-x-3 mb-5">
+                  <p className="font-medium">Paid :</p>
+                  <p className="font-normal">{academic.paid5}</p>
+                </div>
+                <div className="flex space-x-3 mb-5">
+                  <p className="font-medium">Paid Date  :</p>
+                  <p className="font-normal">{academic.paidDate5}</p>
+                </div>
+                <div className="flex space-x-3 mb-5">
+                  <p className="font-medium">Balance Fees :</p>
+                  <p className="font-normal">{academic.balance5}</p>
+                </div>
+
               </div>
             </div>
           </div>
