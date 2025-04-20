@@ -16,6 +16,7 @@ const Add = () => {
   const [academicYears, setAcademicYears] = useState([]);
   const [institutes, setInstitutes] = useState([]);
   const [courses, setCourses] = useState([]);
+  const [courseId1Val, courseId2Val, courseId3Val, courseId4Val, courseId5Val] = useState(null);
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -52,6 +53,10 @@ const Add = () => {
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
+
+    if (name === "courseId1") {
+      courseId1Val = value;
+    }
 
     if (name === "image") {
       alert("file found")
@@ -471,7 +476,7 @@ const Add = () => {
 
               <div className="flex space-x-3 mb-5" />
               <div className="flex space-x-3 mt-5 justify-center" >
-                <label className="block mt-2 text-sm font-bold text-gray-400">
+                <label className="block mt-2 text-sm font-bold text-blue-500">
                   *****   SELECT COURSE-1   *****
                 </label>
               </div>
@@ -541,6 +546,8 @@ const Add = () => {
                   <input
                     type="number"
                     name="fees1"
+                    value={courses.map().find(courseId1Val)}
+                    disabled={true}
                     onChange={handleChange}
                     className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                   //    required
@@ -626,7 +633,7 @@ const Add = () => {
               <div className="flex space-x-3 mb-5" />
               <div className="flex space-x-3 mb-5" />
               <div className="flex space-x-3 mt-5 justify-center" >
-                <label className="block mt-2 text-sm font-bold text-gray-400">
+                <label className="block mt-2 text-sm font-bold text-blue-500">
                   *****   SELECT COURSE-2   *****
                 </label>
               </div>
@@ -781,7 +788,7 @@ const Add = () => {
               <div className="flex space-x-3 mb-5" />
               <div className="flex space-x-3 mb-5" />
               <div className="flex space-x-3 mt-5 justify-center" >
-                <label className="block mt-2 text-sm font-bold text-gray-400">
+                <label className="block mt-2 text-sm font-bold text-blue-500">
                   *****   SELECT COURSE-3   *****
                 </label>
               </div>
@@ -936,7 +943,7 @@ const Add = () => {
               <div className="flex space-x-3 mb-5" />
               <div className="flex space-x-3 mb-5" />
               <div className="flex space-x-3 mt-5 justify-center" >
-                <label className="block mt-2 text-sm font-bold text-gray-400">
+                <label className="block mt-2 text-sm font-bold text-blue-500">
                   *****   SELECT COURSE-4   *****
                 </label>
               </div>
@@ -1091,7 +1098,7 @@ const Add = () => {
               <div className="flex space-x-3 mb-5" />
               <div className="flex space-x-3 mb-5" />
               <div className="flex space-x-3 mt-5 justify-center" >
-                <label className="block mt-2 text-sm font-bold text-gray-400">
+                <label className="block mt-2 text-sm font-bold text-blue-500">
                   *****   SELECT COURSE-5   *****
                 </label>
               </div>

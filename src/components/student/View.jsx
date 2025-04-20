@@ -36,7 +36,6 @@ const View = () => {
           setStudent(student);
 
           if (academicResponse.data.success) {
-            //  setStudent(student)
             setAcademic(academicResponse.data.academic);
           } else {
             alert("No academic Found : " + responnse.data.student._id);
