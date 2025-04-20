@@ -546,7 +546,7 @@ const Add = () => {
                   <input
                     type="number"
                     name="fees1"
-                    value={courses.map().find(courseId1Val)}
+                    value={courses.map().find(courseId1Val).fees}
                     disabled={true}
                     onChange={handleChange}
                     className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
