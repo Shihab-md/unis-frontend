@@ -57,7 +57,7 @@ const Add = () => {
 
     if (name === "courseId1") {
       alert("Value : " + courseId1Val)
-      alert("Fees : " + courses.filter(course => course._id === courseId1Val).map(course => course.fees))
+      alert("Fees : " + courses.filter(course => course._id === value).map(course => course.fees))
       
       this.setCourseId1Val(courses.filter(course => course._id === value).map(course => course.fees));
       alert("Value : " + courseId1Val)
