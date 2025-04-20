@@ -23,7 +23,8 @@ const View = () => {
           }
         );
         if (responnse.data.success) {
-          setStudent(responnse.data.student);
+          const student = responnse.data.student;
+          setStudent(student);
 
           alert("Going to call Academic : " + student._id);
 
