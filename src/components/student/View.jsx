@@ -24,7 +24,7 @@ const View = () => {
         );
         if (responnse.data.success) {
           const student = responnse.data.student;
-         // setStudent(student);
+          // setStudent(student);
 
           const academicResponse = await axios.get(
             `https://unis-server.vercel.app/api/student/${student._id}/${'vieww'}`,
@@ -49,7 +49,7 @@ const View = () => {
             alert("No academic Found : " + responnse.data.student._id);
           }
 
-        //  setStudent(student);
+          //  setStudent(student);
         }
       } catch (error) {
         if (error.response && !error.response.data.success) {
@@ -127,6 +127,8 @@ const View = () => {
                   <p className="font-normal">{student.idMark2}</p>
                 </div>
 
+                <div className="flex space-x-3 mb-5" />
+
                 <div className="flex space-x-3 mb-5">
                   <p className="font-medium">Father's Name:</p>
                   <p className="font-normal">{student.fatherName}</p>
@@ -170,6 +172,8 @@ const View = () => {
                   <p className="font-normal">{student.guardianRelation}</p>
                 </div>
 
+                <div className="flex space-x-3 mb-5" />
+
                 <div className="flex space-x-3 mb-5">
                   <p className="font-medium">Address:</p>
                   <p className="font-normal">{student.address}</p>
@@ -188,8 +192,8 @@ const View = () => {
 
                 <div className="flex space-x-3 mb-5" />
 
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">***** COURCE-1 DETAILS</p>
+                <div className="flex space-x-3 mb-5 justify-center">
+                  <p className="font-medium text-blue-500">***** COURCE-1 DETAILS *****</p>
                   <p className="font-normal"></p>
                 </div>
                 <div className="flex space-x-3 mb-5">
@@ -222,7 +226,7 @@ const View = () => {
                 </div>
                 <div className="flex space-x-3 mb-5">
                   <p className="font-medium">Paid Date  :</p>
-                  <p className="font-normal">{academic.paidDate1}</p>
+                  <p className="font-normal">{new Date(academic.paidDate1).toLocaleDateString()}</p>
                 </div>
                 <div className="flex space-x-3 mb-5">
                   <p className="font-medium">Balance Fees :</p>
@@ -231,8 +235,8 @@ const View = () => {
 
                 <div className="flex space-x-3 mb-5" />
 
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">***** COURCE-2 DETAILS</p>
+                <div className="flex space-x-3 mb-5 justify-center">
+                  <p className="font-medium text-blue-500">***** COURCE-2 DETAILS *****</p>
                   <p className="font-normal"></p>
                 </div>
                 <div className="flex space-x-3 mb-5">
@@ -264,8 +268,8 @@ const View = () => {
                   <p className="font-normal">{academic.paid2}</p>
                 </div>
                 <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Paid Date  :</p>
-                  <p className="font-normal">{academic.paidDate2}</p>
+                  <p className="font-medium text-blue-500">Paid Date  :</p>
+                  <p className="font-normal">{new Date(academic.paidDate2).toLocaleDateString()}</p>
                 </div>
                 <div className="flex space-x-3 mb-5">
                   <p className="font-medium">Balance Fees :</p>
@@ -274,8 +278,8 @@ const View = () => {
 
                 <div className="flex space-x-3 mb-5" />
 
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">***** COURCE-3 DETAILS</p>
+                <div className="flex space-x-3 mb-5 justify-center">
+                  <p className="font-medium text-blue-500">***** COURCE-3 DETAILS *****</p>
                   <p className="font-normal"></p>
                 </div>
                 <div className="flex space-x-3 mb-5">
@@ -308,7 +312,7 @@ const View = () => {
                 </div>
                 <div className="flex space-x-3 mb-5">
                   <p className="font-medium">Paid Date  :</p>
-                  <p className="font-normal">{academic.paidDate3}</p>
+                  <p className="font-normal">{new Date(academic.paidDate3).toLocaleDateString()}</p>
                 </div>
                 <div className="flex space-x-3 mb-5">
                   <p className="font-medium">Balance Fees :</p>
@@ -317,8 +321,8 @@ const View = () => {
 
                 <div className="flex space-x-3 mb-5" />
 
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">***** COURCE-4 DETAILS</p>
+                <div className="flex space-x-3 mb-5 justify-center">
+                  <p className="font-medium text-blue-500">***** COURCE-4 DETAILS *****</p>
                   <p className="font-normal"></p>
                 </div>
                 <div className="flex space-x-3 mb-5">
@@ -351,7 +355,7 @@ const View = () => {
                 </div>
                 <div className="flex space-x-3 mb-5">
                   <p className="font-medium">Paid Date  :</p>
-                  <p className="font-normal">{academic.paidDate4}</p>
+                  <p className="font-normal">{new Date(academic.paidDate4).toLocaleDateString()}</p>
                 </div>
                 <div className="flex space-x-3 mb-5">
                   <p className="font-medium">Balance Fees :</p>
@@ -360,8 +364,8 @@ const View = () => {
 
                 <div className="flex space-x-3 mb-5" />
 
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">***** COURCE-5 DETAILS</p>
+                <div className="flex space-x-3 mb-5 justify-center">
+                  <p className="font-medium text-blue-500">***** COURCE-5 DETAILS *****</p>
                   <p className="font-normal"></p>
                 </div>
                 <div className="flex space-x-3 mb-5">
@@ -394,7 +398,7 @@ const View = () => {
                 </div>
                 <div className="flex space-x-3 mb-5">
                   <p className="font-medium">Paid Date  :</p>
-                  <p className="font-normal">{academic.paidDate5}</p>
+                  <p className="font-normal">{new Date(academic.paidDate5).toLocaleDateString()}</p>
                 </div>
                 <div className="flex space-x-3 mb-5">
                   <p className="font-medium">Balance Fees :</p>
