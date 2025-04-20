@@ -25,10 +25,10 @@ const View = () => {
         if (responnse.data.success) {
           setStudent(responnse.data.student);
 
-          alert("Going to call Academic : " + responnse.data.student._id);
+          alert("Going to call Academic : " + student._id);
 
           const academicResponse = await axios.get(
-            `https://unis-server.vercel.app/api/student/${responnse.data.student._id}/${'777'}`,
+            `https://unis-server.vercel.app/api/student/${student._id}/${'vieww'}`,
             {
               headers: {
                 Authorization: `Bearer ${localStorage.getItem("token")}`,
