@@ -169,7 +169,7 @@ const View = () => {
 
                 <div className="flex space-x-3 mb-5">
                   <p className="font-medium">Academic Year:</p>
-                  <p className="font-normal">{academic.acYear}</p>
+                  <p className="font-normal">{academic.acYear.acYear}</p>
                 </div>
 
                 <div className="flex space-x-3 mb-5" />
@@ -180,11 +180,11 @@ const View = () => {
                 </div>
                 <div className="flex space-x-3 mb-5">
                   <p className="font-medium">Institute Name:</p>
-                  <p className="font-normal">{academic.instituteId1}</p>
+                  <p className="font-normal">{academic.instituteId1.name}</p>
                 </div>
                 <div className="flex space-x-3 mb-5">
                   <p className="font-medium">Course Name :</p>
-                  <p className="font-normal">{academic.courseId1}</p>
+                  <p className="font-normal">{academic.courseId1.name}</p>
                 </div>
                 <div className="flex space-x-3 mb-5">
                   <p className="font-medium">Reference Number :</p>
