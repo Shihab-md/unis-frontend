@@ -24,7 +24,7 @@ const View = () => {
         );
         if (responnse.data.success) {
           const student = responnse.data.student;
-          setStudent(student);
+         // setStudent(student);
 
           alert("Going to call Academic : " + student._id);
 
@@ -41,6 +41,8 @@ const View = () => {
           } else {
             alert("No academic Found : " + responnse.data.student._id);
           }
+
+          setStudent(student);
         }
       } catch (error) {
         if (error.response && !error.response.data.success) {
