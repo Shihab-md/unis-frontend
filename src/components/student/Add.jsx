@@ -16,7 +16,7 @@ const Add = () => {
   const [academicYears, setAcademicYears] = useState([]);
   const [institutes, setInstitutes] = useState([]);
   const [courses, setCourses] = useState([]);
-  let courseId1Val, courseId2Val, courseId3Val, courseId4Val, courseId5Val;
+  let courseId1Val, courseId2Val, courseId3Val, courseId4Val, courseId5Val = useState(null);
   const navigate = useNavigate()
 
   useEffect(() => {
