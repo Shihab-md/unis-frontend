@@ -8,7 +8,7 @@ import {
 const View = () => {
   const { id } = useParams();
   const [student, setStudent] = useState(null);
-  const [academic] = useState(null);
+  const [academic, setAcademic] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -34,7 +34,7 @@ const View = () => {
             }
           );
           if (academicResponse.data.success) {
-            academic = academicResponse.data.academic;
+            setAcademic(academicResponse.data.academic);
           }
         }
       } catch (error) {
