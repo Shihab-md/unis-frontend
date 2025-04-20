@@ -16,7 +16,8 @@ const Add = () => {
   const [academicYears, setAcademicYears] = useState([]);
   const [institutes, setInstitutes] = useState([]);
   const [courses, setCourses] = useState([]);
-  let courseId1Val, courseId2Val, courseId3Val, courseId4Val, courseId5Val = useState(null);
+  //let courseId1Val, courseId2Val, courseId3Val, courseId4Val, courseId5Val = useState(null);
+  const [courseId1Val, setCourseId1Val] = useState("");
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -62,7 +63,7 @@ const Add = () => {
    //   alert("Fees : " + courses.filter(course => course._id === courseId1Val).map(course => course.fees))
       courseId1Val = courses.filter(course => course._id === value).map(course => course.fees);
       alert("Value : " + courseId1Val)
-      this.setState({ courseId1Val });
+      this.setCourseId1Val(courseId1Val);
     }
 
     if (name === "image") {
