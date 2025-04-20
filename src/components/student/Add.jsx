@@ -60,6 +60,7 @@ const Add = () => {
       alert("Value : " + courseId1Val)
 
       alert("Fees : " + courses.filter(course => course._id === courseId1Val).map(course => course.fees))
+      courseId1Val = courses.filter(course => course._id === courseId1Val).map(course => course.fees);
     }
 
     if (name === "image") {
@@ -550,7 +551,7 @@ const Add = () => {
                   <input
                     type="number"
                     name="fees1"
-                    value={courses.filter(course => course._id === courseId1Val).map(course => course.fees)}
+                    value={courseId1Val}
                     // disabled={true}
                     onChange={handleChange}
                     className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
