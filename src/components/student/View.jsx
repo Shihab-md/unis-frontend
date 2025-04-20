@@ -26,8 +26,6 @@ const View = () => {
           const student = responnse.data.student;
          // setStudent(student);
 
-          alert("Going to call Academic : " + student._id);
-
           const academicResponse = await axios.get(
             `https://unis-server.vercel.app/api/student/${student._id}/${'vieww'}`,
             {
@@ -36,13 +34,16 @@ const View = () => {
               },
             }
           );
+          alert("After Academic : " + student._id);
+
           if (academicResponse.data.success) {
+            setStudent(student);
             setAcademic(academicResponse.data.academic);
           } else {
             alert("No academic Found : " + responnse.data.student._id);
           }
 
-          setStudent(student);
+        //  setStudent(student);
         }
       } catch (error) {
         if (error.response && !error.response.data.success) {
