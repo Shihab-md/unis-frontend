@@ -604,7 +604,7 @@ const Add = () => {
                     onChange={handleChange}
                     //    placeholder="DOB"
                     className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-                    required
+                  //     required
                   />
                 </div>
 
@@ -635,13 +635,13 @@ const Add = () => {
               {/* Institute 2 --------------------------------------------- */}
               <div>
                 <label className="block mt-2 text-sm font-medium text-gray-700">
-                  Select Institute <span className="text-red-700">*</span>
+                  Select Institute
                 </label>
                 <select
                   name="instituteId2"
                   onChange={handleChange}
                   className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-                  required
+                //    required
                 >
                   <option value="">Select Institute</option>
                   {institutes.map((institute) => (
@@ -655,13 +655,13 @@ const Add = () => {
               {/* Course 2 */}
               <div>
                 <label className="block mt-2 text-sm font-medium text-gray-700">
-                  Select Course <span className="text-red-700">*</span>
+                  Select Course
                 </label>
                 <select
                   name="courseId2"
                   onChange={handleChange}
                   className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-                  required
+                //    required
                 >
                   <option value="">Select Course</option>
                   {courses.map((course) => (
@@ -759,7 +759,7 @@ const Add = () => {
                     onChange={handleChange}
                     //    placeholder="DOB"
                     className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-                    required
+                  //    required
                   />
                 </div>
 
@@ -790,13 +790,13 @@ const Add = () => {
               {/* Institute 3 --------------------------------------------- */}
               <div>
                 <label className="block mt-2 text-sm font-medium text-gray-700">
-                  Select Institute <span className="text-red-700">*</span>
+                  Select Institute
                 </label>
                 <select
                   name="instituteId3"
                   onChange={handleChange}
                   className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-                  required
+                //    required
                 >
                   <option value="">Select Institute</option>
                   {institutes.map((institute) => (
@@ -810,13 +810,13 @@ const Add = () => {
               {/* Course 3 */}
               <div>
                 <label className="block mt-2 text-sm font-medium text-gray-700">
-                  Select Course <span className="text-red-700">*</span>
+                  Select Course
                 </label>
                 <select
                   name="courseId3"
                   onChange={handleChange}
                   className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-                  required
+                //    required
                 >
                   <option value="">Select Course</option>
                   {courses.map((course) => (
@@ -914,7 +914,7 @@ const Add = () => {
                     onChange={handleChange}
                     //    placeholder="DOB"
                     className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-                    required
+                  //    required
                   />
                 </div>
 
@@ -945,13 +945,13 @@ const Add = () => {
               {/* Institute 4 --------------------------------------------- */}
               <div>
                 <label className="block mt-2 text-sm font-medium text-gray-700">
-                  Select Institute <span className="text-red-700">*</span>
+                  Select Institute
                 </label>
                 <select
                   name="instituteId4"
                   onChange={handleChange}
                   className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-                  required
+                //    required
                 >
                   <option value="">Select Institute</option>
                   {institutes.map((institute) => (
@@ -965,13 +965,13 @@ const Add = () => {
               {/* Course 4 */}
               <div>
                 <label className="block mt-2 text-sm font-medium text-gray-700">
-                  Select Course <span className="text-red-700">*</span>
+                  Select Course
                 </label>
                 <select
                   name="courseId4"
                   onChange={handleChange}
                   className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-                  required
+                //    required
                 >
                   <option value="">Select Course</option>
                   {courses.map((course) => (
@@ -1069,7 +1069,7 @@ const Add = () => {
                     onChange={handleChange}
                     //    placeholder="DOB"
                     className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-                    required
+                  //     required
                   />
                 </div>
 
@@ -1100,13 +1100,13 @@ const Add = () => {
               {/* Institute 5 --------------------------------------------- */}
               <div>
                 <label className="block mt-2 text-sm font-medium text-gray-700">
-                  Select Institute <span className="text-red-700">*</span>
+                  Select Institute
                 </label>
                 <select
                   name="instituteId5"
                   onChange={handleChange}
                   className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-                  required
+                //    required
                 >
                   <option value="">Select Institute</option>
                   {institutes.map((institute) => (
@@ -1120,13 +1120,13 @@ const Add = () => {
               {/* Course 5 */}
               <div>
                 <label className="block mt-2 text-sm font-medium text-gray-700">
-                  Select Course <span className="text-red-700">*</span>
+                  Select Course
                 </label>
                 <select
                   name="courseId5"
                   onChange={handleChange}
                   className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-                  required
+                //    required
                 >
                   <option value="">Select Course</option>
                   {courses.map((course) => (
@@ -1224,7 +1224,7 @@ const Add = () => {
                     onChange={handleChange}
                     //    placeholder="DOB"
                     className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-                    required
+                  //    required
                   />
                 </div>
 
