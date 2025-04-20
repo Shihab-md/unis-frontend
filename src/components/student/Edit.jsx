@@ -81,7 +81,7 @@ const Edit = () => {
         if (responnse.data.success) {
           const student = responnse.data.student;
           const academicResponse = await axios.get(
-            `https://unis-server.vercel.app/api/student/${student._id}/${'680390ae200583d3d5c01f87'}`,
+            `https://unis-server.vercel.app/api/student/${student._id}/${'777'}`,
             {
               headers: {
                 Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -252,6 +252,7 @@ const Edit = () => {
                     type="text"
                     name="rollNumber"
                     value={student.rollNumber}
+                    disabled={true}
                     onChange={handleChange}
                     className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                     required
@@ -593,6 +594,7 @@ const Edit = () => {
                     name="acYear"
                     value={student.acYear}
                     onChange={handleChange}
+                    disabled={true}
                     className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                     required
                   >
