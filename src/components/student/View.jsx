@@ -35,6 +35,8 @@ const View = () => {
           );
           if (academicResponse.data.success) {
             setAcademic(academicResponse.data.academic);
+          } else {
+            alert("No academic Found : " + responnse.data.student._id);
           }
         }
       } catch (error) {
@@ -169,7 +171,7 @@ const View = () => {
 
                 <div className="flex space-x-3 mb-5">
                   <p className="font-medium">Academic Year:</p>
-                  <p className="font-normal">{academic.acYear.acYear}</p>
+                  <p className="font-normal">{academic.acYear}</p>
                 </div>
 
                 <div className="flex space-x-3 mb-5" />
