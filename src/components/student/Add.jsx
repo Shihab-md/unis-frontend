@@ -16,7 +16,7 @@ const Add = () => {
   const [academicYears, setAcademicYears] = useState([]);
   const [institutes, setInstitutes] = useState([]);
   const [courses, setCourses] = useState([]);
-  const [courseId1Val, courseId2Val, courseId3Val, courseId4Val, courseId5Val] = useState(null);
+  let courseId1Val, courseId2Val, courseId3Val, courseId4Val, courseId5Val;
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -547,7 +547,7 @@ const Add = () => {
                     type="number"
                     name="fees1"
                     value={courses
-                      .filter(course => course._id === courseId1Val)
+                      .filter(course => course._id == courseId1Val)
                       .map(course => course.fees)}
                     disabled={true}
                     onChange={handleChange}
