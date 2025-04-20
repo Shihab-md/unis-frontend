@@ -550,9 +550,7 @@ const Add = () => {
                   <input
                     type="number"
                     name="fees1"
-                    value={courses
-                      .filter(course => course._id === courseId1Val)
-                      .map(course => course.fees)}
+                    value={courses.filter(course => course._id === courseId1Val).map(course => course.fees)}
                     // disabled={true}
                     onChange={handleChange}
                     className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
