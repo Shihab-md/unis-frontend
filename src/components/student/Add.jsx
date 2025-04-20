@@ -56,14 +56,11 @@ const Add = () => {
     const { name, value, files } = e.target;
 
     if (name === "courseId1") {
-      courseId1Val = value;
-
       alert("Value : " + courseId1Val)
-
-   //   alert("Fees : " + courses.filter(course => course._id === courseId1Val).map(course => course.fees))
-      courseId1Val = courses.filter(course => course._id === value).map(course => course.fees);
+      alert("Fees : " + courses.filter(course => course._id === courseId1Val).map(course => course.fees))
+      
+      this.setCourseId1Val(courses.filter(course => course._id === value).map(course => course.fees));
       alert("Value : " + courseId1Val)
-      this.setCourseId1Val(courseId1Val);
     }
 
     if (name === "image") {
