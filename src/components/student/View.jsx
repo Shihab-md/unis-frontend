@@ -34,11 +34,17 @@ const View = () => {
               },
             }
           );
-          alert("After Academic : " + student._id);
 
           if (academicResponse.data.success) {
+
+            alert("After Academic : " + student._id);
             setStudent(student);
+
+            alert("After ");
+
             setAcademic(academicResponse.data.academic);
+
+            alert("After After");
           } else {
             alert("No academic Found : " + responnse.data.student._id);
           }
