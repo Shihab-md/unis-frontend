@@ -174,10 +174,10 @@ const Add = () => {
               />
             </div>
             <div className="grid grid-cols-2 gap-7 justify-between">
-              {/* Subject-1 Max Marks */}
+              {/* Subject-1 Max Mark */}
               <div>
                 <label className="block text-sm font-medium text-gray-700">
-                  Max Marks <span className="text-red-700">*</span>
+                  Max Mark <span className="text-red-700">*</span>
                 </label>
                 <input
                   type="number"
@@ -188,10 +188,10 @@ const Add = () => {
                 />
               </div>
 
-              {/* Subject-1 Pass Marks */}
+              {/* Subject-1 Pass Mark */}
               <div>
                 <label className="block text-sm font-medium text-gray-700">
-                  Pass Marks <span className="text-red-700">*</span>
+                  Pass Mark <span className="text-red-700">*</span>
                 </label>
                 <input
                   type="number"
@@ -218,10 +218,10 @@ const Add = () => {
             </div>
 
             <div className="grid grid-cols-2 gap-7 justify-between">
-              {/* Subject-2 Max Marks */}
+              {/* Subject-2 Max Mark */}
               <div>
                 <label className="block text-sm font-medium text-gray-700">
-                  Max Marks <span className="text-red-700">*</span>
+                  Max Mark <span className="text-red-700">*</span>
                 </label>
                 <input
                   type="number"
@@ -232,10 +232,10 @@ const Add = () => {
                 />
               </div>
 
-              {/* Subject-2 Pass Marks */}
+              {/* Subject-2 Pass Mark */}
               <div>
                 <label className="block text-sm font-medium text-gray-700">
-                  Pass Marks <span className="text-red-700">*</span>
+                  Pass Mark <span className="text-red-700">*</span>
                 </label>
                 <input
                   type="number"
@@ -262,10 +262,10 @@ const Add = () => {
             </div>
 
             <div className="grid grid-cols-2 gap-7 justify-between">
-              {/* Subject-3 Max Marks */}
+              {/* Subject-3 Max Mark */}
               <div>
                 <label className="block text-sm font-medium text-gray-700">
-                  Max Marks <span className="text-red-700">*</span>
+                  Max Mark <span className="text-red-700">*</span>
                 </label>
                 <input
                   type="number"
@@ -276,10 +276,10 @@ const Add = () => {
                 />
               </div>
 
-              {/* Subject-3 Pass Marks */}
+              {/* Subject-3 Pass Mark */}
               <div>
                 <label className="block text-sm font-medium text-gray-700">
-                  Pass Marks <span className="text-red-700">*</span>
+                  Pass Mark <span className="text-red-700">*</span>
                 </label>
                 <input
                   type="number"
@@ -306,10 +306,10 @@ const Add = () => {
             </div>
 
             <div className="grid grid-cols-2 gap-7 justify-between">
-              {/* Subject-4 Max Marks */}
+              {/* Subject-4 Max Mark */}
               <div>
                 <label className="block text-sm font-medium text-gray-700">
-                  Max Marks
+                  Max Mark
                 </label>
                 <input
                   type="number"
@@ -320,10 +320,10 @@ const Add = () => {
                 />
               </div>
 
-              {/* Subject-4 Pass Marks */}
+              {/* Subject-4 Pass Mark */}
               <div>
                 <label className="block text-sm font-medium text-gray-700">
-                  Pass Marks
+                  Pass Mark
                 </label>
                 <input
                   type="number"
@@ -350,10 +350,10 @@ const Add = () => {
             </div>
 
             <div className="grid grid-cols-2 gap-7 justify-between">
-              {/* Subject-5 Max Marks */}
+              {/* Subject-5 Max Mark */}
               <div>
                 <label className="block text-sm font-medium text-gray-700">
-                  Max Marks
+                  Max Mark
                 </label>
                 <input
                   type="number"
@@ -364,10 +364,10 @@ const Add = () => {
                 />
               </div>
 
-              {/* Subject-5 Pass Marks */}
+              {/* Subject-5 Pass Mark */}
               <div>
                 <label className="block text-sm font-medium text-gray-700">
-                  Pass Marks
+                  Pass Mark
                 </label>
                 <input
                   type="number"
@@ -394,10 +394,10 @@ const Add = () => {
             </div>
 
             <div className="grid grid-cols-2 gap-7 justify-between">
-              {/* Subject-6 Max Marks */}
+              {/* Subject-6 Max Mark */}
               <div>
                 <label className="block text-sm font-medium text-gray-700">
-                  Max Marks
+                  Max Mark
                 </label>
                 <input
                   type="number"
@@ -408,10 +408,10 @@ const Add = () => {
                 />
               </div>
 
-              {/* Subject-6 Pass Marks */}
+              {/* Subject-6 Pass Mark */}
               <div>
                 <label className="block text-sm font-medium text-gray-700">
-                  Pass Marks
+                  Pass Mark
                 </label>
                 <input
                   type="number"
@@ -438,10 +438,10 @@ const Add = () => {
             </div>
 
             <div className="grid grid-cols-2 gap-7 justify-between">
-              {/* Subject-7 Max Marks */}
+              {/* Subject-7 Max Mark */}
               <div>
                 <label className="block text-sm font-medium text-gray-700">
-                  Max Marks
+                  Max Mark
                 </label>
                 <input
                   type="number"
@@ -452,10 +452,10 @@ const Add = () => {
                 />
               </div>
 
-              {/* Subject-7 Pass Marks */}
+              {/* Subject-7 Pass Mark */}
               <div>
                 <label className="block text-sm font-medium text-gray-700">
-                  Pass Marks
+                  Pass Mark
                 </label>
                 <input
                   type="number"
@@ -482,10 +482,10 @@ const Add = () => {
             </div>
 
             <div className="grid grid-cols-2 gap-7 justify-between">
-              {/* Subject-8 Max Marks */}
+              {/* Subject-8 Max Mark */}
               <div>
                 <label className="block text-sm font-medium text-gray-700">
-                  Max Marks
+                  Max Mark
                 </label>
                 <input
                   type="number"
@@ -496,10 +496,10 @@ const Add = () => {
                 />
               </div>
 
-              {/* Subject-8 Pass Marks */}
+              {/* Subject-8 Pass Mark */}
               <div>
                 <label className="block text-sm font-medium text-gray-700">
-                  Pass Marks
+                  Pass Mark
                 </label>
                 <input
                   type="number"
@@ -526,10 +526,10 @@ const Add = () => {
             </div>
 
             <div className="grid grid-cols-2 gap-7 justify-between">
-              {/* Subject-9 Max Marks */}
+              {/* Subject-9 Max Mark */}
               <div>
                 <label className="block text-sm font-medium text-gray-700">
-                  Max Marks
+                  Max Mark
                 </label>
                 <input
                   type="number"
@@ -540,10 +540,10 @@ const Add = () => {
                 />
               </div>
 
-              {/* Subject-9 Pass Marks */}
+              {/* Subject-9 Pass Mark */}
               <div>
                 <label className="block text-sm font-medium text-gray-700">
-                  Pass Marks
+                  Pass Mark
                 </label>
                 <input
                   type="number"
@@ -570,10 +570,10 @@ const Add = () => {
             </div>
 
             <div className="grid grid-cols-2 gap-7 justify-between">
-              {/* Subject-10 Max Marks */}
+              {/* Subject-10 Max Mark */}
               <div>
                 <label className="block text-sm font-medium text-gray-700">
-                  Max Marks
+                  Max Mark
                 </label>
                 <input
                   type="number"
@@ -584,10 +584,10 @@ const Add = () => {
                 />
               </div>
 
-              {/* Subject-10 Pass Marks */}
+              {/* Subject-10 Pass Mark */}
               <div>
                 <label className="block text-sm font-medium text-gray-700">
-                  Pass Marks
+                  Pass Mark
                 </label>
                 <input
                   type="number"
