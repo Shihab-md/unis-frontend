@@ -395,6 +395,45 @@ const View = () => {
                   <p className="font-normal">{academic.balance5}</p>
                 </div>
 
+                <div className="flex space-x-3 mb-5" />
+
+                <div className="flex space-x-3 mb-5 justify-center">
+                  <p className="font-medium text-blue-500">***** Hostel Details *****</p>
+                  <p className="font-normal"></p>
+                </div>
+                <div className="flex space-x-3 mb-5">
+                  <p className="font-medium">Hostel Admission:</p>
+                  <p className="font-normal">{student.hostel}</p>
+                </div>
+                <div className="flex space-x-3 mb-5">
+                  <p className="font-medium">Hostel Reference Number :</p>
+                  <p className="font-normal">{student.hostelRefNumber}</p>
+                </div>
+                <div className="flex space-x-3 mb-5">
+                  <p className="font-medium">Hostel Fees :</p>
+                  <p className="font-normal">{student.hostelFees}</p>
+                </div>
+                <div className="flex space-x-3 mb-5">
+                  <p className="font-medium">Hostel Fees Discount :</p>
+                  <p className="font-normal">{student.hostelDiscount}</p>
+                </div>
+                <div className="flex space-x-3 mb-5">
+                  <p className="font-medium">Hostel Final Fees :</p>
+                  <p className="font-normal">{student.hostelFinalFees}</p>
+                </div>
+                <div className="flex space-x-3 mb-5">
+                  <p className="font-medium">Hostel Fees Paid :</p>
+                  <p className="font-normal">{student.hostelPaid}</p>
+                </div>
+                <div className="flex space-x-3 mb-5">
+                  <p className="font-medium">Hostel Fees Paid Date:</p>
+                  <p className="font-normal">{new Date(student.hostelPaidDate).toLocaleDateString()}</p>
+                </div>
+                <div className="flex space-x-3 mb-5">
+                  <p className="font-medium">Hostel Balance Fees :</p>
+                  <p className="font-normal">{student.hostelBalance}</p>
+                </div>
+
               </div>
             </div>
           </div>

@@ -129,6 +129,15 @@ const Edit = () => {
             address: student.address,
             district: student.district,
 
+            hostel: student.hostel,
+            hostelRefNumber: student.hostelRefNumber,
+            hostelFees: student.hostelFees,
+            hostelDiscount: student.hostelDiscount,
+            hostelFinalFees: student.hostelFinalFees,
+            hostelPaid: student.hostelPaid,
+            hostelPaidDate: student.hostelPaidDate,
+            hostelBalance: student.hostelBalance,
+
             acYear: academic.acYear,
 
             instituteId1: academic.instituteId1,
@@ -1450,6 +1459,146 @@ const Edit = () => {
                       type="number"
                       name="balance5"
                       value={student.balance5}
+                      onChange={handleChange}
+                      className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                    //    required
+                    />
+                  </div>
+                </div>
+
+                <div className="flex space-x-3 mb-5" />
+                <div className="flex space-x-3 mb-5" />
+                <div className="flex space-x-3 mt-5 justify-center" >
+                  <label className="block mt-2 text-sm font-bold text-blue-500">
+                    *****   Hostel Details   *****
+                  </label>
+                </div>
+                <div className="flex space-x-3 mb-5" />
+
+                {/* Hostel */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Is the Hostel Admission Required?<span className="text-red-700">*</span>
+                  </label>
+                  <select
+                    name="hostel"
+                    onChange={handleChange}
+                    value={student.hostel}
+                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                    required
+                  >
+                    <option value="">Select Hostel Admission</option>
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                  </select>
+                </div>
+
+                {/* Hostel Reference Number */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Hostel Reference Number
+                  </label>
+                  <input
+                    type="text"
+                    name="hostelRefNumber"
+                    onChange={handleChange}
+                    value={student.hostelRefNumber}
+                    //    placeholder="Qualification"
+                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                  //    required
+                  />
+                </div>
+
+                <div className="grid grid-cols-2 gap-7 justify-between">
+                  {/* Hostel Fees */}
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700">
+                      Hostel Fees
+                    </label>
+                    <input
+                      type="number"
+                      name="hostelFees"
+                      value={student.hostelFees}
+                      onChange={handleChange}
+                      className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                    //    required
+                    />
+                  </div>
+
+                  {/* Hostel Discount */}
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700">
+                      Hostel Fees Discount
+                    </label>
+                    <input
+                      type="number"
+                      name="hostelDiscount"
+                      onChange={handleChange}
+                      value={student.hostelDiscount}
+                      className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                    //    required
+                    />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-2 gap-7 justify-between">
+                  {/* Hostel Final Fees */}
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700">
+                      Hostel Final Fees
+                    </label>
+                    <input
+                      type="number"
+                      name="hostelFinalFees"
+                      onChange={handleChange}
+                      value={student.hostelFinalFees}
+                      className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                    //    required
+                    />
+                  </div>
+
+                  {/* Hostel Paid */}
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700">
+                      Hostel Fees Paid
+                    </label>
+                    <input
+                      type="number"
+                      name="hostelPaid"
+                      value={student.hostelPaid}
+                      onChange={handleChange}
+                      className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                    //    required
+                    />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-2 gap-7 justify-between">
+                  {/* Hostel Paid Date */}
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700">
+                      Hostel Fees Paid Date
+                    </label>
+                    <input
+                      type="date"
+                      name="hostelPaidDate"
+                      onChange={handleChange}
+                      value={moment(new Date(student.hostelPaidDate)).format("YYYY-MM-DD")}
+                      //    placeholder="DOB"
+                      className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                    //    required
+                    />
+                  </div>
+
+                  {/* Hostel Balance */}
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700">
+                      Hostel Fees Balance
+                    </label>
+                    <input
+                      type="number"
+                      name="hostelBalance"
+                      value={student.hostelBalance}
                       onChange={handleChange}
                       className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                     //    required
