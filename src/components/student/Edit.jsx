@@ -1493,6 +1493,8 @@ const Edit = () => {
                   </select>
                 </div>
 
+                <div className="flex space-x-3 mb-5" />
+
                 {/* Hostel Reference Number */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700">
