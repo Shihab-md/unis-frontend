@@ -56,6 +56,10 @@ const View = () => {
                   <p className="font-normal">{institute.name}</p>
                 </div>
                 <div className="flex space-x-3 mb-5">
+                  <p className="font-medium">Education Type:</p>
+                  <p className="font-normal">{institute.type}</p>
+                </div>
+                <div className="flex space-x-3 mb-5">
                   <p className="font-medium">Email:</p>
                   <p className="font-normal">{institute.email}</p>
                 </div>

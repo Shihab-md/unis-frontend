@@ -38,6 +38,7 @@ const Edit = () => {
             ...prev,
             iCode: institute.iCode,
             name: institute.name,
+            type: institute.type,
             email: institute.email,
             contactNumber: institute.contactNumber,
             address: institute.address,

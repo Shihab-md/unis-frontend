@@ -37,6 +37,7 @@ const List = () => {
             sno: sno++,
             iCode: sup.iCode,
             name: sup.name,
+            type: sup.type,
             contactNumber: sup.contactNumber,
             email: sup.email,
             address: sup.address,
