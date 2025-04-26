@@ -61,7 +61,9 @@ const Edit = () => {
             ...prev,
             code: course.code,
             name: course.name,
+            type: course.type,
             remarks: course.remarks,
+            fees: course.fees,
 
             subject1: course.subject1,
             subject1MaxMark: course.subject1MaxMark,
