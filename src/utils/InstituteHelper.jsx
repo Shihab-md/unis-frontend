@@ -16,24 +16,24 @@ export const columns = [
     name: "Code",
     selector: (row) => row.iCode,
     sortable: true,
-    width: "160px",
+    width: "110px", 
   }, 
   {
     name: "Name",
     selector: (row) => row.name,
     sortable: true,
-    width: "270px",
+    width: "280px",
+  },
+  {
+    name: "Education Type",
+    selector: (row) => row.type,
+    sortable: true,
+    width: "250px",
   },
   {
     name: "Address",
     selector: (row) => row.address,
     width: "230px",
-  },
-  {
-    name: "District",
-    selector: (row) => row.district,
-    sortable: true,
-    width: "100px",
   },
   {
     name: "Action",
