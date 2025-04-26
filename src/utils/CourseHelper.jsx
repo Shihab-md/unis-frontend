@@ -33,17 +33,17 @@ export const columns = [
   {
     name: "Remarks",
     selector: (row) => row.remarks,
-    width: "25  0px",
+    width: "250px",
   },
   {
     name: "Fees",
     selector: (row) => row.fees,
-    width: "140px",
+    width: "120px",
   },
   {
     name: "No. of Subjects",
     selector: (row) => row.subjectsCount,
-    width: "110px",
+    width: "140px",
   },
   {
     name: "Action",
