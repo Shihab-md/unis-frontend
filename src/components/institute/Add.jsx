@@ -107,6 +107,8 @@ const Add = () => {
               </select>
             </div>
 
+            <div className="flex space-x-3 mb-5" />
+            
             {/* Contact Number */}
             <div>
               <label className="block text-sm font-medium text-gray-700">
