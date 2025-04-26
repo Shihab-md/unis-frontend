@@ -22,13 +22,18 @@ export const columns = [
     name: "Name",
     selector: (row) => row.name,
     sortable: true,
-    width: "280px",
+    width: "290px",
   },
   {
     name: "Education Type",
     selector: (row) => row.type,
     sortable: true,
     width: "250px",
+  },
+  {
+    name: "State / District",
+    selector: (row) => row.district,
+    width: "180px",
   },
   {
     name: "Address",
