@@ -675,7 +675,7 @@ const Edit = () => {
                     required
                   >
                     <option value="">Select Course</option>
-                    {courses.map((course) => (
+                    {courses.filter(course => course.type === "Deeniyath Education").map((course) => (
                       <option key={course._id} value={course._id}>
                         {course.name}
                       </option>
@@ -840,7 +840,7 @@ const Edit = () => {
                   //    required
                   >
                     <option value="">Select Course</option>
-                    {courses.map((course) => (
+                    {courses.filter(course => course.type === "School Education").map((course) => (
                       <option key={course._id} value={course._id}>
                         {course.name}
                       </option>
@@ -1005,7 +1005,7 @@ const Edit = () => {
                   //    required
                   >
                     <option value="">Select Course</option>
-                    {courses.map((course) => (
+                    {courses.filter(course => course.type === "College Education").map((course) => (
                       <option key={course._id} value={course._id}>
                         {course.name}
                       </option>
@@ -1170,7 +1170,7 @@ const Edit = () => {
                   //    required
                   >
                     <option value="">Select Course</option>
-                    {courses.map((course) => (
+                    {courses.filter(course => course.type === "Vocational Courses").map((course) => (
                       <option key={course._id} value={course._id}>
                         {course.name}
                       </option>
@@ -1335,7 +1335,7 @@ const Edit = () => {
                   //   required
                   >
                     <option value="">Select Course</option>
-                    {courses.map((course) => (
+                    {courses.filter(course => course.type === "Vocational Courses").map((course) => (
                       <option key={course._id} value={course._id}>
                         {course.name}
                       </option>
