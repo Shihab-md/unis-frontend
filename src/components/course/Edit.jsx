@@ -150,6 +150,29 @@ const Edit = () => {
             <div className="py-2 px-4 border mt-5 mb-3 items-center justify-center rounded-lg shadow-lg">
               <div className="grid mt-3 grid-cols-1 md:grid-cols-2 gap-4">
 
+                {/* Type */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Education Type <span className="text-red-700">*</span>
+                  </label>
+                  <select
+                    name="type"
+                    onChange={handleChange}
+                    value={course.type}
+                    disabled={true}
+                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                    required
+                  >
+                    <option value="">Select Education Type</option>
+                    <option value="Deeniyath Education">Deeniyath Education</option>
+                    <option value="School Education">School Education</option>
+                    <option value="College Education">College Education</option>
+                    <option value="Vocational Courses">Vocational Courses</option>
+                  </select>
+                </div>
+
+                <div className="flex space-x-3 mb-5" />
+
                 {/* Code */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700">
@@ -179,26 +202,6 @@ const Edit = () => {
                     className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                     required
                   />
-                </div>
-
-                {/* Type */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-700">
-                    Education Type <span className="text-red-700">*</span>
-                  </label>
-                  <select
-                    name="type"
-                    onChange={handleChange}
-                    value={course.type}
-                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-                    required
-                  >
-                    <option value="">Select Education Type</option>
-                    <option value="Deeniyath Education">Deeniyath Education</option>
-                    <option value="School Education">School Education</option>
-                    <option value="College Education">College Education</option>
-                    <option value="Vocational Courses">Vocational Courses</option>
-                  </select>
                 </div>
 
                 {/* Remarks */}
