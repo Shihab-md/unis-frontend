@@ -16,7 +16,7 @@ export const columns = [
     name: "Code",
     selector: (row) => row.code,
     sortable: true,
-    width: "90px",
+    width: "100px",
   }, 
   {
     name: "Name",
@@ -25,19 +25,25 @@ export const columns = [
     width: "280px",
   },
   {
+    name: "Education Type",
+    selector: (row) => row.type,
+    sortable: true,
+    width: "250px",
+  },
+  {
     name: "Remarks",
     selector: (row) => row.remarks,
-    width: "250px",
+    width: "190px",
   },
   {
     name: "Fees",
     selector: (row) => row.fees,
-    width: "160px",
+    width: "140px",
   },
   {
     name: "Subjects #",
     selector: (row) => row.subjectsCount,
-    width: "120px",
+    width: "110px",
   },
   {
     name: "Action",

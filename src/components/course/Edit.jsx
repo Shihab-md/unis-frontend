@@ -179,6 +179,26 @@ const Edit = () => {
                   />
                 </div>
 
+                {/* Type */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Education Type <span className="text-red-700">*</span>
+                  </label>
+                  <select
+                    name="type"
+                    onChange={handleChange}
+                    value={course.type}
+                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                    required
+                  >
+                    <option value="">Select Education Type</option>
+                    <option value="Deeniyath Education">Deeniyath Education</option>
+                    <option value="School Education">School Education</option>
+                    <option value="College Education">College Education</option>
+                    <option value="Vocational Courses">Vocational Courses</option>
+                  </select>
+                </div>
+
                 {/* Remarks */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700">
@@ -369,7 +389,7 @@ const Edit = () => {
                   {/* Subject-4 Max Marks */}
                   <div>
                     <label className="block text-sm font-medium text-gray-700">
-                      Max Marks 
+                      Max Marks
                     </label>
                     <input
                       type="number"
@@ -384,7 +404,7 @@ const Edit = () => {
                   {/* Subject-4 Pass Marks */}
                   <div>
                     <label className="block text-sm font-medium text-gray-700">
-                      Pass Marks 
+                      Pass Marks
                     </label>
                     <input
                       type="number"

@@ -37,6 +37,7 @@ const List = () => {
             sno: sno++,
             code: sup.code,
             name: sup.name,
+            type: sup.type,
             remarks: sup.remarks,
             fees: sup.fees,
             subjectsCount: 0,
