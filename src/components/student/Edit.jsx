@@ -860,7 +860,7 @@ const Edit = () => {
                 {/* Reference Number-2 */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700">
-                    Reference Number <span className="text-red-700">*</span>
+                    Reference Number
                   </label>
                   <input
                     type="text"
@@ -1190,7 +1190,7 @@ const Edit = () => {
                 {/* Reference Number-4 */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700">
-                    Reference Number <span className="text-red-700">*</span>
+                    Reference Number
                   </label>
                   <input
                     type="text"
@@ -1199,7 +1199,7 @@ const Edit = () => {
                     onChange={handleChange}
                     //    placeholder="Qualification"
                     className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-                    required
+                  //    required
                   />
                 </div>
 
@@ -1355,7 +1355,7 @@ const Edit = () => {
                 {/* Reference Number-5 */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700">
-                    Reference Number <span className="text-red-700">*</span>
+                    Reference Number
                   </label>
                   <input
                     type="text"
@@ -1364,7 +1364,7 @@ const Edit = () => {
                     onChange={handleChange}
                     //    placeholder="Qualification"
                     className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-                    required
+                  //    required
                   />
                 </div>
 
