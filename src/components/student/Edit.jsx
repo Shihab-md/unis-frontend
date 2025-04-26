@@ -654,7 +654,7 @@ const Edit = () => {
                     required
                   >
                     <option value="">Select Institute</option>
-                    {institutes.map((institute) => (
+                    {institutes.filter(institute => institute.type === "Deeniyath Education").map((institute) => (
                       <option key={institute._id} value={institute._id}>
                         {institute.name}
                       </option>
@@ -819,7 +819,7 @@ const Edit = () => {
                   //    required
                   >
                     <option value="">Select Institute</option>
-                    {institutes.map((institute) => (
+                    {institutes.filter(institute => institute.type === "School Education").map((institute) => (
                       <option key={institute._id} value={institute._id}>
                         {institute.name}
                       </option>
@@ -984,7 +984,7 @@ const Edit = () => {
                   //    required
                   >
                     <option value="">Select Institute</option>
-                    {institutes.map((institute) => (
+                    {institutes.filter(institute => institute.type === "College Education").map((institute) => (
                       <option key={institute._id} value={institute._id}>
                         {institute.name}
                       </option>
@@ -1149,7 +1149,7 @@ const Edit = () => {
                   //    required
                   >
                     <option value="">Select Institute</option>
-                    {institutes.map((institute) => (
+                    {institutes.filter(institute => institute.type === "Vocational Courses").map((institute) => (
                       <option key={institute._id} value={institute._id}>
                         {institute.name}
                       </option>
@@ -1314,7 +1314,7 @@ const Edit = () => {
                   //    required
                   >
                     <option value="">Select Institute</option>
-                    {institutes.map((institute) => (
+                    {institutes.filter(institute => institute.type === "Vocational Courses").map((institute) => (
                       <option key={institute._id} value={institute._id}>
                         {institute.name}
                       </option>
