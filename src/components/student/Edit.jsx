@@ -636,7 +636,7 @@ const Edit = () => {
                 <div className="flex space-x-3 mb-5" />
                 <div className="flex space-x-3 mt-5 justify-center" >
                   <label className="block mt-2 text-sm font-bold text-blue-500">
-                    *****   SELECT COURSE-1   *****
+                    *****   Dheeniyath Education   *****
                   </label>
                 </div>
                 <div className="flex space-x-3 mb-5" />
@@ -801,7 +801,7 @@ const Edit = () => {
                 <div className="flex space-x-3 mb-5" />
                 <div className="flex space-x-3 mt-5 justify-center" >
                   <label className="block mt-2 text-sm font-bold text-blue-500">
-                    *****   SELECT COURSE-2   *****
+                    *****   School Education   *****
                   </label>
                 </div>
                 <div className="flex space-x-3 mb-5" />
@@ -966,7 +966,7 @@ const Edit = () => {
                 <div className="flex space-x-3 mb-5" />
                 <div className="flex space-x-3 mt-5 justify-center" >
                   <label className="block mt-2 text-sm font-bold text-blue-500">
-                    *****   SELECT COURSE-3   *****
+                    *****   College Education   *****
                   </label>
                 </div>
                 <div className="flex space-x-3 mb-5" />
@@ -1131,7 +1131,7 @@ const Edit = () => {
                 <div className="flex space-x-3 mb-5" />
                 <div className="flex space-x-3 mt-5 justify-center" >
                   <label className="block mt-2 text-sm font-bold text-blue-500">
-                    *****   SELECT COURSE-4   *****
+                    *****   Vocational Course - 1   *****
                   </label>
                 </div>
                 <div className="flex space-x-3 mb-5" />
@@ -1296,7 +1296,7 @@ const Edit = () => {
                 <div className="flex space-x-3 mb-5" />
                 <div className="flex space-x-3 mt-5 justify-center" >
                   <label className="block mt-2 text-sm font-bold text-blue-500">
-                    *****   SELECT COURSE-5   *****
+                    *****   Vocational Course - 2   *****
                   </label>
                 </div>
                 <div className="flex space-x-3 mb-5" />
