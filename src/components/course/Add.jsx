@@ -158,6 +158,8 @@ const Add = () => {
               />
             </div>
 
+            <div className="flex space-x-3 mb-5" />
+            
             {/* Subject-1 */}
             <div>
               <label className="block text-sm font-medium text-gray-700">
