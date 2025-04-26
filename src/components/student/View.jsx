@@ -183,7 +183,7 @@ const View = () => {
                 <div className="flex space-x-3 mb-5" />
 
                 <div className="flex space-x-3 mb-5 justify-center">
-                  <p className="font-medium text-blue-500">***** COURCE-1 DETAILS *****</p>
+                  <p className="font-medium text-blue-500">***** Deeniyath Education *****</p>
                   <p className="font-normal"></p>
                 </div>
                 <div className="flex space-x-3 mb-5">
@@ -226,7 +226,7 @@ const View = () => {
                 <div className="flex space-x-3 mb-5" />
 
                 <div className="flex space-x-3 mb-5 justify-center">
-                  <p className="font-medium text-blue-500">***** COURCE-2 DETAILS *****</p>
+                  <p className="font-medium text-blue-500">***** School Education *****</p>
                   <p className="font-normal"></p>
                 </div>
                 <div className="flex space-x-3 mb-5">
@@ -269,7 +269,7 @@ const View = () => {
                 <div className="flex space-x-3 mb-5" />
 
                 <div className="flex space-x-3 mb-5 justify-center">
-                  <p className="font-medium text-blue-500">***** COURCE-3 DETAILS *****</p>
+                  <p className="font-medium text-blue-500">***** College Education *****</p>
                   <p className="font-normal"></p>
                 </div>
                 <div className="flex space-x-3 mb-5">
@@ -312,7 +312,7 @@ const View = () => {
                 <div className="flex space-x-3 mb-5" />
 
                 <div className="flex space-x-3 mb-5 justify-center">
-                  <p className="font-medium text-blue-500">***** COURCE-4 DETAILS *****</p>
+                  <p className="font-medium text-blue-500">***** Vocation Course - 1 *****</p>
                   <p className="font-normal"></p>
                 </div>
                 <div className="flex space-x-3 mb-5">
@@ -355,7 +355,7 @@ const View = () => {
                 <div className="flex space-x-3 mb-5" />
 
                 <div className="flex space-x-3 mb-5 justify-center">
-                  <p className="font-medium text-blue-500">***** COURCE-5 DETAILS *****</p>
+                  <p className="font-medium text-blue-500">***** Vocation Course - 2 *****</p>
                   <p className="font-normal"></p>
                 </div>
                 <div className="flex space-x-3 mb-5">
