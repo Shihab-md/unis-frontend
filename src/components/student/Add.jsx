@@ -139,6 +139,19 @@ const Add = () => {
       //setFees5Val(courses.filter(course => course._id === value).map(course => course.fees));
     }
 
+    // to set fees value
+    if (name === "fees1") {
+      setFees1Val(fees1Val);
+    } else if (name === "fees2") {
+      setFees2Val(fees2Val);
+    } else if (name === "fees3") {
+      setFees3Val(fees3Val);
+    } else if (name === "fees4") {
+      setFees4Val(fees4Val);
+    } else if (name === "fees5") {
+      setFees5Val(fees5Val);
+    }
+
     // set Final fees after discount
     if (name === "discount1") {
       setDiscount1Val(value);
@@ -171,6 +184,21 @@ const Add = () => {
       setBalance6Val(fees6Val - value - paid6Val);
     }
 
+    // to set final fees value
+    if (name === "finalFees1") {
+      setFinalFees1Val(finalFees1Val);
+    } else if (name === "finalFees2") {
+      setFinalFees2Val(finalFees2Val);
+    } else if (name === "finalFees3") {
+      setFinalFees3Val(finalFees3Val);
+    } else if (name === "finalFees4") {
+      setFinalFees4Val(finalFees4Val);
+    } else if (name === "finalFees5") {
+      setFinalFees5Val(finalFees5Val);
+    } else if (name === "finalFees6") {
+      setFinalFees6Val(finalFees6Val);
+    }
+
     // set Balance after paid
     if (name === "paid1") {
       setPaid1Val(value);
@@ -195,6 +223,21 @@ const Add = () => {
     } else if (name === "hostelPaid") {
       setPaid6Val(value);
       setBalance6Val(finalFees6Val - value);
+    }
+
+    // to set balance value
+    if (name === "balance1") {
+      setBalance1Val(balance1Val);
+    } else if (name === "balance2") {
+      setBalance2Val(balance2Val);
+    } else if (name === "balance3") {
+      setBalance3Val(balance3Val);
+    } else if (name === "balance4") {
+      setBalance4Val(balance4Val);
+    } else if (name === "balance5") {
+      setBalance5Val(balance5Val);
+    } else if (name === "hostelBalance") {
+      setBalance6Val(balance6Val);
     }
 
     if (name === "image") {
@@ -1512,7 +1555,7 @@ const Add = () => {
                     type="number"
                     name="hostelFinalFees"
                     onChange={handleChange}
-                //    disabled={true}
+                    //    disabled={true}
                     value={finalFees6Val}
                     className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                   //    required
@@ -1560,7 +1603,7 @@ const Add = () => {
                     type="number"
                     name="hostelBalance"
                     onChange={handleChange}
-                //    disabled={true}
+                    //    disabled={true}
                     value={balance6Val}
                     className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                   //    required
