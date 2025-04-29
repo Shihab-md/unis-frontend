@@ -195,7 +195,7 @@ const Add = () => {
       setFinalFees4Val(finalFees4Val);
     } else if (name === "finalFees5") {
       setFinalFees5Val(finalFees5Val);
-    } else if (name === "finalFees6") {
+    } else if (name === "hostelFinalFees") {
       setFinalFees6Val(finalFees6Val);
     }
 
