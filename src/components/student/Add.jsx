@@ -244,7 +244,34 @@ const Add = () => {
       alert("file found")
       setFormData((prevData) => ({ ...prevData, [name]: files[0] }));
     } else {
-      setFormData((prevData) => ({ ...prevData, [name]: value }));
+      setFormData((prevData) => ({
+        ...prevData,
+        [name]: value ,
+      
+        fees1: fees1Val,
+        finalFees1: finalFees1Val,
+        balance1: balance1Val,
+
+        fees2: fees2Val,
+        finalFees2: finalFees2Val,
+        balance2: balance2Val,
+
+        fees3: fees3Val,
+        finalFees3: finalFees3Val,
+        balance3: balance3Val,
+
+        fees4: fees4Val,
+        finalFees4: finalFees4Val,
+        balance4: balance4Val,
+
+        fees5: fees5Val,
+        finalFees5: finalFees5Val,
+        balance5: balance5Val,
+
+        hostelFinalFees: finalFees6Val,
+        hostelBalance: balance6Val,
+
+      }));
     }
   };
 
