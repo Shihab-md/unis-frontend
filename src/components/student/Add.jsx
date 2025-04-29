@@ -17,11 +17,11 @@ const Add = () => {
   const [institutes, setInstitutes] = useState([]);
   const [courses, setCourses] = useState([]);
 
-  const [courseId1Val, setCourseId1Val] = useState("");
-  const [courseId2Val, setCourseId2Val] = useState("");
-  const [courseId3Val, setCourseId3Val] = useState("");
-  const [courseId4Val, setCourseId4Val] = useState("");
-  const [courseId5Val, setCourseId5Val] = useState("");
+  const [fees1Val, setFees1Val] = useState("");
+  const [fees2Val, setFees2Val] = useState("");
+  const [fees3Val, setFees3Val] = useState("");
+  const [fees4Val, setFees4Val] = useState("");
+  const [fees5Val, setFees5Val] = useState("");
 
   const [finalFees1Val, setFinalFees1Val] = useState("");
   const [finalFees2Val, setFinalFees2Val] = useState("");
@@ -72,30 +72,43 @@ const Add = () => {
   const handleChange = (e) => {
     const { name, value, files } = e.target;
 
-    // set Fees
+    // set Fees after seletion of course
     if (name === "courseId1") {
-      setCourseId1Val(courses.filter(course => course._id === value).map(course => course.fees));
+      setFees1Val(courses.filter(course => course._id === value).map(course => course.fees));
     } else if (name === "courseId2") {
-      setCourseId2Val(courses.filter(course => course._id === value).map(course => course.fees));
+      setFees2Val(courses.filter(course => course._id === value).map(course => course.fees));
     } else if (name === "courseId3") {
-      setCourseId3Val(courses.filter(course => course._id === value).map(course => course.fees));
+      setFees3Val(courses.filter(course => course._id === value).map(course => course.fees));
     } else if (name === "courseId4") {
-      setCourseId4Val(courses.filter(course => course._id === value).map(course => course.fees));
+      setFees4Val(courses.filter(course => course._id === value).map(course => course.fees));
     } else if (name === "courseId5") {
-      setCourseId5Val(courses.filter(course => course._id === value).map(course => course.fees));
+      setFees5Val(courses.filter(course => course._id === value).map(course => course.fees));
     }
 
     // set Final fees after discount
     if (name === "discount1") {
-      setFinalFees1Val(courseId1Val - value);
+      setFinalFees1Val(fees1Val - value);
     } else if (name === "discount2") {
-      setFinalFees2Val(courseId2Val - value);
+      setFinalFees2Val(fees2Val - value);
     } else if (name === "discount3") {
-      setFinalFees3Val(courseId3Val - value);
+      setFinalFees3Val(fees3Val - value);
     } else if (name === "discount4") {
-      setFinalFees4Val(courseId4Val - value);
+      setFinalFees4Val(fees4Val - value);
     } else if (name === "discount5") {
-      setFinalFees5Val(courseId5Val - value);
+      setFinalFees5Val(fees5Val - value);
+    }
+
+    // set Balance after paid
+    if (name === "paid1") {
+      setBalance1Val(finalFees1Val - value);
+    } else if (name === "paid2") {
+      setBalance2Val(finalFees2Val - value);
+    } else if (name === "paid3") {
+      setBalance3Val(finalFees3Val - value);
+    } else if (name === "paid4") {
+      setBalance4Val(finalFees4Val - value);
+    } else if (name === "paid5") {
+      setBalance5Val(finalFees5Val - value);
     }
 
     if (name === "image") {
@@ -586,7 +599,7 @@ const Add = () => {
                   <input
                     type="number"
                     name="fees1"
-                    value={courseId1Val}
+                    value={fees1Val}
                     disabled={true}
                     onChange={handleChange}
                     className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
@@ -667,6 +680,7 @@ const Add = () => {
                     name="balance1"
                     onChange={handleChange}
                     disabled={true}
+                    value={balance1Val}
                     className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                   //    required
                   />
@@ -746,7 +760,7 @@ const Add = () => {
                   <input
                     type="number"
                     name="fees2"
-                    value={courseId2Val}
+                    value={fees2Val}
                     disabled={true}
                     onChange={handleChange}
                     className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
@@ -779,6 +793,8 @@ const Add = () => {
                     type="number"
                     name="finalFees2"
                     onChange={handleChange}
+                    disabled={true}
+                    value={finalFees2Val}
                     className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                   //    required
                   />
@@ -824,6 +840,8 @@ const Add = () => {
                     type="number"
                     name="balance2"
                     onChange={handleChange}
+                    disabled={true}
+                    value={balance2Val}
                     className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                   //    required
                   />
@@ -903,7 +921,7 @@ const Add = () => {
                   <input
                     type="number"
                     name="fees3"
-                    value={courseId3Val}
+                    value={fees3Val}
                     disabled={true}
                     onChange={handleChange}
                     className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
@@ -936,6 +954,8 @@ const Add = () => {
                     type="number"
                     name="finalFees3"
                     onChange={handleChange}
+                    disabled={true}
+                    value={finalFees3Val}
                     className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                   //    required
                   />
@@ -981,6 +1001,8 @@ const Add = () => {
                     type="number"
                     name="balance3"
                     onChange={handleChange}
+                    disabled={true}
+                    value={balance3Val}
                     className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                   //    required
                   />
@@ -1060,7 +1082,7 @@ const Add = () => {
                   <input
                     type="number"
                     name="fees4"
-                    value={courseId4Val}
+                    value={fees4Val}
                     disabled={true}
                     onChange={handleChange}
                     className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
@@ -1093,6 +1115,8 @@ const Add = () => {
                     type="number"
                     name="finalFees4"
                     onChange={handleChange}
+                    disabled={true}
+                    value={finalFees4Val}
                     className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                   //    required
                   />
@@ -1138,6 +1162,8 @@ const Add = () => {
                     type="number"
                     name="balance4"
                     onChange={handleChange}
+                    disabled={true}
+                    value={balance4Val}
                     className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                   //    required
                   />
@@ -1217,7 +1243,7 @@ const Add = () => {
                   <input
                     type="number"
                     name="fees5"
-                    value={courseId5Val}
+                    value={fees5Val}
                     disabled={true}
                     onChange={handleChange}
                     className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
@@ -1250,6 +1276,8 @@ const Add = () => {
                     type="number"
                     name="finalFees5"
                     onChange={handleChange}
+                    disabled={true}
+                    value={finalFees5Val}
                     className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                   //    required
                   />
@@ -1295,6 +1323,8 @@ const Add = () => {
                     type="number"
                     name="balance5"
                     onChange={handleChange}
+                    disabled={true}
+                    value={balance5Val}
                     className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                   //    required
                   />
