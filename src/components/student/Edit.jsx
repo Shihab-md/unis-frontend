@@ -419,26 +419,39 @@ const Edit = () => {
       [name]: value,
 
       fees1: fees1Val ? fees1Val : "0",
+      discount1: discount1Val,
       finalFees1: finalFees1Val ? finalFees1Val : "0",
+      paid1: paid1Val,
       balance1: balance1Val ? balance1Val : "0",
 
       fees2: fees2Val ? fees2Val : "0",
+      discount2: discount2Val,
       finalFees2: finalFees2Val ? finalFees2Val : "0",
+      paid2: paid2Val,
       balance2: balance2Val ? balance2Val : "0",
 
-      fees3: fees3Val,
-      finalFees3: finalFees3Val,
-      balance3: balance3Val,
+      fees3: fees3Val ? fees3Val : "0",
+      discount3: discount3Val,
+      finalFees3: finalFees3Val ? finalFees3Val : "0",
+      paid3: paid3Val,
+      balance3: balance3Val ? balance3Val : "0",
 
-      fees4: fees4Val,
-      finalFees4: finalFees4Val,
-      balance4: balance4Val,
+      fees4: fees4Val ? fees4Val : "0",
+      discount4: discount4Val,
+      finalFees4: finalFees4Val ? finalFees4Val : "0",
+      paid4: paid4Val,
+      balance4: balance4Val ? balance4Val : "0",
 
-      fees5: fees5Val,
-      finalFees5: finalFees5Val,
-      balance5: balance5Val,
+      fees5: fees5Val ? fees5Val : "0",
+      discount5: discount5Val,
+      finalFees5: finalFees5Val ? finalFees5Val : "0",
+      paid5: paid5Val,
+      balance5: balance5Val ? balance5Val : "0",
 
+      hostelFees: fees6Val,
+      hostelDiscount: discount6Val,
       hostelFinalFees: finalFees6Val,
+      hostelPaid: paid6Val,
       hostelBalance: balance6Val,
     }));
   };
@@ -778,7 +791,7 @@ const Edit = () => {
                 {/* Guardian's Occupation */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700">
-                    Father's Occupation
+                    Guardian's Occupation
                   </label>
                   <input
                     type="number"

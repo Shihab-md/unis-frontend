@@ -601,7 +601,7 @@ const Add = () => {
               {/* Guardian's Occupation */}
               <div>
                 <label className="block text-sm font-medium text-gray-700">
-                  Father's Occupation
+                  Guardian's Occupation
                 </label>
                 <input
                   type="number"
