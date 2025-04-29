@@ -14,17 +14,11 @@ const Edit = () => {
   const [student, setStudent] = useState({
     name: "",
     email: "",
-    role: "",
     contactNumber: "",
     address: "",
-    routeName: "",
-    qualification: "",
     dob: "",
     gender: "",
     maritalStatus: "",
-    doj: "",
-    designation: "",
-    salary: "",
   });
   // const [departments, setDepartments] = useState(null);
   const navigate = useNavigate();
