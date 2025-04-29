@@ -1512,7 +1512,7 @@ const Add = () => {
                     type="number"
                     name="hostelFinalFees"
                     onChange={handleChange}
-                    disabled={true}
+                //    disabled={true}
                     value={finalFees6Val}
                     className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                   //    required
@@ -1560,7 +1560,7 @@ const Add = () => {
                     type="number"
                     name="hostelBalance"
                     onChange={handleChange}
-                    disabled={true}
+                //    disabled={true}
                     value={balance6Val}
                     className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                   //    required
