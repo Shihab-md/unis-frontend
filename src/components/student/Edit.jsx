@@ -156,11 +156,11 @@ const Edit = () => {
           setPaid5Val(academic.paid5);
           setBalance5Val(academic.balance5);
 
-          setFees5Val(student.hostelFees);
-          setDiscount5Val(student.hostelDiscount);
-          setFinalFees5Val(student.hostelFinalFees);
-          setPaid5Val(student.hostelPaid);
-          setBalance5Val(student.hostelBalance);
+          setFees6Val(student.hostelFees);
+          setDiscount6Val(student.hostelDiscount);
+          setFinalFees6Val(student.hostelFinalFees);
+          setPaid6Val(student.hostelPaid);
+          setBalance6Val(student.hostelBalance);
 
           setStudent((prev) => ({
             ...prev,
