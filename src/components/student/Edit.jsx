@@ -698,7 +698,7 @@ const Edit = () => {
                     Father's Occupation
                   </label>
                   <input
-                    type="number"
+                    type="text"
                     name="fatherOccupation"
                     value={student.fatherOccupation}
                     onChange={handleChange}
@@ -743,7 +743,7 @@ const Edit = () => {
                     Mother's Occupation
                   </label>
                   <input
-                    type="number"
+                    type="text"
                     name="motherOccupation"
                     value={student.motherOccupation}
                     onChange={handleChange}
@@ -788,7 +788,7 @@ const Edit = () => {
                     Guardian's Occupation
                   </label>
                   <input
-                    type="number"
+                    type="text"
                     name="guardianOccupation"
                     value={student.guardianOccupation}
                     onChange={handleChange}

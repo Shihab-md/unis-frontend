@@ -520,7 +520,7 @@ const Add = () => {
                   Father's Occupation
                 </label>
                 <input
-                  type="number"
+                  type="text"
                   name="fatherOccupation"
                   onChange={handleChange}
                   className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
@@ -562,7 +562,7 @@ const Add = () => {
                   Mother's Occupation
                 </label>
                 <input
-                  type="number"
+                  type="text"
                   name="motherOccupation"
                   onChange={handleChange}
                   className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
@@ -604,7 +604,7 @@ const Add = () => {
                   Guardian's Occupation
                 </label>
                 <input
-                  type="number"
+                  type="text"
                   name="guardianOccupation"
                   onChange={handleChange}
                   className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
