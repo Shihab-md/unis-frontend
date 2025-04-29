@@ -127,10 +127,40 @@ const Edit = () => {
           const academic = academicResponse.data.academic;
 
           setFees1Val(academic.fees1);
+          setDiscount1Val(academic.discount1);
+          setFinalFees1Val(academic.finalFees1);
+          setPaid1Val(academic.paid1);
+          setBalance1Val(academic.balance1);
+
           setFees2Val(academic.fees2);
+          setDiscount2Val(academic.discount2);
+          setFinalFees2Val(academic.finalFees2);
+          setPaid2Val(academic.paid2);
+          setBalance2Val(academic.balance2);
+
           setFees3Val(academic.fees3);
+          setDiscount3Val(academic.discount3);
+          setFinalFees3Val(academic.finalFees3);
+          setPaid3Val(academic.paid3);
+          setBalance3Val(academic.balance3);
+
           setFees4Val(academic.fees4);
+          setDiscount4Val(academic.discount4);
+          setFinalFees4Val(academic.finalFees4);
+          setPaid4Val(academic.paid4);
+          setBalance4Val(academic.balance4);
+
           setFees5Val(academic.fees5);
+          setDiscount5Val(academic.discount5);
+          setFinalFees5Val(academic.finalFees5);
+          setPaid5Val(academic.paid5);
+          setBalance5Val(academic.balance5);
+
+          setFees5Val(student.hostelFees);
+          setDiscount5Val(student.hostelDiscount);
+          setFinalFees5Val(student.hostelFinalFees);
+          setPaid5Val(student.hostelPaid);
+          setBalance5Val(student.hostelBalance);
 
           setStudent((prev) => ({
             ...prev,
@@ -160,64 +190,64 @@ const Edit = () => {
 
             hostel: student.hostel,
             hostelRefNumber: student.hostelRefNumber,
-            hostelFees: student.hostelFees,
-            hostelDiscount: student.hostelDiscount,
-            hostelFinalFees: student.hostelFinalFees,
-            hostelPaid: student.hostelPaid,
+            //  hostelFees: student.hostelFees,
+            //   hostelDiscount: student.hostelDiscount,
+            //   hostelFinalFees: student.hostelFinalFees,
+            //   hostelPaid: student.hostelPaid,
             hostelPaidDate: student.hostelPaidDate,
-            hostelBalance: student.hostelBalance,
+            //   hostelBalance: student.hostelBalance,
 
             acYear: academic.acYear,
 
             instituteId1: academic.instituteId1,
             courseId1: academic.courseId1,
             refNumber1: academic.refNumber1,
-            feesSss1: academic.fees1,
-            discount1: academic.discount1,
-            finalFees1: academic.finalFees1,
-            paid1: academic.paid1,
+            // feesSss1: academic.fees1,
+            //  discount1: academic.discount1,
+            //  finalFees1: academic.finalFees1,
+            //  paid1: academic.paid1,
             paidDate1: academic.paidDate1,
-            balance1: academic.balance1,
+            //  balance1: academic.balance1,
 
             instituteId2: academic.instituteId2,
             courseId2: academic.courseId2,
             refNumber2: academic.refNumber2,
-            fees2: academic.fees2,
-            discount2: academic.discount2,
-            finalFees2: academic.finalFees2,
-            paid2: academic.paid2,
+            //  fees2: academic.fees2,
+            //  discount2: academic.discount2,
+            //  finalFees2: academic.finalFees2,
+            //  paid2: academic.paid2,
             paidDate2: academic.paidDate2,
-            balance2: academic.balance2,
+            //  balance2: academic.balance2,
 
             instituteId3: academic.instituteId3,
             courseId3: academic.courseId3,
             refNumber3: academic.refNumber3,
-            fees3: academic.fees3,
-            discount3: academic.discount3,
-            finalFees3: academic.finalFees3,
-            paid3: academic.paid3,
+            //  fees3: academic.fees3,
+            //  discount3: academic.discount3,
+            //  finalFees3: academic.finalFees3,
+            //   paid3: academic.paid3,
             paidDate3: academic.paidDate3,
-            balance3: academic.balance3,
+            //  balance3: academic.balance3,
 
             instituteId4: academic.instituteId4,
             courseId4: academic.courseId4,
             refNumber4: academic.refNumber4,
-            fees4: academic.fees4,
-            discount4: academic.discount4,
-            finalFees4: academic.finalFees4,
-            paid4: academic.paid4,
+            //   fees4: academic.fees4,
+            //   discount4: academic.discount4,
+            //   finalFees4: academic.finalFees4,
+            //   paid4: academic.paid4,
             paidDate4: academic.paidDate4,
-            balance4: academic.balance4,
+            //   balance4: academic.balance4,
 
             instituteId5: academic.instituteId5,
             courseId5: academic.courseId5,
             refNumber5: academic.refNumber5,
-            fees5: academic.fees5,
-            discount5: academic.discount5,
-            finalFees5: academic.finalFees5,
-            paid5: academic.paid5,
+            //    fees5: academic.fees5,
+            //   discount5: academic.discount5,
+            //    finalFees5: academic.finalFees5,
+            //    paid5: academic.paid5,
             paidDate5: academic.paidDate5,
-            balance5: academic.balance5,
+            //    balance5: academic.balance5,
           }));
         }
       } catch (error) {
