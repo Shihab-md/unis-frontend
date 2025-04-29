@@ -23,11 +23,23 @@ const Add = () => {
   const [fees4Val, setFees4Val] = useState("");
   const [fees5Val, setFees5Val] = useState("");
 
+  const [discount1Val, setDiscount1Val] = useState("");
+  const [discount2Val, setDiscount2Val] = useState("");
+  const [discount3Val, setDiscount3Val] = useState("");
+  const [discount4Val, setDiscount4Val] = useState("");
+  const [discount5Val, setDiscount5Val] = useState("");
+
   const [finalFees1Val, setFinalFees1Val] = useState("");
   const [finalFees2Val, setFinalFees2Val] = useState("");
   const [finalFees3Val, setFinalFees3Val] = useState("");
   const [finalFees4Val, setFinalFees4Val] = useState("");
   const [finalFees5Val, setFinalFees5Val] = useState("");
+
+  const [paid1Val, setPaid1Val] = useState("");
+  const [paid2Val, setPaid2Val] = useState("");
+  const [paid3Val, setPaid3Val] = useState("");
+  const [paid4Val, setPaid4Val] = useState("");
+  const [paid5Val, setPaid5Val] = useState("");
 
   const [balance1Val, setBalance1Val] = useState("");
   const [balance2Val, setBalance2Val] = useState("");
@@ -75,6 +87,11 @@ const Add = () => {
     // set Fees after seletion of course
     if (name === "courseId1") {
       setFees1Val(courses.filter(course => course._id === value).map(course => course.fees));
+      setDiscount1Val(0);
+      setFinalFees1Val(fees1Val - discount1Val);
+      setPaid1Val(0);
+      setBalance1Val(finalFees1Val - paid1Val);
+
     } else if (name === "courseId2") {
       setFees2Val(courses.filter(course => course._id === value).map(course => course.fees));
     } else if (name === "courseId3") {
@@ -616,6 +633,7 @@ const Add = () => {
                     type="number"
                     name="discount1"
                     onChange={handleChange}
+                    value={discount1Val}
                     className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                   //    required
                   />
@@ -648,6 +666,7 @@ const Add = () => {
                     type="number"
                     name="paid1"
                     onChange={handleChange}
+                    value={paid1Val}
                     className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                   //    required
                   />
