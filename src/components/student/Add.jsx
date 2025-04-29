@@ -141,15 +141,15 @@ const Add = () => {
 
     // to set fees value
     if (name === "fees1") {
-      setFees1Val(fees1Val);
+      setFees1Val(value);
     } else if (name === "fees2") {
-      setFees2Val(fees2Val);
+      setFees2Val(value);
     } else if (name === "fees3") {
-      setFees3Val(fees3Val);
+      setFees3Val(value);
     } else if (name === "fees4") {
-      setFees4Val(fees4Val);
+      setFees4Val(value);
     } else if (name === "fees5") {
-      setFees5Val(fees5Val);
+      setFees5Val(value);
     }
 
     // set Final fees after discount
@@ -186,17 +186,17 @@ const Add = () => {
 
     // to set final fees value
     if (name === "finalFees1") {
-      setFinalFees1Val(finalFees1Val);
+      setFinalFees1Val(value);
     } else if (name === "finalFees2") {
-      setFinalFees2Val(finalFees2Val);
+      setFinalFees2Val(value);
     } else if (name === "finalFees3") {
-      setFinalFees3Val(finalFees3Val);
+      setFinalFees3Val(value);
     } else if (name === "finalFees4") {
-      setFinalFees4Val(finalFees4Val);
+      setFinalFees4Val(value);
     } else if (name === "finalFees5") {
-      setFinalFees5Val(finalFees5Val);
+      setFinalFees5Val(value);
     } else if (name === "hostelFinalFees") {
-      setFinalFees6Val(finalFees6Val);
+      setFinalFees6Val(value);
     }
 
     // set Balance after paid
@@ -227,17 +227,17 @@ const Add = () => {
 
     // to set balance value
     if (name === "balance1") {
-      setBalance1Val(balance1Val);
+      setBalance1Val(value);
     } else if (name === "balance2") {
-      setBalance2Val(balance2Val);
+      setBalance2Val(value);
     } else if (name === "balance3") {
-      setBalance3Val(balance3Val);
+      setBalance3Val(value);
     } else if (name === "balance4") {
-      setBalance4Val(balance4Val);
+      setBalance4Val(value);
     } else if (name === "balance5") {
-      setBalance5Val(balance5Val);
+      setBalance5Val(value);
     } else if (name === "hostelBalance") {
-      setBalance6Val(balance6Val);
+      setBalance6Val(value);
     }
 
     if (name === "image") {
