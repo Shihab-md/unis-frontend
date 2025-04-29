@@ -106,6 +106,7 @@ const Add = () => {
     if (name === "discount1") {
       setDiscount1Val(value);
       setFinalFees1Val(fees1Val - value);
+      setBalance1Val(finalFees1Val - paid1Val);
     } else if (name === "discount2") {
       setFinalFees2Val(fees2Val - value);
     } else if (name === "discount3") {
