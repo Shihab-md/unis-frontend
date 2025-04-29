@@ -126,7 +126,7 @@ const Add = () => {
 
         <form onSubmit={handleSubmit}>
           <div className="py-2 px-4 border mt-5 mb-3 items-center justify-center rounded-lg shadow-lg">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
 
               {/* School */}
               <div>
@@ -290,7 +290,7 @@ const Add = () => {
               <div className="flex space-x-3 mb-5" />
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
               {/* Father's Name */}
               <div>
                 <label className="block text-sm font-medium text-gray-700">
@@ -447,7 +447,7 @@ const Add = () => {
               </div>
             </div>
 
-            <div className="grid mt-3 grid-cols-1 md:grid-cols-1 gap-4 ">
+            <div className="grid mt-3 grid-cols-1 md:grid-cols-1 gap-5 ">
               {/* Address */}
               <div>
                 <label className="block text-sm font-medium text-gray-700">
@@ -464,7 +464,7 @@ const Add = () => {
               </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
               <div className="flex space-x-3 mb-5" />
               <div className="flex space-x-3 mb-5" />
 
