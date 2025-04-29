@@ -22,30 +22,35 @@ const Add = () => {
   const [fees3Val, setFees3Val] = useState("");
   const [fees4Val, setFees4Val] = useState("");
   const [fees5Val, setFees5Val] = useState("");
+  const [fees6Val, setFees6Val] = useState("");
 
   const [discount1Val, setDiscount1Val] = useState("");
   const [discount2Val, setDiscount2Val] = useState("");
   const [discount3Val, setDiscount3Val] = useState("");
   const [discount4Val, setDiscount4Val] = useState("");
   const [discount5Val, setDiscount5Val] = useState("");
+  const [discount6Val, setDiscount6Val] = useState("");
 
   const [finalFees1Val, setFinalFees1Val] = useState("");
   const [finalFees2Val, setFinalFees2Val] = useState("");
   const [finalFees3Val, setFinalFees3Val] = useState("");
   const [finalFees4Val, setFinalFees4Val] = useState("");
   const [finalFees5Val, setFinalFees5Val] = useState("");
+  const [finalFees6Val, setFinalFees6Val] = useState("");
 
   const [paid1Val, setPaid1Val] = useState("");
   const [paid2Val, setPaid2Val] = useState("");
   const [paid3Val, setPaid3Val] = useState("");
   const [paid4Val, setPaid4Val] = useState("");
   const [paid5Val, setPaid5Val] = useState("");
+  const [paid6Val, setPaid6Val] = useState("");
 
   const [balance1Val, setBalance1Val] = useState("");
   const [balance2Val, setBalance2Val] = useState("");
   const [balance3Val, setBalance3Val] = useState("");
   const [balance4Val, setBalance4Val] = useState("");
   const [balance5Val, setBalance5Val] = useState("");
+  const [balance6Val, setBalance6Val] = useState("");
 
   const navigate = useNavigate()
 
@@ -92,15 +97,46 @@ const Add = () => {
       setFinalFees1Val(fees1);
       setPaid1Val(0);
       setBalance1Val(fees1);
-
     } else if (name === "courseId2") {
-      setFees2Val(courses.filter(course => course._id === value).map(course => course.fees));
+      let fees2 = courses.filter(course => course._id === value).map(course => course.fees);
+      setFees2Val(fees2);
+      setDiscount2Val(0);
+      setFinalFees2Val(fees2);
+      setPaid2Val(0);
+      setBalance2Val(fees2);
+      //setFees2Val(courses.filter(course => course._id === value).map(course => course.fees));
     } else if (name === "courseId3") {
-      setFees3Val(courses.filter(course => course._id === value).map(course => course.fees));
+      let fees3 = courses.filter(course => course._id === value).map(course => course.fees);
+      setFees3Val(fees3);
+      setDiscount3Val(0);
+      setFinalFees3Val(fees3);
+      setPaid3Val(0);
+      setBalance3Val(fees3);
+      // setFees3Val(courses.filter(course => course._id === value).map(course => course.fees));
     } else if (name === "courseId4") {
-      setFees4Val(courses.filter(course => course._id === value).map(course => course.fees));
+      let fees4 = courses.filter(course => course._id === value).map(course => course.fees);
+      setFees4Val(fees4);
+      setDiscount4Val(0);
+      setFinalFees4Val(fees4);
+      setPaid4Val(0);
+      setBalance4Val(fees4);
+      //setFees4Val(courses.filter(course => course._id === value).map(course => course.fees));
     } else if (name === "courseId5") {
-      setFees5Val(courses.filter(course => course._id === value).map(course => course.fees));
+      let fees5 = courses.filter(course => course._id === value).map(course => course.fees);
+      setFees5Val(fees5);
+      setDiscount5Val(0);
+      setFinalFees5Val(fees5);
+      setPaid5Val(0);
+      setBalance5Val(fees5);
+      //setFees5Val(courses.filter(course => course._id === value).map(course => course.fees));
+    } else if (name === "hostelFees") {
+      //  let fees5 = courses.filter(course => course._id === value).map(course => course.fees);
+      setFees6Val(value);
+      setDiscount6Val(0);
+      setFinalFees6Val(value);
+      setPaid6Val(0);
+      setBalance6Val(value);
+      //setFees5Val(courses.filter(course => course._id === value).map(course => course.fees));
     }
 
     // set Final fees after discount
@@ -108,28 +144,57 @@ const Add = () => {
       setDiscount1Val(value);
       setFinalFees1Val(fees1Val - value);
       setBalance1Val(fees1Val - value - paid1Val);
+
     } else if (name === "discount2") {
+      setDiscount2Val(value);
       setFinalFees2Val(fees2Val - value);
+      setBalance2Val(fees2Val - value - paid2Val);
+
     } else if (name === "discount3") {
+      setDiscount3Val(value);
       setFinalFees3Val(fees3Val - value);
+      setBalance3Val(fees3Val - value - paid3Val);
+
     } else if (name === "discount4") {
+      setDiscount4Val(value);
       setFinalFees4Val(fees4Val - value);
+      setBalance4Val(fees4Val - value - paid4Val);
+
     } else if (name === "discount5") {
+      setDiscount5Val(value);
       setFinalFees5Val(fees5Val - value);
+      setBalance5Val(fees5Val - value - paid5Val);
+
+    } else if (name === "hostelDiscount") {
+      setDiscount6Val(value);
+      setFinalFees6Val(fees6Val - value);
+      setBalance6Val(fees6Val - value - paid6Val);
     }
 
     // set Balance after paid
     if (name === "paid1") {
       setPaid1Val(value);
       setBalance1Val(finalFees1Val - value);
+
     } else if (name === "paid2") {
+      setPaid2Val(value);
       setBalance2Val(finalFees2Val - value);
+
     } else if (name === "paid3") {
+      setPaid3Val(value);
       setBalance3Val(finalFees3Val - value);
+
     } else if (name === "paid4") {
+      setPaid4Val(value);
       setBalance4Val(finalFees4Val - value);
+
     } else if (name === "paid5") {
+      setPaid5Val(value);
       setBalance5Val(finalFees5Val - value);
+
+    } else if (name === "hostelPaid") {
+      setPaid6Val(value);
+      setBalance6Val(finalFees6Val - value);
     }
 
     if (name === "image") {
@@ -800,6 +865,7 @@ const Add = () => {
                     type="number"
                     name="discount2"
                     onChange={handleChange}
+                    value={discount2Val}
                     className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                   //    required
                   />
@@ -832,6 +898,7 @@ const Add = () => {
                     type="number"
                     name="paid2"
                     onChange={handleChange}
+                    value={paid2Val}
                     className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                   //    required
                   />
@@ -961,6 +1028,7 @@ const Add = () => {
                     type="number"
                     name="discount3"
                     onChange={handleChange}
+                    value={discount3Val}
                     className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                   //    required
                   />
@@ -993,6 +1061,7 @@ const Add = () => {
                     type="number"
                     name="paid3"
                     onChange={handleChange}
+                    value={paid3Val}
                     className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                   //    required
                   />
@@ -1122,6 +1191,7 @@ const Add = () => {
                     type="number"
                     name="discount4"
                     onChange={handleChange}
+                    value={discount4Val}
                     className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                   //    required
                   />
@@ -1154,6 +1224,7 @@ const Add = () => {
                     type="number"
                     name="paid4"
                     onChange={handleChange}
+                    value={paid4Val}
                     className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                   //    required
                   />
@@ -1283,6 +1354,7 @@ const Add = () => {
                     type="number"
                     name="discount5"
                     onChange={handleChange}
+                    value={discount5Val}
                     className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                   //    required
                   />
@@ -1315,6 +1387,7 @@ const Add = () => {
                     type="number"
                     name="paid5"
                     onChange={handleChange}
+                    value={paid5Val}
                     className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                   //    required
                   />
@@ -1406,6 +1479,7 @@ const Add = () => {
                   <input
                     type="number"
                     name="hostelFees"
+                    value={fees6Val}
                     onChange={handleChange}
                     className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                   //    required
@@ -1421,6 +1495,7 @@ const Add = () => {
                     type="number"
                     name="hostelDiscount"
                     onChange={handleChange}
+                    value={discount6Val}
                     className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                   //    required
                   />
@@ -1437,6 +1512,8 @@ const Add = () => {
                     type="number"
                     name="hostelFinalFees"
                     onChange={handleChange}
+                    disabled={true}
+                    value={finalFees6Val}
                     className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                   //    required
                   />
@@ -1451,6 +1528,7 @@ const Add = () => {
                     type="number"
                     name="hostelPaid"
                     onChange={handleChange}
+                    value={paid6Val}
                     className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                   //    required
                   />
@@ -1482,6 +1560,8 @@ const Add = () => {
                     type="number"
                     name="hostelBalance"
                     onChange={handleChange}
+                    disabled={true}
+                    value={balance6Val}
                     className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                   //    required
                   />
