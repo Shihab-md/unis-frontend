@@ -1284,7 +1284,7 @@ const Add = () => {
               {/* Hostel */}
               <div>
                 <label className="block text-sm font-medium text-gray-700">
-                  Is the Hostel Admission Required? <span className="text-red-700">*</span>
+                  Hostel Admission <span className="text-red-700">*</span>
                 </label>
                 <select
                   name="hostel"
@@ -1303,7 +1303,7 @@ const Add = () => {
               {/* Hostel Reference Number */}
               <div>
                 <label className="block text-sm font-medium text-gray-700">
-                  Hostel Reference Number
+                  Reference Number
                 </label>
                 <input
                   type="text"
@@ -1319,7 +1319,7 @@ const Add = () => {
                 {/* Hostel Fees */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700">
-                    Hostel Fees
+                    Fees
                   </label>
                   <input
                     type="number"
@@ -1333,7 +1333,7 @@ const Add = () => {
                 {/* Hostel Discount */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700">
-                    Hostel Fees Discount
+                    Discount
                   </label>
                   <input
                     type="number"
@@ -1349,7 +1349,7 @@ const Add = () => {
                 {/* Hostel Final Fees */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700">
-                    Hostel Final Fees
+                    Final Fees
                   </label>
                   <input
                     type="number"
@@ -1363,7 +1363,7 @@ const Add = () => {
                 {/* Hostel Paid */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700">
-                    Hostel Fees Paid
+                    Paid
                   </label>
                   <input
                     type="number"
@@ -1379,7 +1379,7 @@ const Add = () => {
                 {/* Hostel Paid Date */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700">
-                    Hostel Fees Paid Date
+                    Paid Date
                   </label>
                   <input
                     type="date"
@@ -1394,7 +1394,7 @@ const Add = () => {
                 {/* Hostel Balance */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700">
-                    Hostel Fees Balance
+                    Balance
                   </label>
                   <input
                     type="number"
