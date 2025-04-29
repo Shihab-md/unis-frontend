@@ -266,7 +266,7 @@ const Edit = () => {
                     name="schoolId"
                     value={student.schoolId}
                     onChange={handleChange}
-                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                    className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                     required
                   >
                     <option value="">Select Niswan</option>
@@ -289,7 +289,7 @@ const Edit = () => {
                     value={student.rollNumber}
                     disabled={true}
                     onChange={handleChange}
-                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                    className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                     required
                   />
                 </div>
@@ -304,7 +304,7 @@ const Edit = () => {
                     name="name"
                     value={student.name}
                     onChange={handleChange}
-                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                    className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                     required
                   />
                 </div>
@@ -320,7 +320,7 @@ const Edit = () => {
                     value={moment(new Date(student.doa)).format("YYYY-MM-DD")}
                     onChange={handleChange}
                     //    placeholder="DOB"
-                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                    className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                     required
                   />
                 </div>
@@ -339,7 +339,7 @@ const Edit = () => {
                     value={moment(new Date(student.dob)).format("YYYY-MM-DD")}
                     onChange={handleChange}
                     //    placeholder="DOB"
-                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                    className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                     required
                   />
                 </div>
@@ -353,7 +353,7 @@ const Edit = () => {
                     name="gender"
                     value={student.gender}
                     onChange={handleChange}
-                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                    className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                     required
                   >
                     <option value="">Select Gender</option>
@@ -372,7 +372,7 @@ const Edit = () => {
                     value={student.maritalStatus}
                     onChange={handleChange}
                     placeholder="Marital Status"
-                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                    className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                     required
                   >
                     <option value="">Select Status</option>
@@ -391,7 +391,7 @@ const Edit = () => {
                     name="bloodGroup"
                     value={student.bloodGroup}
                     onChange={handleChange}
-                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                    className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                   //    required
                   />
                 </div>
@@ -406,7 +406,7 @@ const Edit = () => {
                     name="idMark1"
                     value={student.idMark1}
                     onChange={handleChange}
-                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                    className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                     required
                   />
                 </div>
@@ -421,7 +421,7 @@ const Edit = () => {
                     name="idMark2"
                     value={student.idMark2}
                     onChange={handleChange}
-                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                    className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                   //    required
                   />
                 </div>
@@ -441,7 +441,7 @@ const Edit = () => {
                     name="fatherName"
                     value={student.fatherName}
                     onChange={handleChange}
-                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                    className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                   //  required
                   />
                 </div>
@@ -456,7 +456,7 @@ const Edit = () => {
                     name="fatherNumber"
                     value={student.fatherNumber}
                     onChange={handleChange}
-                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                    className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                   //  required
                   />
                 </div>
@@ -471,7 +471,7 @@ const Edit = () => {
                     name="fatherOccupation"
                     value={student.fatherOccupation}
                     onChange={handleChange}
-                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                    className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                   //  required
                   />
                 </div>
@@ -486,7 +486,7 @@ const Edit = () => {
                     name="motherName"
                     value={student.motherName}
                     onChange={handleChange}
-                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                    className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                   //    required
                   />
                 </div>
@@ -501,7 +501,7 @@ const Edit = () => {
                     name="motherNumber"
                     value={student.motherNumber}
                     onChange={handleChange}
-                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                    className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                   //    required
                   />
                 </div>
@@ -516,7 +516,7 @@ const Edit = () => {
                     name="motherOccupation"
                     value={student.motherOccupation}
                     onChange={handleChange}
-                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                    className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                   //  required
                   />
                 </div>
@@ -531,7 +531,7 @@ const Edit = () => {
                     name="guardianName"
                     value={student.guardianName}
                     onChange={handleChange}
-                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                    className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                   //    required
                   />
                 </div>
@@ -546,7 +546,7 @@ const Edit = () => {
                     name="guardianNumber"
                     value={student.guardianNumber}
                     onChange={handleChange}
-                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                    className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                   //    required
                   />
                 </div>
@@ -561,7 +561,7 @@ const Edit = () => {
                     name="guardianOccupation"
                     value={student.guardianOccupation}
                     onChange={handleChange}
-                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                    className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                   //  required
                   />
                 </div>
@@ -576,7 +576,7 @@ const Edit = () => {
                     name="guardianRelation"
                     value={student.guardianRelation}
                     onChange={handleChange}
-                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                    className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                   //    required
                   />
                 </div>
@@ -592,7 +592,7 @@ const Edit = () => {
                     value={student.district}
                     onChange={handleChange}
                     //  placeholder="Route Name"
-                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                    className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                     required
                   />
                 </div>
@@ -610,7 +610,7 @@ const Edit = () => {
                     value={student.address}
                     onChange={handleChange}
                     //  placeholder="Address"
-                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                    className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                     required
                   />
                 </div>
@@ -630,7 +630,7 @@ const Edit = () => {
                     value={student.acYear}
                     onChange={handleChange}
                     disabled={true}
-                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                    className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                     required
                   >
                     <option value="">Select Academic Year</option>
@@ -659,7 +659,7 @@ const Edit = () => {
                     name="instituteId1"
                     value={student.instituteId1}
                     onChange={handleChange}
-                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                    className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                     required
                   >
                     <option value="">Select Institute</option>
@@ -680,7 +680,7 @@ const Edit = () => {
                     name="courseId1"
                     value={student.courseId1}
                     onChange={handleChange}
-                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                    className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                     required
                   >
                     <option value="">Select Course</option>
@@ -703,7 +703,7 @@ const Edit = () => {
                     value={student.refNumber1}
                     onChange={handleChange}
                     //    placeholder="Qualification"
-                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                    className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                     required
                   />
                 </div>
@@ -720,7 +720,7 @@ const Edit = () => {
                       // value={student.fees1}
                       value={courseId1Val}
                       onChange={handleChange}
-                      className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                      className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                     //    required
                     />
                   </div>
@@ -735,7 +735,7 @@ const Edit = () => {
                       name="discount1"
                       value={student.discount1}
                       onChange={handleChange}
-                      className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                      className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                     //    required
                     />
                   </div>
@@ -752,7 +752,7 @@ const Edit = () => {
                       name="finalFees1"
                       value={student.finalFees1}
                       onChange={handleChange}
-                      className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                      className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                     //    required
                     />
                   </div>
@@ -767,7 +767,7 @@ const Edit = () => {
                       name="paid1"
                       value={student.paid1}
                       onChange={handleChange}
-                      className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                      className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                     //    required
                     />
                   </div>
@@ -785,7 +785,7 @@ const Edit = () => {
                       value={moment(new Date(student.paidDate1)).format("YYYY-MM-DD")}
                       onChange={handleChange}
                       //    placeholder="DOB"
-                      className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                      className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                     //    required
                     />
                   </div>
@@ -800,7 +800,7 @@ const Edit = () => {
                       name="balance1"
                       value={student.balance1}
                       onChange={handleChange}
-                      className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                      className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                     //    required
                     />
                   </div>
@@ -824,7 +824,7 @@ const Edit = () => {
                     name="instituteId2"
                     value={student.instituteId2}
                     onChange={handleChange}
-                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                    className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                   //    required
                   >
                     <option value="">Select Institute</option>
@@ -845,7 +845,7 @@ const Edit = () => {
                     name="courseId2"
                     value={student.courseId2}
                     onChange={handleChange}
-                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                    className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                   //    required
                   >
                     <option value="">Select Course</option>
@@ -868,7 +868,7 @@ const Edit = () => {
                     value={student.refNumber2}
                     onChange={handleChange}
                     //    placeholder="Qualification"
-                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                    className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                   //   required
                   />
                 </div>
@@ -885,7 +885,7 @@ const Edit = () => {
                       // value={student.fees2}
                       value={courseId2Val}
                       onChange={handleChange}
-                      className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                      className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                     //    required
                     />
                   </div>
@@ -900,7 +900,7 @@ const Edit = () => {
                       name="discount2"
                       value={student.discount2}
                       onChange={handleChange}
-                      className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                      className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                     //    required
                     />
                   </div>
@@ -917,7 +917,7 @@ const Edit = () => {
                       name="finalFees2"
                       value={student.finalFees2}
                       onChange={handleChange}
-                      className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                      className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                     //    required
                     />
                   </div>
@@ -932,7 +932,7 @@ const Edit = () => {
                       name="paid2"
                       value={student.paid2}
                       onChange={handleChange}
-                      className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                      className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                     //    required
                     />
                   </div>
@@ -950,7 +950,7 @@ const Edit = () => {
                       value={moment(new Date(student.paidDate2)).format("YYYY-MM-DD")}
                       onChange={handleChange}
                       //    placeholder="DOB"
-                      className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                      className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                     //    required
                     />
                   </div>
@@ -965,7 +965,7 @@ const Edit = () => {
                       name="balance2"
                       value={student.balance2}
                       onChange={handleChange}
-                      className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                      className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                     //    required
                     />
                   </div>
@@ -989,7 +989,7 @@ const Edit = () => {
                     name="instituteId3"
                     value={student.instituteId3}
                     onChange={handleChange}
-                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                    className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                   //    required
                   >
                     <option value="">Select Institute</option>
@@ -1010,7 +1010,7 @@ const Edit = () => {
                     name="courseId3"
                     value={student.courseId3}
                     onChange={handleChange}
-                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                    className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                   //    required
                   >
                     <option value="">Select Course</option>
@@ -1033,7 +1033,7 @@ const Edit = () => {
                     value={student.refNumber3}
                     onChange={handleChange}
                     //    placeholder="Qualification"
-                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                    className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                   //   required
                   />
                 </div>
@@ -1050,7 +1050,7 @@ const Edit = () => {
                       //value={student.fees3}
                       value={courseId3Val}
                       onChange={handleChange}
-                      className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                      className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                     //    required
                     />
                   </div>
@@ -1065,7 +1065,7 @@ const Edit = () => {
                       name="discount3"
                       value={student.discount3}
                       onChange={handleChange}
-                      className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                      className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                     //    required
                     />
                   </div>
@@ -1082,7 +1082,7 @@ const Edit = () => {
                       name="finalFees3"
                       value={student.finalFees3}
                       onChange={handleChange}
-                      className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                      className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                     //    required
                     />
                   </div>
@@ -1097,7 +1097,7 @@ const Edit = () => {
                       name="paid3"
                       value={student.paid3}
                       onChange={handleChange}
-                      className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                      className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                     //    required
                     />
                   </div>
@@ -1115,7 +1115,7 @@ const Edit = () => {
                       value={moment(new Date(student.paidDate3)).format("YYYY-MM-DD")}
                       onChange={handleChange}
                       //    placeholder="DOB"
-                      className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                      className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                     //     required
                     />
                   </div>
@@ -1130,7 +1130,7 @@ const Edit = () => {
                       name="balance3"
                       value={student.balance3}
                       onChange={handleChange}
-                      className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                      className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                     //    required
                     />
                   </div>
@@ -1154,7 +1154,7 @@ const Edit = () => {
                     name="instituteId4"
                     value={student.instituteId4}
                     onChange={handleChange}
-                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                    className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                   //    required
                   >
                     <option value="">Select Institute</option>
@@ -1175,7 +1175,7 @@ const Edit = () => {
                     name="courseId4"
                     value={student.courseId4}
                     onChange={handleChange}
-                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                    className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                   //    required
                   >
                     <option value="">Select Course</option>
@@ -1198,7 +1198,7 @@ const Edit = () => {
                     value={student.refNumber4}
                     onChange={handleChange}
                     //    placeholder="Qualification"
-                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                    className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                   //    required
                   />
                 </div>
@@ -1215,7 +1215,7 @@ const Edit = () => {
                       // value={student.fees4}
                       value={courseId4Val}
                       onChange={handleChange}
-                      className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                      className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                     //    required
                     />
                   </div>
@@ -1230,7 +1230,7 @@ const Edit = () => {
                       name="discount4"
                       value={student.discount4}
                       onChange={handleChange}
-                      className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                      className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                     //    required
                     />
                   </div>
@@ -1247,7 +1247,7 @@ const Edit = () => {
                       name="finalFees4"
                       value={student.finalFees4}
                       onChange={handleChange}
-                      className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                      className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                     //    required
                     />
                   </div>
@@ -1262,7 +1262,7 @@ const Edit = () => {
                       name="paid4"
                       value={student.paid4}
                       onChange={handleChange}
-                      className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                      className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                     //    required
                     />
                   </div>
@@ -1280,7 +1280,7 @@ const Edit = () => {
                       value={moment(new Date(student.paidDate4)).format("YYYY-MM-DD")}
                       onChange={handleChange}
                       //    placeholder="DOB"
-                      className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                      className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                     //     required
                     />
                   </div>
@@ -1295,7 +1295,7 @@ const Edit = () => {
                       name="balance4"
                       value={student.balance4}
                       onChange={handleChange}
-                      className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                      className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                     //    required
                     />
                   </div>
@@ -1319,7 +1319,7 @@ const Edit = () => {
                     name="instituteId5"
                     value={student.instituteId5}
                     onChange={handleChange}
-                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                    className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                   //    required
                   >
                     <option value="">Select Institute</option>
@@ -1340,7 +1340,7 @@ const Edit = () => {
                     name="courseId5"
                     value={student.courseId5}
                     onChange={handleChange}
-                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                    className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                   //   required
                   >
                     <option value="">Select Course</option>
@@ -1363,7 +1363,7 @@ const Edit = () => {
                     value={student.refNumber5}
                     onChange={handleChange}
                     //    placeholder="Qualification"
-                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                    className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                   //    required
                   />
                 </div>
@@ -1380,7 +1380,7 @@ const Edit = () => {
                       // value={student.fees5}
                       value={courseId5Val}
                       onChange={handleChange}
-                      className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                      className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                     //    required
                     />
                   </div>
@@ -1395,7 +1395,7 @@ const Edit = () => {
                       name="discount5"
                       value={student.discount5}
                       onChange={handleChange}
-                      className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                      className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                     //    required
                     />
                   </div>
@@ -1412,7 +1412,7 @@ const Edit = () => {
                       name="finalFees5"
                       value={student.finalFees5}
                       onChange={handleChange}
-                      className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                      className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                     //    required
                     />
                   </div>
@@ -1427,7 +1427,7 @@ const Edit = () => {
                       name="paid5"
                       value={student.paid5}
                       onChange={handleChange}
-                      className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                      className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                     //    required
                     />
                   </div>
@@ -1445,7 +1445,7 @@ const Edit = () => {
                       value={moment(new Date(student.paidDate5)).format("YYYY-MM-DD")}
                       onChange={handleChange}
                       //    placeholder="DOB"
-                      className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                      className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                     //     required
                     />
                   </div>
@@ -1460,7 +1460,7 @@ const Edit = () => {
                       name="balance5"
                       value={student.balance5}
                       onChange={handleChange}
-                      className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                      className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                     //    required
                     />
                   </div>
@@ -1484,7 +1484,7 @@ const Edit = () => {
                     name="hostel"
                     onChange={handleChange}
                     value={student.hostel}
-                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                    className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                     required
                   >
                     <option value="">Select Hostel Admission</option>
@@ -1506,7 +1506,7 @@ const Edit = () => {
                     onChange={handleChange}
                     value={student.hostelRefNumber}
                     //    placeholder="Qualification"
-                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                    className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                   //    required
                   />
                 </div>
@@ -1522,7 +1522,7 @@ const Edit = () => {
                       name="hostelFees"
                       value={student.hostelFees}
                       onChange={handleChange}
-                      className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                      className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                     //    required
                     />
                   </div>
@@ -1537,7 +1537,7 @@ const Edit = () => {
                       name="hostelDiscount"
                       onChange={handleChange}
                       value={student.hostelDiscount}
-                      className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                      className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                     //    required
                     />
                   </div>
@@ -1554,7 +1554,7 @@ const Edit = () => {
                       name="hostelFinalFees"
                       onChange={handleChange}
                       value={student.hostelFinalFees}
-                      className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                      className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                     //    required
                     />
                   </div>
@@ -1569,7 +1569,7 @@ const Edit = () => {
                       name="hostelPaid"
                       value={student.hostelPaid}
                       onChange={handleChange}
-                      className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                      className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                     //    required
                     />
                   </div>
@@ -1587,7 +1587,7 @@ const Edit = () => {
                       onChange={handleChange}
                       value={moment(new Date(student.hostelPaidDate)).format("YYYY-MM-DD")}
                       //    placeholder="DOB"
-                      className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                      className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                     //    required
                     />
                   </div>
@@ -1602,7 +1602,7 @@ const Edit = () => {
                       name="hostelBalance"
                       value={student.hostelBalance}
                       onChange={handleChange}
-                      className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                      className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                     //    required
                     />
                   </div>
