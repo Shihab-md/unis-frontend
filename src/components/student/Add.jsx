@@ -86,11 +86,12 @@ const Add = () => {
 
     // set Fees after seletion of course
     if (name === "courseId1") {
-      setFees1Val(courses.filter(course => course._id === value).map(course => course.fees));
+      let fees1 = courses.filter(course => course._id === value).map(course => course.fees);
+      setFees1Val(fees1);
       setDiscount1Val(0);
-      setFinalFees1Val(fees1Val);
+      setFinalFees1Val(fees1);
       setPaid1Val(0);
-      setBalance1Val(fees1Val);
+      setBalance1Val(fees1);
 
     } else if (name === "courseId2") {
       setFees2Val(courses.filter(course => course._id === value).map(course => course.fees));
