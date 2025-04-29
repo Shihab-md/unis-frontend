@@ -246,15 +246,15 @@ const Add = () => {
     } else {
       setFormData((prevData) => ({
         ...prevData,
-        [name]: value ,
-      
-        fees1: fees1Val,
-        finalFees1: finalFees1Val,
-        balance1: balance1Val,
+        [name]: value,
 
-        fees2: fees2Val,
-        finalFees2: finalFees2Val,
-        balance2: balance2Val,
+        fees1: fees1Val ? fees1Val : "0",
+        finalFees1: finalFees1Val ? finalFees1Val : "0",
+        balance1: balance1Val ? balance1Val : "0",
+
+        fees2: fees2Val ? fees2Val : "0",
+        finalFees2: finalFees2Val ? finalFees2Val : "0",
+        balance2: balance2Val ? balance2Val : "0",
 
         fees3: fees3Val,
         finalFees3: finalFees3Val,
