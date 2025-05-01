@@ -202,6 +202,11 @@ const Edit = () => {
             //  paid1: academic.paid1,
             paidDate1: academic.paidDate1,
             //  balance1: academic.balance1,
+            fees1: fees1Val,
+            discount1: discount1Val,
+            finalFees1: finalFees1Val,
+            paid1: paid1Val,
+            balance1: balance1Val,
 
             instituteId2: academic.instituteId2,
             courseId2: academic.courseId2,
