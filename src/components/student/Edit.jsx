@@ -49,7 +49,7 @@ const Edit = () => {
   const [finalFees5Val, setFinalFees5Val] = useState("");
   const [finalFees6Val, setFinalFees6Val] = useState("");
 
-  const [paid1Val, setPaid1Val] = useState("");
+  let [paid1Val, setPaid1Val] = useState("");
   const [paid2Val, setPaid2Val] = useState("");
   const [paid3Val, setPaid3Val] = useState("");
   const [paid4Val, setPaid4Val] = useState("");
