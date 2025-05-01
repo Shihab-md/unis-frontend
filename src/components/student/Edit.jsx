@@ -376,6 +376,7 @@ const Edit = () => {
     // set Balance after paid
     if (name === "paid1") {
       setPaid1Val(value);
+      setPaid1Val(paid1Val);
       alert("Paid-1 : "+value +", "+ paid1Val)
       setBalance1Val(finalFees1Val - value);
 
