@@ -28,12 +28,6 @@ const Edit = () => {
   const [institutes, setInstitutes] = useState([]);
   const [courses, setCourses] = useState([]);
 
-  let fees1Val = "";
-  let fees2Val = "";
-  let fees3Val = "";
-  let fees4Val = "";
-  let fees5Val = "";
-
   useEffect(() => {
     const getSchoolsMap = async (id) => {
       const schools = await getSchools(id);
@@ -129,46 +123,46 @@ const Edit = () => {
             hostelDiscount: student.hostelDiscount,
             //  hostelFinalFees: student.hostelFinalFees,
 
-         //   fees1Val: academic.fees1,
-         //   fees2Val: academic.fees2,
-         //   fees3Val: academic.fees3,
-        //   fees4Val: academic.fees4,
-        //    fees5Val: academic.fees5,
+            //   fees1Val: academic.fees1,
+            //   fees2Val: academic.fees2,
+            //   fees3Val: academic.fees3,
+            //   fees4Val: academic.fees4,
+            //    fees5Val: academic.fees5,
 
             acYear: academic.acYear,
 
             instituteId1: academic.instituteId1,
             courseId1: academic.courseId1,
             refNumber1: academic.refNumber1,
-              fees1: academic.fees1,
+            fees1: academic.fees1,
             discount1: academic.discount1,
             //  finalFees1: academic.finalFees1,
 
             instituteId2: academic.instituteId2,
             courseId2: academic.courseId2,
             refNumber2: academic.refNumber2,
-              fees2: academic.fees2,
+            fees2: academic.fees2,
             discount2: academic.discount2,
             //  finalFees2: academic.finalFees2,
 
             instituteId3: academic.instituteId3,
             courseId3: academic.courseId3,
             refNumber3: academic.refNumber3,
-              fees3: academic.fees3,
+            fees3: academic.fees3,
             discount3: academic.discount3,
             //  finalFees3: academic.finalFees3,
 
             instituteId4: academic.instituteId4,
             courseId4: academic.courseId4,
             refNumber4: academic.refNumber4,
-              fees4: academic.fees4,
+            fees4: academic.fees4,
             discount4: academic.discount4,
             //  finalFees4: academic.finalFees4,
 
             instituteId5: academic.instituteId5,
             courseId5: academic.courseId5,
             refNumber5: academic.refNumber5,
-              fees5: academic.fees5,
+            fees5: academic.fees5,
             discount5: academic.discount5,
             //  finalFees5: academic.finalFees5,
 
@@ -187,51 +181,10 @@ const Edit = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
 
-    // set Fees after seletion of course
-    if (name === "courseId1") {
-      let fees1 = courses.filter(course => course._id === value).map(course => course.fees);
-      fees1Val = fees1;
-
-    } else if (name === "courseId2") {
-      let fees2 = courses.filter(course => course._id === value).map(course => course.fees);
-      fees2Val = fees2;
-
-    } else if (name === "courseId3") {
-      let fees3 = courses.filter(course => course._id === value).map(course => course.fees);
-      fees3Val = fees3;
-
-    } else if (name === "courseId4") {
-      let fees4 = courses.filter(course => course._id === value).map(course => course.fees);
-      fees4Val = fees4;
-
-    } else if (name === "courseId5") {
-      let fees5 = courses.filter(course => course._id === value).map(course => course.fees);
-      fees5Val = fees5;
-
-    }
-
-    // to set fees value
-    if (name === "fees1") {
-      fees1Val = value;
-    } else if (name === "fees2") {
-      fees2Val = value;
-    } else if (name === "fees3") {
-      fees3Val = value;
-    } else if (name === "fees4") {
-      fees4Val = value;
-    } else if (name === "fees5") {
-      fees5Val = value;
-    }
-
     setStudent((prevData) => ({
       ...prevData,
       [name]: value,
 
-    //  fees1: fees1Val,
-    //  fees2: fees2Val,
-    //  fees3: fees3Val,
-    //  fees4: fees4Val,
-    //  fees5: fees5Val,
     }));
   };
 
@@ -733,9 +686,9 @@ const Edit = () => {
                     <input
                       type="number"
                       name="fees1"
-                        value={student.fees1}
-                   //   value={fees1Val}
-                      disabled={true}
+                      value={student.fees1}
+                      //   value={fees1Val}
+                      //   disabled={true}
                       onChange={handleChange}
                       className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                     //    required
@@ -751,7 +704,7 @@ const Edit = () => {
                       type="number"
                       name="discount1"
                       value={student.discount1}
-                      disabled={true}
+                      //  disabled={true}
                       onChange={handleChange}
                       className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                     //    required
@@ -852,8 +805,8 @@ const Edit = () => {
                       type="number"
                       name="fees2"
                       value={student.fees2}
-                   //   value={fees2Val}
-                      disabled={true}
+                      //   value={fees2Val}
+                      //  disabled={true}
                       onChange={handleChange}
                       className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                     //    required
@@ -869,7 +822,7 @@ const Edit = () => {
                       type="number"
                       name="discount2"
                       value={student.discount2}
-                      disabled={true}
+                      //  disabled={true}
                       onChange={handleChange}
                       className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                     //    required
@@ -970,8 +923,8 @@ const Edit = () => {
                       type="number"
                       name="fees3"
                       value={student.fees3}
-                    //  value={fees3Val}
-                      disabled={true}
+                      //  value={fees3Val}
+                      //   disabled={true}
                       onChange={handleChange}
                       className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                     //    required
@@ -987,7 +940,7 @@ const Edit = () => {
                       type="number"
                       name="discount3"
                       value={student.discount3}
-                      disabled={true}
+                      //   disabled={true}
                       onChange={handleChange}
                       className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                     //    required
@@ -1087,9 +1040,9 @@ const Edit = () => {
                     <input
                       type="number"
                       name="fees4"
-                       value={student.fees4}
-                    //  value={fees4Val}
-                      disabled={true}
+                      value={student.fees4}
+                      //  value={fees4Val}
+                      //   disabled={true}
                       onChange={handleChange}
                       className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                     //    required
@@ -1105,7 +1058,7 @@ const Edit = () => {
                       type="number"
                       name="discount4"
                       value={student.discount4}
-                      disabled={true}
+                      //  disabled={true}
                       onChange={handleChange}
                       className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                     //    required
@@ -1205,9 +1158,9 @@ const Edit = () => {
                     <input
                       type="number"
                       name="fees5"
-                        value={student.fees5}
-                    //  value={fees5Val}
-                      disabled={true}
+                      value={student.fees5}
+                      //  value={fees5Val}
+                      //  disabled={true}
                       onChange={handleChange}
                       className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                     //    required
@@ -1222,7 +1175,7 @@ const Edit = () => {
                     <input
                       type="number"
                       name="discount5"
-                      disabled={true}
+                      //  disabled={true}
                       value={student.discount5}
                       onChange={handleChange}
                       className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
@@ -1301,7 +1254,7 @@ const Edit = () => {
                     <input
                       type="number"
                       name="hostelFees"
-                      disabled={true}
+                      //  disabled={true}
                       value={student.hostelFees}
                       onChange={handleChange}
                       className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
@@ -1318,7 +1271,7 @@ const Edit = () => {
                       type="number"
                       name="hostelDiscount"
                       onChange={handleChange}
-                      disabled={true}
+                      //  disabled={true}
                       value={student.hostelDiscount}
                       className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                     //    required
