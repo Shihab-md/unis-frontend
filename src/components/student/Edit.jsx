@@ -225,11 +225,11 @@ const Edit = () => {
       ...prevData,
       [name]: value,
 
-      fees1: fees1Val,
-      fees2: fees2Val,
-      fees3: fees3Val,
-      fees4: fees4Val,
-      fees5: fees5Val,
+    //  fees1: fees1Val,
+    //  fees2: fees2Val,
+    //  fees3: fees3Val,
+    //  fees4: fees4Val,
+    //  fees5: fees5Val,
     }));
   };
 
