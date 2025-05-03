@@ -91,11 +91,11 @@ const Edit = () => {
 
           const academic = academicResponse.data.academic;
 
-          fees1Val = academic.fees1,
-          fees2Val = academic.fees2,
-          fees3Val = academic.fees3,
-          fees4Val = academic.fees4,
-          fees5Val = academic.fees5,
+          //  fees1Val = academic.fees1,
+          //   fees2Val = academic.fees2,
+          //   fees3Val = academic.fees3,
+          //   fees4Val = academic.fees4,
+          //   fees5Val = academic.fees5,
 
           setStudent((prev) => ({
             ...prev,
@@ -129,11 +129,11 @@ const Edit = () => {
             hostelDiscount: student.hostelDiscount,
             //  hostelFinalFees: student.hostelFinalFees,
 
-            fees1Val : academic.fees1,
-          fees2Val : academic.fees2,
-          fees3Val : academic.fees3,
-          fees4Val : academic.fees4,
-          fees5Val : academic.fees5,
+            fees1Val: academic.fees1,
+            fees2Val: academic.fees2,
+            fees3Val: academic.fees3,
+            fees4Val: academic.fees4,
+            fees5Val: academic.fees5,
 
             acYear: academic.acYear,
 
