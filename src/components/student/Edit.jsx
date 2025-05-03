@@ -117,6 +117,9 @@ const Edit = () => {
             address: student.address,
             district: student.district,
 
+            active: student.active,
+            remarks: student.remarks,
+
             hostel: student.hostel,
             hostelRefNumber: student.hostelRefNumber,
             hostelFees: student.hostelFees,
@@ -291,6 +294,45 @@ const Edit = () => {
                     //    placeholder="DOB"
                     className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                     required
+                  />
+                </div>
+
+                <div className="flex space-x-3 mb-5" />
+                <div className="flex space-x-3 mb-5" />
+
+                {/* Active */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Status <span className="text-red-700">*</span>
+                  </label>
+                  <select
+                    name="active"
+                    value={student.active}
+                    onChange={handleChange}
+                    className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
+                    required
+                  >
+                    <option value="">Select Status</option>
+                    <option value="Active">Active</option>
+                    <option value="In-Active">In-Active</option>
+                    <option value="Transferred">Transferred</option>
+                    <option value="Graduated">Graduated</option>
+                    <option value="Discontinued">Discontinued</option>
+                  </select>
+                </div>
+
+                {/* Remarks */}
+                <div>
+                  <label className="block mt-2 text-sm font-medium text-gray-700">
+                    Remarks
+                  </label>
+                  <input
+                    type="text"
+                    name="remarks"
+                    value={student.remarks}
+                    onChange={handleChange}
+                    className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
+                  //   required
                   />
                 </div>
 
