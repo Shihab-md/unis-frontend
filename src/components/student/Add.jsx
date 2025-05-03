@@ -87,6 +87,19 @@ const Add = () => {
 
     }
 
+    // to set fees value
+    if (name === "fees1") {
+      setFees1Val(value);
+    } else if (name === "fees2") {
+      setFees2Val(value);
+    } else if (name === "fees3") {
+      setFees3Val(value);
+    } else if (name === "fees4") {
+      setFees4Val(value);
+    } else if (name === "fees5") {
+      setFees5Val(value);
+    }
+
     if (name === "image") {
       alert("file found")
       setFormData((prevData) => ({ ...prevData, [name]: files[0] }));

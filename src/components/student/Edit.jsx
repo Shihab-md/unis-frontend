@@ -92,11 +92,11 @@ const Edit = () => {
 
           const academic = academicResponse.data.academic;
 
-          setFees1Val(academic.fees1),
-          setFees2Val(academic.fees2),
-          setFees3Val(academic.fees3),
-          setFees4Val(academic.fees4),
-          setFees5Val(academic.fees5),
+          setFees1Val(academic.fees1);
+          setFees2Val(academic.fees2);
+          setFees3Val(academic.fees3);
+          setFees4Val(academic.fees4);
+          setFees5Val(academic.fees5);
 
           setStudent((prev) => ({
             ...prev,
@@ -128,44 +128,44 @@ const Edit = () => {
             hostelRefNumber: student.hostelRefNumber,
             hostelFees: student.hostelFees,
             hostelDiscount: student.hostelDiscount,
-          //  hostelFinalFees: student.hostelFinalFees,
+            //  hostelFinalFees: student.hostelFinalFees,
 
             acYear: academic.acYear,
 
             instituteId1: academic.instituteId1,
             courseId1: academic.courseId1,
             refNumber1: academic.refNumber1,
-          //  fees1: academic.fees1,
+            //  fees1: academic.fees1,
             discount1: academic.discount1,
-          //  finalFees1: academic.finalFees1,
+            //  finalFees1: academic.finalFees1,
 
             instituteId2: academic.instituteId2,
             courseId2: academic.courseId2,
             refNumber2: academic.refNumber2,
-          //  fees2: academic.fees2,
+            //  fees2: academic.fees2,
             discount2: academic.discount2,
-          //  finalFees2: academic.finalFees2,
+            //  finalFees2: academic.finalFees2,
 
             instituteId3: academic.instituteId3,
             courseId3: academic.courseId3,
             refNumber3: academic.refNumber3,
-          //  fees3: academic.fees3,
+            //  fees3: academic.fees3,
             discount3: academic.discount3,
-          //  finalFees3: academic.finalFees3,
+            //  finalFees3: academic.finalFees3,
 
             instituteId4: academic.instituteId4,
             courseId4: academic.courseId4,
             refNumber4: academic.refNumber4,
-          //  fees4: academic.fees4,
+            //  fees4: academic.fees4,
             discount4: academic.discount4,
-          //  finalFees4: academic.finalFees4,
+            //  finalFees4: academic.finalFees4,
 
             instituteId5: academic.instituteId5,
             courseId5: academic.courseId5,
             refNumber5: academic.refNumber5,
-          //  fees5: academic.fees5,
+            //  fees5: academic.fees5,
             discount5: academic.discount5,
-          //  finalFees5: academic.finalFees5,
+            //  finalFees5: academic.finalFees5,
 
           }));
         }
@@ -206,6 +206,19 @@ const Edit = () => {
     } else if (name === "hostelFees") {
       setFees6Val(value);
 
+    }
+
+    // to set fees value
+    if (name === "fees1") {
+      setFees1Val(value);
+    } else if (name === "fees2") {
+      setFees2Val(value);
+    } else if (name === "fees3") {
+      setFees3Val(value);
+    } else if (name === "fees4") {
+      setFees4Val(value);
+    } else if (name === "fees5") {
+      setFees5Val(value);
     }
 
     setStudent((prevData) => ({
