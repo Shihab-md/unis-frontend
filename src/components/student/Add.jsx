@@ -24,20 +24,6 @@ const Add = () => {
   const [fees5Val, setFees5Val] = useState("");
   const [fees6Val, setFees6Val] = useState("");
 
-  const [discount1Val, setDiscount1Val] = useState("");
-  const [discount2Val, setDiscount2Val] = useState("");
-  const [discount3Val, setDiscount3Val] = useState("");
-  const [discount4Val, setDiscount4Val] = useState("");
-  const [discount5Val, setDiscount5Val] = useState("");
-  const [discount6Val, setDiscount6Val] = useState("");
-
-  const [finalFees1Val, setFinalFees1Val] = useState("");
-  const [finalFees2Val, setFinalFees2Val] = useState("");
-  const [finalFees3Val, setFinalFees3Val] = useState("");
-  const [finalFees4Val, setFinalFees4Val] = useState("");
-  const [finalFees5Val, setFinalFees5Val] = useState("");
-  const [finalFees6Val, setFinalFees6Val] = useState("");
-
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -79,91 +65,26 @@ const Add = () => {
     if (name === "courseId1") {
       let fees1 = courses.filter(course => course._id === value).map(course => course.fees);
       setFees1Val(fees1);
-      setDiscount1Val(0);
-      setFinalFees1Val(fees1);
 
     } else if (name === "courseId2") {
       let fees2 = courses.filter(course => course._id === value).map(course => course.fees);
       setFees2Val(fees2);
-      setDiscount2Val(0);
-      setFinalFees2Val(fees2);
 
     } else if (name === "courseId3") {
       let fees3 = courses.filter(course => course._id === value).map(course => course.fees);
       setFees3Val(fees3);
-      setDiscount3Val(0);
-      setFinalFees3Val(fees3);
 
     } else if (name === "courseId4") {
       let fees4 = courses.filter(course => course._id === value).map(course => course.fees);
       setFees4Val(fees4);
-      setDiscount4Val(0);
-      setFinalFees4Val(fees4);
 
     } else if (name === "courseId5") {
       let fees5 = courses.filter(course => course._id === value).map(course => course.fees);
       setFees5Val(fees5);
-      setDiscount5Val(0);
-      setFinalFees5Val(fees5);
 
     } else if (name === "hostelFees") {
       setFees6Val(value);
-      setDiscount6Val(0);
-      setFinalFees6Val(value);
-    }
 
-    // to set fees value
-    if (name === "fees1") {
-      setFees1Val(value);
-    } else if (name === "fees2") {
-      setFees2Val(value);
-    } else if (name === "fees3") {
-      setFees3Val(value);
-    } else if (name === "fees4") {
-      setFees4Val(value);
-    } else if (name === "fees5") {
-      setFees5Val(value);
-    }
-
-    // set Final fees after discount
-    if (name === "discount1") {
-      setDiscount1Val(value);
-      setFinalFees1Val(fees1Val - value);
-
-    } else if (name === "discount2") {
-      setDiscount2Val(value);
-      setFinalFees2Val(fees2Val - value);
-
-    } else if (name === "discount3") {
-      setDiscount3Val(value);
-      setFinalFees3Val(fees3Val - value);
-
-    } else if (name === "discount4") {
-      setDiscount4Val(value);
-      setFinalFees4Val(fees4Val - value);
-
-    } else if (name === "discount5") {
-      setDiscount5Val(value);
-      setFinalFees5Val(fees5Val - value);
-
-    } else if (name === "hostelDiscount") {
-      setDiscount6Val(value);
-      setFinalFees6Val(fees6Val - value);
-    }
-
-    // to set final fees value
-    if (name === "finalFees1") {
-      setFinalFees1Val(value);
-    } else if (name === "finalFees2") {
-      setFinalFees2Val(value);
-    } else if (name === "finalFees3") {
-      setFinalFees3Val(value);
-    } else if (name === "finalFees4") {
-      setFinalFees4Val(value);
-    } else if (name === "finalFees5") {
-      setFinalFees5Val(value);
-    } else if (name === "hostelFinalFees") {
-      setFinalFees6Val(value);
     }
 
     if (name === "image") {
@@ -175,21 +96,10 @@ const Add = () => {
         [name]: value,
 
         fees1: fees1Val,
-        finalFees1: finalFees1Val,
-
         fees2: fees2Val,
-        finalFees2: finalFees2Val,
-
         fees3: fees3Val,
-        finalFees3: finalFees3Val,
-
         fees4: fees4Val,
-        finalFees4: finalFees4Val,
-
         fees5: fees5Val,
-        finalFees5: finalFees5Val,
-
-        hostelFinalFees: finalFees6Val,
 
       }));
     }
@@ -666,7 +576,7 @@ const Add = () => {
                 />
               </div>
 
-              <div className="grid grid-cols-3 gap-7 justify-between">
+              <div className="grid grid-cols-2 gap-7 justify-between">
                 {/* Fees */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700">
@@ -692,13 +602,12 @@ const Add = () => {
                     type="number"
                     name="discount1"
                     onChange={handleChange}
-                    value={discount1Val}
                     className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                   //    required
                   />
                 </div>
 
-                {/* Final Fees */}
+                {/* Final Fees 
                 <div>
                   <label className="block text-sm font-medium text-gray-700">
                     Final Fees
@@ -712,7 +621,7 @@ const Add = () => {
                     className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                   //    required
                   />
-                </div>
+                </div>*/}
               </div>
 
               <div className="flex space-x-3 mb-5" />
@@ -779,7 +688,7 @@ const Add = () => {
                 />
               </div>
 
-              <div className="grid grid-cols-3 gap-7 justify-between">
+              <div className="grid grid-cols-2 gap-7 justify-between">
                 {/* Fees 2 */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700">
@@ -805,13 +714,12 @@ const Add = () => {
                     type="number"
                     name="discount2"
                     onChange={handleChange}
-                    value={discount2Val}
                     className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                   //    required
                   />
                 </div>
 
-                {/* Final Fees 2 */}
+                {/* Final Fees 2 
                 <div>
                   <label className="block text-sm font-medium text-gray-700">
                     Final Fees
@@ -825,7 +733,7 @@ const Add = () => {
                     className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                   //    required
                   />
-                </div>
+                </div>*/}
               </div>
 
               <div className="flex space-x-3 mb-5" />
@@ -892,7 +800,7 @@ const Add = () => {
                 />
               </div>
 
-              <div className="grid grid-cols-3 gap-7 justify-between">
+              <div className="grid grid-cols-2 gap-7 justify-between">
                 {/* Fees 3 */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700">
@@ -918,13 +826,12 @@ const Add = () => {
                     type="number"
                     name="discount3"
                     onChange={handleChange}
-                    value={discount3Val}
                     className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                   //    required
                   />
                 </div>
 
-                {/* Final Fees 3 */}
+                {/* Final Fees 3 
                 <div>
                   <label className="block text-sm font-medium text-gray-700">
                     Final Fees
@@ -938,7 +845,7 @@ const Add = () => {
                     className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                   //    required
                   />
-                </div>
+                </div>*/}
               </div>
 
               <div className="flex space-x-3 mb-5" />
@@ -1005,7 +912,7 @@ const Add = () => {
                 />
               </div>
 
-              <div className="grid grid-cols-3 gap-7 justify-between">
+              <div className="grid grid-cols-2 gap-7 justify-between">
                 {/* Fees 4 */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700">
@@ -1031,13 +938,12 @@ const Add = () => {
                     type="number"
                     name="discount4"
                     onChange={handleChange}
-                    value={discount4Val}
                     className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                   //    required
                   />
                 </div>
 
-                {/* Final Fees 4 */}
+                {/* Final Fees 4 
                 <div>
                   <label className="block text-sm font-medium text-gray-700">
                     Final Fees
@@ -1051,7 +957,7 @@ const Add = () => {
                     className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                   //    required
                   />
-                </div>
+                </div>*/}
               </div>
 
               <div className="flex space-x-3 mb-5" />
@@ -1118,7 +1024,7 @@ const Add = () => {
                 />
               </div>
 
-              <div className="grid grid-cols-3 gap-7 justify-between">
+              <div className="grid grid-cols-2 gap-7 justify-between">
                 {/* Fees 5 */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700">
@@ -1144,13 +1050,12 @@ const Add = () => {
                     type="number"
                     name="discount5"
                     onChange={handleChange}
-                    value={discount5Val}
                     className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                   //    required
                   />
                 </div>
 
-                {/* Final Fees 5 */}
+                {/* Final Fees 5 
                 <div>
                   <label className="block text-sm font-medium text-gray-700">
                     Final Fees
@@ -1164,7 +1069,7 @@ const Add = () => {
                     className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                   //    required
                   />
-                </div>
+                </div>*/}
               </div>
 
               <div className="flex space-x-3 mb-5" />
@@ -1210,7 +1115,7 @@ const Add = () => {
                 />
               </div>
 
-              <div className="grid grid-cols-3 gap-7 justify-between">
+              <div className="grid grid-cols-2 gap-7 justify-between">
                 {/* Hostel Fees */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700">
@@ -1235,13 +1140,12 @@ const Add = () => {
                     type="number"
                     name="hostelDiscount"
                     onChange={handleChange}
-                    value={discount6Val}
                     className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                   //    required
                   />
                 </div>
 
-                {/* Hostel Final Fees */}
+                {/* Hostel Final Fees 
                 <div>
                   <label className="block text-sm font-medium text-gray-700">
                     Final Fees
@@ -1255,7 +1159,7 @@ const Add = () => {
                     className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                   //    required
                   />
-                </div>
+                </div>*/}
               </div>
 
               <div className="flex space-x-3 mb-5" />
