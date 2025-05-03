@@ -28,41 +28,6 @@ const Edit = () => {
   const [institutes, setInstitutes] = useState([]);
   const [courses, setCourses] = useState([]);
 
-  const [fees1Val, setFees1Val] = useState("");
-  const [fees2Val, setFees2Val] = useState("");
-  const [fees3Val, setFees3Val] = useState("");
-  const [fees4Val, setFees4Val] = useState("");
-  const [fees5Val, setFees5Val] = useState("");
-  const [fees6Val, setFees6Val] = useState("");
-
-  const [discount1Val, setDiscount1Val] = useState("");
-  const [discount2Val, setDiscount2Val] = useState("");
-  const [discount3Val, setDiscount3Val] = useState("");
-  const [discount4Val, setDiscount4Val] = useState("");
-  const [discount5Val, setDiscount5Val] = useState("");
-  const [discount6Val, setDiscount6Val] = useState("");
-
-  const [finalFees1Val, setFinalFees1Val] = useState("");
-  const [finalFees2Val, setFinalFees2Val] = useState("");
-  const [finalFees3Val, setFinalFees3Val] = useState("");
-  const [finalFees4Val, setFinalFees4Val] = useState("");
-  const [finalFees5Val, setFinalFees5Val] = useState("");
-  const [finalFees6Val, setFinalFees6Val] = useState("");
-
-  let [paid1Val, setPaid1Val] = useState("");
-  const [paid2Val, setPaid2Val] = useState("");
-  const [paid3Val, setPaid3Val] = useState("");
-  const [paid4Val, setPaid4Val] = useState("");
-  const [paid5Val, setPaid5Val] = useState("");
-  const [paid6Val, setPaid6Val] = useState("");
-
-  const [balance1Val, setBalance1Val] = useState("");
-  const [balance2Val, setBalance2Val] = useState("");
-  const [balance3Val, setBalance3Val] = useState("");
-  const [balance4Val, setBalance4Val] = useState("");
-  const [balance5Val, setBalance5Val] = useState("");
-  const [balance6Val, setBalance6Val] = useState("");
-
   useEffect(() => {
     const getSchoolsMap = async (id) => {
       const schools = await getSchools(id);
@@ -120,42 +85,6 @@ const Edit = () => {
 
           const academic = academicResponse.data.academic;
 
-          setFees1Val(academic.fees1);
-          setDiscount1Val(academic.discount1);
-          setFinalFees1Val(academic.finalFees1);
-          setPaid1Val(academic.paid1);
-          setBalance1Val(academic.balance1);
-
-          setFees2Val(academic.fees2);
-          setDiscount2Val(academic.discount2);
-          setFinalFees2Val(academic.finalFees2);
-          setPaid2Val(academic.paid2);
-          setBalance2Val(academic.balance2);
-
-          setFees3Val(academic.fees3);
-          setDiscount3Val(academic.discount3);
-          setFinalFees3Val(academic.finalFees3);
-          setPaid3Val(academic.paid3);
-          setBalance3Val(academic.balance3);
-
-          setFees4Val(academic.fees4);
-          setDiscount4Val(academic.discount4);
-          setFinalFees4Val(academic.finalFees4);
-          setPaid4Val(academic.paid4);
-          setBalance4Val(academic.balance4);
-
-          setFees5Val(academic.fees5);
-          setDiscount5Val(academic.discount5);
-          setFinalFees5Val(academic.finalFees5);
-          setPaid5Val(academic.paid5);
-          setBalance5Val(academic.balance5);
-
-          setFees6Val(student.hostelFees);
-          setDiscount6Val(student.hostelDiscount);
-          setFinalFees6Val(student.hostelFinalFees);
-          setPaid6Val(student.hostelPaid);
-          setBalance6Val(student.hostelBalance);
-
           setStudent((prev) => ({
             ...prev,
             name: student.userId.name,
@@ -184,70 +113,47 @@ const Edit = () => {
 
             hostel: student.hostel,
             hostelRefNumber: student.hostelRefNumber,
-            //  hostelFees: student.hostelFees,
-            //   hostelDiscount: student.hostelDiscount,
-            //   hostelFinalFees: student.hostelFinalFees,
-            //   hostelPaid: student.hostelPaid,
-            hostelPaidDate: student.hostelPaidDate,
-            //   hostelBalance: student.hostelBalance,
+            hostelFees: student.hostelFees,
+            hostelDiscount: student.hostelDiscount,
+            hostelFinalFees: student.hostelFinalFees,
 
             acYear: academic.acYear,
 
             instituteId1: academic.instituteId1,
             courseId1: academic.courseId1,
             refNumber1: academic.refNumber1,
-            // feesSss1: academic.fees1,
-            //  discount1: academic.discount1,
-            //  finalFees1: academic.finalFees1,
-            //  paid1: academic.paid1,
-            paidDate1: academic.paidDate1,
-            //  balance1: academic.balance1,
-           
-        //   fees1: fees1Val,
-        //   discount1: discount1Val,
-        //   finalFees1: finalFees1Val,
-        //   paid1: paid1Val,
-         //  balance1: balance1Val,
+            fees1: academic.fees1,
+            discount1: academic.discount1,
+            finalFees1: academic.finalFees1,
 
             instituteId2: academic.instituteId2,
             courseId2: academic.courseId2,
             refNumber2: academic.refNumber2,
-            //  fees2: academic.fees2,
-            //  discount2: academic.discount2,
-            //  finalFees2: academic.finalFees2,
-            //  paid2: academic.paid2,
-            paidDate2: academic.paidDate2,
-            //  balance2: academic.balance2,
+            fees2: academic.fees2,
+            discount2: academic.discount2,
+            finalFees2: academic.finalFees2,
 
             instituteId3: academic.instituteId3,
             courseId3: academic.courseId3,
             refNumber3: academic.refNumber3,
-            //  fees3: academic.fees3,
-            //  discount3: academic.discount3,
-            //  finalFees3: academic.finalFees3,
-            //   paid3: academic.paid3,
-            paidDate3: academic.paidDate3,
-            //  balance3: academic.balance3,
+            fees3: academic.fees3,
+            discount3: academic.discount3,
+            finalFees3: academic.finalFees3,
 
             instituteId4: academic.instituteId4,
             courseId4: academic.courseId4,
             refNumber4: academic.refNumber4,
-            //   fees4: academic.fees4,
-            //   discount4: academic.discount4,
-            //   finalFees4: academic.finalFees4,
-            //   paid4: academic.paid4,
-            paidDate4: academic.paidDate4,
-            //   balance4: academic.balance4,
+            fees4: academic.fees4,
+            discount4: academic.discount4,
+            finalFees4: academic.finalFees4,
 
             instituteId5: academic.instituteId5,
             courseId5: academic.courseId5,
             refNumber5: academic.refNumber5,
-            //    fees5: academic.fees5,
-            //   discount5: academic.discount5,
-            //    finalFees5: academic.finalFees5,
-            //    paid5: academic.paid5,
-            paidDate5: academic.paidDate5,
-            //    balance5: academic.balance5,
+            fees5: academic.fees5,
+            discount5: academic.discount5,
+            finalFees5: academic.finalFees5,
+
           }));
         }
       } catch (error) {
@@ -263,198 +169,9 @@ const Edit = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
 
-    // set Fees after seletion of course
-    if (name === "courseId1") {
-      let fees1 = courses.filter(course => course._id === value).map(course => course.fees);
-      setFees1Val(fees1);
-      setDiscount1Val(0);
-      setFinalFees1Val(fees1);
-      setPaid1Val(0);
-      setBalance1Val(fees1);
-    } else if (name === "courseId2") {
-      let fees2 = courses.filter(course => course._id === value).map(course => course.fees);
-      setFees2Val(fees2);
-      setDiscount2Val(0);
-      setFinalFees2Val(fees2);
-      setPaid2Val(0);
-      setBalance2Val(fees2);
-      //setFees2Val(courses.filter(course => course._id === value).map(course => course.fees));
-    } else if (name === "courseId3") {
-      let fees3 = courses.filter(course => course._id === value).map(course => course.fees);
-      setFees3Val(fees3);
-      setDiscount3Val(0);
-      setFinalFees3Val(fees3);
-      setPaid3Val(0);
-      setBalance3Val(fees3);
-      // setFees3Val(courses.filter(course => course._id === value).map(course => course.fees));
-    } else if (name === "courseId4") {
-      let fees4 = courses.filter(course => course._id === value).map(course => course.fees);
-      setFees4Val(fees4);
-      setDiscount4Val(0);
-      setFinalFees4Val(fees4);
-      setPaid4Val(0);
-      setBalance4Val(fees4);
-      //setFees4Val(courses.filter(course => course._id === value).map(course => course.fees));
-    } else if (name === "courseId5") {
-      let fees5 = courses.filter(course => course._id === value).map(course => course.fees);
-      setFees5Val(fees5);
-      setDiscount5Val(0);
-      setFinalFees5Val(fees5);
-      setPaid5Val(0);
-      setBalance5Val(fees5);
-      //setFees5Val(courses.filter(course => course._id === value).map(course => course.fees));
-    } else if (name === "hostelFees") {
-      //  let fees5 = courses.filter(course => course._id === value).map(course => course.fees);
-      setFees6Val(value);
-      setDiscount6Val(0);
-      setFinalFees6Val(value);
-      setPaid6Val(0);
-      setBalance6Val(value);
-      //setFees5Val(courses.filter(course => course._id === value).map(course => course.fees));
-    }
-
-    // to set fees value
-    if (name === "fees1") {
-      setFees1Val(value);
-    } else if (name === "fees2") {
-      setFees2Val(value);
-    } else if (name === "fees3") {
-      setFees3Val(value);
-    } else if (name === "fees4") {
-      setFees4Val(value);
-    } else if (name === "fees5") {
-      setFees5Val(value);
-    }
-
-    // set Final fees after discount
-    if (name === "discount1") {
-      setDiscount1Val(value);
-      setFinalFees1Val(fees1Val - value);
-      setBalance1Val(fees1Val - value - paid1Val);
-
-    } else if (name === "discount2") {
-      setDiscount2Val(value);
-      setFinalFees2Val(fees2Val - value);
-      setBalance2Val(fees2Val - value - paid2Val);
-
-    } else if (name === "discount3") {
-      setDiscount3Val(value);
-      setFinalFees3Val(fees3Val - value);
-      setBalance3Val(fees3Val - value - paid3Val);
-
-    } else if (name === "discount4") {
-      setDiscount4Val(value);
-      setFinalFees4Val(fees4Val - value);
-      setBalance4Val(fees4Val - value - paid4Val);
-
-    } else if (name === "discount5") {
-      setDiscount5Val(value);
-      setFinalFees5Val(fees5Val - value);
-      setBalance5Val(fees5Val - value - paid5Val);
-
-    } else if (name === "hostelDiscount") {
-      setDiscount6Val(value);
-      setFinalFees6Val(fees6Val - value);
-      setBalance6Val(fees6Val - value - paid6Val);
-    }
-
-    // to set final fees value
-    if (name === "finalFees1") {
-      setFinalFees1Val(value);
-    } else if (name === "finalFees2") {
-      setFinalFees2Val(value);
-    } else if (name === "finalFees3") {
-      setFinalFees3Val(value);
-    } else if (name === "finalFees4") {
-      setFinalFees4Val(value);
-    } else if (name === "finalFees5") {
-      setFinalFees5Val(value);
-    } else if (name === "hostelFinalFees") {
-      setFinalFees6Val(value);
-    }
-
-    // set Balance after paid
-    if (name === "paid1") {
-      setPaid1Val(value);
-      paid1Val = value;
-      alert("Paid-1 : "+value +", "+ paid1Val)
-      setBalance1Val(finalFees1Val - value);
-
-    } else if (name === "paid2") {
-      setPaid2Val(value);
-      setBalance2Val(finalFees2Val - value);
-
-    } else if (name === "paid3") {
-      setPaid3Val(value);
-      setBalance3Val(finalFees3Val - value);
-
-    } else if (name === "paid4") {
-      setPaid4Val(value);
-      setBalance4Val(finalFees4Val - value);
-
-    } else if (name === "paid5") {
-      setPaid5Val(value);
-      setBalance5Val(finalFees5Val - value);
-
-    } else if (name === "hostelPaid") {
-      setPaid6Val(value);
-      setBalance6Val(finalFees6Val - value);
-    }
-
-    // to set balance value
-    if (name === "balance1") {
-      setBalance1Val(value);
-    } else if (name === "balance2") {
-      setBalance2Val(value);
-    } else if (name === "balance3") {
-      setBalance3Val(value);
-    } else if (name === "balance4") {
-      setBalance4Val(value);
-    } else if (name === "balance5") {
-      setBalance5Val(value);
-    } else if (name === "hostelBalance") {
-      setBalance6Val(value);
-    }
-
     setStudent((prevData) => ({
       ...prevData,
       [name]: value,
-
-      fees1: fees1Val ? fees1Val : "0",
-      discount1: discount1Val,
-      finalFees1: finalFees1Val ? finalFees1Val : "0",
-      paid1: paid1Val,
-      balance1: balance1Val ? balance1Val : "0",
-
-      fees2: fees2Val ? fees2Val : "0",
-      discount2: discount2Val,
-      finalFees2: finalFees2Val ? finalFees2Val : "0",
-      paid2: paid2Val,
-      balance2: balance2Val ? balance2Val : "0",
-
-      fees3: fees3Val ? fees3Val : "0",
-      discount3: discount3Val,
-      finalFees3: finalFees3Val ? finalFees3Val : "0",
-      paid3: paid3Val,
-      balance3: balance3Val ? balance3Val : "0",
-
-      fees4: fees4Val ? fees4Val : "0",
-      discount4: discount4Val,
-      finalFees4: finalFees4Val ? finalFees4Val : "0",
-      paid4: paid4Val,
-      balance4: balance4Val ? balance4Val : "0",
-
-      fees5: fees5Val ? fees5Val : "0",
-      discount5: discount5Val,
-      finalFees5: finalFees5Val ? finalFees5Val : "0",
-      paid5: paid5Val,
-      balance5: balance5Val ? balance5Val : "0",
-
-      hostelFees: fees6Val,
-      hostelDiscount: discount6Val,
-      hostelFinalFees: finalFees6Val,
-      hostelPaid: paid6Val,
-      hostelBalance: balance6Val,
     }));
   };
 
@@ -947,7 +664,7 @@ const Edit = () => {
                   />
                 </div>
 
-                <div className="grid grid-cols-2 gap-7 justify-between">
+                <div className="grid grid-cols-3 gap-7 justify-between">
                   {/* Fees */}
                   <div>
                     <label className="block text-sm font-medium text-gray-700">
@@ -956,8 +673,7 @@ const Edit = () => {
                     <input
                       type="number"
                       name="fees1"
-                      // value={student.fees1}
-                      value={fees1Val}
+                      value={student.fees1}
                       disabled={true}
                       onChange={handleChange}
                       className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
@@ -973,16 +689,14 @@ const Edit = () => {
                     <input
                       type="number"
                       name="discount1"
-                      //  value={student.discount1}
-                      value={discount1Val}
+                      value={student.discount1}
+                      disabled={true}
                       onChange={handleChange}
                       className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                     //    required
                     />
                   </div>
-                </div>
 
-                <div className="grid grid-cols-2 gap-7 justify-between">
                   {/* Final Fees */}
                   <div>
                     <label className="block text-sm font-medium text-gray-700">
@@ -992,56 +706,7 @@ const Edit = () => {
                       type="number"
                       name="finalFees1"
                       disabled={true}
-                      value={finalFees1Val}
-                      onChange={handleChange}
-                      className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                    //    required
-                    />
-                  </div>
-
-                  {/* Paid */}
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700">
-                      Paid
-                    </label>
-                    <input
-                      type="number"
-                      name="paid1"
-                      value={paid1Val}
-                      onChange={handleChange}
-                      className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                    //    required
-                    />
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-2 gap-7 justify-between">
-                  {/* Paid Date */}
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700">
-                      Paid Date
-                    </label>
-                    <input
-                      type="date"
-                      name="paidDate1"
-                      value={moment(new Date(student.paidDate1)).format("YYYY-MM-DD")}
-                      onChange={handleChange}
-                      //    placeholder="DOB"
-                      className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                    //    required
-                    />
-                  </div>
-
-                  {/* Balance */}
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700">
-                      Balance
-                    </label>
-                    <input
-                      type="number"
-                      name="balance1"
-                      disabled={true}
-                      value={balance1Val}
+                      value={student.finalFees1}
                       onChange={handleChange}
                       className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                     //    required
@@ -1116,7 +781,7 @@ const Edit = () => {
                   />
                 </div>
 
-                <div className="grid grid-cols-2 gap-7 justify-between">
+                <div className="grid grid-cols-3 gap-7 justify-between">
                   {/* Fees 2 */}
                   <div>
                     <label className="block text-sm font-medium text-gray-700">
@@ -1125,8 +790,7 @@ const Edit = () => {
                     <input
                       type="number"
                       name="fees2"
-                      // value={student.fees2}
-                      value={fees2Val}
+                      value={student.fees2}
                       disabled={true}
                       onChange={handleChange}
                       className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
@@ -1142,15 +806,14 @@ const Edit = () => {
                     <input
                       type="number"
                       name="discount2"
-                      value={discount2Val}
+                      value={student.discount2}
+                      disabled={true}
                       onChange={handleChange}
                       className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                     //    required
                     />
                   </div>
-                </div>
 
-                <div className="grid grid-cols-2 gap-7 justify-between">
                   {/* Final Fees 2 */}
                   <div>
                     <label className="block text-sm font-medium text-gray-700">
@@ -1160,56 +823,7 @@ const Edit = () => {
                       type="number"
                       name="finalFees2"
                       disabled={true}
-                      value={finalFees2Val}
-                      onChange={handleChange}
-                      className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                    //    required
-                    />
-                  </div>
-
-                  {/* Paid 2 */}
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700">
-                      Paid
-                    </label>
-                    <input
-                      type="number"
-                      name="paid2"
-                      value={paid2Val}
-                      onChange={handleChange}
-                      className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                    //    required
-                    />
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-2 gap-7 justify-between">
-                  {/* Paid Date 2 */}
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700">
-                      Paid Date
-                    </label>
-                    <input
-                      type="date"
-                      name="paidDate2"
-                      value={moment(new Date(student.paidDate2)).format("YYYY-MM-DD")}
-                      onChange={handleChange}
-                      //    placeholder="DOB"
-                      className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                    //    required
-                    />
-                  </div>
-
-                  {/* Balance 2 */}
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700">
-                      Balance
-                    </label>
-                    <input
-                      type="number"
-                      name="balance2"
-                      disabled={true}
-                      value={balance2Val}
+                      value={student.finalFees2}
                       onChange={handleChange}
                       className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                     //    required
@@ -1284,7 +898,7 @@ const Edit = () => {
                   />
                 </div>
 
-                <div className="grid grid-cols-2 gap-7 justify-between">
+                <div className="grid grid-cols-3 gap-7 justify-between">
                   {/* Fees 3 */}
                   <div>
                     <label className="block text-sm font-medium text-gray-700">
@@ -1293,8 +907,7 @@ const Edit = () => {
                     <input
                       type="number"
                       name="fees3"
-                      //value={student.fees3}
-                      value={fees3Val}
+                      value={student.fees3}
                       disabled={true}
                       onChange={handleChange}
                       className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
@@ -1310,15 +923,14 @@ const Edit = () => {
                     <input
                       type="number"
                       name="discount3"
-                      value={discount3Val}
+                      value={student.discount3}
+                      disabled={true}
                       onChange={handleChange}
                       className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                     //    required
                     />
                   </div>
-                </div>
 
-                <div className="grid grid-cols-2 gap-7 justify-between">
                   {/* Final Fees 3 */}
                   <div>
                     <label className="block text-sm font-medium text-gray-700">
@@ -1328,56 +940,7 @@ const Edit = () => {
                       type="number"
                       name="finalFees3"
                       disabled={true}
-                      value={finalFees3Val}
-                      onChange={handleChange}
-                      className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                    //    required
-                    />
-                  </div>
-
-                  {/* Paid 3 */}
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700">
-                      Paid
-                    </label>
-                    <input
-                      type="number"
-                      name="paid3"
-                      value={paid3Val}
-                      onChange={handleChange}
-                      className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                    //    required
-                    />
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-2 gap-7 justify-between">
-                  {/* Paid Date 3 */}
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700">
-                      Paid Date
-                    </label>
-                    <input
-                      type="date"
-                      name="paidDate3"
-                      value={moment(new Date(student.paidDate3)).format("YYYY-MM-DD")}
-                      onChange={handleChange}
-                      //    placeholder="DOB"
-                      className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                    //     required
-                    />
-                  </div>
-
-                  {/* Balance 3 */}
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700">
-                      Balance
-                    </label>
-                    <input
-                      type="number"
-                      name="balance3"
-                      disabled={true}
-                      value={balance3Val}
+                      value={student.finalFees3}
                       onChange={handleChange}
                       className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                     //    required
@@ -1452,7 +1015,7 @@ const Edit = () => {
                   />
                 </div>
 
-                <div className="grid grid-cols-2 gap-7 justify-between">
+                <div className="grid grid-cols-3 gap-7 justify-between">
                   {/* Fees 4 */}
                   <div>
                     <label className="block text-sm font-medium text-gray-700">
@@ -1461,8 +1024,7 @@ const Edit = () => {
                     <input
                       type="number"
                       name="fees4"
-                      // value={student.fees4}
-                      value={fees4Val}
+                      value={student.fees4}
                       disabled={true}
                       onChange={handleChange}
                       className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
@@ -1478,15 +1040,14 @@ const Edit = () => {
                     <input
                       type="number"
                       name="discount4"
-                      value={discount4Val}
+                      value={student.discount4}
+                      disabled={true}
                       onChange={handleChange}
                       className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                     //    required
                     />
                   </div>
-                </div>
 
-                <div className="grid grid-cols-2 gap-7 justify-between">
                   {/* Final Fees 4 */}
                   <div>
                     <label className="block text-sm font-medium text-gray-700">
@@ -1496,56 +1057,7 @@ const Edit = () => {
                       type="number"
                       name="finalFees4"
                       disabled={true}
-                      value={finalFees4Val}
-                      onChange={handleChange}
-                      className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                    //    required
-                    />
-                  </div>
-
-                  {/* Paid 4 */}
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700">
-                      Paid
-                    </label>
-                    <input
-                      type="number"
-                      name="paid4"
-                      value={paid4Val}
-                      onChange={handleChange}
-                      className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                    //    required
-                    />
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-2 gap-7 justify-between">
-                  {/* Paid Date 4 */}
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700">
-                      Paid Date
-                    </label>
-                    <input
-                      type="date"
-                      name="paidDate4"
-                      value={moment(new Date(student.paidDate4)).format("YYYY-MM-DD")}
-                      onChange={handleChange}
-                      //    placeholder="DOB"
-                      className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                    //     required
-                    />
-                  </div>
-
-                  {/* Balance 4 */}
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700">
-                      Balance
-                    </label>
-                    <input
-                      type="number"
-                      name="balance4"
-                      disabled={true}
-                      value={balance4Val}
+                      value={student.finalFees4}
                       onChange={handleChange}
                       className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                     //    required
@@ -1620,7 +1132,7 @@ const Edit = () => {
                   />
                 </div>
 
-                <div className="grid grid-cols-2 gap-7 justify-between">
+                <div className="grid grid-cols-3 gap-7 justify-between">
                   {/* Fees 5 */}
                   <div>
                     <label className="block text-sm font-medium text-gray-700">
@@ -1629,8 +1141,7 @@ const Edit = () => {
                     <input
                       type="number"
                       name="fees5"
-                      // value={student.fees5}
-                      value={fees5Val}
+                      value={student.fees5}
                       disabled={true}
                       onChange={handleChange}
                       className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
@@ -1646,15 +1157,14 @@ const Edit = () => {
                     <input
                       type="number"
                       name="discount5"
-                      value={discount5Val}
+                      disabled={true}
+                      value={student.discount5}
                       onChange={handleChange}
                       className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                     //    required
                     />
                   </div>
-                </div>
 
-                <div className="grid grid-cols-2 gap-7 justify-between">
                   {/* Final Fees 5 */}
                   <div>
                     <label className="block text-sm font-medium text-gray-700">
@@ -1664,56 +1174,7 @@ const Edit = () => {
                       type="number"
                       name="finalFees5"
                       disabled={true}
-                      value={finalFees5Val}
-                      onChange={handleChange}
-                      className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                    //    required
-                    />
-                  </div>
-
-                  {/* Paid 5 */}
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700">
-                      Paid
-                    </label>
-                    <input
-                      type="number"
-                      name="paid5"
-                      value={paid5Val}
-                      onChange={handleChange}
-                      className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                    //    required
-                    />
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-2 gap-7 justify-between">
-                  {/* Paid Date 5 */}
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700">
-                      Paid Date
-                    </label>
-                    <input
-                      type="date"
-                      name="paidDate5"
-                      value={moment(new Date(student.paidDate5)).format("YYYY-MM-DD")}
-                      onChange={handleChange}
-                      //    placeholder="DOB"
-                      className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                    //     required
-                    />
-                  </div>
-
-                  {/* Balance 5 */}
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700">
-                      Balance
-                    </label>
-                    <input
-                      type="number"
-                      name="balance5"
-                      disabled={true}
-                      value={balance5Val}
+                      value={student.finalFees5}
                       onChange={handleChange}
                       className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                     //    required
@@ -1766,7 +1227,7 @@ const Edit = () => {
                   />
                 </div>
 
-                <div className="grid grid-cols-2 gap-7 justify-between">
+                <div className="grid grid-cols-3 gap-7 justify-between">
                   {/* Hostel Fees */}
                   <div>
                     <label className="block text-sm font-medium text-gray-700">
@@ -1775,8 +1236,8 @@ const Edit = () => {
                     <input
                       type="number"
                       name="hostelFees"
-                      //value={student.hostelFees}
-                      value={fees6Val}
+                      disabled={true}
+                      value={student.hostelFees}
                       onChange={handleChange}
                       className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                     //    required
@@ -1792,15 +1253,13 @@ const Edit = () => {
                       type="number"
                       name="hostelDiscount"
                       onChange={handleChange}
-                      value={discount6Val}
-                      //value={student.hostelDiscount}
+                      disabled={true}
+                      value={student.hostelDiscount}
                       className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                     //    required
                     />
                   </div>
-                </div>
 
-                <div className="grid grid-cols-2 gap-7 justify-between">
                   {/* Hostel Final Fees */}
                   <div>
                     <label className="block text-sm font-medium text-gray-700">
@@ -1811,59 +1270,7 @@ const Edit = () => {
                       name="hostelFinalFees"
                       onChange={handleChange}
                       disabled={true}
-                      value={finalFees6Val}
-                      //value={student.hostelFinalFees}
-                      className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                    //    required
-                    />
-                  </div>
-
-                  {/* Hostel Paid */}
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700">
-                      Paid
-                    </label>
-                    <input
-                      type="number"
-                      name="hostelPaid"
-                      value={paid6Val}
-                      //value={student.hostelPaid}
-                      onChange={handleChange}
-                      className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                    //    required
-                    />
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-2 gap-7 justify-between">
-                  {/* Hostel Paid Date */}
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700">
-                      Paid Date
-                    </label>
-                    <input
-                      type="date"
-                      name="hostelPaidDate"
-                      onChange={handleChange}
-                      value={moment(new Date(student.hostelPaidDate)).format("YYYY-MM-DD")}
-                      //    placeholder="DOB"
-                      className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                    //    required
-                    />
-                  </div>
-
-                  {/* Hostel Balance */}
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700">
-                      Balance
-                    </label>
-                    <input
-                      type="number"
-                      name="hostelBalance"
-                      disabled={true}
-                      value={balance6Val}
-                      //value={student.hostelBalance}
-                      onChange={handleChange}
+                      value={student.hostelFinalFees}
                       className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                     //    required
                     />
