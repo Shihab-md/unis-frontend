@@ -28,12 +28,11 @@ const Edit = () => {
   const [institutes, setInstitutes] = useState([]);
   const [courses, setCourses] = useState([]);
 
-  const [fees1Val, setFees1Val] = useState("");
-  const [fees2Val, setFees2Val] = useState("");
-  const [fees3Val, setFees3Val] = useState("");
-  const [fees4Val, setFees4Val] = useState("");
-  const [fees5Val, setFees5Val] = useState("");
-  const [fees6Val, setFees6Val] = useState("");
+  let [fees1Val, setFees1Val] = useState("");
+  let [fees2Val, setFees2Val] = useState("");
+  let [fees3Val, setFees3Val] = useState("");
+  let [fees4Val, setFees4Val] = useState("");
+  let [fees5Val, setFees5Val] = useState("");
 
   useEffect(() => {
     const getSchoolsMap = async (id) => {
@@ -92,11 +91,11 @@ const Edit = () => {
 
           const academic = academicResponse.data.academic;
 
-          setFees1Val(academic.fees1);
-          setFees2Val(academic.fees2);
-          setFees3Val(academic.fees3);
-          setFees4Val(academic.fees4);
-          setFees5Val(academic.fees5);
+          fees1Val = academic.fees1;
+          fees2Val = academic.fees2;
+          fees3Val = academic.fees3;
+          fees4Val = academic.fees4;
+          fees5Val = academic.fees5;
 
           setStudent((prev) => ({
             ...prev,
@@ -185,51 +184,48 @@ const Edit = () => {
     // set Fees after seletion of course
     if (name === "courseId1") {
       let fees1 = courses.filter(course => course._id === value).map(course => course.fees);
-      setFees1Val(fees1);
+      fees1Val = fees1;
 
     } else if (name === "courseId2") {
       let fees2 = courses.filter(course => course._id === value).map(course => course.fees);
-      setFees2Val(fees2);
+      fees2Val = fees2;
 
     } else if (name === "courseId3") {
       let fees3 = courses.filter(course => course._id === value).map(course => course.fees);
-      setFees3Val(fees3);
+      fees3Val = fees3;
 
     } else if (name === "courseId4") {
       let fees4 = courses.filter(course => course._id === value).map(course => course.fees);
-      setFees4Val(fees4);
+      fees4Val = fees4;
 
     } else if (name === "courseId5") {
       let fees5 = courses.filter(course => course._id === value).map(course => course.fees);
-      setFees5Val(fees5);
-
-    } else if (name === "hostelFees") {
-      setFees6Val(value);
+      fees5Val = fees5;
 
     }
 
     // to set fees value
     if (name === "fees1") {
-      setFees1Val(value);
+      fees1Val = value;
     } else if (name === "fees2") {
-      setFees2Val(value);
+      fees2Val = value;
     } else if (name === "fees3") {
-      setFees3Val(value);
+      fees3Val = value;
     } else if (name === "fees4") {
-      setFees4Val(value);
+      fees4Val = value;
     } else if (name === "fees5") {
-      setFees5Val(value);
+      fees5Val = value;
     }
 
     setStudent((prevData) => ({
       ...prevData,
       [name]: value,
 
-    //  fees1: fees1Val,
-    //  fees2: fees2Val,
-    //  fees3: fees3Val,
-    //  fees4: fees4Val,
-    //  fees5: fees5Val,
+      fees1: fees1Val,
+      fees2: fees2Val,
+      fees3: fees3Val,
+      fees4: fees4Val,
+      fees5: fees5Val,
     }));
   };
 
