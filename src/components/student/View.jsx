@@ -89,6 +89,17 @@ const View = () => {
                 <div className="flex space-x-3 mb-5" />
 
                 <div className="flex space-x-3 mb-5">
+                  <p className="font-medium">Status:</p>
+                  <p className="font-normal">{student.active}</p>
+                </div>
+                <div className="flex space-x-3 mb-5">
+                  <p className="font-medium">Remarks:</p>
+                  <p className="font-normal">{student.remarks}</p>
+                </div>
+
+                <div className="flex space-x-3 mb-5" />
+
+                <div className="flex space-x-3 mb-5">
                   <p className="font-medium">Date of Addmission:</p>
                   <p className="font-normal">{new Date(student.doa).toLocaleDateString()}</p>
                 </div>
@@ -210,18 +221,6 @@ const View = () => {
                   <p className="font-medium">Final Fees :</p>
                   <p className="font-normal">{academic.finalFees1}</p>
                 </div>
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Paid :</p>
-                  <p className="font-normal">{academic.paid1}</p>
-                </div>
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Paid Date  :</p>
-                  <p className="font-normal">{new Date(academic.paidDate1).toLocaleDateString()}</p>
-                </div>
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Balance Fees :</p>
-                  <p className="font-normal">{academic.balance1}</p>
-                </div>
 
                 <div className="flex space-x-3 mb-5" />
 
@@ -252,18 +251,6 @@ const View = () => {
                 <div className="flex space-x-3 mb-5">
                   <p className="font-medium">Final Fees :</p>
                   <p className="font-normal">{academic.finalFees2}</p>
-                </div>
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Paid :</p>
-                  <p className="font-normal">{academic.paid2}</p>
-                </div>
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium text-blue-500">Paid Date  :</p>
-                  <p className="font-normal">{new Date(academic.paidDate2).toLocaleDateString()}</p>
-                </div>
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Balance Fees :</p>
-                  <p className="font-normal">{academic.balance2}</p>
                 </div>
 
                 <div className="flex space-x-3 mb-5" />
@@ -296,18 +283,6 @@ const View = () => {
                   <p className="font-medium">Final Fees :</p>
                   <p className="font-normal">{academic.finalFees3}</p>
                 </div>
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Paid :</p>
-                  <p className="font-normal">{academic.paid3}</p>
-                </div>
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Paid Date  :</p>
-                  <p className="font-normal">{new Date(academic.paidDate3).toLocaleDateString()}</p>
-                </div>
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Balance Fees :</p>
-                  <p className="font-normal">{academic.balance3}</p>
-                </div>
 
                 <div className="flex space-x-3 mb-5" />
 
@@ -338,18 +313,6 @@ const View = () => {
                 <div className="flex space-x-3 mb-5">
                   <p className="font-medium">Final Fees :</p>
                   <p className="font-normal">{academic.finalFees4}</p>
-                </div>
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Paid :</p>
-                  <p className="font-normal">{academic.paid4}</p>
-                </div>
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Paid Date  :</p>
-                  <p className="font-normal">{new Date(academic.paidDate4).toLocaleDateString()}</p>
-                </div>
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Balance Fees :</p>
-                  <p className="font-normal">{academic.balance4}</p>
                 </div>
 
                 <div className="flex space-x-3 mb-5" />
@@ -382,18 +345,6 @@ const View = () => {
                   <p className="font-medium">Final Fees :</p>
                   <p className="font-normal">{academic.finalFees5}</p>
                 </div>
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Paid :</p>
-                  <p className="font-normal">{academic.paid5}</p>
-                </div>
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Paid Date  :</p>
-                  <p className="font-normal">{new Date(academic.paidDate5).toLocaleDateString()}</p>
-                </div>
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Balance Fees :</p>
-                  <p className="font-normal">{academic.balance5}</p>
-                </div>
 
                 <div className="flex space-x-3 mb-5" />
 
@@ -420,18 +371,6 @@ const View = () => {
                 <div className="flex space-x-3 mb-5">
                   <p className="font-medium">Hostel Final Fees :</p>
                   <p className="font-normal">{student.hostelFinalFees}</p>
-                </div>
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Hostel Fees Paid :</p>
-                  <p className="font-normal">{student.hostelPaid}</p>
-                </div>
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Hostel Fees Paid Date:</p>
-                  <p className="font-normal">{new Date(student.hostelPaidDate).toLocaleDateString()}</p>
-                </div>
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Hostel Balance Fees :</p>
-                  <p className="font-normal">{student.hostelBalance}</p>
                 </div>
 
               </div>
