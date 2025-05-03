@@ -83,7 +83,7 @@ const List = () => {
         <input
           type="text"
           placeholder="Seach By Student"
-          className="px-4 py-0.5 border rounded shadow-lg"
+          className="px-4 py-0.5 border rounded shadow-lg justify-center"
           onChange={handleFilter}
         />
         <Link to="/admin-dashboard/add-student" >
