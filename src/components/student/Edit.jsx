@@ -28,11 +28,11 @@ const Edit = () => {
   const [institutes, setInstitutes] = useState([]);
   const [courses, setCourses] = useState([]);
 
-  let [fees1Val, setFees1Val] = useState("");
-  let [fees2Val, setFees2Val] = useState("");
-  let [fees3Val, setFees3Val] = useState("");
-  let [fees4Val, setFees4Val] = useState("");
-  let [fees5Val, setFees5Val] = useState("");
+  let fees1Val = "";
+  let fees2Val = "";
+  let fees3Val = "";
+  let fees4Val = "";
+  let fees5Val = "";
 
   useEffect(() => {
     const getSchoolsMap = async (id) => {
