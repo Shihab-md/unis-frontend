@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { columns, SupervisorButtons } from '../../utils/SupervisorHelper'
+import { getBaseUrl } from '../../utils/CommonHelper'
 import DataTable from 'react-data-table-component'
 import axios from 'axios'
 import {
@@ -23,7 +24,7 @@ const List = () => {
       setSupLoading(true)
       try {
         const responnse = await axios.get(
-          "https://unis-server.vercel.app/api/supervisor",
+          getBaseUrl() + "supervisor",
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,
