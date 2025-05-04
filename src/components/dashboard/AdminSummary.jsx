@@ -146,7 +146,7 @@ const AdminSummary = () => {
           <SummaryCard
             icon={<FaUserCog />}
             text="Settings"
-            number=""
+            number=" "
             color="bg-teal-900"
           />
         </Link>
