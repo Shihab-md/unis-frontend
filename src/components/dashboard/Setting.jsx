@@ -30,7 +30,7 @@ const Setting = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (setting.newPassword !== setting.confirmPassword) {
-      setError("Password not matched");
+      setError("New Password and Confirm Password are not matched");
     } else {
       try {
         const response = await axios.put(
@@ -43,6 +43,7 @@ const Setting = () => {
           }
         );
         if (response.data.success) {
+          alert("Password changed Successfully...");
           navigate("/admin-dashboard");
           setError("")
         }

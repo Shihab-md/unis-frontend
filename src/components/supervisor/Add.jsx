@@ -290,7 +290,7 @@ const Add = () => {
               <input
                 type="file"
                 name="image"
-                //     onChange={handleChange}
+                onChange={handleChange}
                 placeholder="Upload Image"
                 accept="image/*"
                 className="mt-1 p-2 mb-5 block w-full border border-gray-300 rounded-md"
