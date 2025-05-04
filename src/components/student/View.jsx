@@ -74,8 +74,16 @@ const View = () => {
                 <div className="flex space-x-3 mb-5" />
 
                 <div className="flex space-x-3 mb-5">
+                  <p className="font-medium">Niswan Name (Arabic):</p>
+                  <p className="font-normal">{student.schoolId && student.schoolId.nameArabic ? student.schoolId.nameArabic : ""}</p>
+                </div>
+                <div className="flex space-x-3 mb-5">
                   <p className="font-medium">Niswan Name (English):</p>
-                  <p className="font-normal">{student.schoolId.nameEnglish}</p>
+                  <p className="font-normal">{student.schoolId && student.schoolId.nameEnglish ? student.schoolId.nameEnglish : ""}</p>
+                </div>
+                <div className="flex space-x-3 mb-5">
+                  <p className="font-medium">Niswan Name (Native):</p>
+                  <p className="font-normal">{student.schoolId && student.schoolId.nameNative ? student.schoolId.nameNative : ""}</p>
                 </div>
                 <div className="flex space-x-3 mb-5">
                   <p className="font-medium">Roll Number:</p>
@@ -83,7 +91,7 @@ const View = () => {
                 </div>
                 <div className="flex space-x-3 mb-5">
                   <p className="font-medium">Name:</p>
-                  <p className="font-normal">{student.userId.name}</p>
+                  <p className="font-normal">{student.userId && student.userId.name ? student.userId.name : ""}</p>
                 </div>
 
                 <div className="flex space-x-3 mb-5" />
@@ -188,7 +196,7 @@ const View = () => {
 
                 <div className="flex space-x-3 mb-5">
                   <p className="font-medium">Academic Year:</p>
-                  <p className="font-normal">{academic.acYear.acYear}</p>
+                  <p className="font-normal">{academic.acYear && academic.acYear.acYear ? academic.acYear.acYear : ""}</p>
                 </div>
 
                 <div className="flex space-x-3 mb-5" />
@@ -199,11 +207,11 @@ const View = () => {
                 </div>
                 <div className="flex space-x-3 mb-5">
                   <p className="font-medium">Institute Name:</p>
-                  <p className="font-normal">{academic.instituteId1.name}</p>
+                  <p className="font-normal">{academic.instituteId1 && academic.instituteId1.name ? academic.instituteId1.name : ""}</p>
                 </div>
                 <div className="flex space-x-3 mb-5">
                   <p className="font-medium">Course Name :</p>
-                  <p className="font-normal">{academic.courseId1.name}</p>
+                  <p className="font-normal">{academic.courseId1 && academic.courseId1.name ? academic.courseId1.name : ""}</p>
                 </div>
                 <div className="flex space-x-3 mb-5">
                   <p className="font-medium">Reference Number :</p>
@@ -261,11 +269,11 @@ const View = () => {
                 </div>
                 <div className="flex space-x-3 mb-5">
                   <p className="font-medium">Institute Name:</p>
-                  <p className="font-normal">{academic.instituteId3.name ? academic.instituteId3.name : ""}</p>
+                  <p className="font-normal">{academic.instituteId3 && academic.instituteId3.name ? academic.instituteId3.name : ""}</p>
                 </div>
                 <div className="flex space-x-3 mb-5">
                   <p className="font-medium">Course Name :</p>
-                  <p className="font-normal">{academic.courseId3.name ? academic.courseId3.name : ""}</p>
+                  <p className="font-normal">{academic.instituteId3 && academic.courseId3.name ? academic.courseId3.name : ""}</p>
                 </div>
                 <div className="flex space-x-3 mb-5">
                   <p className="font-medium">Reference Number :</p>
@@ -292,11 +300,11 @@ const View = () => {
                 </div>
                 <div className="flex space-x-3 mb-5">
                   <p className="font-medium">Institute Name:</p>
-                  <p className="font-normal">{academic.instituteId4.name}</p>
+                  <p className="font-normal">{academic.instituteId4 && academic.instituteId4.name ? academic.instituteId4.name : ""}</p>
                 </div>
                 <div className="flex space-x-3 mb-5">
                   <p className="font-medium">Course Name :</p>
-                  <p className="font-normal">{academic.courseId4.name}</p>
+                  <p className="font-normal">{academic.courseId4 && academic.courseId4.name ? academic.courseId4.name : ""}</p>
                 </div>
                 <div className="flex space-x-3 mb-5">
                   <p className="font-medium">Reference Number :</p>
@@ -323,11 +331,11 @@ const View = () => {
                 </div>
                 <div className="flex space-x-3 mb-5">
                   <p className="font-medium">Institute Name:</p>
-                  <p className="font-normal">{academic.instituteId5.name}</p>
+                  <p className="font-normal">{academic.instituteId5 && academic.instituteId5.name ? academic.instituteId5.name : ""}</p>
                 </div>
                 <div className="flex space-x-3 mb-5">
                   <p className="font-medium">Course Name :</p>
-                  <p className="font-normal">{academic.courseId5.name}</p>
+                  <p className="font-normal">{academic.courseId5 && academic.courseId5.name ? academic.courseId5.name : ""}</p>
                 </div>
                 <div className="flex space-x-3 mb-5">
                   <p className="font-medium">Reference Number :</p>
