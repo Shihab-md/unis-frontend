@@ -52,7 +52,7 @@ const AdminSummary = () => {
       <h5 className="text-xl mt-2 mb-3 font-bold text-center text-gray-500 text-shadow-lg">Super Admin Dashboard</h5>
 
       <div className="rounded-lg grid grid-cols-2 md:grid-cols-4 gap-7 mt-7 flex rounded-lg">
-        {(getRole()).toString() === "superadmin" ? 
+        {(getRole()).toString() === "superadmin" ?
           <Link to="/admin-dashboard/supervisors" >
             <SummaryCard
               icon={<FaUserFriends />}
@@ -60,8 +60,7 @@ const AdminSummary = () => {
               number={summary.totalSupervisors}
               color="bg-teal-600"
             />
-          </Link>
-         : null}
+          </Link> : null}
         <Link to="/admin-dashboard/schools" >
           <SummaryCard
             icon={<FaMosque />}
@@ -86,38 +85,42 @@ const AdminSummary = () => {
             color="bg-blue-500"
           />
         </Link>
-        <Link to="/admin-dashboard/institutes" >
-          <SummaryCard
-            icon={<FaBuilding />}
-            text="Institutes"
-            number={summary.totalInstitutes}
-            color="bg-slate-700"
-          />
-        </Link>
-        <Link to="/admin-dashboard/courses" >
-          <SummaryCard
-            icon={<FaClipboardList />}
-            text="Courses"
-            number={summary.totalCourses}
-            color="bg-purple-700"
-          />
-        </Link>
-        <Link to="#" >
-          <SummaryCard
-            icon={<FaTasks />}
-            text="Exams"
-            number={summary.totalEmployees}
-            color="bg-emerald-700"
-          />
-        </Link>
-        <Link to="/admin-dashboard/academicYears" >
-          <SummaryCard
-            icon={<FaCalendarAlt />}
-            text="AC Year"
-            number={summary.totalAcademicYears}
-            color="bg-blue-800"
-          />
-        </Link>
+        {(getRole()).toString() === "superadmin" ?
+          <Link to="/admin-dashboard/institutes" >
+            <SummaryCard
+              icon={<FaBuilding />}
+              text="Institutes"
+              number={summary.totalInstitutes}
+              color="bg-slate-700"
+            />
+          </Link> : null}
+        {(getRole()).toString() === "superadmin" ?
+          <Link to="/admin-dashboard/courses" >
+            <SummaryCard
+              icon={<FaClipboardList />}
+              text="Courses"
+              number={summary.totalCourses}
+              color="bg-purple-700"
+            />
+          </Link> : null}
+        {(getRole()).toString() === "superadmin" ?
+          <Link to="#" >
+            <SummaryCard
+              icon={<FaTasks />}
+              text="Exams"
+              number={summary.totalEmployees}
+              color="bg-emerald-700"
+            />
+          </Link> : null}
+        {(getRole()).toString() === "superadmin" ?
+          <Link to="/admin-dashboard/academicYears" >
+            <SummaryCard
+              icon={<FaCalendarAlt />}
+              text="AC Year"
+              number={summary.totalAcademicYears}
+              color="bg-blue-800"
+            />
+          </Link> : null}
         <Link to="#" >
           <SummaryCard
             icon={<FaRupeeSign />}
@@ -126,14 +129,15 @@ const AdminSummary = () => {
             color="bg-orange-700"
           />
         </Link>
-        <Link to="#" >
-          <SummaryCard
-            icon={<FaMedal />}
-            text="Certificates"
-            number={summary.totalEmployees}
-            color="bg-yellow-600"
-          />
-        </Link>
+        {(getRole()).toString() === "superadmin" ?
+          <Link to="#" >
+            <SummaryCard
+              icon={<FaMedal />}
+              text="Certificates"
+              number={summary.totalEmployees}
+              color="bg-yellow-600"
+            />
+          </Link> : null}
         <Link to="#" >
           <SummaryCard
             icon={<FaFileContract />}
