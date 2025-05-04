@@ -85,7 +85,7 @@ const AdminSummary = () => {
             color="bg-blue-500"
           />
         </Link>
-        {(getRole()).toString() === "superadmin" ?
+        {user.role === "superadmin" ?
           <Link to="/admin-dashboard/institutes" >
             <SummaryCard
               icon={<FaBuilding />}
@@ -94,7 +94,7 @@ const AdminSummary = () => {
               color="bg-slate-700"
             />
           </Link> : null}
-        {(getRole()).toString() === "superadmin" ?
+        {user.role === "superadmin" ?
           <Link to="/admin-dashboard/courses" >
             <SummaryCard
               icon={<FaClipboardList />}
@@ -103,7 +103,7 @@ const AdminSummary = () => {
               color="bg-purple-700"
             />
           </Link> : null}
-        {(getRole()).toString() === "superadmin" ?
+        {user.role === "superadmin" ?
           <Link to="#" >
             <SummaryCard
               icon={<FaTasks />}
@@ -112,7 +112,7 @@ const AdminSummary = () => {
               color="bg-emerald-700"
             />
           </Link> : null}
-        {(getRole()).toString() === "superadmin" ?
+        {user.role === "superadmin" ?
           <Link to="/admin-dashboard/academicYears" >
             <SummaryCard
               icon={<FaCalendarAlt />}
@@ -129,7 +129,7 @@ const AdminSummary = () => {
             color="bg-orange-700"
           />
         </Link>
-        {(getRole()).toString() === "superadmin" ?
+        {user.role === "superadmin" ?
           <Link to="#" >
             <SummaryCard
               icon={<FaMedal />}
