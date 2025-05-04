@@ -83,7 +83,7 @@ const View = () => {
                 </div>
                 <div className="flex space-x-3 mb-5">
                   <p className="font-medium">Name:</p>
-                  <p className="font-normal">{student.userId.name}</p>
+                {/* <p className="font-normal">{student.userId.name}</p> */} 
                 </div>
 
                 <div className="flex space-x-3 mb-5" />
