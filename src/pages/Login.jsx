@@ -27,19 +27,22 @@ const Login = () => {
         localStorage.setItem("token", response.data.token)
         localStorage.setItem("role", response.data.user.role)
         if (response.data.user.role === "superadmin") {
-          navigate('/superadmin-dashboard')
+          navigate('/admin-dashboard')
 
         } else if (response.data.user.role === "admin") {
           navigate('/admin-dashboard')
 
         } else if (response.data.user.role === "supervisor") {
-          navigate('/supervisor-dashboard')
+          navigate('/admin-dashboard')
+          // navigate('/supervisor-dashboard')
 
         } else if (response.data.user.role === "teacher") {
-          navigate('/teacher-dashboard')
+          navigate('/admin-dashboard')
+         // navigate('/teacher-dashboard')
 
         } else if (response.data.user.role === "student") {
-          navigate('/student-dashboard')
+          navigate('/admin-dashboard')
+          //navigate('/student-dashboard')
 
         } else if (response.data.user.role === "parent") {
           navigate('/parent-dashboard')
