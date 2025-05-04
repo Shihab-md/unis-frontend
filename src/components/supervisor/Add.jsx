@@ -44,7 +44,7 @@ const Add = () => {
 
       const response = await axios.post(
         (await getBaseUrl()).toString() + "supervisor/add",
-        formDataObj, upload.single('image'),
+        upload.single('image'), formDataObj,
         {
           headers: headers
           //headers: {
@@ -98,6 +98,7 @@ const Add = () => {
               <input
                 type="email"
                 name="email"
+                value="sass@asffs.vvs"
                 onChange={handleChange}
                 //  placeholder="Insert Email"
                 className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
