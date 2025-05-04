@@ -52,7 +52,7 @@ const AdminSummary = () => {
       <h5 className="text-xl mt-2 mb-3 font-bold text-center text-gray-500 text-shadow-lg">Super Admin Dashboard</h5>
 
       <div className="rounded-lg grid grid-cols-2 md:grid-cols-4 gap-7 mt-7 flex rounded-lg">
-        {(getRole()).toString() === "superadmin" ? <div>
+        {(getRole()).toString() === "superadmin" ? 
           <Link to="/admin-dashboard/supervisors" >
             <SummaryCard
               icon={<FaUserFriends />}
@@ -61,7 +61,7 @@ const AdminSummary = () => {
               color="bg-teal-600"
             />
           </Link>
-        </div> : null}
+         : null}
         <Link to="/admin-dashboard/schools" >
           <SummaryCard
             icon={<FaMosque />}

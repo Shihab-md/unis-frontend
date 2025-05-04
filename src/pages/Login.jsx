@@ -25,6 +25,7 @@ const Login = () => {
       if (response.data.success) {
         login(response.data.user)
         localStorage.setItem("token", response.data.token)
+        localStorage.setItem("role", response.data.user.role)
         if (response.data.user.role === "superadmin") {
           navigate('/superadmin-dashboard')
 
