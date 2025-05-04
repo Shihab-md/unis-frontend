@@ -44,7 +44,7 @@ const Add = () => {
 
       const response = await axios.post(
         (await getBaseUrl()).toString() + "supervisor/add",
-        formDataObj,
+        formDataObj, upload.single('image'),
         {
           headers: headers
           //headers: {
