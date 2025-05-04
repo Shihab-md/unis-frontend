@@ -64,7 +64,7 @@ const Setting = () => {
       </div>
       <p className="text-red-500">{error}</p>
       <form onSubmit={handleSubmit}>
-        <div className="py-2 px-4 border mt-5 mb-3 items-center justify-center rounded-lg shadow-lg">
+        <div className="py-2 px-4 border mt-5 mb-7 items-center justify-center rounded-lg shadow-lg">
 
           {/* Old Password */}
           <div className="mt-5">
@@ -114,7 +114,7 @@ const Setting = () => {
 
         <button
           type="submit"
-          className="w-full mt-7 bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded-lg shadow-lg"
+          className="w-full mt-3 bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded-lg shadow-lg"
         >
           Change Password
         </button>
