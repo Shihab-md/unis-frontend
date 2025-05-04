@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate, Link } from "react-router-dom";
+import { getBaseUrl } from '../utils/CommonHelper'
 import {
   FaArrowAltCircleRight,
 } from "react-icons/fa";
