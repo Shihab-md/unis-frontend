@@ -132,17 +132,17 @@ const Edit = () => {
             //   fees4Val: academic.fees4,
             //    fees5Val: academic.fees5,
 
-            acYear: academic.acYear && academic.acYear._id ? academic.acYear._id : "",
+            acYear: academic.acYear && academic.acYear._id ? academic.acYear._id : null,
 
-            instituteId1: academic.instituteId1 && academic.instituteId1._id ? academic.instituteId1._id : "",
-            courseId1: academic.courseId1 && academic.courseId1._id ? academic.courseId1._id : "",
+            instituteId1: academic.instituteId1 && academic.instituteId1._id ? academic.instituteId1._id : null,
+            courseId1: academic.courseId1 && academic.courseId1._id ? academic.courseId1._id : null,
             refNumber1: academic.refNumber1,
             fees1: academic.fees1,
             discount1: academic.discount1,
             //  finalFees1: academic.finalFees1,
 
-            instituteId2: academic.instituteId2 && academic.instituteId2._id ? academic.instituteId2._id : "",
-            courseId2: academic.courseId2 && academic.courseId2._id ? academic.courseId2._id : "",
+            instituteId2: academic.instituteId2 && academic.instituteId2._id ? academic.instituteId2._id : null,
+            courseId2: academic.courseId2 && academic.courseId2._id ? academic.courseId2._id : null,
             refNumber2: academic.refNumber2,
             fees2: academic.fees2,
             discount2: academic.discount2,
