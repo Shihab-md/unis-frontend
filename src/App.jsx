@@ -139,7 +139,7 @@ function App() {
           <Route path="/admin-dashboard/academicYears/edit/:id" element={<AcademicYearEdit />}></Route>
 
           <Route path="/admin-dashboard/setting" element={<Setting />}></Route>
-          
+
           <Route
             path="/admin-dashboard/salary/add"
             element={<AddSalary />}
@@ -168,7 +168,6 @@ function App() {
           <Route path="/employee-dashboard/leaves/:id" element={<LeaveList />}></Route>
           <Route path="/employee-dashboard/add-leave" element={<AddLeave />}></Route>
           <Route path="/employee-dashboard/salary/:id" element={<ViewSalary />}></Route>
-          <Route path="/employee-dashboard/setting" element={<Setting />}></Route>
 
         </Route>
       </Routes>

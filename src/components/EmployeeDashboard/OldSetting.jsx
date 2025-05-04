@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useAuth } from "../../context/AuthContext";
 
-const Setting = () => {
+const OldSetting = () => {
   const navigate = useNavigate();
   const { user } = useAuth()
     const [setting, setSetting] = useState({
@@ -106,4 +106,4 @@ const Setting = () => {
   );
 };
 
-export default Setting;
+export default OldSetting;
