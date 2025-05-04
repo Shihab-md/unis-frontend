@@ -138,7 +138,7 @@ function App() {
           <Route path="/admin-dashboard/academicYears/:id" element={<AcademicYearView />}></Route>
           <Route path="/admin-dashboard/academicYears/edit/:id" element={<AcademicYearEdit />}></Route>
 
-          <Route path="/admin-dashboard/setting" element={<Setting />}></Route>
+          <Route path="/admin-dashboard/settings" element={<Setting />}></Route>
 
           <Route
             path="/admin-dashboard/salary/add"
