@@ -1,6 +1,5 @@
 import axios from "axios";
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { getBaseUrl } from '../utils/CommonHelper'
 
 const userContext = createContext();
 
@@ -14,7 +13,7 @@ const AuthContext = ({ children }) => {
         const token = localStorage.getItem("token");
         if (token) {
           const response = await axios.get(
-            (getBaseUrl()).toString() + "auth/verify",
+            "https://unis-server.vercel.app/api/auth/verify",
             {
               headers: {
                 Authorization: `Bearer ${token}`,
