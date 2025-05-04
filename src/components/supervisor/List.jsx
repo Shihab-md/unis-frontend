@@ -24,7 +24,7 @@ const List = () => {
       setSupLoading(true)
       try {
         const responnse = await axios.get(
-          getBaseUrl.toString() + "supervisor",
+          (await getBaseUrl()).toString() + "supervisor",
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,
