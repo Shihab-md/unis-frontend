@@ -64,57 +64,60 @@ const Setting = () => {
       </div>
       <p className="text-red-500">{error}</p>
       <form onSubmit={handleSubmit}>
-        {/* Old Password */}
-        <div>
-          <label className="text-sm font-medium text-gray-700">
-            Old Password
-          </label>
-          <input
-            type="password"
-            name="oldPassword"
-            placeholder="Old Password"
-            onChange={handleChange}
-            className="mt-1 w-full p-2 border border-gray-300 rounded-md"
-            required
-          />
-        </div>
+        <div className="py-2 px-4 border mt-5 mb-3 items-center justify-center rounded-lg shadow-lg">
 
-        {/* New Password */}
-        <div className="mt-7">
-          <label className="text-sm mt-5 font-medium text-gray-700">
-            New Password
-          </label>
-          <input
-            type="password"
-            name="newPassword"
-            placeholder="New Password"
-            onChange={handleChange}
-            className="mt-1 w-full p-2 border border-gray-300 rounded-md"
-            required
-          />
-        </div>
+          {/* Old Password */}
+          <div className="mt-7">
+            <label className="text-sm font-medium text-gray-700">
+              Old Password
+            </label>
+            <input
+              type="password"
+              name="oldPassword"
+              placeholder="Old Password"
+              onChange={handleChange}
+              className="mt-1 w-full p-2 border border-gray-300 rounded-md"
+              required
+            />
+          </div>
 
-        {/* Confirm Password */}
-        <div className="mt-7">
-          <label className="text-sm mt-5 font-medium text-gray-700">
-            Confirm Password
-          </label>
-          <input
-            type="password"
-            name="confirmPassword"
-            placeholder="Confirm Password"
-            onChange={handleChange}
-            className="mt-1 w-full p-2 border border-gray-300 rounded-md"
-            required
-          />
-        </div>
+          {/* New Password */}
+          <div className="mt-5">
+            <label className="text-sm mt-5 font-medium text-gray-700">
+              New Password
+            </label>
+            <input
+              type="password"
+              name="newPassword"
+              placeholder="New Password"
+              onChange={handleChange}
+              className="mt-1 w-full p-2 border border-gray-300 rounded-md"
+              required
+            />
+          </div>
 
-        <button
-          type="submit"
-          className="w-full mt-7 bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded-lg shadow-lg"
-        >
-          Change Password
-        </button>
+          {/* Confirm Password */}
+          <div className="mt-5">
+            <label className="text-sm mt-5 font-medium text-gray-700">
+              Confirm Password
+            </label>
+            <input
+              type="password"
+              name="confirmPassword"
+              placeholder="Confirm Password"
+              onChange={handleChange}
+              className="mt-1 w-full p-2 border border-gray-300 rounded-md"
+              required
+            />
+          </div>
+
+          <button
+            type="submit"
+            className="w-full mt-7 bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded-lg shadow-lg"
+          >
+            Change Password
+          </button>
+        </div>
       </form>
     </div>
   );
