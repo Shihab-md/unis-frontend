@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
-import { getBaseUrl } from '../../utils/CommonHelper'
+import { getBaseUrl, handelRightClick } from '../../utils/CommonHelper'
 import {
   FaRegTimesCircle
 } from "react-icons/fa";
 
 const Add = () => {
+
+  document.addEventListener('contextmenu', handelRightClick);
 
   const [formData, setFormData] = useState({});
   const navigate = useNavigate()

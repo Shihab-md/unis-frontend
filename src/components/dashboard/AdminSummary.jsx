@@ -52,7 +52,7 @@ const AdminSummary = () => {
       <h5 className="text-xl mt-2 mb-3 font-bold text-center text-gray-500 text-shadow-lg">Super Admin Dashboard</h5>
 
       <div className="rounded-lg grid grid-cols-2 md:grid-cols-4 gap-7 mt-7 flex rounded-lg">
-        {user.role === "superadmin" ?
+        {user.role === "superadmin" || user.role === "hquser" ?
           <Link to="/admin-dashboard/supervisors" >
             <SummaryCard
               icon={<FaUserFriends />}
@@ -72,7 +72,7 @@ const AdminSummary = () => {
         <Link to="/admin-dashboard/employees" >
           <SummaryCard
             icon={<FaHouseUser />}
-            text="Teachers"
+            text="Employees"
             number={summary.totalEmployees}
             color="bg-cyan-600"
           />
@@ -85,7 +85,7 @@ const AdminSummary = () => {
             color="bg-blue-500"
           />
         </Link>
-        {user.role === "superadmin" ?
+        {user.role === "superadmin" || user.role === "hquser" ?
           <Link to="/admin-dashboard/institutes" >
             <SummaryCard
               icon={<FaBuilding />}
@@ -94,7 +94,7 @@ const AdminSummary = () => {
               color="bg-slate-700"
             />
           </Link> : null}
-        {user.role === "superadmin" ?
+        {user.role === "superadmin" || user.role === "hquser" ?
           <Link to="/admin-dashboard/courses" >
             <SummaryCard
               icon={<FaClipboardList />}
@@ -103,7 +103,7 @@ const AdminSummary = () => {
               color="bg-purple-700"
             />
           </Link> : null}
-        {user.role === "superadmin" ?
+        {user.role === "superadmin" || user.role === "hquser" ?
           <Link to="#" >
             <SummaryCard
               icon={<FaTasks />}
@@ -112,7 +112,7 @@ const AdminSummary = () => {
               color="bg-emerald-700"
             />
           </Link> : null}
-        {user.role === "superadmin" ?
+        {user.role === "superadmin" || user.role === "hquser" ?
           <Link to="/admin-dashboard/academicYears" >
             <SummaryCard
               icon={<FaCalendarAlt />}
@@ -129,7 +129,7 @@ const AdminSummary = () => {
             color="bg-orange-700"
           />
         </Link>
-        {user.role === "superadmin" ?
+        {user.role === "superadmin" || user.role === "hquser" ?
           <Link to="#" >
             <SummaryCard
               icon={<FaMedal />}

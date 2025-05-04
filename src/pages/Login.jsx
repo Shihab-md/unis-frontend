@@ -26,7 +26,7 @@ const Login = () => {
         login(response.data.user)
         localStorage.setItem("token", response.data.token)
         localStorage.setItem("role", response.data.user.role)
-        if (response.data.user.role === "superadmin") {
+        if (response.data.user.role === "superadmin" || response.data.user.role === "hquser") {
           navigate('/admin-dashboard')
 
         } else if (response.data.user.role === "admin") {
@@ -38,7 +38,7 @@ const Login = () => {
 
         } else if (response.data.user.role === "teacher") {
           navigate('/admin-dashboard')
-         // navigate('/teacher-dashboard')
+          // navigate('/teacher-dashboard')
 
         } else if (response.data.user.role === "student") {
           navigate('/admin-dashboard')
