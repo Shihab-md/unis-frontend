@@ -36,12 +36,10 @@ const Add = () => {
     try {
 
       // const upload = multer({ dest: './public/' })
-
+      alert("Calling...");
       const headers = {
         'Content-Type': 'multipart/form-data',
-        'Authorization': `Bearer ${localStorage.getItem("token")}`,
         'Access-Control-Allow-Origin': '*',
-        'Accept': 'application/json'
       }
 
       const response = await axios.post(
