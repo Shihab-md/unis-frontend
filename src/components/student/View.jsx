@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
+import { getBaseUrl } from '../../utils/CommonHelper'
 import {
   FaRegTimesCircle
 } from "react-icons/fa";
@@ -15,7 +16,7 @@ const View = () => {
     const fetchStudent = async () => {
       try {
         const responnse = await axios.get(
-          `https://unis-server.vercel.app/api/student/${id}`,
+          (await getBaseUrl()).toString() + `student/${id}`,
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -25,7 +26,7 @@ const View = () => {
         if (responnse.data.success) {
           const student = responnse.data.student;
           const academicResponse = await axios.get(
-            `https://unis-server.vercel.app/api/student/${student._id}/${'vieww'}`,
+            (await getBaseUrl()).toString() + `student/${student._id}/${'vieww'}`,
             {
               headers: {
                 Authorization: `Bearer ${localStorage.getItem("token")}`,

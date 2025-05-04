@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { columns, EmployeeButtons } from '../../utils/EmployeeHelper'
 import DataTable from 'react-data-table-component'
 import axios from 'axios'
+import { getBaseUrl } from '../../utils/CommonHelper'
 import {
   FaPlusSquare, FaArrowAltCircleLeft
 } from "react-icons/fa";
@@ -23,7 +24,7 @@ const List = () => {
       setSupLoading(true)
       try {
         const responnse = await axios.get(
-          "https://unis-server.vercel.app/api/employee",
+          (await getBaseUrl()).toString() + "employee",
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,

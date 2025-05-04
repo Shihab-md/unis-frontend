@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
+import { getBaseUrl } from '../../utils/CommonHelper'
 import {
   FaRegTimesCircle
 } from "react-icons/fa";
@@ -23,7 +24,7 @@ const Add = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.post('https://unis-server.vercel.app/api/academicYear/add', academicYear, {
+      const response = await axios.post((await getBaseUrl()).toString() + 'academicYear/add', academicYear, {
         headers: {
           "Authorization": `Bearer ${localStorage.getItem('token')}`
         }

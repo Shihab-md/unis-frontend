@@ -4,6 +4,7 @@ import { useNavigate, useParams, Link } from "react-router-dom";
 import {
   FaRegTimesCircle
 } from "react-icons/fa";
+import { getBaseUrl } from '../../utils/CommonHelper'
 
 const Edit = () => {
   const [institute, setInstitute] = useState({
@@ -25,7 +26,7 @@ const Edit = () => {
     const fetchInstitute = async () => {
       try {
         const responnse = await axios.get(
-          `https://unis-server.vercel.app/api/institute/${id}`,
+          (await getBaseUrl()).toString() + `institute/${id}`,
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -69,7 +70,7 @@ const Edit = () => {
 
     try {
       const response = await axios.put(
-        `https://unis-server.vercel.app/api/institute/${id}`,
+        (await getBaseUrl()).toString() + `institute/${id}`,
         institute,
         {
           headers: {
@@ -154,7 +155,7 @@ const Edit = () => {
                 </div>
 
                 <div className="flex space-x-3 mb-5" />
-                
+
                 {/* Contact Number */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700">

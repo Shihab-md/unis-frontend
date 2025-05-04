@@ -5,6 +5,7 @@ import { getSchools } from '../../utils/SchoolHelper'
 import { getAcademicYears } from '../../utils/AcademicYearHelper'
 import { getInstitutes } from '../../utils/InstituteHelper'
 import { getCourses } from '../../utils/CourseHelper'
+import { getBaseUrl } from '../../utils/CommonHelper'
 import {
   FaRegTimesCircle
 } from "react-icons/fa";
@@ -135,7 +136,7 @@ const Add = () => {
       }
 
       const response = await axios.post(
-        "https://unis-server.vercel.app/api/student/add",
+        (await getBaseUrl()).toString() + "student/add",
         formDataObj,
         {
           headers: headers

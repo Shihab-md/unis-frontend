@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
+import { getBaseUrl } from '../../utils/CommonHelper'
 import {
   FaRegTimesCircle
 } from "react-icons/fa";
@@ -54,7 +55,7 @@ const Add = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.post('https://unis-server.vercel.app/api/course/add', course, {
+      const response = await axios.post((await getBaseUrl()).toString() + 'course/add', course, {
         headers: {
           "Authorization": `Bearer ${localStorage.getItem('token')}`
         }
@@ -213,7 +214,7 @@ const Add = () => {
                 name="subject2"
                 onChange={handleChange}
                 className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-            //    required
+              //    required
               />
             </div>
 
@@ -228,7 +229,7 @@ const Add = () => {
                   name="subject2MaxMark"
                   onChange={handleChange}
                   className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-              //    required
+                //    required
                 />
               </div>
 
@@ -242,7 +243,7 @@ const Add = () => {
                   name="subject2PassMark"
                   onChange={handleChange}
                   className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-              //    required
+                //    required
                 />
               </div>
             </div>
@@ -257,7 +258,7 @@ const Add = () => {
                 name="subject3"
                 onChange={handleChange}
                 className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-            //    required
+              //    required
               />
             </div>
 
@@ -272,7 +273,7 @@ const Add = () => {
                   name="subject3MaxMark"
                   onChange={handleChange}
                   className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-              //    required
+                //    required
                 />
               </div>
 
@@ -286,7 +287,7 @@ const Add = () => {
                   name="subject3PassMark"
                   onChange={handleChange}
                   className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-              //    required
+                //    required
                 />
               </div>
             </div>

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { getBaseUrl } from '../../utils/CommonHelper'
 import { useNavigate, useParams, Link } from "react-router-dom";
 import {
   FaRegTimesCircle
@@ -48,7 +49,7 @@ const Edit = () => {
     const fetchCourse = async () => {
       try {
         const responnse = await axios.get(
-          `https://unis-server.vercel.app/api/course/${id}`,
+          (await getBaseUrl()).toString() + `course/${id}`,
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -117,7 +118,7 @@ const Edit = () => {
 
     try {
       const response = await axios.put(
-        `https://unis-server.vercel.app/api/course/${id}`,
+        (await getBaseUrl()).toString() + `course/${id}`,
         course,
         {
           headers: {
@@ -292,7 +293,7 @@ const Edit = () => {
                     value={course.subject2}
                     onChange={handleChange}
                     className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-                //    required
+                  //    required
                   />
                 </div>
 
@@ -308,7 +309,7 @@ const Edit = () => {
                       value={course.subject2MaxMark}
                       onChange={handleChange}
                       className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-                  //    required
+                    //    required
                     />
                   </div>
 
@@ -323,7 +324,7 @@ const Edit = () => {
                       value={course.subject2PassMark}
                       onChange={handleChange}
                       className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-                  //    required
+                    //    required
                     />
                   </div>
                 </div>
@@ -339,7 +340,7 @@ const Edit = () => {
                     value={course.subject3}
                     onChange={handleChange}
                     className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-                //    required
+                  //    required
                   />
                 </div>
 
@@ -355,7 +356,7 @@ const Edit = () => {
                       value={course.subject3MaxMark}
                       onChange={handleChange}
                       className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-                  //    required
+                    //    required
                     />
                   </div>
 
@@ -370,7 +371,7 @@ const Edit = () => {
                       value={course.subject3PassMark}
                       onChange={handleChange}
                       className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-                  //    required
+                    //    required
                     />
                   </div>
                 </div>
@@ -433,7 +434,7 @@ const Edit = () => {
                     value={course.subject5}
                     onChange={handleChange}
                     className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-                 //   required
+                  //   required
                   />
                 </div>
 
@@ -449,7 +450,7 @@ const Edit = () => {
                       value={course.subject5MaxMark}
                       onChange={handleChange}
                       className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-                  //    required
+                    //    required
                     />
                   </div>
 
@@ -464,7 +465,7 @@ const Edit = () => {
                       value={course.subject5PassMark}
                       onChange={handleChange}
                       className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-                  //    required
+                    //    required
                     />
                   </div>
                 </div>

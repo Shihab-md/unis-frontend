@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
+import { getBaseUrl } from '../../utils/CommonHelper'
 import {
   FaRegTimesCircle
 } from "react-icons/fa";
@@ -28,7 +29,7 @@ const Add = () => {
 
     try {
       const response = await axios.post(
-        "https://unis-server.vercel.app/api/school/add",
+        (await getBaseUrl()).toString() + "school/add",
         formDataObj,
         {
           headers: {

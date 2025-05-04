@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { columns, AcademicYearButtons } from '../../utils/AcademicYearHelper'
 import DataTable from 'react-data-table-component'
+import { getBaseUrl } from '../../utils/CommonHelper'
 import axios from 'axios'
 import {
   FaPlusSquare, FaArrowAltCircleLeft
@@ -23,7 +24,7 @@ const List = () => {
       setSupLoading(true)
       try {
         const responnse = await axios.get(
-          "https://unis-server.vercel.app/api/academicYear",
+          (await getBaseUrl()).toString() + "academicYear",
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,

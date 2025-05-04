@@ -6,6 +6,7 @@ import { getCourses } from '../../utils/CourseHelper'
 import axios from "axios";
 import { useNavigate, useParams, Link } from "react-router-dom";
 import moment from "moment";
+import { getBaseUrl } from '../../utils/CommonHelper'
 import {
   FaRegTimesCircle
 } from "react-icons/fa";
@@ -64,7 +65,7 @@ const Edit = () => {
     const fetchStudent = async () => {
       try {
         const responnse = await axios.get(
-          `https://unis-server.vercel.app/api/student/${id}`,
+          (await getBaseUrl()).toString() + `student/${id}`,
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -75,7 +76,7 @@ const Edit = () => {
         if (responnse.data.success) {
           const student = responnse.data.student;
           const academicResponse = await axios.get(
-            `https://unis-server.vercel.app/api/student/${student._id}/${'777'}`,
+            (await getBaseUrl()).toString() + `student/${student._id}/${'777'}`,
             {
               headers: {
                 Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -196,7 +197,7 @@ const Edit = () => {
 
     try {
       const response = await axios.put(
-        `https://unis-server.vercel.app/api/student/${id}`,
+        (await getBaseUrl()).toString() + `student/${id}`,
         student,
         {
           headers: {

@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { getBaseUrl } from '../utils/CommonHelper'
 import {
   FaEye,
   FaEdit,
@@ -12,12 +13,12 @@ export const columns = [
     selector: (row) => row.sno,
     width: "60px",
   },
-  { 
+  {
     name: "Academic year",
     selector: (row) => row.acYear,
     sortable: true,
     width: "190px",
-  }, 
+  },
   {
     name: "Description",
     selector: (row) => row.desc,
@@ -46,7 +47,7 @@ export const getAcademicYears = async (id) => {
   let academicYears;
   try {
     const responnse = await axios.get(
-      `https://unis-server.vercel.app/api/academicYear/`,
+      (await getBaseUrl()).toString() + `academicYear/`,
       {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -72,7 +73,7 @@ export const AcademicYearButtons = ({ Id, onAcademicYearDelete }) => {
     if (confirm) {
       try {
         const responnse = await axios.delete(
-          `https://unis-server.vercel.app/api/academicYear/${id}`,
+          (await getBaseUrl()).toString() + `academicYear/${id}`,
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,

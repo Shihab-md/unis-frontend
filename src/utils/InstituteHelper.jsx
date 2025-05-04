@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { getBaseUrl } from '../utils/CommonHelper'
 import {
   FaEye,
   FaEdit,
@@ -52,7 +53,7 @@ export const getInstitutes = async (id) => {
   let institutes;
   try {
     const responnse = await axios.get(
-      `https://unis-server.vercel.app/api/institute/`,
+      (await getBaseUrl()).toString() + `institute/`,
       {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -78,7 +79,7 @@ export const InstituteButtons = ({ Id, onInstituteDelete }) => {
     if (confirm) {
       try {
         const responnse = await axios.delete(
-          `https://unis-server.vercel.app/api/institute/${id}`,
+          (await getBaseUrl()).toString() + `institute/${id}`,
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,

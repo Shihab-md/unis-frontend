@@ -1,5 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import { getBaseUrl } from '../../utils/CommonHelper'
 import { useParams, useNavigate, Link } from "react-router-dom";
 import {
   FaRegTimesCircle
@@ -14,7 +15,7 @@ const View = () => {
     const fetchEmployee = async () => {
       try {
         const responnse = await axios.get(
-          `https://unis-server.vercel.app/api/employee/${id}`,
+          (await getBaseUrl()).toString() + `employee/${id}`,
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,

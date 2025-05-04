@@ -4,6 +4,7 @@ import { useParams, useNavigate, Link } from "react-router-dom";
 import {
   FaRegTimesCircle
 } from "react-icons/fa";
+import { getBaseUrl } from '../../utils/CommonHelper'
 
 const View = () => {
   const { id } = useParams();
@@ -14,7 +15,7 @@ const View = () => {
     const fetchSchool = async () => {
       try {
         const responnse = await axios.get(
-          `https://unis-server.vercel.app/api/school/${id}`,
+          (await getBaseUrl()).toString() + `school/${id}`,
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,

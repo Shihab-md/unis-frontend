@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { columns, SchoolButtons } from '../../utils/SchoolHelper'
 import DataTable from 'react-data-table-component'
 import axios from 'axios'
+import { getBaseUrl } from '../../utils/CommonHelper'
 import {
   FaPlusSquare, FaArrowAltCircleLeft
 } from "react-icons/fa";
@@ -22,7 +23,7 @@ const List = () => {
       setSchLoading(true)
       try {
         const responnse = await axios.get(
-          "https://unis-server.vercel.app/api/school",
+          (await getBaseUrl()).toString() + "school",
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,
