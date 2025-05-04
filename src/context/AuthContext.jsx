@@ -14,7 +14,7 @@ const AuthContext = ({ children }) => {
         const token = localStorage.getItem("token");
         if (token) {
           const response = await axios.get(
-            (await getBaseUrl()).toString() + "auth/verify",
+            (getBaseUrl()).toString() + "auth/verify",
             {
               headers: {
                 Authorization: `Bearer ${token}`,
