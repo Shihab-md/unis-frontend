@@ -132,9 +132,9 @@ const Edit = () => {
             //   fees4Val: academic.fees4,
             //    fees5Val: academic.fees5,
 
-            acYear: academic.acYear,
+            acYear: academic.acYear && academic.acYear.acYear ? academic.acYear.acYear : "",
 
-            instituteId1: academic.instituteId1,
+            instituteId1: academic.instituteId1 && academic.instituteId1._id ? academic.instituteId1._id : "",
             courseId1: academic.courseId1,
             refNumber1: academic.refNumber1,
             fees1: academic.fees1,
