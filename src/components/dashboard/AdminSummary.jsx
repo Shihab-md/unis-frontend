@@ -9,7 +9,7 @@ import {
   FaUserFriends,
   FaUsers,
   FaHouseUser,
-  FaClipboardList, FaTasks, FaCalendarAlt, 
+  FaClipboardList, FaTasks, FaCalendarAlt,
   FaRupeeSign, FaMedal, FaFileContract,
 } from "react-icons/fa";
 import axios from 'axios'
@@ -23,7 +23,7 @@ const AdminSummary = () => {
   useEffect(() => {
     const fetchSummary = async () => {
       try {
-        const summary = await axios.get('https://unis-server.vercel.app/api/dashboard/summary', {
+        const summary = await axios.get((await getBaseUrl()).toString() + 'dashboard/summary', {
           headers: {
             "Authorization": `Bearer ${localStorage.getItem('token')}`
           }
@@ -93,7 +93,7 @@ const AdminSummary = () => {
         </Link>
         <Link to="/admin-dashboard/courses" >
           <SummaryCard
-            icon={<FaClipboardList /> }
+            icon={<FaClipboardList />}
             text="Courses"
             number={summary.totalCourses}
             color="bg-purple-700"
