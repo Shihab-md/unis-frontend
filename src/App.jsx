@@ -6,6 +6,8 @@ import PrivateRoutes from "./utils/PrivateRoutes";
 import RoleBaseRoutes from "./utils/RoleBaseRoutes";
 import AdminSummary from "./components/dashboard/AdminSummary";
 
+import Setting from "./components/dashboard/Setting";
+
 import DepartmentList from "./components/department/DepartmentList";
 import AddDepartment from "./components/department/AddDepartment";
 import EditDepartment from "./components/department/EditDepartment";
@@ -55,7 +57,7 @@ import ViewSalary from "./components/salary/View";
 import Summary from './components/EmployeeDashboard/Summary'
 import LeaveList from './components/leave/List'
 import AddLeave from './components/leave/Add'
-import Setting from "./components/EmployeeDashboard/Setting";
+
 import Table from "./components/leave/Table";
 import Detail from "./components/leave/Detail";
 import Attendance from "./components/attendance/Attendance";
@@ -136,6 +138,8 @@ function App() {
           <Route path="/admin-dashboard/academicYears/:id" element={<AcademicYearView />}></Route>
           <Route path="/admin-dashboard/academicYears/edit/:id" element={<AcademicYearEdit />}></Route>
 
+          <Route path="/admin-dashboard/setting" element={<Setting />}></Route>
+          
           <Route
             path="/admin-dashboard/salary/add"
             element={<AddSalary />}
@@ -144,7 +148,7 @@ function App() {
           <Route path="/admin-dashboard/leaves/:id" element={<Detail />}></Route>
           <Route path="/admin-dashboard/employees/leaves/:id" element={<LeaveList />}></Route>
 
-          <Route path="/admin-dashboard/setting" element={<Setting />}></Route>
+          
           <Route path="/admin-dashboard/attendance" element={<Attendance />}></Route>
           <Route path="/admin-dashboard/attendance-report" element={<AttendanceReport />}></Route>
         </Route>

@@ -142,11 +142,11 @@ const AdminSummary = () => {
             color="bg-gray-500"
           />
         </Link>
-        <Link to="#" >
+        <Link to="/admin-dashboard/settings" >
           <SummaryCard
             icon={<FaUserCog />}
             text="Settings"
-            number="<--->"
+            number="***"
             color="bg-teal-900"
           />
         </Link>
