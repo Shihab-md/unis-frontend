@@ -3,7 +3,7 @@ import { NavLink } from "react-router-dom";
 import SummaryCard from "./SummaryCard";
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext'
-import { getBaseUrl } from '../../utils/CommonHelper'
+import { getBaseUrl, getRole } from '../../utils/CommonHelper'
 import {
   FaBuilding,
   FaMosque,
@@ -52,14 +52,16 @@ const AdminSummary = () => {
       <h5 className="text-xl mt-2 mb-3 font-bold text-center text-gray-500 text-shadow-lg">Super Admin Dashboard</h5>
 
       <div className="rounded-lg grid grid-cols-2 md:grid-cols-4 gap-7 mt-7 flex rounded-lg">
-        <Link to="/admin-dashboard/supervisors" >
-          <SummaryCard
-            icon={<FaUserFriends />}
-            text="Muaavins"
-            number={summary.totalSupervisors}
-            color="bg-teal-600"
-          />
-        </Link>
+        {(getRole()).toString() === "superadmin" ? <div>
+          <Link to="/admin-dashboard/supervisors" >
+            <SummaryCard
+              icon={<FaUserFriends />}
+              text="Muaavins"
+              number={summary.totalSupervisors}
+              color="bg-teal-600"
+            />
+          </Link>
+        </div> : null}
         <Link to="/admin-dashboard/schools" >
           <SummaryCard
             icon={<FaMosque />}
