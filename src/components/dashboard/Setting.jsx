@@ -3,6 +3,9 @@ import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
 import { useAuth } from "../../context/AuthContext";
 import { getBaseUrl, handleRightClick } from '../../utils/CommonHelper'
+import {
+  FaRegTimesCircle
+} from "react-icons/fa";
 
 const Setting = () => {
 
