@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { getBaseUrl } from '../utils/CommonHelper'
 import {
   FaEye,
   FaEdit,
@@ -52,7 +53,7 @@ export const getSupervisors = async (id) => {
   let supervisors;
   try {
     const responnse = await axios.get(
-      `https://unis-server.vercel.app/api/supervisors/`,
+      (await getBaseUrl()).toString() + `supervisors/`,
       {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -78,7 +79,7 @@ export const SupervisorButtons = ({ Id, onSupervisorDelete }) => {
     if (confirm) {
       try {
         const responnse = await axios.delete(
-          `https://unis-server.vercel.app/api/supervisor/${id}`,
+          (await getBaseUrl()).toString() + `supervisor/${id}`,
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,
