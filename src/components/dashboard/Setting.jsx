@@ -97,7 +97,7 @@ const Setting = () => {
           </div>
 
           {/* Confirm Password */}
-          <div className="mt-5">
+          <div className="mt-5 mb-5">
             <label className="text-sm mt-5 mb-5 font-medium text-gray-700">
               Confirm Password
             </label>
