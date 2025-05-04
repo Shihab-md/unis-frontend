@@ -5,13 +5,9 @@ import { Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext'
 import { getBaseUrl, getRole } from '../../utils/CommonHelper'
 import {
-  FaBuilding,
-  FaMosque,
-  FaUserFriends,
-  FaUsers,
-  FaHouseUser,
-  FaClipboardList, FaTasks, FaCalendarAlt,
-  FaRupeeSign, FaMedal, FaFileContract,
+  FaBuilding, FaMosque, FaUserFriends,
+  FaUsers, FaHouseUser, FaClipboardList, FaTasks, FaCalendarAlt,
+  FaRupeeSign, FaMedal, FaFileContract, FaUserCog,
 } from "react-icons/fa";
 import axios from 'axios'
 import { useNavigate } from "react-router-dom";
@@ -144,6 +140,14 @@ const AdminSummary = () => {
             text="Reports"
             number={summary.totalEmployees}
             color="bg-gray-500"
+          />
+        </Link>
+        <Link to="#" >
+          <SummaryCard
+            icon={<FaUserCog />}
+            text="Settings"
+          //  number={summary.totalEmployees}
+            color="bg-gray-200"
           />
         </Link>
       </div>

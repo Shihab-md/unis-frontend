@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
-import { getBaseUrl, handelRightClick } from '../../utils/CommonHelper'
+import { getBaseUrl, handleRightClick } from '../../utils/CommonHelper'
 import {
   FaRegTimesCircle
 } from "react-icons/fa";
 
 const Add = () => {
 
-  document.addEventListener('contextmenu', handelRightClick);
+  // To prevent right-click.
+  document.addEventListener('contextmenu', handleRightClick);
 
   const [formData, setFormData] = useState({});
   const navigate = useNavigate()

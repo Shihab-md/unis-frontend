@@ -8,7 +8,7 @@ export const getRole = async () => {
   return role ? role : "";
 };
 
-export function handelRightClick(event) {
+export function handleRightClick(event) {
   event.preventDefault();
 }
 
