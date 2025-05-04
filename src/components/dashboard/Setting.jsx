@@ -64,7 +64,7 @@ const Setting = () => {
       </div>
       <p className="text-red-500">{error}</p>
       <form onSubmit={handleSubmit}>
-        <div className="py-2 px-4 border mt-5 mb-7 items-center justify-center rounded-lg shadow-lg">
+        <div className="py-2 px-4 border mt-5 mb-3 items-center justify-center rounded-lg shadow-lg">
 
           {/* Old Password */}
           <div className="mt-5">
@@ -98,7 +98,7 @@ const Setting = () => {
 
           {/* Confirm Password */}
           <div className="mt-5">
-            <label className="text-sm mt-5 font-medium text-gray-700">
+            <label className="text-sm mt-5 mb-5 font-medium text-gray-700">
               Confirm Password
             </label>
             <input
