@@ -83,7 +83,7 @@ const View = () => {
                 </div>
                 <div className="flex space-x-3 mb-5">
                   <p className="font-medium">Name:</p>
-                {/* <p className="font-normal">{student.userId.name}</p> */} 
+                  <p className="font-normal">{student.userId.name}</p>
                 </div>
 
                 <div className="flex space-x-3 mb-5" />
@@ -230,11 +230,11 @@ const View = () => {
                 </div>
                 <div className="flex space-x-3 mb-5">
                   <p className="font-medium">Institute Name:</p>
-                  <p className="font-normal">{academic.instituteId2.name}</p>
+                  <p className="font-normal">{academic.instituteId2.name ? academic.instituteId2.name : ""}</p>
                 </div>
                 <div className="flex space-x-3 mb-5">
                   <p className="font-medium">Course Name :</p>
-                  <p className="font-normal">{academic.courseId2.name}</p>
+                  <p className="font-normal">{academic.courseId2.name ? academic.courseId2.name : ""}</p>
                 </div>
                 <div className="flex space-x-3 mb-5">
                   <p className="font-medium">Reference Number :</p>
@@ -261,11 +261,11 @@ const View = () => {
                 </div>
                 <div className="flex space-x-3 mb-5">
                   <p className="font-medium">Institute Name:</p>
-                  <p className="font-normal">{academic.instituteId3.name}</p>
+                  <p className="font-normal">{academic.instituteId3.name ? academic.instituteId3.name : ""}</p>
                 </div>
                 <div className="flex space-x-3 mb-5">
                   <p className="font-medium">Course Name :</p>
-                  <p className="font-normal">{academic.courseId3.name}</p>
+                  <p className="font-normal">{academic.courseId3.name ? academic.courseId3.name : ""}</p>
                 </div>
                 <div className="flex space-x-3 mb-5">
                   <p className="font-medium">Reference Number :</p>
