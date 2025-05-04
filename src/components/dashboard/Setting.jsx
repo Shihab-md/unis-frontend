@@ -67,7 +67,7 @@ const Setting = () => {
         <div className="py-2 px-4 border mt-5 mb-3 items-center justify-center rounded-lg shadow-lg">
 
           {/* Old Password */}
-          <div className="mt-7">
+          <div className="mt-5">
             <label className="text-sm font-medium text-gray-700">
               Old Password
             </label>
@@ -110,14 +110,14 @@ const Setting = () => {
               required
             />
           </div>
-
-          <button
-            type="submit"
-            className="w-full mt-7 bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded-lg shadow-lg"
-          >
-            Change Password
-          </button>
         </div>
+
+        <button
+          type="submit"
+          className="w-full mt-7 bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded-lg shadow-lg"
+        >
+          Change Password
+        </button>
       </form>
     </div>
   );
