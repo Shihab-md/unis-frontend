@@ -17,7 +17,7 @@ const Add = () => {
   const handleChange = (e) => {
     const { name, value, files } = e.target;
 
-    if (name === "file") {
+    if (name === "image") {
       alert("file found")
       setFormData((prevData) => ({ ...prevData, [name]: files[0] }));
     } else {
@@ -290,7 +290,7 @@ const Add = () => {
 
               <input
                 type="file"
-                name="file"
+                name="image"
                 onChange={handleChange}
                 placeholder="Upload Image"
                 accept="image/*"
