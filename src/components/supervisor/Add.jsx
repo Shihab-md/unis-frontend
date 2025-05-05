@@ -17,7 +17,7 @@ const Add = () => {
   const handleChange = (e) => {
     const { name, value, files } = e.target;
 
-    if (name === "image") {
+    if (name === "file") {
       alert("file found")
       setFormData((prevData) => ({ ...prevData, [name]: files[0] }));
     } else {
