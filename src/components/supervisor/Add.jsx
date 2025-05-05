@@ -43,7 +43,7 @@ const Add = () => {
 
       const url = (await getBaseUrl()).toString() + "supervisor/add";
     //  alert(JSON.stringify(formData));
-      const response = await axios.post(url, formData,
+      const response = await axios.post(url, formDataObj,
         {
           headers: headers
           //headers: {
