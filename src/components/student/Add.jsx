@@ -101,8 +101,7 @@ const Add = () => {
       setFees5Val(value);
     }
 
-    if (name === "image") {
-      alert("file found")
+    if (name === "file") {
       setFormData((prevData) => ({ ...prevData, [name]: files[0] }));
     } else {
       setFormData((prevData) => ({
@@ -1184,15 +1183,10 @@ const Add = () => {
                 <label className="block text-sm font-medium text-gray-700">
                   Upload Image
                 </label>
-                {/* <FileBase64 type="file" name="profileImage" className="mt-2 p-2 block w-full border border-gray-300 rounded-md" multiple={false} onChange={handleChange} onDone={({ base64 }) => setFormData((prevData) => ({ ...prevData, [profileImage]: base64 }))} />                  
-            
-           <FileBase64 type="file" className="mt-2 p-2 block w-full border border-gray-300 rounded-md" multiple={false} onDone={({ base64 }) => setFormData({ profileImage: base64 })} onChange={(e) => e.target.files[0]} />
-           */}
-
                 <input
                   type="file"
-                  name="image"
-                  //     onChange={handleChange}
+                  name="file"
+                  onChange={handleChange}
                   placeholder="Upload Image"
                   accept="image/*"
                   className="mt-2 mb-5 p-2 block w-full border border-gray-300 rounded-md"

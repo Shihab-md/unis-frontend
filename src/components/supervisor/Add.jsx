@@ -18,7 +18,6 @@ const Add = () => {
     const { name, value, files } = e.target;
 
     if (name === "file") {
-     // alert("file found : " + files ? "Hi" : "Bye")
       setFormData((prevData) => ({ ...prevData, [name]: files[0] }));
     } else {
       setFormData((prevData) => ({ ...prevData, [name]: value }));
