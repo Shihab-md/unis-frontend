@@ -19,7 +19,7 @@ const Add = () => {
 
     if (name === "image") {
       alert("file found")
-      setFormData((prevData) => ({ ...prevData, file: files[0] }));
+      setFormData((prevData) => ({ ...prevData, [name]: files[0] }));
     } else {
       setFormData((prevData) => ({ ...prevData, [name]: value }));
     }
