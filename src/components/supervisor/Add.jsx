@@ -18,7 +18,7 @@ const Add = () => {
     const { name, value, files } = e.target;
 
     if (name === "file") {
-      alert("file found")
+     // alert("file found : " + files ? "Hi" : "Bye")
       setFormData((prevData) => ({ ...prevData, [name]: files[0] }));
     } else {
       setFormData((prevData) => ({ ...prevData, [name]: value }));
@@ -34,19 +34,16 @@ const Add = () => {
     })
 
     try {
-
-      // const upload = multer({ dest: './public/' })
-      alert("Calling...");
       const headers = {
         'Content-Type': 'multipart/form-data',
         'Authorization': `Bearer ${localStorage.getItem("token")}`,
         'Access-Control-Allow-Origin': '*',
-       // 'Accept': 'application/json'
+        'Accept': 'application/json'
       }
 
-      const response = await axios.post(
-        (await getBaseUrl()).toString() + "supervisor/add",
-        formDataObj,
+      const url = (await getBaseUrl()).toString() + "supervisor/add";
+    //  alert(JSON.stringify(formData));
+      const response = await axios.post(url, formData,
         {
           headers: headers
           //headers: {
