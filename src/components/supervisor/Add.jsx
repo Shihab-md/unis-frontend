@@ -96,7 +96,7 @@ const Add = () => {
               <input
                 type="email"
                 name="email"
-                value="sass@asffs.vvs"
+               // value="sass@asffs.vvs"
                 onChange={handleChange}
                 //  placeholder="Insert Email"
                 className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
