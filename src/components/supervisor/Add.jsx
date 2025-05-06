@@ -41,7 +41,7 @@ const Add = () => {
       }
 
       const url = (await getBaseUrl()).toString() + "supervisor/add";
-    //  alert(JSON.stringify(formData));
+      //  alert(JSON.stringify(formData));
       const response = await axios.post(url, formDataObj,
         {
           headers: headers
@@ -96,7 +96,7 @@ const Add = () => {
               <input
                 type="email"
                 name="email"
-               // value="sass@asffs.vvs"
+                // value="sass@asffs.vvs"
                 onChange={handleChange}
                 //  placeholder="Insert Email"
                 className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
@@ -279,11 +279,6 @@ const Add = () => {
               <label className="block text-sm font-medium text-gray-700">
                 Upload Image
               </label>
-              {/* <FileBase64 type="file" name="profileImage" className="mt-1 p-2 block w-full border border-gray-300 rounded-md" multiple={false} onChange={handleChange} onDone={({ base64 }) => setFormData((prevData) => ({ ...prevData, [profileImage]: base64 }))} />                  
-            
-           <FileBase64 type="file" className="mt-1 p-2 block w-full border border-gray-300 rounded-md" multiple={false} onDone={({ base64 }) => setFormData({ profileImage: base64 })} onChange={(e) => e.target.files[0]} />
-           */}
-
               <input
                 type="file"
                 name="file"

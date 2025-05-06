@@ -6,12 +6,16 @@ import { getCourses } from '../../utils/CourseHelper'
 import axios from "axios";
 import { useNavigate, useParams, Link } from "react-router-dom";
 import moment from "moment";
-import { getBaseUrl } from '../../utils/CommonHelper'
+import { getBaseUrl, handleRightClick } from '../../utils/CommonHelper'
 import {
   FaRegTimesCircle
 } from "react-icons/fa";
 
 const Edit = () => {
+
+  // To prevent right-click.
+  document.addEventListener('contextmenu', handleRightClick);
+
   const [student, setStudent] = useState({
     name: "",
     email: "",
@@ -21,7 +25,7 @@ const Edit = () => {
     gender: "",
     maritalStatus: "",
   });
-  // const [departments, setDepartments] = useState(null);
+
   const navigate = useNavigate();
   const { id } = useParams();
   const [schools, setSchools] = useState([]);
@@ -183,26 +187,33 @@ const Edit = () => {
   }, []);
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
 
-    setStudent((prevData) => ({
-      ...prevData,
-      [name]: value,
-
-    }));
+    const { name, value, files } = e.target;
+    if (name === "file") {
+      setStudent((prevData) => ({ ...prevData, [name]: files[0] }));
+    } else {
+      setStudent((prevData) => ({ ...prevData, [name]: value }));
+    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
+      const headers = {
+        'Content-Type': 'multipart/form-data',
+        'Authorization': `Bearer ${localStorage.getItem("token")}`,
+        'Access-Control-Allow-Origin': '*',
+        'Accept': 'application/json'
+      }
       const response = await axios.put(
         (await getBaseUrl()).toString() + `student/${id}`,
         student,
         {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
+          headers: headers
+          //{
+          //  Authorization: `Bearer ${localStorage.getItem("token")}`,
+          //},
         }
       );
       if (response.data.success) {
@@ -1340,6 +1351,21 @@ const Edit = () => {
 
                 <div className="flex space-x-3 mb-5" />
                 <div className="flex space-x-3 mb-5" />
+
+                {/* Image Upload */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Update Image
+                  </label>
+                  <input
+                    type="file"
+                    name="file"
+                    onChange={handleChange}
+                    placeholder="Upload Image"
+                    accept="image/*"
+                    className="mt-1 p-2 mb-5 block w-full border border-gray-300 rounded-md"
+                  />
+                </div>
 
               </div>
             </div>

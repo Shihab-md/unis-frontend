@@ -47,11 +47,9 @@ const View = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-1 gap-6">
             <div className="py-2 px-4 border mt-5 mb-1 items-center justify-center rounded-lg shadow-lg">
-              <div className="flex space-x-3 mb-5" />
-              <div className="flex border items-center justify-center rounded-lg shadow-lg">
-                <img
+              <div className="flex mt-2 space-x-3 mb-3 items-center justify-center" >
+                <img className='size-40 border items-center justify-center rounded-lg shadow-lg'
                   src={"data:image/jpeg;base64," + supervisor.userId.profileImage}
-                  className="rounded-full border w-72"
                 />
               </div>
               <div>

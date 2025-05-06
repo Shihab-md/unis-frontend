@@ -1,14 +1,17 @@
 import React, { useEffect, useState } from "react";
-//import { fetchDepartments } from "../../utils/SupervisorHelper";
 import axios from "axios";
 import { useNavigate, useParams, Link } from "react-router-dom";
 import moment from "moment";
-import { getBaseUrl } from '../../utils/CommonHelper'
+import { getBaseUrl, handleRightClick } from '../../utils/CommonHelper'
 import {
   FaRegTimesCircle
 } from "react-icons/fa";
 
 const Edit = () => {
+
+  // To prevent right-click.
+  document.addEventListener('contextmenu', handleRightClick);
+
   const [supervisor, setSupervisor] = useState({
     name: "",
     email: "",
@@ -23,17 +26,9 @@ const Edit = () => {
     designation: "",
     salary: "",
   });
-  // const [departments, setDepartments] = useState(null);
+
   const navigate = useNavigate();
   const { id } = useParams();
-
-  {/*} useEffect(() => {
-    const getDepartments = async () => {
-      const departments = await fetchDepartments();
-      setDepartments(departments);
-    };
-    getDepartments();
-  }, []); */}
 
   useEffect(() => {
     const fetchSupervisor = async () => {
@@ -76,21 +71,33 @@ const Edit = () => {
   }, []);
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setSupervisor((prevData) => ({ ...prevData, [name]: value }));
+    const { name, value, files } = e.target;
+    if (name === "file") {
+      setSupervisor((prevData) => ({ ...prevData, [name]: files[0] }));
+    } else {
+      setSupervisor((prevData) => ({ ...prevData, [name]: value }));
+    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
+      const headers = {
+        'Content-Type': 'multipart/form-data',
+        'Authorization': `Bearer ${localStorage.getItem("token")}`,
+        'Access-Control-Allow-Origin': '*',
+        'Accept': 'application/json'
+      }
+
       const response = await axios.put(
         (await getBaseUrl()).toString() + `supervisor/${id}`,
         supervisor,
         {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
+          headers: headers
+          //{
+          //  Authorization: `Bearer ${localStorage.getItem("token")}`,
+          //},
         }
       );
       if (response.data.success) {
@@ -114,7 +121,7 @@ const Edit = () => {
               <FaRegTimesCircle className="text-2xl ml-7 text-red-700 bg-gray-200 rounded-xl shadow-md items-center justify-end" />
             </Link>
           </div>
-          
+
           <form onSubmit={handleSubmit}>
             <div className="py-2 px-4 border mt-5 mb-3 items-center justify-center rounded-lg shadow-lg">
               <div className="grid mt-3 grid-cols-1 md:grid-cols-2 gap-4">
@@ -316,6 +323,22 @@ const Edit = () => {
                     required
                   />
                 </div>
+
+                {/* Image Upload */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Update Image
+                  </label>
+                  <input
+                    type="file"
+                    name="file"
+                    onChange={handleChange}
+                    placeholder="Upload Image"
+                    accept="image/*"
+                    className="mt-1 p-2 mb-5 block w-full border border-gray-300 rounded-md"
+                  />
+                </div>
+
               </div>
             </div>
             <button

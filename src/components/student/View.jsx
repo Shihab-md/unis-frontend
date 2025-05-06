@@ -64,28 +64,19 @@ const View = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-1 gap-6">
             <div className="py-2 px-4 border mt-5 mb-1 items-center justify-center rounded-lg shadow-lg">
-              <div className="flex space-x-3 mb-5" />
-              <div className="flex border items-center justify-center rounded-lg shadow-lg">
-                <img
+              <div className="flex mt-2 space-x-3 mb-3 items-center justify-center" >
+                <img className='size-40 border items-center justify-center rounded-lg shadow-lg'
                   src={"data:image/jpeg;base64," + student.userId.profileImage}
-                  className="rounded-full border w-72"
                 />
               </div>
               <div>
                 <div className="flex space-x-3 mb-5" />
 
                 <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Niswan Name (Arabic):</p>
-                  <p className="font-normal">{student.schoolId && student.schoolId.nameArabic ? student.schoolId.nameArabic : ""}</p>
-                </div>
-                <div className="flex space-x-3 mb-5">
                   <p className="font-medium">Niswan Name (English):</p>
                   <p className="font-normal">{student.schoolId && student.schoolId.nameEnglish ? student.schoolId.nameEnglish : ""}</p>
                 </div>
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Niswan Name (Native):</p>
-                  <p className="font-normal">{student.schoolId && student.schoolId.nameNative ? student.schoolId.nameNative : ""}</p>
-                </div>
+
                 <div className="flex space-x-3 mb-5">
                   <p className="font-medium">Roll Number:</p>
                   <p className="font-normal">{student.rollNumber}</p>

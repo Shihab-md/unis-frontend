@@ -39,7 +39,7 @@ const View = () => {
       {employee ? (
         <div className="max-w-3xl mx-auto mt-2 bg-white p-8 rounded-md shadow-md">
           <div className="flex py-2 px-4 items-center justify-center bg-teal-700 text-white rounded-lg shadow-lg">
-            <h2 className="text-xl font-semibold items-center justify-center">Staff Details</h2>
+            <h2 className="text-xl font-semibold items-center justify-center">Employee Details</h2>
             <Link to="/admin-dashboard/employees" >
               <FaRegTimesCircle className="text-2xl ml-7 text-red-700 bg-gray-200 rounded-xl shadow-md items-center justify-end" />
             </Link>
@@ -47,11 +47,9 @@ const View = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-1 gap-6">
             <div className="py-2 px-4 border mt-5 mb-1 items-center justify-center rounded-lg shadow-lg">
-              <div className="flex space-x-3 mb-5" />
-              <div className="flex border items-center justify-center rounded-lg shadow-lg">
-                <img
+            <div className="flex mt-2 space-x-3 mb-3 items-center justify-center" >
+                <img className='size-40 border items-center justify-center rounded-lg shadow-lg'
                   src={"data:image/jpeg;base64," + employee.userId.profileImage}
-                  className="rounded-full border w-72"
                 />
               </div>
               <div>
