@@ -85,7 +85,7 @@ const Add = () => {
 
             {/* Details */}
             <div>
-              <label className="block text-sm font-medium text-gray-700">
+              <label className="block mt-2 text-sm font-medium text-gray-700">
                 Details <span className="text-red-700">*</span>
               </label>
               <input
@@ -98,7 +98,7 @@ const Add = () => {
             </div>
 
             {/* Template Upload */}
-            <div>
+            <div className="mt-5">
               <label className="block text-sm font-medium text-gray-700">
                 Upload Template Image<span className="text-red-700">*</span>
               </label>

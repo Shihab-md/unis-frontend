@@ -133,7 +133,7 @@ const Edit = () => {
                 </div>
 
                 {/* Template Image Upload */}
-                <div>
+                <div className="mt-5">
                   <label className="block text-sm font-medium text-gray-700">
                     Update Template Image <span className="text-red-700">*</span>
                   </label>
