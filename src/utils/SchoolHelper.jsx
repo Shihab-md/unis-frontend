@@ -29,31 +29,31 @@ export const columns = [
         </div>
       ),*/
     selector: (row) => row.code,
-    sortable: true,
+  //  sortable: true,
     width: "110px",
   },
   {
     name: "Name",
     selector: (row) => row.name,
-    sortable: true,
+  //  sortable: true,
     width: "370px",
   },
   {
     name: "Address, District / State",
     selector: (row) => row.address + ", " + row.district,
-    sortable: true,
+  //  sortable: true,
     width: "190px",
   },
   {
     name: "Supervisor Id",
     selector: (row) => row.supervisorId,
-    sortable: true,
+  //  sortable: true,
     width: "160px",
   },
   {
     name: "Status",
     selector: (row) => row.active,
-    sortable: true,
+  //  sortable: true,
     width: "110px",
   },
   {
