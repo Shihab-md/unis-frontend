@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext'
 import { getBaseUrl, getRole } from '../../utils/CommonHelper'
 import {
-  FaBuilding, FaMosque, FaUserFriends,
+  FaBuilding, FaMosque, FaUserFriends, FaWpforms,
   FaUsers, FaHouseUser, FaClipboardList, FaTasks, FaCalendarAlt,
   FaRupeeSign, FaMedal, FaFileContract, FaUserCog,
 } from "react-icons/fa";
@@ -96,7 +96,7 @@ const AdminSummary = () => {
               icon={<FaClipboardList />}
               text="Courses"
               number={summary.totalCourses}
-              color="bg-purple-700"
+              color="bg-purple-800"
             />
           </Link> : null}
         {user.role === "superadmin" || user.role === "hquser" ?
@@ -134,6 +134,15 @@ const AdminSummary = () => {
               color="bg-yellow-600"
             />
           </Link> : null}
+        {user.role === "superadmin" || user.role === "hquser" ?
+          <Link to="/admin-dashboard/templates" >
+            <SummaryCard
+              icon={<FaWpforms />}
+              text="Templates"
+              number={summary.totalTemplates}
+              color="bg-purple-500"
+            />
+          </Link> : null}
         <Link to="#" >
           <SummaryCard
             icon={<FaFileContract />}
@@ -151,39 +160,6 @@ const AdminSummary = () => {
           />
         </Link>
       </div>
-
-      {/*
-      <div className="mt-12">
-        <h4 className="text-center text-2xl font-bold">Leave Details</h4>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
-          <SummaryCard
-            icon={<FaFileAlt />}
-            text="Leave Applied"
-            number={summary.leaveSummary.appliedFor}
-            color="bg-teal-600"
-          />
-          <SummaryCard
-            icon={<FaCheckCircle />}
-            text="Leave Approved"
-            number={summary.leaveSummary.approved}
-            color="bg-green-600"
-          />
-          <SummaryCard
-            icon={<FaHourglassHalf />}
-            text="Leave Pending"
-            number={summary.leaveSummary.pending}
-            color="bg-yellow-600"
-          />
-          <SummaryCard
-            icon={<FaTimesCircle />}
-            text="Leave Rejected"
-            number={summary.leaveSummary.rejected}
-            color="bg-red-600"
-          />
-        </div>
-      </div>
-      */}
     </div>
   );
 };
