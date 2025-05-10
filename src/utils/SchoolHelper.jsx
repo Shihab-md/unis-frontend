@@ -45,16 +45,16 @@ export const columns = [
     width: "370px",
   },
   {
-    name: "Supervisor Id",
-    selector: (row) => row.supervisorId,
-  //  sortable: true,
-    width: "160px",
-  },
-  {
     name: "Status",
     selector: (row) => row.active,
   //  sortable: true,
     width: "110px",
+  },
+  {
+    name: "Supervisor Id",
+    selector: (row) => row.supervisorId,
+  //  sortable: true,
+    width: "160px",
   },
   {
     name: "Action",
