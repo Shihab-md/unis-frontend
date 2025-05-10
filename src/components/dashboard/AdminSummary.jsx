@@ -126,11 +126,11 @@ const AdminSummary = () => {
           />
         </Link>
         {user.role === "superadmin" || user.role === "hquser" ?
-          <Link to="#" >
+          <Link to="/admin-dashboard/certificates" >
             <SummaryCard
               icon={<FaMedal />}
               text="Certificates"
-              number={summary.totalEmployees}
+              number="*"
               color="bg-yellow-600"
             />
           </Link> : null}
