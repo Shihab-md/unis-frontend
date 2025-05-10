@@ -101,7 +101,7 @@ const List = () => {
         </Link>
       </div>
       <div className='mt-6 rounded-lg shadow-lg'>
-        <DataTable columns={columns} data={filteredSchool} highlightOnHover />
+        <DataTable columns={columns} data={filteredSchool} highlightOnHover striped responsive />
         {/* <DataTable columns={columns} data={filteredSchool} pagination highlightOnHover currentPage={currentPage} onChangePage={handlePageChange} />*/}
       </div>
     </div>
