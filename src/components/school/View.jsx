@@ -4,10 +4,14 @@ import { useParams, useNavigate, Link } from "react-router-dom";
 import {
   FaRegTimesCircle
 } from "react-icons/fa";
-import { getBaseUrl } from '../../utils/CommonHelper'
+import { getBaseUrl, handleRightClick } from '../../utils/CommonHelper'
 
 const View = () => {
-  const { id } = useParams();
+
+  // To prevent right-click.
+  document.addEventListener('contextmenu', handleRightClick);
+
+  const { id, page } = useParams();
   const [school, setSchool] = useState(null);
   const navigate = useNavigate();
 

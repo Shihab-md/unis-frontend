@@ -4,9 +4,13 @@ import { useNavigate, useParams, Link } from "react-router-dom";
 import {
   FaRegTimesCircle
 } from "react-icons/fa";
-import { getBaseUrl } from '../../utils/CommonHelper'
+import { getBaseUrl, handleRightClick } from '../../utils/CommonHelper'
 
 const Edit = () => {
+
+  // To prevent right-click.
+  document.addEventListener('contextmenu', handleRightClick);
+
   const [school, setSchool] = useState({
     code: "",
     nameEnglish: "",

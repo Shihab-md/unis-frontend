@@ -3,15 +3,26 @@ import { Link } from 'react-router-dom'
 import { columns, SchoolButtons } from '../../utils/SchoolHelper'
 import DataTable from 'react-data-table-component'
 import axios from 'axios'
-import { getBaseUrl } from '../../utils/CommonHelper'
+import { getBaseUrl, handleRightClick } from '../../utils/CommonHelper'
 import {
   FaPlusSquare, FaArrowAltCircleLeft
 } from "react-icons/fa";
 
 const List = () => {
+
+  // To prevent right-click.
+  document.addEventListener('contextmenu', handleRightClick);
+
   const [schools, setSchools] = useState([])
   const [schLoading, setSchLoading] = useState(false)
   const [filteredSchool, setFilteredSchools] = useState(null)
+
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+    //  alert("Current Page  :" + page);
+  };
 
   useEffect(() => {
 
@@ -90,7 +101,8 @@ const List = () => {
         </Link>
       </div>
       <div className='mt-6 rounded-lg shadow-lg'>
-        <DataTable columns={columns} data={filteredSchool} pagination highlightOnHover />
+        <DataTable columns={columns} data={filteredSchool} highlightOnHover />
+        {/* <DataTable columns={columns} data={filteredSchool} pagination highlightOnHover currentPage={currentPage} onChangePage={handlePageChange} />*/}
       </div>
     </div>
   )

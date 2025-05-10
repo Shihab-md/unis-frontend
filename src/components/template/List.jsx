@@ -14,6 +14,8 @@ const List = () => {
   const [filteredTemplate, setFilteredTemplates] = useState(null)
   const navigate = useNavigate()
 
+  const [currentPage, setCurrentPage] = useState(1);
+
   useEffect(() => {
 
     const onTemplateDelete = () => {
