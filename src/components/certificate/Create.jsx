@@ -181,6 +181,7 @@ const Create = () => {
                   Select Students <span className="text-red-700">*</span>
                 </label>
               </div>
+              <div className="flex space-x-3 mb-5" />
               <div className='mt-2 mb-5 gap-2 border rounded-md shadow-lg'>
                 <DataTable columns={columnsSelect} data={students} reloadData={handleReload} selectableRows onSelectedRowsChange={handleRowChange} clearSelectedRows={toggledClearRows} />
               </div>
