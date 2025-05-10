@@ -63,19 +63,24 @@ const Create = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
 
+    //  if (name === "schoolId") {
+    //    handleReload(value);
+    //    setFormData((prevData) => ({ ...prevData, [name]: value }));
+    //  } else {
+    //    setFormData((prevData) => ({ ...prevData, [name]: value }));
+    //  }
+
     if (name === "schoolId") {
       handleReload(value);
-      setFormData((prevData) => ({ ...prevData, [name]: value }));
-    } else {
-      setFormData((prevData) => ({ ...prevData, [name]: value }));
     }
+    setFormData((prevData) => ({ ...prevData, [name]: value }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (selectedRows && selectedRows.length > 0) {
-    //  selectedRows.map(selRow =>
+      //  selectedRows.map(selRow =>
       //  alert(selRow.rollNumber));
 
       const formDataObj = new FormData();
@@ -84,7 +89,7 @@ const Create = () => {
       })
 
       Object.keys(selectedRows).forEach((key) => {
-        formDataObj.append("studentId", selectedRows[key].rollNumber)
+        formDataObj.append("studentId", selectedRows[key]._id)
       })
 
       try {
