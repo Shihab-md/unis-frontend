@@ -92,7 +92,7 @@ const List = () => {
         </Link>
       </div>
       <div className='mt-6 rounded-lg shadow-lg'>
-        <DataTable columns={columns} data={filteredCourse} pagination />
+        <DataTable columns={columns} data={filteredCourse} highlightOnHover striped responsive />
       </div>
     </div>
   )
