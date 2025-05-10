@@ -7,6 +7,19 @@ import {
   FaTrashAlt,
 } from "react-icons/fa";
 
+export const columnsSelect = [
+  {
+    name: "Roll Number",
+    selector: (row) => row.rollNumber,
+    width: "120px",
+  },
+  {
+    name: "Name",
+    selector: (row) => row.name,
+    width: "250px",
+  },
+];
+
 export const columns = [
   {
     name: "S No",
@@ -65,6 +78,31 @@ export const getStudents = async (id) => {
     }
   }
   return students;
+};
+
+export const getStudentsBySchool = async (schoolId) => {
+  let studentsBySchool;
+  try {
+
+    const responnse = await axios.get(
+      (await getBaseUrl()).toString() + `student/bySchoolId/${schoolId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      }
+    );
+    console.log(responnse)
+    if (responnse.data.success) {
+      studentsBySchool = responnse.data.students;
+    }
+  } catch (error) {
+    if (error.response && !error.response.data.success) {
+      alert(error.response.data.error);
+    }
+  }
+
+  return studentsBySchool;
 };
 
 export const StudentButtons = ({ Id, onStudentDelete }) => {

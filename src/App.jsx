@@ -57,6 +57,8 @@ import TemplateAdd from "./components/template/Add";
 import TemplateView from "./components/template/View";
 import TemplateEdit from "./components/template/Edit";
 
+import CertificateCreate from "./components/certificate/Create";
+
 import AddSalary from "./components/salary/Add";
 import ViewSalary from "./components/salary/View";
 import Summary from './components/EmployeeDashboard/Summary'
@@ -142,6 +144,8 @@ function App() {
           <Route path="/admin-dashboard/add-template" element={<TemplateAdd />}></Route>
           <Route path="/admin-dashboard/templates/:id" element={<TemplateView />}></Route>
           <Route path="/admin-dashboard/templates/edit/:id" element={<TemplateEdit />}></Route>
+
+          <Route path="/admin-dashboard/certificates" element={<CertificateCreate />}></Route>
 
           <Route path="/admin-dashboard/academicYears" element={<AcademicYearList />}></Route>
           <Route path="/admin-dashboard/add-academicYear" element={<AcademicYearAdd />}></Route>

@@ -32,11 +32,11 @@ export const columns = [
 ];
 
 // templates for salary form
-export const getTemplates = async (id) => {
+export const getTemplates = async (id) => { 
   let templates;
   try {
     const responnse = await axios.get(
-      (await getBaseUrl()).toString() + `templates/`,
+      (await getBaseUrl()).toString() + `template/`,
       {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
