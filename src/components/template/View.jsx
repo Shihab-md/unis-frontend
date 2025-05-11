@@ -7,9 +7,19 @@ import {
 } from "react-icons/fa";
 
 const View = () => {
+
   const { id } = useParams();
   const [template, setTemplate] = useState(null);
   const navigate = useNavigate();
+
+  const handleDownload = () => {
+    const link = document.createElement('a');
+    link.href = template.template && template.template != "" ? "data:image/jpeg;base64," + template.template : "/template.jpg";
+    link.download = "123.jpg" || 'downloaded_image'; // Use provided name or default
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
 
   useEffect(() => {
     const fetchTemplate = async () => {
@@ -52,7 +62,11 @@ const View = () => {
                 <img className='size-40 border items-center justify-center rounded-lg shadow-lg'
                   src={template.template && template.template != "" ? "data:image/jpeg;base64," + template.template : "/template.jpg"}
                 />
+                <button onClick={handleDownload}>
+                  Download Image
+                </button>
               </div>
+
               <div>
                 <div className="flex mt-1 space-x-3 mb-5" />
                 <div className="flex space-x-3 mb-5">
