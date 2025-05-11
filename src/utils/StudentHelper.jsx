@@ -15,7 +15,7 @@ export const columnsSelect = [
   },
   {
     name: "Name",
-    selector: (row) => row.name,
+    selector: (row) => row.userId.name,
     width: "250px",
   },
 ];

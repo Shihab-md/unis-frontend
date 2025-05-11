@@ -107,8 +107,8 @@ const Create = () => {
           }
         );
         if (response.data.success) {
-          alert("Certificates created Successfully...");
-          navigate("/admin-dashboard/certificates");
+          alert("Certificates created Successfully.....");
+          navigate("/admin-dashboard");
         }
 
       } catch (error) {
