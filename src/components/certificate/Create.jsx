@@ -108,7 +108,7 @@ const Create = () => {
               let image = resData.image;
               const link = document.createElement('a');
               link.href = "data:image/jpeg;base64," + image;
-              link.download = resData.rollNumber + ".jpg" || 'downloaded_image'; // Use provided name or default
+              link.download = resData.fileName + ".jpg" || 'downloaded_image'; // Use provided name or default
               document.body.appendChild(link);
               link.click();
               document.body.removeChild(link);
