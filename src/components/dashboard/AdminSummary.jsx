@@ -39,7 +39,7 @@ const AdminSummary = () => {
 
   if (!summary) {
     return <div className='flex items-center justify-center rounded-lg shadow-lg'>
-      <img width={430} className='flex p-7 items-center justify-center rounded-lg shadow-lg w-34' src="/spinner.gif" />
+      <img width={430} className='flex p-7 aspect-3/2 items-center justify-center rounded-lg shadow-lg' src="/spinner.gif" />
     </div>
   }
   //p-6

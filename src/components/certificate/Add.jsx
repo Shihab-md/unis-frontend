@@ -20,6 +20,8 @@ const Create = () => {
   const [templates, setTemplates] = useState([]);
   const [students, setStudents] = useState([]);
 
+  const [createdAll, setCreatedAll] = useState(null)
+
   const [selectedRows, setSelectedRows] = React.useState(false);
   const [toggledClearRows, setToggleClearRows] = React.useState(false);
 
@@ -91,6 +93,7 @@ const Create = () => {
         formDataNew.set("templateId", formDataObj.get("templateId"));
         formDataNew.set("schoolId", formDataObj.get("schoolId"));
         let downloaded = false;
+        setCreatedAll(true);
         for (const selectedRow of selectedRows) {
           //  alert(selectedRow._id);
           formDataNew.delete("studentId");
@@ -117,6 +120,7 @@ const Create = () => {
           }
         }
         if (downloaded) {
+          setCreatedAll(false);
           alert("Certificates created Successfully.....");
           navigate("/admin-dashboard/certificates");
         } else {
@@ -131,6 +135,12 @@ const Create = () => {
       alert("Please Select Students!");
     }
   };
+
+  if (createdAll) {
+    return <div className='flex items-center justify-center rounded-lg shadow-lg'>
+      <img width={430} className='flex p-7 items-center justify-center rounded-lg shadow-lg' src="/spinner.gif" />
+    </div>
+  }
 
   return (
     <>

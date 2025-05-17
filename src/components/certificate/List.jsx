@@ -52,7 +52,7 @@ const List = () => {
         console.log(error.message)
         if (error.response && !error.response.data.success) {
           alert(error.response.data.error)
-        //  navigate('/login')
+          //  navigate('/login')
         }
       } finally {
         setSupLoading(false)
@@ -70,7 +70,9 @@ const List = () => {
   }
 
   if (!filteredCertificate) {
-    return <div>Loading ...</div>
+    return <div className='flex items-center justify-center rounded-lg shadow-lg'>
+      <img width={430} className='flex p-7 items-center justify-center rounded-lg shadow-lg' src="/spinner.gif" />
+    </div>
   }
 
   return (
