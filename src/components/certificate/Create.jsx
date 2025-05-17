@@ -63,13 +63,6 @@ const Create = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
 
-    //  if (name === "schoolId") {
-    //    handleReload(value);
-    //    setFormData((prevData) => ({ ...prevData, [name]: value }));
-    //  } else {
-    //    setFormData((prevData) => ({ ...prevData, [name]: value }));
-    //  }
-
     if (name === "schoolId") {
       handleReload(value);
     }
@@ -80,16 +73,10 @@ const Create = () => {
     e.preventDefault();
 
     if (selectedRows && selectedRows.length > 0) {
-      //  selectedRows.map(selRow =>
-      //  alert(selRow.rollNumber));
 
       const formDataObj = new FormData();
       Object.keys(formData).forEach((key) => {
         formDataObj.append(key, formData[key])
-      })
-
-      Object.keys(selectedRows).forEach((key) => {
-        formDataObj.append("studentId", selectedRows[key]._id)
       })
 
       try {
@@ -100,17 +87,41 @@ const Create = () => {
           'Accept': 'application/json'
         }
 
-        const url = (await getBaseUrl()).toString() + "template/create";
-        const response = await axios.post(url, formDataObj,
-          {
-            headers: headers
-          }
-        );
-        if (response.data.success) {
-          alert("Certificates created Successfully.....");
-          navigate("/admin-dashboard");
-        }
+        const formDataNew = new FormData();
+        formDataNew.set("templateId", formDataObj.get("templateId"));
+        formDataNew.set("schoolId", formDataObj.get("schoolId"));
+        let downloaded = false;
+        for (const selectedRow of selectedRows) {
+          //  alert(selectedRow._id);
+          formDataNew.delete("studentId");
+          formDataNew.set("studentId", selectedRow._id);
 
+          const url = (await getBaseUrl()).toString() + "certificate/add";
+          const response = await axios.post(url, formDataNew,
+            {
+              headers: headers
+            }
+          );
+          if (response.data.success) {
+            let resData = response.data;
+            if (resData.image && resData.image != "") {
+              let image = resData.image;
+              const link = document.createElement('a');
+              link.href = "data:image/jpeg;base64," + image;
+              link.download = resData.rollNumber + ".jpg" || 'downloaded_image'; // Use provided name or default
+              document.body.appendChild(link);
+              link.click();
+              document.body.removeChild(link);
+              downloaded = true;
+            }
+          }
+        }
+        if (downloaded) {
+          alert("Certificates created Successfully.....");
+          //  navigate("/admin-dashboard");
+        } else {
+          alert("Certificates NOT created.....");
+        }
       } catch (error) {
         if (error.response && !error.response.data.success) {
           alert(error.response.data.error);

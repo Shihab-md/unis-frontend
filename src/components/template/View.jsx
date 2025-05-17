@@ -44,6 +44,7 @@ const View = () => {
 
     fetchTemplate();
   }, []);
+  
   return (
     <>
       {template ? (
