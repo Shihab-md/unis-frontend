@@ -57,7 +57,9 @@ import TemplateAdd from "./components/template/Add";
 import TemplateView from "./components/template/View";
 import TemplateEdit from "./components/template/Edit";
 
-import CertificateCreate from "./components/certificate/Create";
+import CertificateList from "./components/certificate/List";
+import CertificateAdd from "./components/certificate/Add";
+import CertificateView from "./components/certificate/View";
 
 import AddSalary from "./components/salary/Add";
 import ViewSalary from "./components/salary/View";
@@ -145,7 +147,9 @@ function App() {
           <Route path="/admin-dashboard/templates/:id" element={<TemplateView />}></Route>
           <Route path="/admin-dashboard/templates/edit/:id" element={<TemplateEdit />}></Route>
 
-          <Route path="/admin-dashboard/certificates" element={<CertificateCreate />}></Route>
+          <Route path="/admin-dashboard/certificates" element={<CertificateList />}></Route>
+          <Route path="/admin-dashboard/add-certificate" element={<CertificateAdd />}></Route>
+          <Route path="/admin-dashboard/certificates/:id" element={<CertificateView />}></Route>
 
           <Route path="/admin-dashboard/academicYears" element={<AcademicYearList />}></Route>
           <Route path="/admin-dashboard/add-academicYear" element={<AcademicYearAdd />}></Route>
