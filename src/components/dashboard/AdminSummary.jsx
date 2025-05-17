@@ -38,7 +38,9 @@ const AdminSummary = () => {
   }, [])
 
   if (!summary) {
-    return <div> Loading...</div>
+    return <div className='flex items-center justify-center rounded-lg shadow-lg'>
+      <img width={430} className='flex p-7 items-center justify-center rounded-lg shadow-lg w-34' src="/spinner.gif" />
+    </div>
   }
   //p-6
   return (
