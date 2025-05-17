@@ -16,7 +16,7 @@ const View = () => {
     if (certificate.certificate) {
       const link = document.createElement('a');
       link.href = certificate.certificate != "" ? "data:image/jpeg;base64," + certificate.certificate : "/certificate.jpg";
-      link.download = certificate.templateId.code + "_" + certificate.code + "_" + certificate.userId.name + ".jpg" || 'downloaded_image'; // Use provided name or default
+      link.download = certificate.templateId.code + "_" + certificate.studentId.rollNumber + "_" + certificate.userId.name + ".jpg" || 'downloaded_image'; // Use provided name or default
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
