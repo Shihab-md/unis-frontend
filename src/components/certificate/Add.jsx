@@ -124,11 +124,13 @@ const Create = () => {
           alert("Certificates created Successfully.....");
           navigate("/admin-dashboard/certificates");
         } else {
+          setCreatedAll(false);
           alert("Certificates NOT created.....");
         }
       } catch (error) {
         if (error.response && !error.response.data.success) {
           alert(error.response.data.error);
+          setCreatedAll(false);
         }
       }
     } else {
