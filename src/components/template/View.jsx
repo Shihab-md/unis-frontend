@@ -44,7 +44,7 @@ const View = () => {
 
     fetchTemplate();
   }, []);
-  
+
   return (
     <>
       {template ? (
@@ -63,16 +63,16 @@ const View = () => {
                 <img className='size-40 border items-center justify-center rounded-lg shadow-lg'
                   src={template.template && template.template != "" ? "data:image/jpeg;base64," + template.template : "/template.jpg"}
                 />
-                <button onClick={handleDownload}>
+                {/* <button onClick={handleDownload}>
                   Download Image
-                </button>
+                </button>*/}
               </div>
 
               <div>
                 <div className="flex mt-1 space-x-3 mb-5" />
                 <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Code:</p>
-                  <p className="font-normal">{template.code}</p>
+                  <p className="font-medium">Course Name:</p>
+                  <p className="font-normal">{template.courseId.name}</p>
                 </div>
                 <div className="flex space-x-3 mb-5">
                   <p className="font-medium">Details:</p>

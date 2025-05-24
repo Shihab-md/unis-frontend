@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate, useParams, Link } from "react-router-dom";
-import moment from "moment";
+import { getCourses } from '../../utils/CourseHelper'
 import { getBaseUrl, handleRightClick } from '../../utils/CommonHelper'
 import {
   FaRegTimesCircle
@@ -12,13 +12,22 @@ const Edit = () => {
   // To prevent right-click.
   document.addEventListener('contextmenu', handleRightClick);
 
+  const [courses, setCourses] = useState([]);
   const [template, setTemplate] = useState({
-    code: "",
+    courseId: "",
     details: "",
   });
 
   const navigate = useNavigate();
   const { id } = useParams();
+
+  useEffect(() => {
+    const getCoursesMap = async (id) => {
+      const courses = await getCourses(id);
+      setCourses(courses);
+    };
+    getCoursesMap();
+  }, []);
 
   useEffect(() => {
     const fetchTemplate = async () => {
@@ -35,7 +44,8 @@ const Edit = () => {
           const template = responnse.data.template;
           setTemplate((prev) => ({
             ...prev,
-            code: template.code,
+            // code: template.code,
+            courseId: template.courseId && template.courseId._id ? template.courseId._id : null,
             details: template.details,
           }));
         }
@@ -101,25 +111,31 @@ const Edit = () => {
           <form onSubmit={handleSubmit}>
             <div className="py-2 px-4 border mt-5 mb-3 items-center justify-center rounded-lg shadow-lg">
               <div className="grid mt-3 grid-cols-1 md:grid-cols-2 gap-4">
-                {/* Code */}
+                {/* Course 1 */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">
-                    Code <span className="text-red-700">*</span>
+                  <label className="block mt-2 text-sm font-medium text-gray-700">
+                    Select Course <span className="text-red-700">*</span>
                   </label>
-                  <input
-                    type="text"
-                    name="code"
-                    value={template.code}
+                  <select
+                    name="courseId"
+                    value={template.courseId}
                     onChange={handleChange}
                     disabled={true}
-                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                    className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                     required
-                  />
+                  >
+                    <option value="">Select Course</option>
+                    {courses.map((course) => (
+                      <option key={course._id} value={course._id}>
+                        {course.name}
+                      </option>
+                    ))}
+                  </select>
                 </div>
 
                 {/* Details */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">
+                  <label className="block mt-2 text-sm font-medium text-gray-700">
                     Details <span className="text-red-700">*</span>
                   </label>
                   <input
@@ -127,7 +143,7 @@ const Edit = () => {
                     name="details"
                     value={template.details}
                     onChange={handleChange}
-                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                    className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                     required
                   />
                 </div>

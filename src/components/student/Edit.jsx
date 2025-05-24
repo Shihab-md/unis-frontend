@@ -7,7 +7,7 @@ import axios from "axios";
 import { useNavigate, useParams, Link } from "react-router-dom";
 import moment from "moment";
 import { getBaseUrl, handleRightClick } from '../../utils/CommonHelper'
-import {
+import { 
   FaRegTimesCircle
 } from "react-icons/fa";
 

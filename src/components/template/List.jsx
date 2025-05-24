@@ -38,7 +38,7 @@ const List = () => {
           const data = await responnse.data.templates.map((sup) => ({
             _id: sup._id,
             sno: sno++,
-            code: sup.code,
+            code: sup.courseId.name,
             details: sup.details,
             action: (<TemplateButtons Id={sup._id} onTemplateDelete={onTemplateDelete} />),
           }));
@@ -61,7 +61,7 @@ const List = () => {
 
   const handleFilter = (e) => {
     const records = templates.filter((sup) => (
-      sup.name.toLowerCase().includes(e.target.value.toLowerCase())
+      sup.code.toLowerCase().includes(e.target.value.toLowerCase())
     ))
     setFilteredTemplates(records)
   }
@@ -81,7 +81,7 @@ const List = () => {
         </Link>
         <input
           type="text"
-          placeholder="Seach By Template Code"
+          placeholder="Seach By Course"
           className="px-4 py-0.5 border rounded shadow-lg"
           onChange={handleFilter}
         />

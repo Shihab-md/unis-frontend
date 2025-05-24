@@ -172,7 +172,7 @@ const Create = () => {
                   <option value="">Select Template</option>
                   {templates.map((template) => (
                     <option key={template._id} value={template._id}>
-                      {template.code}
+                      {template.courseId.name}
                     </option>
                   ))}
                 </select>

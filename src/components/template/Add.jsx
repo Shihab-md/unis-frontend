@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
 import { getBaseUrl, handleRightClick } from '../../utils/CommonHelper'
+import { getCourses } from '../../utils/CourseHelper'
 import {
   FaRegTimesCircle
 } from "react-icons/fa";
@@ -12,7 +13,17 @@ const Add = () => {
   document.addEventListener('contextmenu', handleRightClick);
 
   const [formData, setFormData] = useState({});
+  const [courses, setCourses] = useState([]);
+
   const navigate = useNavigate()
+
+  useEffect(() => {
+    const getCoursesMap = async (id) => {
+      const courses = await getCourses(id);
+      setCourses(courses);
+    };
+    getCoursesMap();
+  }, []);
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
@@ -69,18 +80,23 @@ const Add = () => {
       <form onSubmit={handleSubmit}>
         <div className="py-2 px-4 border mt-5 mb-3 items-center justify-center rounded-lg shadow-lg">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {/* Code */}
             <div>
               <label className="block mt-2 text-sm font-medium text-gray-700">
-                Code <span className="text-red-700">*</span>
+                Select Course <span className="text-red-700">*</span>
               </label>
-              <input
-                type="text"
-                name="code"
+              <select
+                name="courseId"
                 onChange={handleChange}
-                className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                 required
-              />
+              >
+                <option value="">Select Course</option>
+                {courses.map((course) => (
+                  <option key={course._id} value={course._id}>
+                    {course.name}
+                  </option>
+                ))}
+              </select>
             </div>
 
             {/* Details */}
@@ -92,7 +108,7 @@ const Add = () => {
                 type="text"
                 name="details"
                 onChange={handleChange}
-                className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                 required
               />
             </div>
