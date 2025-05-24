@@ -35,7 +35,7 @@ export const columns = [
     width: "140px",
   },
   {
-    name: "Niswan Name",
+    name: "Niswan",
     selector: (row) => row.niswanCode + " : " + row.niswanName,
     width: "430px",
   },

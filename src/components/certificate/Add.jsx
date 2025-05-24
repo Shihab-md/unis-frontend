@@ -181,7 +181,7 @@ const Create = () => {
               {/* Schools */}
               <div>
                 <label className="block mt-2 text-sm font-medium text-gray-700">
-                  Select Niswan Code<span className="text-red-700">*</span>
+                  Select Niswan<span className="text-red-700">*</span>
                 </label>
                 <select
                   name="schoolId"
@@ -189,10 +189,10 @@ const Create = () => {
                   className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                   required
                 >
-                  <option value="">Select Niswan Code</option>
+                  <option value="">Select Niswan</option>
                   {schools.map((school) => (
                     <option key={school._id} value={school._id}>
-                      {school.code}
+                      {school.code + " : " + school.nameEnglish}
                     </option>
                   ))}
                 </select>
