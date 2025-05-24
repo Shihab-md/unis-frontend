@@ -105,6 +105,31 @@ export const getStudentsBySchool = async (schoolId) => {
   return studentsBySchool;
 };
 
+export const getStudentsBySchoolAndCourse = async (schoolId, templateId) => {
+  let studentsBySchoolAndCourse;
+  try {
+
+    const responnse = await axios.get(
+      (await getBaseUrl()).toString() + `student/bySchoolIdAndCourse/${schoolId}/${templateId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      }
+    );
+    console.log(responnse)
+    if (responnse.data.success) {
+      studentsBySchoolAndCourse = responnse.data.students;
+    }
+  } catch (error) {
+    if (error.response && !error.response.data.success) {
+      alert(error.response.data.error);
+    }
+  }
+
+  return studentsBySchoolAndCourse;
+};
+
 export const StudentButtons = ({ Id, onStudentDelete }) => {
   const navigate = useNavigate();
 

@@ -3,7 +3,7 @@ import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
 import { getBaseUrl, handleRightClick } from '../../utils/CommonHelper'
 import { getSchools } from '../../utils/SchoolHelper'
-import { columnsSelect, getStudentsBySchool } from '../../utils/StudentHelper'
+import { columnsSelect, getStudentsBySchool, getStudentsBySchoolAndCourse } from '../../utils/StudentHelper'
 import { getTemplates } from '../../utils/TemplateHelper'
 import DataTable from 'react-data-table-component'
 import {
@@ -19,6 +19,7 @@ const Create = () => {
   const [schools, setSchools] = useState([]);
   const [templates, setTemplates] = useState([]);
   const [students, setStudents] = useState([]);
+  const [tempId, setTempId] = useState([]);
 
   const [createdAll, setCreatedAll] = useState(null)
 
@@ -36,9 +37,9 @@ const Create = () => {
     setToggleClearRows(!toggledClearRows);
   }
 
-  const handleReload = async (studentIdVal) => {
-    if (studentIdVal) {
-      const students = await getStudentsBySchool(studentIdVal);
+  const handleReload = async (schoolIdIdVal) => {
+    if (schoolIdIdVal) {
+      const students = await getStudentsBySchoolAndCourse(schoolIdIdVal, tempId);
       setStudents(students);
     } else {
       setStudents([]);
@@ -64,6 +65,10 @@ const Create = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+
+    if (name === "templateId") {
+      setTempId(value);
+    }
 
     if (name === "schoolId") {
       handleReload(value);
