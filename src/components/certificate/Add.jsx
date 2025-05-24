@@ -140,7 +140,7 @@ const Create = () => {
 
   if (createdAll) {
     return <div className='flex items-center justify-center rounded-lg shadow-lg'>
-      <img width={430} className='flex p-7 items-center justify-center rounded-lg shadow-lg' src="/spinner.gif" />
+      <img width={340} className='flex p-7 items-center justify-center rounded-lg shadow-lg' src="/spinner.gif" />
     </div>
   }
 
@@ -181,7 +181,7 @@ const Create = () => {
               {/* Schools */}
               <div>
                 <label className="block mt-2 text-sm font-medium text-gray-700">
-                  Select Niswan <span className="text-red-700">*</span>
+                  Select Niswan Code<span className="text-red-700">*</span>
                 </label>
                 <select
                   name="schoolId"
@@ -189,10 +189,10 @@ const Create = () => {
                   className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                   required
                 >
-                  <option value="">Select Niswan</option>
+                  <option value="">Select Niswan Code</option>
                   {schools.map((school) => (
                     <option key={school._id} value={school._id}>
-                      {school.nameEnglish}
+                      {school.code}
                     </option>
                   ))}
                 </select>
@@ -204,8 +204,8 @@ const Create = () => {
                   Select Students <span className="text-red-700">*</span>
                 </label>
               </div>
-              <div className="flex space-x-3" />
-              <div className='mb-5 gap-2 border rounded-md shadow-lg'>
+              <div className="flex space-x-2" />
+              <div className='mb-5 border rounded-md shadow-lg'>
                 <DataTable columns={columnsSelect} data={students} reloadData={handleReload} selectableRows onSelectedRowsChange={handleRowChange} clearSelectedRows={toggledClearRows} />
               </div>
 

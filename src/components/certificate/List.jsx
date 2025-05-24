@@ -42,6 +42,7 @@ const List = () => {
             studentName: sup.userId.name,
             rollNumber: sup.studentId.rollNumber,
             sanadhName: sup.templateId.code,
+            niswanCode: sup.schoolId.code,
             niswanName: sup.schoolId.nameEnglish,
             action: (<CertificateButtons Id={sup._id} onCertificateDelete={onCertificateDelete} />),
           }));
@@ -86,7 +87,7 @@ const List = () => {
         </Link>
         <input
           type="text"
-          placeholder="Seach By Sanadh Number"
+          placeholder="Search By Sanadh No."
           className="px-4 py-0.5 border rounded shadow-lg"
           onChange={handleFilter}
         />

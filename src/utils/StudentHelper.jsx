@@ -11,7 +11,7 @@ export const columnsSelect = [
   {
     name: "Roll Number",
     selector: (row) => row.rollNumber,
-    width: "120px",
+    width: "140px",
   },
   {
     name: "Name",

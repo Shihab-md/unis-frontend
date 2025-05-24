@@ -36,7 +36,7 @@ export const columns = [
   },
   {
     name: "Niswan Name",
-    selector: (row) => row.niswanName,
+    selector: (row) => row.niswanCode + " : " + row.niswanName,
     width: "430px",
   },
   {
@@ -47,7 +47,7 @@ export const columns = [
 ];
 
 // certificates for salary form
-export const getCertificates = async (id) => { 
+export const getCertificates = async (id) => {
   let certificates;
   try {
     const responnse = await axios.get(
