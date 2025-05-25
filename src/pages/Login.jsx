@@ -2,12 +2,16 @@ import axios from "axios";
 import React, { useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate, Link } from "react-router-dom";
-import { getBaseUrl } from '../utils/CommonHelper'
-import {
+import { getBaseUrl, handleRightClick } from '../utils/CommonHelper';
+import Swal from 'sweetalert2';
+import { 
   FaArrowAltCircleRight,
 } from "react-icons/fa";
 
 const Login = () => {
+  // To prevent right-click.
+    document.addEventListener('contextmenu', handleRightClick);
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null)
