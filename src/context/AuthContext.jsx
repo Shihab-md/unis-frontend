@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { getBaseUrl } from '../utils/CommonHelper'
+import Swal from 'sweetalert2';
 
 const userContext = createContext();
 
@@ -43,10 +44,28 @@ const AuthContext = ({ children }) => {
     setUser(user);
   };
 
-  const logout = () => {
-    setUser(null);
-    localStorage.removeItem("token");
+  const logout = async () => {
+    const result = await Swal.fire({
+      title: 'Are you sure to Logout?',
+      // text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'No',
+    });
+
+    if (result.isConfirmed) {
+      Swal.fire('Success!', 'Successfully Logged out!', 'success');
+      setUser(null);
+      localStorage.removeItem("token");
+    } else if (result.dismiss === Swal.DismissReason.cancel) {
+      // Swal.fire('Cancelled', 'Your file is safe!', 'error');
+      // Handle cancellation logic (optional)
+    }
   };
+
   return (
     <userContext.Provider value={{ user, login, logout, loading }}>
       {children}

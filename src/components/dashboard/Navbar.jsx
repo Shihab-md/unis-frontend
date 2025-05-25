@@ -5,7 +5,7 @@ import {
   FaHome, FaSignOutAlt, FaPowerOff
 } from "react-icons/fa";
 
-const Navbar = () => {
+const Navbar = () => { 
   const { user, logout } = useAuth()
   return (
     <div className='flex items-center text-white justify-between h-12 bg-teal-600 px-5 text-shadow-lg'>

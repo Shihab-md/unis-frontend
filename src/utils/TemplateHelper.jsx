@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { getBaseUrl } from '../utils/CommonHelper'
+import { getBaseUrl } from '../utils/CommonHelper';
+import Swal from 'sweetalert2';
 import {
   FaEye,
   FaEdit,
@@ -32,7 +33,7 @@ export const columns = [
 ];
 
 // templates for salary form
-export const getTemplates = async (id) => { 
+export const getTemplates = async (id) => {
   let templates;
   try {
     const responnse = await axios.get(
@@ -58,8 +59,19 @@ export const TemplateButtons = ({ Id, onTemplateDelete }) => {
   const navigate = useNavigate();
 
   const handleDelete = async (id) => {
-    const confirm = window.confirm("Do you want to delete?");
-    if (confirm) {
+
+    const result = await Swal.fire({
+      title: 'Are you sure to Delete?',
+      // text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'No',
+    });
+
+    if (result.isConfirmed) {
       try {
         const responnse = await axios.delete(
           (await getBaseUrl()).toString() + `template/${id}`,
@@ -70,14 +82,19 @@ export const TemplateButtons = ({ Id, onTemplateDelete }) => {
           }
         );
         if (responnse.data.success) {
-          alert("Deleted Successfully...");
+          //alert("Deleted Successfully...");
+          Swal.fire('Success!', 'Successfully Deleted!', 'success');
           onTemplateDelete();
         }
       } catch (error) {
         if (error.response && !error.response.data.success) {
-          alert(error.response.data.error);
+          // alert(error.response.data.error);
+          Swal.fire('Error!', error.response.data.error, 'error');
         }
       }
+    } else if (result.dismiss === Swal.DismissReason.cancel) {
+      // Swal.fire('Cancelled', 'Your file is safe!', 'error');
+      // Handle cancellation logic (optional)
     }
   };
 

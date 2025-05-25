@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { getBaseUrl } from '../utils/CommonHelper'
+import { getBaseUrl } from '../utils/CommonHelper';
+import Swal from 'sweetalert2';
 import {
   FaEye,
   FaEdit,
@@ -13,12 +14,12 @@ export const columns = [
     selector: (row) => row.sno,
     width: "60px",
   },
-  { 
+  {
     name: "Code",
     selector: (row) => row.code,
     sortable: true,
     width: "100px",
-  }, 
+  },
   {
     name: "Name",
     selector: (row) => row.name,
@@ -80,8 +81,18 @@ export const CourseButtons = ({ Id, onCourseDelete }) => {
   const navigate = useNavigate();
 
   const handleDelete = async (id) => {
-    const confirm = window.confirm("Do you want to delete?");
-    if (confirm) {
+    const result = await Swal.fire({
+      title: 'Are you sure to Delete?',
+      // text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'No',
+    });
+
+    if (result.isConfirmed) {
       try {
         const responnse = await axios.delete(
           (await getBaseUrl()).toString() + `course/${id}`,
@@ -92,14 +103,19 @@ export const CourseButtons = ({ Id, onCourseDelete }) => {
           }
         );
         if (responnse.data.success) {
-          alert("Deleted Successfully...");
+          //alert("Deleted Successfully...");
+          Swal.fire('Success!', 'Successfully Deleted!', 'success');
           onCourseDelete();
         }
       } catch (error) {
         if (error.response && !error.response.data.success) {
-          alert(error.response.data.error);
+          // alert(error.response.data.error);
+          Swal.fire('Error!', error.response.data.error, 'error');
         }
       }
+    } else if (result.dismiss === Swal.DismissReason.cancel) {
+      // Swal.fire('Cancelled', 'Your file is safe!', 'error');
+      // Handle cancellation logic (optional)
     }
   };
 
