@@ -4,6 +4,7 @@ import { columns, SchoolButtons } from '../../utils/SchoolHelper'
 import DataTable from 'react-data-table-component'
 import axios from 'axios'
 import { getBaseUrl, handleRightClick } from '../../utils/CommonHelper'
+import Swal from 'sweetalert2';
 import {
   FaPlusSquare, FaArrowAltCircleLeft
 } from "react-icons/fa";
@@ -60,7 +61,7 @@ const List = () => {
       } catch (error) {
         console.log(error.message)
         if (error.response && !error.response.data.success) {
-          alert(error.response.data.error)
+          Swal.fire('Error!', error.response.data.error, 'error');
         }
       } finally {
         setSchLoading(false)

@@ -1,14 +1,18 @@
 import React, { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { columns, SupervisorButtons } from '../../utils/SupervisorHelper'
-import { getBaseUrl } from '../../utils/CommonHelper'
+import { getBaseUrl, handleRightClick } from '../../utils/CommonHelper';
 import DataTable from 'react-data-table-component'
 import axios from 'axios'
+import Swal from 'sweetalert2';
 import {
   FaPlusSquare, FaArrowAltCircleLeft
 } from "react-icons/fa";
 
 const List = () => {
+  // To prevent right-click.
+  document.addEventListener('contextmenu', handleRightClick);
+
   const [supervisors, setSupervisors] = useState([])
   const [supLoading, setSupLoading] = useState(false)
   const [filteredSupervisor, setFilteredSupervisors] = useState(null)
@@ -41,7 +45,7 @@ const List = () => {
             contactNumber: sup.contactNumber,
             routeName: sup.routeName,
             dob: new Date(sup.dob).toLocaleDateString(),
-          //  profileImage: <img width={40} className='rounded-full' src={(getBaseUrl()).toString() + `${sup.userId.profileImage}`} />,
+            //  profileImage: <img width={40} className='rounded-full' src={(getBaseUrl()).toString() + `${sup.userId.profileImage}`} />,
             action: (<SupervisorButtons Id={sup._id} onSupervisorDelete={onSupervisorDelete} />),
           }));
           setSupervisors(data);
@@ -50,7 +54,7 @@ const List = () => {
       } catch (error) {
         console.log(error.message)
         if (error.response && !error.response.data.success) {
-          alert(error.response.data.error)
+          Swal.fire('Error!', error.response.data.error, 'error');
           navigate('/login')
         }
       } finally {

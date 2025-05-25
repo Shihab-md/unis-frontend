@@ -1,12 +1,16 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { getBaseUrl } from '../../utils/CommonHelper'
+import { getBaseUrl, handleRightClick } from '../../utils/CommonHelper';;
+import Swal from 'sweetalert2';
 import { useNavigate, useParams, Link } from "react-router-dom";
 import {
   FaRegTimesCircle
 } from "react-icons/fa";
 
 const Edit = () => {
+  // To prevent right-click.
+  document.addEventListener('contextmenu', handleRightClick);
+
   const [course, setCourse] = useState({
     name: "",
     remarks: "",
@@ -100,7 +104,7 @@ const Edit = () => {
         }
       } catch (error) {
         if (error.response && !error.response.data.success) {
-          alert(error.response.data.error);
+          Swal.fire('Error!', error.response.data.error, 'error');
         }
       }
     };
@@ -127,12 +131,12 @@ const Edit = () => {
         }
       );
       if (response.data.success) {
-        alert("Updated Successfully...");
+        Swal.fire('Success!', 'Successfully Updated!', 'success');
         navigate("/admin-dashboard/courses");
       }
     } catch (error) {
       if (error.response && !error.response.data.success) {
-        alert(error.response.data.error);
+        Swal.fire('Error!', error.response.data.error, 'error');
       }
     }
   };

@@ -75,7 +75,7 @@ export const getStudents = async (id) => {
     }
   } catch (error) {
     if (error.response && !error.response.data.success) {
-      alert(error.response.data.error);
+      Swal.fire('Error!', error.response.data.error, 'error');
     }
   }
   return students;
@@ -99,7 +99,7 @@ export const getStudentsBySchool = async (schoolId) => {
     }
   } catch (error) {
     if (error.response && !error.response.data.success) {
-      alert(error.response.data.error);
+      Swal.fire('Error!', error.response.data.error, 'error');
     }
   }
 
@@ -124,7 +124,7 @@ export const getStudentsBySchoolAndCourse = async (schoolId, templateId) => {
     }
   } catch (error) {
     if (error.response && !error.response.data.success) {
-      alert(error.response.data.error);
+      Swal.fire('Error!', error.response.data.error, 'error');
     }
   }
 

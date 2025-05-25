@@ -3,16 +3,20 @@ import { NavLink } from "react-router-dom";
 import SummaryCard from "./SummaryCard";
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext'
-import { getBaseUrl, getRole } from '../../utils/CommonHelper'
+import { getBaseUrl, handleRightClick } from '../../utils/CommonHelper'
 import {
   FaBuilding, FaMosque, FaUserFriends, FaWpforms,
   FaUsers, FaHouseUser, FaClipboardList, FaTasks, FaCalendarAlt,
   FaRupeeSign, FaMedal, FaFileContract, FaUserCog,
 } from "react-icons/fa";
 import axios from 'axios'
+import Swal from 'sweetalert2';
 import { useNavigate } from "react-router-dom";
 
 const AdminSummary = () => {
+  // To prevent right-click.
+  document.addEventListener('contextmenu', handleRightClick);
+
   const [summary, setSummary] = useState(null)
   const navigate = useNavigate()
   const { user } = useAuth()
@@ -29,7 +33,7 @@ const AdminSummary = () => {
         setSummary(summary.data)
       } catch (error) {
         if (error.response) {
-          alert(error.response.data.error)
+          Swal.fire('Error!', error.response.data.error, 'error');
         }
         console.log(error.messsage)
       }

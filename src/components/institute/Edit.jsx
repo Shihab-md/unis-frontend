@@ -4,9 +4,13 @@ import { useNavigate, useParams, Link } from "react-router-dom";
 import {
   FaRegTimesCircle
 } from "react-icons/fa";
-import { getBaseUrl } from '../../utils/CommonHelper'
+import { getBaseUrl, handleRightClick } from '../../utils/CommonHelper';;
+import Swal from 'sweetalert2';
 
 const Edit = () => {
+  // To prevent right-click.
+  document.addEventListener('contextmenu', handleRightClick);
+  
   const [institute, setInstitute] = useState({
     name: "",
     email: "",
@@ -52,7 +56,7 @@ const Edit = () => {
         }
       } catch (error) {
         if (error.response && !error.response.data.success) {
-          alert(error.response.data.error);
+          Swal.fire('Error!', error.response.data.error, 'error');
         }
       }
     };
@@ -79,12 +83,12 @@ const Edit = () => {
         }
       );
       if (response.data.success) {
-        alert("Updated Successfully...");
+        Swal.fire('Success!', 'Successfully Updated!', 'success');
         navigate("/admin-dashboard/institutes");
       }
     } catch (error) {
       if (error.response && !error.response.data.success) {
-        alert(error.response.data.error);
+        Swal.fire('Error!', error.response.data.error, 'error');
       }
     }
   };

@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
+import Swal from 'sweetalert2';
 import {
   FaRegTimesCircle
 } from "react-icons/fa";
@@ -31,7 +32,7 @@ const View = () => {
         }
       } catch (error) {
         if (error.response && !error.response.data.success) {
-          alert(error.response.data.error);
+          Swal.fire('Error!', error.response.data.error, 'error');;
         }
       }
     };

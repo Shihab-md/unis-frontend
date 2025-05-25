@@ -6,6 +6,7 @@ import { getSchools } from '../../utils/SchoolHelper'
 import { columnsSelect, getStudentsBySchool, getStudentsBySchoolAndCourse } from '../../utils/StudentHelper'
 import { getTemplates } from '../../utils/TemplateHelper'
 import DataTable from 'react-data-table-component'
+import Swal from 'sweetalert2';
 import {
   FaRegTimesCircle
 } from "react-icons/fa";
@@ -126,20 +127,24 @@ const Create = () => {
         }
         if (downloaded) {
           setCreatedAll(false);
-          alert("Certificates created Successfully.....");
+         // alert("Certificates created Successfully.....");
+          Swal.fire('Success!', 'Successfully Created!', 'success');
           navigate("/admin-dashboard/certificates");
         } else {
           setCreatedAll(false);
-          alert("Certificates NOT created.....");
+          Swal.fire('Error!', 'Certificates NOT created.....', 'error');
+          //alert("Certificates NOT created.....");
         }
       } catch (error) {
         if (error.response && !error.response.data.success) {
-          alert(error.response.data.error);
+          //alert(error.response.data.error);
+          Swal.fire('Error!', error.response.data.error, 'error');
           setCreatedAll(false);
         }
       }
     } else {
-      alert("Please Select Students!");
+      Swal.fire('Error!', 'Please Select Students!', 'warning');
+      //alert("Please Select Students!");
     }
   };
 

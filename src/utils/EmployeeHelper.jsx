@@ -61,7 +61,7 @@ export const getEmployees = async (id) => {
     }
   } catch (error) {
     if (error.response && !error.response.data.success) {
-      alert(error.response.data.error);
+      Swal.fire('Error!', error.response.data.error, 'error');;
     }
   }
   return employees;

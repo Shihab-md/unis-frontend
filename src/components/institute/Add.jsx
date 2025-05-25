@@ -1,12 +1,16 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
-import { getBaseUrl } from '../../utils/CommonHelper'
+import { getBaseUrl, handleRightClick } from '../../utils/CommonHelper';;
+import Swal from 'sweetalert2';
 import {
   FaRegTimesCircle
 } from "react-icons/fa";
 
 const Add = () => {
+
+  // To prevent right-click.
+  document.addEventListener('contextmenu', handleRightClick);
 
   const [institute, setInstitute] = useState({
     iCode: "",
@@ -38,12 +42,14 @@ const Add = () => {
         }
       })
       if (response.data.success) {
-        alert("Added Successfully...");
+        //alert("Added Successfully..."); 
+        Swal.fire('Success!', 'Successfully Added!', 'success');
         navigate("/admin-dashboard/institutes");
       }
     } catch (error) {
       if (error.response && !error.response.data.success) {
-        alert(error.response.data.error);
+        //alert(error.response.data.error);
+        Swal.fire('Error!', error.response.data.error, 'error');
       }
     }
   };

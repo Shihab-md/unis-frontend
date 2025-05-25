@@ -1,12 +1,15 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
-import { getBaseUrl } from '../../utils/CommonHelper'
+import { getBaseUrl, handleRightClick } from '../../utils/CommonHelper';;
+import Swal from 'sweetalert2';
 import {
   FaRegTimesCircle
 } from "react-icons/fa";
 
 const Add = () => {
+  // To prevent right-click.
+  document.addEventListener('contextmenu', handleRightClick);
 
   const [academicYear, setAcademicYear] = useState({
     acYear: "",
@@ -30,12 +33,14 @@ const Add = () => {
         }
       })
       if (response.data.success) {
-        alert("Added Successfully...");
+        //alert("Added Successfully..."); 
+        Swal.fire('Success!', 'Successfully Added!', 'success');
         navigate("/admin-dashboard/academicYears");
       }
     } catch (error) {
       if (error.response && !error.response.data.success) {
-        alert(error.response.data.error);
+        //alert(error.response.data.error);
+        Swal.fire('Error!', error.response.data.error, 'error');
       }
     }
   };
@@ -76,7 +81,7 @@ const Add = () => {
                 type="text"
                 name="desc"
                 onChange={handleChange}
-                className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                className="mt-1 p-2 mb-5 block w-full border border-gray-300 rounded-md"
                 required
               />
             </div>

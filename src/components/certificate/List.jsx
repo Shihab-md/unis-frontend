@@ -1,14 +1,18 @@
 import React, { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { columns, CertificateButtons } from '../../utils/CertificateHelper'
-import { getBaseUrl } from '../../utils/CommonHelper'
+import { getBaseUrl, handleRightClick } from '../../utils/CommonHelper';
 import DataTable from 'react-data-table-component'
 import axios from 'axios'
+import Swal from 'sweetalert2';
 import {
   FaPlusSquare, FaArrowAltCircleLeft
 } from "react-icons/fa";
 
 const List = () => {
+  // To prevent right-click.
+  document.addEventListener('contextmenu', handleRightClick);
+
   const [certificates, setCertificates] = useState([])
   const [supLoading, setSupLoading] = useState(false)
   const [filteredCertificate, setFilteredCertificates] = useState(null)
@@ -52,7 +56,7 @@ const List = () => {
       } catch (error) {
         console.log(error.message)
         if (error.response && !error.response.data.success) {
-          alert(error.response.data.error)
+          Swal.fire('Error!', error.response.data.error, 'error');
           //  navigate('/login')
         }
       } finally {

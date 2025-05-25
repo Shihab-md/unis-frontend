@@ -54,8 +54,10 @@ const Login = () => {
       }
     } catch (error) {
       if (error.response && !error.response.data.success) {
+        Swal.fire('Error!', error.response.data.error, 'error');
         setError(error.response.data.error)
       } else {
+        Swal.fire('Error!', 'Server Error', 'error');
         setError("Server Error")
       }
     }

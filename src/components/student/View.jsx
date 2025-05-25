@@ -1,12 +1,16 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
-import { getBaseUrl } from '../../utils/CommonHelper'
+import { getBaseUrl, handleRightClick } from '../../utils/CommonHelper';
+import Swal from 'sweetalert2';
 import {
   FaRegTimesCircle
 } from "react-icons/fa";
 
 const View = () => {
+  // To prevent right-click.
+  document.addEventListener('contextmenu', handleRightClick);
+
   const { id } = useParams();
   const [student, setStudent] = useState(null);
   const [academic, setAcademic] = useState(null);
@@ -44,7 +48,7 @@ const View = () => {
         }
       } catch (error) {
         if (error.response && !error.response.data.success) {
-          alert(error.response.data.error);
+          Swal.fire('Error!', error.response.data.error, 'error');;
         }
       }
     };

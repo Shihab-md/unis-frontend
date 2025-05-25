@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
 import { useAuth } from "../../context/AuthContext";
-import { getBaseUrl, handleRightClick } from '../../utils/CommonHelper'
+import { getBaseUrl, handleRightClick } from '../../utils/CommonHelper';
+import Swal from 'sweetalert2';
 import {
   FaRegTimesCircle
 } from "react-icons/fa";
@@ -43,13 +44,16 @@ const Setting = () => {
           }
         );
         if (response.data.success) {
-          alert("Password changed Successfully...");
+          //alert("Password changed Successfully...");
+           Swal.fire('Success!', 'Password changed Successfully...!', 'success');
           navigate("/admin-dashboard");
           setError("")
         }
       } catch (error) {
         if (error.response && !error.response.data.success) {
           setError(error.response.data.error)
+          //alert(error.response.data.error);
+          Swal.fire('Error!', error.response.data.error, 'error');
         }
       }
     }

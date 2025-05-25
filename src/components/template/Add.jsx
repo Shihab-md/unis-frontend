@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
-import { getBaseUrl, handleRightClick } from '../../utils/CommonHelper'
-import { getCourses } from '../../utils/CourseHelper'
+import { getBaseUrl, handleRightClick } from '../../utils/CommonHelper';
+import { getCourses } from '../../utils/CourseHelper';
+import Swal from 'sweetalert2';
 import {
   FaRegTimesCircle
 } from "react-icons/fa";
@@ -58,12 +59,14 @@ const Add = () => {
         }
       );
       if (response.data.success) {
-        alert("Added Successfully...");
+        //alert("Added Successfully..."); 
+        Swal.fire('Success!', 'Successfully Added!', 'success');
         navigate("/admin-dashboard/templates");
       }
     } catch (error) {
       if (error.response && !error.response.data.success) {
-        alert(error.response.data.error);
+        //alert(error.response.data.error);
+        Swal.fire('Error!', error.response.data.error, 'error');
       }
     }
   };
