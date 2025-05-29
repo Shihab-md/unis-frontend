@@ -131,7 +131,14 @@ const Edit = () => {
         }
       );
       if (response.data.success) {
-        Swal.fire('Success!', 'Successfully Updated!', 'success');
+        Swal.fire({
+          title: "Success!",
+          html: "<b>Successfully Updated!</b>",
+          icon: "success",
+          timer: 1600,
+          timerProgressBar: true,
+          showConfirmButton: false,
+        });
         navigate("/admin-dashboard/courses");
       }
     } catch (error) {

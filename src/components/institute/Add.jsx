@@ -42,13 +42,18 @@ const Add = () => {
         }
       })
       if (response.data.success) {
-        //alert("Added Successfully..."); 
-        Swal.fire('Success!', 'Successfully Added!', 'success');
+        Swal.fire({
+          title: "Success!",
+          html: "<b>Successfully Added!</b>",
+          icon: "success",
+          timer: 1600,
+          timerProgressBar: true,
+          showConfirmButton: false,
+        });
         navigate("/admin-dashboard/institutes");
       }
     } catch (error) {
       if (error.response && !error.response.data.success) {
-        //alert(error.response.data.error);
         Swal.fire('Error!', error.response.data.error, 'error');
       }
     }

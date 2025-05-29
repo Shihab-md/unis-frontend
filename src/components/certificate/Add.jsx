@@ -127,17 +127,21 @@ const Create = () => {
         }
         if (downloaded) {
           setCreatedAll(false);
-         // alert("Certificates created Successfully.....");
-          Swal.fire('Success!', 'Successfully Created!', 'success');
+          Swal.fire({
+            title: "Success!",
+            html: "<b>Successfully Added!</b>",
+            icon: "success",
+            timer: 1600,
+            timerProgressBar: true,
+            showConfirmButton: false,
+          });
           navigate("/admin-dashboard/certificates");
         } else {
           setCreatedAll(false);
           Swal.fire('Error!', 'Certificates NOT created.....', 'error');
-          //alert("Certificates NOT created.....");
         }
       } catch (error) {
         if (error.response && !error.response.data.success) {
-          //alert(error.response.data.error);
           Swal.fire('Error!', error.response.data.error, 'error');
           setCreatedAll(false);
         }

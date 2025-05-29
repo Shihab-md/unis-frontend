@@ -9,7 +9,7 @@ const AuthContext = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
+  useEffect(() => { 
     const verifyUser = async () => {
       try {
         const token = localStorage.getItem("token");

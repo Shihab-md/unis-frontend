@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { getBaseUrl } from '../utils/CommonHelper'
+import { getBaseUrl } from '../utils/CommonHelper';
+import Swal from 'sweetalert2';
 import {
   FaEye,
   FaEdit,
@@ -85,7 +86,14 @@ export const CertificateButtons = ({ Id, onCertificateDelete }) => {
           }
         );
         if (responnse.data.success) {
-          alert("Deleted Successfully...");
+          Swal.fire({
+            title: "Success!",
+            html: "<b>Successfully Deleted!</b>",
+            icon: "success",
+            timer: 1600,
+            timerProgressBar: true,
+            showConfirmButton: false,
+          });
           onCertificateDelete();
         }
       } catch (error) {

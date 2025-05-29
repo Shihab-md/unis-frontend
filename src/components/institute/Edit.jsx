@@ -10,7 +10,7 @@ import Swal from 'sweetalert2';
 const Edit = () => {
   // To prevent right-click.
   document.addEventListener('contextmenu', handleRightClick);
-  
+
   const [institute, setInstitute] = useState({
     name: "",
     email: "",
@@ -83,7 +83,14 @@ const Edit = () => {
         }
       );
       if (response.data.success) {
-        Swal.fire('Success!', 'Successfully Updated!', 'success');
+        Swal.fire({
+          title: "Success!",
+          html: "<b>Successfully Updated!</b>",
+          icon: "success",
+          timer: 1600,
+          timerProgressBar: true,
+          showConfirmButton: false,
+        });
         navigate("/admin-dashboard/institutes");
       }
     } catch (error) {

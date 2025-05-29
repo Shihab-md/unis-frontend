@@ -91,12 +91,6 @@ const Edit = () => {
 
           const academic = academicResponse.data.academic;
 
-          //  fees1Val = academic.fees1,
-          //   fees2Val = academic.fees2,
-          //   fees3Val = academic.fees3,
-          //   fees4Val = academic.fees4,
-          //   fees5Val = academic.fees5,
-
           setStudent((prev) => ({
             ...prev,
             name: student.userId && student.userId.name ? student.userId.name : "",
@@ -130,13 +124,6 @@ const Edit = () => {
             hostelRefNumber: student.hostelRefNumber,
             hostelFees: student.hostelFees,
             hostelDiscount: student.hostelDiscount,
-            //  hostelFinalFees: student.hostelFinalFees,
-
-            //   fees1Val: academic.fees1,
-            //   fees2Val: academic.fees2,
-            //   fees3Val: academic.fees3,
-            //   fees4Val: academic.fees4,
-            //    fees5Val: academic.fees5,
 
             acYear: academic.acYear && academic.acYear._id ? academic.acYear._id : null,
 
@@ -145,35 +132,30 @@ const Edit = () => {
             refNumber1: academic.refNumber1,
             fees1: academic.fees1,
             discount1: academic.discount1,
-            //  finalFees1: academic.finalFees1,
 
             instituteId2: academic.instituteId2 && academic.instituteId2._id ? academic.instituteId2._id : null,
             courseId2: academic.courseId2 && academic.courseId2._id ? academic.courseId2._id : null,
             refNumber2: academic.refNumber2,
             fees2: academic.fees2,
             discount2: academic.discount2,
-            //  finalFees2: academic.finalFees2,
 
             instituteId3: academic.instituteId3 && academic.instituteId3._id ? academic.instituteId3._id : null,
             courseId3: academic.courseId3 && academic.courseId3._id ? academic.courseId3._id : null,
             refNumber3: academic.refNumber3,
             fees3: academic.fees3,
             discount3: academic.discount3,
-            //  finalFees3: academic.finalFees3,
 
             instituteId4: academic.instituteId4 && academic.instituteId4._id ? academic.instituteId4._id : null,
             courseId4: academic.courseId4 && academic.courseId4._id ? academic.courseId4._id : null,
             refNumber4: academic.refNumber4,
             fees4: academic.fees4,
             discount4: academic.discount4,
-            //  finalFees4: academic.finalFees4,
 
             instituteId5: academic.instituteId5 && academic.instituteId5._id ? academic.instituteId5._id : null,
             courseId5: academic.courseId5 && academic.courseId5._id ? academic.courseId5._id : null,
             refNumber5: academic.refNumber5,
             fees5: academic.fees5,
             discount5: academic.discount5,
-            //  finalFees5: academic.finalFees5,
 
           }));
         }
@@ -212,13 +194,17 @@ const Edit = () => {
         student,
         {
           headers: headers
-          //{
-          //  Authorization: `Bearer ${localStorage.getItem("token")}`,
-          //},
         }
       );
       if (response.data.success) {
-        Swal.fire('Success!', 'Successfully Updated!', 'success');
+        Swal.fire({
+          title: "Success!",
+          html: "<b>Successfully Updated!</b>",
+          icon: "success",
+          timer: 1600,
+          timerProgressBar: true,
+          showConfirmButton: false,
+        });
         navigate("/admin-dashboard/students");
       }
     } catch (error) {

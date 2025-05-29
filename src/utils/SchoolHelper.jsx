@@ -112,13 +112,18 @@ export const SchoolButtons = ({ Id, onSchoolDelete }) => {
           }
         );
         if (responnse.data.success) {
-          //alert("Deleted Successfully...");
-          Swal.fire('Success!', 'Successfully Deleted!', 'success');
+          Swal.fire({
+            title: "Success!",
+            html: "<b>Successfully Deleted!</b>",
+            icon: "success",
+            timer: 1600,
+            timerProgressBar: true,
+            showConfirmButton: false,
+          });
           onSchoolDelete();
         }
       } catch (error) {
         if (error.response && !error.response.data.success) {
-          // alert(error.response.data.error);
           Swal.fire('Error!', error.response.data.error, 'error');
         }
       }
