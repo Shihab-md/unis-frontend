@@ -9,7 +9,7 @@ const AuthContext = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => { 
+  useEffect(() => {
     const verifyUser = async () => {
       try {
         const token = localStorage.getItem("token");
@@ -57,7 +57,14 @@ const AuthContext = ({ children }) => {
     });
 
     if (result.isConfirmed) {
-      Swal.fire('Success!', 'Successfully Logged out!', 'success');
+      Swal.fire({
+        title: "Success!",
+        html: "<b>Successfully Logged out!</b>",
+        icon: "success",
+        timer: 1600,
+        timerProgressBar: true,
+        showConfirmButton: false,
+      });
       setUser(null);
       localStorage.removeItem("token");
     } else if (result.dismiss === Swal.DismissReason.cancel) {
