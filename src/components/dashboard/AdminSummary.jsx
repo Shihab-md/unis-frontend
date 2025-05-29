@@ -3,7 +3,7 @@ import { NavLink } from "react-router-dom";
 import SummaryCard from "./SummaryCard";
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext'
-import { getBaseUrl, handleRightClick } from '../../utils/CommonHelper'
+import { getBaseUrl, handleRightClick, getSpinner } from '../../utils/CommonHelper'
 import {
   FaBuilding, FaMosque, FaUserFriends, FaWpforms,
   FaUsers, FaHouseUser, FaClipboardList, FaTasks, FaCalendarAlt,
@@ -42,9 +42,7 @@ const AdminSummary = () => {
   }, [])
 
   if (!summary) {
-    return <div className='flex items-center justify-center rounded-lg shadow-lg'>
-      <img width={430} className='flex p-7 aspect-3/2 items-center justify-center rounded-lg shadow-lg' src="/spinner.gif" />
-    </div>
+    return getSpinner();
   }
   //p-6
   return (

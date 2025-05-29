@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { columns, CertificateButtons } from '../../utils/CertificateHelper'
-import { getBaseUrl, handleRightClick } from '../../utils/CommonHelper';
+import { getBaseUrl, handleRightClick, getSpinner } from '../../utils/CommonHelper';
 import DataTable from 'react-data-table-component'
 import axios from 'axios'
 import Swal from 'sweetalert2';
@@ -75,9 +75,7 @@ const List = () => {
   }
 
   if (!filteredCertificate) {
-    return <div className='flex items-center justify-center rounded-lg shadow-lg'>
-      <img width={430} className='flex p-7 items-center justify-center rounded-lg shadow-lg' src="/spinner.gif" />
-    </div>
+    return getSpinner();
   }
 
   return (

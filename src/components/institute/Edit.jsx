@@ -4,7 +4,7 @@ import { useNavigate, useParams, Link } from "react-router-dom";
 import {
   FaRegTimesCircle
 } from "react-icons/fa";
-import { getBaseUrl, handleRightClick } from '../../utils/CommonHelper';;
+import { getBaseUrl, handleRightClick, getSpinner } from '../../utils/CommonHelper';
 import Swal from 'sweetalert2';
 
 const Edit = () => {
@@ -295,7 +295,7 @@ const Edit = () => {
           </form>
         </div>
       ) : (
-        <div>Loading...</div>
+        getSpinner()
       )}
     </>
   );

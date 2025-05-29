@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { getBaseUrl, handleRightClick } from '../../utils/CommonHelper';
+import { getBaseUrl, handleRightClick, getSpinner } from '../../utils/CommonHelper';
 import { useParams, useNavigate, Link } from "react-router-dom";
 import Swal from 'sweetalert2';
 import {
@@ -10,7 +10,7 @@ import {
 const View = () => {
   // To prevent right-click.
   document.addEventListener('contextmenu', handleRightClick);
-  
+
   const { id } = useParams();
   const [institute, setInstitute] = useState(null);
   const navigate = useNavigate();
@@ -107,7 +107,7 @@ const View = () => {
           </button>
         </div>
       ) : (
-        <div> Loading ....</div>
+        getSpinner()
       )}
     </>
   );

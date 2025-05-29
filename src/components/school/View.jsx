@@ -5,7 +5,7 @@ import Swal from 'sweetalert2';
 import {
   FaRegTimesCircle
 } from "react-icons/fa";
-import { getBaseUrl, handleRightClick } from '../../utils/CommonHelper'
+import { getBaseUrl, handleRightClick, getSpinner } from '../../utils/CommonHelper'
 
 const View = () => {
 
@@ -171,7 +171,7 @@ const View = () => {
           </button>
         </div>
       ) : (
-        <div> Loading ....</div>
+        getSpinner()
       )}
     </>
   );

@@ -12,3 +12,9 @@ export function handleRightClick(event) {
   event.preventDefault();
 }
 
+export function getSpinner() {
+  return <div className='flex items-center justify-center rounded-lg shadow-lg'>
+    <img width={340} className='flex p-7 items-center justify-center rounded-lg shadow-lg' src="/spinner.gif" />
+  </div>
+}
+

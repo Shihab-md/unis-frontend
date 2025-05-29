@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { columns, SupervisorButtons } from '../../utils/SupervisorHelper'
-import { getBaseUrl, handleRightClick } from '../../utils/CommonHelper';
+import { getBaseUrl, handleRightClick, getSpinner } from '../../utils/CommonHelper';
 import DataTable from 'react-data-table-component'
 import axios from 'axios'
 import Swal from 'sweetalert2';
@@ -73,7 +73,7 @@ const List = () => {
   }
 
   if (!filteredSupervisor) {
-    return <div>Loading ...</div>
+    return getSpinner();
   }
 
   return (

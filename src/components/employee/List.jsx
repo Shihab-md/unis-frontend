@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { columns, EmployeeButtons } from '../../utils/EmployeeHelper'
 import DataTable from 'react-data-table-component'
 import axios from 'axios'
-import { getBaseUrl, handleRightClick } from '../../utils/CommonHelper';
+import { getBaseUrl, handleRightClick, getSpinner } from '../../utils/CommonHelper';
 import Swal from 'sweetalert2';
 import {
   FaPlusSquare, FaArrowAltCircleLeft
@@ -74,7 +74,7 @@ const List = () => {
   }
 
   if (!filteredEmployee) {
-    return <div>Loading ...</div>
+    return getSpinner();
   }
 
   return (
