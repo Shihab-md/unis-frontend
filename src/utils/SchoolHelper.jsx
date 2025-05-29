@@ -63,6 +63,19 @@ export const columns = [
   },
 ];
 
+export const conditionalRowStyles = [
+  {
+    when: row => row.active,
+    style: row => ({
+      //	backgroundColor: 'rgba(63, 195, 128, 0.9)',
+      color: row.active == 'In-Active' ? 'red' : 'black',
+      //	'&:hover': {
+      //		cursor: 'pointer',
+      //	},
+    }),
+  }
+];
+
 export const getSchools = async (id) => {
   let schools;
   try {

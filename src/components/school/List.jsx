@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { columns, SchoolButtons } from '../../utils/SchoolHelper'
+import { columns, SchoolButtons, conditionalRowStyles } from '../../utils/SchoolHelper'
 import DataTable from 'react-data-table-component'
 import axios from 'axios'
 import { getBaseUrl, handleRightClick, getSpinner } from '../../utils/CommonHelper'
@@ -102,7 +102,7 @@ const List = () => {
         </Link>
       </div>
       <div className='mt-6 rounded-lg shadow-lg'>
-        <DataTable columns={columns} data={filteredSchool} highlightOnHover striped responsive />
+        <DataTable columns={columns} data={filteredSchool} highlightOnHover striped responsive conditionalRowStyles={conditionalRowStyles} />
         {/* <DataTable columns={columns} data={filteredSchool} pagination highlightOnHover currentPage={currentPage} onChangePage={handlePageChange} />*/}
       </div>
     </div>
