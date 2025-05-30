@@ -1,11 +1,18 @@
 
+
 export const getBaseUrl = async () => {
   return "https://unis-server.vercel.app/api/";
+
 };
 
-export const getRole = async () => {
+export function getAuthRoles(screenName) {
   const role = localStorage.getItem("role");
-  return role ? role : "";
+  // Supervisors
+  if (screenName == "supervisorsList" || screenName == "supervisorAdd"
+    || screenName == "supervisorEdit" || screenName == "supervisorView") {
+
+    return ['superadmin', 'hquser'];
+  }
 };
 
 export function handleRightClick(event) {
