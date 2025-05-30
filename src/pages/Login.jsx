@@ -108,11 +108,7 @@ const Login = () => {
               />
             </div>
             <div className="mb-5 flex items-center justify-between">
-              <label className="inline-flex items-center">
-                <input type="checkbox" className="form-checkbox" />
-                <span className="ml-2 text-gray-700">Remember me</span>
-              </label>
-              <a href="#" className="text-teal-600">
+              <a href="#" className="text-yellow-700">
                 Forgot password?
               </a>
             </div>
