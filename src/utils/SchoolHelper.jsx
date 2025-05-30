@@ -69,9 +69,10 @@ export const conditionalRowStyles = [
     style: row => ({
       //	backgroundColor: 'rgba(63, 195, 128, 0.9)',
       color: row.active == 'In-Active' ? 'red' : 'black',
-      //	'&:hover': {
-      //		cursor: 'pointer',
-      //	},
+      '&:hover': {
+        //		cursor: 'pointer',
+        color: row.active == 'In-Active' ? 'red' : 'black',
+      },
     }),
   }
 ];

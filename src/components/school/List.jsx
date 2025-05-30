@@ -27,7 +27,7 @@ const List = () => {
   const ExpandedComponent = ({ data }) => {
     return (
       <>
-        <div className='ml-14 p-2'>
+        <div className='ml-14 p-2 bg-blue-50'>
           <p className = 'ml-14'>{data.nameArabic}</p>
           <p className = 'ml-14'>{data.nameNative}</p>
         </div>
