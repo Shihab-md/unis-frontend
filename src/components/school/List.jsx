@@ -22,8 +22,18 @@ const List = () => {
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
-    //  alert("Current Page  :" + page);
   };
+
+  const ExpandedComponent = ({ data }) => {
+    return (
+      <>
+        <div className='ml-14 p-2'>
+          <p className = 'ml-14'>{data.nameArabic}</p>
+          <p className = 'ml-14'>{data.nameNative}</p>
+        </div>
+      </>
+    );
+  }
 
   useEffect(() => {
 
@@ -49,6 +59,8 @@ const List = () => {
             sno: sno++,
             code: sch.code,
             name: sch.nameEnglish,
+            nameArabic: sch.nameArabic,
+            nameNative: sch.nameNative,
             address: sch.address,
             district: sch.district,
             active: sch.active,
@@ -102,8 +114,7 @@ const List = () => {
         </Link>
       </div>
       <div className='mt-6 rounded-lg shadow-lg'>
-        <DataTable columns={columns} data={filteredSchool} highlightOnHover striped responsive conditionalRowStyles={conditionalRowStyles} />
-        {/* <DataTable columns={columns} data={filteredSchool} pagination highlightOnHover currentPage={currentPage} onChangePage={handlePageChange} />*/}
+        <DataTable columns={columns} data={filteredSchool} highlightOnHover striped responsive conditionalRowStyles={conditionalRowStyles} expandableRows expandableRowsComponent={ExpandedComponent} />
       </div>
     </div>
   )
