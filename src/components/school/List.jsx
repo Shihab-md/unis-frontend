@@ -26,12 +26,12 @@ const List = () => {
 
   const ExpandedComponent = ({ data }) => {
     return (
-      <>
+      data.nameArabic || data.nameNative ?
         <div className='ml-14 p-2 bg-blue-50'>
-          <p className = 'ml-14'>{data.nameArabic}</p>
-          <p className = 'ml-14'>{data.nameNative}</p>
+          <p className='ml-14'>{data.nameArabic}</p>
+          <p className='ml-14'>{data.nameNative}</p>
         </div>
-      </>
+        : null
     );
   }
 
