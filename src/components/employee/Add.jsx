@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
 import { getSchools } from '../../utils/SchoolHelper';
-import { getBaseUrl, handleRightClick } from '../../utils/CommonHelper';;
+import { getBaseUrl, handleRightClick, checkAuth } from '../../utils/CommonHelper';;
 import Swal from 'sweetalert2';
 import {
   FaRegTimesCircle
@@ -15,6 +15,14 @@ const Add = () => {
   const [formData, setFormData] = useState({});
   const [schools, setSchools] = useState([]);
   const navigate = useNavigate()
+
+  useEffect(() => {
+    // Authenticate the User.
+    if (checkAuth("employeeAdd") === "NO") {
+      Swal.fire('Error!', 'User Authorization Failed!', 'error');
+      navigate("/login");
+    }
+  });
 
   useEffect(() => {
     const getSchoolsMap = async (id) => {

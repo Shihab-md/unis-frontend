@@ -49,10 +49,11 @@ const AdminSummary = () => {
     <div className="p-7 pt-3 items-center rounded-lg">
       <h5 className="p-1 text-center font-semibold text-gray-700">ربِّ زِدْنِي عِلْماً</h5>
       <h5 className="p-1 text-center">Welcome, {user.name}</h5>
-      <h5 className="text-xl mt-2 mb-3 font-bold text-center text-gray-500 text-shadow-lg">Super Admin Dashboard</h5>
+      <h5 className="text-xl mt-2 mb-3 font-bold text-center text-gray-500 text-shadow-lg">Dashboard</h5>
 
       <div className="rounded-lg grid grid-cols-2 md:grid-cols-4 gap-7 mt-7 flex rounded-lg">
-        {user.role === "superadmin" || user.role === "hquser" ?
+
+        {user.role === "superadmin" || user.role === "hquser" || user.role === "supervisor" ?
           <Link to="/admin-dashboard/supervisors" >
             <SummaryCard
               icon={<FaUserFriends />}
@@ -61,30 +62,37 @@ const AdminSummary = () => {
               color="bg-teal-600"
             />
           </Link> : null}
-        <Link to="/admin-dashboard/schools" >
-          <SummaryCard
-            icon={<FaMosque />}
-            text="Niswans"
-            number={summary.totalSchools}
-            color="bg-pink-600"
-          />
-        </Link>
-        <Link to="/admin-dashboard/employees" >
-          <SummaryCard
-            icon={<FaHouseUser />}
-            text="Employees"
-            number={summary.totalEmployees}
-            color="bg-cyan-600"
-          />
-        </Link>
-        <Link to="/admin-dashboard/students" >
-          <SummaryCard
-            icon={<FaUsers />}
-            text="Students"
-            number={summary.totalStudents}
-            color="bg-blue-500"
-          />
-        </Link>
+
+        {user.role === "superadmin" || user.role === "hquser" || user.role === "supervisor" || user.role === "admin" ?
+          <Link to="/admin-dashboard/schools" >
+            <SummaryCard
+              icon={<FaMosque />}
+              text="Niswans"
+              number={summary.totalSchools}
+              color="bg-pink-600"
+            />
+          </Link> : null}
+
+        {user.role === "superadmin" || user.role === "hquser" || user.role === "supervisor" || user.role === "admin" ?
+          <Link to="/admin-dashboard/employees" >
+            <SummaryCard
+              icon={<FaHouseUser />}
+              text="Employees"
+              number={summary.totalEmployees}
+              color="bg-cyan-600"
+            />
+          </Link> : null}
+
+        {user.role === "superadmin" || user.role === "hquser" || user.role === "admin" ?
+          <Link to="/admin-dashboard/students" >
+            <SummaryCard
+              icon={<FaUsers />}
+              text="Students"
+              number={summary.totalStudents}
+              color="bg-blue-500"
+            />
+          </Link> : null}
+
         {user.role === "superadmin" || user.role === "hquser" ?
           <Link to="/admin-dashboard/institutes" >
             <SummaryCard
@@ -94,6 +102,7 @@ const AdminSummary = () => {
               color="bg-slate-700"
             />
           </Link> : null}
+
         {user.role === "superadmin" || user.role === "hquser" ?
           <Link to="/admin-dashboard/courses" >
             <SummaryCard
@@ -103,6 +112,7 @@ const AdminSummary = () => {
               color="bg-purple-800"
             />
           </Link> : null}
+
         {user.role === "superadmin" || user.role === "hquser" ?
           <Link to="#" >
             <SummaryCard
@@ -112,6 +122,7 @@ const AdminSummary = () => {
               color="bg-emerald-700"
             />
           </Link> : null}
+
         {user.role === "superadmin" || user.role === "hquser" ?
           <Link to="/admin-dashboard/academicYears" >
             <SummaryCard
@@ -121,14 +132,17 @@ const AdminSummary = () => {
               color="bg-blue-800"
             />
           </Link> : null}
-        <Link to="#" >
-          <SummaryCard
-            icon={<FaRupeeSign />}
-            text="Accounts"
-            number={summary.totalEmployees}
-            color="bg-orange-700"
-          />
-        </Link>
+
+        {user.role === "superadmin" || user.role === "hquser" || user.role === "admin" ?
+          <Link to="#" >
+            <SummaryCard
+              icon={<FaRupeeSign />}
+              text="Accounts"
+              number={summary.totalEmployees}
+              color="bg-orange-700"
+            />
+          </Link> : null}
+
         {user.role === "superadmin" || user.role === "hquser" ?
           <Link to="/admin-dashboard/certificates" >
             <SummaryCard
@@ -138,6 +152,7 @@ const AdminSummary = () => {
               color="bg-yellow-600"
             />
           </Link> : null}
+
         {user.role === "superadmin" || user.role === "hquser" ?
           <Link to="/admin-dashboard/templates" >
             <SummaryCard
@@ -147,14 +162,17 @@ const AdminSummary = () => {
               color="bg-purple-500"
             />
           </Link> : null}
-        <Link to="#" >
-          <SummaryCard
-            icon={<FaFileContract />}
-            text="Reports"
-            number={summary.totalEmployees}
-            color="bg-gray-500"
-          />
-        </Link>
+
+        {user.role === "superadmin" || user.role === "hquser" || user.role === "supervisor" || user.role === "admin" ?
+          <Link to="#" >
+            <SummaryCard
+              icon={<FaFileContract />}
+              text="Reports"
+              number={summary.totalEmployees}
+              color="bg-gray-500"
+            />
+          </Link> : null}
+
         <Link to="/admin-dashboard/settings" >
           <SummaryCard
             icon={<FaUserCog />}
@@ -163,6 +181,7 @@ const AdminSummary = () => {
             color="bg-teal-900"
           />
         </Link>
+
       </div>
     </div>
   );

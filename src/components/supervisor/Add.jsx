@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
-import { getBaseUrl, handleRightClick, getAuthRoles } from '../../utils/CommonHelper';
+import { getBaseUrl, handleRightClick, checkAuth } from '../../utils/CommonHelper';
 import Swal from 'sweetalert2';
 import {
   FaRegTimesCircle
@@ -15,7 +15,7 @@ const Add = () => {
 
   useEffect(() => {
     // Authenticate the User.
-    if (!getAuthRoles("supervisorAdd").includes(localStorage.getItem("role"))) {
+    if (checkAuth("supervisorAdd") === "NO") {
       Swal.fire('Error!', 'User Authorization Failed!', 'error');
       navigate("/login");
     }

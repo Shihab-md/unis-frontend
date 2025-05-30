@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { columns, CertificateButtons } from '../../utils/CertificateHelper'
-import { getBaseUrl, handleRightClick, getSpinner } from '../../utils/CommonHelper';
+import { getBaseUrl, handleRightClick, getSpinner, checkAuth } from '../../utils/CommonHelper';
 import DataTable from 'react-data-table-component'
 import axios from 'axios'
 import Swal from 'sweetalert2';
@@ -21,6 +21,12 @@ const List = () => {
   const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
+
+    // Authenticate the User.
+    if (checkAuth("certificatesList") === "NO") {
+      Swal.fire('Error!', 'User Authorization Failed!', 'error');
+      navigate("/login");
+    }
 
     const onCertificateDelete = () => {
       fetchCertificates()

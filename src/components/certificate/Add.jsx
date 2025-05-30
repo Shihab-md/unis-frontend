@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
-import { getBaseUrl, handleRightClick } from '../../utils/CommonHelper'
+import { getBaseUrl, handleRightClick, checkAuth } from '../../utils/CommonHelper'
 import { getSchools } from '../../utils/SchoolHelper'
-import { columnsSelect, getStudentsBySchool, getStudentsBySchoolAndCourse } from '../../utils/StudentHelper'
+import { columnsSelect, getStudentsBySchoolAndCourse } from '../../utils/StudentHelper'
 import { getTemplates } from '../../utils/TemplateHelper'
 import DataTable from 'react-data-table-component'
 import Swal from 'sweetalert2';
@@ -28,6 +28,14 @@ const Create = () => {
   const [toggledClearRows, setToggleClearRows] = React.useState(false);
 
   const navigate = useNavigate()
+
+  useEffect(() => {
+    // Authenticate the User.
+    if (checkAuth("certificateAdd") === "NO") {
+      Swal.fire('Error!', 'User Authorization Failed!', 'error');
+      navigate("/login");
+    }
+  });
 
   const handleRowChange = ({ selectedRows }) => {
     setSelectedRows(selectedRows);

@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { getBaseUrl, handleRightClick, getSpinner } from '../../utils/CommonHelper';
+import { getBaseUrl, handleRightClick, getSpinner, checkAuth } from '../../utils/CommonHelper';
 import { useParams, useNavigate, Link } from "react-router-dom";
 import Swal from 'sweetalert2';
 import {
@@ -16,6 +16,13 @@ const View = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
+
+    // Authenticate the User.
+    if (checkAuth("acYearView") === "NO") {
+      Swal.fire('Error!', 'User Authorization Failed!', 'error');
+      navigate("/login");
+    }
+
     const fetchAcademicYear = async () => {
       try {
         const responnse = await axios.get(

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
-import { getBaseUrl, handleRightClick } from '../../utils/CommonHelper';
+import { getBaseUrl, handleRightClick, checkAuth } from '../../utils/CommonHelper';
 import { getCourses } from '../../utils/CourseHelper';
 import Swal from 'sweetalert2';
 import {
@@ -19,6 +19,13 @@ const Add = () => {
   const navigate = useNavigate()
 
   useEffect(() => {
+
+    // Authenticate the User.
+    if (checkAuth("templateAdd") === "NO") {
+      Swal.fire('Error!', 'User Authorization Failed!', 'error');
+      navigate("/login");
+    }
+
     const getCoursesMap = async (id) => {
       const courses = await getCourses(id);
       setCourses(courses);

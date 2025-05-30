@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { getBaseUrl, handleRightClick, getSpinner } from '../../utils/CommonHelper';
+import { getBaseUrl, handleRightClick, getSpinner, checkAuth } from '../../utils/CommonHelper';
 import Swal from 'sweetalert2';
 import { useNavigate, useParams, Link } from "react-router-dom";
 import {
@@ -50,6 +50,13 @@ const Edit = () => {
   const { id } = useParams();
 
   useEffect(() => {
+
+    // Authenticate the User.
+    if (checkAuth("courseEdit") === "NO") {
+      Swal.fire('Error!', 'User Authorization Failed!', 'error');
+      navigate("/login");
+    }
+
     const fetchCourse = async () => {
       try {
         const responnse = await axios.get(

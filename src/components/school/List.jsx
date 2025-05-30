@@ -3,7 +3,8 @@ import { Link } from 'react-router-dom'
 import { columns, SchoolButtons, conditionalRowStyles } from '../../utils/SchoolHelper'
 import DataTable from 'react-data-table-component'
 import axios from 'axios'
-import { getBaseUrl, handleRightClick, getSpinner } from '../../utils/CommonHelper'
+import { useAuth } from '../../context/AuthContext'
+import { getBaseUrl, handleRightClick, getSpinner, checkAuth } from '../../utils/CommonHelper'
 import Swal from 'sweetalert2';
 import {
   FaPlusSquare, FaArrowAltCircleLeft
@@ -35,7 +36,15 @@ const List = () => {
     );
   }
 
+  const { user } = useAuth();
+
   useEffect(() => {
+
+    // Authenticate the User.
+    if (checkAuth("schoolsList") === "NO") {
+      Swal.fire('Error!', 'User Authorization Failed!', 'error');
+      navigate("/login");
+    }
 
     const onSchoolDelete = () => {
       fetchSchools()
@@ -49,6 +58,8 @@ const List = () => {
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,
+            //  'X-U-R': user.role,
+            //  'X-U-I': user._id,
             },
           }
         );
@@ -71,7 +82,7 @@ const List = () => {
           setFilteredSchools(data)
         }
       } catch (error) {
-        console.log(error.message)
+        //console.log(error.message)
         if (error.response && !error.response.data.success) {
           Swal.fire('Error!', error.response.data.error, 'error');
         }
@@ -109,9 +120,10 @@ const List = () => {
           className="px-4 py-0.5 border rounded shadow-lg"
           onChange={handleFilter}
         />
-        <Link to="/admin-dashboard/add-school" >
-          <FaPlusSquare className="text-2xl bg-teal-700 text-white rounded shadow-lg" />
-        </Link>
+        {user.role === "superadmin" || user.role === "hquser" ?
+          <Link to="/admin-dashboard/add-school" >
+            <FaPlusSquare className="text-2xl bg-teal-700 text-white rounded shadow-lg" />
+          </Link> : null}
       </div>
       <div className='mt-6 rounded-lg shadow-lg'>
         <DataTable columns={columns} data={filteredSchool} highlightOnHover striped responsive conditionalRowStyles={conditionalRowStyles} expandableRows expandableRowsComponent={ExpandedComponent} />

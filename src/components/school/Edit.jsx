@@ -4,7 +4,7 @@ import { useNavigate, useParams, Link } from "react-router-dom";
 import {
   FaRegTimesCircle
 } from "react-icons/fa";
-import { getBaseUrl, handleRightClick, getSpinner } from '../../utils/CommonHelper';
+import { getBaseUrl, handleRightClick, getSpinner, checkAuth } from '../../utils/CommonHelper';
 import Swal from 'sweetalert2';
 
 const Edit = () => {
@@ -35,6 +35,13 @@ const Edit = () => {
   const { id } = useParams();
 
   useEffect(() => {
+
+    // Authenticate the User.
+    if (checkAuth("schoolEdit") === "NO") {
+      Swal.fire('Error!', 'User Authorization Failed!', 'error');
+      navigate("/login");
+    }
+
     const fetchSchool = async () => {
       try {
         const responnse = await axios.get(

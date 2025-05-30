@@ -5,7 +5,7 @@ import Swal from 'sweetalert2';
 import {
   FaRegTimesCircle
 } from "react-icons/fa";
-import { getBaseUrl, handleRightClick, getSpinner } from '../../utils/CommonHelper'
+import { getBaseUrl, handleRightClick, getSpinner, checkAuth } from '../../utils/CommonHelper'
 
 const View = () => {
 
@@ -17,6 +17,13 @@ const View = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
+
+    // Authenticate the User.
+    if (checkAuth("schoolView") === "NO") {
+      Swal.fire('Error!', 'User Authorization Failed!', 'error');
+      navigate("/login");
+    }
+
     const fetchSchool = async () => {
       try {
         const responnse = await axios.get(

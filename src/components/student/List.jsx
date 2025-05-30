@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { columns, StudentButtons } from '../../utils/StudentHelper'
 import DataTable from 'react-data-table-component'
 import axios from 'axios'
-import { getBaseUrl, handleRightClick, getSpinner } from '../../utils/CommonHelper';
+import { getBaseUrl, handleRightClick, getSpinner, checkAuth } from '../../utils/CommonHelper';
 import Swal from 'sweetalert2';
 import {
   FaPlusSquare, FaArrowAltCircleLeft
@@ -19,6 +19,12 @@ const List = () => {
   const navigate = useNavigate()
 
   useEffect(() => {
+
+    // Authenticate the User.
+    if (checkAuth("studentsList") === "NO") {
+      Swal.fire('Error!', 'User Authorization Failed!', 'error');
+      navigate("/login");
+    }
 
     const onStudentDelete = () => {
       fetchStudents()

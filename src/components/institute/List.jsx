@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { columns, InstituteButtons } from '../../utils/InstituteHelper'
 import DataTable from 'react-data-table-component'
 import axios from 'axios'
-import { getBaseUrl, handleRightClick, getSpinner } from '../../utils/CommonHelper';
+import { getBaseUrl, handleRightClick, getSpinner, checkAuth } from '../../utils/CommonHelper';
 import Swal from 'sweetalert2';
 import {
   FaPlusSquare, FaArrowAltCircleLeft
@@ -12,13 +12,19 @@ import {
 const List = () => {
   // To prevent right-click.
   document.addEventListener('contextmenu', handleRightClick);
-  
+
   const [institutes, setInstitutes] = useState([])
   const [supLoading, setSupLoading] = useState(false)
   const [filteredInstitute, setFilteredInstitutes] = useState(null)
   const navigate = useNavigate()
 
   useEffect(() => {
+
+    // Authenticate the User.
+    if (checkAuth("institutesList") === "NO") {
+      Swal.fire('Error!', 'User Authorization Failed!', 'error');
+      navigate("/login");
+    }
 
     const onInstituteDelete = () => {
       fetchInstitutes()

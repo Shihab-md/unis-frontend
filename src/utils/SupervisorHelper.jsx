@@ -2,6 +2,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { getBaseUrl } from '../utils/CommonHelper';
 import Swal from 'sweetalert2';
+import { useAuth } from '../context/AuthContext'
 import {
   FaEye,
   FaEdit,
@@ -120,26 +121,31 @@ export const SupervisorButtons = ({ Id, onSupervisorDelete }) => {
     }
   };
 
+  const { user } = useAuth();
+
   return (
     <div className="flex space-x-3 rounded-sm shadow-lg">
-      <button
-        className="px-3 py-1 bg-teal-600 text-white rounded-sm text-shadow-lg"
-        onClick={() => navigate(`/admin-dashboard/supervisors/${Id}`)}
-      >
-        <FaEye />
-      </button>
-      <button
-        className="px-3 py-1 bg-blue-600 text-white rounded-sm text-shadow-lg"
-        onClick={() => navigate(`/admin-dashboard/supervisors/edit/${Id}`)}
-      >
-        <FaEdit />
-      </button>
-      <button
-        className="px-3 py-1 bg-red-600 text-white rounded-sm text-shadow-lg"
-        onClick={() => handleDelete(Id)}
-      >
-        <FaTrashAlt />
-      </button>
+      {user.role === "superadmin" || user.role === "hquser" ?
+        <div className="flex space-x-3 rounded-sm shadow-lg">
+          <button
+            className="px-3 py-1 bg-teal-600 text-white rounded-sm text-shadow-lg"
+            onClick={() => navigate(`/admin-dashboard/supervisors/${Id}`)}
+          >
+            <FaEye />
+          </button>
+          <button
+            className="px-3 py-1 bg-blue-600 text-white rounded-sm text-shadow-lg"
+            onClick={() => navigate(`/admin-dashboard/supervisors/edit/${Id}`)}
+          >
+            <FaEdit />
+          </button>
+          <button
+            className="px-3 py-1 bg-red-600 text-white rounded-sm text-shadow-lg"
+            onClick={() => handleDelete(Id)}
+          >
+            <FaTrashAlt />
+          </button>
+        </div> : null}
     </div>
   );
 };

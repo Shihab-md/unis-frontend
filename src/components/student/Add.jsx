@@ -5,7 +5,7 @@ import { getSchools } from '../../utils/SchoolHelper';
 import { getAcademicYears } from '../../utils/AcademicYearHelper';
 import { getInstitutes } from '../../utils/InstituteHelper';
 import { getCourses } from '../../utils/CourseHelper';
-import { getBaseUrl, handleRightClick } from '../../utils/CommonHelper';;
+import { getBaseUrl, handleRightClick, checkAuth } from '../../utils/CommonHelper';;
 import Swal from 'sweetalert2';
 import {
   FaRegTimesCircle
@@ -29,6 +29,14 @@ const Add = () => {
   const [fees6Val, setFees6Val] = useState("");
 
   const navigate = useNavigate()
+
+  useEffect(() => {
+    // Authenticate the User.
+    if (checkAuth("studentAdd") === "NO") {
+      Swal.fire('Error!', 'User Authorization Failed!', 'error');
+      navigate("/login");
+    }
+  });
 
   useEffect(() => {
     const getSchoolsMap = async (id) => {

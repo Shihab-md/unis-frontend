@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { getBaseUrl } from '../utils/CommonHelper';
+import { useAuth } from '../context/AuthContext'
 import Swal from 'sweetalert2';
 import {
   FaEye,
@@ -147,6 +148,8 @@ export const SchoolButtons = ({ Id, onSchoolDelete }) => {
     }
   };
 
+  const { user } = useAuth();
+
   return (
     <div className="flex space-x-3">
       <button
@@ -155,18 +158,20 @@ export const SchoolButtons = ({ Id, onSchoolDelete }) => {
       >
         <FaEye />
       </button>
-      <button
-        className="px-3 py-1 bg-blue-600 text-white rounded-sm text-shadow-lg"
-        onClick={() => navigate(`/admin-dashboard/schools/edit/${Id}`)}
-      >
-        <FaEdit />
-      </button>
-      <button
-        className="px-3 py-1 bg-red-600 text-white rounded-sm text-shadow-lg"
-        onClick={() => handleDelete(Id)}
-      >
-        <FaTrashAlt />
-      </button>
+      {user.role === "superadmin" || user.role === "hquser" || user.role === "admin" ?
+        <div className="flex space-x-3">
+          <button
+            className="px-3 py-1 bg-blue-600 text-white rounded-sm text-shadow-lg"
+            onClick={() => navigate(`/admin-dashboard/schools/edit/${Id}`)}
+          >
+            <FaEdit />
+          </button>
+          <button
+            className="px-3 py-1 bg-red-600 text-white rounded-sm text-shadow-lg"
+            onClick={() => handleDelete(Id)}
+          >
+            <FaTrashAlt />
+          </button> </div> : null}
     </div>
   );
 };

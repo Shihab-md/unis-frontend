@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
-import { getBaseUrl, handleRightClick } from '../../utils/CommonHelper';;
+import { getBaseUrl, handleRightClick, checkAuth } from '../../utils/CommonHelper';;
 import Swal from 'sweetalert2';
 import {
   FaRegTimesCircle
@@ -48,6 +48,14 @@ const Add = () => {
   });
 
   const navigate = useNavigate()
+
+  useEffect(() => {
+    // Authenticate the User.
+    if (checkAuth("courseAdd") === "NO") {
+      Swal.fire('Error!', 'User Authorization Failed!', 'error');
+      navigate("/login");
+    }
+  });
 
   const handleChange = (e) => {
     const { name, value } = e.target;

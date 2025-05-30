@@ -3,8 +3,9 @@ import { Link, useNavigate } from 'react-router-dom'
 import { columns, EmployeeButtons } from '../../utils/EmployeeHelper'
 import DataTable from 'react-data-table-component'
 import axios from 'axios'
-import { getBaseUrl, handleRightClick, getSpinner } from '../../utils/CommonHelper';
+import { getBaseUrl, handleRightClick, getSpinner, checkAuth } from '../../utils/CommonHelper';
 import Swal from 'sweetalert2';
+import { useAuth } from '../../context/AuthContext'
 import {
   FaPlusSquare, FaArrowAltCircleLeft
 } from "react-icons/fa";
@@ -19,6 +20,12 @@ const List = () => {
   const navigate = useNavigate()
 
   useEffect(() => {
+
+    // Authenticate the User.
+    if (checkAuth("employeesList") === "NO") {
+      Swal.fire('Error!', 'User Authorization Failed!', 'error');
+      navigate("/login");
+    }
 
     const onEmployeeDelete = () => {
       fetchEmployees()
@@ -77,6 +84,8 @@ const List = () => {
     return getSpinner();
   }
 
+  const { user } = useAuth();
+
   return (
     <div className="mt-3 p-5">
       <div className="text-center">
@@ -92,9 +101,10 @@ const List = () => {
           className="px-4 py-0.5 border rounded shadow-lg"
           onChange={handleFilter}
         />
-        <Link to="/admin-dashboard/add-employee" >
-          <FaPlusSquare className="text-2xl bg-teal-700 text-white rounded shadow-lg" />
-        </Link>
+        {user.role === "superadmin" || user.role === "hquser" || user.role === "admin" ?
+          <Link to="/admin-dashboard/add-employee" >
+            <FaPlusSquare className="text-2xl bg-teal-700 text-white rounded shadow-lg" />
+          </Link> : null}
       </div>
       <div className='mt-6 rounded-lg shadow-lg'>
         <DataTable columns={columns} data={filteredEmployee} pagination />

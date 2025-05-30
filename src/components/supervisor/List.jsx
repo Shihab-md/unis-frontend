@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { columns, SupervisorButtons } from '../../utils/SupervisorHelper'
-import { getBaseUrl, handleRightClick, getSpinner, getAuthRoles } from '../../utils/CommonHelper';
+import { getBaseUrl, handleRightClick, getSpinner, checkAuth } from '../../utils/CommonHelper';
 import DataTable from 'react-data-table-component'
+import { useAuth } from '../../context/AuthContext'
 import axios from 'axios'
 import Swal from 'sweetalert2';
 import {
@@ -20,9 +21,9 @@ const List = () => {
   const [filteredSupervisor, setFilteredSupervisors] = useState(null)
 
   useEffect(() => {
-
+ 
     // Authenticate the User.
-    if (!getAuthRoles("supervisorsList").includes(localStorage.getItem("role"))) {
+    if (checkAuth("supervisorsList") === "NO") {
       Swal.fire('Error!', 'User Authorization Failed!', 'error');
       navigate("/login");
     }
@@ -47,7 +48,6 @@ const List = () => {
           const data = await responnse.data.supervisors.map((sup) => ({
             _id: sup._id,
             sno: sno++,
-            // dep_name: sup.department.dep_name,
             name: sup.userId.name,
             contactNumber: sup.contactNumber,
             routeName: sup.routeName,
@@ -83,6 +83,8 @@ const List = () => {
     return getSpinner();
   }
 
+  const { user } = useAuth();
+
   return (
     <div className="mt-3 p-5">
       <div className="text-center">
@@ -98,9 +100,10 @@ const List = () => {
           className="px-4 py-0.5 border rounded shadow-lg"
           onChange={handleFilter}
         />
-        <Link to="/admin-dashboard/add-supervisor" >
-          <FaPlusSquare className="text-2xl bg-teal-700 text-white rounded shadow-lg" />
-        </Link>
+        {user.role === "superadmin" || user.role === "hquser" ?
+          <Link to="/admin-dashboard/add-supervisor" >
+            <FaPlusSquare className="text-2xl bg-teal-700 text-white rounded shadow-lg" />
+          </Link> : null}
       </div>
       <div className='mt-6 rounded-lg shadow-lg'>
         <DataTable columns={columns} data={filteredSupervisor} pagination />
