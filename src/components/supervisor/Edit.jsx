@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate, useParams, Link } from "react-router-dom";
 import moment from "moment";
-import { getBaseUrl, handleRightClick, getSpinner } from '../../utils/CommonHelper';
+import { getBaseUrl, handleRightClick, getSpinner, getAuthRoles } from '../../utils/CommonHelper';
 import Swal from 'sweetalert2';
 import {
   FaRegTimesCircle
@@ -12,6 +12,8 @@ const Edit = () => {
 
   // To prevent right-click.
   document.addEventListener('contextmenu', handleRightClick);
+
+  const navigate = useNavigate()
 
   const [supervisor, setSupervisor] = useState({
     name: "",
@@ -28,10 +30,16 @@ const Edit = () => {
     salary: "",
   });
 
-  const navigate = useNavigate();
   const { id } = useParams();
 
   useEffect(() => {
+
+    // Authenticate the User.
+    if (!getAuthRoles("supervisorEdit").includes(localStorage.getItem("role"))) {
+      Swal.fire('Error!', 'User Authorization Failed!', 'error');
+      navigate("/login");
+    }
+
     const fetchSupervisor = async () => {
       try {
         const responnse = await axios.get(

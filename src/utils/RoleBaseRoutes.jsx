@@ -2,12 +2,13 @@ import React from 'react'
 import { useAuth } from '../context/AuthContext'
 import { Navigate } from 'react-router-dom'
 import Swal from 'sweetalert2';
+import { getSpinner } from './CommonHelper';
 
 const RoleBaseRoutes = ({ children, requiredRole }) => {
     const { user, loading } = useAuth()
 
     if (loading) {
-        return <div>Loading ...</div>
+        return getSpinner();
     }
 
     if (!requiredRole.includes(user.role)) {

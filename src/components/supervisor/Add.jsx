@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
-import { getBaseUrl, handleRightClick } from '../../utils/CommonHelper';
+import { getBaseUrl, handleRightClick, getAuthRoles } from '../../utils/CommonHelper';
 import Swal from 'sweetalert2';
 import {
   FaRegTimesCircle
@@ -9,11 +9,19 @@ import {
 
 const Add = () => {
 
+  const navigate = useNavigate();
   // To prevent right-click.
   document.addEventListener('contextmenu', handleRightClick);
 
+  useEffect(() => {
+    // Authenticate the User.
+    if (!getAuthRoles("supervisorAdd").includes(localStorage.getItem("role"))) {
+      Swal.fire('Error!', 'User Authorization Failed!', 'error');
+      navigate("/login");
+    }
+  });
+
   const [formData, setFormData] = useState({});
-  const navigate = useNavigate()
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;

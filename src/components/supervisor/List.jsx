@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { columns, SupervisorButtons } from '../../utils/SupervisorHelper'
-import { getBaseUrl, handleRightClick, getSpinner } from '../../utils/CommonHelper';
+import { getBaseUrl, handleRightClick, getSpinner, getAuthRoles } from '../../utils/CommonHelper';
 import DataTable from 'react-data-table-component'
 import axios from 'axios'
 import Swal from 'sweetalert2';
@@ -10,15 +10,22 @@ import {
 } from "react-icons/fa";
 
 const List = () => {
+
   // To prevent right-click.
   document.addEventListener('contextmenu', handleRightClick);
 
+  const navigate = useNavigate()
   const [supervisors, setSupervisors] = useState([])
   const [supLoading, setSupLoading] = useState(false)
   const [filteredSupervisor, setFilteredSupervisors] = useState(null)
-  const navigate = useNavigate()
 
   useEffect(() => {
+
+    // Authenticate the User.
+    if (!getAuthRoles("supervisorsList").includes(localStorage.getItem("role"))) {
+      Swal.fire('Error!', 'User Authorization Failed!', 'error');
+      navigate("/login");
+    }
 
     const onSupervisorDelete = () => {
       fetchSupervisors()
