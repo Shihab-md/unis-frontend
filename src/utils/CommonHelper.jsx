@@ -71,7 +71,7 @@ export function handleRightClick(event) {
 
 export function getSpinner() {
   return <div className='flex items-center justify-center rounded-lg h-screen content-center'>
-    <img width={340} className='flex p-7 items-center justify-center rounded-lg' src="/spinner.gif" />
+    <img width={340} className='flex p-7 items-center justify-center rounded-full' src="/spinner.gif" />
   </div>
 }
 
