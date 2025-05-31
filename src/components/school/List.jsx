@@ -58,8 +58,8 @@ const List = () => {
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,
-            //  'X-U-R': user.role,
-            //  'X-U-I': user._id,
+              //  'X-U-R': user.role,
+              //  'X-U-I': user._id,
             },
           }
         );
@@ -75,7 +75,8 @@ const List = () => {
             address: sch.address,
             district: sch.district,
             active: sch.active,
-            supervisorId: sch.supervisorId,
+            supervisorId: sch.supervisorId.supervisorId,
+            supervisorName: sch.supervisorId.userId.name,
             action: (<SchoolButtons Id={sch._id} onSchoolDelete={onSchoolDelete} />),
           }));
           setSchools(data);

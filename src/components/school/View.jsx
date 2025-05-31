@@ -100,8 +100,8 @@ const View = () => {
                   <p className="font-normal">{school.active}</p>
                 </div>
                 <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Supervisor Id :</p>
-                  <p className="font-normal">{school.supervisorId}</p>
+                  <p className="font-medium">Supervisor :</p>
+                  <p className="font-normal">{school.supervisorId.supervisorId + " : " + school.supervisorId.userId.name}</p>
                 </div>
                 <div className="flex space-x-3 mb-5" />
                 <div className="flex space-x-3 mb-5">

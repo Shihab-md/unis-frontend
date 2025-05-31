@@ -55,7 +55,7 @@ export const getSupervisors = async (id) => {
   let supervisors;
   try {
     const responnse = await axios.get(
-      (await getBaseUrl()).toString() + `supervisors/`,
+      (await getBaseUrl()).toString() + `supervisor/`,
       {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,

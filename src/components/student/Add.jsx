@@ -37,7 +37,7 @@ const Add = () => {
       navigate("/login");
     }
   });
-
+ 
   useEffect(() => {
     const getSchoolsMap = async (id) => {
       const schools = await getSchools(id);

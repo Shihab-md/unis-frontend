@@ -43,7 +43,7 @@ export const columns = [
     name: "Address, District / State",
     selector: (row) => row.address + ", " + row.district,
     //  sortable: true,
-    width: "370px",
+    width: "300px",
   },
   {
     name: "Status",
@@ -52,10 +52,10 @@ export const columns = [
     width: "110px",
   },
   {
-    name: "Supervisor Id",
-    selector: (row) => row.supervisorId,
+    name: "Supervisor",
+    selector: (row) => row.supervisorId + " : " + row.supervisorName,
     //  sortable: true,
-    width: "160px",
+    width: "320px",
   },
   {
     name: "Action",

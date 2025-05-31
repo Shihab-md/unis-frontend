@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { getSupervisors } from '../../utils/SupervisorHelper';
 import { useNavigate, useParams, Link } from "react-router-dom";
 import {
   FaRegTimesCircle
@@ -31,8 +32,17 @@ const Edit = () => {
     incharge7: "",
   });
 
+  const [supervisors, setSupervisors] = useState([]);
   const navigate = useNavigate();
   const { id } = useParams();
+
+  useEffect(() => {
+    const getSupervisorsMap = async (id) => {
+      const supervisors = await getSupervisors(id);
+      setSupervisors(supervisors);
+    };
+    getSupervisorsMap();
+  }, []);
 
   useEffect(() => {
 
@@ -297,6 +307,27 @@ const Edit = () => {
                 {/* Supervisor Id */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700">
+                    Select Supervisor <span className="text-red-700">*</span>
+                  </label>
+                  <select
+                    name="supervisorId"
+                    value={school.supervisorId}
+                    onChange={handleChange}
+                    className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
+                    required
+                  >
+                    <option value="">Select Supervisor</option>
+                    {supervisors.map((supervisor) => (
+                      <option key={supervisor._id} value={supervisor._id}>
+                        {supervisor.supervisorId + " : " + supervisor.userId.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                {/* Supervisor Id 
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">
                     Supervisor Id <span className="text-red-700">*</span>
                   </label>
                   <input
@@ -308,7 +339,7 @@ const Edit = () => {
                     className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                     required
                   />
-                </div>
+                </div>*/}
 
                 <div className="flex space-x-3 mb-5" />
                 <div className="flex space-x-3 mb-5" />
