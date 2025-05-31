@@ -9,7 +9,7 @@ const Navbar = () => {
   const { user, logout } = useAuth()
   return (
     <div className='flex items-center text-white justify-between h-12 bg-teal-600 px-5 text-shadow-lg'>
-      <Link to="/admin-dashboard" >
+      <Link to="/dashboard" >
         <FaHome className="text-2xl text-green-300 text-shadow-lg" />
       </Link>
       <p className="text-xl mt-1 font-bold text-shadow-lg">UNIS ACADEMY</p>

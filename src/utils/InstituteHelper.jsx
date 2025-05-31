@@ -123,13 +123,13 @@ export const InstituteButtons = ({ Id, onInstituteDelete }) => {
     <div className="flex space-x-3">
       <button
         className="px-3 py-1 bg-teal-600 text-white rounded-sm text-shadow-lg"
-        onClick={() => navigate(`/admin-dashboard/institutes/${Id}`)}
+        onClick={() => navigate(`/dashboard/institutes/${Id}`)}
       >
         <FaEye />
       </button>
       <button
         className="px-3 py-1 bg-blue-600 text-white rounded-sm text-shadow-lg"
-        onClick={() => navigate(`/admin-dashboard/institutes/edit/${Id}`)}
+        onClick={() => navigate(`/dashboard/institutes/edit/${Id}`)}
       >
         <FaEdit />
       </button>

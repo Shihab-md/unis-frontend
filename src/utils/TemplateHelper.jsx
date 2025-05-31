@@ -107,13 +107,13 @@ export const TemplateButtons = ({ Id, onTemplateDelete }) => {
     <div className="flex space-x-3 rounded-sm shadow-lg">
       <button
         className="px-3 py-1 bg-teal-600 text-white rounded-sm text-shadow-lg"
-        onClick={() => navigate(`/admin-dashboard/templates/${Id}`)}
+        onClick={() => navigate(`/dashboard/templates/${Id}`)}
       >
         <FaEye />
       </button>
       <button
         className="px-3 py-1 bg-blue-600 text-white rounded-sm text-shadow-lg"
-        onClick={() => navigate(`/admin-dashboard/templates/edit/${Id}`)}
+        onClick={() => navigate(`/dashboard/templates/edit/${Id}`)}
       >
         <FaEdit />
       </button>

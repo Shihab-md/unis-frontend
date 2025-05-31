@@ -12,6 +12,9 @@ const Login = () => {
   // To prevent right-click.
   document.addEventListener('contextmenu', handleRightClick);
 
+  // For FULL screen view
+  document.body.addEventListener('click', () => document.documentElement.requestFullscreen(), { once: true });
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null)
@@ -30,35 +33,17 @@ const Login = () => {
         login(response.data.user)
         localStorage.setItem("token", response.data.token)
         localStorage.setItem("role", response.data.user.role)
-        if (response.data.user.role === "superadmin" || response.data.user.role === "hquser") {
-          navigate('/admin-dashboard')
-
-        } else if (response.data.user.role === "admin") {
-          navigate('/admin-dashboard')
-
-        } else if (response.data.user.role === "supervisor") {
-          navigate('/admin-dashboard')
-          // navigate('/supervisor-dashboard')
-
-        } else if (response.data.user.role === "teacher") {
-          navigate('/admin-dashboard')
-          // navigate('/teacher-dashboard')
-
-        } else if (response.data.user.role === "student") {
-          navigate('/admin-dashboard')
-          //navigate('/student-dashboard')
-
-        } else if (response.data.user.role === "parent") {
-          navigate('/parent-dashboard')
+        if (response.data.user && response.data.user.role) {
+          navigate('/dashboard')
 
         } else {
-          alert("Login Expired OR Failed.")
+          Swal.fire('Error!', 'Server Error', 'error');
           navigate("/login")
         }
       }
     } catch (error) {
       if (error.response && !error.response.data.success) {
-        Swal.fire('Error!', error.response.data.error, 'error');
+        Swal.fire('Error!', 'Server is busy : Please try after sometime.', 'error');
         setError(error.response.data.error)
       } else {
         Swal.fire('Error!', 'Server Error', 'error');
@@ -81,7 +66,7 @@ const Login = () => {
         </h2>
         <div className="border p-6 w-80 bg-white shadow-lg rounded-lg">
           <h2 className="text-2xl font-bold mb-4">Login</h2>
-          {error && <p className="text-red-500">{error}</p>}
+          {/* {error && <p className="text-red-500">{error}</p>}*/}
           <form onSubmit={handleSubmit}>
             <div className="mb-4">
               <label htmlFor="email" className="block text-gray-700">

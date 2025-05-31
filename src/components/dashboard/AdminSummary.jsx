@@ -17,11 +17,15 @@ const AdminSummary = () => {
   // To prevent right-click.
   document.addEventListener('contextmenu', handleRightClick);
 
+  // For FULL screen view
+  document.body.addEventListener('click', () => document.documentElement.requestFullscreen(), { once: true });
+
   const [summary, setSummary] = useState(null)
   const navigate = useNavigate()
   const { user } = useAuth()
 
   useEffect(() => {
+
     const fetchSummary = async () => {
       try {
         const summary = await axios.get((await getBaseUrl()).toString() + 'dashboard/summary', {
@@ -54,7 +58,7 @@ const AdminSummary = () => {
       <div className="rounded-lg grid grid-cols-2 md:grid-cols-4 gap-7 mt-7 flex rounded-lg">
 
         {user.role === "superadmin" || user.role === "hquser" || user.role === "supervisor" ?
-          <Link to="/admin-dashboard/supervisors" >
+          <Link to="/dashboard/supervisors" >
             <SummaryCard
               icon={<FaUserFriends />}
               text="Muaavins"
@@ -64,7 +68,7 @@ const AdminSummary = () => {
           </Link> : null}
 
         {user.role === "superadmin" || user.role === "hquser" || user.role === "supervisor" || user.role === "admin" ?
-          <Link to="/admin-dashboard/schools" >
+          <Link to="/dashboard/schools" >
             <SummaryCard
               icon={<FaMosque />}
               text="Niswans"
@@ -74,7 +78,7 @@ const AdminSummary = () => {
           </Link> : null}
 
         {user.role === "superadmin" || user.role === "hquser" || user.role === "supervisor" || user.role === "admin" ?
-          <Link to="/admin-dashboard/employees" >
+          <Link to="/dashboard/employees" >
             <SummaryCard
               icon={<FaHouseUser />}
               text="Employees"
@@ -84,7 +88,7 @@ const AdminSummary = () => {
           </Link> : null}
 
         {user.role === "superadmin" || user.role === "hquser" || user.role === "admin" ?
-          <Link to="/admin-dashboard/students" >
+          <Link to="/dashboard/students" >
             <SummaryCard
               icon={<FaUsers />}
               text="Students"
@@ -94,7 +98,7 @@ const AdminSummary = () => {
           </Link> : null}
 
         {user.role === "superadmin" || user.role === "hquser" ?
-          <Link to="/admin-dashboard/institutes" >
+          <Link to="/dashboard/institutes" >
             <SummaryCard
               icon={<FaBuilding />}
               text="Institutes"
@@ -104,7 +108,7 @@ const AdminSummary = () => {
           </Link> : null}
 
         {user.role === "superadmin" || user.role === "hquser" ?
-          <Link to="/admin-dashboard/courses" >
+          <Link to="/dashboard/courses" >
             <SummaryCard
               icon={<FaClipboardList />}
               text="Courses"
@@ -124,7 +128,7 @@ const AdminSummary = () => {
           </Link> : null}
 
         {user.role === "superadmin" || user.role === "hquser" ?
-          <Link to="/admin-dashboard/academicYears" >
+          <Link to="/dashboard/academicYears" >
             <SummaryCard
               icon={<FaCalendarAlt />}
               text="AC Year"
@@ -144,7 +148,7 @@ const AdminSummary = () => {
           </Link> : null}
 
         {user.role === "superadmin" || user.role === "hquser" ?
-          <Link to="/admin-dashboard/certificates" >
+          <Link to="/dashboard/certificates" >
             <SummaryCard
               icon={<FaMedal />}
               text="Certificates"
@@ -154,7 +158,7 @@ const AdminSummary = () => {
           </Link> : null}
 
         {user.role === "superadmin" || user.role === "hquser" ?
-          <Link to="/admin-dashboard/templates" >
+          <Link to="/dashboard/templates" >
             <SummaryCard
               icon={<FaWpforms />}
               text="Templates"
@@ -173,7 +177,7 @@ const AdminSummary = () => {
             />
           </Link> : null}
 
-        <Link to="/admin-dashboard/settings" >
+        <Link to="/dashboard/settings" >
           <SummaryCard
             icon={<FaUserCog />}
             text="Settings"

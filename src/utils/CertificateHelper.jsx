@@ -108,7 +108,7 @@ export const CertificateButtons = ({ Id, onCertificateDelete }) => {
     <div className="flex space-x-3 rounded-sm shadow-lg">
       <button
         className="px-3 py-1 bg-teal-600 text-white rounded-sm text-shadow-lg"
-        onClick={() => navigate(`/admin-dashboard/certificates/${Id}`)}
+        onClick={() => navigate(`/dashboard/certificates/${Id}`)}
       >
         <FaEye />
       </button>

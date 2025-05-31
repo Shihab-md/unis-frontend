@@ -80,13 +80,13 @@ export const ClassSectionButtons = ({ Id, onClassSectionDelete }) => {
     <div className="flex space-x-3">
       <button
         className="px-3 py-1 bg-teal-600 text-white"
-        onClick={() => navigate(`/admin-dashboard/classSections/${Id}`)}
+        onClick={() => navigate(`/dashboard/classSections/${Id}`)}
       >
         View
       </button>
       <button
         className="px-3 py-1 bg-blue-600 text-white"
-        onClick={() => navigate(`/admin-dashboard/classSections/edit/${Id}`)}
+        onClick={() => navigate(`/dashboard/classSections/edit/${Id}`)}
       >
         Edit
       </button>

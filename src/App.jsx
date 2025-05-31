@@ -76,10 +76,13 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Navigate to="/admin-dashboard" />}></Route>
+        <Route path="/" element={<Navigate to="/dashboard" />}></Route>
         <Route path="/login" element={<Login />}></Route>
-        <Route
-          path="/admin-dashboard"
+
+        {/* <Route path="/" element={<Navigate to="/login" />}></Route>
+        <Route path="/login" element={<Login />}></Route>*/}
+
+        <Route path="/dashboard"
           element={
             <PrivateRoutes>
               <RoleBaseRoutes requiredRole={["admin"]}>
@@ -90,87 +93,77 @@ function App() {
         >
           <Route index element={<AdminSummary />}></Route>
 
-          <Route
-            path="/admin-dashboard/departments"
-            element={<DepartmentList />}
-          ></Route>
-          <Route
-            path="/admin-dashboard/add-department"
-            element={<AddDepartment />}
-          ></Route>
-          <Route
-            path="/admin-dashboard/department/:id"
-            element={<EditDepartment />}
-          ></Route>
+          <Route path="/dashboard/supervisors" element={<SupervisorList />}></Route>
+          <Route path="/dashboard/add-supervisor" element={<SupervisorAdd />}></Route>
+          <Route path="/dashboard/supervisors/:id" element={<SupervisorView />}></Route>
+          <Route path="/dashboard/supervisors/edit/:id" element={<SupervisorEdit />}></Route>
 
-          <Route path="/admin-dashboard/supervisors" element={<SupervisorList />}></Route>
-          <Route path="/admin-dashboard/add-supervisor" element={<SupervisorAdd />}></Route>
-          <Route path="/admin-dashboard/supervisors/:id" element={<SupervisorView />}></Route>
-          <Route path="/admin-dashboard/supervisors/edit/:id" element={<SupervisorEdit />}></Route>
+          <Route path="/dashboard/schools" element={<SchoolList />}></Route>
+          <Route path="/dashboard/add-school" element={<SchoolAdd />}></Route>
+          <Route path="/dashboard/schools/:id" element={<SchoolView />}></Route>
+          <Route path="/dashboard/schools/edit/:id" element={<SchoolEdit />}></Route>
 
-          <Route path="/admin-dashboard/schools" element={<SchoolList />}></Route>
-          <Route path="/admin-dashboard/add-school" element={<SchoolAdd />}></Route>
-          <Route path="/admin-dashboard/schools/:id" element={<SchoolView />}></Route>
-          <Route path="/admin-dashboard/schools/edit/:id" element={<SchoolEdit />}></Route>
+          <Route path="/dashboard/employees" element={<List />}></Route>
+          <Route path="/dashboard/add-employee" element={<Add />}></Route>
+          <Route path="/dashboard/employees/:id" element={<View />}></Route>
+          <Route path="/dashboard/employees/edit/:id" element={<Edit />}></Route>
 
-          <Route path="/admin-dashboard/classSections" element={<ClassSectionList />}></Route>
-          <Route path="/admin-dashboard/add-classSection" element={<ClassSectionAdd />}></Route>
-          <Route path="/admin-dashboard/classSections/:id" element={<ClassSectionView />}></Route>
-          <Route path="/admin-dashboard/classSections/edit/:id" element={<ClassSectionEdit />}></Route>
+          <Route path="/dashboard/students" element={<StudentList />}></Route>
+          <Route path="/dashboard/add-student" element={<StudentAdd />}></Route>
+          <Route path="/dashboard/students/:id" element={<StudentView />}></Route>
+          <Route path="/dashboard/students/edit/:id" element={<StudentEdit />}></Route>
 
-          <Route path="/admin-dashboard/employees" element={<List />}></Route>
-          <Route path="/admin-dashboard/add-employee" element={<Add />}></Route>
-          <Route path="/admin-dashboard/employees/:id" element={<View />}></Route>
-          <Route path="/admin-dashboard/employees/edit/:id" element={<Edit />}></Route>
-          <Route
-            path="/admin-dashboard/employees/salary/:id"
-            element={<ViewSalary />}
-          ></Route>
+          <Route path="/dashboard/institutes" element={<InstituteList />}></Route>
+          <Route path="/dashboard/add-institute" element={<InstituteAdd />}></Route>
+          <Route path="/dashboard/institutes/:id" element={<InstituteView />}></Route>
+          <Route path="/dashboard/institutes/edit/:id" element={<InstituteEdit />}></Route>
 
-          <Route path="/admin-dashboard/students" element={<StudentList />}></Route>
-          <Route path="/admin-dashboard/add-student" element={<StudentAdd />}></Route>
-          <Route path="/admin-dashboard/students/:id" element={<StudentView />}></Route>
-          <Route path="/admin-dashboard/students/edit/:id" element={<StudentEdit />}></Route>
+          <Route path="/dashboard/courses" element={<CourseList />}></Route>
+          <Route path="/dashboard/add-course" element={<CourseAdd />}></Route>
+          <Route path="/dashboard/courses/:id" element={<CourseView />}></Route>
+          <Route path="/dashboard/courses/edit/:id" element={<CourseEdit />}></Route>
 
-          <Route path="/admin-dashboard/institutes" element={<InstituteList />}></Route>
-          <Route path="/admin-dashboard/add-institute" element={<InstituteAdd />}></Route>
-          <Route path="/admin-dashboard/institutes/:id" element={<InstituteView />}></Route>
-          <Route path="/admin-dashboard/institutes/edit/:id" element={<InstituteEdit />}></Route>
+          <Route path="/dashboard/templates" element={<TemplateList />}></Route>
+          <Route path="/dashboard/add-template" element={<TemplateAdd />}></Route>
+          <Route path="/dashboard/templates/:id" element={<TemplateView />}></Route>
+          <Route path="/dashboard/templates/edit/:id" element={<TemplateEdit />}></Route>
 
-          <Route path="/admin-dashboard/courses" element={<CourseList />}></Route>
-          <Route path="/admin-dashboard/add-course" element={<CourseAdd />}></Route>
-          <Route path="/admin-dashboard/courses/:id" element={<CourseView />}></Route>
-          <Route path="/admin-dashboard/courses/edit/:id" element={<CourseEdit />}></Route>
+          <Route path="/dashboard/certificates" element={<CertificateList />}></Route>
+          <Route path="/dashboard/add-certificate" element={<CertificateAdd />}></Route>
+          <Route path="/dashboard/certificates/:id" element={<CertificateView />}></Route>
 
-          <Route path="/admin-dashboard/templates" element={<TemplateList />}></Route>
-          <Route path="/admin-dashboard/add-template" element={<TemplateAdd />}></Route>
-          <Route path="/admin-dashboard/templates/:id" element={<TemplateView />}></Route>
-          <Route path="/admin-dashboard/templates/edit/:id" element={<TemplateEdit />}></Route>
+          <Route path="/dashboard/academicYears" element={<AcademicYearList />}></Route>
+          <Route path="/dashboard/add-academicYear" element={<AcademicYearAdd />}></Route>
+          <Route path="/dashboard/academicYears/:id" element={<AcademicYearView />}></Route>
+          <Route path="/dashboard/academicYears/edit/:id" element={<AcademicYearEdit />}></Route>
 
-          <Route path="/admin-dashboard/certificates" element={<CertificateList />}></Route>
-          <Route path="/admin-dashboard/add-certificate" element={<CertificateAdd />}></Route>
-          <Route path="/admin-dashboard/certificates/:id" element={<CertificateView />}></Route>
+          <Route path="/dashboard/settings" element={<Setting />}></Route>
 
-          <Route path="/admin-dashboard/academicYears" element={<AcademicYearList />}></Route>
-          <Route path="/admin-dashboard/add-academicYear" element={<AcademicYearAdd />}></Route>
-          <Route path="/admin-dashboard/academicYears/:id" element={<AcademicYearView />}></Route>
-          <Route path="/admin-dashboard/academicYears/edit/:id" element={<AcademicYearEdit />}></Route>
+          <Route path="/dashboard/classSections" element={<ClassSectionList />}></Route>
+          <Route path="/dashboard/add-classSection" element={<ClassSectionAdd />}></Route>
+          <Route path="/dashboard/classSections/:id" element={<ClassSectionView />}></Route>
+          <Route path="/dashboard/classSections/edit/:id" element={<ClassSectionEdit />}></Route>
 
-          <Route path="/admin-dashboard/settings" element={<Setting />}></Route>
+          {/* 
 
-          <Route
-            path="/admin-dashboard/salary/add"
-            element={<AddSalary />}
-          ></Route>
-          <Route path="/admin-dashboard/leaves" element={<Table />}></Route>
-          <Route path="/admin-dashboard/leaves/:id" element={<Detail />}></Route>
-          <Route path="/admin-dashboard/employees/leaves/:id" element={<LeaveList />}></Route>
+          <Route path="/dashboard/departments" element={<DepartmentList />}></Route>
+          <Route path="/dashboard/add-department" element={<AddDepartment />}></Route>
+          <Route path="/dashboard/department/:id" element={<EditDepartment />}></Route>
+
+          <Route path="/dashboard/employees/salary/:id" element={<ViewSalary />}></Route>
+
+          <Route path="/dashboard/salary/add" element={<AddSalary />}></Route>
+          <Route path="/dashboard/leaves" element={<Table />}></Route>
+          <Route path="/dashboard/leaves/:id" element={<Detail />}></Route>
+          <Route path="/dashboard/employees/leaves/:id" element={<LeaveList />}></Route>
 
           
-          <Route path="/admin-dashboard/attendance" element={<Attendance />}></Route>
-          <Route path="/admin-dashboard/attendance-report" element={<AttendanceReport />}></Route>
+          <Route path="/dashboard/attendance" element={<Attendance />}></Route>
+          <Route path="/dashboard/attendance-report" element={<AttendanceReport />}></Route> */}
+
         </Route>
-        <Route
+
+        {/* <Route
           path="/employee-dashboard"
           element={
             <PrivateRoutes>
@@ -187,7 +180,7 @@ function App() {
           <Route path="/employee-dashboard/add-leave" element={<AddLeave />}></Route>
           <Route path="/employee-dashboard/salary/:id" element={<ViewSalary />}></Route>
 
-        </Route>
+        </Route> */}
       </Routes>
     </BrowserRouter>
   );

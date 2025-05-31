@@ -90,7 +90,7 @@ const List = () => {
         <h3 className="text-2xl font-bold px-5 py-0 text-shadow-lg">Manage Certificates</h3>
       </div>
       <div className="flex justify-between items-center mt-5">
-        <Link to="/admin-dashboard" >
+        <Link to="/dashboard" >
           <FaArrowAltCircleLeft className="text-2xl bg-blue-700 text-white rounded shadow-lg" />
         </Link>
         <input
@@ -99,7 +99,7 @@ const List = () => {
           className="px-4 py-0.5 border rounded shadow-lg"
           onChange={handleFilter}
         />
-        <Link to="/admin-dashboard/add-certificate" >
+        <Link to="/dashboard/add-certificate" >
           <FaPlusSquare className="text-2xl bg-teal-700 text-white rounded shadow-lg" />
         </Link>
       </div>

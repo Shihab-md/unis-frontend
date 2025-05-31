@@ -75,7 +75,7 @@ const List = () => {
           onChange={handleFilter}
         />
         <Link
-          to="/admin-dashboard/add-classSection"
+          to="/dashboard/add-classSection"
           className="px-4 py-1 bg-teal-600 rounded text-white"
         >
           Add New Class Section

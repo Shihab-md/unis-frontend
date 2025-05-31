@@ -19,7 +19,7 @@ const AdminSidebar = () => {
       </div>
       <div className="px-4">
         <NavLink
-          to="/admin-dashboard"
+          to="/dashboard"
           className={({ isActive }) =>
             `${
               isActive ? "bg-teal-500 " : " "
@@ -31,7 +31,7 @@ const AdminSidebar = () => {
           <span>Dashboard</span>
         </NavLink>
         <NavLink
-          to="/admin-dashboard/supervisors"
+          to="/dashboard/supervisors"
           className={({ isActive }) =>
             `${
               isActive ? "bg-teal-500 " : " "
@@ -42,7 +42,7 @@ const AdminSidebar = () => {
           <span>Supervisors</span>
         </NavLink>
         <NavLink
-          to="/admin-dashboard/schools"
+          to="/dashboard/schools"
           className={({ isActive }) =>
             `${
               isActive ? "bg-teal-500 " : " "
@@ -53,7 +53,7 @@ const AdminSidebar = () => {
           <span>Niswans</span>
         </NavLink>
         <NavLink
-          to="/admin-dashboard/classSections"
+          to="/dashboard/classSections"
           className={({ isActive }) =>
             `${
               isActive ? "bg-teal-500 " : " "
@@ -64,7 +64,7 @@ const AdminSidebar = () => {
           <span>ClassSection</span>
         </NavLink>
         <NavLink
-          to="/admin-dashboard/employees"
+          to="/dashboard/employees"
           className={({ isActive }) =>
             `${
               isActive ? "bg-teal-500 " : " "
@@ -75,7 +75,7 @@ const AdminSidebar = () => {
           <span>Employee</span>
         </NavLink>
         <NavLink
-          to="/admin-dashboard/departments"
+          to="/dashboard/departments"
           className={({ isActive }) =>
             `${
               isActive ? "bg-teal-500 " : " "
@@ -86,7 +86,7 @@ const AdminSidebar = () => {
           <span>Department</span>
         </NavLink>
         <NavLink
-          to="/admin-dashboard/leaves"
+          to="/dashboard/leaves"
           className={({ isActive }) =>
             `${
               isActive ? "bg-teal-500 " : " "
@@ -97,7 +97,7 @@ const AdminSidebar = () => {
           <span>Leave</span>
         </NavLink>
         <NavLink
-          to="/admin-dashboard/salary/add"
+          to="/dashboard/salary/add"
           className={({ isActive }) =>
             `${
               isActive ? "bg-teal-500 " : " "
@@ -108,7 +108,7 @@ const AdminSidebar = () => {
           <span>Salary</span>
         </NavLink>
         <NavLink
-          to={`/admin-dashboard/attendance`}
+          to={`/dashboard/attendance`}
           className={({ isActive }) =>
             `${
               isActive ? "bg-teal-500 " : " "
@@ -119,7 +119,7 @@ const AdminSidebar = () => {
           <span>Attendance</span>
         </NavLink>
         <NavLink
-          to={`/admin-dashboard/attendance-report`}
+          to={`/dashboard/attendance-report`}
           className={({ isActive }) =>
             `${
               isActive ? "bg-teal-500 " : " "
@@ -130,7 +130,7 @@ const AdminSidebar = () => {
           <span>Attendance Report</span>
         </NavLink>
         <NavLink
-          to="/admin-dashboard/setting"
+          to="/dashboard/setting"
           className="flex items-center space-x-4 block py-2.5 px-4 rounded"
         >
           <FaCogs />

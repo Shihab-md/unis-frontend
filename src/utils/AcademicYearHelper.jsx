@@ -117,13 +117,13 @@ export const AcademicYearButtons = ({ Id, onAcademicYearDelete }) => {
     <div className="flex space-x-3">
       <button
         className="px-3 py-1 bg-teal-600 text-white rounded-sm text-shadow-lg"
-        onClick={() => navigate(`/admin-dashboard/academicYears/${Id}`)}
+        onClick={() => navigate(`/dashboard/academicYears/${Id}`)}
       >
         <FaEye />
       </button>
       <button
         className="px-3 py-1 bg-blue-600 text-white rounded-sm text-shadow-lg"
-        onClick={() => navigate(`/admin-dashboard/academicYears/edit/${Id}`)}
+        onClick={() => navigate(`/dashboard/academicYears/edit/${Id}`)}
       >
         <FaEdit />
       </button>

@@ -56,7 +56,7 @@ const View = () => {
           <button
             className="px-3 py-1 bg-blue-600 text-white"
             data-ripple-light="true"
-            onClick={() => navigate(`/admin-dashboard/classSections`)}
+            onClick={() => navigate(`/dashboard/classSections`)}
           >  Back
           </button>
         </div>

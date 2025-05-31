@@ -123,13 +123,13 @@ export const EmployeeButtons = ({ Id, onEmployeeDelete }) => {
         <div className="flex space-x-3">
           <button
             className="px-3 py-1 bg-teal-600 text-white rounded-sm text-shadow-lg"
-            onClick={() => navigate(`/admin-dashboard/employees/${Id}`)}
+            onClick={() => navigate(`/dashboard/employees/${Id}`)}
           >
             <FaEye />
           </button>
           <button
             className="px-3 py-1 bg-blue-600 text-white rounded-sm text-shadow-lg"
-            onClick={() => navigate(`/admin-dashboard/employees/edit/${Id}`)}
+            onClick={() => navigate(`/dashboard/employees/edit/${Id}`)}
           >
             <FaEdit />
           </button>

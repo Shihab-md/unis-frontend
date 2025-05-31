@@ -154,7 +154,7 @@ export const SchoolButtons = ({ Id, onSchoolDelete }) => {
     <div className="flex space-x-3">
       <button
         className="px-3 py-1 bg-teal-600 text-white rounded-sm text-shadow-lg"
-        onClick={() => navigate(`/admin-dashboard/schools/${Id}`)}
+        onClick={() => navigate(`/dashboard/schools/${Id}`)}
       >
         <FaEye />
       </button>
@@ -162,7 +162,7 @@ export const SchoolButtons = ({ Id, onSchoolDelete }) => {
         <div className="flex space-x-3">
           <button
             className="px-3 py-1 bg-blue-600 text-white rounded-sm text-shadow-lg"
-            onClick={() => navigate(`/admin-dashboard/schools/edit/${Id}`)}
+            onClick={() => navigate(`/dashboard/schools/edit/${Id}`)}
           >
             <FaEdit />
           </button>

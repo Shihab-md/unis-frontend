@@ -91,7 +91,7 @@ const List = () => {
         <h3 className="text-2xl font-bold px-5 py-0 text-shadow-lg">Manage Supervisors</h3>
       </div>
       <div className="flex justify-between items-center mt-5">
-        <Link to="/admin-dashboard" >
+        <Link to="/dashboard" >
           <FaArrowAltCircleLeft className="text-2xl bg-blue-700 text-white rounded shadow-lg" />
         </Link>
         <input
@@ -101,7 +101,7 @@ const List = () => {
           onChange={handleFilter}
         />
         {user.role === "superadmin" || user.role === "hquser" ?
-          <Link to="/admin-dashboard/add-supervisor" >
+          <Link to="/dashboard/add-supervisor" >
             <FaPlusSquare className="text-2xl bg-teal-700 text-white rounded shadow-lg" />
           </Link> : null}
       </div>

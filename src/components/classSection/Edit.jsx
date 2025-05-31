@@ -59,7 +59,7 @@ const Edit = () => {
         }
       );
       if (response.data.success) {
-        navigate("/admin-dashboard/classSections");
+        navigate("/dashboard/classSections");
       }
     } catch (error) {
       if (error.response && !error.response.data.success) {

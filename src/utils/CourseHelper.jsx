@@ -128,13 +128,13 @@ export const CourseButtons = ({ Id, onCourseDelete }) => {
     <div className="flex space-x-3">
       <button
         className="px-3 py-1 bg-teal-600 text-white rounded-sm text-shadow-lg"
-        onClick={() => navigate(`/admin-dashboard/courses/${Id}`)}
+        onClick={() => navigate(`/dashboard/courses/${Id}`)}
       >
         <FaEye />
       </button>
       <button
         className="px-3 py-1 bg-blue-600 text-white rounded-sm text-shadow-lg"
-        onClick={() => navigate(`/admin-dashboard/courses/edit/${Id}`)}
+        onClick={() => navigate(`/dashboard/courses/edit/${Id}`)}
       >
         <FaEdit />
       </button>
