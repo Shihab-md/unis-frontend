@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
-import { getBaseUrl, handleRightClick, checkAuth } from '../../utils/CommonHelper'
+import { getBaseUrl, handleRightClick, getSpinner, checkAuth } from '../../utils/CommonHelper'
 import { getSchools } from '../../utils/SchoolHelper'
 import { columnsSelect, getStudentsBySchoolAndCourse } from '../../utils/StudentHelper'
 import { getTemplates } from '../../utils/TemplateHelper'
@@ -161,14 +161,12 @@ const Create = () => {
   };
 
   if (createdAll) {
-    return <div className='flex items-center justify-center rounded-lg shadow-lg'>
-      <img width={340} className='flex p-7 items-center justify-center rounded-lg shadow-lg' src="/spinner.gif" />
-    </div>
+    return getSpinner();
   }
 
   return (
     <>
-      <div className="max-w-4xl mx-auto mt-2 bg-white p-5 rounded-md shadow-md">
+      <div className="max-w-4xl mx-auto mt-2 bg-white p-5 rounded-md shadow-md bg-blue-50">
         <div className="flex py-2 px-4 items-center justify-center bg-teal-700 text-white rounded-lg shadow-lg">
           <h2 className="text-xl font-semibold items-center justify-center">Create Certificates</h2>
           <Link to="/dashboard/certificates" >

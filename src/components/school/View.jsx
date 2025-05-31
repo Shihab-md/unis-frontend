@@ -47,9 +47,9 @@ const View = () => {
     fetchSchool();
   }, []);
   return (
-    <><div className="bg-[url(../bg-img.jpg)] bg-fixed bg-cover bg-center bg-repeat bg-teal-50">
+    <>
       {school ? (
-        <div className="max-w-3xl mx-auto mt-2 bg-white p-8 rounded-md shadow-md">
+        <div className="max-w-3xl mx-auto mt-2 bg-white p-8 rounded-md shadow-md bg-blue-50">
           <div className="flex py-2 px-4 items-center justify-center bg-teal-700 text-white rounded-lg shadow-lg">
             <h2 className="text-xl font-semibold items-center justify-center">Niswan Details</h2>
             <Link to="/dashboard/schools" >
@@ -180,7 +180,6 @@ const View = () => {
       ) : (
         getSpinner()
       )}
-      </div>
     </>
   );
 };

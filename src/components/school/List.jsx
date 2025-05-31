@@ -107,7 +107,7 @@ const List = () => {
   }
 
   return (
-    <div className="p-5 bg-[url(../bg-img.jpg)] bg-fixed bg-cover bg-center bg-repeat bg-teal-50">
+    <div className="p-5 bg-repeat">
       <div className="text-center">
         <h3 className="text-2xl font-bold px-5 py-0">Manage Niswans</h3>
       </div>
@@ -126,7 +126,7 @@ const List = () => {
             <FaPlusSquare className="text-2xl bg-teal-700 text-white rounded shadow-lg" />
           </Link> : null}
       </div>
-      <div className='mt-6 rounded-lg shadow-lg'>
+      <div className='mt-6 rounded-lg shadow-lg bg-blue-50'>
         <DataTable columns={columns} data={filteredSchool} highlightOnHover striped responsive conditionalRowStyles={conditionalRowStyles} expandableRows expandableRowsComponent={ExpandedComponent} />
       </div>
     </div>
