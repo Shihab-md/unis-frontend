@@ -50,6 +50,7 @@ const AdminSummary = () => {
   }
   //p-6
   return (
+    <div className="h-screen bg-[url(./bg-img.jpg)] bg-fixed bg-cover bg-center bg-teal-50">
     <div className="p-7 pt-3 items-center justify-center rounded-lg h-screen">
       <h5 className="p-1 text-center font-semibold text-gray-700">ربِّ زِدْنِي عِلْماً</h5>
       <h5 className="p-1 text-center">Welcome, {user.name}</h5>
@@ -187,6 +188,7 @@ const AdminSummary = () => {
         </Link>
 
       </div>
+    </div>
     </div>
   );
 };

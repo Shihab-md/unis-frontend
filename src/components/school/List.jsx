@@ -107,7 +107,7 @@ const List = () => {
   }
 
   return (
-    <div className="p-5">
+    <div className="p-5 bg-[url(../bg-img.jpg)] bg-fixed bg-cover bg-center bg-repeat bg-teal-50">
       <div className="text-center">
         <h3 className="text-2xl font-bold px-5 py-0">Manage Niswans</h3>
       </div>
