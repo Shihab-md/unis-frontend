@@ -70,7 +70,6 @@ const View = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-1 gap-6">
             <div className="py-2 px-4 border mt-5 mb-1 items-center justify-center rounded-lg shadow-lg">
-
               <div className="flex mt-2 space-x-10 mb-3 items-center justify-center" >
                 <img className='size-40 border items-center justify-center rounded-lg shadow-lg'
                   src={certificate.certificate && certificate.certificate != "" ? "data:image/jpeg;base64," + certificate.certificate : "/certificate.jpg"}

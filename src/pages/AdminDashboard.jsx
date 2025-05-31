@@ -11,7 +11,6 @@ const AdminDashboard = () => {
         <Navbar />
         <Outlet />
       </div>
-  
   )
 }
 
