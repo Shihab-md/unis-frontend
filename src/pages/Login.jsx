@@ -64,7 +64,7 @@ const Login = () => {
         <h2 className="p-5 font-bold text-4xl text-shadow-lg">
           UNIS ACADEMY
         </h2>
-        <div className="border p-6 w-80 bg-white shadow-lg rounded-lg">
+        <div className="border p-6 w-80 bg-white shadow-lg rounded-lg bg-[url(../bg-img.jpg)]">
           <h2 className="text-2xl font-bold mb-4">Login</h2>
           {/* {error && <p className="text-red-500">{error}</p>}*/}
           <form onSubmit={handleSubmit}>
