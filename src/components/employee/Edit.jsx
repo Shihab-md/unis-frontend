@@ -3,6 +3,7 @@ import { getSchools } from "../../utils/SchoolHelper";
 import axios from "axios";
 import { useNavigate, useParams, Link } from "react-router-dom";
 import moment from "moment";
+import { useAuth } from '../../context/AuthContext'
 import { getBaseUrl, handleRightClick, getSpinner, checkAuth } from '../../utils/CommonHelper';
 import Swal from 'sweetalert2';
 import {
@@ -133,6 +134,8 @@ const Edit = () => {
     }
   };
 
+  const { user } = useAuth();
+
   return (
     <>
       {employee ? (
@@ -229,10 +232,13 @@ const Edit = () => {
                     onChange={handleChange}
                     className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                     required
+                    disabled={user.role === "superadmin" || user.role === "hquser" ?
+                      false : true}
                   >
                     <option value="">Select Role</option>
                     <option value="admin">Admin</option>
                     <option value="teacher">Teacher</option>
+                    <option value="staff">Staff</option>
                   </select>
                 </div>
 

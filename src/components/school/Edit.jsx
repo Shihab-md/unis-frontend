@@ -313,7 +313,7 @@ const Edit = () => {
                     name="supervisorId"
                     value={school.supervisorId}
                     onChange={handleChange}
-                    className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
+                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                     required
                   >
                     <option value="">Select Supervisor</option>

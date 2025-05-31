@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
 import { getSchools } from '../../utils/SchoolHelper';
+import { useAuth } from '../../context/AuthContext'
 import { getBaseUrl, handleRightClick, checkAuth } from '../../utils/CommonHelper';;
 import Swal from 'sweetalert2';
 import {
@@ -82,6 +83,8 @@ const Add = () => {
       }
     }
   };
+
+  const { user } = useAuth();
 
   return (
     <>
@@ -170,8 +173,11 @@ const Add = () => {
                   required
                 >
                   <option value="">Select Role</option>
-                  <option value="admin">Admin</option>
+                  {user.role === "superadmin" || user.role === "hquser" ?
+                    <option value="admin">Admin</option>
+                    : null}
                   <option value="teacher">Teacher</option>
+                  <option value="staff">Staff</option>
                 </select>
               </div>
 
