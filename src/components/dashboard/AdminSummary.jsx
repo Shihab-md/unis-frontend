@@ -50,10 +50,10 @@ const AdminSummary = () => {
   }
   //p-6
   return (
-    <div className="p-7 pt-3 items-center rounded-lg">
+    <div className="p-7 pt-3 items-center justify-center rounded-lg h-screen">
       <h5 className="p-1 text-center font-semibold text-gray-700">ربِّ زِدْنِي عِلْماً</h5>
       <h5 className="p-1 text-center">Welcome, {user.name}</h5>
-      <h5 className="text-xl mt-2 mb-3 font-bold text-center text-gray-500 text-shadow-lg">Dashboard</h5>
+      <h5 className="text-xl mb-3 font-bold text-center text-gray-500 text-shadow-lg">Dashboard</h5>
 
       <div className="rounded-lg grid grid-cols-2 md:grid-cols-4 gap-7 mt-7 flex rounded-lg">
 
