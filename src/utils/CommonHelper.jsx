@@ -27,7 +27,7 @@ const authorizedScreensFor_ADMIN_Role = [
 ];
 
 export const getBaseUrl = async () => {
-  return "https://unis-server.vercel.app/api/";
+   return "https://unis-server.vercel.app/api/";
 
 };
 
@@ -70,8 +70,8 @@ export function handleRightClick(event) {
 }
 
 export function getSpinner() {
-  return <div className='flex items-center justify-center rounded-lg shadow-lg h-screen content-center'>
-    <img width={340} className='flex p-7 items-center justify-center rounded-lg shadow-lg' src="/spinner.gif" />
+  return <div className='flex items-center justify-center rounded-lg h-screen content-center'>
+    <img width={340} className='flex p-7 items-center justify-center rounded-lg' src="/spinner.gif" />
   </div>
 }
 
