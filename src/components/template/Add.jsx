@@ -106,7 +106,7 @@ const Add = () => {
                 required
               >
                 <option value="">Select Course</option>
-                {courses.map((course) => (
+                {courses.filter(course => course.type === "Deeniyath Education" || course.type === "Vocational Courses").map((course) => (
                   <option key={course._id} value={course._id}>
                     {course.name}
                   </option>
