@@ -37,7 +37,7 @@ const Add = () => {
       navigate("/login");
     }
   });
- 
+
   useEffect(() => {
     const getSchoolsMap = async (id) => {
       const schools = await getSchools(id);
@@ -172,7 +172,7 @@ const Add = () => {
 
   return (
     <>
-      <div className="max-w-4xl mx-auto mt-2 bg-white p-5 rounded-md shadow-md bg-blue-50">
+      <div className="max-w-4xl mx-auto mt-2 p-5 rounded-md shadow-md bg-[url(/bg-img.jpg)] bg-fixed bg-cover bg-center bg-repeat">
         <div className="flex py-2 px-4 items-center justify-center bg-teal-700 text-white rounded-lg shadow-lg">
           <h2 className="text-xl font-semibold items-center justify-center">Enter Student Details</h2>
           <Link to="/dashboard/students" >
@@ -181,7 +181,7 @@ const Add = () => {
         </div>
 
         <form onSubmit={handleSubmit}>
-          <div className="py-2 px-4 border mt-5 mb-3 items-center justify-center rounded-lg shadow-lg">
+          <div className="py-2 px-4 border mt-5 mb-3 items-center justify-center rounded-lg shadow-lg bg-white">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
 
               {/* School */}

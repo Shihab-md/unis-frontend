@@ -8,6 +8,7 @@ import { useNavigate, useParams, Link } from "react-router-dom";
 import moment from "moment";
 import { getBaseUrl, handleRightClick, getSpinner, checkAuth } from '../../utils/CommonHelper';
 import Swal from 'sweetalert2';
+import ViewCard from "../dashboard/ViewCard";
 import {
   FaRegTimesCircle
 } from "react-icons/fa";
@@ -224,7 +225,7 @@ const Edit = () => {
   return (
     <>
       {student ? (
-        <div className="max-w-4xl mx-auto mt-2 bg-white p-5 rounded-md shadow-md bg-blue-50">
+        <div className="max-w-4xl mx-auto mt-2 p-5 rounded-md shadow-md bg-[url(/bg-img.jpg)] bg-fixed bg-cover bg-center bg-repeat">
           <div className="flex py-2 px-4 items-center justify-center bg-teal-700 text-white rounded-lg shadow-lg">
             <h2 className="text-xl font-semibold items-center justify-center">Update Student Details</h2>
             <Link to="/dashboard/students" >
@@ -232,7 +233,7 @@ const Edit = () => {
             </Link>
           </div>
           <form onSubmit={handleSubmit}>
-            <div className="py-2 px-4 border mt-5 mb-3 items-center justify-center rounded-lg shadow-lg">
+            <div className="py-2 px-4 border mt-5 mb-3 items-center justify-center rounded-lg shadow-lg bg-blue">
               <div className="grid mt-3 grid-cols-1 md:grid-cols-2 gap-5">
 
                 {/* School */}
@@ -660,11 +661,14 @@ const Edit = () => {
                 </div>
 
                 <div className="flex space-x-3 mb-5" />
-                <div className="flex space-x-3 mt-5 justify-center" >
+                <div className="flex space-x-3 mb-5" />
+                <div className="flex space-x-3 mb-5" />
+                {/* <div className="flex space-x-3 mt-5 justify-center" >
                   <label className="block mt-2 text-sm font-bold text-blue-500">
                     *****   Dheeniyath Education   *****
                   </label>
-                </div>
+                </div>*/}
+                <ViewCard type="header" text="Deeniyath Education" />
                 <div className="flex space-x-3 mb-5" />
 
                 {/* Institute 1 --------------------------------------------- */}
@@ -778,11 +782,7 @@ const Edit = () => {
 
                 <div className="flex space-x-3 mb-5" />
                 <div className="flex space-x-3 mb-5" />
-                <div className="flex space-x-3 mt-5 justify-center" >
-                  <label className="block mt-2 text-sm font-bold text-blue-500">
-                    *****   School Education   *****
-                  </label>
-                </div>
+                <ViewCard type="header" text="School Education" />
                 <div className="flex space-x-3 mb-5" />
 
                 {/* Institute 2 --------------------------------------------- */}
@@ -896,11 +896,7 @@ const Edit = () => {
 
                 <div className="flex space-x-3 mb-5" />
                 <div className="flex space-x-3 mb-5" />
-                <div className="flex space-x-3 mt-5 justify-center" >
-                  <label className="block mt-2 text-sm font-bold text-blue-500">
-                    *****   College Education   *****
-                  </label>
-                </div>
+                <ViewCard type="header" text="College Education" />
                 <div className="flex space-x-3 mb-5" />
 
                 {/* Institute 3 --------------------------------------------- */}
@@ -1014,11 +1010,7 @@ const Edit = () => {
 
                 <div className="flex space-x-3 mb-5" />
                 <div className="flex space-x-3 mb-5" />
-                <div className="flex space-x-3 mt-5 justify-center" >
-                  <label className="block mt-2 text-sm font-bold text-blue-500">
-                    *****   Vocational Course - 1   *****
-                  </label>
-                </div>
+                <ViewCard type="header" text="Vocational Course - 1" />
                 <div className="flex space-x-3 mb-5" />
 
                 {/* Institute 4 --------------------------------------------- */}
@@ -1132,11 +1124,7 @@ const Edit = () => {
 
                 <div className="flex space-x-3 mb-5" />
                 <div className="flex space-x-3 mb-5" />
-                <div className="flex space-x-3 mt-5 justify-center" >
-                  <label className="block mt-2 text-sm font-bold text-blue-500">
-                    *****   Vocational Course - 2   *****
-                  </label>
-                </div>
+                <ViewCard type="header" text="Vocational Course - 2" />
                 <div className="flex space-x-3 mb-5" />
 
                 {/* Institute 5 --------------------------------------------- */}
@@ -1250,11 +1238,7 @@ const Edit = () => {
 
                 <div className="flex space-x-3 mb-5" />
                 <div className="flex space-x-3 mb-5" />
-                <div className="flex space-x-3 mt-5 justify-center" >
-                  <label className="block mt-2 text-sm font-bold text-blue-500">
-                    *****   Hostel Details   *****
-                  </label>
-                </div>
+                <ViewCard type="header" text="Hostel Details" />
                 <div className="flex space-x-3 mb-5" />
 
                 {/* Hostel */}

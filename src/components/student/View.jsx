@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { getBaseUrl, handleRightClick, getSpinner, checkAuth } from '../../utils/CommonHelper';
 import Swal from 'sweetalert2';
+import ViewCard from "../dashboard/ViewCard";
 import {
   FaRegTimesCircle
 } from "react-icons/fa";
@@ -66,7 +67,7 @@ const View = () => {
   return (
     <>
       {student ? (
-        <div className="max-w-3xl mx-auto mt-2 bg-white p-8 rounded-md shadow-md bg-blue-50">
+        <div className="max-w-3xl mx-auto mt-2 bg-white p-8 rounded-md shadow-md bg-[url(/bg-img.jpg)] bg-fixed bg-cover bg-center bg-repeat">
           <div className="flex py-2 px-4 items-center justify-center bg-teal-700 text-white rounded-lg shadow-lg">
             <h2 className="text-xl font-semibold items-center justify-center">Student Details</h2>
             <Link to="/dashboard/students" >
@@ -75,238 +76,226 @@ const View = () => {
           </div>
 
           <div className="grid grid-cols-1 md</div>grid-cols-1 gap-6">
-            <div className="py-2 px-4 border mt-5 mb-1 items-center justify-center rounded-lg shadow-lg">
-              <div className="flex mt-2 space-x-3 mb-3 items-center justify-center" >
-                <img className='size-40 border items-center justify-center rounded-lg shadow-lg'
+            <div className="py-2 px-4 border mt-5 mb-1 items-center justify-center rounded-lg shadow-lg bg-white">
+              <div className="flex mt-2 space-x-3 mb-1 items-center justify-center" >
+                <img className='size-40 border mt-3 items-center justify-center rounded-lg shadow-lg'
                   src={student.userId.profileImage && student.userId.profileImage != "" ? "data</div>image/jpeg;base64," + student.userId.profileImage : "/avatar.png"}
                 />
               </div>
               <div className="p-2">
                 <div className="flex space-x-3 mb-5" />
 
-                <div className="border p-2 font-medium bg-purple-100">Niswan Name (English)</div>
-                <div className="border p-2 font-normal">{student.schoolId && student.schoolId.nameEnglish ? student.schoolId.code + " : " + student.schoolId.nameEnglish : ""}</div>
+                <ViewCard type="title" text="Niswan Name (English)" />
+                <ViewCard type="data" text={student.schoolId && student.schoolId.nameEnglish ? student.schoolId.code + " : " + student.schoolId.nameEnglish : ""} />
 
-                <div className="border p-2 font-medium bg-purple-100">Roll Number</div>
-                <div className="border p-2 font-normal">{student.rollNumber}</div>
+                <ViewCard type="title" text="Roll Number" />
+                <ViewCard type="data" text={student.rollNumber} />
 
-                <div className="border p-2 font-medium bg-purple-100">Name</div>
-                <div className="border p-2 font-normal">{student.userId && student.userId.name ? student.userId.name : ""}</div>
+                <ViewCard type="title" text="Name" />
+                <ViewCard type="data" text={student.userId && student.userId.name ? student.userId.name : ""} />
 
-                <div className="border p-2 font-medium bg-purple-100">Status</div>
-                <div className="border p-2 font-normal">{student.active}</div>
+                <ViewCard type="title" text="Status" />
+                <ViewCard type="data" text={student.active} />
 
-                <div className="border p-2 font-medium bg-purple-100">Remarks</div>
-                <div className="border p-2 font-normal">{student.remarks}</div>
-
-                <div className="flex space-x-3 mb-5" />
-
-                <div className="border p-2 font-medium bg-purple-100">Date of Addmission</div>
-                <div className="border p-2 font-normal">{new Date(student.doa).toLocaleDateString()}</div>
-
-                <div className="border p-2 font-medium bg-purple-100">Date of Birth</div>
-                <div className="border p-2 font-normal">{new Date(student.dob).toLocaleDateString()}</div>
-
-                <div className="border p-2 font-medium bg-purple-100">Gender</div>
-                <div className="border p-2 font-normal">{student.gender}</div>
-
-                <div className="border p-2 font-medium bg-purple-100">Marital Status</div>
-                <div className="border p-2 font-normal">{student.maritalStatus}</div>
-
-                <div className="border p-2 font-medium bg-purple-100">Blood Group</div>
-                <div className="border p-2 font-normal">{student.bloodGroup}</div>
-
-                <div className="border p-2 font-medium bg-purple-100">Identification Mark 1</div>
-                <div className="border p-2 font-normal">{student.idMark1}</div>
-
-                <div className="border p-2 font-medium bg-purple-100">Identification Mark 2</div>
-                <div className="border p-2 font-normal">{student.idMark2}</div>
+                <ViewCard type="title" text="Remarks" />
+                <ViewCard type="data" text={student.remarks} />
 
                 <div className="flex space-x-3 mb-5" />
 
-                <div className="border p-2 font-medium bg-purple-100">Father's Name</div>
-                <div className="border p-2 font-normal">{student.fatherName}</div>
+                <ViewCard type="title" text="Date of Addmission" />
+                <ViewCard type="data" text={new Date(student.doa).toLocaleDateString()} />
 
-                <div className="border p-2 font-medium bg-purple-100">Father's Number</div>
-                <div className="border p-2 font-normal">{student.fatherNumber} </div>
+                <ViewCard type="title" text="Date of Birth" />
+                <ViewCard type="data" text={new Date(student.dob).toLocaleDateString()} />
 
-                <div className="border p-2 font-medium bg-purple-100">Father's Occupation</div>
-                <div className="border p-2 font-normal">{student.fatherOccupation} </div>
+                <ViewCard type="title" text="Gender" />
+                <ViewCard type="data" text={student.gender} />
 
-                <div className="border p-2 font-medium bg-purple-100">Mother's Name</div>
-                <div className="border p-2 font-normal">{student.motherName} </div>
+                <ViewCard type="title" text="Marital Status" />
+                <ViewCard type="data" text={student.maritalStatus} />
 
-                <div className="border p-2 font-medium bg-purple-100">Mother's Number</div>
-                <div className="border p-2 font-normal">{student.motherNumber} </div>
+                <ViewCard type="title" text="Blood Group" />
+                <ViewCard type="data" text={student.bloodGroup} />
 
-                <div className="border p-2 font-medium bg-purple-100">Mother's Occupation</div>
-                <div className="border p-2 font-normal">{student.motherOccupation} </div>
+                <ViewCard type="title" text="Identification Mark 1" />
+                <ViewCard type="data" text={student.idMark1} />
 
-                <div className="border p-2 font-medium bg-purple-100">Guardian's Name</div>
-                <div className="border p-2 font-normal">{student.guardianName} </div>
-
-                <div className="border p-2 font-medium bg-purple-100">Guardian's Number</div>
-                <div className="border p-2 font-normal">{student.guardianNumber} </div>
-
-                <div className="border p-2 font-medium bg-purple-100">Guardian's Occupation</div>
-                <div className="border p-2 font-normal">{student.guardianOccupation} </div>
-
-                <div className="border p-2 font-medium bg-purple-100">Guardian's Relationship</div>
-                <div className="border p-2 font-normal">{student.guardianRelation} </div>
+                <ViewCard type="title" text="Identification Mark 2" />
+                <ViewCard type="data" text={student.idMark2} />
 
                 <div className="flex space-x-3 mb-5" />
 
-                <div className="border p-2 font-medium bg-purple-100">Address</div>
-                <div className="border p-2 font-normal">{student.address} </div>
+                <ViewCard type="title" text="Father's Name" />
+                <ViewCard type="data" text={student.fatherName} />
 
-                <div className="border p-2 font-medium bg-purple-100">State / District</div>
-                <div className="border p-2 font-normal">{student.district} </div>
+                <ViewCard type="title" text="Father's Number" />
+                <ViewCard type="data" text={student.fatherNumber} />
 
-                <div className="flex space-x-3 mb-5" />
+                <ViewCard type="title" text="Father's Occupation" />
+                <ViewCard type="data" text={student.fatherOccupation} />
 
-                <div className="border p-2 font-medium bg-purple-100">Academic Year</div>
-                <div className="border p-2 font-normal">{academic.acYear && academic.acYear.acYear ? academic.acYear.acYear : ""} </div>
+                <ViewCard type="title" text="Mother's Name" />
+                <ViewCard type="data" text={student.motherName} />
 
-                <div className="flex space-x-3 mb-5" />
+                <ViewCard type="title" text="Mother's Number" />
+                <ViewCard type="data" text={student.motherNumber} />
 
-                <div className="flex space-x-3 mb-5 justify-center">
-                  <p className="font-medium text-blue-500">***** Deeniyath Education ***** </p>
-                </div>
+                <ViewCard type="title" text="Mother's Occupation" />
+                <ViewCard type="data" text={student.motherOccupation} />
 
-                <div className="border p-2 font-medium bg-purple-100">Institute Name</div>
-                <div className="border p-2 font-normal">{academic.instituteId1 && academic.instituteId1.name ? academic.instituteId1.name : ""}</div>
+                <ViewCard type="title" text="Guardian's Name" />
+                <ViewCard type="data" text={student.guardianName} />
 
-                <div className="border p-2 font-medium bg-purple-100">Course Name </div>
-                <div className="border p-2 font-normal">{academic.courseId1 && academic.courseId1.name ? academic.courseId1.name : ""}</div>
+                <ViewCard type="title" text="Guardian's Number" />
+                <ViewCard type="data" text={student.guardianNumber} />
 
-                <div className="border p-2 font-medium bg-purple-100">Reference Number </div>
-                <div className="border p-2 font-normal">{academic.refNumber1}</div>
+                <ViewCard type="title" text="Guardian's Occupation" />
+                <ViewCard type="data" text={student.guardianOccupation} />
 
-                <div className="border p-2 font-medium bg-purple-100">Fees </div>
-                <div className="border p-2 font-normal">{academic.fees1}</div>
-
-                <div className="border p-2 font-medium bg-purple-100">Discount </div>
-                <div className="border p-2 font-normal">{academic.discount1}</div>
-
-                <div className="border p-2 font-medium bg-purple-100">Final Fees </div>
-                <div className="border p-2 font-normal">{academic.finalFees1}</div>
+                <ViewCard type="title" text="Guardian's Relationship" />
+                <ViewCard type="data" text={student.guardianRelation} />
 
                 <div className="flex space-x-3 mb-5" />
 
-                <div className="flex space-x-3 mb-5 justify-center">
-                  <p className="font-medium text-blue-500">***** School Education ***** </p>
-                </div>
+                <ViewCard type="title" text="Address" />
+                <ViewCard type="data" text={student.address} />
 
-                <div className="border p-2 font-medium bg-purple-100">Institute Name</div>
-                <div className="border p-2 font-normal">{academic.instituteId2 && academic.instituteId2.name ? academic.instituteId2.name : ""}</div>
-
-                <div className="border p-2 font-medium bg-purple-100">Course Name </div>
-                <div className="border p-2 font-normal">{academic.instituteId2 && academic.courseId2.name ? academic.courseId2.name : ""}</div>
-
-                <div className="border p-2 font-medium bg-purple-100">Reference Number </div>
-                <div className="border p-2 font-normal">{academic.refNumber2}</div>
-
-                <div className="border p-2 font-medium bg-purple-100">Fees </div>
-                <div className="border p-2 font-normal">{academic.fees2}</div>
-
-                <div className="border p-2 font-medium bg-purple-100">Discount </div>
-                <div className="border p-2 font-normal">{academic.discount2}</div>
-
-                <div className="border p-2 font-medium bg-purple-100">Final Fees </div>
-                <div className="border p-2 font-normal">{academic.finalFees2}</div>
+                <ViewCard type="title" text="State / District" />
+                <ViewCard type="data" text={student.district} />
 
                 <div className="flex space-x-3 mb-5" />
 
-                <div className="flex space-x-3 mb-5 justify-center">
-                  <p className="font-medium text-blue-500">***** College Education ***** </p>
-                </div>
-
-                <div className="border p-2 font-medium bg-purple-100">Institute Name</div>
-                <div className="border p-2 font-normal">{academic.instituteId3 && academic.instituteId3.name ? academic.instituteId3.name : ""}</div>
-
-                <div className="border p-2 font-medium bg-purple-100">Course Name </div>
-                <div className="border p-2 font-normal">{academic.instituteId3 && academic.courseId3.name ? academic.courseId3.name : ""}</div>
-
-                <div className="border p-2 font-medium bg-purple-100">Reference Number </div>
-                <div className="border p-2 font-normal">{academic.refNumber3}</div>
-
-                <div className="border p-2 font-medium bg-purple-100">Fees </div>
-                <div className="border p-2 font-normal">{academic.fees3}</div>
-
-                <div className="border p-2 font-medium bg-purple-100">Discount </div>
-                <div className="border p-2 font-normal">{academic.discount3}</div>
-
-                <div className="border p-2 font-medium bg-purple-100">Final Fees </div>
-                <div className="border p-2 font-normal">{academic.finalFees3}</div>
+                <ViewCard type="title" text="Academic Year" />
+                <ViewCard type="data" text={academic.acYear && academic.acYear.acYear ? academic.acYear.acYear : ""} />
 
                 <div className="flex space-x-3 mb-5" />
 
-                <div className="flex space-x-3 mb-5 justify-center">
-                  <p className="font-medium text-blue-500">***** Vocation Course - 1 ***** </p>
-                </div>
+                <ViewCard type="header" text="Deeniyath Education" />
 
-                <div className="border p-2 font-medium bg-purple-100">Institute Name</div>
-                <div className="border p-2 font-normal">{academic.instituteId4 && academic.instituteId4.name ? academic.instituteId4.name : ""}</div>
+                <ViewCard type="title" text="Institute Name" />
+                <ViewCard type="data" text={academic.instituteId1 && academic.instituteId1.name ? academic.instituteId1.name : ""} />
 
-                <div className="border p-2 font-medium bg-purple-100">Course Name </div>
-                <div className="border p-2 font-normal">{academic.courseId4 && academic.courseId4.name ? academic.courseId4.name : ""}</div>
+                <ViewCard type="title" text="Course Name " />
+                <ViewCard type="data" text={academic.courseId1 && academic.courseId1.name ? academic.courseId1.name : ""} />
 
-                <div className="border p-2 font-medium bg-purple-100">Reference Number </div>
-                <div className="border p-2 font-normal">{academic.refNumber4}</div>
+                <ViewCard type="title" text="Reference Number " />
+                <ViewCard type="data" text={academic.refNumber1} />
 
-                <div className="border p-2 font-medium bg-purple-100">Fees </div>
-                <div className="border p-2 font-normal">{academic.fees4}</div>
+                <ViewCard type="title" text="Fees " />
+                <ViewCard type="data" text={academic.fees1} />
 
-                <div className="border p-2 font-medium bg-purple-100">Discount </div>
-                <div className="border p-2 font-normal">{academic.discount4}</div>
+                <ViewCard type="title" text="Discount " />
+                <ViewCard type="data" text={academic.discount1} />
 
-                <div className="border p-2 font-medium bg-purple-100">Final Fees </div>
-                <div className="border p-2 font-normal">{academic.finalFees4}</div>
+                <ViewCard type="title" text="Final Fees " />
+                <ViewCard type="data" text={academic.finalFees1} />
 
                 <div className="flex space-x-3 mb-5" />
 
-                <div className="flex space-x-3 mb-5 justify-center">
-                  <p className="font-medium text-blue-500">***** Vocation Course - 2 ***** </p>
-                </div>
+                <ViewCard type="header" text="School Education" />
 
-                <div className="border p-2 font-medium bg-purple-100">Institute Name</div>
-                <div className="border p-2 font-normal">{academic.instituteId5 && academic.instituteId5.name ? academic.instituteId5.name : ""}</div>
+                <ViewCard type="title" text="Institute Name" />
+                <ViewCard type="data" text={academic.instituteId2 && academic.instituteId2.name ? academic.instituteId2.name : ""} />
 
-                <div className="border p-2 font-medium bg-purple-100">Course Name </div>
-                <div className="border p-2 font-normal">{academic.courseId5 && academic.courseId5.name ? academic.courseId5.name : ""}</div>
+                <ViewCard type="title" text="Course Name " />
+                <ViewCard type="data" text={academic.instituteId2 && academic.courseId2.name ? academic.courseId2.name : ""} />
 
-                <div className="border p-2 font-medium bg-purple-100">Reference Number </div>
-                <div className="border p-2 font-normal">{academic.refNumber5}</div>
+                <ViewCard type="title" text="Reference Number " />
+                <ViewCard type="data" text={academic.refNumber2} />
 
-                <div className="border p-2 font-medium bg-purple-100">Fees </div>
-                <div className="border p-2 font-normal">{academic.fees5}</div>
+                <ViewCard type="title" text="Fees " />
+                <ViewCard type="data" text={academic.fees2} />
 
-                <div className="border p-2 font-medium bg-purple-100">Discount </div>
-                <div className="border p-2 font-normal">{academic.discount5}</div>
+                <ViewCard type="title" text="Discount " />
+                <ViewCard type="data" text={academic.discount2} />
 
-                <div className="border p-2 font-medium bg-purple-100">Final Fees </div>
-                <div className="border p-2 font-normal">{academic.finalFees5}</div>
+                <ViewCard type="title" text="Final Fees " />
+                <ViewCard type="data" text={academic.finalFees2} />
 
                 <div className="flex space-x-3 mb-5" />
 
-                <div className="flex space-x-3 mb-5 justify-center">
-                  <p className="font-medium text-blue-500">***** Hostel Details ***** </p>
-                </div>
+                <ViewCard type="header" text="College Education" />
 
-                <div className="border p-2 font-medium bg-purple-100">Hostel Admission</div>
-                <div className="border p-2 font-normal">{student.hostel}</div>
+                <ViewCard type="title" text="Institute Name" />
+                <ViewCard type="data" text={academic.instituteId3 && academic.instituteId3.name ? academic.instituteId3.name : ""} />
 
-                <div className="border p-2 font-medium bg-purple-100">Hostel Reference Number </div>
-                <div className="border p-2 font-normal">{student.hostelRefNumber}</div>
+                <ViewCard type="title" text="Course Name " />
+                <ViewCard type="data" text={academic.instituteId3 && academic.courseId3.name ? academic.courseId3.name : ""} />
 
-                <div className="border p-2 font-medium bg-purple-100">Hostel Fees </div>
-                <div className="border p-2 font-normal">{student.hostelFees}</div>
+                <ViewCard type="title" text="Reference Number " />
+                <ViewCard type="data" text={academic.refNumber3} />
 
-                <div className="border p-2 font-medium bg-purple-100">Hostel Fees Discount </div>
-                <div className="border p-2 font-normal">{student.hostelDiscount}</div>
+                <ViewCard type="title" text="Fees " />
+                <ViewCard type="data" text={academic.fees3} />
 
-                <div className="border p-2 font-medium bg-purple-100">Hostel Final Fees </div>
-                <div className="border p-2 font-normal">{student.hostelFinalFees}</div>
+                <ViewCard type="title" text="Discount " />
+                <ViewCard type="data" text={academic.discount3} />
+
+                <ViewCard type="title" text="Final Fees " />
+                <ViewCard type="data" text={academic.finalFees3} />
+
+                <div className="flex space-x-3 mb-5" />
+
+                <ViewCard type="header" text="Vocation Course - 1" />
+
+                <ViewCard type="title" text="Institute Name" />
+                <ViewCard type="data" text={academic.instituteId4 && academic.instituteId4.name ? academic.instituteId4.name : ""} />
+
+                <ViewCard type="title" text="Course Name " />
+                <ViewCard type="data" text={academic.courseId4 && academic.courseId4.name ? academic.courseId4.name : ""} />
+
+                <ViewCard type="title" text="Reference Number " />
+                <ViewCard type="data" text={academic.refNumber4} />
+
+                <ViewCard type="title" text="Fees " />
+                <ViewCard type="data" text={academic.fees4} />
+
+                <ViewCard type="title" text="Discount " />
+                <ViewCard type="data" text={academic.discount4} />
+
+                <ViewCard type="title" text="Final Fees " />
+                <ViewCard type="data" text={academic.finalFees4} />
+
+                <div className="flex space-x-3 mb-5" />
+
+                <ViewCard type="header" text="Vocation Course - 2" />
+
+                <ViewCard type="title" text="Institute Name" />
+                <ViewCard type="data" text={academic.instituteId5 && academic.instituteId5.name ? academic.instituteId5.name : ""} />
+
+                <ViewCard type="title" text="Course Name " />
+                <ViewCard type="data" text={academic.courseId5 && academic.courseId5.name ? academic.courseId5.name : ""} />
+
+                <ViewCard type="title" text="Reference Number " />
+                <ViewCard type="data" text={academic.refNumber5} />
+
+                <ViewCard type="title" text="Fees " />
+                <ViewCard type="data" text={academic.fees5} />
+
+                <ViewCard type="title" text="Discount " />
+                <ViewCard type="data" text={academic.discount5} />
+
+                <ViewCard type="title" text="Final Fees " />
+                <ViewCard type="data" text={academic.finalFees5} />
+
+                <div className="flex space-x-3 mb-5" />
+
+                <ViewCard type="header" text="Hostel Details" />
+
+                <ViewCard type="title" text="Hostel Admission" />
+                <ViewCard type="data" text={student.hostel} />
+
+                <ViewCard type="title" text="Hostel Reference Number " />
+                <ViewCard type="data" text={student.hostelRefNumber} />
+
+                <ViewCard type="title" text="Hostel Fees " />
+                <ViewCard type="data" text={student.hostelFees} />
+
+                <ViewCard type="title" text="Hostel Fees Discount " />
+                <ViewCard type="data" text={student.hostelDiscount} />
+
+                <ViewCard type="title" text="Hostel Final Fees " />
+                <ViewCard type="data" text={student.hostelFinalFees} />
 
               </div>
             </div>
