@@ -151,7 +151,7 @@ const Add = () => {
                 />
               </div>
 
-              {/* Area */}
+              {/* Address */}
               <div>
                 <label className="block text-sm font-medium text-gray-700">
                   Address <span className="text-red-700">*</span>
@@ -166,10 +166,10 @@ const Add = () => {
                 />
               </div>
 
-              {/* District / State */}
+              {/* District - State */}
               <div>
                 <label className="block text-sm font-medium text-gray-700">
-                  District / State <span className="text-red-700">*</span>
+                  District & State <span className="text-red-700">*</span>
                 </label>
                 <input
                   type="text"

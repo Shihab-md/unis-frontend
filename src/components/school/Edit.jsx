@@ -219,7 +219,7 @@ const Edit = () => {
                   />
                 </div>
 
-                {/* Area */}
+                {/* Address */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700">
                     Address <span className="text-red-700">*</span>
@@ -235,10 +235,10 @@ const Edit = () => {
                   />
                 </div>
 
-                {/* District / State */}
+                {/* District & State */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700">
-                    District / State <span className="text-red-700">*</span>
+                    District & State <span className="text-red-700">*</span>
                   </label>
                   <input
                     type="text"
@@ -311,7 +311,7 @@ const Edit = () => {
                   </label>
                   <select
                     name="supervisorId"
-                    value={school.supervisorId}
+                    value={school.supervisorId._id}
                     onChange={handleChange}
                     className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                     required

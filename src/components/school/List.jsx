@@ -27,10 +27,11 @@ const List = () => {
 
   const ExpandedComponent = ({ data }) => {
     return (
-      data.nameArabic || data.nameNative ?
+      data.nameArabic || data.nameNative || data.address ?
         <div className='ml-14 p-2 bg-blue-50'>
-          <p className='ml-14'>{data.nameArabic}</p>
-          <p className='ml-14'>{data.nameNative}</p>
+          <p className='ml-14 text-xs'>{data.nameArabic}</p>
+          <p className='ml-14 text-xs'>{data.nameNative}</p>
+          <p className='ml-14 text-xs'>{"Address : " + data.address}</p>
         </div>
         : null
     );

@@ -33,7 +33,7 @@ const AdminSummary = () => {
             "Authorization": `Bearer ${localStorage.getItem('token')}`
           }
         })
-        console.log(summary.data)
+
         setSummary(summary.data)
       } catch (error) {
         if (error.response) {
