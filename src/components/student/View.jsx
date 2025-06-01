@@ -67,7 +67,7 @@ const View = () => {
   return (
     <>
       {student ? (
-        <div className="max-w-3xl mx-auto mt-2 bg-white p-8 rounded-md shadow-md bg-[url(/bg-img.jpg)] bg-fixed bg-cover bg-center bg-repeat">
+        <div className="max-w-3xl mx-auto mt-2 p-8 rounded-md shadow-md">
           <div className="flex py-2 px-4 items-center justify-center bg-teal-700 text-white rounded-lg shadow-lg">
             <h2 className="text-xl font-semibold items-center justify-center">Student Details</h2>
             <Link to="/dashboard/students" >
@@ -76,7 +76,7 @@ const View = () => {
           </div>
 
           <div className="grid grid-cols-1 md</div>grid-cols-1 gap-6">
-            <div className="py-2 px-4 border mt-5 mb-1 items-center justify-center rounded-lg shadow-lg bg-white">
+            <div className="py-2 px-4 border mt-5 mb-1 items-center justify-center rounded-lg shadow-lg">
               <div className="flex mt-2 space-x-3 mb-1 items-center justify-center" >
                 <img className='size-40 border mt-3 items-center justify-center rounded-lg shadow-lg'
                   src={student.userId.profileImage && student.userId.profileImage != "" ? "data</div>image/jpeg;base64," + student.userId.profileImage : "/avatar.png"}

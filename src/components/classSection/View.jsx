@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import ViewCard from "../dashboard/ViewCard";
 
 const View = () => {
   const { id } = useParams();

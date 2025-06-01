@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { getBaseUrl, handleRightClick, getSpinner, checkAuth } from '../../utils/CommonHelper';
 import Swal from 'sweetalert2';
+import ViewCard from "../dashboard/ViewCard";
 import {
   FaRegTimesCircle, FaDownload
 } from "react-icons/fa";

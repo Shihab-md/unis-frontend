@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { getBaseUrl, handleRightClick, getSpinner, checkAuth } from '../../utils/CommonHelper';
 import Swal from 'sweetalert2';
+import ViewCard from "../dashboard/ViewCard";
 import {
   FaRegTimesCircle
 } from "react-icons/fa";
@@ -59,7 +60,7 @@ const View = () => {
   return (
     <>
       {template ? (
-        <div className="max-w-3xl mx-auto mt-2 bg-white p-8 rounded-md shadow-md bg-blue-50">
+        <div className="max-w-3xl mx-auto mt-2 p-8 rounded-md shadow-md">
           <div className="flex py-2 px-4 items-center justify-center bg-teal-700 text-white rounded-lg shadow-lg">
             <h2 className="text-xl font-semibold items-center justify-center">Template Details</h2>
             <Link to="/dashboard/templates" >
@@ -81,14 +82,10 @@ const View = () => {
 
               <div>
                 <div className="flex mt-1 space-x-3 mb-5" />
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Course Name:</p>
-                  <p className="font-normal">{template.courseId.name}</p>
-                </div>
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Details:</p>
-                  <p className="font-normal">{template.details}</p>
-                </div>
+                <ViewCard type="title" text="Course Name" />
+                <ViewCard type="data" text={template.courseId.name} />
+                <ViewCard type="title" text="Details" />
+                <ViewCard type="data" text={template.details} />
               </div>
             </div>
             <button
