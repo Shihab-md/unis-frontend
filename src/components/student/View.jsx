@@ -62,6 +62,7 @@ const View = () => {
 
     fetchStudent();
   }, []);
+
   return (
     <>
       {student ? (
@@ -73,322 +74,245 @@ const View = () => {
             </Link>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-1 gap-6">
+          <div className="grid grid-cols-1 md</div>grid-cols-1 gap-6">
             <div className="py-2 px-4 border mt-5 mb-1 items-center justify-center rounded-lg shadow-lg">
               <div className="flex mt-2 space-x-3 mb-3 items-center justify-center" >
                 <img className='size-40 border items-center justify-center rounded-lg shadow-lg'
-                  src={student.userId.profileImage && student.userId.profileImage != "" ? "data:image/jpeg;base64," + student.userId.profileImage : "/avatar.png"}
+                  src={student.userId.profileImage && student.userId.profileImage != "" ? "data</div>image/jpeg;base64," + student.userId.profileImage : "/avatar.png"}
                 />
               </div>
-              <div>
+              <div className="p-2">
                 <div className="flex space-x-3 mb-5" />
 
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Niswan Name (English):</p>
-                  <p className="font-normal">{student.schoolId && student.schoolId.nameEnglish ? student.schoolId.nameEnglish : ""}</p>
-                </div>
+                <div className="border p-2 font-medium bg-purple-100">Niswan Name (English)</div>
+                <div className="border p-2 font-normal">{student.schoolId && student.schoolId.nameEnglish ? student.schoolId.code + " : " + student.schoolId.nameEnglish : ""}</div>
 
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Roll Number:</p>
-                  <p className="font-normal">{student.rollNumber}</p>
-                </div>
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Name:</p>
-                  <p className="font-normal">{student.userId && student.userId.name ? student.userId.name : ""}</p>
-                </div>
+                <div className="border p-2 font-medium bg-purple-100">Roll Number</div>
+                <div className="border p-2 font-normal">{student.rollNumber}</div>
 
-                <div className="flex space-x-3 mb-5" />
+                <div className="border p-2 font-medium bg-purple-100">Name</div>
+                <div className="border p-2 font-normal">{student.userId && student.userId.name ? student.userId.name : ""}</div>
 
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Status:</p>
-                  <p className="font-normal">{student.active}</p>
-                </div>
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Remarks:</p>
-                  <p className="font-normal">{student.remarks}</p>
-                </div>
+                <div className="border p-2 font-medium bg-purple-100">Status</div>
+                <div className="border p-2 font-normal">{student.active}</div>
+
+                <div className="border p-2 font-medium bg-purple-100">Remarks</div>
+                <div className="border p-2 font-normal">{student.remarks}</div>
 
                 <div className="flex space-x-3 mb-5" />
 
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Date of Addmission:</p>
-                  <p className="font-normal">{new Date(student.doa).toLocaleDateString()}</p>
-                </div>
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Date of Birth:</p>
-                  <p className="font-normal">{new Date(student.dob).toLocaleDateString()}</p>
-                </div>
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Gender:</p>
-                  <p className="font-normal">{student.gender}</p>
-                </div>
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Marital Status:</p>
-                  <p className="font-normal">{student.maritalStatus}</p>
-                </div>
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Blood Group:</p>
-                  <p className="font-normal">{student.bloodGroup}</p>
-                </div>
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Identification Mark 1:</p>
-                  <p className="font-normal">{student.idMark1}</p>
-                </div>
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Identification Mark 2:</p>
-                  <p className="font-normal">{student.idMark2}</p>
-                </div>
+                <div className="border p-2 font-medium bg-purple-100">Date of Addmission</div>
+                <div className="border p-2 font-normal">{new Date(student.doa).toLocaleDateString()}</div>
+
+                <div className="border p-2 font-medium bg-purple-100">Date of Birth</div>
+                <div className="border p-2 font-normal">{new Date(student.dob).toLocaleDateString()}</div>
+
+                <div className="border p-2 font-medium bg-purple-100">Gender</div>
+                <div className="border p-2 font-normal">{student.gender}</div>
+
+                <div className="border p-2 font-medium bg-purple-100">Marital Status</div>
+                <div className="border p-2 font-normal">{student.maritalStatus}</div>
+
+                <div className="border p-2 font-medium bg-purple-100">Blood Group</div>
+                <div className="border p-2 font-normal">{student.bloodGroup}</div>
+
+                <div className="border p-2 font-medium bg-purple-100">Identification Mark 1</div>
+                <div className="border p-2 font-normal">{student.idMark1}</div>
+
+                <div className="border p-2 font-medium bg-purple-100">Identification Mark 2</div>
+                <div className="border p-2 font-normal">{student.idMark2}</div>
 
                 <div className="flex space-x-3 mb-5" />
 
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Father's Name:</p>
-                  <p className="font-normal">{student.fatherName}</p>
-                </div>
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Father's Number:</p>
-                  <p className="font-normal">{student.fatherNumber}</p>
-                </div>
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Father's Occupation:</p>
-                  <p className="font-normal">{student.fatherOccupation}</p>
-                </div>
+                <div className="border p-2 font-medium bg-purple-100">Father's Name</div>
+                <div className="border p-2 font-normal">{student.fatherName}</div>
 
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Mother's Name:</p>
-                  <p className="font-normal">{student.motherName}</p>
-                </div>
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Mother's Number:</p>
-                  <p className="font-normal">{student.motherNumber}</p>
-                </div>
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Mother's Occupation:</p>
-                  <p className="font-normal">{student.motherOccupation}</p>
-                </div>
+                <div className="border p-2 font-medium bg-purple-100">Father's Number</div>
+                <div className="border p-2 font-normal">{student.fatherNumber} </div>
 
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Guardian's Name:</p>
-                  <p className="font-normal">{student.guardianName}</p>
-                </div>
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Guardian's Number:</p>
-                  <p className="font-normal">{student.guardianNumber}</p>
-                </div>
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Guardian's Occupation:</p>
-                  <p className="font-normal">{student.guardianOccupation}</p>
-                </div>
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Guardian's Relationship:</p>
-                  <p className="font-normal">{student.guardianRelation}</p>
-                </div>
+                <div className="border p-2 font-medium bg-purple-100">Father's Occupation</div>
+                <div className="border p-2 font-normal">{student.fatherOccupation} </div>
+
+                <div className="border p-2 font-medium bg-purple-100">Mother's Name</div>
+                <div className="border p-2 font-normal">{student.motherName} </div>
+
+                <div className="border p-2 font-medium bg-purple-100">Mother's Number</div>
+                <div className="border p-2 font-normal">{student.motherNumber} </div>
+
+                <div className="border p-2 font-medium bg-purple-100">Mother's Occupation</div>
+                <div className="border p-2 font-normal">{student.motherOccupation} </div>
+
+                <div className="border p-2 font-medium bg-purple-100">Guardian's Name</div>
+                <div className="border p-2 font-normal">{student.guardianName} </div>
+
+                <div className="border p-2 font-medium bg-purple-100">Guardian's Number</div>
+                <div className="border p-2 font-normal">{student.guardianNumber} </div>
+
+                <div className="border p-2 font-medium bg-purple-100">Guardian's Occupation</div>
+                <div className="border p-2 font-normal">{student.guardianOccupation} </div>
+
+                <div className="border p-2 font-medium bg-purple-100">Guardian's Relationship</div>
+                <div className="border p-2 font-normal">{student.guardianRelation} </div>
 
                 <div className="flex space-x-3 mb-5" />
 
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Address:</p>
-                  <p className="font-normal">{student.address}</p>
-                </div>
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">State / District:</p>
-                  <p className="font-normal">{student.district}</p>
-                </div>
+                <div className="border p-2 font-medium bg-purple-100">Address</div>
+                <div className="border p-2 font-normal">{student.address} </div>
+
+                <div className="border p-2 font-medium bg-purple-100">State / District</div>
+                <div className="border p-2 font-normal">{student.district} </div>
 
                 <div className="flex space-x-3 mb-5" />
 
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Academic Year:</p>
-                  <p className="font-normal">{academic.acYear && academic.acYear.acYear ? academic.acYear.acYear : ""}</p>
-                </div>
+                <div className="border p-2 font-medium bg-purple-100">Academic Year</div>
+                <div className="border p-2 font-normal">{academic.acYear && academic.acYear.acYear ? academic.acYear.acYear : ""} </div>
 
                 <div className="flex space-x-3 mb-5" />
 
                 <div className="flex space-x-3 mb-5 justify-center">
-                  <p className="font-medium text-blue-500">***** Deeniyath Education *****</p>
-                  <p className="font-normal"></p>
+                  <p className="font-medium text-blue-500">***** Deeniyath Education ***** </p>
                 </div>
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Institute Name:</p>
-                  <p className="font-normal">{academic.instituteId1 && academic.instituteId1.name ? academic.instituteId1.name : ""}</p>
-                </div>
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Course Name :</p>
-                  <p className="font-normal">{academic.courseId1 && academic.courseId1.name ? academic.courseId1.name : ""}</p>
-                </div>
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Reference Number :</p>
-                  <p className="font-normal">{academic.refNumber1}</p>
-                </div>
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Fees :</p>
-                  <p className="font-normal">{academic.fees1}</p>
-                </div>
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Discount :</p>
-                  <p className="font-normal">{academic.discount1}</p>
-                </div>
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Final Fees :</p>
-                  <p className="font-normal">{academic.finalFees1}</p>
-                </div>
+
+                <div className="border p-2 font-medium bg-purple-100">Institute Name</div>
+                <div className="border p-2 font-normal">{academic.instituteId1 && academic.instituteId1.name ? academic.instituteId1.name : ""}</div>
+
+                <div className="border p-2 font-medium bg-purple-100">Course Name </div>
+                <div className="border p-2 font-normal">{academic.courseId1 && academic.courseId1.name ? academic.courseId1.name : ""}</div>
+
+                <div className="border p-2 font-medium bg-purple-100">Reference Number </div>
+                <div className="border p-2 font-normal">{academic.refNumber1}</div>
+
+                <div className="border p-2 font-medium bg-purple-100">Fees </div>
+                <div className="border p-2 font-normal">{academic.fees1}</div>
+
+                <div className="border p-2 font-medium bg-purple-100">Discount </div>
+                <div className="border p-2 font-normal">{academic.discount1}</div>
+
+                <div className="border p-2 font-medium bg-purple-100">Final Fees </div>
+                <div className="border p-2 font-normal">{academic.finalFees1}</div>
 
                 <div className="flex space-x-3 mb-5" />
 
                 <div className="flex space-x-3 mb-5 justify-center">
-                  <p className="font-medium text-blue-500">***** School Education *****</p>
-                  <p className="font-normal"></p>
+                  <p className="font-medium text-blue-500">***** School Education ***** </p>
                 </div>
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Institute Name:</p>
-                  <p className="font-normal">{academic.instituteId2 && academic.instituteId2.name ? academic.instituteId2.name : ""}</p>
-                </div>
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Course Name :</p>
-                  <p className="font-normal">{academic.instituteId2 && academic.courseId2.name ? academic.courseId2.name : ""}</p>
-                </div>
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Reference Number :</p>
-                  <p className="font-normal">{academic.refNumber2}</p>
-                </div>
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Fees :</p>
-                  <p className="font-normal">{academic.fees2}</p>
-                </div>
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Discount :</p>
-                  <p className="font-normal">{academic.discount2}</p>
-                </div>
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Final Fees :</p>
-                  <p className="font-normal">{academic.finalFees2}</p>
-                </div>
+
+                <div className="border p-2 font-medium bg-purple-100">Institute Name</div>
+                <div className="border p-2 font-normal">{academic.instituteId2 && academic.instituteId2.name ? academic.instituteId2.name : ""}</div>
+
+                <div className="border p-2 font-medium bg-purple-100">Course Name </div>
+                <div className="border p-2 font-normal">{academic.instituteId2 && academic.courseId2.name ? academic.courseId2.name : ""}</div>
+
+                <div className="border p-2 font-medium bg-purple-100">Reference Number </div>
+                <div className="border p-2 font-normal">{academic.refNumber2}</div>
+
+                <div className="border p-2 font-medium bg-purple-100">Fees </div>
+                <div className="border p-2 font-normal">{academic.fees2}</div>
+
+                <div className="border p-2 font-medium bg-purple-100">Discount </div>
+                <div className="border p-2 font-normal">{academic.discount2}</div>
+
+                <div className="border p-2 font-medium bg-purple-100">Final Fees </div>
+                <div className="border p-2 font-normal">{academic.finalFees2}</div>
 
                 <div className="flex space-x-3 mb-5" />
 
                 <div className="flex space-x-3 mb-5 justify-center">
-                  <p className="font-medium text-blue-500">***** College Education *****</p>
-                  <p className="font-normal"></p>
+                  <p className="font-medium text-blue-500">***** College Education ***** </p>
                 </div>
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Institute Name:</p>
-                  <p className="font-normal">{academic.instituteId3 && academic.instituteId3.name ? academic.instituteId3.name : ""}</p>
-                </div>
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Course Name :</p>
-                  <p className="font-normal">{academic.instituteId3 && academic.courseId3.name ? academic.courseId3.name : ""}</p>
-                </div>
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Reference Number :</p>
-                  <p className="font-normal">{academic.refNumber3}</p>
-                </div>
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Fees :</p>
-                  <p className="font-normal">{academic.fees3}</p>
-                </div>
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Discount :</p>
-                  <p className="font-normal">{academic.discount3}</p>
-                </div>
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Final Fees :</p>
-                  <p className="font-normal">{academic.finalFees3}</p>
-                </div>
+
+                <div className="border p-2 font-medium bg-purple-100">Institute Name</div>
+                <div className="border p-2 font-normal">{academic.instituteId3 && academic.instituteId3.name ? academic.instituteId3.name : ""}</div>
+
+                <div className="border p-2 font-medium bg-purple-100">Course Name </div>
+                <div className="border p-2 font-normal">{academic.instituteId3 && academic.courseId3.name ? academic.courseId3.name : ""}</div>
+
+                <div className="border p-2 font-medium bg-purple-100">Reference Number </div>
+                <div className="border p-2 font-normal">{academic.refNumber3}</div>
+
+                <div className="border p-2 font-medium bg-purple-100">Fees </div>
+                <div className="border p-2 font-normal">{academic.fees3}</div>
+
+                <div className="border p-2 font-medium bg-purple-100">Discount </div>
+                <div className="border p-2 font-normal">{academic.discount3}</div>
+
+                <div className="border p-2 font-medium bg-purple-100">Final Fees </div>
+                <div className="border p-2 font-normal">{academic.finalFees3}</div>
 
                 <div className="flex space-x-3 mb-5" />
 
                 <div className="flex space-x-3 mb-5 justify-center">
-                  <p className="font-medium text-blue-500">***** Vocation Course - 1 *****</p>
-                  <p className="font-normal"></p>
+                  <p className="font-medium text-blue-500">***** Vocation Course - 1 ***** </p>
                 </div>
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Institute Name:</p>
-                  <p className="font-normal">{academic.instituteId4 && academic.instituteId4.name ? academic.instituteId4.name : ""}</p>
-                </div>
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Course Name :</p>
-                  <p className="font-normal">{academic.courseId4 && academic.courseId4.name ? academic.courseId4.name : ""}</p>
-                </div>
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Reference Number :</p>
-                  <p className="font-normal">{academic.refNumber4}</p>
-                </div>
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Fees :</p>
-                  <p className="font-normal">{academic.fees4}</p>
-                </div>
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Discount :</p>
-                  <p className="font-normal">{academic.discount4}</p>
-                </div>
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Final Fees :</p>
-                  <p className="font-normal">{academic.finalFees4}</p>
-                </div>
+
+                <div className="border p-2 font-medium bg-purple-100">Institute Name</div>
+                <div className="border p-2 font-normal">{academic.instituteId4 && academic.instituteId4.name ? academic.instituteId4.name : ""}</div>
+
+                <div className="border p-2 font-medium bg-purple-100">Course Name </div>
+                <div className="border p-2 font-normal">{academic.courseId4 && academic.courseId4.name ? academic.courseId4.name : ""}</div>
+
+                <div className="border p-2 font-medium bg-purple-100">Reference Number </div>
+                <div className="border p-2 font-normal">{academic.refNumber4}</div>
+
+                <div className="border p-2 font-medium bg-purple-100">Fees </div>
+                <div className="border p-2 font-normal">{academic.fees4}</div>
+
+                <div className="border p-2 font-medium bg-purple-100">Discount </div>
+                <div className="border p-2 font-normal">{academic.discount4}</div>
+
+                <div className="border p-2 font-medium bg-purple-100">Final Fees </div>
+                <div className="border p-2 font-normal">{academic.finalFees4}</div>
 
                 <div className="flex space-x-3 mb-5" />
 
                 <div className="flex space-x-3 mb-5 justify-center">
-                  <p className="font-medium text-blue-500">***** Vocation Course - 2 *****</p>
-                  <p className="font-normal"></p>
+                  <p className="font-medium text-blue-500">***** Vocation Course - 2 ***** </p>
                 </div>
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Institute Name:</p>
-                  <p className="font-normal">{academic.instituteId5 && academic.instituteId5.name ? academic.instituteId5.name : ""}</p>
-                </div>
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Course Name :</p>
-                  <p className="font-normal">{academic.courseId5 && academic.courseId5.name ? academic.courseId5.name : ""}</p>
-                </div>
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Reference Number :</p>
-                  <p className="font-normal">{academic.refNumber5}</p>
-                </div>
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Fees :</p>
-                  <p className="font-normal">{academic.fees5}</p>
-                </div>
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Discount :</p>
-                  <p className="font-normal">{academic.discount5}</p>
-                </div>
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Final Fees :</p>
-                  <p className="font-normal">{academic.finalFees5}</p>
-                </div>
+
+                <div className="border p-2 font-medium bg-purple-100">Institute Name</div>
+                <div className="border p-2 font-normal">{academic.instituteId5 && academic.instituteId5.name ? academic.instituteId5.name : ""}</div>
+
+                <div className="border p-2 font-medium bg-purple-100">Course Name </div>
+                <div className="border p-2 font-normal">{academic.courseId5 && academic.courseId5.name ? academic.courseId5.name : ""}</div>
+
+                <div className="border p-2 font-medium bg-purple-100">Reference Number </div>
+                <div className="border p-2 font-normal">{academic.refNumber5}</div>
+
+                <div className="border p-2 font-medium bg-purple-100">Fees </div>
+                <div className="border p-2 font-normal">{academic.fees5}</div>
+
+                <div className="border p-2 font-medium bg-purple-100">Discount </div>
+                <div className="border p-2 font-normal">{academic.discount5}</div>
+
+                <div className="border p-2 font-medium bg-purple-100">Final Fees </div>
+                <div className="border p-2 font-normal">{academic.finalFees5}</div>
 
                 <div className="flex space-x-3 mb-5" />
 
                 <div className="flex space-x-3 mb-5 justify-center">
-                  <p className="font-medium text-blue-500">***** Hostel Details *****</p>
-                  <p className="font-normal"></p>
+                  <p className="font-medium text-blue-500">***** Hostel Details ***** </p>
                 </div>
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Hostel Admission:</p>
-                  <p className="font-normal">{student.hostel}</p>
-                </div>
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Hostel Reference Number :</p>
-                  <p className="font-normal">{student.hostelRefNumber}</p>
-                </div>
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Hostel Fees :</p>
-                  <p className="font-normal">{student.hostelFees}</p>
-                </div>
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Hostel Fees Discount :</p>
-                  <p className="font-normal">{student.hostelDiscount}</p>
-                </div>
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Hostel Final Fees :</p>
-                  <p className="font-normal">{student.hostelFinalFees}</p>
-                </div>
+
+                <div className="border p-2 font-medium bg-purple-100">Hostel Admission</div>
+                <div className="border p-2 font-normal">{student.hostel}</div>
+
+                <div className="border p-2 font-medium bg-purple-100">Hostel Reference Number </div>
+                <div className="border p-2 font-normal">{student.hostelRefNumber}</div>
+
+                <div className="border p-2 font-medium bg-purple-100">Hostel Fees </div>
+                <div className="border p-2 font-normal">{student.hostelFees}</div>
+
+                <div className="border p-2 font-medium bg-purple-100">Hostel Fees Discount </div>
+                <div className="border p-2 font-normal">{student.hostelDiscount}</div>
+
+                <div className="border p-2 font-medium bg-purple-100">Hostel Final Fees </div>
+                <div className="border p-2 font-normal">{student.hostelFinalFees}</div>
 
               </div>
             </div>
           </div>
           <button
-            className="w-full mt-5 mb-3 bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded-lg shadow-lg"
+            className="w-full mt-5 mb-3 bg-teal-600 hover</div>bg-teal-700 text-white font-bold py-2 px-4 rounded-lg shadow-lg"
             data-ripple-light="true"
             onClick={() => navigate(`/dashboard/students`)}
           >  Back
