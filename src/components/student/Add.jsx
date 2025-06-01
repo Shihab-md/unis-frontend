@@ -7,6 +7,7 @@ import { getInstitutes } from '../../utils/InstituteHelper';
 import { getCourses } from '../../utils/CourseHelper';
 import { getBaseUrl, handleRightClick, checkAuth } from '../../utils/CommonHelper';;
 import Swal from 'sweetalert2';
+import ViewCard from "../dashboard/ViewCard";
 import {
   FaRegTimesCircle
 } from "react-icons/fa";
@@ -181,7 +182,7 @@ const Add = () => {
         </div>
 
         <form onSubmit={handleSubmit}>
-          <div className="py-2 px-4 border mt-5 mb-3 items-center justify-center rounded-lg shadow-lg bg-white">
+          <div className="py-2 px-4 border mt-5 mb-3 items-center justify-center rounded-lg shadow-lg">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
 
               {/* School */}
@@ -545,11 +546,7 @@ const Add = () => {
               </div>
 
               <div className="flex space-x-3 mb-5" />
-              <div className="flex space-x-3 mt-5 justify-center" >
-                <label className="block mt-2 text-sm font-bold text-blue-500">
-                  *****   Dheeniyath Education   *****
-                </label>
-              </div>
+              <ViewCard type="header" text="Deeniyath Education" />
               <div className="flex space-x-3 mb-5" />
 
               {/* Institute 1 --------------------------------------------- */}
@@ -657,11 +654,7 @@ const Add = () => {
 
               <div className="flex space-x-3 mb-5" />
               <div className="flex space-x-3 mb-5" />
-              <div className="flex space-x-3 mt-5 justify-center" >
-                <label className="block mt-2 text-sm font-bold text-blue-500">
-                  *****   School Education   *****
-                </label>
-              </div>
+              <ViewCard type="header" text="School Education" />
               <div className="flex space-x-3 mb-5" />
 
               {/* Institute 2 --------------------------------------------- */}
@@ -769,11 +762,7 @@ const Add = () => {
 
               <div className="flex space-x-3 mb-5" />
               <div className="flex space-x-3 mb-5" />
-              <div className="flex space-x-3 mt-5 justify-center" >
-                <label className="block mt-2 text-sm font-bold text-blue-500">
-                  *****   College Education   *****
-                </label>
-              </div>
+              <ViewCard type="header" text="College Education" />
               <div className="flex space-x-3 mb-5" />
 
               {/* Institute 3 --------------------------------------------- */}
@@ -881,11 +870,7 @@ const Add = () => {
 
               <div className="flex space-x-3 mb-5" />
               <div className="flex space-x-3 mb-5" />
-              <div className="flex space-x-3 mt-5 justify-center" >
-                <label className="block mt-2 text-sm font-bold text-blue-500">
-                  *****   Vocational Course - 1   *****
-                </label>
-              </div>
+              <ViewCard type="header" text="Vocational Course - 1" />
               <div className="flex space-x-3 mb-5" />
 
               {/* Institute 4 --------------------------------------------- */}
@@ -993,11 +978,7 @@ const Add = () => {
 
               <div className="flex space-x-3 mb-5" />
               <div className="flex space-x-3 mb-5" />
-              <div className="flex space-x-3 mt-5 justify-center" >
-                <label className="block mt-2 text-sm font-bold text-blue-500">
-                  *****   Vocational Course - 2   *****
-                </label>
-              </div>
+              <ViewCard type="header" text="Vocational Course - 2" />
               <div className="flex space-x-3 mb-5" />
 
               {/* Institute 5 --------------------------------------------- */}
@@ -1105,11 +1086,7 @@ const Add = () => {
 
               <div className="flex space-x-3 mb-5" />
               <div className="flex space-x-3 mb-5" />
-              <div className="flex space-x-3 mt-5 justify-center" >
-                <label className="block mt-2 text-sm font-bold text-blue-500">
-                  *****   Hostel Details   *****
-                </label>
-              </div>
+              <ViewCard type="header" text="Hostel Details" />
               <div className="flex space-x-3 mb-5" />
 
               {/* Hostel */}

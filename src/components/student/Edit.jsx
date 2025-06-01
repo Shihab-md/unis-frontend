@@ -233,7 +233,7 @@ const Edit = () => {
             </Link>
           </div>
           <form onSubmit={handleSubmit}>
-            <div className="py-2 px-4 border mt-5 mb-3 items-center justify-center rounded-lg shadow-lg bg-blue">
+            <div className="py-2 px-4 border mt-5 mb-3 items-center justify-center rounded-lg shadow-lg">
               <div className="grid mt-3 grid-cols-1 md:grid-cols-2 gap-5">
 
                 {/* School */}
@@ -660,8 +660,6 @@ const Edit = () => {
                   </select>
                 </div>
 
-                <div className="flex space-x-3 mb-5" />
-                <div className="flex space-x-3 mb-5" />
                 <div className="flex space-x-3 mb-5" />
                 {/* <div className="flex space-x-3 mt-5 justify-center" >
                   <label className="block mt-2 text-sm font-bold text-blue-500">
