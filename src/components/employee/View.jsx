@@ -49,7 +49,7 @@ const View = () => {
   return (
     <>
       {employee ? (
-        <div className="max-w-3xl mx-auto mt-2 bg-white p-8 rounded-md shadow-md bg-blue-50">
+        <div className="max-w-3xl mx-auto mt-2 p-8 rounded-md shadow-md">
           <div className="flex py-2 px-4 items-center justify-center bg-teal-700 text-white rounded-lg shadow-lg">
             <h2 className="text-xl font-semibold items-center justify-center">Employee Details</h2>
             <Link to="/dashboard/employees" >
@@ -58,71 +58,54 @@ const View = () => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-1 gap-6">
-            <div className="py-2 px-4 border mt-5 mb-1 items-center justify-center rounded-lg shadow-lg">
+            <div className="py-2 px-4 border mt-5 mb-1 items-center justify-center rounded-lg shadow-lg bg-white">
               <div className="flex mt-2 space-x-3 mb-3 items-center justify-center" >
-                <img className='size-40 border items-center justify-center rounded-lg shadow-lg'
+                <img className='size-40 border mt-3 items-center justify-center rounded-lg shadow-lg'
                   src={employee.userId.profileImage && employee.userId.profileImage != "" ? "data:image/jpeg;base64," + employee.userId.profileImage : "/avatar.png"}
                 />
               </div>
-              <div>
-                <div className="flex space-x-3 mb-5" />
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Name:</p>
-                  <p className="font-normal">{employee.userId.name}</p>
-                </div>
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Email:</p>
-                  <p className="font-normal">{employee.userId.email}</p>
-                </div>
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Employee ID:</p>
-                  <p className="font-normal">{employee.employeeId}</p>
-                </div>
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Niswan Name:</p>
-                  <p className="font-normal">{employee.schoolId.nameEnglish}</p>
-                </div>
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Contact Number:</p>
-                  <p className="font-normal">{employee.contactNumber}</p>
-                </div>
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Address:</p>
-                  <p className="font-normal">{employee.address}</p>
-                </div>
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Designation:</p>
-                  <p className="font-normal">{employee.designation}</p>
-                </div>
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Qualification:</p>
-                  <p className="font-normal">{employee.qualification}</p>
-                </div>
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Date of Birth:</p>
-                  <p className="font-normal">
-                    {new Date(employee.dob).toLocaleDateString()}
-                  </p>
-                </div>
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Gender:</p>
-                  <p className="font-normal">{employee.gender}</p>
-                </div>
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Marital Status:</p>
-                  <p className="font-normal">{employee.maritalStatus}</p>
-                </div>
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Date of Joining:</p>
-                  <p className="font-normal">
-                    {new Date(employee.doj).toLocaleDateString()}
-                  </p>
-                </div>
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Salary:</p>
-                  <p className="font-normal">{employee.salary}</p>
-                </div>
-              </div>
+              <div className="flex space-x-3 mb-5" />
+
+              <ViewCard type="title" text="Name" />
+              <ViewCard type="data" text={employee.userId.name} />
+
+              <ViewCard type="title" text="Email" />
+              <ViewCard type="data" text={employee.userId.email} />
+
+              <ViewCard type="title" text="Employee ID" />
+              <ViewCard type="data" text={employee.employeeId} />
+
+              <ViewCard type="title" text="Niswan Name" />
+              <ViewCard type="data" text={employee.schoolId.nameEnglish} />
+
+              <ViewCard type="title" text="Contact Number" />
+              <ViewCard type="data" text={employee.contactNumber} />
+
+              <ViewCard type="title" text="Address" />
+              <ViewCard type="data" text={employee.address} />
+
+              <ViewCard type="title" text="Designation" />
+              <ViewCard type="data" text={employee.designation} />
+
+              <ViewCard type="title" text="Qualification" />
+              <ViewCard type="data" text={employee.qualification} />
+
+              <ViewCard type="title" text="Date of Birth" />
+              <ViewCard type="data" text={new Date(employee.dob).toLocaleDateString()} />
+
+              <ViewCard type="title" text="Gender" />
+              <ViewCard type="data" text={employee.gender} />
+
+              <ViewCard type="title" text="Marital Status" />
+              <ViewCard type="data" text={employee.maritalStatus} />
+
+              <ViewCard type="title" text="Date of Joining" />
+              <ViewCard type="data" text={new Date(employee.doj).toLocaleDateString()} />
+
+              <ViewCard type="title" text="Salary" />
+              <ViewCard type="data" text={employee.salary} />
+
+              <div className="flex space-x-3 mb-5" />
             </div>
           </div>
           <button

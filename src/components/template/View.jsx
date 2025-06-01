@@ -69,10 +69,10 @@ const View = () => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-1 gap-6">
-            <div className="py-2 px-4 border mt-5 mb-1 items-center justify-center rounded-lg shadow-lg">
+            <div className="py-2 px-4 border mt-5 mb-1 items-center justify-center rounded-lg shadow-lg bg-white">
 
               <div className="flex mt-2 space-x-3 mb-3 items-center justify-center" >
-                <img className='size-40 border items-center justify-center rounded-lg shadow-lg'
+                <img className='size-40 mt-5 border items-center justify-center rounded-lg shadow-lg'
                   src={template.template && template.template != "" ? "data:image/jpeg;base64," + template.template : "/template.jpg"}
                 />
                 {/* <button onClick={handleDownload}>
@@ -82,10 +82,13 @@ const View = () => {
 
               <div>
                 <div className="flex mt-1 space-x-3 mb-5" />
+
                 <ViewCard type="title" text="Course Name" />
                 <ViewCard type="data" text={template.courseId.name} />
                 <ViewCard type="title" text="Details" />
                 <ViewCard type="data" text={template.details} />
+
+                <div className="flex mt-1 space-x-3 mb-5" />
               </div>
             </div>
             <button

@@ -75,11 +75,11 @@ const View = () => {
             </Link>
           </div>
 
-          <div className="grid grid-cols-1 md</div>grid-cols-1 gap-6">
-            <div className="py-2 px-4 border mt-5 mb-1 items-center justify-center rounded-lg shadow-lg">
+          <div className="grid grid-cols-1 md:grid-cols-1 gap-6">
+            <div className="py-2 px-4 border mt-5 mb-1 items-center justify-center rounded-lg shadow-lg bg-white">
               <div className="flex mt-2 space-x-3 mb-1 items-center justify-center" >
                 <img className='size-40 border mt-3 items-center justify-center rounded-lg shadow-lg'
-                  src={student.userId.profileImage && student.userId.profileImage != "" ? "data</div>image/jpeg;base64," + student.userId.profileImage : "/avatar.png"}
+                  src={student.userId.profileImage && student.userId.profileImage != "" ? "data:image/jpeg;base64," + student.userId.profileImage : "/avatar.png"}
                 />
               </div>
               <div className="p-2">

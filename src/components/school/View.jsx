@@ -50,7 +50,7 @@ const View = () => {
   return (
     <>
       {school ? (
-        <div className="max-w-3xl mx-auto mt-2 bg-white p-8 rounded-md shadow-md bg-blue-50">
+        <div className="max-w-3xl mx-auto mt-2 p-8 rounded-md shadow-md">
           <div className="flex py-2 px-4 items-center justify-center bg-teal-700 text-white rounded-lg shadow-lg">
             <h2 className="text-xl font-semibold items-center justify-center">Niswan Details</h2>
             <Link to="/dashboard/schools" >
@@ -59,114 +59,83 @@ const View = () => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-1 gap-6">
-            <div className="py-2 px-4 border mt-5 mb-1 items-center justify-center rounded-lg shadow-lg">
+            <div className="py-2 px-4 border mt-5 mb-1 items-center justify-center rounded-lg shadow-lg bg-white">
               <div>
                 <div className="flex space-x-3 mb-5" />
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Code :</p>
-                  <p className="font-medium">{school.code}</p>
-                </div>
+
+                  <ViewCard type="title" text="Code" />
+                  <ViewCard type="data" text={school.code} />
+                  <ViewCard type="title" text="Name in English" />
+                  <ViewCard type="data" text={school.nameEnglish} />
+                  <ViewCard type="title" text="Name in Arabic" />
+                  <ViewCard type="data" text={school.nameArabic} />
+                  <ViewCard type="title" text="Name in Native" />
+                  <ViewCard type="data" text={school.nameNative} />
+
                 <div className="flex space-x-3 mb-5" />
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Name in English :</p>
-                  <p className="font-normal">{school.nameEnglish}</p>
-                </div>
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Name in Arabic :</p>
-                  <p className="font-normal">{school.nameArabic}</p>
-                </div>
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Name in Native :</p>
-                  <p className="font-normal">{school.nameNative}</p>
-                </div>
+
+                  <ViewCard type="title" text="Address" />
+                  <ViewCard type="data" text={school.address} />
+                  <ViewCard type="title" text="District / State" />
+                  <ViewCard type="data" text={school.district} />
+                  <ViewCard type="title" text="Contact Number" />
+                  <ViewCard type="data" text={school.contactNumber} />
+                  <ViewCard type="title" text="Email" />
+                  <ViewCard type="data" text={school.email} />
+                  <ViewCard type="title" text="Status" />
+                  <ViewCard type="data" text={school.active} />
+                  <ViewCard type="title" text="Supervisor" />
+                  <ViewCard type="data" text={school.supervisorId.supervisorId + " : " + school.supervisorId.userId.name} />
+
                 <div className="flex space-x-3 mb-5" />
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Address :</p>
-                  <p className="font-normal">{school.address}</p>
-                </div>
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">District / State :</p>
-                  <p className="font-normal">{school.district}</p>
-                </div>
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Contact Number :</p>
-                  <p className="font-normal">{school.contactNumber}</p>
-                </div>
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Email :</p>
-                  <p className="font-normal">{school.email}</p>
-                </div>
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Status :</p>
-                  <p className="font-normal">{school.active}</p>
-                </div>
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Supervisor :</p>
-                  <p className="font-normal">{school.supervisorId.supervisorId + " : " + school.supervisorId.userId.name}</p>
-                </div>
+
+                  <ViewCard type="title" text="Incharge-1 Name" />
+                  <ViewCard type="data" text={school.incharge1} />
+                  <ViewCard type="title" text="Incharge-1 Number" />
+                  <ViewCard type="data" text={school.incharge1Number} />
+
                 <div className="flex space-x-3 mb-5" />
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Incharge-1 Name :</p>
-                  <p className="font-normal">{school.incharge1}</p>
-                </div>
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Incharge-1 Number :</p>
-                  <p className="font-normal">{school.incharge1Number}</p>
-                </div>
+
+                  <ViewCard type="title" text="Incharge-2 Name" />
+                  <ViewCard type="data" text={school.incharge2} />
+                  <ViewCard type="title" text="Incharge-2 Number" />
+                  <ViewCard type="data" text={school.incharge2Number} />
+
                 <div className="flex space-x-3 mb-5" />
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Incharge-2 Name :</p>
-                  <p className="font-normal">{school.incharge2}</p>
-                </div>
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Incharge-2 Number :</p>
-                  <p className="font-normal">{school.incharge2Number}</p>
-                </div>
+
+                  <ViewCard type="title" text="Incharge-3 Name" />
+                  <ViewCard type="data" text={school.incharge3} />
+                  <ViewCard type="title" text="Incharge-3 Number" />
+                  <ViewCard type="data" text={school.incharge3Number} />
+
                 <div className="flex space-x-3 mb-5" />
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Incharge-3 Name :</p>
-                  <p className="font-normal">{school.incharge3}</p>
-                </div>
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Incharge-3 Number :</p>
-                  <p className="font-normal">{school.incharge3Number}</p>
-                </div>
+
+                  <ViewCard type="title" text="Incharge-4 Name" />
+                  <ViewCard type="data" text={school.incharge4} />
+                  <ViewCard type="title" text="Incharge-4 Number" />
+                  <ViewCard type="data" text={school.incharge4Number} />
+
                 <div className="flex space-x-3 mb-5" />
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Incharge-4 Name :</p>
-                  <p className="font-normal">{school.incharge4}</p>
-                </div>
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Incharge-4 Number :</p>
-                  <p className="font-normal">{school.incharge4Number}</p>
-                </div>
+
+                  <ViewCard type="title" text="Incharge-5 Name" />
+                  <ViewCard type="data" text={school.incharge5} />
+                  <ViewCard type="title" text="Incharge-5 Number" />
+                  <ViewCard type="data" text={school.incharge5Number} />
+
                 <div className="flex space-x-3 mb-5" />
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Incharge-5 Name :</p>
-                  <p className="font-normal">{school.incharge5}</p>
-                </div>
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Incharge-5 Number :</p>
-                  <p className="font-normal">{school.incharge5Number}</p>
-                </div>
+
+                  <ViewCard type="title" text="Incharge-6 Name" />
+                  <ViewCard type="data" text={school.incharge6} />
+                  <ViewCard type="title" text="Incharge-6 Number" />
+                  <ViewCard type="data" text={school.incharge6Number} />
+
                 <div className="flex space-x-3 mb-5" />
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Incharge-6 Name :</p>
-                  <p className="font-normal">{school.incharge6}</p>
-                </div>
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Incharge-6 Number :</p>
-                  <p className="font-normal">{school.incharge6Number}</p>
-                </div>
-                <div className="flex space-x-3 mb-5" />
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Incharge-7 Name :</p>
-                  <p className="font-normal">{school.incharge7}</p>
-                </div>
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Incharge-7 Number :</p>
-                  <p className="font-normal">{school.incharge7Number}</p>
-                </div>
+
+                  <ViewCard type="title" text="Incharge-7 Name" />
+                  <ViewCard type="data" text={school.incharge7} />
+                  <ViewCard type="title" text="Incharge-7 Number" />
+                  <ViewCard type="data" text={school.incharge7Number} />
+
                 <div className="flex space-x-3 mb-5" />
               </div>
             </div>

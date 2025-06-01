@@ -233,7 +233,7 @@ const Edit = () => {
             </Link>
           </div>
           <form onSubmit={handleSubmit}>
-            <div className="py-2 px-4 border mt-5 mb-3 items-center justify-center rounded-lg shadow-lg">
+            <div className="py-2 px-4 border mt-5 mb-3 items-center justify-center rounded-lg shadow-lg bg-white">
               <div className="grid mt-3 grid-cols-1 md:grid-cols-2 gap-5">
 
                 {/* School */}

@@ -49,7 +49,7 @@ const View = () => {
   return (
     <>
       {course ? (
-        <div className="max-w-3xl mx-auto mt-2 bg-white p-8 rounded-md shadow-md bg-blue-50">
+        <div className="max-w-3xl mx-auto mt-2 p-8 rounded-md shadow-md">
           <div className="flex py-2 px-4 items-center justify-center bg-teal-700 text-white rounded-lg shadow-lg">
             <h2 className="text-xl font-semibold items-center justify-center">Course Details</h2>
             <Link to="/dashboard/courses" >
@@ -57,171 +57,113 @@ const View = () => {
             </Link>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-1 gap-6">
-            <div className="py-2 px-4 border mt-5 mb-1 items-center justify-center rounded-lg shadow-lg">
+            <div className="py-2 px-4 border mt-5 mb-1 items-center justify-center rounded-lg shadow-lg bg-white">
+
               <div className="flex space-x-3 mb-5" />
-              <div>
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Code:</p>
-                  <p className="font-normal">{course.code}</p>
-                </div>
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Name:</p>
-                  <p className="font-normal">{course.name}</p>
-                </div>
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Education Type:</p>
-                  <p className="font-normal">{course.type}</p>
-                </div>
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Remarks:</p>
-                  <p className="font-normal">{course.remarks}</p>
-                </div>
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Fees:</p>
-                  <p className="font-normal">{course.fees}</p>
-                </div>
 
-                <div className="flex space-x-3 mb-5" />
+              <ViewCard type="title" text="Code" />
+              <ViewCard type="data" text={course.code} />
+              <ViewCard type="title" text="Name" />
+              <ViewCard type="data" text={course.name} />
+              <ViewCard type="title" text="Education Type" />
+              <ViewCard type="data" text={course.type} />
+              <ViewCard type="title" text="Remarks" />
+              <ViewCard type="data" text={course.remarks} />
+              <ViewCard type="title" text="Fees" />
+              <ViewCard type="data" text={course.fees} />
 
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Subject-1 :</p>
-                  <p className="font-normal">{course.subject1}</p>
-                </div>
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Max Marks :</p>
-                  <p className="font-normal">{course.subject1MaxMark}</p>
-                </div>
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Pass Marks :</p>
-                  <p className="font-normal">{course.subject1PassMark}</p>
-                </div>
+              <div className="flex space-x-3 mb-5" />
 
-                <div className="flex space-x-3 mb-5" />
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Subject-2 :</p>
-                  <p className="font-normal">{course.subject2}</p>
-                </div>
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Max Marks :</p>
-                  <p className="font-normal">{course.subject2MaxMark}</p>
-                </div>
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Pass Marks :</p>
-                  <p className="font-normal">{course.subject2PassMark}</p>
-                </div>
+              <ViewCard type="title" text="Subject-1 " />
+              <ViewCard type="data" text={course.subject1} />
+              <ViewCard type="title" text="Max Marks " />
+              <ViewCard type="data" text={course.subject1MaxMark} />
+              <ViewCard type="title" text="Pass Marks " />
+              <ViewCard type="data" text={course.subject1PassMark} />
 
-                <div className="flex space-x-3 mb-5" />
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Subject-3 :</p>
-                  <p className="font-normal">{course.subject3}</p>
-                </div>
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Max Marks :</p>
-                  <p className="font-normal">{course.subject3MaxMark}</p>
-                </div>
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Pass Marks :</p>
-                  <p className="font-normal">{course.subject3PassMark}</p>
-                </div>
+              <div className="flex space-x-3 mb-5" />
 
-                <div className="flex space-x-3 mb-5" />
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Subject-4 :</p>
-                  <p className="font-normal">{course.subject4}</p>
-                </div>
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Max Marks :</p>
-                  <p className="font-normal">{course.subject4MaxMark}</p>
-                </div>
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Pass Marks :</p>
-                  <p className="font-normal">{course.subject4PassMark}</p>
-                </div>
+              <ViewCard type="title" text="Subject-2 " />
+              <ViewCard type="data" text={course.subject2} />
+              <ViewCard type="title" text="Max Marks " />
+              <ViewCard type="data" text={course.subject2MaxMark} />
+              <ViewCard type="title" text="Pass Marks " />
+              <ViewCard type="data" text={course.subject2PassMark} />
 
-                <div className="flex space-x-3 mb-5" />
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Subject-5 :</p>
-                  <p className="font-normal">{course.subject5}</p>
-                </div>
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Max Marks :</p>
-                  <p className="font-normal">{course.subject5MaxMark}</p>
-                </div>
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Pass Marks :</p>
-                  <p className="font-normal">{course.subject5PassMark}</p>
-                </div>
+              <div className="flex space-x-3 mb-5" />
 
-                <div className="flex space-x-3 mb-5" />
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Subject-6 :</p>
-                  <p className="font-normal">{course.subject6}</p>
-                </div>
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Max Marks :</p>
-                  <p className="font-normal">{course.subject6MaxMark}</p>
-                </div>
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Pass Marks :</p>
-                  <p className="font-normal">{course.subject6PassMark}</p>
-                </div>
+              <ViewCard type="title" text="Subject-3 " />
+              <ViewCard type="data" text={course.subject3} />
+              <ViewCard type="title" text="Max Marks " />
+              <ViewCard type="data" text={course.subject3MaxMark} />
+              <ViewCard type="title" text="Pass Marks " />
+              <ViewCard type="data" text={course.subject3PassMark} />
 
-                <div className="flex space-x-3 mb-5" />
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Subject-7 :</p>
-                  <p className="font-normal">{course.subject7}</p>
-                </div>
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Max Marks :</p>
-                  <p className="font-normal">{course.subject7MaxMark}</p>
-                </div>
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Pass Marks :</p>
-                  <p className="font-normal">{course.subject7PassMark}</p>
-                </div>
+              <div className="flex space-x-3 mb-5" />
 
-                <div className="flex space-x-3 mb-5" />
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Subject-8 :</p>
-                  <p className="font-normal">{course.subject8}</p>
-                </div>
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Max Marks :</p>
-                  <p className="font-normal">{course.subject8MaxMark}</p>
-                </div>
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Pass Marks :</p>
-                  <p className="font-normal">{course.subject8PassMark}</p>
-                </div>
+              <ViewCard type="title" text="Subject-4 " />
+              <ViewCard type="data" text={course.subject4} />
+              <ViewCard type="title" text="Max Marks " />
+              <ViewCard type="data" text={course.subject4MaxMark} />
+              <ViewCard type="title" text="Pass Marks " />
+              <ViewCard type="data" text={course.subject4PassMark} />
 
-                <div className="flex space-x-3 mb-5" />
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Subject-9 :</p>
-                  <p className="font-normal">{course.subject9}</p>
-                </div>
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Max Marks :</p>
-                  <p className="font-normal">{course.subject9MaxMark}</p>
-                </div>
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Pass Marks :</p>
-                  <p className="font-normal">{course.subject9PassMark}</p>
-                </div>
 
-                <div className="flex space-x-3 mb-5" />
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Subject-10 :</p>
-                  <p className="font-normal">{course.subject10}</p>
-                </div>
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Max Marks :</p>
-                  <p className="font-normal">{course.subject10MaxMark}</p>
-                </div>
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Pass Marks :</p>
-                  <p className="font-normal">{course.subject10PassMark}</p>
-                </div>
-              </div>
+              <div className="flex space-x-3 mb-5" />
+
+              <ViewCard type="title" text="Subject-5 " />
+              <ViewCard type="data" text={course.subject5} />
+              <ViewCard type="title" text="Max Marks " />
+              <ViewCard type="data" text={course.subject5MaxMark} />
+              <ViewCard type="title" text="Pass Marks " />
+              <ViewCard type="data" text={course.subject5PassMark} />
+
+              <div className="flex space-x-3 mb-5" />
+
+              <ViewCard type="title" text="Subject-6 " />
+              <ViewCard type="data" text={course.subject6} />
+              <ViewCard type="title" text="Max Marks " />
+              <ViewCard type="data" text={course.subject6MaxMark} />
+              <ViewCard type="title" text="Pass Marks " />
+              <ViewCard type="data" text={course.subject6PassMark} />
+
+              <div className="flex space-x-3 mb-5" />
+
+              <ViewCard type="title" text="Subject-7 " />
+              <ViewCard type="data" text={course.subject7} />
+              <ViewCard type="title" text="Max Marks " />
+              <ViewCard type="data" text={course.subject7MaxMark} />
+              <ViewCard type="title" text="Pass Marks " />
+              <ViewCard type="data" text={course.subject7PassMark} />
+
+              <div className="flex space-x-3 mb-5" />
+
+              <ViewCard type="title" text="Subject-8 " />
+              <ViewCard type="data" text={course.subject8} />
+              <ViewCard type="title" text="Max Marks " />
+              <ViewCard type="data" text={course.subject8MaxMark} />
+              <ViewCard type="title" text="Pass Marks " />
+              <ViewCard type="data" text={course.subject8PassMark} />
+
+              <div className="flex space-x-3 mb-5" />
+
+              <ViewCard type="title" text="Subject-9 " />
+              <ViewCard type="data" text={course.subject9} />
+              <ViewCard type="title" text="Max Marks " />
+              <ViewCard type="data" text={course.subject9MaxMark} />
+              <ViewCard type="title" text="Pass Marks " />
+              <ViewCard type="data" text={course.subject9PassMark} />
+
+              <div className="flex space-x-3 mb-5" />
+
+              <ViewCard type="title" text="Subject-10 " />
+              <ViewCard type="data" text={course.subject10} />
+              <ViewCard type="title" text="Max Marks " />
+              <ViewCard type="data" text={course.subject10MaxMark} />
+              <ViewCard type="title" text="Pass Marks " />
+              <ViewCard type="data" text={course.subject10PassMark} />
+
+              <div className="flex space-x-3 mb-5" />
             </div>
           </div>
           <button

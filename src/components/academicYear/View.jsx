@@ -49,7 +49,7 @@ const View = () => {
   return (
     <>
       {academicYear ? (
-        <div className="max-w-3xl mx-auto mt-2 bg-white p-8 rounded-md shadow-md bg-blue-50">
+        <div className="max-w-3xl mx-auto mt-2 p-8 rounded-md shadow-md">
           <div className="flex py-2 px-4 items-center justify-center bg-teal-700 text-white rounded-lg shadow-lg">
             <h2 className="text-xl font-semibold items-center justify-center">Academic Year Details</h2>
             <Link to="/dashboard/academicYears" >
@@ -57,18 +57,16 @@ const View = () => {
             </Link>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-1 gap-6">
-            <div className="py-2 px-4 border mt-5 mb-1 items-center justify-center rounded-lg shadow-lg">
+            <div className="py-2 px-4 border mt-5 mb-1 items-center justify-center rounded-lg shadow-lg bg-white">
               <div className="flex space-x-3 mb-5" />
-              <div>
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Academic Year:</p>
-                  <p className="font-normal">{academicYear.acYear}</p>
-                </div>
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Description:</p>
-                  <p className="font-normal">{academicYear.desc}</p>
-                </div>
-              </div>
+
+              <ViewCard type="title" text="Academic Year" />
+              <ViewCard type="data" text={academicYear.acYear} />
+
+              <ViewCard type="title" text="Description" />
+              <ViewCard type="data" text={academicYear.desc} />
+
+              <div className="flex space-x-3 mb-5" />
             </div>
           </div>
           <button

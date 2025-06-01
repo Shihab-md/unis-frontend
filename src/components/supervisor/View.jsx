@@ -49,7 +49,7 @@ const View = () => {
   return (
     <>
       {supervisor ? (
-        <div className="max-w-3xl mx-auto mt-2 bg-white p-8 rounded-md shadow-md bg-blue-50">
+        <div className="max-w-3xl mx-auto mt-2 p-8 rounded-md shadow-md">
           <div className="flex py-2 px-4 items-center justify-center bg-teal-700 text-white rounded-lg shadow-lg">
             <h2 className="text-xl font-semibold items-center justify-center">Supervisor Details</h2>
             <Link to="/dashboard/supervisors" >
@@ -58,7 +58,7 @@ const View = () => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-1 gap-6">
-            <div className="py-2 px-4 border mt-5 mb-1 items-center justify-center rounded-lg shadow-lg">
+            <div className="py-2 px-4 border mt-5 mb-1 items-center justify-center rounded-lg shadow-lg bg-white">
 
               <div className="flex mt-2 space-x-3 mb-3 items-center justify-center" >
                 <img className='size-40 border items-center justify-center rounded-lg shadow-lg'
@@ -67,58 +67,43 @@ const View = () => {
               </div>
               <div>
                 <div className="flex mt-1 space-x-3 mb-5" />
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Name:</p>
-                  <p className="font-normal">{supervisor.userId.name}</p>
-                </div>
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Email:</p>
-                  <p className="font-normal">{supervisor.userId.email}</p>
-                </div>
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Supervisor ID:</p>
-                  <p className="font-normal">{supervisor.supervisorId}</p>
-                </div>
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Contact Number:</p>
-                  <p className="font-normal">{supervisor.contactNumber}</p>
-                </div>
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Address:</p>
-                  <p className="font-normal">{supervisor.address}</p>
-                </div>
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Route:</p>
-                  <p className="font-normal">{supervisor.routeName}</p>
-                </div>
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Qualification:</p>
-                  <p className="font-normal">{supervisor.qualification}</p>
-                </div>
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Date of Birth:</p>
-                  <p className="font-normal">
-                    {new Date(supervisor.dob).toLocaleDateString()}
-                  </p>
-                </div>
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Gender:</p>
-                  <p className="font-normal">{supervisor.gender}</p>
-                </div>
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Marital Status:</p>
-                  <p className="font-normal">{supervisor.maritalStatus}</p>
-                </div>
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Date of Joining:</p>
-                  <p className="font-normal">
-                    {new Date(supervisor.doj).toLocaleDateString()}
-                  </p>
-                </div>
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Salary:</p>
-                  <p className="font-normal">{supervisor.salary}</p>
-                </div>
+
+                <ViewCard type="title" text="Name" />
+                <ViewCard type="data" text={supervisor.userId.name} />
+
+                <ViewCard type="title" text="Email" />
+                <ViewCard type="data" text={supervisor.userId.email} />
+
+                <ViewCard type="title" text="Supervisor ID" />
+                <ViewCard type="data" text={supervisor.supervisorId} />
+
+                <ViewCard type="title" text="Contact Number" />
+                <ViewCard type="data" text={supervisor.contactNumber} />
+
+                <ViewCard type="title" text="Address" />
+                <ViewCard type="data" text={supervisor.address} />
+
+                <ViewCard type="title" text="Route" />
+                <ViewCard type="data" text={supervisor.routeName} />
+
+                <ViewCard type="title" text="Qualification" />
+                <ViewCard type="data" text={supervisor.qualification} />
+
+                <ViewCard type="title" text="Date of Birth" />
+                <ViewCard type="data" text={new Date(supervisor.dob).toLocaleDateString()} />
+
+                <ViewCard type="title" text="Gender" />
+                <ViewCard type="data" text={supervisor.gender} />
+
+                <ViewCard type="title" text="Marital Status" />
+                <ViewCard type="data" text={supervisor.maritalStatus} />
+
+                <ViewCard type="title" text="Date of Joining" />
+                <ViewCard type="data" text={new Date(supervisor.doj).toLocaleDateString()} />
+
+                <ViewCard type="title" text="Salary" />
+                <ViewCard type="data" text={supervisor.salary} />
+
               </div>
             </div>
             <button

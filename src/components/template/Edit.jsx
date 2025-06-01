@@ -124,7 +124,7 @@ const Edit = () => {
           </div>
 
           <form onSubmit={handleSubmit}>
-            <div className="py-2 px-4 border mt-5 mb-3 items-center justify-center rounded-lg shadow-lg">
+            <div className="py-2 px-4 border mt-5 mb-3 items-center justify-center rounded-lg shadow-lg bg-white">
               <div className="grid mt-3 grid-cols-1 md:grid-cols-2 gap-4">
                 {/* Course 1 */}
                 <div>
@@ -166,7 +166,7 @@ const Edit = () => {
                 {/* Template Image Upload */}
                 <div className="mt-5">
                   <label className="block text-sm font-medium text-gray-700">
-                    Update Template Image <span className="text-red-700">*</span>
+                    Update Template <span className="text-red-700">*</span>
                   </label>
                   <input
                     type="file"

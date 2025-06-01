@@ -49,7 +49,7 @@ const View = () => {
   return (
     <>
       {institute ? (
-        <div className="max-w-3xl mx-auto mt-2 bg-white p-8 rounded-md shadow-md bg-blue-50">
+        <div className="max-w-3xl mx-auto mt-2 p-8 rounded-md shadow-md">
           <div className="flex py-2 px-4 items-center justify-center bg-teal-700 text-white rounded-lg shadow-lg">
             <h2 className="text-xl font-semibold items-center justify-center">Institute Details</h2>
             <Link to="/dashboard/institutes" >
@@ -57,54 +57,43 @@ const View = () => {
             </Link>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-1 gap-6">
-            <div className="py-2 px-4 border mt-5 mb-1 items-center justify-center rounded-lg shadow-lg">
+            <div className="py-2 px-4 border mt-5 mb-1 items-center justify-center rounded-lg shadow-lg bg-white">
               <div className="flex space-x-3 mb-5" />
-              <div>
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Code:</p>
-                  <p className="font-normal">{institute.iCode}</p>
-                </div>
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Name:</p>
-                  <p className="font-normal">{institute.name}</p>
-                </div>
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Education Type:</p>
-                  <p className="font-normal">{institute.type}</p>
-                </div>
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Email:</p>
-                  <p className="font-normal">{institute.email}</p>
-                </div>
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Contact Number:</p>
-                  <p className="font-normal">{institute.contactNumber}</p>
-                </div>
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Address:</p>
-                  <p className="font-normal">{institute.address}</p>
-                </div>
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">District:</p>
-                  <p className="font-normal">{institute.district}</p>
-                </div>
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Incharge-1 Name :</p>
-                  <p className="font-normal">{institute.incharge1}</p>
-                </div>
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Incharge-1 Number :</p>
-                  <p className="font-normal">{institute.incharge1Number}</p>
-                </div>
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Incharge-2 Name :</p>
-                  <p className="font-normal">{institute.incharge2}</p>
-                </div>
-                <div className="flex space-x-3 mb-5">
-                  <p className="font-medium">Incharge-2 Number :</p>
-                  <p className="font-normal">{institute.incharge2Number}</p>
-                </div>
-              </div>
+
+              <ViewCard type="title" text="Code" />
+              <ViewCard type="data" text={institute.iCode} />
+
+              <ViewCard type="title" text="Name" />
+              <ViewCard type="data" text={institute.name} />
+
+              <ViewCard type="title" text="Education Type" />
+              <ViewCard type="data" text={institute.type} />
+
+              <ViewCard type="title" text="Email" />
+              <ViewCard type="data" text={institute.email} />
+
+              <ViewCard type="title" text="Contact Number" />
+              <ViewCard type="data" text={institute.contactNumber} />
+
+              <ViewCard type="title" text="Address" />
+              <ViewCard type="data" text={institute.address} />
+
+              <ViewCard type="title" text="District" />
+              <ViewCard type="data" text={institute.district} />
+
+              <ViewCard type="title" text="Incharge-1 Name" />
+              <ViewCard type="data" text={institute.incharge1} />
+
+              <ViewCard type="title" text="Incharge-1 Number" />
+              <ViewCard type="data" text={institute.incharge1Number} />
+
+              <ViewCard type="title" text="Incharge-2 Name" />
+              <ViewCard type="data" text={institute.incharge2} />
+
+              <ViewCard type="title" text="Incharge-2 Number" />
+              <ViewCard type="data" text={institute.incharge2Number} />
+
+              <div className="flex space-x-3 mb-5" />
             </div>
           </div>
           <button
