@@ -224,9 +224,9 @@ const Create = () => {
                   Select Students <span className="text-red-700">*</span>
                 </label>
               </div>
-              <div className="flex space-x-2" />
+              <div className="flex space-x-1" />
               <div className='mb-5 border rounded-md shadow-lg'>
-                <DataTable columns={columnsSelect} data={students} reloadData={handleReload} selectableRows onSelectedRowsChange={handleRowChange} clearSelectedRows={toggledClearRows} />
+                <DataTable columns={columnsSelect} data={students} reloadData={handleReload} selectableRows onSelectedRowsChange={handleRowChange} clearSelectedRows={toggledClearRows} highlightOnHover striped />
               </div>
 
             </div>

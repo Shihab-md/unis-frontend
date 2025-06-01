@@ -10,14 +10,9 @@ import {
 
 export const columnsSelect = [
   {
-    name: "Roll Number",
-    selector: (row) => row.rollNumber,
-    width: "130px",
-  },
-  {
-    name: "Name",
-    selector: (row) => row.userId.name,
-    width: "250px",
+    name: "Students",
+    selector: (row) => row.rollNumber + " : " + row.userId.name,
+    width: "410px",
   },
 ];
 
