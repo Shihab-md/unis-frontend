@@ -1,12 +1,9 @@
 import axios from "axios";
 import React, { useState } from "react";
 import { useAuth } from "../context/AuthContext";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { getBaseUrl, handleRightClick } from '../utils/CommonHelper';
 import Swal from 'sweetalert2';
-import {
-  FaArrowAltCircleRight,
-} from "react-icons/fa";
 
 const Login = () => {
   // To prevent right-click.
@@ -104,20 +101,7 @@ const Login = () => {
               >
                 بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيْم
               </button>
-
-              {/*   <div className="rounded flex bg-teal-600 border">
-              <Link type="submit" >
-                <div className="py-2 px-6 justify-end items-center">
-                  <p className="text-white justify-end">بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيْم </p>
-                </div>
-
-                <div className="text-2xl flex justify-end items-center text-white px-5">
-                  <FaArrowAltCircleRight classname="text-bold justify-end" />
-                </div>
-              </Link>*/}
             </div>
-
-
           </form>
         </div>
       </div>
