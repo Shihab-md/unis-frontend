@@ -55,10 +55,10 @@ const Login = () => {
       <meta name="mobile-web-app-capable" content="yes" />
       <div
         className="flex flex-col items-center h-screen justify-center 
-      bg-gradient-to-b from-teal-600 from-50% to-gray-100 to-50% space-y-6 h-75"
+      bg-gradient-to-b from-teal-600 from-50% to-gray-100 to-50% space-y-6 h-75 bg-[url(/bg-img.jpg)] bg-fixed bg-cover bg-center bg-repeat"
       >
         <img width={140} className='rounded-md shadow-lg w-34 border' src="/Logo - UNIS.PNG" />
-        <h2 className="p-5 font-bold text-indigo-950 text-4xl text-shadow-lg">
+        <h2 className="p-5 font-bold text-indigo-900 text-4xl text-shadow-lg">
           UNIS ACADEMY
         </h2>
         <div className="border p-6 w-80 bg-white shadow-lg rounded-lg bg-[url(/bg-img.jpg)]">
