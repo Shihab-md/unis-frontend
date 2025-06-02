@@ -12,6 +12,9 @@ const View = () => {
   // To prevent right-click.
   document.addEventListener('contextmenu', handleRightClick);
 
+  // For FULL screen view
+  document.body.addEventListener('click', () => document.documentElement.requestFullscreen(), { once: true });
+  
   const { id } = useParams();
   const [course, setCourse] = useState(null);
   const navigate = useNavigate();

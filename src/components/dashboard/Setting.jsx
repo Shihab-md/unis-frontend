@@ -13,6 +13,9 @@ const Setting = () => {
   // To prevent right-click.
   document.addEventListener('contextmenu', handleRightClick);
 
+  // For FULL screen view
+  document.body.addEventListener('click', () => document.documentElement.requestFullscreen(), { once: true });
+
   const navigate = useNavigate();
   const { user } = useAuth()
   const [setting, setSetting] = useState({
@@ -45,7 +48,7 @@ const Setting = () => {
         );
         if (response.data.success) {
           //alert("Password changed Successfully...");
-           Swal.fire('Success!', 'Password changed Successfully...!', 'success');
+          Swal.fire('Success!', 'Password changed Successfully...!', 'success');
           navigate("/dashboard");
           setError("")
         }

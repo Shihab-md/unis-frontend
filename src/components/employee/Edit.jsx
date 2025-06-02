@@ -14,6 +14,9 @@ const Edit = () => {
   // To prevent right-click.
   document.addEventListener('contextmenu', handleRightClick);
 
+  // For FULL screen view
+  document.body.addEventListener('click', () => document.documentElement.requestFullscreen(), { once: true });
+  
   const [employee, setEmployee] = useState({
     name: "",
     email: "",

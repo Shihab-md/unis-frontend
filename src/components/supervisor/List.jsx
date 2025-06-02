@@ -15,6 +15,9 @@ const List = () => {
   // To prevent right-click.
   document.addEventListener('contextmenu', handleRightClick);
 
+  // For FULL screen view
+  document.body.addEventListener('click', () => document.documentElement.requestFullscreen(), { once: true });
+  
   const navigate = useNavigate()
   const [supervisors, setSupervisors] = useState([])
   const [supLoading, setSupLoading] = useState(false)

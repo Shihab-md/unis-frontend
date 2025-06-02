@@ -13,6 +13,9 @@ const Edit = () => {
   // To prevent right-click.
   document.addEventListener('contextmenu', handleRightClick);
 
+  // For FULL screen view
+  document.body.addEventListener('click', () => document.documentElement.requestFullscreen(), { once: true });
+  
   const [courses, setCourses] = useState([]);
   const [template, setTemplate] = useState({
     courseId: "",
