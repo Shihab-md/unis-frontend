@@ -15,9 +15,10 @@ const View = () => {
 
   // For FULL screen view
   document.body.addEventListener('click', () => document.documentElement.requestFullscreen(), { once: true });
-  
+
   const { id } = useParams();
   const [template, setTemplate] = useState(null);
+  const [show, setShow] = useState(null);
   const navigate = useNavigate();
 
   const handleDownload = () => {
@@ -27,6 +28,13 @@ const View = () => {
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
+  };
+
+  const handleShowDialog = async () => {
+    setShow("show");
+  };
+  const handleHideDialog = async () => {
+    setShow(null);
   };
 
   useEffect(() => {
@@ -75,8 +83,22 @@ const View = () => {
           <div className="grid grid-cols-1 md:grid-cols-1 gap-6">
             <div className="py-2 px-4 border mt-5 mb-1 items-center justify-center rounded-lg shadow-lg bg-white">
 
-              <div className="flex mt-2 space-x-3 mb-3 items-center justify-center" >
-                <img className='size-40 mt-5 border items-center justify-center rounded-lg shadow-lg'
+              {show ?
+                <div title="Click to Close"><dialog
+                  className="dialog"
+                  style={{ position: 'absolute' }}
+                  open
+                  onClick={handleHideDialog}
+                >
+                  <img
+                    className="size-100 border items-center justify-center shadow-lg" onClick={handleHideDialog}
+                    src={template.template && template.template != "" ? "data:image/jpeg;base64," + template.template : "/template.jpg"}
+                  />
+                </dialog></div>
+                : <div></div>}
+
+              <div className="flex mt-2 space-x-3 mb-3 items-center justify-center" title="Click to ZOOM" >
+                <img className='size-40 mt-5 border items-center justify-center rounded-lg shadow-lg' onClick={handleShowDialog}
                   src={template.template && template.template != "" ? "data:image/jpeg;base64," + template.template : "/template.jpg"}
                 />
                 {/* <button onClick={handleDownload}>
