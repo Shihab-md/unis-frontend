@@ -39,7 +39,8 @@ const View = () => {
         }
       } catch (error) {
         if (error.response && !error.response.data.success) {
-          Swal.fire('Error!', error.response.data.error, 'error');;
+          Swal.fire('Error!', error.response.data.error, 'error');
+          navigate("/dashboard/institutes");
         }
       }
     };

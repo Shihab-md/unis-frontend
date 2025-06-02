@@ -42,6 +42,7 @@ const List = () => {
         console.log(error.message)
         if (error.response && !error.response.data.success) {
           alert(error.response.data.error)
+          navigate("/dashboard");
         }
       } finally {
         setSchLoading(false)

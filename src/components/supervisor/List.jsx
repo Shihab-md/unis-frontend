@@ -21,7 +21,7 @@ const List = () => {
   const [filteredSupervisor, setFilteredSupervisors] = useState(null)
 
   useEffect(() => {
- 
+
     // Authenticate the User.
     if (checkAuth("supervisorsList") === "NO") {
       Swal.fire('Error!', 'User Authorization Failed!', 'error');
@@ -62,7 +62,8 @@ const List = () => {
         console.log(error.message)
         if (error.response && !error.response.data.success) {
           Swal.fire('Error!', error.response.data.error, 'error');
-          navigate('/login')
+          //  navigate('/login')
+          navigate("/dashboard");
         }
       } finally {
         setSupLoading(false)

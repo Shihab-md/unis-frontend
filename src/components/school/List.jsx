@@ -87,6 +87,7 @@ const List = () => {
         //console.log(error.message)
         if (error.response && !error.response.data.success) {
           Swal.fire('Error!', error.response.data.error, 'error');
+          navigate("/dashboard");
         }
       } finally {
         setSchLoading(false)

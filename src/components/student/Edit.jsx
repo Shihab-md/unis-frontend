@@ -219,7 +219,6 @@ const Edit = () => {
     } catch (error) {
       if (error.response && !error.response.data.success) {
         Swal.fire('Error!', error.response.data.error, 'error');
-        navigate("/dashboard/students/");
       }
     }
   };

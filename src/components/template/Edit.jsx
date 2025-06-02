@@ -60,6 +60,7 @@ const Edit = () => {
       } catch (error) {
         if (error.response && !error.response.data.success) {
           Swal.fire('Error!', error.response.data.error, 'error');
+          navigate("/dashboard/templates/");
         }
       }
     };
@@ -178,7 +179,6 @@ const Edit = () => {
                     className="mt-1 p-2 mb-5 block w-full border border-gray-300 rounded-md"
                   />
                 </div>
-
               </div>
             </div>
             <button
