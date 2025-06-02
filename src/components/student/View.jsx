@@ -51,12 +51,14 @@ const View = () => {
           if (academicResponse.data.success) {
             setAcademic(academicResponse.data.academic);
           } else {
-            alert("No academic Found : " + responnse.data.student._id);
+            Swal.fire('Error!', "No academic data Found : " + responnse.data.student.userId.name, 'error');
+            navigate("/dashboard/students/");
           }
         }
       } catch (error) {
         if (error.response && !error.response.data.success) {
-          Swal.fire('Error!', error.response.data.error, 'error');;
+          Swal.fire('Error!', error.response.data.error, 'error');
+          navigate("/dashboard/students/");
         }
       }
     };
