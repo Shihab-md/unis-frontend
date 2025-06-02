@@ -90,7 +90,6 @@ const View = () => {
                   style={{ position: 'absolute' }}
                   open
                   onClick={handleHideDialog}
-                  alt=""
                 >
                   <img
                     className="p-2 size-100 border items-center justify-center shadow-lg" onClick={handleHideDialog}
