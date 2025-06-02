@@ -18,6 +18,10 @@ const Login = () => {
   const { login } = useAuth()
   const navigate = useNavigate()
 
+  const handleForgotPass = async (e) => {
+    Swal.fire('', 'Please contact HQ Admin.', 'info')
+  }
+
   const handleSubmit = async (e) => {
 
     e.preventDefault();
@@ -94,7 +98,7 @@ const Login = () => {
               />
             </div>
             <div className="mb-5 flex items-center justify-between">
-              <a href="#" className="text-yellow-700">
+              <a href="#" onClick={handleForgotPass} className="text-yellow-700">
                 Forgot password?
               </a>
             </div>
