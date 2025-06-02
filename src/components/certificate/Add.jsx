@@ -22,6 +22,8 @@ const Create = () => {
   const [students, setStudents] = useState([]);
   const [tempId, setTempId] = useState([]);
 
+  const [studentsLoading, setStudentsLoading] = useState(false)
+
   const [createdAll, setCreatedAll] = useState(null)
 
   const [selectedRows, setSelectedRows] = React.useState(false);
@@ -47,13 +49,19 @@ const Create = () => {
   }
 
   const handleReload = async (schoolIdIdVal) => {
-    if (schoolIdIdVal) {
-      const students = await getStudentsBySchoolAndCourse(schoolIdIdVal, tempId);
-      setStudents(students);
-    } else {
-      setStudents([]);
+    setStudentsLoading(true)
+    try {
+      if (schoolIdIdVal) {
+        const students = await getStudentsBySchoolAndCourse(schoolIdIdVal, tempId);
+        setStudents(students);
+      } else {
+        setStudents([]);
+      }
+      setSelectedRows([]);
+    } finally {
+      setStudentsLoading(false)
     }
-    setSelectedRows([]);
+
   };
 
   useEffect(() => {
@@ -226,7 +234,11 @@ const Create = () => {
               </div>
               <div className="flex space-x-1" />
               <div className='mb-5 border rounded-md shadow-lg'>
-                <DataTable columns={columnsSelect} data={students} reloadData={handleReload} selectableRows onSelectedRowsChange={handleRowChange} clearSelectedRows={toggledClearRows} highlightOnHover striped />
+                {!studentsLoading ?
+                  <DataTable columns={columnsSelect} data={students} reloadData={handleReload} selectableRows onSelectedRowsChange={handleRowChange} clearSelectedRows={toggledClearRows} highlightOnHover striped />
+                  : <div className='flex items-center justify-center rounded-lg shadow-xl border'>
+                    <img width={250} className='flex items-center justify-center' src="/spinner1.gif" />
+                  </div>}
               </div>
 
             </div>
