@@ -84,14 +84,14 @@ const View = () => {
             <div className="py-2 px-4 border mt-5 mb-1 items-center justify-center rounded-lg shadow-lg bg-white">
 
               {show ?
-                <div title="Click to Close"><dialog
-                  className="dialog"
+                <div className="bg-white rounded-lg" title="Click to Close"><dialog
+                  className="dialog rounded-lg"
                   style={{ position: 'absolute' }}
                   open
                   onClick={handleHideDialog}
                 >
                   <img
-                    className="size-100 border items-center justify-center shadow-lg" onClick={handleHideDialog}
+                    className="p-2 size-100 border items-center justify-center shadow-lg rounded-lg" onClick={handleHideDialog}
                     src={template.template && template.template != "" ? "data:image/jpeg;base64," + template.template : "/template.jpg"}
                   />
                 </dialog></div>
