@@ -1,14 +1,11 @@
 import React, { useEffect, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { columns, EmployeeButtons } from '../../utils/EmployeeHelper'
 import DataTable from 'react-data-table-component'
 import axios from 'axios'
-import { getBaseUrl, handleRightClick, getSpinner, checkAuth } from '../../utils/CommonHelper';
+import { getBaseUrl, handleRightClick, getSpinner, checkAuth, getBackIcon, getAddIcon } from '../../utils/CommonHelper';
 import Swal from 'sweetalert2';
 import { useAuth } from '../../context/AuthContext'
-import {
-  FaPlusSquare, FaArrowAltCircleLeft
-} from "react-icons/fa";
 
 const List = () => {
   // To prevent right-click.
@@ -16,7 +13,7 @@ const List = () => {
 
   // For FULL screen view
   document.body.addEventListener('click', () => document.documentElement.requestFullscreen(), { once: true });
-  
+
   const [employees, setEmployees] = useState([])
   const [supLoading, setSupLoading] = useState(false)
   const [filteredEmployee, setFilteredEmployees] = useState(null)
@@ -95,9 +92,7 @@ const List = () => {
         <h3 className="text-2xl font-bold px-5 py-0">Manage Employees</h3>
       </div>
       <div className="flex justify-between items-center mt-5">
-        <Link to="/dashboard" >
-          <FaArrowAltCircleLeft className="text-2xl bg-blue-700 text-white rounded shadow-lg" />
-        </Link>
+        {getBackIcon("/dashboard")}
         <input
           type="text"
           placeholder="Seach By Employee"
@@ -105,9 +100,7 @@ const List = () => {
           onChange={handleFilter}
         />
         {user.role === "superadmin" || user.role === "hquser" || user.role === "admin" ?
-          <Link to="/dashboard/add-employee" >
-            <FaPlusSquare className="text-2xl bg-teal-700 text-white rounded shadow-lg" />
-          </Link> : null}
+          getAddIcon("/dashboard/add-employee") : null}
       </div>
       <div className='mt-6 rounded-lg shadow-lg'>
         <DataTable columns={columns} data={filteredEmployee} pagination />

@@ -1,13 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { columns, InstituteButtons } from '../../utils/InstituteHelper'
 import DataTable from 'react-data-table-component'
 import axios from 'axios'
-import { getBaseUrl, handleRightClick, getSpinner, checkAuth } from '../../utils/CommonHelper';
+import { getBaseUrl, handleRightClick, getSpinner, checkAuth, getBackIcon, getAddIcon } from '../../utils/CommonHelper';
 import Swal from 'sweetalert2';
-import {
-  FaPlusSquare, FaArrowAltCircleLeft
-} from "react-icons/fa";
 
 const List = () => {
   // To prevent right-click.
@@ -15,7 +12,7 @@ const List = () => {
 
   // For FULL screen view
   document.body.addEventListener('click', () => document.documentElement.requestFullscreen(), { once: true });
-  
+
   const [institutes, setInstitutes] = useState([])
   const [supLoading, setSupLoading] = useState(false)
   const [filteredInstitute, setFilteredInstitutes] = useState(null)
@@ -92,18 +89,14 @@ const List = () => {
         <h3 className="text-2xl font-bold px-5 py-0">Manage Institutes</h3>
       </div>
       <div className="flex justify-between items-center mt-5">
-        <Link to="/dashboard" >
-          <FaArrowAltCircleLeft className="text-2xl bg-blue-700 text-white rounded shadow-lg" />
-        </Link>
+        {getBackIcon("/dashboard")}
         <input
           type="text"
           placeholder="Seach By Institute"
           className="px-4 py-0.5 border rounded shadow-lg"
           onChange={handleFilter}
         />
-        <Link to="/dashboard/add-institute" >
-          <FaPlusSquare className="text-2xl bg-teal-700 text-white rounded shadow-lg" />
-        </Link>
+        {getAddIcon("/dashboard/add-institute")}
       </div>
       <div className='mt-6 rounded-lg shadow-lg'>
         <DataTable columns={columns} data={filteredInstitute} pagination />

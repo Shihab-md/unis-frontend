@@ -1,14 +1,11 @@
 import React, { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { columns, SchoolButtons, conditionalRowStyles } from '../../utils/SchoolHelper'
 import DataTable from 'react-data-table-component'
 import axios from 'axios'
 import { useAuth } from '../../context/AuthContext'
-import { getBaseUrl, handleRightClick, getSpinner, checkAuth } from '../../utils/CommonHelper'
+import { getBaseUrl, handleRightClick, getSpinner, checkAuth, getBackIcon, getAddIcon } from '../../utils/CommonHelper'
 import Swal from 'sweetalert2';
-import {
-  FaPlusSquare, FaArrowAltCircleLeft
-} from "react-icons/fa";
 
 const List = () => {
 
@@ -17,12 +14,13 @@ const List = () => {
 
   // For FULL screen view
   document.body.addEventListener('click', () => document.documentElement.requestFullscreen(), { once: true });
-  
+
   const [schools, setSchools] = useState([])
   const [schLoading, setSchLoading] = useState(false)
   const [filteredSchool, setFilteredSchools] = useState(null)
 
   const [currentPage, setCurrentPage] = useState(1);
+  const navigate = useNavigate()
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
@@ -117,9 +115,7 @@ const List = () => {
         <h3 className="text-2xl font-bold px-5 py-0">Manage Niswans</h3>
       </div>
       <div className="flex justify-between items-center mt-5">
-        <Link to="/dashboard" >
-          <FaArrowAltCircleLeft className="text-2xl bg-blue-700 text-white rounded shadow-lg" />
-        </Link>
+        {getBackIcon("/dashboard")}
         <input
           type="text"
           placeholder="Seach By Niswan Code"
@@ -127,9 +123,8 @@ const List = () => {
           onChange={handleFilter}
         />
         {user.role === "superadmin" || user.role === "hquser" ?
-          <Link to="/dashboard/add-school" >
-            <FaPlusSquare className="text-2xl bg-teal-700 text-white rounded shadow-lg" />
-          </Link> : null}
+          getAddIcon("/dashboard/add-school")
+          : null}
       </div>
       <div className='mt-6 rounded-lg shadow-lg bg-blue-50'>
         <DataTable columns={columns} data={filteredSchool} highlightOnHover striped responsive conditionalRowStyles={conditionalRowStyles} expandableRows expandableRowsComponent={ExpandedComponent} />

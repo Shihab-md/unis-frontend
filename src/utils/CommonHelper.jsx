@@ -1,4 +1,7 @@
 
+import { Link } from 'react-router-dom';
+import { FaPlusSquare, FaArrowAltCircleLeft } from "react-icons/fa";
+
 const authorizedScreensFor_SA_HQ_Roles = [
   "supervisorsList", "supervisorAdd", "supervisorEdit", "supervisorView",
   "schoolsList", "schoolAdd", "schoolEdit", "schoolView",
@@ -27,7 +30,7 @@ const authorizedScreensFor_ADMIN_Role = [
 ];
 
 export const getBaseUrl = async () => {
-   return "https://unis-server.vercel.app/api/";
+  return "https://unis-server.vercel.app/api/";
 
 };
 
@@ -73,5 +76,13 @@ export function getSpinner() {
   return <div className='flex p-16 items-center justify-center rounded-lg h-screen content-center'>
     <img width={340} className='flex items-center justify-center rounded-full shadow-xl border' src="/spinner.gif" />
   </div>
+}
+
+export function getBackIcon(toPage) {
+  return <Link to={toPage} > <FaArrowAltCircleLeft className="text-3xl bg-blue-700 text-white rounded shadow-lg" /> </Link>
+}
+
+export function getAddIcon(toPage) {
+  return <Link to={toPage} > <FaPlusSquare className="text-3xl bg-teal-700 text-white rounded shadow-lg" /></Link>
 }
 
