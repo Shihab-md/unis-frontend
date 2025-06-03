@@ -24,7 +24,7 @@ export const columns = [
     name: "Supervisor",
     selector: (row) => row.supId + " : " + row.name,
     sortable: true,
-    width: "320px",
+    width: "370px",
   },
   {
     name: "Contact Number",
@@ -32,10 +32,16 @@ export const columns = [
     width: "190px",
   },
   {
+    name: "Email",
+    selector: (row) => row.email,
+    sortable: true,
+    width: "250px",
+  },
+  {
     name: "Route",
     selector: (row) => row.routeName,
     sortable: true,
-    width: "250px",
+    width: "190px",
   },
   {
     name: "No. of Niswans",

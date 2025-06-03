@@ -50,6 +50,7 @@ const List = () => {
             sno: sno++,
             supId: sup.supervisorId,
             name: sup.userId.name,
+            email: sup.userId.email,
             contactNumber: sup.contactNumber,
             routeName: sup.routeName,
             dob: new Date(sup.dob).toLocaleDateString(),
