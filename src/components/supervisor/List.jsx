@@ -48,6 +48,7 @@ const List = () => {
           const data = await responnse.data.supervisors.map((sup) => ({
             _id: sup._id,
             sno: sno++,
+            supId: sup.supervisorId,
             name: sup.userId.name,
             contactNumber: sup.contactNumber,
             routeName: sup.routeName,

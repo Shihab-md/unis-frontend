@@ -21,8 +21,8 @@ export const columns = [
     width: "90px",
   }, */
   {
-    name: "Name",
-    selector: (row) => row.name,
+    name: "Supervisor",
+    selector: (row) => row.supId + " : " + row.name,
     sortable: true,
     width: "320px",
   },
