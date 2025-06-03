@@ -39,15 +39,12 @@ export function checkAuth(screenName) {
   const role = localStorage.getItem("role")
 
   if (role === "superadmin" || role === "hquser") {
-
     return "OK";
 
   } else if (role === "supervisor" && authorizedScreensFor_SUP_Role.includes(screenName)) {
-
     return "OK";
 
   } else if (role === "admin" && authorizedScreensFor_ADMIN_Role.includes(screenName)) {
-
     return "OK";
 
   } else if (role === "employee") {

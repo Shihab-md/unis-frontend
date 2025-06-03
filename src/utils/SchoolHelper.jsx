@@ -41,7 +41,7 @@ export const columns = [
   },
   {
     name: "No. of Students",
-    selector: (row) => "#",
+    selector: (row) => row.studentsCount,
     //  sortable: true,
     width: "120px",
   },
