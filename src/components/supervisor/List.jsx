@@ -52,6 +52,7 @@ const List = () => {
             contactNumber: sup.contactNumber,
             routeName: sup.routeName,
             dob: new Date(sup.dob).toLocaleDateString(),
+            schoolsCount: sup._schoolsCount ? sup._schoolsCount : 0,
             //  profileImage: <img width={40} className='rounded-full' src={(getBaseUrl()).toString() + `${sup.userId.profileImage}`} />,
             action: (<SupervisorButtons Id={sup._id} onSupervisorDelete={onSupervisorDelete} />),
           }));

@@ -39,7 +39,7 @@ export const columns = [
   },
   {
     name: "No. of Niswans",
-    selector: (row) => "ALL",
+    selector: (row) => row.schoolsCount,
     sortable: true,
     width: "190px",
   },
