@@ -51,11 +51,11 @@ const AdminSummary = () => {
   //p-6
   return (
     <div className="p-7 pt-3 items-center justify-center rounded-lg h-9/10">
-      <h5 className="p-1 text-center font-semibold md:text-xl text-gray-700 lg:mt-12">ربِّ زِدْنِي عِلْماً</h5>
+      <h5 className="p-1 text-center font-semibold lg:text-xl text-gray-700 lg:mt-12">ٱللَّٰهُمَّ ربِّ زِدْنِي عِلْماً</h5>
       <h5 className="p-1 mt-1 text-center">Welcome, {user.name}</h5>
       <h5 className="text-xl mt-1 mb-3 font-bold capitalize text-center text-gray-500 text-shadow-lg">{user.role } Dashboard</h5>
 
-      <div className="content-center rounded-lg grid grid-cols-2 md:grid-cols-4 gap-7 mt-7 md:mt-14 flex rounded-lg">
+      <div className="content-center rounded-lg grid grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-7 lg:gap-16 mt-7 lg:mt-16 flex rounded-lg">
 
         {user.role === "superadmin" || user.role === "hquser" || user.role === "supervisor" ?
           <Link to="/dashboard/supervisors" >
