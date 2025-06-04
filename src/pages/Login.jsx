@@ -62,7 +62,7 @@ const Login = () => {
       bg-gradient-to-b from-teal-600 from-50% to-gray-100 to-50% space-y-6 h-75 bg-[url(/bg-img.jpg)] bg-fixed bg-cover bg-center bg-repeat"
       >*/}
       <div
-        className="flex flex-col items-center h-screen justify-center 
+        className="flex flex-col items-center justify-center min-h-screen
        space-y-6 h-75 bg-[url(/bg-img.jpg)] bg-fixed bg-cover bg-center bg-repeat"
       >
         <img width={140} className='rounded-md shadow-lg w-34 border' src="/Logo - UNIS.PNG" />
