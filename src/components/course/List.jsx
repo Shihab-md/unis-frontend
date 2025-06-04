@@ -91,7 +91,7 @@ const List = () => {
         {getBackIcon("/dashboard/masters")}
         <input
           type="text"
-          placeholder="Seach By Course"
+          placeholder="Search By Course"
           className="px-4 py-0.5 border rounded shadow-lg"
           onChange={handleFilter}
         />

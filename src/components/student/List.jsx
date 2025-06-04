@@ -91,7 +91,7 @@ const List = () => {
         {getBackIcon("/dashboard")}
         <input
           type="text"
-          placeholder="Seach By Student"
+          placeholder="Search By Student"
           className="px-4 py-0.5 border rounded shadow-lg justify-center"
           onChange={handleFilter}
         />
@@ -100,7 +100,7 @@ const List = () => {
       <div className='mt-6 rounded-lg shadow-lg'>
         <DataTable columns={columns} data={filteredStudent} pagination />
       </div>
-    </div>
+    </div> 
   )
 }
 

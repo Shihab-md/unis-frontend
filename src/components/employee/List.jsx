@@ -95,7 +95,7 @@ const List = () => {
         {getBackIcon("/dashboard")}
         <input
           type="text"
-          placeholder="Seach By Employee"
+          placeholder="Search By Employee"
           className="px-4 py-0.5 border rounded shadow-lg"
           onChange={handleFilter}
         />

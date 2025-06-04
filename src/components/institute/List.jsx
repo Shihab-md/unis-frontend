@@ -92,7 +92,7 @@ const List = () => {
         {getBackIcon("/dashboard/masters")}
         <input
           type="text"
-          placeholder="Seach By Institute"
+          placeholder="Search By Institute"
           className="px-4 py-0.5 border rounded shadow-lg"
           onChange={handleFilter}
         />

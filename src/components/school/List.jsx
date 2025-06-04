@@ -119,7 +119,7 @@ const List = () => {
         {getBackIcon("/dashboard")}
         <input
           type="text"
-          placeholder="Seach By Niswan Code"
+          placeholder="Search By Niswan Code"
           className="px-4 py-0.5 border rounded shadow-lg"
           onChange={handleFilter}
         />
