@@ -89,7 +89,7 @@ const List = () => {
         <h3 className="text-2xl font-bold px-5 py-0">Manage Institutes</h3>
       </div>
       <div className="flex justify-between items-center mt-5">
-        {getBackIcon("/dashboard")}
+        {getBackIcon("/dashboard/masters")}
         <input
           type="text"
           placeholder="Seach By Institute"

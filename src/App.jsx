@@ -5,7 +5,7 @@ import EmployeeDashboard from "./pages/EmployeeDashboard";
 import PrivateRoutes from "./utils/PrivateRoutes";
 import RoleBaseRoutes from "./utils/RoleBaseRoutes";
 import AdminSummary from "./components/dashboard/AdminSummary";
-
+import Masters from "./components/dashboard/Masters";
 import Setting from "./components/dashboard/Setting";
 
 import DepartmentList from "./components/department/DepartmentList";
@@ -137,6 +137,7 @@ function App() {
           <Route path="/dashboard/academicYears/:id" element={<AcademicYearView />}></Route>
           <Route path="/dashboard/academicYears/edit/:id" element={<AcademicYearEdit />}></Route>
 
+          <Route path="/dashboard/masters" element={<Masters />}></Route>
           <Route path="/dashboard/settings" element={<Setting />}></Route>
 
           <Route path="/dashboard/classSections" element={<ClassSectionList />}></Route>
