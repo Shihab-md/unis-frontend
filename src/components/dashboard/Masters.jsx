@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext'
 import { getBaseUrl, handleRightClick, getSpinner, getBackIcon } from '../../utils/CommonHelper'
 import {
-  FaBuilding, FaWpforms, FaClipboardList, FaCalendarAlt, FaUserCog,
+  FaUniversity, FaWpforms, FaClipboardList, FaCalendarAlt, FaUserCog,
 } from "react-icons/fa";
 import axios from 'axios'
 import Swal from 'sweetalert2';
@@ -57,7 +57,7 @@ const Masters = () => {
         {user.role === "superadmin" || user.role === "hquser" ?
           <Link to="/dashboard/institutes" >
             <SummaryCard
-              icon={<FaBuilding />}
+              icon={<FaUniversity />}
               text="Institutes"
               number={summary.totalInstitutes}
               color="bg-cyan-600"

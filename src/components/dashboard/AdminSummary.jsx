@@ -5,9 +5,9 @@ import { Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext'
 import { getBaseUrl, handleRightClick, getSpinner } from '../../utils/CommonHelper'
 import {
-  FaMosque, FaUserFriends, FaWpforms,
+  FaMosque, FaUserFriends, FaCoins, FaGraduationCap,
   FaUsers, FaHouseUser, FaClipboardList, FaTasks, FaCalendarAlt,
-  FaRupeeSign, FaMedal, FaFileContract, FaUserCog,
+  FaRupeeSign, FaMedal, FaFileContract, FaCogs,
 } from "react-icons/fa";
 import axios from 'axios'
 import Swal from 'sweetalert2';
@@ -150,7 +150,7 @@ const AdminSummary = () => {
         {user.role === "superadmin" || user.role === "hquser" ?
           <Link to="/dashboard/masters" >
             <SummaryCard
-              icon={<FaWpforms />}
+              icon={<FaCoins />}
               text="Masters"
               number="*"
               color="bg-purple-500"
@@ -169,7 +169,7 @@ const AdminSummary = () => {
 
         <Link to="/dashboard/settings" >
           <SummaryCard
-            icon={<FaUserCog />}
+            icon={<FaCogs />}
             text="Settings"
             number="***"
             color="bg-lime-700"
