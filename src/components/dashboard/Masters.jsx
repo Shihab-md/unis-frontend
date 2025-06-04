@@ -52,7 +52,7 @@ const Masters = () => {
       <h5 className="p-1 mt-1 text-center">Welcome, {user.name}</h5>
       <h5 className="text-xl mt-1 mb-3 font-bold capitalize text-center text-gray-500 text-shadow-lg">{user.role} Dashboard</h5>
 
-      <div className="content-center rounded-lg grid grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-7 gap-12 mt-16 flex rounded-lg">
+      <div className="content-center rounded-lg grid grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-12 mt-16 flex rounded-lg">
 
         {user.role === "superadmin" || user.role === "hquser" ?
           <Link to="/dashboard/institutes" >
