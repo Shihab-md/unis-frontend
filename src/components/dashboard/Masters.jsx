@@ -51,9 +51,9 @@ const Masters = () => {
       <h5 className="p-1 text-center font-semibold lg:text-xl text-gray-700 mt-14">ٱللَّٰهُمَّ ربِّ زِدْنِي عِلْماً</h5>
       <h5 className="p-1 mt-1 text-center">Welcome, {user.name}</h5>
       <h5 className="text-2xl mt-1 mb-3 font-bold capitalize text-center text-gray-500 text-shadow-lg">{user.role} Dashboard</h5>
-      <h5 className="text-xl mt-1 mb-3 font-bold capitalize text-center text-gray-500 text-shadow-lg">Masters</h5>
+      <h5 className="text-xl mt-2 mb-3 font-bold capitalize text-center text-gray-500 text-shadow-lg">Masters</h5>
 
-      <div className="content-center rounded-lg grid grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-12 mt-16 flex rounded-lg">
+      <div className="content-center rounded-lg grid grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-10 mt-16 flex rounded-lg">
 
         {user.role === "superadmin" || user.role === "hquser" ?
           <Link to="/dashboard/institutes" >
