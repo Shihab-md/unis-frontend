@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { columns, StudentButtons } from '../../utils/StudentHelper'
+import { columns, StudentButtons, conditionalRowStyles } from '../../utils/StudentHelper'
 import DataTable from 'react-data-table-component'
 import axios from 'axios'
 import { getBaseUrl, handleRightClick, getSpinner, checkAuth, getBackIcon, getAddIcon } from '../../utils/CommonHelper';
@@ -43,16 +43,18 @@ const List = () => {
         );
         if (responnse.data.success) {
           let sno = 1;
-          const data = await responnse.data.students.map((sup) => ({
-            _id: sup._id,
+          const data = await responnse.data.students.map((student) => ({
+            _id: student._id,
             sno: sno++,
-            name: sup.userId.name,
-            schoolName: sup.schoolId.nameEnglish,
-            rollNumber: sup.rollNumber,
-            district: sup.district,
+            name: student.userId.name,
+            schoolName: student.schoolId.nameEnglish,
+            rollNumber: student.rollNumber,
+            district: student.district,
+            active: student.active,
+            fatherName: student.fatherName ? student.fatherName : student.motherName ? student.motherName : student.guardianName ? student.guardianName : "",
             //dob: new Date(sup.dob).toLocaleDateString(),
-            profileImage: <img width={40} className='rounded-full' src={`https://unis-server.vercel.app/${sup.userId.profileImage}`} />,
-            action: (<StudentButtons Id={sup._id} onStudentDelete={onStudentDelete} />),
+            profileImage: <img width={40} className='rounded-full' src={`https://unis-server.vercel.app/${student.userId.profileImage}`} />,
+            action: (<StudentButtons Id={student._id} onStudentDelete={onStudentDelete} />),
           }));
           setStudents(data);
           setFilteredStudents(data)
@@ -98,9 +100,9 @@ const List = () => {
         {getAddIcon("/dashboard/add-student")}
       </div>
       <div className='mt-6 rounded-lg shadow-lg'>
-        <DataTable columns={columns} data={filteredStudent} pagination />
+        <DataTable columns={columns} data={filteredStudent} pagination highlightOnHover striped responsive conditionalRowStyles={conditionalRowStyles} />
       </div>
-    </div> 
+    </div>
   )
 }
 

@@ -25,32 +25,58 @@ export const columns = [
   {
     name: "Roll Number",
     selector: (row) => row.rollNumber,
-    sortable: true,
+    //  sortable: true,
     width: "160px",
   },
   {
-    name: "Name",
+    name: "Student Name",
     selector: (row) => row.name,
-    sortable: true,
-    width: "250px",
+    //  sortable: true,
+    width: "280px",
+  },
+  {
+    name: "Father / Mother / Guardian Name",
+    selector: (row) => row.fatherName,
+    //  sortable: true,
+    width: "280px",
   },
   {
     name: "Niswan Name",
     selector: (row) => row.schoolName,
-    sortable: true,
-    width: "250px",
+    //  sortable: true,
+    width: "370px",
   },
   {
-    name: "State / District",
+    name: "State & District",
     selector: (row) => row.district,
-    sortable: true,
+    //  sortable: true,
     width: "190px",
+  },
+  {
+    name: "Status",
+    selector: (row) => row.active,
+    //  sortable: true,
+    width: "120px",
   },
   {
     name: "Action",
     selector: (row) => row.action,
     center: "true",
   },
+];
+
+export const conditionalRowStyles = [
+  {
+    when: row => row.active,
+    style: row => ({
+      //	backgroundColor: 'rgba(63, 195, 128, 0.9)',
+      color: row.active == 'In-Active' ? 'red' : row.active == 'Transferred' ? 'blue' : 'black',
+      '&:hover': {
+        //		cursor: 'pointer',
+        color: row.active == 'In-Active' ? 'red' : row.active == 'Transferred' ? 'blue' : 'black',
+      },
+    }),
+  }
 ];
 
 // students for salary form
