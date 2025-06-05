@@ -18,7 +18,7 @@ const AdminSummary = () => {
   document.addEventListener('contextmenu', handleRightClick);
 
   // For FULL screen view
-  document.body.addEventListener('click', () => document.documentElement.requestFullscreen(), { once: true });
+  //document.body.addEventListener('click', () => document.documentElement.requestFullscreen(), { once: true });
 
   const [summary, setSummary] = useState(null)
   const navigate = useNavigate()

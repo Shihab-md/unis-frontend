@@ -10,7 +10,7 @@ const Login = () => {
   document.addEventListener('contextmenu', handleRightClick);
 
   // For FULL screen view
-  document.body.addEventListener('click', () => document.documentElement.requestFullscreen(), { once: true });
+  //document.body.addEventListener('click', () => document.documentElement.requestFullscreen(), { once: true });
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");

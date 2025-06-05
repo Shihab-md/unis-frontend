@@ -14,7 +14,7 @@ const Add = () => {
   document.addEventListener('contextmenu', handleRightClick);
 
   // For FULL screen view
-  document.body.addEventListener('click', () => document.documentElement.requestFullscreen(), { once: true });
+  //document.body.addEventListener('click', () => document.documentElement.requestFullscreen(), { once: true });
   
   const [supervisors, setSupervisors] = useState([]);
   const [formData, setFormData] = useState({});

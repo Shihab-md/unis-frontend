@@ -14,7 +14,7 @@ const Edit = () => {
   document.addEventListener('contextmenu', handleRightClick);
 
   // For FULL screen view
-  document.body.addEventListener('click', () => document.documentElement.requestFullscreen(), { once: true });
+  //document.body.addEventListener('click', () => document.documentElement.requestFullscreen(), { once: true });
   
   const [school, setSchool] = useState({
     code: "",
