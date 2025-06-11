@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
 import { useAuth } from "../../context/AuthContext";
-import { getBaseUrl, handleRightClick } from '../../utils/CommonHelper';
+import { getBaseUrl, handleRightClickAndFullScreen } from '../../utils/CommonHelper';
 import Swal from 'sweetalert2';
 import {
   FaRegTimesCircle
@@ -10,11 +10,8 @@ import {
 
 const Setting = () => {
 
-  // To prevent right-click.
-  document.addEventListener('contextmenu', handleRightClick);
-
-  // For FULL screen view
-  document.body.addEventListener('click', () => document.documentElement.requestFullscreen(), { once: true });
+  // To prevent right-click AND For FULL screen view.
+  handleRightClickAndFullScreen();
 
   const navigate = useNavigate();
   const { user } = useAuth()

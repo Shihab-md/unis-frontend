@@ -2,12 +2,16 @@ import axios from "axios";
 import React, { useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
-import { getBaseUrl, handleRightClick } from '../utils/CommonHelper';
+import { getBaseUrl, handleRightClickAndFullScreen } from '../utils/CommonHelper';
 import Swal from 'sweetalert2';
 
 const Login = () => {
-  // To prevent right-click.
-  document.addEventListener('contextmenu', handleRightClick);
+
+  // To prevent right-click AND For FULL screen view.
+  handleRightClickAndFullScreen();
+
+  // To prevent right-click
+  //document.addEventListener('contextmenu', handleRightClick);
 
   // For FULL screen view
   //document.body.addEventListener('click', () => document.documentElement.requestFullscreen(), { once: true });

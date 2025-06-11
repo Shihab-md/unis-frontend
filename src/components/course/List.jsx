@@ -2,16 +2,13 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { columns, CourseButtons } from '../../utils/CourseHelper'
 import DataTable from 'react-data-table-component'
-import { getBaseUrl, handleRightClick, getSpinner, checkAuth, getBackIcon, getAddIcon } from '../../utils/CommonHelper';
+import { getBaseUrl, handleRightClickAndFullScreen, getSpinner, checkAuth, getBackIcon, getAddIcon } from '../../utils/CommonHelper';
 import axios from 'axios'
 import Swal from 'sweetalert2';
 
 const List = () => {
-  // To prevent right-click.
-  document.addEventListener('contextmenu', handleRightClick);
-
-  // For FULL screen view
-  document.body.addEventListener('click', () => document.documentElement.requestFullscreen(), { once: true });
+  // To prevent right-click AND For FULL screen view.
+  handleRightClickAndFullScreen();
 
   const [courses, setCourses] = useState([])
   const [supLoading, setSupLoading] = useState(false)

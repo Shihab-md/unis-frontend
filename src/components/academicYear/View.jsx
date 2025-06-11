@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { getBaseUrl, handleRightClick, getSpinner, checkAuth } from '../../utils/CommonHelper';
+import { getBaseUrl, handleRightClickAndFullScreen, getSpinner, checkAuth } from '../../utils/CommonHelper';
 import { useParams, useNavigate, Link } from "react-router-dom";
 import Swal from 'sweetalert2';
 import ViewCard from "../dashboard/ViewCard";
@@ -9,12 +9,9 @@ import {
 } from "react-icons/fa";
 
 const View = () => {
-  // To prevent right-click.
-  document.addEventListener('contextmenu', handleRightClick);
+  // To prevent right-click AND For FULL screen view.
+  handleRightClickAndFullScreen();
 
-  // For FULL screen view
-  document.body.addEventListener('click', () => document.documentElement.requestFullscreen(), { once: true });
-  
   const { id } = useParams();
   const [academicYear, setAcademicYear] = useState(null);
   const navigate = useNavigate();

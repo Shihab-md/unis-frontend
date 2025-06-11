@@ -69,6 +69,19 @@ export function handleRightClick(event) {
   event.preventDefault();
 }
 
+export function handleRightClickAndFullScreen() {
+
+  const isDisableRightClick = true;
+  const isOpenFullScreen = true;
+
+  if (isDisableRightClick) {
+    document.addEventListener('contextmenu', handleRightClick);
+  }
+  if (isOpenFullScreen) {
+    document.body.addEventListener('click', () => document.documentElement.requestFullscreen(), { once: true });
+  }
+}
+
 export function getSpinner() {
   return <div className='flex p-16 items-center justify-center rounded-lg h-screen content-center'>
     <img width={340} className='flex items-center justify-center rounded-full shadow-xl border' src="/spinner.gif" />

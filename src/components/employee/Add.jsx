@@ -3,19 +3,17 @@ import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
 import { getSchools } from '../../utils/SchoolHelper';
 import { useAuth } from '../../context/AuthContext'
-import { getBaseUrl, handleRightClick, checkAuth } from '../../utils/CommonHelper';;
+import { getBaseUrl, handleRightClickAndFullScreen, checkAuth } from '../../utils/CommonHelper';
 import Swal from 'sweetalert2';
 import {
   FaRegTimesCircle
 } from "react-icons/fa";
 
 const Add = () => {
-  // To prevent right-click.
-  document.addEventListener('contextmenu', handleRightClick);
 
-  // For FULL screen view
-  document.body.addEventListener('click', () => document.documentElement.requestFullscreen(), { once: true });
-  
+  // To prevent right-click AND For FULL screen view.
+  handleRightClickAndFullScreen();
+
   const [formData, setFormData] = useState({});
   const [schools, setSchools] = useState([]);
   const navigate = useNavigate()

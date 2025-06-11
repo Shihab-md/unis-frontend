@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
-import { getBaseUrl, handleRightClick, getSpinner, checkAuth } from '../../utils/CommonHelper'
+import { getBaseUrl, handleRightClickAndFullScreen, getSpinner, checkAuth } from '../../utils/CommonHelper'
 import { getSchools } from '../../utils/SchoolHelper'
 import { columnsSelect, getStudentsBySchoolAndCourse } from '../../utils/StudentHelper'
 import { getTemplates } from '../../utils/TemplateHelper'
@@ -13,12 +13,9 @@ import {
 
 const Create = () => {
 
-  // To prevent right-click.
-  document.addEventListener('contextmenu', handleRightClick);
+  // To prevent right-click AND For FULL screen view.
+  handleRightClickAndFullScreen();
 
-  // For FULL screen view
-  document.body.addEventListener('click', () => document.documentElement.requestFullscreen(), { once: true });
-  
   const [formData, setFormData] = useState(1);
   const [schools, setSchools] = useState([]);
   const [templates, setTemplates] = useState([]);

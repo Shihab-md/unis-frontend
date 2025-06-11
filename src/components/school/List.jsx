@@ -4,16 +4,13 @@ import { columns, SchoolButtons, conditionalRowStyles } from '../../utils/School
 import DataTable from 'react-data-table-component'
 import axios from 'axios'
 import { useAuth } from '../../context/AuthContext'
-import { getBaseUrl, handleRightClick, getSpinner, checkAuth, getBackIcon, getAddIcon } from '../../utils/CommonHelper'
+import { getBaseUrl, handleRightClickAndFullScreen, getSpinner, checkAuth, getBackIcon, getAddIcon } from '../../utils/CommonHelper'
 import Swal from 'sweetalert2';
 
 const List = () => {
 
-  // To prevent right-click.
-  document.addEventListener('contextmenu', handleRightClick);
-
-  // For FULL screen view
-  //document.body.addEventListener('click', () => document.documentElement.requestFullscreen(), { once: true });
+  // To prevent right-click AND For FULL screen view.
+  handleRightClickAndFullScreen();
 
   const [schools, setSchools] = useState([])
   const [schLoading, setSchLoading] = useState(false)

@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
-import { getBaseUrl, handleRightClick, getSpinner, checkAuth } from '../../utils/CommonHelper';
+import { getBaseUrl, handleRightClickAndFullScreen, getSpinner, checkAuth } from '../../utils/CommonHelper';
 import Swal from 'sweetalert2';
 import ViewCard from "../dashboard/ViewCard";
 import {
@@ -9,11 +9,9 @@ import {
 } from "react-icons/fa";
 
 const View = () => {
-  // To prevent right-click.
-  document.addEventListener('contextmenu', handleRightClick);
 
-  // For FULL screen view
-  document.body.addEventListener('click', () => document.documentElement.requestFullscreen(), { once: true });
+  // To prevent right-click AND For FULL screen view.
+  handleRightClickAndFullScreen();
 
   const { id } = useParams();
   const [certificate, setCertificate] = useState(null);

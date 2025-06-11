@@ -5,7 +5,7 @@ import { getSchools } from '../../utils/SchoolHelper';
 import { getAcademicYears } from '../../utils/AcademicYearHelper';
 import { getInstitutes } from '../../utils/InstituteHelper';
 import { getCourses } from '../../utils/CourseHelper';
-import { getBaseUrl, handleRightClick, checkAuth } from '../../utils/CommonHelper';;
+import { getBaseUrl, handleRightClickAndFullScreen, checkAuth } from '../../utils/CommonHelper';
 import Swal from 'sweetalert2';
 import ViewCard from "../dashboard/ViewCard";
 import {
@@ -13,12 +13,10 @@ import {
 } from "react-icons/fa";
 
 const Add = () => {
-  // To prevent right-click.
-  document.addEventListener('contextmenu', handleRightClick);
 
-  // For FULL screen view
-  document.body.addEventListener('click', () => document.documentElement.requestFullscreen(), { once: true });
-  
+  // To prevent right-click AND For FULL screen view.
+  handleRightClickAndFullScreen();
+
   const [formData, setFormData] = useState({});
   const [schools, setSchools] = useState([]);
   const [academicYears, setAcademicYears] = useState([]);

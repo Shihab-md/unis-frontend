@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { getBaseUrl, handleRightClick, getSpinner, checkAuth } from '../../utils/CommonHelper';
+import { getBaseUrl, handleRightClickAndFullScreen, getSpinner, checkAuth } from '../../utils/CommonHelper';
 import Swal from 'sweetalert2';
 import { useNavigate, useParams, Link } from "react-router-dom";
 import {
@@ -8,12 +8,10 @@ import {
 } from "react-icons/fa";
 
 const Edit = () => {
-  // To prevent right-click.
-  document.addEventListener('contextmenu', handleRightClick);
 
-  // For FULL screen view
-  document.body.addEventListener('click', () => document.documentElement.requestFullscreen(), { once: true });
-  
+  // To prevent right-click AND For FULL screen view.
+  handleRightClickAndFullScreen();
+
   const [course, setCourse] = useState({
     name: "",
     remarks: "",

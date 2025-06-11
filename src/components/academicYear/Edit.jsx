@@ -1,19 +1,16 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate, useParams, Link } from "react-router-dom";
-import { getBaseUrl, handleRightClick, getSpinner, checkAuth } from '../../utils/CommonHelper';;
+import { getBaseUrl, handleRightClickAndFullScreen, getSpinner, checkAuth } from '../../utils/CommonHelper';
 import Swal from 'sweetalert2';
 import {
   FaRegTimesCircle
 } from "react-icons/fa";
 
 const Edit = () => {
-  // To prevent right-click.
-  document.addEventListener('contextmenu', handleRightClick);
+  // To prevent right-click AND For FULL screen view.
+  handleRightClickAndFullScreen();
 
-  // For FULL screen view
-  document.body.addEventListener('click', () => document.documentElement.requestFullscreen(), { once: true });
-  
   const [academicYear, setAcademicYear] = useState({
     acYear: "",
     desc: "",

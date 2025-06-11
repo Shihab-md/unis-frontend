@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import SummaryCard from "./SummaryCard";
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext'
-import { getBaseUrl, handleRightClick, getSpinner, getBackIcon } from '../../utils/CommonHelper'
+import { getBaseUrl, handleRightClickAndFullScreen, getSpinner, getBackIcon } from '../../utils/CommonHelper'
 import {
   FaUniversity, FaWpforms, FaClipboardList, FaCalendarAlt, FaUserCog,
 } from "react-icons/fa";
@@ -11,11 +11,9 @@ import Swal from 'sweetalert2';
 import { useNavigate } from "react-router-dom";
 
 const Masters = () => {
-  // To prevent right-click.
-  document.addEventListener('contextmenu', handleRightClick);
 
-  // For FULL screen view
-  document.body.addEventListener('click', () => document.documentElement.requestFullscreen(), { once: true });
+  // To prevent right-click AND For FULL screen view.
+  handleRightClickAndFullScreen();
 
   const [summary, setSummary] = useState(null)
   const navigate = useNavigate()
