@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { columns, EmployeeButtons } from '../../utils/EmployeeHelper'
 import DataTable from 'react-data-table-component'
 import axios from 'axios'
-import { getBaseUrl, handleRightClickAndFullScreen, getSpinner, checkAuth, getBackIcon, getAddIcon } from '../../utils/CommonHelper';
+import { getBaseUrl, handleRightClickAndFullScreen, getSpinner, checkAuth, LinkIcon } from '../../utils/CommonHelper';
 import Swal from 'sweetalert2';
 import { useAuth } from '../../context/AuthContext'
 
@@ -90,7 +90,7 @@ const List = () => {
         <h3 className="text-2xl font-bold px-5 py-0">Manage Employees</h3>
       </div>
       <div className="flex justify-between items-center mt-5">
-        {getBackIcon("/dashboard")}
+        {LinkIcon("/dashboard", "Back")}
         <input
           type="text"
           placeholder="Search By Employee"
@@ -98,7 +98,7 @@ const List = () => {
           onChange={handleFilter}
         />
         {user.role === "superadmin" || user.role === "hquser" || user.role === "admin" ?
-          getAddIcon("/dashboard/add-employee") : null}
+          LinkIcon("/dashboard/add-employee", "Add") : null}
       </div>
       <div className='mt-6 rounded-lg shadow-lg'>
         <DataTable columns={columns} data={filteredEmployee} pagination />

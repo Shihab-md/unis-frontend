@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { columns, SupervisorButtons } from '../../utils/SupervisorHelper'
-import { getBaseUrl, handleRightClickAndFullScreen, getSpinner, checkAuth, getBackIcon, getAddIcon } from '../../utils/CommonHelper';
+import { getBaseUrl, handleRightClickAndFullScreen, getSpinner, checkAuth, LinkIcon } from '../../utils/CommonHelper';
 import DataTable from 'react-data-table-component'
 import { useAuth } from '../../context/AuthContext'
 import axios from 'axios'
@@ -92,7 +92,7 @@ const List = () => {
         <h3 className="text-2xl font-bold px-5 py-0 text-shadow-lg">Manage Supervisors</h3>
       </div>
       <div className="flex justify-between items-center mt-5">
-        {getBackIcon("/dashboard")}
+        {LinkIcon("/dashboard", "Back")}
         <input
           type="text"
           placeholder="Search By Supervisor"
@@ -100,7 +100,7 @@ const List = () => {
           onChange={handleFilter}
         />
         {user.role === "superadmin" || user.role === "hquser" ?
-          getAddIcon("/dashboard/add-supervisor") : null}
+          LinkIcon("/dashboard/add-supervisor", "Add") : null}
       </div>
       <div className='mt-6 rounded-lg shadow-lg'>
         <DataTable columns={columns} data={filteredSupervisor} pagination />

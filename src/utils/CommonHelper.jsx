@@ -30,7 +30,7 @@ const authorizedScreensFor_ADMIN_Role = [
 ];
 
 export const getBaseUrl = async () => {
-  return "https://unis-server.vercel.app/api/";
+   return "https://unis-server.vercel.app/api/";
 
 };
 
@@ -88,11 +88,12 @@ export function getSpinner() {
   </div>
 }
 
-export function getBackIcon(toPage) {
-  return <Link to={toPage} > <FaArrowAltCircleLeft className="text-3xl bg-blue-700 text-white rounded shadow-lg" /> </Link>
-}
+export function LinkIcon(toPage, purpose) {
+  if (purpose === "Add") {
+    return <Link to={toPage} > <FaPlusSquare className="text-3xl bg-teal-700 text-white rounded shadow-lg" /></Link>
 
-export function getAddIcon(toPage) {
-  return <Link to={toPage} > <FaPlusSquare className="text-3xl bg-teal-700 text-white rounded shadow-lg" /></Link>
-}
+  } else if (purpose === "Back") {
+    return <Link to={toPage} > <FaArrowAltCircleLeft className="text-3xl bg-blue-700 text-white rounded shadow-lg" /> </Link>
+  }
+} 
 

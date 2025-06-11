@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import SummaryCard from "./SummaryCard";
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext'
-import { getBaseUrl, handleRightClickAndFullScreen, getSpinner, getBackIcon } from '../../utils/CommonHelper'
+import { getBaseUrl, handleRightClickAndFullScreen, getSpinner, LinkIcon } from '../../utils/CommonHelper'
 import {
   FaUniversity, FaWpforms, FaClipboardList, FaCalendarAlt, FaUserCog,
 } from "react-icons/fa";
