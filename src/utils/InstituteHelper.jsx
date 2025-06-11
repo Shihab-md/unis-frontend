@@ -72,6 +72,28 @@ export const getInstitutes = async (id) => {
   return institutes;
 };
 
+export const getInstitutesFromCache = async (id) => {
+  let institutes;
+  try {
+    const responnse = await axios.get(
+      (await getBaseUrl()).toString() + `institute/fromCache/`,
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      }
+    );
+    if (responnse.data.success) {
+      institutes = responnse.data.institutes;
+    }
+  } catch (error) {
+    if (error.response && !error.response.data.success) {
+      Swal.fire('Error!', error.response.data.error, 'error');
+    }
+  }
+  return institutes;
+};
+
 export const InstituteButtons = ({ Id, onInstituteDelete }) => {
   const navigate = useNavigate();
 

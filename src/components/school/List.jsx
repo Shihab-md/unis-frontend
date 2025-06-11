@@ -76,7 +76,7 @@ const List = () => {
             active: sch.active,
             supervisorId: sch.supervisorId.supervisorId,
             supervisorName: sch.supervisorId.userId.name,
-            studentsCount: sch._studentsCount ? sch._studentsCount : 0,
+          //  studentsCount: sch._studentsCount ? sch._studentsCount : 0,
             action: (<SchoolButtons Id={sch._id} onSchoolDelete={onSchoolDelete} />),
           }));
           setSchools(data);
@@ -125,7 +125,7 @@ const List = () => {
           : null}
       </div>
       <div className='mt-6 rounded-lg shadow-lg bg-blue-50'>
-        <DataTable columns={columns} data={filteredSchool} highlightOnHover striped responsive conditionalRowStyles={conditionalRowStyles} expandableRows expandableRowsComponent={ExpandedComponent} />
+        <DataTable columns={columns} data={filteredSchool} pagination highlightOnHover striped responsive conditionalRowStyles={conditionalRowStyles} expandableRows expandableRowsComponent={ExpandedComponent} />
       </div>
     </div>
   )

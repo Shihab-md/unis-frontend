@@ -56,7 +56,30 @@ export const columns = [
   },
 ];
 
-// supervisors for salary form
+// supervisors FromCache
+export const getSupervisorsFromCache = async (id) => {
+  let supervisors;
+  try {
+    const responnse = await axios.get(
+      (await getBaseUrl()).toString() + `supervisor/fromCache/`,
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      }
+    );
+    if (responnse.data.success) {
+      supervisors = responnse.data.supervisors;
+    }
+  } catch (error) {
+    if (error.response && !error.response.data.success) {
+      Swal.fire('Error!', error.response.data.error, 'error');
+    }
+  }
+  return supervisors;
+};
+
+// supervisors 
 export const getSupervisors = async (id) => {
   let supervisors;
   try {

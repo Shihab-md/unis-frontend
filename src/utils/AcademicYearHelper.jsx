@@ -66,6 +66,28 @@ export const getAcademicYears = async (id) => {
   return academicYears;
 };
 
+export const getAcademicYearsFromCache = async (id) => {
+  let academicYears;
+  try {
+    const responnse = await axios.get(
+      (await getBaseUrl()).toString() + `academicYear/fromCache`,
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      }
+    );
+    if (responnse.data.success) {
+      academicYears = responnse.data.academicYears;
+    }
+  } catch (error) {
+    if (error.response && !error.response.data.success) {
+      Swal.fire('Error!', error.response.data.error, 'error');
+    }
+  }
+  return academicYears;
+};
+
 export const AcademicYearButtons = ({ Id, onAcademicYearDelete }) => {
   const navigate = useNavigate();
 

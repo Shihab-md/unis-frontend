@@ -51,7 +51,7 @@ const List = () => {
             active: student.active,
             fatherName: student.fatherName ? student.fatherName : student.motherName ? student.motherName : student.guardianName ? student.guardianName : "",
             //dob: new Date(sup.dob).toLocaleDateString(),
-            profileImage: <img width={40} className='rounded-full' src={`https://unis-server.vercel.app/${student.userId.profileImage}`} />,
+          //  profileImage: <img width={40} className='rounded-full' src={`https://unis-server.vercel.app/${student.userId.profileImage}`} />,
             action: (<StudentButtons Id={student._id} onStudentDelete={onStudentDelete} />),
           }));
           setStudents(data);

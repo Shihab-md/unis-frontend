@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { getSchools } from "../../utils/SchoolHelper";
-import { getAcademicYears } from '../../utils/AcademicYearHelper'
-import { getInstitutes } from '../../utils/InstituteHelper'
-import { getCourses } from '../../utils/CourseHelper'
+import { getSchoolsFromCache } from '../../utils/SchoolHelper';
+import { getAcademicYearsFromCache } from '../../utils/AcademicYearHelper';
+import { getInstitutesFromCache } from '../../utils/InstituteHelper';
+import { getCoursesFromCache } from '../../utils/CourseHelper';
 import axios from "axios";
 import { useNavigate, useParams, Link } from "react-router-dom";
 import moment from "moment";
@@ -44,7 +44,7 @@ const Edit = () => {
     }
 
     const getSchoolsMap = async (id) => {
-      const schools = await getSchools(id);
+      const schools = await getSchoolsFromCache(id);
       setSchools(schools);
     };
     getSchoolsMap();
@@ -52,7 +52,7 @@ const Edit = () => {
 
   useEffect(() => {
     const getAcademicYearsMap = async (id) => {
-      const academicYears = await getAcademicYears(id);
+      const academicYears = await getAcademicYearsFromCache(id);
       setAcademicYears(academicYears);
     };
     getAcademicYearsMap();
@@ -60,7 +60,7 @@ const Edit = () => {
 
   useEffect(() => {
     const getInstitutesMap = async (id) => {
-      const institutes = await getInstitutes(id);
+      const institutes = await getInstitutesFromCache(id);
       setInstitutes(institutes);
     };
     getInstitutesMap();
@@ -68,7 +68,7 @@ const Edit = () => {
 
   useEffect(() => {
     const getCoursesMap = async (id) => {
-      const courses = await getCourses(id);
+      const courses = await getCoursesFromCache(id);
       setCourses(courses);
     };
     getCoursesMap();
@@ -252,7 +252,7 @@ const Edit = () => {
                     <option value="">Select Niswan</option>
                     {schools.map((school) => (
                       <option key={school._id} value={school._id}>
-                        {school.nameEnglish}
+                        {school.code + " : " + school.nameEnglish}
                       </option>
                     ))}
                   </select>

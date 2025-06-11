@@ -77,6 +77,28 @@ export const getCourses = async (id) => {
   return courses;
 };
 
+export const getCoursesFromCache = async (id) => {
+  let courses;
+  try {
+    const responnse = await axios.get(
+      (await getBaseUrl()).toString() + `course/fromCache/`,
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      }
+    );
+    if (responnse.data.success) {
+      courses = responnse.data.courses;
+    }
+  } catch (error) {
+    if (error.response && !error.response.data.success) {
+      Swal.fire('Error!', error.response.data.error, 'error');
+    }
+  }
+  return courses;
+};
+
 export const CourseButtons = ({ Id, onCourseDelete }) => {
   const navigate = useNavigate();
 

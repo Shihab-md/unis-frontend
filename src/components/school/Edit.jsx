@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { getSupervisors } from '../../utils/SupervisorHelper';
+import { getSupervisorsFromCache } from '../../utils/SupervisorHelper';
 import { useNavigate, useParams, Link } from "react-router-dom";
 import {
   FaRegTimesCircle
@@ -38,7 +38,7 @@ const Edit = () => {
 
   useEffect(() => {
     const getSupervisorsMap = async (id) => {
-      const supervisors = await getSupervisors(id);
+      const supervisors = await getSupervisorsFromCache(id);
       setSupervisors(supervisors);
     };
     getSupervisorsMap();

@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
-import { getSchools } from '../../utils/SchoolHelper';
-import { getAcademicYears } from '../../utils/AcademicYearHelper';
-import { getInstitutes } from '../../utils/InstituteHelper';
-import { getCourses } from '../../utils/CourseHelper';
+import { getSchoolsFromCache } from '../../utils/SchoolHelper';
+import { getAcademicYearsFromCache } from '../../utils/AcademicYearHelper';
+import { getInstitutesFromCache } from '../../utils/InstituteHelper';
+import { getCoursesFromCache } from '../../utils/CourseHelper';
 import { getBaseUrl, handleRightClickAndFullScreen, checkAuth } from '../../utils/CommonHelper';
 import Swal from 'sweetalert2';
 import ViewCard from "../dashboard/ViewCard";
@@ -18,6 +18,7 @@ const Add = () => {
   handleRightClickAndFullScreen();
 
   const [formData, setFormData] = useState({});
+
   const [schools, setSchools] = useState([]);
   const [academicYears, setAcademicYears] = useState([]);
   const [institutes, setInstitutes] = useState([]);
@@ -42,7 +43,7 @@ const Add = () => {
 
   useEffect(() => {
     const getSchoolsMap = async (id) => {
-      const schools = await getSchools(id);
+      const schools = await getSchoolsFromCache(id);
       setSchools(schools);
     };
     getSchoolsMap();
@@ -50,7 +51,7 @@ const Add = () => {
 
   useEffect(() => {
     const getAcademicYearsMap = async (id) => {
-      const academicYears = await getAcademicYears(id);
+      const academicYears = await getAcademicYearsFromCache(id);
       setAcademicYears(academicYears);
     };
     getAcademicYearsMap();
@@ -58,7 +59,8 @@ const Add = () => {
 
   useEffect(() => {
     const getInstitutesMap = async (id) => {
-      const institutes = await getInstitutes(id);
+      const institutes = await getInstitutesFromCache(id);
+     // alert(institutes)
       setInstitutes(institutes);
     };
     getInstitutesMap();
@@ -66,7 +68,7 @@ const Add = () => {
 
   useEffect(() => {
     const getCoursesMap = async (id) => {
-      const courses = await getCourses(id);
+      const courses = await getCoursesFromCache(id);
       setCourses(courses);
     };
     getCoursesMap();
@@ -200,7 +202,7 @@ const Add = () => {
                   <option value="">Select Niswan</option>
                   {schools.map((school) => (
                     <option key={school._id} value={school._id}>
-                      {school.nameEnglish}
+                      {school.code + " : " + school.nameEnglish}
                     </option>
                   ))}
                 </select>

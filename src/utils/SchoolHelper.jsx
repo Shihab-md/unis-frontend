@@ -37,13 +37,7 @@ export const columns = [
     name: "Name",
     selector: (row) => row.name,
     //  sortable: true,
-    width: "400px",
-  },
-  {
-    name: "No. of Students",
-    selector: (row) => row.studentsCount,
-    //  sortable: true,
-    width: "120px",
+    width: "430px",
   },
   {
     name: "District & State",
@@ -61,7 +55,7 @@ export const columns = [
     name: "Supervisor",
     selector: (row) => row.supervisorId + " : " + row.supervisorName,
     //  sortable: true,
-    width: "300px",
+    width: "320px",
   },
   {
     name: "Action",
@@ -89,6 +83,29 @@ export const getSchools = async (id) => {
   try {
     const responnse = await axios.get(
       (await getBaseUrl()).toString() + `school/`,
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      }
+    );
+    console.log(responnse)
+    if (responnse.data.success) {
+      schools = responnse.data.schools;
+    }
+  } catch (error) {
+    if (error.response && !error.response.data.success) {
+      Swal.fire('Error!', error.response.data.error, 'error');
+    }
+  }
+  return schools;
+};
+
+export const getSchoolsFromCache = async (id) => {
+  let schools;
+  try {
+    const responnse = await axios.get(
+      (await getBaseUrl()).toString() + `school/fromCache/`,
       {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
