@@ -24,18 +24,18 @@ export const columns = [
     name: "Supervisor",
     selector: (row) => row.supId + " : " + row.name,
     sortable: true,
-    width: "370px",
+    width: "470px",
   },
   {
     name: "Contact Number",
     selector: (row) => row.contactNumber,
-    width: "190px",
+    width: "150px",
   },
   {
     name: "Email",
     selector: (row) => row.email,
     sortable: true,
-    width: "250px",
+    width: "280px",
   },
   {
     name: "Route",
@@ -47,7 +47,7 @@ export const columns = [
     name: "No. of Niswans",
     selector: (row) => row.schoolsCount,
     sortable: true,
-    width: "190px",
+    width: "160px",
   },
   {
     name: "Action",
