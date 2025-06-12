@@ -8,12 +8,12 @@ import {
 const Navbar = () => { 
   const { user, logout } = useAuth()
   return (
-    <div className='flex items-center text-white justify-between h-12 bg-teal-600 px-5 text-shadow-lg'>
+    <div className='flex items-center text-white justify-between h-12 md:h-20 bg-teal-600 px-5 text-shadow-lg'>
       <Link to="/dashboard" >
-        <FaHome className="text-2xl text-green-300 text-shadow-lg" />
+        <FaHome className="text-2xl lg:text-4xl text-green-300 text-shadow-lg" />
       </Link>
-      <p className="text-xl mt-1 font-bold text-shadow-lg">UNIS ACADEMY</p>
-      <FaPowerOff className="text-2xl text-red-700 text-shadow-lg" onClick={logout} />
+      <p className="text-xl lg:text-3xl mt-1 font-bold text-shadow-lg">UNIS ACADEMY</p>
+      <FaPowerOff className="text-2xl lg:text-4xl text-red-700 text-shadow-lg" onClick={logout} />
     </div>
   )
 }
