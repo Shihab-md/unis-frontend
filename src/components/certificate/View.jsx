@@ -21,7 +21,7 @@ const View = () => {
   const handleDownload = () => {
     if (certificate.certificate) {
       const link = document.createElement('a');
-      link.href = certificate.certificate != "" ? certificate.certificate : "/certificate.jpg";
+      link.href = certificate.certificate != "" ? certificate.certificate + "?" + new Date().getTime() : "/certificate.jpg";
       link.download = certificate.courseId.name + "_" + certificate.studentId.rollNumber + "_" + certificate.userId.name + ".png" || 'downloaded_image.png'; // Use provided name or default
       document.body.appendChild(link);
       link.click();
