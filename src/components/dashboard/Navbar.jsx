@@ -8,7 +8,7 @@ import {
 const Navbar = () => { 
   const { user, logout } = useAuth()
   return (
-    <div className='flex items-center text-white justify-between h-12 md:h-20 bg-teal-600 px-5 text-shadow-lg'>
+    <div className='flex items-center text-white justify-between h-12 lg:h-20 bg-teal-600 px-5 text-shadow-lg'>
       <Link to="/dashboard" >
         <FaHome className="text-2xl lg:text-4xl text-green-300 text-shadow-lg" />
       </Link>
