@@ -4,7 +4,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { getBaseUrl, handleRightClickAndFullScreen, getSpinner, checkAuth } from '../../utils/CommonHelper'
 import { getSchoolsFromCache } from '../../utils/SchoolHelper'
 import { columnsSelect, getStudentsBySchoolAndCourse } from '../../utils/StudentHelper'
-import { getTemplates } from '../../utils/TemplateHelper'
+import { getTemplatesFromCache } from '../../utils/TemplateHelper'
 import DataTable from 'react-data-table-component'
 import Swal from 'sweetalert2';
 import {
@@ -74,7 +74,7 @@ const Create = () => {
 
   useEffect(() => {
     const getTemplatesMap = async (id) => {
-      const templates = await getTemplates(id);
+      const templates = await getTemplatesFromCache(id);
       setTemplates(templates);
     };
     getTemplatesMap();

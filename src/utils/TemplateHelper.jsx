@@ -55,6 +55,28 @@ export const getTemplates = async (id) => {
   return templates;
 };
 
+export const getTemplatesFromCache = async (id) => {
+  let templates;
+  try {
+    const responnse = await axios.get(
+      (await getBaseUrl()).toString() + `template/fromCache/`,
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      }
+    );
+    if (responnse.data.success) {
+      templates = responnse.data.templates;
+    }
+  } catch (error) {
+    if (error.response && !error.response.data.success) {
+      Swal.fire('Error!', error.response.data.error, 'error');
+    }
+  }
+  return templates;
+};
+
 export const TemplateButtons = ({ Id, onTemplateDelete }) => {
   const navigate = useNavigate();
 
