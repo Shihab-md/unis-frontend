@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate, useParams, Link } from "react-router-dom";
-import { getCourses } from '../../utils/CourseHelper';
+import { getCoursesFromCache } from '../../utils/CourseHelper';
 import { getBaseUrl, handleRightClickAndFullScreen, getSpinner, checkAuth } from '../../utils/CommonHelper';
 import Swal from 'sweetalert2';
 import {
@@ -24,7 +24,7 @@ const Edit = () => {
 
   useEffect(() => {
     const getCoursesMap = async (id) => {
-      const courses = await getCourses(id);
+      const courses = await getCoursesFromCache(id);
       setCourses(courses);
     };
     getCoursesMap();

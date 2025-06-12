@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
 import { getBaseUrl, handleRightClickAndFullScreen, getSpinner, checkAuth } from '../../utils/CommonHelper'
-import { getSchools } from '../../utils/SchoolHelper'
+import { getSchoolsFromCache } from '../../utils/SchoolHelper'
 import { columnsSelect, getStudentsBySchoolAndCourse } from '../../utils/StudentHelper'
 import { getTemplates } from '../../utils/TemplateHelper'
 import DataTable from 'react-data-table-component'
@@ -66,7 +66,7 @@ const Create = () => {
 
   useEffect(() => {
     const getSchoolsMap = async (id) => {
-      const schools = await getSchools(id);
+      const schools = await getSchoolsFromCache(id);
       setSchools(schools);
     };
     getSchoolsMap();
@@ -132,8 +132,12 @@ const Create = () => {
             if (resData.image && resData.image != "") {
               let image = resData.image;
               const link = document.createElement('a');
-              link.href = "data:image/jpeg;base64," + image;
-              link.download = resData.fileName + ".jpg" || 'downloaded_image'; // Use provided name or default
+              if (resData.type === 'base64') {
+                link.href = "data:image/jpeg;base64," + image;
+              } else {
+                link.href = image;
+              }
+              link.download = resData.fileName || 'downloaded_image.png'; // Use provided name or default
               document.body.appendChild(link);
               link.click();
               document.body.removeChild(link);

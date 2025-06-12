@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
 import { getBaseUrl, handleRightClickAndFullScreen, checkAuth } from '../../utils/CommonHelper';
-import { getCourses } from '../../utils/CourseHelper';
+import { getCoursesFromCache } from '../../utils/CourseHelper';
 import Swal from 'sweetalert2';
 import {
   FaRegTimesCircle
@@ -27,7 +27,7 @@ const Add = () => {
     }
 
     const getCoursesMap = async (id) => {
-      const courses = await getCourses(id);
+      const courses = await getCoursesFromCache(id);
       setCourses(courses);
     };
     getCoursesMap();

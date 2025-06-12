@@ -20,7 +20,8 @@ const View = () => {
 
   const handleDownload = () => {
     const link = document.createElement('a');
-    link.href = template.template && template.template != "" ? "data:image/jpeg;base64," + template.template : "/template.jpg";
+    //link.href = template.template && template.template != "" ? "data:image/jpeg;base64," + template.template : "/template.jpg";
+    link.href = template.template && template.template != "" ? template.template + "?" + new Date().getTime() : "/template.jpg";
     link.download = "123.jpg" || 'downloaded_image'; // Use provided name or default
     document.body.appendChild(link);
     link.click();
@@ -89,14 +90,14 @@ const View = () => {
                 >
                   <img
                     className="p-2 size-100 border items-center justify-center shadow-lg rounded-lg" onClick={handleHideDialog}
-                    src={template.template && template.template != "" ? "data:image/jpeg;base64," + template.template : "/template.jpg"}
+                    src={template.template && template.template != "" ? template.template + "?" + new Date().getTime() : "/template.jpg"}
                   />
                 </dialog></div>
                 : <div></div>}
 
               <div className="flex mt-2 space-x-3 mb-3 items-center justify-center" title="Click to ZOOM" >
                 <img className='size-40 mt-5 border items-center justify-center rounded-lg shadow-lg' onClick={handleShowDialog}
-                  src={template.template && template.template != "" ? "data:image/jpeg;base64," + template.template : "/template.jpg"}
+                  src={template.template && template.template != "" ? template.template + "?" + new Date().getTime() : "/template.jpg"}
                 />
                 {/* <button onClick={handleDownload}>
                   Download Image

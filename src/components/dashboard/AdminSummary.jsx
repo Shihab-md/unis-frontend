@@ -59,7 +59,7 @@ const AdminSummary = () => {
           <Link to="/dashboard/supervisors" >
             <SummaryCard
               icon={<FaUserFriends />}
-              text="Muaavins"
+              text="Muavins"
               number={summary.totalSupervisors}
               color="bg-teal-600"
             />

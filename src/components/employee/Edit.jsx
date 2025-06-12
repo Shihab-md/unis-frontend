@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { getSchools } from "../../utils/SchoolHelper";
+import { getSchoolsFromCache } from "../../utils/SchoolHelper";
 import axios from "axios";
 import { useNavigate, useParams, Link } from "react-router-dom";
 import moment from "moment";
@@ -44,7 +44,7 @@ const Edit = () => {
     }
 
     const getSchoolsMap = async (id) => {
-      const schools = await getSchools(id);
+      const schools = await getSchoolsFromCache(id);
       setSchools(schools);
     };
     getSchoolsMap();
@@ -167,7 +167,7 @@ const Edit = () => {
                     <option value="">Select Niswan</option>
                     {schools.map((school) => (
                       <option key={school._id} value={school._id}>
-                        {school.nameEnglish}
+                        {school.code + " : " + school.nameEnglish}
                       </option>
                     ))}
                   </select>

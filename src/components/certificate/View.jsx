@@ -21,8 +21,8 @@ const View = () => {
   const handleDownload = () => {
     if (certificate.certificate) {
       const link = document.createElement('a');
-      link.href = certificate.certificate != "" ? "data:image/jpeg;base64," + certificate.certificate : "/certificate.jpg";
-      link.download = certificate.courseId.name + "_" + certificate.studentId.rollNumber + "_" + certificate.userId.name + ".jpg" || 'downloaded_image'; // Use provided name or default
+      link.href = certificate.certificate != "" ? certificate.certificate : "/certificate.jpg";
+      link.download = certificate.courseId.name + "_" + certificate.studentId.rollNumber + "_" + certificate.userId.name + ".png" || 'downloaded_image.png'; // Use provided name or default
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
@@ -91,14 +91,14 @@ const View = () => {
                 >
                   <img
                     className="p-2 size-100 border items-center justify-center shadow-lg" onClick={handleHideDialog}
-                    src={certificate.certificate && certificate.certificate != "" ? "data:image/jpeg;base64," + certificate.certificate : "/certificate.jpg"}
+                    src={certificate.certificate && certificate.certificate != "" ? certificate.certificate + "?" + new Date().getTime() : "/certificate.jpg"}
                   />
                 </dialog></div>
                 : <div></div>}
 
               <div className="flex mt-2 space-x-10 mb-3 items-center justify-center" title="Click to ZOOM">
                 <img className='size-40 mt-3 border items-center justify-center rounded-lg shadow-lg' onClick={handleShowDialog}
-                  src={certificate.certificate && certificate.certificate != "" ? "data:image/jpeg;base64," + certificate.certificate : "/certificate.jpg"}
+                  src={certificate.certificate && certificate.certificate != "" ? certificate.certificate + "?" + new Date().getTime() : "/certificate.jpg"}
                 />
                 <FaDownload onClick={handleDownload} className="text-3xl text-green-700 bg-gray-200 border rounded shadow-xl items-bottom justify-end" />
               </div>

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
-import { getSchools } from '../../utils/SchoolHelper';
+import { getSchoolsFromCache } from '../../utils/SchoolHelper';
 import { useAuth } from '../../context/AuthContext'
 import { getBaseUrl, handleRightClickAndFullScreen, checkAuth } from '../../utils/CommonHelper';
 import Swal from 'sweetalert2';
@@ -28,7 +28,7 @@ const Add = () => {
 
   useEffect(() => {
     const getSchoolsMap = async (id) => {
-      const schools = await getSchools(id);
+      const schools = await getSchoolsFromCache(id);
       setSchools(schools);
     };
     getSchoolsMap();
@@ -114,7 +114,7 @@ const Add = () => {
                   <option value="">Select Niswan</option>
                   {schools.map((school) => (
                     <option key={school._id} value={school._id}>
-                      {school.nameEnglish}
+                      {school.code + " : " + school.nameEnglish}
                     </option>
                   ))}
                 </select>
