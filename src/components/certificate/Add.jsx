@@ -210,7 +210,7 @@ const Create = () => {
                 </select>
               </div>
 
-              {/* Schools */}
+              {/* Schools  */}
               <div>
                 <label className="block mt-2 text-sm font-medium text-gray-700">
                   Select Niswan<span className="text-red-700">*</span>
