@@ -29,11 +29,6 @@ const authorizedScreensFor_ADMIN_Role = [
   "settings"
 ];
 
-export const getBaseUrl = async () => {
-   return "https://unis-server.vercel.app/api/";
-
-};
-
 export function checkAuth(screenName) {
 
   const role = localStorage.getItem("role")
@@ -65,14 +60,15 @@ export function checkAuth(screenName) {
   //}
 };
 
-export function handleRightClick(event) {
-  event.preventDefault();
-}
+export const getBaseUrl = async () => {
+  return "https://unis-server.vercel.app/api/";
+
+};
 
 export function handleRightClickAndFullScreen() {
 
   const isDisableRightClick = true;
-  const isOpenFullScreen = false;
+  const isOpenFullScreen = true;
 
   if (isDisableRightClick) {
     document.addEventListener('contextmenu', handleRightClick);
@@ -80,6 +76,10 @@ export function handleRightClickAndFullScreen() {
   if (isOpenFullScreen) {
     document.body.addEventListener('click', () => document.documentElement.requestFullscreen(), { once: true });
   }
+}
+
+export function handleRightClick(event) {
+  event.preventDefault();
 }
 
 export function getSpinner() {
