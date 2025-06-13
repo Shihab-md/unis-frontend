@@ -72,7 +72,7 @@ export function handleRightClick(event) {
 export function handleRightClickAndFullScreen() {
 
   const isDisableRightClick = true;
-  const isOpenFullScreen = true;
+  const isOpenFullScreen = false;
 
   if (isDisableRightClick) {
     document.addEventListener('contextmenu', handleRightClick);
@@ -88,12 +88,22 @@ export function getSpinner() {
   </div>
 }
 
+export function getPrcessing() {
+  return <div className='flex p-16 items-center justify-center rounded-lg h-screen content-center'><dialog
+    className="dialog rounded-lg"
+    style={{ position: 'absolute' }}
+    open
+  >
+    <img width={320} className='flex items-center justify-center rounded-lg shadow-xl border' src="/spinner1.gif" />
+  </dialog></div>
+}
+
 export function LinkIcon(toPage, purpose) {
   if (purpose === "Add") {
-    return <Link to={toPage} > <FaPlusSquare className="text-3xl bg-teal-700 text-white rounded shadow-lg" /></Link>
+    return <Link to={toPage} > <FaPlusSquare className="text-3xl lg:text-4xl bg-teal-700 text-white rounded shadow-lg" /></Link>
 
   } else if (purpose === "Back") {
-    return <Link to={toPage} > <FaArrowAltCircleLeft className="text-3xl bg-blue-700 text-white rounded shadow-lg" /> </Link>
+    return <Link to={toPage} > <FaArrowAltCircleLeft className="text-3xl lg:text-4xl bg-blue-700 text-white rounded shadow-lg" /> </Link>
   }
-} 
+}
 

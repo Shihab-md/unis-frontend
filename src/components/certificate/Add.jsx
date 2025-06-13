@@ -149,7 +149,7 @@ const Create = () => {
           setCreatedAll(false);
           Swal.fire({
             title: "Success!",
-            html: "<b>Successfully Added!</b>",
+            html: "<b>Successfully created!</b>",
             icon: "success",
             timer: 1600,
             timerProgressBar: true,
