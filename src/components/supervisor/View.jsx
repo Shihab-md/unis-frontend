@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
-import { getBaseUrl, handleRightClickAndFullScreen, getSpinner, checkAuth } from '../../utils/CommonHelper';
+import { getBaseUrl, handleRightClickAndFullScreen, getSpinner, checkAuth, getFormattedDate } from '../../utils/CommonHelper';
 import Swal from 'sweetalert2';
 import ViewCard from "../dashboard/ViewCard";
 import {
@@ -92,7 +92,7 @@ const View = () => {
                 <ViewCard type="data" text={supervisor.qualification} />
 
                 <ViewCard type="title" text="Date of Birth" />
-                <ViewCard type="data" text={new Date(supervisor.dob).toLocaleDateString()} />
+                <ViewCard type="data" text={getFormattedDate(supervisor.dob)} />
 
                 <ViewCard type="title" text="Gender" />
                 <ViewCard type="data" text={supervisor.gender} />
@@ -104,7 +104,7 @@ const View = () => {
                 <ViewCard type="data" text={supervisor.jobType} />
 
                 <ViewCard type="title" text="Date of Joining" />
-                <ViewCard type="data" text={new Date(supervisor.doj).toLocaleDateString()} />
+                <ViewCard type="data" text={getFormattedDate(supervisor.doj)} />
 
                 <ViewCard type="title" text="Salary" />
                 <ViewCard type="data" text={supervisor.salary} />
@@ -114,7 +114,7 @@ const View = () => {
             <button
               className="w-full mt-1 mb-3 bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded-lg shadow-lg"
               data-ripple-light="true"
-              onClick={() => navigate(`/dashboard/supervisors`)}
+              onClick={() => navigate(`/ dashboard / supervisors`)}
             >  Back
             </button>
           </div>
