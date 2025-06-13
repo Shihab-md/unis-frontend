@@ -2,7 +2,7 @@ import axios from "axios";
 import React, { useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
-import { getBaseUrl, handleRightClickAndFullScreen } from '../utils/CommonHelper';
+import { getBaseUrl, handleRightClickAndFullScreen, getPrcessing } from '../utils/CommonHelper';
 import Swal from 'sweetalert2';
 
 const Login = () => {
@@ -21,20 +21,23 @@ const Login = () => {
   const [error, setError] = useState(null)
   const { login } = useAuth()
   const navigate = useNavigate()
+  const [processing, setProcessing] = useState(null)
 
   const handleForgotPass = async (e) => {
     Swal.fire('', 'Please contact HQ Admin.', 'info')
   }
 
   const handleSubmit = async (e) => {
-
     e.preventDefault();
+    setProcessing(true);
+
     try {
       const response = await axios.post(
         (await getBaseUrl()).toString() + "auth/login",
         { email, password }
       );
       if (response.data.success) {
+        setProcessing(false);
         login(response.data.user)
         localStorage.setItem("token", response.data.token)
         localStorage.setItem("role", response.data.user.role)
@@ -47,6 +50,7 @@ const Login = () => {
         }
       }
     } catch (error) {
+      setProcessing(false);
       if (error.response && !error.response.data.success) {
         Swal.fire('Error!', 'Server is busy : Please try after sometime.', 'error');
         setError(error.response.data.error)
@@ -56,6 +60,10 @@ const Login = () => {
       }
     }
   };
+
+  if (processing) {
+    return getPrcessing();
+  }
 
   return (
     <div>
