@@ -7,6 +7,8 @@ import Swal from 'sweetalert2';
 import {
   FaRegTimesCircle
 } from "react-icons/fa";
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 
 const Edit = () => {
 
@@ -15,6 +17,8 @@ const Edit = () => {
 
   const navigate = useNavigate()
   const [processing, setProcessing] = useState(null)
+  const [selectedDOBDate, setSelectedDOBDate] = useState(null);
+  const [selectedDOJDate, setSelectedDOJDate] = useState(null);
 
   const [supervisor, setSupervisor] = useState({
     name: "",
@@ -54,6 +58,9 @@ const Edit = () => {
         );
         if (responnse.data.success) {
           const supervisor = responnse.data.supervisor;
+
+          setSelectedDOBDate(supervisor.dob);
+          setSelectedDOJDate(supervisor.doj);
           setSupervisor((prev) => ({
             ...prev,
             name: supervisor.userId.name,
@@ -96,6 +103,14 @@ const Edit = () => {
     e.preventDefault();
     setProcessing(true);
     try {
+
+      if (selectedDOBDate) {
+        supervisor.dob = selectedDOBDate;
+      }
+      if (selectedDOJDate) {
+        supervisor.doj = selectedDOJDate;
+      }
+
       const headers = {
         'Content-Type': 'multipart/form-data',
         'Authorization': `Bearer ${localStorage.getItem("token")}`,
@@ -150,7 +165,7 @@ const Edit = () => {
               <div className="grid mt-3 grid-cols-1 md:grid-cols-2 gap-4">
                 {/* Name */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">
+                  <label className="block mt-2 text-sm font-medium text-gray-700">
                     Name <span className="text-red-700">*</span>
                   </label>
                   <input
@@ -166,7 +181,7 @@ const Edit = () => {
 
                 {/* Email */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">
+                  <label className="block mt-2 text-sm font-medium text-gray-700">
                     Email <span className="text-red-700">*</span>
                   </label>
                   <input
@@ -183,7 +198,7 @@ const Edit = () => {
 
                 {/* Supervisor ID */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">
+                  <label className="block mt-2 text-sm font-medium text-gray-700">
                     Supervisor ID <span className="text-red-700">*</span>
                   </label>
                   <input
@@ -200,7 +215,7 @@ const Edit = () => {
 
                 {/* Contact Number */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">
+                  <label className="block mt-2 text-sm font-medium text-gray-700">
                     Contact Number <span className="text-red-700">*</span>
                   </label>
                   <input
@@ -216,7 +231,7 @@ const Edit = () => {
 
                 {/* Address */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">
+                  <label className="block mt-2 text-sm font-medium text-gray-700">
                     Address <span className="text-red-700">*</span>
                   </label>
                   <input
@@ -232,7 +247,7 @@ const Edit = () => {
 
                 {/* Route Name */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">
+                  <label className="block mt-2 text-sm font-medium text-gray-700">
                     Route Name <span className="text-red-700">*</span>
                   </label>
                   <input
@@ -248,7 +263,7 @@ const Edit = () => {
 
                 {/* Qualification */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">
+                  <label className="block mt-2 text-sm font-medium text-gray-700">
                     Qualification <span className="text-red-700">*</span>
                   </label>
                   <input
@@ -262,9 +277,9 @@ const Edit = () => {
                   />
                 </div>
 
-                {/* Date of Birth */}
+                {/* Date of Birth 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">
+                  <label className="block mt-2 text-sm font-medium text-gray-700">
                     Date of Birth <span className="text-red-700">*</span>
                   </label>
                   <input
@@ -276,11 +291,32 @@ const Edit = () => {
                     className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                     required
                   />
+                </div> */}
+
+                {/* Date of Birth */}
+                <div className="grid grid-cols-1">
+                  <label className="block mt-2 text-sm font-medium text-gray-700">
+                    Date of Birth <span className="text-red-700">*</span>
+                  </label>
+                  <DatePicker
+                    name="dob"
+                    selected={selectedDOBDate}
+                    onChange={(date) => setSelectedDOBDate(date)}
+                    dateFormat="dd/MM/yyyy"
+                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                    required
+                    showMonthDropdown
+                    showYearDropdown
+                    dropdownMode="select"
+                    isClearable
+                  //showIcon
+                  //toggleCalendarOnIconClick
+                  />
                 </div>
 
                 {/* Gender */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">
+                  <label className="block mt-2 text-sm font-medium text-gray-700">
                     Gender <span className="text-red-700">*</span>
                   </label>
                   <select
@@ -298,7 +334,7 @@ const Edit = () => {
 
                 {/* Marital Status */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">
+                  <label className="block mt-2 text-sm font-medium text-gray-700">
                     Marital Status <span className="text-red-700">*</span>
                   </label>
                   <select
@@ -317,7 +353,7 @@ const Edit = () => {
 
                 {/* Job Type */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">
+                  <label className="block mt-2 text-sm font-medium text-gray-700">
                     Job Type <span className="text-red-700">*</span>
                   </label>
                   <select
@@ -334,9 +370,9 @@ const Edit = () => {
                   </select>
                 </div>
 
-                {/* Date of Joining */}
+                {/* Date of Joining 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">
+                  <label className="block mt-2 text-sm font-medium text-gray-700">
                     Date of Joining <span className="text-red-700">*</span>
                   </label>
                   <input
@@ -348,11 +384,32 @@ const Edit = () => {
                     className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                     required
                   />
+                </div>*/}
+
+                {/* Date of Joining */}
+                <div className="grid grid-cols-1">
+                  <label className="block mt-2 text-sm font-medium text-gray-700">
+                    Date of Joining <span className="text-red-700">*</span>
+                  </label>
+                  <DatePicker
+                    name="doj"
+                    selected={selectedDOJDate}
+                    onChange={(date) => setSelectedDOJDate(date)}
+                    dateFormat="dd/MM/yyyy"
+                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                    required
+                    showMonthDropdown
+                    showYearDropdown
+                    dropdownMode="select"
+                    isClearable
+                  //showIcon
+                  //toggleCalendarOnIconClick
+                  />
                 </div>
 
                 {/* Salary */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">
+                  <label className="block mt-2 text-sm font-medium text-gray-700">
                     Salary <span className="text-red-700">*</span>
                   </label>
                   <input
@@ -368,7 +425,7 @@ const Edit = () => {
 
                 {/* Image Upload */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">
+                  <label className="block mt-2 text-sm font-medium text-gray-700">
                     Update Image
                   </label>
                   <input
