@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { getSupervisorsFromCache } from '../../utils/SupervisorHelper';
 import { useNavigate, Link } from "react-router-dom";
-import { getBaseUrl, handleRightClickAndFullScreen, checkAuth } from '../../utils/CommonHelper';
+import { getBaseUrl, handleRightClickAndFullScreen, checkAuth, getPrcessing } from '../../utils/CommonHelper';
 import Swal from 'sweetalert2';
 import {
   FaRegTimesCircle
@@ -13,6 +13,7 @@ const Add = () => {
   // To prevent right-click AND For FULL screen view.
   handleRightClickAndFullScreen();
 
+  const [processing, setProcessing] = useState(null)
   const [supervisors, setSupervisors] = useState([]);
   const [formData, setFormData] = useState({});
   const navigate = useNavigate()
@@ -28,7 +29,7 @@ const Add = () => {
   useEffect(() => {
     const getSupervisorsMap = async (id) => {
       const supervisors = await getSupervisorsFromCache(id);
-    //  alert(supervisors)
+      //  alert(supervisors)
       setSupervisors(supervisors);
     };
     getSupervisorsMap();
@@ -45,6 +46,7 @@ const Add = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setProcessing(true);
 
     const formDataObj = new FormData()
     Object.keys(formData).forEach((key) => {
@@ -62,6 +64,7 @@ const Add = () => {
         }
       );
       if (response.data.success) {
+        setProcessing(false);
         Swal.fire({
           title: "Success!",
           html: "<b>Successfully Added!</b>",
@@ -73,11 +76,16 @@ const Add = () => {
         navigate("/dashboard/schools");
       }
     } catch (error) {
+      setProcessing(false);
       if (error.response && !error.response.data.success) {
         Swal.fire('Error!', error.response.data.error, 'error');
       }
     }
   };
+
+  if (processing) {
+    return getPrcessing();
+  }
 
   return (
     <>

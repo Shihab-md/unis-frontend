@@ -22,7 +22,6 @@ const Add = () => {
   });
 
   const [formData, setFormData] = useState({});
-
   const [processing, setProcessing] = useState(null)
 
   const handleChange = (e) => {
@@ -37,7 +36,6 @@ const Add = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     setProcessing(true);
 
     const formDataObj = new FormData()

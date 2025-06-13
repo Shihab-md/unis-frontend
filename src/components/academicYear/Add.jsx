@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
-import { getBaseUrl, handleRightClickAndFullScreen, checkAuth } from '../../utils/CommonHelper';
+import { getBaseUrl, handleRightClickAndFullScreen, checkAuth, getPrcessing } from '../../utils/CommonHelper';
 import Swal from 'sweetalert2';
 import {
   FaRegTimesCircle
@@ -12,6 +12,7 @@ const Add = () => {
   // To prevent right-click AND For FULL screen view.
   handleRightClickAndFullScreen();
 
+  const [processing, setProcessing] = useState(null)
   const [academicYear, setAcademicYear] = useState({
     acYear: "",
     desc: "",
@@ -34,7 +35,7 @@ const Add = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    setProcessing(true);
     try {
       const response = await axios.post((await getBaseUrl()).toString() + 'academicYear/add', academicYear, {
         headers: {
@@ -42,6 +43,7 @@ const Add = () => {
         }
       })
       if (response.data.success) {
+        setProcessing(false);
         Swal.fire({
           title: "Success!",
           html: "<b>Successfully Added!</b>",
@@ -53,11 +55,16 @@ const Add = () => {
         navigate("/dashboard/academicYears");
       }
     } catch (error) {
+      setProcessing(false);
       if (error.response && !error.response.data.success) {
         Swal.fire('Error!', error.response.data.error, 'error');
       }
     }
   };
+
+  if (processing) {
+    return getPrcessing();
+  }
 
   return (
     <div className="max-w-4xl mx-auto mt-2 p-5 rounded-md shadow-md">

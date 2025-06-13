@@ -4,7 +4,7 @@ import axios from "axios";
 import { useNavigate, useParams, Link } from "react-router-dom";
 import moment from "moment";
 import { useAuth } from '../../context/AuthContext'
-import { getBaseUrl, handleRightClickAndFullScreen, getSpinner, checkAuth } from '../../utils/CommonHelper';
+import { getBaseUrl, handleRightClickAndFullScreen, getSpinner, checkAuth, getPrcessing } from '../../utils/CommonHelper';
 import Swal from 'sweetalert2';
 import {
   FaRegTimesCircle
@@ -15,6 +15,7 @@ const Edit = () => {
   // To prevent right-click AND For FULL screen view.
   handleRightClickAndFullScreen();
 
+  const [processing, setProcessing] = useState(null)
   const [employee, setEmployee] = useState({
     name: "",
     email: "",
@@ -103,7 +104,7 @@ const Edit = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    setProcessing(true);
     try {
       const headers = {
         'Content-Type': 'multipart/form-data',
@@ -119,6 +120,7 @@ const Edit = () => {
         }
       );
       if (response.data.success) {
+        setProcessing(false);
         Swal.fire({
           title: "Success!",
           html: "<b>Successfully Updated!</b>",
@@ -130,6 +132,7 @@ const Edit = () => {
         navigate("/dashboard/employees");
       }
     } catch (error) {
+      setProcessing(false);
       if (error.response && !error.response.data.success) {
         Swal.fire('Error!', error.response.data.error, 'error');
       }
@@ -137,6 +140,10 @@ const Edit = () => {
   };
 
   const { user } = useAuth();
+
+  if (processing) {
+    return getPrcessing();
+  }
 
   return (
     <>

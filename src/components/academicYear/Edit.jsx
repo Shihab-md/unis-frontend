@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate, useParams, Link } from "react-router-dom";
-import { getBaseUrl, handleRightClickAndFullScreen, getSpinner, checkAuth } from '../../utils/CommonHelper';
+import { getBaseUrl, handleRightClickAndFullScreen, getSpinner, checkAuth, getPrcessing } from '../../utils/CommonHelper';
 import Swal from 'sweetalert2';
 import {
   FaRegTimesCircle
@@ -11,6 +11,7 @@ const Edit = () => {
   // To prevent right-click AND For FULL screen view.
   handleRightClickAndFullScreen();
 
+  const [processing, setProcessing] = useState(null)
   const [academicYear, setAcademicYear] = useState({
     acYear: "",
     desc: "",
@@ -63,7 +64,7 @@ const Edit = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    setProcessing(true);
     try {
       const response = await axios.put(
         (await getBaseUrl()).toString() + `academicYear/${id}`,
@@ -75,6 +76,7 @@ const Edit = () => {
         }
       );
       if (response.data.success) {
+        setProcessing(false);
         Swal.fire({
           title: "Success!",
           html: "<b>Successfully Updated!</b>",
@@ -86,11 +88,16 @@ const Edit = () => {
         navigate("/dashboard/academicYears");
       }
     } catch (error) {
+      setProcessing(false);
       if (error.response && !error.response.data.success) {
         Swal.fire('Error!', error.response.data.error, 'error');
       }
     }
   };
+
+  if (processing) {
+    return getPrcessing();
+  }
 
   return (
     <>

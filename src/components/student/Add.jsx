@@ -5,7 +5,7 @@ import { getSchoolsFromCache } from '../../utils/SchoolHelper';
 import { getAcademicYearsFromCache } from '../../utils/AcademicYearHelper';
 import { getInstitutesFromCache } from '../../utils/InstituteHelper';
 import { getCoursesFromCache } from '../../utils/CourseHelper';
-import { getBaseUrl, handleRightClickAndFullScreen, checkAuth } from '../../utils/CommonHelper';
+import { getBaseUrl, handleRightClickAndFullScreen, checkAuth, getPrcessing } from '../../utils/CommonHelper';
 import Swal from 'sweetalert2';
 import ViewCard from "../dashboard/ViewCard";
 import {
@@ -18,6 +18,7 @@ const Add = () => {
   handleRightClickAndFullScreen();
 
   const [formData, setFormData] = useState({});
+  const [processing, setProcessing] = useState(null)
 
   const [schools, setSchools] = useState([]);
   const [academicYears, setAcademicYears] = useState([]);
@@ -60,7 +61,7 @@ const Add = () => {
   useEffect(() => {
     const getInstitutesMap = async (id) => {
       const institutes = await getInstitutesFromCache(id);
-     // alert(institutes)
+      // alert(institutes)
       setInstitutes(institutes);
     };
     getInstitutesMap();
@@ -135,6 +136,7 @@ const Add = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setProcessing(true);
 
     const formDataObj = new FormData()
     Object.keys(formData).forEach((key) => {
@@ -157,6 +159,7 @@ const Add = () => {
         }
       );
       if (response.data.success) {
+        setProcessing(false);
         Swal.fire({
           title: "Success!",
           html: "<b>Successfully Added!</b>",
@@ -168,11 +171,16 @@ const Add = () => {
         navigate("/dashboard/students");
       }
     } catch (error) {
+      setProcessing(false);
       if (error.response && !error.response.data.success) {
         Swal.fire('Error!', error.response.data.error, 'error');
       }
     }
   };
+
+  if (processing) {
+    return getPrcessing();
+  }
 
   return (
     <>

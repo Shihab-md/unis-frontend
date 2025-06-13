@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
 import { useAuth } from "../../context/AuthContext";
-import { getBaseUrl, handleRightClickAndFullScreen } from '../../utils/CommonHelper';
+import { getBaseUrl, handleRightClickAndFullScreen, getPrcessing } from '../../utils/CommonHelper';
 import Swal from 'sweetalert2';
 import {
   FaRegTimesCircle
@@ -13,6 +13,7 @@ const Setting = () => {
   // To prevent right-click AND For FULL screen view.
   handleRightClickAndFullScreen();
 
+  const [processing, setProcessing] = useState(null)
   const navigate = useNavigate();
   const { user } = useAuth()
   const [setting, setSetting] = useState({
@@ -33,6 +34,7 @@ const Setting = () => {
     if (setting.newPassword !== setting.confirmPassword) {
       setError("New Password and Confirm Password are not matched");
     } else {
+      setProcessing(true);
       try {
         const response = await axios.put(
           (await getBaseUrl()).toString() + "setting/change-password",
@@ -44,20 +46,31 @@ const Setting = () => {
           }
         );
         if (response.data.success) {
-          //alert("Password changed Successfully...");
-          Swal.fire('Success!', 'Password changed Successfully...!', 'success');
+          setProcessing(false);
+          Swal.fire({
+            title: "Success!",
+            html: "<b>Password changed Successfully...!</b>",
+            icon: "success",
+            timer: 1600,
+            timerProgressBar: true,
+            showConfirmButton: false,
+          });
           navigate("/dashboard");
           setError("")
         }
       } catch (error) {
+        setProcessing(false);
         if (error.response && !error.response.data.success) {
           setError(error.response.data.error)
-          //alert(error.response.data.error);
           Swal.fire('Error!', error.response.data.error, 'error');
         }
       }
     }
   };
+
+  if (processing) {
+    return getPrcessing();
+  }
 
   return (
     <div className="max-w-3xl mx-auto mt-10 p-7 rounded-md shadow-md">
@@ -67,7 +80,7 @@ const Setting = () => {
           <FaRegTimesCircle className="text-2xl ml-7 text-red-700 bg-gray-200 rounded-xl shadow-md items-center justify-end" />
         </Link>
       </div>
-      <p className="text-red-500">{error}</p>
+      {/*  <p className="text-red-500">{error}</p> */}
       <form onSubmit={handleSubmit}>
         <div className="py-2 px-4 border mt-5 mb-3 items-center justify-center rounded-lg shadow-lg bg-white">
 

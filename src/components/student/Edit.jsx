@@ -6,7 +6,7 @@ import { getCoursesFromCache } from '../../utils/CourseHelper';
 import axios from "axios";
 import { useNavigate, useParams, Link } from "react-router-dom";
 import moment from "moment";
-import { getBaseUrl, handleRightClickAndFullScreen, getSpinner, checkAuth } from '../../utils/CommonHelper';
+import { getBaseUrl, handleRightClickAndFullScreen, getSpinner, checkAuth, getPrcessing } from '../../utils/CommonHelper';
 import Swal from 'sweetalert2';
 import ViewCard from "../dashboard/ViewCard";
 import {
@@ -17,6 +17,7 @@ const Edit = () => {
 
   // To prevent right-click AND For FULL screen view.
   handleRightClickAndFullScreen();
+  const [processing, setProcessing] = useState(null)
 
   const [student, setStudent] = useState({
     name: "",
@@ -190,7 +191,7 @@ const Edit = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    setProcessing(true);
     try {
       const headers = {
         'Content-Type': 'multipart/form-data',
@@ -206,6 +207,7 @@ const Edit = () => {
         }
       );
       if (response.data.success) {
+        setProcessing(false);
         Swal.fire({
           title: "Success!",
           html: "<b>Successfully Updated!</b>",
@@ -217,11 +219,16 @@ const Edit = () => {
         navigate("/dashboard/students");
       }
     } catch (error) {
+      setProcessing(false);
       if (error.response && !error.response.data.success) {
         Swal.fire('Error!', error.response.data.error, 'error');
       }
     }
   };
+
+  if (processing) {
+    return getPrcessing();
+  }
 
   return (
     <>
