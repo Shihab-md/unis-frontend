@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
-import { getBaseUrl, handleRightClickAndFullScreen, getSpinner, checkAuth } from '../../utils/CommonHelper'
+import { getBaseUrl, handleRightClickAndFullScreen, getSpinner, checkAuth, getPrcessing } from '../../utils/CommonHelper'
 import { getSchoolsFromCache } from '../../utils/SchoolHelper'
 import { columnsSelect, getStudentsBySchoolAndCourse } from '../../utils/StudentHelper'
 import { getTemplatesFromCache } from '../../utils/TemplateHelper'
@@ -173,7 +173,7 @@ const Create = () => {
   };
 
   if (createdAll) {
-    return getSpinner();
+    return getPrcessing();
   }
 
   return (
