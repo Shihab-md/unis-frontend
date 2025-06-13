@@ -28,6 +28,7 @@ const Edit = () => {
     doj: "",
     designation: "",
     salary: "",
+    jobType: "",
   });
 
   const { id } = useParams();
@@ -66,7 +67,8 @@ const Edit = () => {
             maritalStatus: supervisor.maritalStatus,
             doj: supervisor.doj,
             designation: supervisor.designation,
-            salary: supervisor.salary
+            salary: supervisor.salary,
+            jobType: supervisor.jobType
           }));
         }
       } catch (error) {
@@ -182,7 +184,7 @@ const Edit = () => {
                     name="supervisorId"
                     value={supervisor.supervisorId}
                     onChange={handleChange}
-                  //  disabled={true}
+                    //  disabled={true}
                     //      placeholder="Supervisor ID"
                     className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                     required
@@ -303,6 +305,25 @@ const Edit = () => {
                     <option value="">Select Status</option>
                     <option value="Single">Single</option>
                     <option value="Married">Married</option>
+                  </select>
+                </div>
+
+                {/* Job Type */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Job Type <span className="text-red-700">*</span>
+                  </label>
+                  <select
+                    name="jobType"
+                    value={supervisor.jobType}
+                    onChange={handleChange}
+                    placeholder="Job Type"
+                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                    required
+                  >
+                    <option value="">Select Job Type</option>
+                    <option value="Full-Time">Full-Time</option>
+                    <option value="Part-Time">Part-Time</option>
                   </select>
                 </div>
 

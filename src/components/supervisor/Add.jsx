@@ -245,6 +245,24 @@ const Add = () => {
               </select>
             </div>
 
+            {/* Job Type */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700">
+                Job Type <span className="text-red-700">*</span>
+              </label>
+              <select
+                name="jobType"
+                onChange={handleChange}
+                placeholder="Job Type"
+                className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                required
+              >
+                <option value="">Select Job Type</option>
+                <option value="Full-Time">Full-Time</option>
+                <option value="Part-Time">Part-Time</option>
+              </select>
+            </div>
+
             {/* Date of Joining */}
             <div>
               <label className="block text-sm font-medium text-gray-700">

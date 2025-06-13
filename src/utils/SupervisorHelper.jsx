@@ -11,15 +11,10 @@ import {
 
 export const columns = [
   {
-    name: "S No",
+    name: "#",
     selector: (row) => row.sno,
-    width: "60px",
+    width: "50px",
   },
-  /*{
-    name: "Image",
-    selector: (row) => row.profileImage,
-    width: "90px",
-  }, */
   {
     name: "Supervisor",
     selector: (row) => row.supId + " : " + row.name,
@@ -29,25 +24,30 @@ export const columns = [
   {
     name: "Contact Number",
     selector: (row) => row.contactNumber,
-    width: "150px",
+    width: "140px",
   },
   {
     name: "Email",
     selector: (row) => row.email,
     sortable: true,
-    width: "280px",
+    width: "260px",
   },
   {
     name: "Route",
     selector: (row) => row.routeName,
     sortable: true,
-    width: "190px",
+    width: "160px",
   },
   {
     name: "No. of Niswans",
     selector: (row) => row.schoolsCount,
     sortable: true,
-    width: "160px",
+    width: "130px",
+  },
+  {
+    name: "Status",
+    selector: (row) => row.active,
+    width: "110px",
   },
   {
     name: "Action",

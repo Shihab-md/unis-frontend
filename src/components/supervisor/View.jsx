@@ -100,6 +100,9 @@ const View = () => {
                 <ViewCard type="title" text="Marital Status" />
                 <ViewCard type="data" text={supervisor.maritalStatus} />
 
+                <ViewCard type="title" text="Job Type" />
+                <ViewCard type="data" text={supervisor.jobType} />
+
                 <ViewCard type="title" text="Date of Joining" />
                 <ViewCard type="data" text={new Date(supervisor.doj).toLocaleDateString()} />
 
