@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { columns, StudentButtons, conditionalRowStyles } from '../../utils/StudentHelper'
 import DataTable from 'react-data-table-component'
-import axios from 'axios'
+import axios from 'axios' 
 import { getBaseUrl, handleRightClickAndFullScreen, getSpinner, checkAuth, LinkIcon } from '../../utils/CommonHelper';
 import Swal from 'sweetalert2';
 

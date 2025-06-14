@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { columns, EmployeeButtons } from '../../utils/EmployeeHelper'
+import { columns, EmployeeButtons, conditionalRowStyles } from '../../utils/EmployeeHelper'
 import DataTable from 'react-data-table-component'
 import axios from 'axios'
 import { getBaseUrl, handleRightClickAndFullScreen, getSpinner, checkAuth, LinkIcon } from '../../utils/CommonHelper';
@@ -45,13 +45,16 @@ const List = () => {
           const data = await responnse.data.employees.map((sup) => ({
             _id: sup._id,
             sno: sno++,
+            empId: sup.employeeId,
             name: sup.userId.name,
             role: sup.userId.role,
             contactNumber: sup.contactNumber,
+            schoolCode: sup.schoolId.code,
             schoolName: sup.schoolId.nameEnglish,
             designation: sup.designation,
+            active: sup.active,
             //dob: new Date(sup.dob).toLocaleDateString(),
-            profileImage: <img width={40} className='rounded-full' src={`https://unis-server.vercel.app/${sup.userId.profileImage}`} />,
+            //  profileImage: <img width={40} className='rounded-full' src={`https://unis-server.vercel.app/${sup.userId.profileImage}`} />,
             action: (<EmployeeButtons Id={sup._id} onEmployeeDelete={onEmployeeDelete} />),
           }));
           setEmployees(data);
@@ -101,7 +104,7 @@ const List = () => {
           LinkIcon("/dashboard/add-employee", "Add") : null}
       </div>
       <div className='mt-6 rounded-lg shadow-lg'>
-        <DataTable columns={columns} data={filteredEmployee} pagination />
+        <DataTable columns={columns} data={filteredEmployee} pagination highlightOnHover striped responsive conditionalRowStyles={conditionalRowStyles} />
       </div>
     </div>
   )

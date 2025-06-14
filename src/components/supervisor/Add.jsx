@@ -33,9 +33,6 @@ const Add = () => {
 
     if (name === "file") {
       setFormData((prevData) => ({ ...prevData, [name]: files[0] }));
-      //  } else if (name === "dob" || name === "doj") {
-      //    setFormData((prevData) => ({ ...prevData, [name]: value }));
-      //    setSelectedDate(value);
     } else {
       setFormData((prevData) => ({ ...prevData, [name]: value }));
     }
@@ -51,7 +48,6 @@ const Add = () => {
     })
 
     try {
-
       if (selectedDOBDate) {
         formDataObj.append('dob', selectedDOBDate)
       }
@@ -67,7 +63,6 @@ const Add = () => {
       }
 
       const url = (await getBaseUrl()).toString() + "supervisor/add";
-      //  alert(JSON.stringify(formData));
       const response = await axios.post(url, formDataObj,
         {
           headers: headers

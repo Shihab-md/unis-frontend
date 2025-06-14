@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { getBaseUrl, handleRightClickAndFullScreen, getSpinner, checkAuth } from '../../utils/CommonHelper';
+import { getBaseUrl, handleRightClickAndFullScreen, getSpinner, checkAuth, getFormattedDate } from '../../utils/CommonHelper';
 import { useParams, useNavigate, Link } from "react-router-dom";
 import Swal from 'sweetalert2';
 import ViewCard from "../dashboard/ViewCard";
@@ -48,6 +48,7 @@ const View = () => {
 
     fetchEmployee();
   }, []);
+
   return (
     <>
       {employee ? (
@@ -63,7 +64,7 @@ const View = () => {
             <div className="py-2 px-4 border mt-5 mb-1 items-center justify-center rounded-lg shadow-lg bg-white">
               <div className="flex mt-2 space-x-3 mb-3 items-center justify-center" >
                 <img className='size-40 border mt-3 items-center justify-center rounded-lg shadow-lg'
-                  src={employee.userId.profileImage && employee.userId.profileImage != "" ? "data:image/jpeg;base64," + employee.userId.profileImage : "/avatar.png"}
+                  src={employee.userId.profileImage && employee.userId.profileImage != "" ? employee.userId.profileImage + "?" + new Date().getTime() : "/avatar.png"}
                 />
               </div>
               <div className="flex space-x-3 mb-5" />
@@ -93,7 +94,7 @@ const View = () => {
               <ViewCard type="data" text={employee.qualification} />
 
               <ViewCard type="title" text="Date of Birth" />
-              <ViewCard type="data" text={new Date(employee.dob).toLocaleDateString()} />
+              <ViewCard type="data" text={getFormattedDate(employee.dob)} />
 
               <ViewCard type="title" text="Gender" />
               <ViewCard type="data" text={employee.gender} />
@@ -102,7 +103,7 @@ const View = () => {
               <ViewCard type="data" text={employee.maritalStatus} />
 
               <ViewCard type="title" text="Date of Joining" />
-              <ViewCard type="data" text={new Date(employee.doj).toLocaleDateString()} />
+              <ViewCard type="data" text={getFormattedDate(employee.doj)} />
 
               <ViewCard type="title" text="Salary" />
               <ViewCard type="data" text={employee.salary} />

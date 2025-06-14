@@ -17,26 +17,31 @@ export const columns = [
   },
   {
     name: "Name",
-    selector: (row) => row.name,
+    selector: (row) => row.empId + " : " + row.name,
     sortable: true,
-    width: "250px",
+    width: "340px",
   },
   {
     name: "Role",
     selector: (row) => row.role,
     sortable: true,
-    width: "160px",
+    width: "120px",
   },
   {
     name: "Contact Number",
     selector: (row) => row.contactNumber,
-    width: "190px",
+    width: "140px",
   },
   {
     name: "Niswan",
-    selector: (row) => row.schoolName,
+    selector: (row) => row.schoolCode + " : " + row.schoolName,
     sortable: true,
-    width: "320px",
+    width: "460px",
+  },
+  {
+    name: "Status",
+    selector: (row) => row.active,
+    width: "110px",
   },
   {
     name: "Action",
@@ -67,6 +72,20 @@ export const getEmployees = async (id) => {
   }
   return employees;
 };
+
+export const conditionalRowStyles = [
+  {
+    when: row => row.active,
+    style: row => ({
+      //	backgroundColor: 'rgba(63, 195, 128, 0.9)',
+      color: row.active == 'In-Active' ? 'red' : 'black',
+      '&:hover': {
+        //		cursor: 'pointer',
+        color: row.active == 'In-Active' ? 'red' : 'black',
+      },
+    }),
+  }
+];
 
 export const EmployeeButtons = ({ Id, onEmployeeDelete }) => {
   const navigate = useNavigate();

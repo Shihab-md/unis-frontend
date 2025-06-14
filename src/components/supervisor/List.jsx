@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { columns, SupervisorButtons } from '../../utils/SupervisorHelper'
+import { columns, SupervisorButtons, conditionalRowStyles } from '../../utils/SupervisorHelper'
 import { getBaseUrl, handleRightClickAndFullScreen, getSpinner, checkAuth, LinkIcon } from '../../utils/CommonHelper';
 import DataTable from 'react-data-table-component'
 import { useAuth } from '../../context/AuthContext'
@@ -104,7 +104,7 @@ const List = () => {
           LinkIcon("/dashboard/add-supervisor", "Add") : null}
       </div>
       <div className='mt-6 lg:mt-10 rounded-lg shadow-lg'>
-        <DataTable columns={columns} data={filteredSupervisor} pagination />
+        <DataTable columns={columns} data={filteredSupervisor} pagination highlightOnHover striped responsive conditionalRowStyles={conditionalRowStyles} />
       </div>
     </div>
   )

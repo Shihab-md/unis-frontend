@@ -11,6 +11,8 @@ import ViewCard from "../dashboard/ViewCard";
 import {
   FaRegTimesCircle
 } from "react-icons/fa";
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 
 const Add = () => {
 
@@ -19,6 +21,8 @@ const Add = () => {
 
   const [formData, setFormData] = useState({});
   const [processing, setProcessing] = useState(null)
+  const [selectedDOBDate, setSelectedDOBDate] = useState(null);
+  const [selectedDOADate, setSelectedDOADate] = useState(null);
 
   const [schools, setSchools] = useState([]);
   const [academicYears, setAcademicYears] = useState([]);
@@ -144,6 +148,13 @@ const Add = () => {
     })
 
     try {
+      if (selectedDOBDate) {
+        formDataObj.append('dob', selectedDOBDate)
+      }
+      if (selectedDOADate) {
+        formDataObj.append('doa', selectedDOADate)
+      }
+
       const headers = {
         'Content-Type': 'multipart/form-data',
         'Authorization': `Bearer ${localStorage.getItem("token")}`,
@@ -244,7 +255,7 @@ const Add = () => {
                 />
               </div>
 
-              {/* Date of Addmission */}
+              {/* Date of Addmission 
               <div>
                 <label className="block mt-2 text-sm font-medium text-gray-700">
                   Date of Addmission <span className="text-red-700">*</span>
@@ -257,12 +268,33 @@ const Add = () => {
                   className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                   required
                 />
+              </div>*/}
+
+              {/* Date of Addmission */}
+              <div className="grid grid-cols-1">
+                <label className="block mt-2 text-sm font-medium text-gray-700">
+                  Date of Addmission <span className="text-red-700">*</span>
+                </label>
+                <DatePicker
+                  name="doa"
+                  selected={selectedDOADate}
+                  onChange={(date) => setSelectedDOADate(date)}
+                  dateFormat="dd/MM/yyyy"
+                  className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                  required
+                  showMonthDropdown
+                  showYearDropdown
+                  dropdownMode="select"
+                  isClearable
+                //showIcon
+                //toggleCalendarOnIconClick
+                />
               </div>
 
               <div className="flex space-x-3 mb-5" />
               <div className="flex space-x-3 mb-5" />
 
-              {/* Date of Birth */}
+              {/* Date of Birth 
               <div>
                 <label className="block text-sm font-medium text-gray-700">
                   Date of Birth <span className="text-red-700">*</span>
@@ -274,6 +306,27 @@ const Add = () => {
                   //    placeholder="DOB"
                   className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                   required
+                />
+              </div>*/}
+
+              {/* Date of Birth */}
+              <div className="grid grid-cols-1">
+                <label className="block text-sm font-medium text-gray-700">
+                  Date of Birth <span className="text-red-700">*</span>
+                </label>
+                <DatePicker
+                  name="dob"
+                  selected={selectedDOBDate}
+                  onChange={(date) => setSelectedDOBDate(date)}
+                  dateFormat="dd/MM/yyyy"
+                  className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                  required
+                  showMonthDropdown
+                  showYearDropdown
+                  dropdownMode="select"
+                  isClearable
+                //showIcon
+                //toggleCalendarOnIconClick
                 />
               </div>
 

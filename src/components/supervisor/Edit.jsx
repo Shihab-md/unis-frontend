@@ -61,6 +61,7 @@ const Edit = () => {
 
           setSelectedDOBDate(supervisor.dob);
           setSelectedDOJDate(supervisor.doj);
+
           setSupervisor((prev) => ({
             ...prev,
             name: supervisor.userId.name,
@@ -70,10 +71,10 @@ const Edit = () => {
             address: supervisor.address,
             routeName: supervisor.routeName,
             qualification: supervisor.qualification,
-            dob: supervisor.dob,
+          //  dob: supervisor.dob,
             gender: supervisor.gender,
             maritalStatus: supervisor.maritalStatus,
-            doj: supervisor.doj,
+          //  doj: supervisor.doj,
             designation: supervisor.designation,
             salary: supervisor.salary,
             jobType: supervisor.jobType
@@ -103,7 +104,6 @@ const Edit = () => {
     e.preventDefault();
     setProcessing(true);
     try {
-
       if (selectedDOBDate) {
         supervisor.dob = selectedDOBDate;
       }

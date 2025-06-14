@@ -56,6 +56,20 @@ export const columns = [
   },
 ];
 
+export const conditionalRowStyles = [
+  {
+    when: row => row.active,
+    style: row => ({
+      //	backgroundColor: 'rgba(63, 195, 128, 0.9)',
+      color: row.active == 'In-Active' ? 'red' : 'black',
+      '&:hover': {
+        //		cursor: 'pointer',
+        color: row.active == 'In-Active' ? 'red' : 'black',
+      },
+    }),
+  }
+];
+
 // supervisors FromCache
 export const getSupervisorsFromCache = async (id) => {
   let supervisors;

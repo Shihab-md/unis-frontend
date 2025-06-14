@@ -9,6 +9,8 @@ import Swal from 'sweetalert2';
 import {
   FaRegTimesCircle
 } from "react-icons/fa";
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 
 const Edit = () => {
 
@@ -16,6 +18,8 @@ const Edit = () => {
   handleRightClickAndFullScreen();
 
   const [processing, setProcessing] = useState(null)
+  const [selectedDOBDate, setSelectedDOBDate] = useState(null);
+  const [selectedDOJDate, setSelectedDOJDate] = useState(null);
   const [employee, setEmployee] = useState({
     name: "",
     email: "",
@@ -64,6 +68,10 @@ const Edit = () => {
         );
         if (responnse.data.success) {
           const employee = responnse.data.employee;
+
+          setSelectedDOBDate(employee.dob);
+          setSelectedDOJDate(employee.doj);
+
           setEmployee((prev) => ({
             ...prev,
             name: employee.userId.name,
@@ -75,10 +83,10 @@ const Edit = () => {
             address: employee.address,
             designation: employee.designation,
             qualification: employee.qualification,
-            dob: employee.dob,
+            //  dob: employee.dob,
             gender: employee.gender,
             maritalStatus: employee.maritalStatus,
-            doj: employee.doj,
+            //  doj: employee.doj,
             salary: employee.salary
           }));
         }
@@ -106,6 +114,13 @@ const Edit = () => {
     e.preventDefault();
     setProcessing(true);
     try {
+      if (selectedDOBDate) {
+        employee.dob = selectedDOBDate;
+      }
+      if (selectedDOJDate) {
+        employee.doj = selectedDOJDate;
+      }
+
       const headers = {
         'Content-Type': 'multipart/form-data',
         'Authorization': `Bearer ${localStorage.getItem("token")}`,
@@ -150,7 +165,7 @@ const Edit = () => {
       {employee ? (
         <div className="max-w-4xl mx-auto mt-2 p-5 rounded-md shadow-lg border">
           <div className="flex py-2 px-4 items-center justify-center bg-teal-700 text-white rounded-lg shadow-lg">
-            <h2 className="text-xl font-semibold items-center justify-center">Update Staff Details</h2>
+            <h2 className="text-xl font-semibold items-center justify-center">Update Employee Details</h2>
             <Link to="/dashboard/employees" >
               <FaRegTimesCircle className="text-2xl ml-7 text-red-700 bg-gray-200 rounded-xl shadow-md items-center justify-end" />
             </Link>
@@ -161,7 +176,7 @@ const Edit = () => {
 
                 {/* School */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">
+                  <label className="block mt-2 text-sm font-medium text-gray-700">
                     Select Niswan <span className="text-red-700">*</span>
                   </label>
                   <select
@@ -182,7 +197,7 @@ const Edit = () => {
 
                 {/* Name */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">
+                  <label className="block mt-2 text-sm font-medium text-gray-700">
                     Name <span className="text-red-700">*</span>
                   </label>
                   <input
@@ -198,7 +213,7 @@ const Edit = () => {
 
                 {/* Email */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">
+                  <label className="block mt-2 text-sm font-medium text-gray-700">
                     Email <span className="text-red-700">*</span>
                   </label>
                   <input
@@ -215,7 +230,7 @@ const Edit = () => {
 
                 {/* Employee ID */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">
+                  <label className="block mt-2 text-sm font-medium text-gray-700">
                     Employee ID <span className="text-red-700">*</span>
                   </label>
                   <input
@@ -232,7 +247,7 @@ const Edit = () => {
 
                 {/* Role */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">
+                  <label className="block mt-2 text-sm font-medium text-gray-700">
                     Role <span className="text-red-700">*</span>
                   </label>
                   <select
@@ -253,7 +268,7 @@ const Edit = () => {
 
                 {/* Contact Number */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">
+                  <label className="block mt-2 text-sm font-medium text-gray-700">
                     Contact Number <span className="text-red-700">*</span>
                   </label>
                   <input
@@ -269,7 +284,7 @@ const Edit = () => {
 
                 {/* Address */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">
+                  <label className="block mt-2 text-sm font-medium text-gray-700">
                     Address <span className="text-red-700">*</span>
                   </label>
                   <input
@@ -285,7 +300,7 @@ const Edit = () => {
 
                 {/* Designation */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">
+                  <label className="block mt-2 text-sm font-medium text-gray-700">
                     Designation
                   </label>
                   <input
@@ -301,7 +316,7 @@ const Edit = () => {
 
                 {/* Qualification */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">
+                  <label className="block mt-2 text-sm font-medium text-gray-700">
                     Qualification <span className="text-red-700">*</span>
                   </label>
                   <input
@@ -315,9 +330,9 @@ const Edit = () => {
                   />
                 </div>
 
-                {/* Date of Birth */}
+                {/* Date of Birth 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">
+                  <label className="block mt-2 text-sm font-medium text-gray-700">
                     Date of Birth <span className="text-red-700">*</span>
                   </label>
                   <input
@@ -329,11 +344,32 @@ const Edit = () => {
                     className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                     required
                   />
+                </div>*/}
+
+                {/* Date of Birth */}
+                <div className="grid grid-cols-1">
+                  <label className="block mt-2 text-sm font-medium text-gray-700">
+                    Date of Birth <span className="text-red-700">*</span>
+                  </label>
+                  <DatePicker
+                    name="dob"
+                    selected={selectedDOBDate}
+                    onChange={(date) => setSelectedDOBDate(date)}
+                    dateFormat="dd/MM/yyyy"
+                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                    required
+                    showMonthDropdown
+                    showYearDropdown
+                    dropdownMode="select"
+                    isClearable
+                  //showIcon
+                  //toggleCalendarOnIconClick
+                  />
                 </div>
 
                 {/* Gender */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">
+                  <label className="block mt-2 text-sm font-medium text-gray-700">
                     Gender <span className="text-red-700">*</span>
                   </label>
                   <select
@@ -351,7 +387,7 @@ const Edit = () => {
 
                 {/* Marital Status */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">
+                  <label className="block mt-2 text-sm font-medium text-gray-700">
                     Marital Status <span className="text-red-700">*</span>
                   </label>
                   <select
@@ -368,9 +404,9 @@ const Edit = () => {
                   </select>
                 </div>
 
-                {/* Date of Joining */}
+                {/* Date of Joining 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">
+                  <label className="block mt-2 text-sm font-medium text-gray-700">
                     Date of Joining <span className="text-red-700">*</span>
                   </label>
                   <input
@@ -382,11 +418,32 @@ const Edit = () => {
                     className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                     required
                   />
+                </div>*/}
+
+                {/* Date of Joining */}
+                <div className="grid grid-cols-1">
+                  <label className="block mt-2 text-sm font-medium text-gray-700">
+                    Date of Joining <span className="text-red-700">*</span>
+                  </label>
+                  <DatePicker
+                    name="doj"
+                    selected={selectedDOJDate}
+                    onChange={(date) => setSelectedDOJDate(date)}
+                    dateFormat="dd/MM/yyyy"
+                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                    required
+                    showMonthDropdown
+                    showYearDropdown
+                    dropdownMode="select"
+                    isClearable
+                  //showIcon
+                  //toggleCalendarOnIconClick
+                  />
                 </div>
 
                 {/* Salary */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">
+                  <label className="block mt-2 text-sm font-medium text-gray-700">
                     Salary <span className="text-red-700">*</span>
                   </label>
                   <input
@@ -402,7 +459,7 @@ const Edit = () => {
 
                 {/* Image Upload */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">
+                  <label className="block mt-2 text-sm font-medium text-gray-700">
                     Update Image
                   </label>
                   <input

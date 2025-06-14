@@ -48,6 +48,7 @@ const View = () => {
 
     fetchSupervisor();
   }, []);
+
   return (
     <>
       {supervisor ? (
@@ -64,7 +65,7 @@ const View = () => {
 
               <div className="flex mt-4 space-x-3 mb-3 items-center justify-center" >
                 <img className='size-40 border items-center justify-center rounded-lg shadow-lg'
-                  src={supervisor.userId.profileImage && supervisor.userId.profileImage != "" ? "data:image/jpeg;base64," + supervisor.userId.profileImage : "/avatar.png"}
+                  src={supervisor.userId.profileImage && supervisor.userId.profileImage != "" ? supervisor.userId.profileImage + "?" + new Date().getTime() : "/avatar.png"}
                 />
               </div>
               <div>

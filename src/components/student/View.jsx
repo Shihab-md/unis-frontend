@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
-import { getBaseUrl, handleRightClickAndFullScreen, getSpinner, checkAuth } from '../../utils/CommonHelper';
+import { getBaseUrl, handleRightClickAndFullScreen, getSpinner, checkAuth, getFormattedDate } from '../../utils/CommonHelper';
 import Swal from 'sweetalert2';
 import ViewCard from "../dashboard/ViewCard";
 import {
@@ -82,7 +82,7 @@ const View = () => {
             <div className="py-2 px-4 border mt-5 mb-1 items-center justify-center rounded-lg shadow-lg bg-white">
               <div className="flex mt-2 space-x-3 mb-1 items-center justify-center" >
                 <img className='size-40 border mt-3 items-center justify-center rounded-lg shadow-lg'
-                  src={student.userId.profileImage && student.userId.profileImage != "" ? "data:image/jpeg;base64," + student.userId.profileImage : "/avatar.png"}
+                  src={student.userId.profileImage && student.userId.profileImage != "" ? student.userId.profileImage + "?" + new Date().getTime() : "/avatar.png"}
                 />
               </div>
               <div className="p-2">
@@ -102,9 +102,9 @@ const View = () => {
                 <div className="flex space-x-3 mb-5" />
 
                 <ViewCard type="title" text="Date of Addmission" />
-                <ViewCard type="data" text={new Date(student.doa).toLocaleDateString()} />
+                <ViewCard type="data" text={getFormattedDate(student.doa)} />
                 <ViewCard type="title" text="Date of Birth" />
-                <ViewCard type="data" text={new Date(student.dob).toLocaleDateString()} />
+                <ViewCard type="data" text={getFormattedDate(student.dob)} />
                 <ViewCard type="title" text="Gender" />
                 <ViewCard type="data" text={student.gender} />
                 <ViewCard type="title" text="Marital Status" />
