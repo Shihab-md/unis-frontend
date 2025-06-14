@@ -71,7 +71,7 @@ const Edit = () => {
   return (
     <>
       {classSection ? (
-        <div className="max-w-4xl mx-auto mt-10 bg-white p-8 rounded-md shadow-md">
+        <div className="max-w-4xl mx-auto mt-10 bg-white p-8 rounded-md shadow-lg border">
           <h2 className="text-2xl font-bold mb-6">Update Class Section</h2>
           <form onSubmit={handleSubmit}>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

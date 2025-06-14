@@ -78,11 +78,11 @@ const Login = () => {
        space-y-6 h-75 bg-[url(/bg-img.jpg)] bg-fixed bg-cover bg-center bg-repeat"
       >
         <img width={140} className='rounded-md shadow-lg w-34 border' src="/Logo - UNIS.PNG" />
-        <h2 className="p-5 font-bold text-indigo-900 text-4xl text-shadow-lg">
+        <p className="p-5 font-bold text-shadow-lg text-indigo-900 text-4xl">
           UNIS ACADEMY
-        </h2>
+        </p>
         <div className="border p-6 w-80 bg-white shadow-lg rounded-lg bg-[url(/bg-img.jpg)]">
-          <h2 className="text-2xl font-bold mb-4">Login</h2>
+          <h2 className="flex text-2xl font-bold mb-4 content-right">Login</h2>
           {/* {error && <p className="text-red-500">{error}</p>}*/}
           <form onSubmit={handleSubmit}>
             <div className="mb-4">
@@ -91,7 +91,7 @@ const Login = () => {
               </label>
               <input
                 type="email"
-                className="w-full px-3 py-2 border"
+                className="w-full px-3 py-2 mt-1 border rounded-md"
                 placeholder="Enter Email"
                 onChange={(e) => setEmail(e.target.value)}
                 required
@@ -103,7 +103,7 @@ const Login = () => {
               </label>
               <input
                 type="password"
-                className="w-full px-3 py-2 border"
+                className="w-full px-3 py-2 mt-1 border rounded-md"
                 placeholder="*****"
                 onChange={(e) => setPassword(e.target.value)}
                 required

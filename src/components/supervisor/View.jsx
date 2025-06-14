@@ -51,7 +51,7 @@ const View = () => {
   return (
     <>
       {supervisor ? (
-        <div className="max-w-3xl mx-auto mt-2 p-8 rounded-md shadow-md">
+        <div className="max-w-3xl mx-auto mt-2 p-8 rounded-md shadow-lg border">
           <div className="flex py-2 px-4 items-center justify-center bg-teal-700 text-white rounded-lg shadow-lg">
             <h2 className="text-xl font-semibold items-center justify-center">Supervisor Details</h2>
             <Link to="/dashboard/supervisors" >
@@ -60,9 +60,9 @@ const View = () => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-1 gap-6">
-            <div className="py-2 px-4 border mt-5 mb-1 items-center justify-center rounded-lg shadow-lg bg-white">
+            <div className="py-4 px-4 border mt-5 mb-1 items-center justify-center rounded-lg shadow-lg bg-white">
 
-              <div className="flex mt-2 space-x-3 mb-3 items-center justify-center" >
+              <div className="flex mt-4 space-x-3 mb-3 items-center justify-center" >
                 <img className='size-40 border items-center justify-center rounded-lg shadow-lg'
                   src={supervisor.userId.profileImage && supervisor.userId.profileImage != "" ? "data:image/jpeg;base64," + supervisor.userId.profileImage : "/avatar.png"}
                 />
@@ -112,9 +112,9 @@ const View = () => {
               </div>
             </div>
             <button
-              className="w-full mt-1 mb-3 bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded-lg shadow-lg"
+              className="w-full mb-3 bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded-lg shadow-lg"
               data-ripple-light="true"
-              onClick={() => navigate(`/ dashboard / supervisors`)}
+              onClick={() => navigate(`/dashboard/supervisors`)}
             >  Back
             </button>
           </div>
