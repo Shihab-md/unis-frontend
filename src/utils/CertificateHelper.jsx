@@ -18,7 +18,7 @@ export const columns = [
     name: "Sanadh No",
     selector: (row) => row.sanadhNo,
     sortable: true,
-    width: "120px",
+    width: "110px",
   },
   {
     name: "Sanadh Name",
@@ -28,7 +28,7 @@ export const columns = [
   {
     name: "Student Name",
     selector: (row) => row.studentName,
-    width: "280px",
+    width: "320px",
   },
   {
     name: "Roll Number",
@@ -38,7 +38,7 @@ export const columns = [
   {
     name: "Niswan",
     selector: (row) => row.niswanCode + " : " + row.niswanName,
-    width: "430px",
+    width: "610px",
   },
   {
     name: "Action",
