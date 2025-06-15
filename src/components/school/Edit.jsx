@@ -7,6 +7,8 @@ import {
 } from "react-icons/fa";
 import { getBaseUrl, handleRightClickAndFullScreen, getSpinner, checkAuth, getPrcessing } from '../../utils/CommonHelper';
 import Swal from 'sweetalert2';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 
 const Edit = () => {
 
@@ -14,6 +16,8 @@ const Edit = () => {
   handleRightClickAndFullScreen();
 
   const [processing, setProcessing] = useState(null)
+  const [selectedDOEDate, setSelectedDOEDate] = useState(null);
+
   const [school, setSchool] = useState({
     code: "",
     nameEnglish: "",
@@ -65,6 +69,9 @@ const Edit = () => {
         );
         if (responnse.data.success) {
           const school = responnse.data.school;
+
+          setSelectedDOEDate(school.doe);
+
           setSchool((prev) => ({
             ...prev,
             code: school.code,
@@ -113,6 +120,12 @@ const Edit = () => {
     e.preventDefault();
     setProcessing(true);
     try {
+      if (selectedDOEDate) {
+        school.doe = selectedDOEDate;
+      } else {
+        school.doe = "";
+      }
+
       const response = await axios.put(
         (await getBaseUrl()).toString() + `school/${id}`,
         school,
@@ -156,7 +169,7 @@ const Edit = () => {
               <FaRegTimesCircle className="text-2xl ml-7 text-red-700 bg-gray-200 rounded-xl shadow-md items-center justify-end" />
             </Link>
           </div>
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit} autocomplete="off">
             <div className="py-2 px-4 border mt-5 mb-3 items-center justify-center rounded-lg shadow-lg bg-white">
               <div className="grid mt-3 grid-cols-1 md:grid-cols-2 gap-4">
                 {/* Code */}
@@ -291,8 +304,26 @@ const Edit = () => {
                   />
                 </div>
 
-                <div className="flex space-x-3 mb-5" />
-                <div className="flex space-x-3 mb-5" />
+                {/* Date of Establishment */}
+                <div className="grid grid-cols-1">
+                  <label className="block text-sm font-medium text-gray-700">
+                    Date of Establishment
+                  </label>
+                  <DatePicker
+                    name="doe"
+                    selected={selectedDOEDate}
+                    onChange={(date) => setSelectedDOEDate(date)}
+                    dateFormat="dd/MM/yyyy"
+                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                    //  required
+                    showMonthDropdown
+                    showYearDropdown
+                    dropdownMode="select"
+                    isClearable
+                  // showIcon
+                  // toggleCalendarOnIconClick
+                  />
+                </div>
 
                 {/* Active */}
                 <div>
@@ -311,6 +342,9 @@ const Edit = () => {
                     <option value="In-Active">In-Active</option>
                   </select>
                 </div>
+
+                <div className="flex space-x-3 mb-5" />
+                <div className="flex space-x-3 mb-5" />
 
                 {/* Supervisor Id */}
                 <div>
@@ -349,6 +383,7 @@ const Edit = () => {
                   />
                 </div>*/}
 
+                <div className="flex space-x-3 mb-5" />
                 <div className="flex space-x-3 mb-5" />
                 <div className="flex space-x-3 mb-5" />
 

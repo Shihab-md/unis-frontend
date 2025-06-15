@@ -131,7 +131,7 @@ const Edit = () => {
             </Link>
           </div>
 
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit} autocomplete="off">
             <div className="py-2 px-4 border mt-5 mb-3 items-center justify-center rounded-lg shadow-lg bg-white">
               <div className="grid mt-3 grid-cols-1 md:grid-cols-2 gap-4">
                 {/* Course 1 */}

@@ -7,6 +7,8 @@ import Swal from 'sweetalert2';
 import {
   FaRegTimesCircle
 } from "react-icons/fa";
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 
 const Add = () => {
 
@@ -14,6 +16,7 @@ const Add = () => {
   handleRightClickAndFullScreen();
 
   const [processing, setProcessing] = useState(null)
+  const [selectedDOEDate, setSelectedDOEDate] = useState(null);
   const [supervisors, setSupervisors] = useState([]);
   const [formData, setFormData] = useState({});
   const navigate = useNavigate()
@@ -29,7 +32,6 @@ const Add = () => {
   useEffect(() => {
     const getSupervisorsMap = async (id) => {
       const supervisors = await getSupervisorsFromCache(id);
-      //  alert(supervisors)
       setSupervisors(supervisors);
     };
     getSupervisorsMap();
@@ -54,6 +56,10 @@ const Add = () => {
     })
 
     try {
+      if (selectedDOEDate) {
+        formDataObj.append('doe', selectedDOEDate)
+      }
+
       const response = await axios.post(
         (await getBaseUrl()).toString() + "school/add",
         formDataObj,
@@ -97,7 +103,7 @@ const Add = () => {
           </Link>
         </div>
 
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} autocomplete="off">
           <div className="py-2 px-4 border mt-5 mb-3 items-center justify-center rounded-lg shadow-lg bg-white">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {/* Code */}
@@ -220,8 +226,26 @@ const Add = () => {
                 />
               </div>
 
-              <div className="flex space-x-3 mb-5" />
-              <div className="flex space-x-3 mb-5" />
+              {/* Date of Establishment */}
+              <div className="grid grid-cols-1">
+                <label className="block text-sm font-medium text-gray-700">
+                  Date of Establishment
+                </label>
+                <DatePicker
+                  name="doe"
+                  selected={selectedDOEDate}
+                  onChange={(date) => setSelectedDOEDate(date)}
+                  dateFormat="dd/MM/yyyy"
+                  className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                  //  required
+                  showMonthDropdown
+                  showYearDropdown
+                  dropdownMode="select"
+                  isClearable
+                // showIcon
+                // toggleCalendarOnIconClick
+                />
+              </div>
 
               {/* Active */}
               <div>
@@ -239,6 +263,9 @@ const Add = () => {
                   <option value="In-Active">In-Active</option>
                 </select>
               </div>
+
+              <div className="flex space-x-3 mb-5" />
+              <div className="flex space-x-3 mb-5" />
 
               {/* Supervisor Id */}
               <div>
@@ -274,6 +301,7 @@ const Add = () => {
               />
             </div>*/}
 
+              <div className="flex space-x-3 mb-5" />
               <div className="flex space-x-3 mb-5" />
               <div className="flex space-x-3 mb-5" />
 

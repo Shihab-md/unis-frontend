@@ -6,7 +6,7 @@ import ViewCard from "../dashboard/ViewCard";
 import {
   FaRegTimesCircle
 } from "react-icons/fa";
-import { getBaseUrl, handleRightClickAndFullScreen, getSpinner, checkAuth } from '../../utils/CommonHelper'
+import { getBaseUrl, handleRightClickAndFullScreen, getSpinner, checkAuth, getFormattedDate } from '../../utils/CommonHelper'
 
 const View = () => {
 
@@ -83,6 +83,8 @@ const View = () => {
                 <ViewCard type="data" text={school.contactNumber} />
                 <ViewCard type="title" text="Email" />
                 <ViewCard type="data" text={school.email} />
+                <ViewCard type="title" text="Date of Establishment" />
+                <ViewCard type="data" text={getFormattedDate(school.doe)} />
                 <ViewCard type="title" text="Status" />
                 <ViewCard type="data" text={school.active} />
                 <ViewCard type="title" text="Supervisor" />

@@ -71,10 +71,10 @@ const Edit = () => {
             address: supervisor.address,
             routeName: supervisor.routeName,
             qualification: supervisor.qualification,
-          //  dob: supervisor.dob,
+            //  dob: supervisor.dob,
             gender: supervisor.gender,
             maritalStatus: supervisor.maritalStatus,
-          //  doj: supervisor.doj,
+            //  doj: supervisor.doj,
             designation: supervisor.designation,
             salary: supervisor.salary,
             jobType: supervisor.jobType
@@ -106,9 +106,13 @@ const Edit = () => {
     try {
       if (selectedDOBDate) {
         supervisor.dob = selectedDOBDate;
+      } else {
+        supervisor.dob = "";
       }
       if (selectedDOJDate) {
         supervisor.doj = selectedDOJDate;
+      } else {
+        supervisor.doj = "";
       }
 
       const headers = {
@@ -160,7 +164,7 @@ const Edit = () => {
             </Link>
           </div>
 
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit} autocomplete="off">
             <div className="py-2 px-4 border mt-5 mb-3 items-center justify-center rounded-lg shadow-lg bg-white">
               <div className="grid mt-3 grid-cols-1 md:grid-cols-2 gap-4">
                 {/* Name */}
