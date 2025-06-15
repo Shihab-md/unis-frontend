@@ -24,28 +24,28 @@ export const columns = [
     name: "Name",
     selector: (row) => row.name,
     sortable: true,
-    width: "280px",
+    width: "340px",
   },
   {
     name: "Education Type",
     selector: (row) => row.type,
     sortable: true,
-    width: "250px",
+    width: "230px",
   },
   {
     name: "Remarks",
     selector: (row) => row.remarks,
-    width: "250px",
+    width: "280px",
   },
   {
     name: "Fees",
     selector: (row) => row.fees,
-    width: "120px",
+    width: "100px",
   },
   {
     name: "No. of Subjects",
     selector: (row) => row.subjectsCount,
-    width: "140px",
+    width: "120px",
   },
   {
     name: "Action",

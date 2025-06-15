@@ -194,10 +194,12 @@ const Add = () => {
                   required
                 >
                   <option value="">Select Role</option>
-                  {user.role === "superadmin" || user.role === "hquser" ?
-                    <option value="admin">Admin</option>
-                    : null}
-                  <option value="teacher">Teacher</option>
+                  {user.role === "superadmin" ?
+                    <option value="admin">Admin</option> : null}
+                  {user.role === "superadmin" ?
+                    <option value="teacher">Teacher</option> : null}
+                  <option value="usthadh">Usthadh</option>
+                  <option value="warden">Warden</option>
                   <option value="staff">Staff</option>
                 </select>
               </div>

@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { getSchoolsFromCache } from "../../utils/SchoolHelper";
 import axios from "axios";
 import { useNavigate, useParams, Link } from "react-router-dom";
-import moment from "moment";
 import { useAuth } from '../../context/AuthContext'
 import { getBaseUrl, handleRightClickAndFullScreen, getSpinner, checkAuth, getPrcessing } from '../../utils/CommonHelper';
 import Swal from 'sweetalert2';
@@ -20,6 +19,7 @@ const Edit = () => {
   const [processing, setProcessing] = useState(null)
   const [selectedDOBDate, setSelectedDOBDate] = useState(null);
   const [selectedDOJDate, setSelectedDOJDate] = useState(null);
+  
   const [employee, setEmployee] = useState({
     name: "",
     email: "",
@@ -83,10 +83,8 @@ const Edit = () => {
             address: employee.address,
             designation: employee.designation,
             qualification: employee.qualification,
-            //  dob: employee.dob,
             gender: employee.gender,
             maritalStatus: employee.maritalStatus,
-            //  doj: employee.doj,
             salary: employee.salary
           }));
         }
@@ -267,6 +265,8 @@ const Edit = () => {
                     <option value="">Select Role</option>
                     <option value="admin">Admin</option>
                     <option value="teacher">Teacher</option>
+                    <option value="usthadh">Usthadh</option>
+                    <option value="warden">Warden</option>
                     <option value="staff">Staff</option>
                   </select>
                 </div>

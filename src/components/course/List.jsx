@@ -48,7 +48,7 @@ const List = () => {
             type: sup.type,
             remarks: sup.remarks,
             fees: sup.fees,
-            subjectsCount: 0,
+            subjectsCount: sup._subjectsCount ? sup._subjectsCount : 0,
             action: (<CourseButtons Id={sup._id} onCourseDelete={onCourseDelete} />),
           }));
           setCourses(data);

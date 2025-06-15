@@ -76,7 +76,7 @@ const List = () => {
             active: sch.active,
             supervisorId: sch.supervisorId.supervisorId,
             supervisorName: sch.supervisorId.userId.name,
-          //  studentsCount: sch._studentsCount ? sch._studentsCount : 0,
+            studentsCount: sch._studentsCount ? sch._studentsCount : 0,
             action: (<SchoolButtons Id={sch._id} onSchoolDelete={onSchoolDelete} />),
           }));
           setSchools(data);

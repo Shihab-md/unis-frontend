@@ -46,7 +46,8 @@ const List = () => {
           const data = await responnse.data.templates.map((sup) => ({
             _id: sup._id,
             sno: sno++,
-            code: sup.courseId.name,
+            code: sup.courseId.code,
+            name: sup.courseId.name,
             details: sup.details,
             action: (<TemplateButtons Id={sup._id} onTemplateDelete={onTemplateDelete} />),
           }));

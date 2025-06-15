@@ -16,9 +16,9 @@ export const columns = [
   },
   {
     name: "Course",
-    selector: (row) => row.code,
+    selector: (row) => row.code + " : " + row.name,
     sortable: true,
-    width: "160px",
+    width: "340px",
   },
   {
     name: "Details",

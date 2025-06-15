@@ -104,7 +104,7 @@ const List = () => {
           LinkIcon("/dashboard/add-supervisor", "Add") : null}
       </div>
       <div className='mt-6 lg:mt-10 rounded-lg shadow-lg'>
-        <DataTable columns={columns} data={filteredSupervisor} pagination highlightOnHover striped responsive conditionalRowStyles={conditionalRowStyles} />
+        <DataTable columns={columns} data={filteredSupervisor} highlightOnHover striped responsive conditionalRowStyles={conditionalRowStyles} />
       </div>
     </div>
   )
