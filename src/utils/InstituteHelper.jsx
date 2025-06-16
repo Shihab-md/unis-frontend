@@ -30,17 +30,17 @@ export const columns = [
     name: "Education Type",
     selector: (row) => row.type,
     sortable: true,
-    width: "250px",
+    width: "230px",
   },
   {
     name: "State / District",
     selector: (row) => row.district,
-    width: "180px",
+    width: "250px",
   },
   {
     name: "Address",
     selector: (row) => row.address,
-    width: "230px",
+    width: "250px",
   },
   {
     name: "Action",

@@ -188,10 +188,14 @@ const Edit = () => {
   const handleChange = (e) => {
 
     const { name, value, files } = e.target;
+
     if (name === "file") {
       setStudent((prevData) => ({ ...prevData, [name]: files[0] }));
     } else {
-      setStudent((prevData) => ({ ...prevData, [name]: value }));
+      setStudent((prevData) => ({
+        ...prevData, [name]: value,
+
+      }));
     }
   };
 
@@ -313,22 +317,6 @@ const Edit = () => {
                   />
                 </div>
 
-                {/* Date of Addmission 
-                <div>
-                  <label className="block mt-2 text-sm font-medium text-gray-700">
-                    Date of Addmission <span className="text-red-700">*</span>
-                  </label>
-                  <input
-                    type="date"
-                    name="doa"
-                    value={moment(new Date(student.doa)).format("YYYY-MM-DD")}
-                    onChange={handleChange}
-                    //    placeholder="DOB"
-                    className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                    required
-                  />
-                </div>*/}
-
                 {/* Date of Addmission */}
                 <div className="grid grid-cols-1">
                   <label className="block mt-2 text-sm font-medium text-gray-700">
@@ -351,7 +339,7 @@ const Edit = () => {
                 </div>
 
                 <div className="flex space-x-3 mb-5" />
-                <div className="flex space-x-3 mb-5" />
+                <div className="hidden lg:block flex space-x-3 mb-5" />
 
                 {/* Active */}
                 <div>
@@ -390,23 +378,7 @@ const Edit = () => {
                 </div>
 
                 <div className="flex space-x-3 mb-5" />
-                <div className="flex space-x-3 mb-5" />
-
-                {/* Date of Birth 
-                <div>
-                  <label className="block text-sm font-medium text-gray-700">
-                    Date of Birth <span className="text-red-700">*</span>
-                  </label>
-                  <input
-                    type="date"
-                    name="dob"
-                    value={moment(new Date(student.dob)).format("YYYY-MM-DD")}
-                    onChange={handleChange}
-                    //    placeholder="DOB"
-                    className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                    required
-                  />
-                </div>*/}
+                <div className="hidden lg:block flex space-x-3 mb-5" />
 
                 {/* Date of Birth */}
                 <div className="grid grid-cols-1">
@@ -512,7 +484,7 @@ const Edit = () => {
                 </div>
 
                 <div className="flex space-x-3 mb-5" />
-                <div className="flex space-x-3 mb-5" />
+                <div className="hidden lg:block flex space-x-3 mb-5" />
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
@@ -703,7 +675,7 @@ const Edit = () => {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                 <div className="flex space-x-3 mb-5" />
-                <div className="flex space-x-3 mb-5" />
+                <div className="hidden lg:block flex space-x-3 mb-5" />
 
                 {/* Academic Year */}
                 <div>
@@ -728,13 +700,10 @@ const Edit = () => {
                 </div>
 
                 <div className="flex space-x-3 mb-5" />
-                {/* <div className="flex space-x-3 mt-5 justify-center" >
-                  <label className="block mt-2 text-sm font-bold text-blue-500">
-                    *****   Dheeniyath Education   *****
-                  </label>
-                </div>*/}
+                <div className="hidden lg:block flex space-x-3 mb-5" />
+                <div className="hidden lg:block flex space-x-3 mb-5" />
                 <ViewCard type="header" text="Deeniyath Education" />
-                <div className="flex space-x-3 mb-5" />
+                <div className="hidden lg:block flex space-x-3 mb-5" />
 
                 {/* Institute 1 --------------------------------------------- */}
                 <div>
@@ -766,6 +735,7 @@ const Edit = () => {
                     name="courseId1"
                     value={student.courseId1}
                     onChange={handleChange}
+                    disabled={true}
                     className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                     required
                   >
@@ -794,61 +764,27 @@ const Edit = () => {
                   />
                 </div>
 
-                <div className="grid grid-cols-2 gap-7 justify-between">
-                  {/* Fees */}
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700">
-                      Fees
-                    </label>
-                    <input
-                      type="number"
-                      name="fees1"
-                      value={student.fees1}
-                      //   value={fees1Val}
-                      //   disabled={true}
-                      onChange={handleChange}
-                      className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                    //    required
-                    />
-                  </div>
-
-                  {/* Discount */}
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700">
-                      Discount
-                    </label>
-                    <input
-                      type="number"
-                      name="discount1"
-                      value={student.discount1}
-                      //  disabled={true}
-                      onChange={handleChange}
-                      className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                    //    required
-                    />
-                  </div>
-
-                  {/* Final Fees 
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700">
-                      Final Fees
-                    </label>
-                    <input
-                      type="number"
-                      name="finalFees1"
-                      disabled={true}
-                      value={student.finalFees1}
-                      onChange={handleChange}
-                      className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                    //    required
-                    />
-                  </div>*/}
+                {/* Fees */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Fees
+                  </label>
+                  <input
+                    type="number"
+                    name="fees1"
+                    value={student.fees1}
+                    //   value={fees1Val}
+                    disabled={true}
+                    onChange={handleChange}
+                    className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
+                  //    required
+                  />
                 </div>
 
                 <div className="flex space-x-3 mb-5" />
-                <div className="flex space-x-3 mb-5" />
+                <div className="hidden lg:block flex space-x-3 mb-5" />
                 <ViewCard type="header" text="School Education" />
-                <div className="flex space-x-3 mb-5" />
+                <div className="hidden lg:block flex space-x-3 mb-5" />
 
                 {/* Institute 2 --------------------------------------------- */}
                 <div>
@@ -880,6 +816,7 @@ const Edit = () => {
                     name="courseId2"
                     value={student.courseId2}
                     onChange={handleChange}
+                    disabled={true}
                     className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                   //    required
                   >
@@ -908,61 +845,27 @@ const Edit = () => {
                   />
                 </div>
 
-                <div className="grid grid-cols-2 gap-7 justify-between">
-                  {/* Fees 2 */}
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700">
-                      Fees
-                    </label>
-                    <input
-                      type="number"
-                      name="fees2"
-                      value={student.fees2}
-                      //   value={fees2Val}
-                      //  disabled={true}
-                      onChange={handleChange}
-                      className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                    //    required
-                    />
-                  </div>
-
-                  {/* Discount 2 */}
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700">
-                      Discount
-                    </label>
-                    <input
-                      type="number"
-                      name="discount2"
-                      value={student.discount2}
-                      //  disabled={true}
-                      onChange={handleChange}
-                      className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                    //    required
-                    />
-                  </div>
-
-                  {/* Final Fees 2 
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700">
-                      Final Fees
-                    </label>
-                    <input
-                      type="number"
-                      name="finalFees2"
-                      disabled={true}
-                      value={student.finalFees2}
-                      onChange={handleChange}
-                      className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                    //    required
-                    />
-                  </div>*/}
+                {/* Fees 2 */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Fees
+                  </label>
+                  <input
+                    type="number"
+                    name="fees2"
+                    value={student.fees2}
+                    //   value={fees2Val}
+                    disabled={true}
+                    onChange={handleChange}
+                    className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
+                  //    required
+                  />
                 </div>
 
                 <div className="flex space-x-3 mb-5" />
-                <div className="flex space-x-3 mb-5" />
+                <div className="hidden lg:block flex space-x-3 mb-5" />
                 <ViewCard type="header" text="College Education" />
-                <div className="flex space-x-3 mb-5" />
+                <div className="hidden lg:block flex space-x-3 mb-5" />
 
                 {/* Institute 3 --------------------------------------------- */}
                 <div>
@@ -994,6 +897,7 @@ const Edit = () => {
                     name="courseId3"
                     value={student.courseId3}
                     onChange={handleChange}
+                    disabled={true}
                     className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                   //    required
                   >
@@ -1022,61 +926,27 @@ const Edit = () => {
                   />
                 </div>
 
-                <div className="grid grid-cols-2 gap-7 justify-between">
-                  {/* Fees 3 */}
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700">
-                      Fees
-                    </label>
-                    <input
-                      type="number"
-                      name="fees3"
-                      value={student.fees3}
-                      //  value={fees3Val}
-                      //   disabled={true}
-                      onChange={handleChange}
-                      className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                    //    required
-                    />
-                  </div>
-
-                  {/* Discount 3 */}
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700">
-                      Discount
-                    </label>
-                    <input
-                      type="number"
-                      name="discount3"
-                      value={student.discount3}
-                      //   disabled={true}
-                      onChange={handleChange}
-                      className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                    //    required
-                    />
-                  </div>
-
-                  {/* Final Fees 3 
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700">
-                      Final Fees
-                    </label>
-                    <input
-                      type="number"
-                      name="finalFees3"
-                      disabled={true}
-                      value={student.finalFees3}
-                      onChange={handleChange}
-                      className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                    //    required
-                    />
-                  </div>*/}
+                {/* Fees 3 */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Fees
+                  </label>
+                  <input
+                    type="number"
+                    name="fees3"
+                    value={student.fees3}
+                    //  value={fees3Val}
+                    disabled={true}
+                    onChange={handleChange}
+                    className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
+                  //    required
+                  />
                 </div>
 
                 <div className="flex space-x-3 mb-5" />
-                <div className="flex space-x-3 mb-5" />
-                <ViewCard type="header" text="Vocational Course - 1" />
-                <div className="flex space-x-3 mb-5" />
+                <div className="hidden lg:block flex space-x-3 mb-5" />
+                <ViewCard type="header" text="Islamic Home Science" />
+                <div className="hidden lg:block flex space-x-3 mb-5" />
 
                 {/* Institute 4 --------------------------------------------- */}
                 <div>
@@ -1091,7 +961,7 @@ const Edit = () => {
                   //    required
                   >
                     <option value="">Select Institute</option>
-                    {institutes.filter(institute => institute.type === "Vocational Courses").map((institute) => (
+                    {institutes.filter(institute => institute.type === "Islamic Home Science").map((institute) => (
                       <option key={institute._id} value={institute._id}>
                         {institute.name}
                       </option>
@@ -1108,11 +978,12 @@ const Edit = () => {
                     name="courseId4"
                     value={student.courseId4}
                     onChange={handleChange}
+                    disabled={true}
                     className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                   //    required
                   >
                     <option value="">Select Course</option>
-                    {courses.filter(course => course.type === "Vocational Courses").map((course) => (
+                    {courses.filter(course => course.type === "Islamic Home Science").map((course) => (
                       <option key={course._id} value={course._id}>
                         {course.name}
                       </option>
@@ -1136,61 +1007,27 @@ const Edit = () => {
                   />
                 </div>
 
-                <div className="grid grid-cols-2 gap-7 justify-between">
-                  {/* Fees 4 */}
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700">
-                      Fees
-                    </label>
-                    <input
-                      type="number"
-                      name="fees4"
-                      value={student.fees4}
-                      //  value={fees4Val}
-                      //   disabled={true}
-                      onChange={handleChange}
-                      className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                    //    required
-                    />
-                  </div>
-
-                  {/* Discount 4 */}
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700">
-                      Discount
-                    </label>
-                    <input
-                      type="number"
-                      name="discount4"
-                      value={student.discount4}
-                      //  disabled={true}
-                      onChange={handleChange}
-                      className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                    //    required
-                    />
-                  </div>
-
-                  {/* Final Fees 4 
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700">
-                      Final Fees
-                    </label>
-                    <input
-                      type="number"
-                      name="finalFees4"
-                      disabled={true}
-                      value={student.finalFees4}
-                      onChange={handleChange}
-                      className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                    //    required
-                    />
-                  </div>*/}
+                {/* Fees 4 */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Fees
+                  </label>
+                  <input
+                    type="number"
+                    name="fees4"
+                    value={student.fees4}
+                    //  value={fees4Val}
+                    disabled={true}
+                    onChange={handleChange}
+                    className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
+                  //    required
+                  />
                 </div>
 
                 <div className="flex space-x-3 mb-5" />
-                <div className="flex space-x-3 mb-5" />
-                <ViewCard type="header" text="Vocational Course - 2" />
-                <div className="flex space-x-3 mb-5" />
+                <div className="hidden lg:block flex space-x-3 mb-5" />
+                <ViewCard type="header" text="Vocational Course" />
+                <div className="hidden lg:block flex space-x-3 mb-5" />
 
                 {/* Institute 5 --------------------------------------------- */}
                 <div>
@@ -1222,6 +1059,7 @@ const Edit = () => {
                     name="courseId5"
                     value={student.courseId5}
                     onChange={handleChange}
+                    disabled={true}
                     className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                   //   required
                   >
@@ -1250,61 +1088,27 @@ const Edit = () => {
                   />
                 </div>
 
-                <div className="grid grid-cols-2 gap-7 justify-between">
-                  {/* Fees 5 */}
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700">
-                      Fees
-                    </label>
-                    <input
-                      type="number"
-                      name="fees5"
-                      value={student.fees5}
-                      //  value={fees5Val}
-                      //  disabled={true}
-                      onChange={handleChange}
-                      className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                    //    required
-                    />
-                  </div>
-
-                  {/* Discount 5 */}
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700">
-                      Discount
-                    </label>
-                    <input
-                      type="number"
-                      name="discount5"
-                      //  disabled={true}
-                      value={student.discount5}
-                      onChange={handleChange}
-                      className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                    //    required
-                    />
-                  </div>
-
-                  {/* Final Fees 5 
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700">
-                      Final Fees
-                    </label>
-                    <input
-                      type="number"
-                      name="finalFees5"
-                      disabled={true}
-                      value={student.finalFees5}
-                      onChange={handleChange}
-                      className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                    //    required
-                    />
-                  </div>*/}
+                {/* Fees 5 */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Fees
+                  </label>
+                  <input
+                    type="number"
+                    name="fees5"
+                    value={student.fees5}
+                    //  value={fees5Val}
+                    disabled={true}
+                    onChange={handleChange}
+                    className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
+                  //    required
+                  />
                 </div>
 
                 <div className="flex space-x-3 mb-5" />
-                <div className="flex space-x-3 mb-5" />
+                <div className="hidden lg:block flex space-x-3 mb-5" />
                 <ViewCard type="header" text="Hostel Details" />
-                <div className="flex space-x-3 mb-5" />
+                <div className="hidden lg:block flex space-x-3 mb-5" />
 
                 {/* Hostel */}
                 <div>
@@ -1324,7 +1128,7 @@ const Edit = () => {
                   </select>
                 </div>
 
-                <div className="flex space-x-3 mb-5" />
+                <div className="hidden lg:block flex space-x-3 mb-5" />
 
                 {/* Hostel Reference Number */}
                 <div>
@@ -1342,58 +1146,25 @@ const Edit = () => {
                   />
                 </div>
 
-                <div className="grid grid-cols-2 gap-7 justify-between">
-                  {/* Hostel Fees */}
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700">
-                      Fees
-                    </label>
-                    <input
-                      type="number"
-                      name="hostelFees"
-                      //  disabled={true}
-                      value={student.hostelFees}
-                      onChange={handleChange}
-                      className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                    //    required
-                    />
-                  </div>
 
-                  {/* Hostel Discount */}
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700">
-                      Discount
-                    </label>
-                    <input
-                      type="number"
-                      name="hostelDiscount"
-                      onChange={handleChange}
-                      //  disabled={true}
-                      value={student.hostelDiscount}
-                      className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                    //    required
-                    />
-                  </div>
-
-                  {/* Hostel Final Fees 
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700">
-                      Final Fees
-                    </label>
-                    <input
-                      type="number"
-                      name="hostelFinalFees"
-                      onChange={handleChange}
-                      disabled={true}
-                      value={student.hostelFinalFees}
-                      className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                    //    required
-                    />
-                  </div>*/}
+                {/* Hostel Fees */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Fees
+                  </label>
+                  <input
+                    type="number"
+                    name="hostelFees"
+                    disabled={true}
+                    value={student.hostelFees}
+                    onChange={handleChange}
+                    className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
+                  //    required
+                  />
                 </div>
 
                 <div className="flex space-x-3 mb-5" />
-                <div className="flex space-x-3 mb-5" />
+                <div className="hidden lg:block flex space-x-3 mb-5" />
 
                 {/* Image Upload */}
                 <div>

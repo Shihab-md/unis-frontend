@@ -177,6 +177,7 @@ const Edit = () => {
                     <option value="Deeniyath Education">Deeniyath Education</option>
                     <option value="School Education">School Education</option>
                     <option value="College Education">College Education</option>
+                    <option value="Islamic Home Science">Islamic Home Science</option>
                     <option value="Vocational Courses">Vocational Courses</option>
                   </select>
                 </div>
