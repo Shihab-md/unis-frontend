@@ -9,8 +9,8 @@ const ViewCard = ({ type, text }) => {
     return (<div className="border p-2">{text ? text : "-"}</div>)
 
   } else if (type === "header") {
-    return (<div className="flex space-x-3 mb-5 justify-center font-medium border border-blue-500 
-      p-2 text-white text-shadow-lg bg-gray-500 rounded-md">{text}</div>)
+    return (<div className="flex space-x-3 mb-5 justify-center font-medium border  
+      p-2 text-white text-shadow-lg bg-purple-500 rounded-md">{text}</div>)
   }
 }
 export default ViewCard
