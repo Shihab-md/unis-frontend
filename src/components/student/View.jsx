@@ -201,7 +201,7 @@ const View = () => {
 
                 <div className="flex space-x-3 mb-5" />
 
-                <ViewCard type="header" text="Vocation Course - 1" />
+                <ViewCard type="header" text="Islamic Home Sceince" />
                 <ViewCard type="title" text="Institute Name" />
                 <ViewCard type="data" text={academic.instituteId4 && academic.instituteId4.name ? academic.instituteId4.name : ""} />
                 <ViewCard type="title" text="Course Name " />
@@ -217,7 +217,7 @@ const View = () => {
 
                 <div className="flex space-x-3 mb-5" />
 
-                <ViewCard type="header" text="Vocation Course - 2" />
+                <ViewCard type="header" text="Vocation Course" />
                 <ViewCard type="title" text="Institute Name" />
                 <ViewCard type="data" text={academic.instituteId5 && academic.instituteId5.name ? academic.instituteId5.name : ""} />
                 <ViewCard type="title" text="Course Name " />
