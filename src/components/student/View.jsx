@@ -162,10 +162,10 @@ const View = () => {
                 <ViewCard type="data" text={academic.refNumber1} />
                 <ViewCard type="title" text="Fees " />
                 <ViewCard type="data" text={academic.fees1} />
-                <ViewCard type="title" text="Discount " />
+                {/*<ViewCard type="title" text="Discount " />
                 <ViewCard type="data" text={academic.discount1} />
                 <ViewCard type="title" text="Final Fees " />
-                <ViewCard type="data" text={academic.finalFees1} />
+                <ViewCard type="data" text={academic.finalFees1} /> */}
 
                 <div className="flex space-x-3 mb-5" />
 
@@ -178,10 +178,10 @@ const View = () => {
                 <ViewCard type="data" text={academic.refNumber2} />
                 <ViewCard type="title" text="Fees " />
                 <ViewCard type="data" text={academic.fees2} />
-                <ViewCard type="title" text="Discount " />
+                {/* <ViewCard type="title" text="Discount " />
                 <ViewCard type="data" text={academic.discount2} />
                 <ViewCard type="title" text="Final Fees " />
-                <ViewCard type="data" text={academic.finalFees2} />
+                <ViewCard type="data" text={academic.finalFees2} /> */}
 
                 <div className="flex space-x-3 mb-5" />
 
@@ -194,10 +194,10 @@ const View = () => {
                 <ViewCard type="data" text={academic.refNumber3} />
                 <ViewCard type="title" text="Fees " />
                 <ViewCard type="data" text={academic.fees3} />
-                <ViewCard type="title" text="Discount " />
+                {/* <ViewCard type="title" text="Discount " />
                 <ViewCard type="data" text={academic.discount3} />
                 <ViewCard type="title" text="Final Fees " />
-                <ViewCard type="data" text={academic.finalFees3} />
+                <ViewCard type="data" text={academic.finalFees3} /> */}
 
                 <div className="flex space-x-3 mb-5" />
 
@@ -210,10 +210,10 @@ const View = () => {
                 <ViewCard type="data" text={academic.refNumber4} />
                 <ViewCard type="title" text="Fees " />
                 <ViewCard type="data" text={academic.fees4} />
-                <ViewCard type="title" text="Discount " />
+                {/*  <ViewCard type="title" text="Discount " />
                 <ViewCard type="data" text={academic.discount4} />
                 <ViewCard type="title" text="Final Fees " />
-                <ViewCard type="data" text={academic.finalFees4} />
+                <ViewCard type="data" text={academic.finalFees4} /> */}
 
                 <div className="flex space-x-3 mb-5" />
 
@@ -226,10 +226,10 @@ const View = () => {
                 <ViewCard type="data" text={academic.refNumber5} />
                 <ViewCard type="title" text="Fees " />
                 <ViewCard type="data" text={academic.fees5} />
-                <ViewCard type="title" text="Discount " />
+                {/*  <ViewCard type="title" text="Discount " />
                 <ViewCard type="data" text={academic.discount5} />
                 <ViewCard type="title" text="Final Fees " />
-                <ViewCard type="data" text={academic.finalFees5} />
+                <ViewCard type="data" text={academic.finalFees5} /> */}
 
                 <div className="flex space-x-3 mb-5" />
 
@@ -240,10 +240,10 @@ const View = () => {
                 <ViewCard type="data" text={student.hostelRefNumber} />
                 <ViewCard type="title" text="Hostel Fees " />
                 <ViewCard type="data" text={student.hostelFees} />
-                <ViewCard type="title" text="Hostel Fees Discount " />
+                {/*  <ViewCard type="title" text="Hostel Fees Discount " />
                 <ViewCard type="data" text={student.hostelDiscount} />
                 <ViewCard type="title" text="Hostel Final Fees " />
-                <ViewCard type="data" text={student.hostelFinalFees} />
+                <ViewCard type="data" text={student.hostelFinalFees} /> */}
 
               </div>
             </div>
