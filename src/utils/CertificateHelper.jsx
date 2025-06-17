@@ -1,12 +1,7 @@
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { getBaseUrl } from '../utils/CommonHelper';
-import Swal from 'sweetalert2';
-import {
-  FaEye,
-  FaEdit,
-  FaTrashAlt,
-} from "react-icons/fa";
+import { getBaseUrl, showSwalAlert, showConfirmationSwalAlert } from '../utils/CommonHelper';
+import { FaEye, } from "react-icons/fa";
 
 export const columns = [
   {
@@ -64,7 +59,7 @@ export const getCertificates = async (id) => {
     }
   } catch (error) {
     if (error.response && !error.response.data.success) {
-      Swal.fire('Error!', error.response.data.error, 'error');
+      showSwalAlert("Error!", error.response.data.error, "error");
     }
   }
   return certificates;
@@ -74,7 +69,7 @@ export const CertificateButtons = ({ Id, onCertificateDelete }) => {
   const navigate = useNavigate();
 
   const handleDelete = async (id) => {
-    const confirm = window.confirm("Do you want to delete?");
+    const confirm = await showConfirmationSwalAlert('Are you sure to Delete?', '', 'question');
     if (confirm) {
       try {
         const responnse = await axios.delete(
@@ -86,19 +81,12 @@ export const CertificateButtons = ({ Id, onCertificateDelete }) => {
           }
         );
         if (responnse.data.success) {
-          Swal.fire({
-            title: "Success!",
-            html: "<b>Successfully Deleted!</b>",
-            icon: "success",
-            timer: 1600,
-            timerProgressBar: true,
-            showConfirmButton: false,
-          });
+          showSwalAlert("Success!", "Successfully Deleted!", "success");
           onCertificateDelete();
         }
       } catch (error) {
         if (error.response && !error.response.data.success) {
-          Swal.fire('Error!', error.response.data.error, 'error');
+          showSwalAlert("Error!", error.response.data.error, "error");
         }
       }
     }

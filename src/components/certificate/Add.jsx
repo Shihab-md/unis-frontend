@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
-import { getBaseUrl, handleRightClickAndFullScreen, getSpinner, checkAuth, getPrcessing } from '../../utils/CommonHelper'
+import { getBaseUrl, handleRightClickAndFullScreen, getSpinner, checkAuth, getPrcessing, showSwalAlert } from '../../utils/CommonHelper'
 import { getSchoolsFromCache } from '../../utils/SchoolHelper'
 import { columnsSelect, getStudentsBySchoolAndCourse } from '../../utils/StudentHelper'
 import { getTemplatesFromCache } from '../../utils/TemplateHelper'
 import DataTable from 'react-data-table-component'
-import Swal from 'sweetalert2';
 import {
   FaRegTimesCircle
 } from "react-icons/fa";
@@ -23,7 +22,6 @@ const Create = () => {
   const [tempId, setTempId] = useState([]);
 
   const [studentsLoading, setStudentsLoading] = useState(false)
-
   const [createdAll, setCreatedAll] = useState(null)
 
   const [selectedRows, setSelectedRows] = React.useState(false);
@@ -34,7 +32,7 @@ const Create = () => {
   useEffect(() => {
     // Authenticate the User.
     if (checkAuth("certificateAdd") === "NO") {
-      Swal.fire('Error!', 'User Authorization Failed!', 'error');
+      showSwalAlert("Error!", "User Authorization Failed!", "error");
       navigate("/login");
     }
   });
@@ -147,28 +145,20 @@ const Create = () => {
         }
         if (downloaded) {
           setCreatedAll(false);
-          Swal.fire({
-            title: "Success!",
-            html: "<b>Successfully created!</b>",
-            icon: "success",
-            timer: 1600,
-            timerProgressBar: true,
-            showConfirmButton: false,
-          });
+          showSwalAlert("Success!", "Successfully Created!", "success");
           navigate("/dashboard/certificates");
         } else {
           setCreatedAll(false);
-          Swal.fire('Error!', 'Certificates NOT created.....', 'error');
+          showSwalAlert("Error!", 'Certificates NOT created.....', "error");
         }
       } catch (error) {
         if (error.response && !error.response.data.success) {
-          Swal.fire('Error!', error.response.data.error, 'error');
+          showSwalAlert("Error!", error.response.data.error, "error");
           setCreatedAll(false);
         }
       }
     } else {
-      Swal.fire('Error!', 'Please Select Students!', 'warning');
-      //alert("Please Select Students!");
+      showSwalAlert("Error!", 'Please Select Students!', "warning");
     }
   };
 

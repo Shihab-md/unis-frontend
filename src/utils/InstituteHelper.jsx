@@ -1,7 +1,6 @@
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { getBaseUrl } from '../utils/CommonHelper';
-import Swal from 'sweetalert2';
+import { getBaseUrl, showSwalAlert, showConfirmationSwalAlert } from '../utils/CommonHelper';
 import {
   FaEye,
   FaEdit,
@@ -66,7 +65,7 @@ export const getInstitutes = async (id) => {
     }
   } catch (error) {
     if (error.response && !error.response.data.success) {
-      Swal.fire('Error!', error.response.data.error, 'error');
+      showSwalAlert("Error!", error.response.data.error, "error");
     }
   }
   return institutes;
@@ -88,7 +87,7 @@ export const getInstitutesFromCache = async (id) => {
     }
   } catch (error) {
     if (error.response && !error.response.data.success) {
-      Swal.fire('Error!', error.response.data.error, 'error');
+      showSwalAlert("Error!", error.response.data.error, "error");
     }
   }
   return institutes;
@@ -98,16 +97,7 @@ export const InstituteButtons = ({ Id, onInstituteDelete }) => {
   const navigate = useNavigate();
 
   const handleDelete = async (id) => {
-    const result = await Swal.fire({
-      title: 'Are you sure to Delete?',
-      // text: "You won't be able to revert this!",
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes',
-      cancelButtonText: 'No',
-    });
+    const result = await showConfirmationSwalAlert('Are you sure to Delete?', '', 'question');
 
     if (result.isConfirmed) {
       try {
@@ -120,22 +110,15 @@ export const InstituteButtons = ({ Id, onInstituteDelete }) => {
           }
         );
         if (responnse.data.success) {
-          Swal.fire({
-            title: "Success!",
-            html: "<b>Successfully Deleted!</b>",
-            icon: "success",
-            timer: 1600,
-            timerProgressBar: true,
-            showConfirmButton: false,
-          });
+          showSwalAlert("Success!", "Successfully Deleted!", "success");
           onInstituteDelete();
         }
       } catch (error) {
         if (error.response && !error.response.data.success) {
-          Swal.fire('Error!', error.response.data.error, 'error');
+          showSwalAlert("Error!", error.response.data.error, "error");
         }
       }
-    } else if (result.dismiss === Swal.DismissReason.cancel) {
+      //  } else if (result.dismiss === Swal.DismissReason.cancel) {
       // Swal.fire('Cancelled', 'Your file is safe!', 'error');
       // Handle cancellation logic (optional)
     }

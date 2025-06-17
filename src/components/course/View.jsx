@@ -1,8 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { getBaseUrl, handleRightClickAndFullScreen, getSpinner, checkAuth } from '../../utils/CommonHelper';
+import { getBaseUrl, handleRightClickAndFullScreen, getSpinner, checkAuth, showSwalAlert } from '../../utils/CommonHelper';
 import { useParams, useNavigate, Link } from "react-router-dom";
-import Swal from 'sweetalert2';
 import ViewCard from "../dashboard/ViewCard";
 import {
   FaRegTimesCircle
@@ -20,7 +19,7 @@ const View = () => {
 
     // Authenticate the User.
     if (checkAuth("courseView") === "NO") {
-      Swal.fire('Error!', 'User Authorization Failed!', 'error');
+      showSwalAlert("Error!", "User Authorization Failed!", "error");
       navigate("/login");
     }
 
@@ -39,7 +38,7 @@ const View = () => {
         }
       } catch (error) {
         if (error.response && !error.response.data.success) {
-          Swal.fire('Error!', error.response.data.error, 'error');
+          showSwalAlert("Error!", error.response.data.error, "error");
           navigate("/dashboard/courses");
         }
       }

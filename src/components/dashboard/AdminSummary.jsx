@@ -2,14 +2,13 @@ import React, { useEffect, useState } from "react";
 import SummaryCard from "./SummaryCard";
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext'
-import { getBaseUrl, handleRightClickAndFullScreen, getSpinner } from '../../utils/CommonHelper'
+import { getBaseUrl, handleRightClickAndFullScreen, getSpinner, showSwalAlert } from '../../utils/CommonHelper'
 import {
   FaMosque, FaUserFriends, FaCoins, FaGraduationCap,
   FaUsers, FaHouseUser, FaClipboardList, FaTasks, FaCalendarAlt,
   FaRupeeSign, FaMedal, FaFileContract, FaCogs,
 } from "react-icons/fa";
 import axios from 'axios'
-import Swal from 'sweetalert2';
 import { useNavigate } from "react-router-dom";
 
 const AdminSummary = () => {
@@ -39,7 +38,7 @@ const AdminSummary = () => {
         setSummary(summary.data)
       } catch (error) {
         if (error.response) {
-          Swal.fire('Error!', error.response.data.error, 'error');
+          showSwalAlert("Error!", error.response.data.error, "error");
         }
         console.log(error.messsage)
       }

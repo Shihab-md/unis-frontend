@@ -4,8 +4,7 @@ import { columns, SchoolButtons, conditionalRowStyles } from '../../utils/School
 import DataTable from 'react-data-table-component'
 import axios from 'axios'
 import { useAuth } from '../../context/AuthContext'
-import { getBaseUrl, handleRightClickAndFullScreen, getSpinner, checkAuth, LinkIcon } from '../../utils/CommonHelper'
-import Swal from 'sweetalert2';
+import { getBaseUrl, handleRightClickAndFullScreen, getSpinner, checkAuth, LinkIcon, showSwalAlert } from '../../utils/CommonHelper'
 
 const List = () => {
 
@@ -41,7 +40,7 @@ const List = () => {
 
     // Authenticate the User.
     if (checkAuth("schoolsList") === "NO") {
-      Swal.fire('Error!', 'User Authorization Failed!', 'error');
+      showSwalAlert("Error!", "User Authorization Failed!", "error");
       navigate("/login");
     }
 
@@ -83,9 +82,8 @@ const List = () => {
           setFilteredSchools(data)
         }
       } catch (error) {
-        //console.log(error.message)
         if (error.response && !error.response.data.success) {
-          Swal.fire('Error!', error.response.data.error, 'error');
+          showSwalAlert("Error!", error.response.data.error, "error");
           navigate("/dashboard");
         }
       } finally {

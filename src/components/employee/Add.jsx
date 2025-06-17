@@ -3,8 +3,7 @@ import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
 import { getSchoolsFromCache } from '../../utils/SchoolHelper';
 import { useAuth } from '../../context/AuthContext'
-import { getBaseUrl, handleRightClickAndFullScreen, checkAuth, getPrcessing } from '../../utils/CommonHelper';
-import Swal from 'sweetalert2';
+import { getBaseUrl, handleRightClickAndFullScreen, checkAuth, getPrcessing, showSwalAlert } from '../../utils/CommonHelper';
 import {
   FaRegTimesCircle
 } from "react-icons/fa";
@@ -26,7 +25,7 @@ const Add = () => {
   useEffect(() => {
     // Authenticate the User.
     if (checkAuth("employeeAdd") === "NO") {
-      Swal.fire('Error!', 'User Authorization Failed!', 'error');
+      showSwalAlert("Error!", "User Authorization Failed!", "error");
       navigate("/login");
     }
   });
@@ -82,21 +81,14 @@ const Add = () => {
       );
       if (response.data.success) {
         setProcessing(false);
-        Swal.fire({
-          title: "Success!",
-          html: "<b>Successfully Added!</b>",
-          icon: "success",
-          timer: 1600,
-          timerProgressBar: true,
-          showConfirmButton: false,
-        });
+        showSwalAlert("Success!", "Successfully Added!", "success");
         navigate("/dashboard/employees");
       }
     } catch (error) {
       setProcessing(false);
       //  error.response.render({ form: formData });
       if (error.response && !error.response.data.success) {
-        Swal.fire('Error!', error.response.data.error, 'error');
+        showSwalAlert("Error!", error.response.data.error, "error");
       }
     }
   };

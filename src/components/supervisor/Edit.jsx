@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate, useParams, Link } from "react-router-dom";
-import moment from "moment";
-import { getBaseUrl, handleRightClickAndFullScreen, getSpinner, checkAuth, getPrcessing } from '../../utils/CommonHelper';
-import Swal from 'sweetalert2';
+import { getBaseUrl, handleRightClickAndFullScreen, getSpinner, checkAuth, getPrcessing, showSwalAlert } from '../../utils/CommonHelper';
 import {
   FaRegTimesCircle
 } from "react-icons/fa";
@@ -42,7 +40,7 @@ const Edit = () => {
 
     // Authenticate the User.
     if (checkAuth("supervisorEdit") === "NO") {
-      Swal.fire('Error!', 'User Authorization Failed!', 'error');
+      showSwalAlert("Error!", "User Authorization Failed!", "error");
       navigate("/login");
     }
 
@@ -82,7 +80,7 @@ const Edit = () => {
         }
       } catch (error) {
         if (error.response && !error.response.data.success) {
-          Swal.fire('Error!', error.response.data.error, 'error');
+          showSwalAlert("Error!", error.response.data.error, "error");
           navigate("/dashboard/supervisors/");
         }
       }
@@ -131,20 +129,13 @@ const Edit = () => {
       );
       if (response.data.success) {
         setProcessing(false);
-        Swal.fire({
-          title: "Success!",
-          html: "<b>Successfully Updated!</b>",
-          icon: "success",
-          timer: 1600,
-          timerProgressBar: true,
-          showConfirmButton: false,
-        });
+        showSwalAlert("Success!", "Successfully Updated!", "success");
         navigate("/dashboard/supervisors");
       }
     } catch (error) {
       setProcessing(false);
       if (error.response && !error.response.data.success) {
-        Swal.fire('Error!', error.response.data.error, 'error');
+        showSwalAlert("Error!", error.response.data.error, "error");
       }
     }
   };

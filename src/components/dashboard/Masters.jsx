@@ -2,12 +2,11 @@ import React, { useEffect, useState } from "react";
 import SummaryCard from "./SummaryCard";
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext'
-import { getBaseUrl, handleRightClickAndFullScreen, getSpinner, LinkIcon } from '../../utils/CommonHelper'
+import { getBaseUrl, handleRightClickAndFullScreen, getSpinner, LinkIcon, showSwalAlert } from '../../utils/CommonHelper'
 import {
   FaUniversity, FaWpforms, FaClipboardList, FaCalendarAlt, FaUserCog,
 } from "react-icons/fa";
 import axios from 'axios'
-import Swal from 'sweetalert2';
 import { useNavigate } from "react-router-dom";
 
 const Masters = () => {
@@ -32,7 +31,7 @@ const Masters = () => {
         setSummary(summary.data)
       } catch (error) {
         if (error.response) {
-          Swal.fire('Error!', error.response.data.error, 'error');
+          showSwalAlert("Error!", error.response.data.error, "error");
         }
         console.log(error.messsage)
       }

@@ -3,9 +3,10 @@ import { useNavigate } from 'react-router-dom'
 import { columns, StudentButtons, conditionalRowStyles } from '../../utils/StudentHelper'
 import DataTable from 'react-data-table-component'
 import axios from 'axios'
-import { getBaseUrl, handleRightClickAndFullScreen, getSpinner, checkAuth, LinkIcon } from '../../utils/CommonHelper';
+import { getBaseUrl, handleRightClickAndFullScreen, getSpinner, checkAuth, LinkIcon, showSwalAlert } from '../../utils/CommonHelper';
 import Swal from 'sweetalert2';
 import { getSchoolsFromCache } from '../../utils/SchoolHelper';
+import 'animate.css';
 
 const List = () => {
 
@@ -20,11 +21,29 @@ const List = () => {
   const navigate = useNavigate()
   let schoolId;
 
+  const handleImport = async () => {
+    const { value: file } = await Swal.fire({
+      title: "<h3 style='color:blue; font-size: 25px;'>Import Student Data</h3>",
+      input: "file",
+      background: "url(/bg_card.png)",
+      inputAttributes: {
+        "accept": "image/*",
+        "aria-label": "Upload your profile picture"
+      },
+      showClass: { popup: `animate__animated animate__fadeInUp animate__faster` },
+      hideClass: { popup: `animate__animated animate__fadeOutDown animate__faster` }
+    });
+
+    if (file) {
+      alert("Hi")
+    }
+  }
+
   useEffect(() => {
 
     // Authenticate the User.
     if (checkAuth("studentsList") === "NO") {
-      Swal.fire('Error!', 'User Authorization Failed!', 'error');
+      showSwalAlert("Error!", "User Authorization Failed!", "error");
       navigate("/login");
     }
 
@@ -42,13 +61,13 @@ const List = () => {
 
         setInputOptions(inputOptions);
 
-        await Swal.fire({ 
+        await Swal.fire({
           title: "<h3 style='color:blue; font-size: 25px;'>Select the Niswan</h3>",
           input: "select",
           inputOptions: inputOptions,
           inputPlaceholder: "Select the Niswan",
           showCancelButton: true,
-         // background: 'gray',
+          background: "url(/bg_card.png)",
           inputValidator: (value) => {
             return new Promise((resolve) => {
               if (value && value != "") {
@@ -98,7 +117,7 @@ const List = () => {
         } catch (error) {
           console.log(error.message)
           if (error.response && !error.response.data.success) {
-            Swal.fire('Error!', error.response.data.error, 'error');
+            showSwalAlert("Error!", error.response.data.error, "error");
             navigate("/dashboard");
           }
         } finally {
@@ -127,7 +146,7 @@ const List = () => {
     <div className="mt-3 p-5">
       <div className="text-center">
         <h3 className="text-2xl font-bold px-5 py-0">Manage Students</h3>
-        <h3 className="text-2xl mt-3 font-bold text-gray-500 px-5 py-0">{localStorage.getItem('schoolName')}</h3>
+        <h3 className="text-xl mt-3 font-bold text-gray-500 px-5 py-0">{localStorage.getItem('schoolName')}</h3>
       </div>
       <div className="flex justify-between items-center mt-5">
         {LinkIcon("/dashboard", "Back")}
@@ -138,6 +157,7 @@ const List = () => {
           onChange={handleFilter}
         />
         {LinkIcon("/dashboard/add-student", "Add")}
+        <div onClick={handleImport}>{LinkIcon("#", "Import")}</div>
       </div>
       <div className='mt-6 rounded-lg shadow-lg'>
         <DataTable columns={columns} data={filteredStudent} pagination highlightOnHover striped responsive conditionalRowStyles={conditionalRowStyles} />

@@ -5,8 +5,7 @@ import { useNavigate, useParams, Link } from "react-router-dom";
 import {
   FaRegTimesCircle
 } from "react-icons/fa";
-import { getBaseUrl, handleRightClickAndFullScreen, getSpinner, checkAuth, getPrcessing } from '../../utils/CommonHelper';
-import Swal from 'sweetalert2';
+import { getBaseUrl, handleRightClickAndFullScreen, getSpinner, checkAuth, getPrcessing, showSwalAlert } from '../../utils/CommonHelper';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
@@ -53,7 +52,7 @@ const Edit = () => {
 
     // Authenticate the User.
     if (checkAuth("schoolEdit") === "NO") {
-      Swal.fire('Error!', 'User Authorization Failed!', 'error');
+      showSwalAlert("Error!", "User Authorization Failed!", "error");
       navigate("/login");
     }
 
@@ -102,7 +101,7 @@ const Edit = () => {
         }
       } catch (error) {
         if (error.response && !error.response.data.success) {
-          Swal.fire('Error!', error.response.data.error, 'error');
+          showSwalAlert("Error!", error.response.data.error, "error");
           navigate("/dashboard/schools/");
         }
       }
@@ -137,20 +136,13 @@ const Edit = () => {
       );
       if (response.data.success) {
         setProcessing(false);
-        Swal.fire({
-          title: "Success!",
-          html: "<b>Successfully Updated!</b>",
-          icon: "success",
-          timer: 1600,
-          timerProgressBar: true,
-          showConfirmButton: false,
-        });
+        showSwalAlert("Success!", "Successfully Updated!", "success");
         navigate("/dashboard/schools");
       }
     } catch (error) {
       setProcessing(false);
       if (error.response && !error.response.data.success) {
-        Swal.fire('Error!', error.response.data.error, 'error');
+        showSwalAlert("Error!", error.response.data.error, "error");
       }
     }
   };

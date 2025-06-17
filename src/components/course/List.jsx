@@ -2,9 +2,8 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { columns, CourseButtons } from '../../utils/CourseHelper'
 import DataTable from 'react-data-table-component'
-import { getBaseUrl, handleRightClickAndFullScreen, getSpinner, checkAuth, LinkIcon } from '../../utils/CommonHelper';
+import { getBaseUrl, handleRightClickAndFullScreen, getSpinner, checkAuth, LinkIcon, showSwalAlert } from '../../utils/CommonHelper';
 import axios from 'axios'
-import Swal from 'sweetalert2';
 
 const List = () => {
   // To prevent right-click AND For FULL screen view.
@@ -19,7 +18,7 @@ const List = () => {
 
     // Authenticate the User.
     if (checkAuth("coursesList") === "NO") {
-      Swal.fire('Error!', 'User Authorization Failed!', 'error');
+      showSwalAlert("Error!", "User Authorization Failed!", "error");
       navigate("/login");
     }
 
@@ -57,7 +56,7 @@ const List = () => {
       } catch (error) {
         console.log(error.message)
         if (error.response && !error.response.data.success) {
-          Swal.fire('Error!', error.response.data.error, 'error');
+          showSwalAlert("Error!", error.response.data.error, "error");
           navigate("/dashboard");
         }
       } finally {

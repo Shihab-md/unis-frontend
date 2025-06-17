@@ -1,6 +1,7 @@
 
 import { Link } from 'react-router-dom';
-import { FaPlusSquare, FaArrowAltCircleLeft } from "react-icons/fa";
+import { FaPlusSquare, FaArrowAltCircleLeft, FaAngleDoubleDown, FaRegCaretSquareDown } from "react-icons/fa";
+import Swal from 'sweetalert2';
 
 const authorizedScreensFor_SA_HQ_Roles = [
   "supervisorsList", "supervisorAdd", "supervisorEdit", "supervisorView",
@@ -68,7 +69,7 @@ export const getBaseUrl = async () => {
 export function handleRightClickAndFullScreen() {
 
   const isDisableRightClick = true;
-  const isOpenFullScreen = true;
+  const isOpenFullScreen = false;
 
   if (isDisableRightClick) {
     document.addEventListener('contextmenu', handleRightClick);
@@ -104,6 +105,9 @@ export function LinkIcon(toPage, purpose) {
 
   } else if (purpose === "Back") {
     return <Link to={toPage} > <FaArrowAltCircleLeft className="text-3xl lg:text-4xl bg-blue-700 text-white rounded shadow-lg" /> </Link>
+
+  } else if (purpose === "Import") {
+    return <Link to={toPage} > <FaRegCaretSquareDown className="text-3xl lg:text-4xl bg-indigo-700 text-white rounded shadow-lg" /> </Link>
   }
 }
 
@@ -119,4 +123,29 @@ export function getFormattedDate(dateString) {
   } else {
     return "";
   }
+}
+
+export function showSwalAlert(title, message, icon) {
+  return Swal.fire({
+    title: title,
+    html: "<b>" + message + "</b>",
+    icon: icon,
+    timer: 1600,
+    timerProgressBar: true,
+    showConfirmButton: false,
+    background: "url(/bg_card.png)",
+  });
+}
+
+export function showConfirmationSwalAlert(title, message, icon) {
+  return Swal.fire({
+    title: title,
+    icon: icon,
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Yes',
+    cancelButtonText: 'No',
+    background: "url(/bg_card.png)",
+  });
 }

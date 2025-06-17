@@ -2,8 +2,7 @@ import axios from "axios";
 import React, { useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
-import { getBaseUrl, handleRightClickAndFullScreen, getPrcessing } from '../utils/CommonHelper';
-import Swal from 'sweetalert2';
+import { getBaseUrl, handleRightClickAndFullScreen, getPrcessing, showSwalAlert } from '../utils/CommonHelper';
 
 const Login = () => {
 
@@ -24,7 +23,7 @@ const Login = () => {
   const [processing, setProcessing] = useState(null)
 
   const handleForgotPass = async (e) => {
-    Swal.fire('', 'Please contact HQ Admin.', 'info')
+    showSwalAlert("Info!", "Please contact HQ Admin!", "info");
   }
 
   const handleSubmit = async (e) => {
@@ -45,8 +44,7 @@ const Login = () => {
         if (!(response.data.user.role === "superadmin"
           || response.data.user.role === "hquser"
           || response.data.user.role === "supervisor")) {
-          //  alert(response.data.user.schoolId)
-          //  alert(response.data.user.schoolName)
+
           localStorage.setItem('schoolId', response.data.user.schoolId);
           localStorage.setItem('schoolName', response.data.user.schoolName);
         }
@@ -55,17 +53,17 @@ const Login = () => {
           navigate('/dashboard')
 
         } else {
-          Swal.fire('Error!', 'Server Error', 'error');
+          showSwalAlert("Error!", "Server Error!", "error");
           navigate("/login")
         }
       }
     } catch (error) {
       setProcessing(false);
       if (error.response && !error.response.data.success) {
-        Swal.fire('Error!', 'Server is busy : Please try after sometime.', 'error');
+        showSwalAlert("Error!", "Server is busy : Please try after sometime.", "error");
         setError(error.response.data.error)
       } else {
-        Swal.fire('Error!', 'Server Error', 'error');
+        showSwalAlert("Error!", "Server Error!", "error");
         setError("Server Error")
       }
     }

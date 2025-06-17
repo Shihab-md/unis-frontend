@@ -2,8 +2,7 @@ import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
 import { useAuth } from "../../context/AuthContext";
-import { getBaseUrl, handleRightClickAndFullScreen, getPrcessing } from '../../utils/CommonHelper';
-import Swal from 'sweetalert2';
+import { getBaseUrl, handleRightClickAndFullScreen, getPrcessing, showSwalAlert } from '../../utils/CommonHelper';
 import {
   FaRegTimesCircle
 } from "react-icons/fa";
@@ -47,14 +46,7 @@ const Setting = () => {
         );
         if (response.data.success) {
           setProcessing(false);
-          Swal.fire({
-            title: "Success!",
-            html: "<b>Password changed Successfully...!</b>",
-            icon: "success",
-            timer: 1600,
-            timerProgressBar: true,
-            showConfirmButton: false,
-          });
+          showSwalAlert("Success!", "Password changed Successfully...!", "success");
           navigate("/dashboard");
           setError("")
         }
@@ -62,7 +54,7 @@ const Setting = () => {
         setProcessing(false);
         if (error.response && !error.response.data.success) {
           setError(error.response.data.error)
-          Swal.fire('Error!', error.response.data.error, 'error');
+          showSwalAlert("Error!", error.response.data.error, "error");
         }
       }
     }

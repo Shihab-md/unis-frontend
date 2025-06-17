@@ -6,8 +6,7 @@ import { getSchoolsFromCache } from '../../utils/SchoolHelper';
 import { getAcademicYearsFromCache } from '../../utils/AcademicYearHelper';
 import { getInstitutesFromCache } from '../../utils/InstituteHelper';
 import { getCoursesFromCache } from '../../utils/CourseHelper';
-import { getBaseUrl, handleRightClickAndFullScreen, checkAuth, getPrcessing } from '../../utils/CommonHelper';
-import Swal from 'sweetalert2';
+import { getBaseUrl, handleRightClickAndFullScreen, checkAuth, getPrcessing, showSwalAlert } from '../../utils/CommonHelper';
 import ViewCard from "../dashboard/ViewCard";
 import {
   FaRegTimesCircle
@@ -43,7 +42,7 @@ const Add = () => {
   useEffect(() => {
     // Authenticate the User.
     if (checkAuth("studentAdd") === "NO") {
-      Swal.fire('Error!', 'User Authorization Failed!', 'error');
+      showSwalAlert("Error!", "User Authorization Failed!", "error");
       navigate("/login");
     }
   });
@@ -174,20 +173,13 @@ const Add = () => {
       );
       if (response.data.success) {
         setProcessing(false);
-        Swal.fire({
-          title: "Success!",
-          html: "<b>Successfully Added!</b>",
-          icon: "success",
-          timer: 1600,
-          timerProgressBar: true,
-          showConfirmButton: false,
-        });
+        showSwalAlert("Success!", "Successfully Added!", "success");
         navigate("/dashboard/students");
       }
     } catch (error) {
       setProcessing(false);
       if (error.response && !error.response.data.success) {
-        Swal.fire('Error!', error.response.data.error, 'error');
+        showSwalAlert("Error!", error.response.data.error, "error");
       }
     }
   };
