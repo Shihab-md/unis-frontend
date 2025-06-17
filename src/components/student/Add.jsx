@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { useAuth } from '../../context/AuthContext'
 import { useNavigate, Link } from "react-router-dom";
 import { getSchoolsFromCache } from '../../utils/SchoolHelper';
 import { getAcademicYearsFromCache } from '../../utils/AcademicYearHelper';
@@ -37,6 +38,7 @@ const Add = () => {
   const [fees6Val, setFees6Val] = useState("");
 
   const navigate = useNavigate()
+  const { user } = useAuth();
 
   useEffect(() => {
     // Authenticate the User.
@@ -154,6 +156,7 @@ const Add = () => {
       if (selectedDOADate) {
         formDataObj.append('doa', selectedDOADate)
       }
+      formDataObj.append('schoolId', localStorage.getItem('schoolId'));
 
       const headers = {
         'Content-Type': 'multipart/form-data',
@@ -212,19 +215,36 @@ const Add = () => {
                 <label className="block mt-2 text-sm font-medium text-gray-700">
                   Select Niswan <span className="text-red-700">*</span>
                 </label>
-                <select
-                  name="schoolId"
-                  onChange={handleChange}
-                  className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                  required
-                >
-                  <option value="">Select Niswan</option>
-                  {schools.map((school) => (
-                    <option key={school._id} value={school._id}>
-                      {school.code + " : " + school.nameEnglish}
-                    </option>
-                  ))}
-                </select>
+                {user.role === "superadmin" || user.role === "hquser" ?
+                  <select
+                    name="schoolId"
+                    onChange={handleChange}
+                    className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
+                    required
+                  >
+                    <option value="">Select Niswan</option>
+                    {schools.map((school) => (
+                      <option key={school._id} value={school._id}>
+                        {school.code + " : " + school.nameEnglish}
+                      </option>
+                    ))}
+                  </select> :
+                  <select
+                    name="schoolId"
+                    value={localStorage.getItem('schoolId')}
+                    onChange={handleChange}
+                    disabled={true}
+                    className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
+                    required
+                  >
+                    <option value="">Select Niswan</option>
+                    {schools.map((school) => (
+                      <option key={school._id} value={school._id}>
+                        {school.code + " : " + school.nameEnglish}
+                      </option>
+                    ))}
+                  </select>
+                }
               </div>
 
               {/* Roll Number (Email) */}

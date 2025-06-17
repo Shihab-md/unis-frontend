@@ -67,6 +67,9 @@ const AuthContext = ({ children }) => {
       });
       setUser(null);
       localStorage.removeItem("token");
+      localStorage.removeItem("role");
+      localStorage.removeItem("schoolId");
+      localStorage.removeItem("schoolName");
     } else if (result.dismiss === Swal.DismissReason.cancel) {
       // Swal.fire('Cancelled', 'Your file is safe!', 'error');
       // Handle cancellation logic (optional)

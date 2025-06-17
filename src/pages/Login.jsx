@@ -39,8 +39,18 @@ const Login = () => {
       if (response.data.success) {
         setProcessing(false);
         login(response.data.user)
-        localStorage.setItem("token", response.data.token)
-        localStorage.setItem("role", response.data.user.role)
+        localStorage.setItem("token", response.data.token);
+        localStorage.setItem("role", response.data.user.role);
+
+        if (!(response.data.user.role === "superadmin"
+          || response.data.user.role === "hquser"
+          || response.data.user.role === "supervisor")) {
+          //  alert(response.data.user.schoolId)
+          //  alert(response.data.user.schoolName)
+          localStorage.setItem('schoolId', response.data.user.schoolId);
+          localStorage.setItem('schoolName', response.data.user.schoolName);
+        }
+
         if (response.data.user && response.data.user.role) {
           navigate('/dashboard')
 

@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { NavLink } from "react-router-dom";
 import SummaryCard from "./SummaryCard";
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext'
@@ -23,6 +22,11 @@ const AdminSummary = () => {
   const { user } = useAuth()
 
   useEffect(() => {
+
+    if (user.role === "superadmin" || user.role === "hquser" || user.role === "supervisor") {
+      localStorage.removeItem("schoolId");
+      localStorage.removeItem("schoolName");
+    }
 
     const fetchSummary = async () => {
       try {
@@ -86,7 +90,7 @@ const AdminSummary = () => {
           </Link> : null}
 
         {user.role === "superadmin" || user.role === "hquser" || user.role === "admin" ?
-          <Link to="/dashboard/students" >
+          <Link to="/dashboard/students"  >
             <SummaryCard
               icon={<FaUsers />}
               text="Students"

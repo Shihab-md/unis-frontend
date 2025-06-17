@@ -274,6 +274,7 @@ const Edit = () => {
                     name="schoolId"
                     value={student.schoolId}
                     onChange={handleChange}
+                    disabled={true}
                     className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                     required
                   >

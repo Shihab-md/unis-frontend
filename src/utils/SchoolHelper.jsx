@@ -188,7 +188,9 @@ export const SchoolButtons = ({ Id, onSchoolDelete }) => {
             onClick={() => navigate(`/dashboard/schools/edit/${Id}`)}
           >
             <FaEdit />
-          </button>
+          </button> </div> : null}
+      {user.role === "superadmin" || user.role === "hquser" ?
+        <div className="flex space-x-3">
           <button
             className="px-3 py-1 bg-red-600 text-white rounded-sm text-shadow-lg"
             onClick={() => handleDelete(Id)}
