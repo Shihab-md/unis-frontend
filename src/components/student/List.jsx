@@ -3,10 +3,11 @@ import { useNavigate } from 'react-router-dom'
 import { columns, StudentButtons, conditionalRowStyles } from '../../utils/StudentHelper'
 import DataTable from 'react-data-table-component'
 import axios from 'axios'
-import { getBaseUrl, handleRightClickAndFullScreen, getSpinner, checkAuth, LinkIcon, showSwalAlert } from '../../utils/CommonHelper';
+import { getBaseUrl, handleRightClickAndFullScreen, getSpinner, getPrcessing, checkAuth, LinkIcon, showSwalAlert } from '../../utils/CommonHelper';
 import Swal from 'sweetalert2';
 import { getSchoolsFromCache } from '../../utils/SchoolHelper';
 import 'animate.css';
+import * as XLSX from 'xlsx';
 
 const List = () => {
 
@@ -20,6 +21,8 @@ const List = () => {
   const [filteredStudent, setFilteredStudents] = useState(null)
   const navigate = useNavigate()
   let schoolId;
+  const [excelData, setExcelData] = useState([]);
+  const [processing, setProcessing] = useState(null)
 
   const handleImport = async () => {
     const { value: file } = await Swal.fire({
@@ -27,15 +30,52 @@ const List = () => {
       input: "file",
       background: "url(/bg_card.png)",
       inputAttributes: {
-        "accept": "image/*",
-        "aria-label": "Upload your profile picture"
+        'Content-Type': 'multipart/form-data',
+        'Authorization': `Bearer ${localStorage.getItem("token")}`,
+        'Access-Control-Allow-Origin': '*',
+        "accept": ".xlsx, .xls",
+        "aria-label": "Upload School Student Data."
       },
       showClass: { popup: `animate__animated animate__fadeInUp animate__faster` },
       hideClass: { popup: `animate__animated animate__fadeOutDown animate__faster` }
     });
 
     if (file) {
-      alert("Hi")
+      try {
+        setProcessing(true);
+        const reader = new FileReader();
+        reader.onload = (event) => {
+          const binaryString = event.target.result;
+          const workbook = XLSX.read(binaryString, { type: 'binary' });
+          const sheetName = workbook.SheetNames[0];
+          const worksheet = workbook.Sheets[sheetName];
+          const jsonData = XLSX.utils.sheet_to_json(worksheet);
+          setExcelData(jsonData);
+        };
+        reader.readAsBinaryString(file);
+
+        let data = JSON.stringify(excelData);
+        const response = await fetch((await getBaseUrl()).toString() + "student/import", {
+          method: 'POST',
+          headers: { 'Authorization': `Bearer ${localStorage.getItem("token")}`, 'Content-Type': 'application/json' },
+          body: data,
+        });
+
+        if (response.ok) {
+          setProcessing(false);
+          const resData = JSON.parse(JSON.stringify(await response.json()));
+          showSwalAlert("Success!", "Successfully Imported!", "success");
+        } else {
+          setProcessing(false);
+          console.error('Failed to send data.');
+        }
+      } catch (error) {
+        setProcessing(false);
+        alert("Error!" + JSON.stringify(error.response.data))
+        console.error('Error sending data:', error);
+      }
+    } else {
+      //  Swal.fire("Please select correct file and try again!");
     }
   }
 
@@ -140,6 +180,10 @@ const List = () => {
 
   if (!filteredStudent) {
     return getSpinner();
+  }
+
+  if (processing) {
+    return getPrcessing();
   }
 
   return (
