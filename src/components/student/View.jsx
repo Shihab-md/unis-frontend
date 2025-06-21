@@ -100,7 +100,7 @@ const View = () => {
 
                 <div className="flex space-x-3 mb-5" />
 
-                <ViewCard type="title" text="Date of Addmission" />
+                <ViewCard type="title" text="Date of Admission" />
                 <ViewCard type="data" text={getFormattedDate(student.doa)} />
                 <ViewCard type="title" text="Date of Birth" />
                 <ViewCard type="data" text={getFormattedDate(student.dob)} />
@@ -159,6 +159,8 @@ const View = () => {
                 <ViewCard type="data" text={academic.courseId1 && academic.courseId1.name ? academic.courseId1.name : ""} />
                 <ViewCard type="title" text="Reference Number " />
                 <ViewCard type="data" text={academic.refNumber1} />
+                <ViewCard type="title" text="Year " />
+                <ViewCard type="data" text={academic.year} />
                 <ViewCard type="title" text="Fees " />
                 <ViewCard type="data" text={academic.fees1} />
                 {/*<ViewCard type="title" text="Discount " />

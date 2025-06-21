@@ -6,7 +6,6 @@ import axios from 'axios'
 import { getBaseUrl, handleRightClickAndFullScreen, getSpinner, getPrcessing, checkAuth, LinkIcon, showSwalAlert } from '../../utils/CommonHelper';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
-import Select from 'react-select';
 import { useAuth } from '../../context/AuthContext'
 import { getSchoolsFromCache } from '../../utils/SchoolHelper';
 import 'animate.css';
@@ -26,85 +25,10 @@ const List = () => {
 
   const navigate = useNavigate()
   const { user } = useAuth()
-
+  
   let schoolId;
   const [excelData, setExcelData] = useState([]);
   const [processing, setProcessing] = useState(null)
-
-  const [selectedOptions, setSelectedOptions] = useState([]);
-
-  const MySwal = withReactContent(Swal);
-
-  function NiswanSelect({ options, onChange, selectedValues }) {
-    return <Select options={
-      options.map((option) => ({
-        value: option._id, label: option.code + " : " + option.nameEnglish
-      }
-      ))
-    }
-      //onChange={handleSelectChange}
-      selectedValues={selectedOptions} />;
-  }
-
-  const handleSelectChange = (option) => {
-    setSelectedOptions(option);
-  };
-
-  const openFilterPopup = async () => {
-    const { value: formValues } = await MySwal.fire({
-      title: 'Filters',
-      background: "url(/bg_card.png)",
-      html: `
-
-        <div className='grid justify-between items-center relative'>
-          <label className='justify-start relative'>Course </label>
-          <select id="swal-course" class="swal2-input w-3/5 lg:w-3/6 ml-10 relative justify-center rounded shadow-lg" style="margin-top: 20px;">
-            <option value="">Select </option>
-            <option value="Muballiga">Muballiga</option>
-            <option value="Muallama">Muallama</option>
-            <option value="Makthab">Makthab</option>
-            <option value="Munavvara">Munavvara</option>
-          </select>
-        </div>
-        <div className='grid justify-between items-center relative'>
-          <label className='justify-start relative'>Status </label>
-          <select id="swal-status" class="swal2-input w-3/5 lg:w-3/6 ml-10 relative justify-center rounded shadow-lg" style="margin-top: 30px;">
-            <option value="">Select</option>
-            <option value="Active">Active</option>
-            <option value="In-Active">In-Active</option>
-          </select>
-        </div>
-      `,
-      focusConfirm: false,
-      showCancelButton: true,
-      cancelButtonText: "Clear",
-      // cancelButtonAriaLabel: "Clear",
-      preConfirm: () => {
-        const select1 = document.getElementById('swal-course').value;
-        const select2 = document.getElementById('swal-status').value;
-        return [select1, select2];
-      }
-    });
-
-    if (formValues) {
-      console.log('Selected values:', formValues);
-      const course = formValues[0] ? formValues[0] : null;
-      const status = formValues[1] ? formValues[1] : null;
-      console.log('Selected value1:', formValues[0]);
-      console.log('Selected value2:', formValues[1]);
-
-      const records = students.filter((student) => {
-        console.log('Selected value3:', student.course + ", " + course);
-        let crc = student.course.toString();
-        crc.toLowerCase().includes("makthab".toLowerCase())
-        // || student.active && status ? student.active.toLowerCase().includes(status.toString().toLowerCase()) : false
-      });
-
-      setFilteredStudents(records)
-    } else {
-      setFilteredStudents(students)
-    }
-  };
 
   const handleImport = async () => {
     const { value: file } = await Swal.fire({
@@ -211,49 +135,15 @@ const List = () => {
     }
 
     const fetchStudents = async () => {
-
       if (!localStorage.getItem('schoolId')) {
         const schools = await getSchoolsFromCache();
         setSchools(schools)
-        let inputArray = [];
         schools.map((school) => (
-          inputOptions[school._id] = school.code + " : " + school.nameEnglish + ", " + school.district
+          inputOptions[school._id] = school.code + " : " + school.nameEnglish
         ))
 
         setInputOptions(inputOptions);
-        //  alert(inputOptions) 
-        {/*  MySwal.fire({
-          title: 'Select the Niswan',
-          background: "url(/bg_card.png)",
-          html: (
-            <div className="mb-2" style={{ height: '30vh' }}>
-              <Select id="selectBox" options={
-                schools.map((option) => ({
-                  value: option._id, label: option.code + " : " + option.nameEnglish
-                }
-                ))
-              }
-                onChange={handleSelectChange}
-                selectedValues={selectedOptions}
-              //  value={selectedOptions}
-              />
-            </div>
-          ),
-          preConfirm: () => {
 
-            // Get selected value from dropdown
-            var drpUserIdInput = $('#selectBox').val();
-            setSelectedOptions(drpUserIdInput)
-          }
-        }).then((result) => {
-          //  const resultStr = JSON.parse(JSON.stringify(result));
-          //  alert(resultStr);
-          if (result.isConfirmed) {
-            // Handle the submitted data
-            console.log('User confirmed selection:', selectedOptions);
-          }
-        });
-*/}
         await Swal.fire({
           title: "<h3 style='color:blue; font-size: 25px;'>Select the Niswan</h3>",
           input: "select",
@@ -274,7 +164,6 @@ const List = () => {
             });
           }
         });
-
       } else {
         schoolId = localStorage.getItem('schoolId')
       }
@@ -301,7 +190,7 @@ const List = () => {
               rollNumber: student.rollNumber,
               district: student.district,
               active: student.active,
-              course: student.courses && student.courses.length > 0 ? student.courses.map(course => course.name ? course.name + ", " : "") : "",
+              course: student.courses && student.courses.length > 0 ? student.courses.map(course => course.name + " ") : "",
               fatherName: student.fatherName ? student.fatherName : student.motherName ? student.motherName : student.guardianName ? student.guardianName : "",
               action: (<StudentButtons Id={student._id} onStudentDelete={onStudentDelete} />),
             }));
@@ -327,11 +216,9 @@ const List = () => {
   }, []);
 
   const handleSearch = (e) => {
-    const records = students.filter((student) => (
-      student.rollNumber.toLowerCase().includes(e.target.value.toLowerCase())
-      || student.name.toLowerCase().includes(e.target.value.toLowerCase())
-      || student.course.toString().toLowerCase().includes(e.target.value.toLowerCase())
-      || student.active.toLowerCase().includes(e.target.value.toLowerCase())
+    const records = students.filter((sup) => (
+      sup.rollNumber.toLowerCase().includes(e.target.value.toLowerCase())
+      || sup.name.toLowerCase().includes(e.target.value.toLowerCase())
     ))
     setFilteredStudents(records)
   }
@@ -371,7 +258,7 @@ const List = () => {
         <div className="flex ml-3 mr-3 w-full lg:w-1/2 justify-end relative">
           <input
             type="text"
-            placeholder="Search"
+            placeholder="Roll Number | Name"
             class="px-3 py-0.5 w-full lg:w-1/2 border rounded shadow-lg justify-end"
             onChange={handleSearch}
           />
@@ -380,7 +267,7 @@ const List = () => {
 
         {/*  <img src="/filter.jpg" class="rounded border border-green-500 w-8 p-1 mr-3 shadow-lg bg-white"/>*/}
 
-        {/* <div class="mr-3" onClick={openFilterPopup}>{LinkIcon("#", "Filter")}</div> */}
+        <div class="mr-3" onClick={handleShowFilter}>{LinkIcon("#", "Filter")}</div>
 
         {LinkIcon("/dashboard/add-student", "Add")}
         {user.role === "superadmin" || user.role === "hquser" ?

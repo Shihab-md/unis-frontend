@@ -31,25 +31,19 @@ export const columns = [
     name: "Student Name",
     selector: (row) => row.name,
     //  sortable: true,
-    width: "280px",
+    width: "300px",
+  },
+  {
+    name: "Course",
+    selector: (row) => row.course,
+    //  sortable: true,
+    width: "250px",
   },
   {
     name: "Father / Mother / Guardian Name",
     selector: (row) => row.fatherName,
     //  sortable: true,
-    width: "280px",
-  },
-  {
-    name: "Niswan Name",
-    selector: (row) => row.schoolName,
-    //  sortable: true,
-    width: "370px",
-  },
-  {
-    name: "State & District",
-    selector: (row) => row.district,
-    //  sortable: true,
-    width: "190px",
+    width: "300px",
   },
   {
     name: "Status",
@@ -177,7 +171,7 @@ export const StudentButtons = ({ Id, onStudentDelete }) => {
           showSwalAlert("Error!", error.response.data.error, "error");
         }
       }
-  //  } else if (result.dismiss === Swal.DismissReason.cancel) {
+      //  } else if (result.dismiss === Swal.DismissReason.cancel) {
       // Swal.fire('Cancelled', 'Your file is safe!', 'error');
       // Handle cancellation logic (optional)
     }

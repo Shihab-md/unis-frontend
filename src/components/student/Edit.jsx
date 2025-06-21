@@ -143,6 +143,7 @@ const Edit = () => {
             instituteId1: academic.instituteId1 && academic.instituteId1._id ? academic.instituteId1._id : null,
             courseId1: academic.courseId1 && academic.courseId1._id ? academic.courseId1._id : null,
             refNumber1: academic.refNumber1,
+            year: academic.year,
             fees1: academic.fees1,
             discount1: academic.discount1,
 
@@ -309,10 +310,10 @@ const Edit = () => {
                   />
                 </div>
 
-                {/* Date of Addmission */}
+                {/* Date of Admission */}
                 <div className="grid grid-cols-1">
                   <label className="block mt-2 text-sm font-medium text-gray-700">
-                    Date of Addmission <span className="text-red-700">*</span>
+                    Date of Admission <span className="text-red-700">*</span>
                   </label>
                   <DatePicker
                     name="doa"
@@ -727,7 +728,7 @@ const Edit = () => {
                     name="courseId1"
                     value={student.courseId1}
                     onChange={handleChange}
-                    disabled={true}
+                //    disabled={true}
                     className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                     required
                   >
@@ -756,21 +757,39 @@ const Edit = () => {
                   />
                 </div>
 
-                {/* Fees */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-700">
-                    Fees
-                  </label>
-                  <input
-                    type="number"
-                    name="fees1"
-                    value={student.fees1}
-                    //   value={fees1Val}
-                    disabled={true}
-                    onChange={handleChange}
-                    className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                  //    required
-                  />
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                  {/* Year */}
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700">
+                      Year <span className="text-red-700">*</span>
+                    </label>
+                    <input
+                      type="number"
+                      name="year"
+                      value={student.year}
+                  //    disabled={student.year ? true : false}
+                      onChange={handleChange}
+                      className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
+                      required
+                    />
+                  </div>
+
+                  {/* Fees */}
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700">
+                      Fees
+                    </label>
+                    <input
+                      type="number"
+                      name="fees1"
+                      value={student.fees1}
+                      //   value={fees1Val}
+                    //  disabled={student.fees1 ? true : false}
+                      onChange={handleChange}
+                      className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
+                    //    required
+                    />
+                  </div>
                 </div>
 
                 <div className="flex space-x-3 mb-5" />
@@ -808,7 +827,7 @@ const Edit = () => {
                     name="courseId2"
                     value={student.courseId2}
                     onChange={handleChange}
-                    disabled={true}
+                //    disabled={student.courseId2 ? true : false}
                     className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                   //    required
                   >
@@ -847,7 +866,7 @@ const Edit = () => {
                     name="fees2"
                     value={student.fees2}
                     //   value={fees2Val}
-                    disabled={true}
+                //    disabled={student.fees2 ? true : false}
                     onChange={handleChange}
                     className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                   //    required
@@ -889,7 +908,7 @@ const Edit = () => {
                     name="courseId3"
                     value={student.courseId3}
                     onChange={handleChange}
-                    disabled={true}
+                 //   disabled={student.courseId3 ? true : false}
                     className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                   //    required
                   >
@@ -928,7 +947,7 @@ const Edit = () => {
                     name="fees3"
                     value={student.fees3}
                     //  value={fees3Val}
-                    disabled={true}
+                 //   disabled={student.fees3 ? true : false}
                     onChange={handleChange}
                     className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                   //    required
@@ -970,7 +989,7 @@ const Edit = () => {
                     name="courseId4"
                     value={student.courseId4}
                     onChange={handleChange}
-                    disabled={true}
+                 //   disabled={student.courseId4 ? true : false}
                     className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                   //    required
                   >
@@ -1009,7 +1028,7 @@ const Edit = () => {
                     name="fees4"
                     value={student.fees4}
                     //  value={fees4Val}
-                    disabled={true}
+                  //  disabled={student.fees4 ? true : false}
                     onChange={handleChange}
                     className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                   //    required
@@ -1051,7 +1070,7 @@ const Edit = () => {
                     name="courseId5"
                     value={student.courseId5}
                     onChange={handleChange}
-                    disabled={true}
+                  //  disabled={student.courseId5 ? true : false}
                     className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                   //   required
                   >
@@ -1090,7 +1109,7 @@ const Edit = () => {
                     name="fees5"
                     value={student.fees5}
                     //  value={fees5Val}
-                    disabled={true}
+                  //  disabled={student.fees5 ? true : false}
                     onChange={handleChange}
                     className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                   //    required
@@ -1147,7 +1166,7 @@ const Edit = () => {
                   <input
                     type="number"
                     name="hostelFees"
-                    disabled={true}
+                  //  disabled={student.hostelFees ? true : false}
                     value={student.hostelFees}
                     onChange={handleChange}
                     className="mt-2 p-2 block w-full border border-gray-300 rounded-md"

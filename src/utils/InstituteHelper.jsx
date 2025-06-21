@@ -23,23 +23,23 @@ export const columns = [
     name: "Name",
     selector: (row) => row.name,
     sortable: true,
-    width: "290px",
+    width: "340px",
   },
   {
     name: "Education Type",
     selector: (row) => row.type,
     sortable: true,
-    width: "230px",
+    width: "220px",
   },
   {
     name: "State / District",
     selector: (row) => row.district,
-    width: "250px",
+    width: "230px",
   },
   {
     name: "Address",
     selector: (row) => row.address,
-    width: "250px",
+    width: "270px",
   },
   {
     name: "Action",

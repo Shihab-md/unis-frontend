@@ -1,6 +1,6 @@
 
 import { Link } from 'react-router-dom';
-import { FaPlusSquare, FaArrowAltCircleLeft, FaAngleDoubleDown, FaRegCaretSquareDown } from "react-icons/fa";
+import { FaPlusSquare, FaArrowAltCircleLeft, FaAngleDoubleDown, FaRegCaretSquareDown, FaFilter } from "react-icons/fa";
 import Swal from 'sweetalert2';
 
 const authorizedScreensFor_SA_HQ_Roles = [
@@ -101,13 +101,20 @@ export function getPrcessing() {
 
 export function LinkIcon(toPage, purpose) {
   if (purpose === "Add") {
-    return <Link to={toPage} > <FaPlusSquare className="text-3xl lg:text-4xl bg-teal-700 text-white rounded shadow-lg" /></Link>
+    return <Link to={toPage} >
+      <FaPlusSquare className="text-3xl lg:text-4xl bg-teal-700 text-white rounded shadow-lg" /></Link>
 
   } else if (purpose === "Back") {
-    return <Link to={toPage} > <FaArrowAltCircleLeft className="text-3xl lg:text-4xl bg-blue-700 text-white rounded shadow-lg" /> </Link>
+    return <Link to={toPage} >
+      <FaArrowAltCircleLeft className="text-3xl lg:text-4xl bg-blue-700 text-white rounded shadow-lg" /> </Link>
 
   } else if (purpose === "Import") {
-    return <Link to={toPage} > <FaRegCaretSquareDown className="text-3xl lg:text-4xl bg-indigo-700 text-white rounded shadow-lg" /> </Link>
+    return <Link to={toPage} >
+      <FaRegCaretSquareDown className="text-3xl lg:text-4xl bg-indigo-700 text-white rounded shadow-lg" /> </Link>
+
+  } else if (purpose === "Filter") {
+    return <Link to={toPage} >
+      <FaFilter className="text-3xl lg:text-4xl text-purple-700 bg-white rounded shadow-lg border-2 border-purple-700 p-1 lg:p-2" /> </Link>
   }
 }
 

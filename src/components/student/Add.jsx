@@ -207,39 +207,25 @@ const Add = () => {
                 <label className="block mt-2 text-sm font-medium text-gray-700">
                   Select Niswan <span className="text-red-700">*</span>
                 </label>
-                {user.role === "superadmin" || user.role === "hquser" ?
-                  <select
-                    name="schoolId"
-                    onChange={handleChange}
-                    className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                    required
-                  >
-                    <option value="">Select Niswan</option>
-                    {schools.map((school) => (
-                      <option key={school._id} value={school._id}>
-                        {school.code + " : " + school.nameEnglish}
-                      </option>
-                    ))}
-                  </select> :
-                  <select
-                    name="schoolId"
-                    value={localStorage.getItem('schoolId')}
-                    onChange={handleChange}
-                    disabled={true}
-                    className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                    required
-                  >
-                    <option value="">Select Niswan</option>
-                    {schools.map((school) => (
-                      <option key={school._id} value={school._id}>
-                        {school.code + " : " + school.nameEnglish}
-                      </option>
-                    ))}
-                  </select>
-                }
+                <select
+                  name="schoolId"
+                  value={localStorage.getItem('schoolId')}
+                  onChange={handleChange}
+                  disabled={true}
+                  className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
+                  required
+                >
+                  <option value="">Select Niswan</option>
+                  {schools.map((school) => (
+                    <option key={school._id} value={school._id}>
+                      {school.code + " : " + school.nameEnglish}
+                    </option>
+                  ))}
+                </select>
               </div>
 
-              {/* Roll Number (Email) */}
+              <div className="flex space-x-3 mb-5" />
+              {/* Roll Number (Email) 
               <div>
                 <label className="block mt-2 text-sm font-medium text-gray-700">
                   Roll Number <span className="text-red-700">*</span>
@@ -251,7 +237,7 @@ const Add = () => {
                   className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                   required
                 />
-              </div>
+              </div>*/}
 
               {/* Name */}
               <div>
@@ -267,10 +253,10 @@ const Add = () => {
                 />
               </div>
 
-              {/* Date of Addmission */}
+              {/* Date of Admission */}
               <div className="grid grid-cols-1">
                 <label className="block mt-2 text-sm font-medium text-gray-700">
-                  Date of Addmission <span className="text-red-700">*</span>
+                  Date of Admission <span className="text-red-700">*</span>
                 </label>
                 <DatePicker
                   name="doa"
@@ -652,20 +638,36 @@ const Add = () => {
                 />
               </div>
 
-              {/* Fees */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700">
-                  Fees
-                </label>
-                <input
-                  type="number"
-                  name="fees1"
-                  value={fees1Val}
-                  disabled={true}
-                  onChange={handleChange}
-                  className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                //    required
-                />
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                {/* Year */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Year <span className="text-red-700">*</span>
+                  </label>
+                  <input
+                    type="number"
+                    name="year"
+                    onChange={handleChange}
+                    className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
+                    required
+                  />
+                </div>
+
+                {/* Fees */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Fees
+                  </label>
+                  <input
+                    type="number"
+                    name="fees1"
+                    value={fees1Val}
+                    disabled={true}
+                    onChange={handleChange}
+                    className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
+                  //    required
+                  />
+                </div>
               </div>
 
               <div className="flex space-x-3 mb-5" />
