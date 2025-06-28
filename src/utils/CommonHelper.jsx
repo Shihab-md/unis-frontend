@@ -1,6 +1,6 @@
 
 import { Link } from 'react-router-dom';
-import { FaPlusSquare, FaArrowAltCircleLeft, FaAngleDoubleDown, FaRegCaretSquareDown, FaFilter } from "react-icons/fa";
+import { FaPlusSquare, FaArrowAltCircleLeft, FaAngleDoubleDown, FaRegCaretSquareDown, FaFilter, FaSearch } from "react-icons/fa";
 import Swal from 'sweetalert2';
 
 const authorizedScreensFor_SA_HQ_Roles = [
@@ -62,7 +62,7 @@ export function checkAuth(screenName) {
 };
 
 export const getBaseUrl = async () => {
-   return "https://unis-server.vercel.app/api/";
+  return "https://unis-server.vercel.app/api/";
 
 };
 
@@ -115,6 +115,10 @@ export function LinkIcon(toPage, purpose) {
   } else if (purpose === "Filter") {
     return <Link to={toPage} >
       <FaFilter className="text-3xl lg:text-4xl text-purple-700 bg-white rounded shadow-lg border-2 border-purple-700 p-1 lg:p-2" /> </Link>
+
+  } else if (purpose === "Search") {
+    return <Link to={toPage} >
+      <FaSearch className="text-3xl text-purple-600 rounded p-1" /> </Link>
   }
 }
 

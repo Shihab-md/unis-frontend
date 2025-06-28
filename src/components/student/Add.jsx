@@ -200,7 +200,7 @@ const Add = () => {
 
         <form onSubmit={handleSubmit} autocomplete="off">
           <div className="py-2 px-4 border mt-5 mb-3 items-center justify-center rounded-lg shadow-lg bg-white">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+            <div className="grid grid-cols-1 md:grid-cols-1 gap-5">
 
               {/* School */}
               <div>
@@ -223,9 +223,9 @@ const Add = () => {
                   ))}
                 </select>
               </div>
-
-              <div className="flex space-x-3 mb-5" />
-              {/* Roll Number (Email) 
+            </div>
+            <div className="flex space-x-3 mb-5" />
+            {/* Roll Number (Email) 
               <div>
                 <label className="block mt-2 text-sm font-medium text-gray-700">
                   Roll Number <span className="text-red-700">*</span>
@@ -239,6 +239,7 @@ const Add = () => {
                 />
               </div>*/}
 
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
               {/* Name */}
               <div>
                 <label className="block mt-2 text-sm font-medium text-gray-700">
@@ -252,52 +253,53 @@ const Add = () => {
                   required
                 />
               </div>
-
-              {/* Date of Admission */}
-              <div className="grid grid-cols-1">
-                <label className="block mt-2 text-sm font-medium text-gray-700">
-                  Date of Admission <span className="text-red-700">*</span>
-                </label>
-                <DatePicker
-                  name="doa"
-                  selected={selectedDOADate}
-                  onChange={(date) => setSelectedDOADate(date)}
-                  dateFormat="dd/MM/yyyy"
-                  className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-                  required
-                  showMonthDropdown
-                  showYearDropdown
-                  dropdownMode="select"
-                  isClearable
-                //showIcon
-                //toggleCalendarOnIconClick
-                />
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                {/* Date of Admission */}
+                <div className="grid grid-cols-1">
+                  <label className="block mt-2 text-sm font-medium text-gray-700">
+                    Date of Admission <span className="text-red-700">*</span>
+                  </label>
+                  <DatePicker
+                    name="doa"
+                    selected={selectedDOADate}
+                    onChange={(date) => setSelectedDOADate(date)}
+                    dateFormat="dd/MM/yyyy"
+                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                    required
+                    showMonthDropdown
+                    showYearDropdown
+                    dropdownMode="select"
+                    isClearable
+                  //showIcon
+                  //toggleCalendarOnIconClick
+                  />
+                </div>
+                {/* Date of Birth */}
+                <div className="grid grid-cols-1">
+                  <label className="block mt-2 text-sm font-medium text-gray-700">
+                    Date of Birth <span className="text-red-700">*</span>
+                  </label>
+                  <DatePicker
+                    name="dob"
+                    selected={selectedDOBDate}
+                    onChange={(date) => setSelectedDOBDate(date)}
+                    dateFormat="dd/MM/yyyy"
+                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                    required
+                    showMonthDropdown
+                    showYearDropdown
+                    dropdownMode="select"
+                    isClearable
+                  //showIcon
+                  //toggleCalendarOnIconClick
+                  />
+                </div>
               </div>
-
               <div className="flex space-x-3 mb-5" />
               <div className="hidden lg:block flex space-x-3 mb-5" />
+            </div>
 
-              {/* Date of Birth */}
-              <div className="grid grid-cols-1">
-                <label className="block text-sm font-medium text-gray-700">
-                  Date of Birth <span className="text-red-700">*</span>
-                </label>
-                <DatePicker
-                  name="dob"
-                  selected={selectedDOBDate}
-                  onChange={(date) => setSelectedDOBDate(date)}
-                  dateFormat="dd/MM/yyyy"
-                  className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-                  required
-                  showMonthDropdown
-                  showYearDropdown
-                  dropdownMode="select"
-                  isClearable
-                //showIcon
-                //toggleCalendarOnIconClick
-                />
-              </div>
-
+            <div className="grid mt-2 grid-cols-1 md:grid-cols-3 gap-5">
               {/* Gender */}
               <div>
                 <label className="block text-sm font-medium text-gray-700">
@@ -309,7 +311,7 @@ const Add = () => {
                   className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                   required
                 >
-                  <option value="">Select Gender</option>
+                  <option value=""></option>
                   <option value="Male">Male</option>
                   <option value="Female">Female</option>
                 </select>
@@ -327,9 +329,28 @@ const Add = () => {
                   className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                   required
                 >
-                  <option value="">Select Status</option>
+                  <option value=""></option>
                   <option value="Single">Single</option>
                   <option value="Married">Married</option>
+                </select>
+              </div>
+
+              {/* Mother Tongue */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700">
+                  Mother Tongue
+                </label>
+                <select
+                  name="motherTongue"
+                  onChange={handleChange}
+                  placeholder="Mother Tongue"
+                  className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
+                >
+                  <option value=""></option>
+                  <option value="Tamil">Tamil</option>
+                  <option value="Urdu">Urdu</option>
+                  <option value="Telugu">Telugu</option>
+                  <option value="English">English</option>
                 </select>
               </div>
 
@@ -377,9 +398,8 @@ const Add = () => {
 
               <div className="flex space-x-3 mb-5" />
               <div className="hidden lg:block flex space-x-3 mb-5" />
-            </div>
+              <div className="hidden lg:block flex space-x-3 mb-5" />
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
               {/* Father's Name */}
               <div>
                 <label className="block text-sm font-medium text-gray-700">
@@ -463,7 +483,9 @@ const Add = () => {
                 //  required
                 />
               </div>
+            </div>
 
+            <div className="grid mt-5 grid-cols-1 md:grid-cols-4 gap-5">
               {/* Guardian's Name */}
               <div>
                 <label className="block text-sm font-medium text-gray-700">
@@ -519,24 +541,13 @@ const Add = () => {
                 //    required
                 />
               </div>
-
-              {/* State / District */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700">
-                  State / District <span className="text-red-700">*</span>
-                </label>
-                <input
-                  type="text"
-                  name="district"
-                  onChange={handleChange}
-                  //  placeholder="Route Name"
-                  className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                  required
-                />
-              </div>
             </div>
 
-            <div className="grid mt-3 grid-cols-1 md:grid-cols-1 gap-5 ">
+            <div className="flex mt-5 space-x-3 mb-5" />
+            <div className="hidden lg:block flex space-x-3 mb-5" />
+            <div className="hidden lg:block flex space-x-3 mb-5" />
+
+            <div className="grid mt-5 grid-cols-1 md:grid-cols-2 gap-5">
               {/* Address */}
               <div>
                 <label className="block text-sm font-medium text-gray-700">
@@ -550,6 +561,37 @@ const Add = () => {
                   className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                   required
                 />
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                {/* District */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">
+                    District <span className="text-red-700">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    name="district"
+                    onChange={handleChange}
+                    //  placeholder="Route Name"
+                    className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
+                    required
+                  />
+                </div>
+                {/* State */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">
+                    State <span className="text-red-700">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    name="state"
+                    onChange={handleChange}
+                    //  placeholder="Route Name"
+                    className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
+                    required
+                  />
+                </div>
               </div>
             </div>
 
@@ -642,7 +684,7 @@ const Add = () => {
                 {/* Year */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700">
-                    Year <span className="text-red-700">*</span>
+                    Year / Std. <span className="text-red-700">*</span>
                   </label>
                   <input
                     type="number"
@@ -1053,8 +1095,8 @@ const Add = () => {
           >
             Add Student
           </button>
-        </form>
-      </div>
+        </form >
+      </div >
     </>
   );
 };

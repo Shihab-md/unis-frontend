@@ -76,8 +76,8 @@ const View = () => {
 
                 <ViewCard type="title" text="Address" />
                 <ViewCard type="data" text={school.address} />
-                <ViewCard type="title" text="District / State" />
-                <ViewCard type="data" text={school.district} />
+                <ViewCard type="title" text="District & State" />
+                <ViewCard type="data" text={school.district + ", " + school.state} />
                 <ViewCard type="title" text="Contact Number" />
                 <ViewCard type="data" text={school.contactNumber} />
                 <ViewCard type="title" text="Email" />

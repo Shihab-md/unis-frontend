@@ -113,6 +113,7 @@ const Edit = () => {
             //  dob: student.dob,
             gender: student.gender,
             maritalStatus: student.maritalStatus,
+            motherTongue: student.motherTongue,
             bloodGroup: student.bloodGroup,
             idMark1: student.idMark1,
             idMark2: student.idMark2,
@@ -129,6 +130,7 @@ const Edit = () => {
             guardianRelation: student.guardianRelation,
             address: student.address,
             district: student.district,
+            state: student.state,
 
             active: student.active,
             remarks: student.remarks,
@@ -294,7 +296,9 @@ const Edit = () => {
                     required
                   />
                 </div>
+              </div>
 
+              <div className="grid mt-5 grid-cols-1 md:grid-cols-2 gap-5">
                 {/* Name */}
                 <div>
                   <label className="block mt-2 text-sm font-medium text-gray-700">
@@ -310,25 +314,48 @@ const Edit = () => {
                   />
                 </div>
 
-                {/* Date of Admission */}
-                <div className="grid grid-cols-1">
-                  <label className="block mt-2 text-sm font-medium text-gray-700">
-                    Date of Admission <span className="text-red-700">*</span>
-                  </label>
-                  <DatePicker
-                    name="doa"
-                    selected={selectedDOADate}
-                    onChange={(date) => setSelectedDOADate(date)}
-                    dateFormat="dd/MM/yyyy"
-                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-                    required
-                    showMonthDropdown
-                    showYearDropdown
-                    dropdownMode="select"
-                    isClearable
-                  //showIcon
-                  //toggleCalendarOnIconClick
-                  />
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                  {/* Date of Admission */}
+                  <div className="grid grid-cols-1">
+                    <label className="block mt-2 text-sm font-medium text-gray-700">
+                      Date of Admission <span className="text-red-700">*</span>
+                    </label>
+                    <DatePicker
+                      name="doa"
+                      selected={selectedDOADate}
+                      onChange={(date) => setSelectedDOADate(date)}
+                      dateFormat="dd/MM/yyyy"
+                      className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                      required
+                      showMonthDropdown
+                      showYearDropdown
+                      dropdownMode="select"
+                      isClearable
+                    //showIcon
+                    //toggleCalendarOnIconClick
+                    />
+                  </div>
+
+                  {/* Date of Birth */}
+                  <div className="grid grid-cols-1">
+                    <label className="block mt-2 text-sm font-medium text-gray-700">
+                      Date of Birth <span className="text-red-700">*</span>
+                    </label>
+                    <DatePicker
+                      name="dob"
+                      selected={selectedDOBDate}
+                      onChange={(date) => setSelectedDOBDate(date)}
+                      dateFormat="dd/MM/yyyy"
+                      className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                      required
+                      showMonthDropdown
+                      showYearDropdown
+                      dropdownMode="select"
+                      isClearable
+                    //showIcon
+                    //toggleCalendarOnIconClick
+                    />
+                  </div>
                 </div>
 
                 <div className="flex space-x-3 mb-5" />
@@ -358,7 +385,7 @@ const Edit = () => {
                 {/* Remarks */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700">
-                    Remarks
+                    Reason for Status change
                   </label>
                   <input
                     type="text"
@@ -372,28 +399,8 @@ const Edit = () => {
 
                 <div className="flex space-x-3 mb-5" />
                 <div className="hidden lg:block flex space-x-3 mb-5" />
-
-                {/* Date of Birth */}
-                <div className="grid grid-cols-1">
-                  <label className="block text-sm font-medium text-gray-700">
-                    Date of Birth <span className="text-red-700">*</span>
-                  </label>
-                  <DatePicker
-                    name="dob"
-                    selected={selectedDOBDate}
-                    onChange={(date) => setSelectedDOBDate(date)}
-                    dateFormat="dd/MM/yyyy"
-                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-                    required
-                    showMonthDropdown
-                    showYearDropdown
-                    dropdownMode="select"
-                    isClearable
-                  //showIcon
-                  //toggleCalendarOnIconClick
-                  />
-                </div>
-
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
                 {/* Gender */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700">
@@ -406,7 +413,7 @@ const Edit = () => {
                     className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                     required
                   >
-                    <option value="">Select Gender</option>
+                    <option value=""></option>
                     <option value="Male">Male</option>
                     <option value="Female">Female</option>
                   </select>
@@ -425,9 +432,29 @@ const Edit = () => {
                     className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                     required
                   >
-                    <option value="">Select Status</option>
+                    <option value=""></option>
                     <option value="Single">Single</option>
                     <option value="Married">Married</option>
+                  </select>
+                </div>
+
+                {/* Mother Tongue */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Mother Tongue
+                  </label>
+                  <select
+                    name="motherTongue"
+                    value={student.motherTongue}
+                    onChange={handleChange}
+                    placeholder="Mother Tongue"
+                    className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
+                  >
+                    <option value=""></option>
+                    <option value="Tamil">Tamil</option>
+                    <option value="Urdu">Urdu</option>
+                    <option value="Telugu">Telugu</option>
+                    <option value="English">English</option>
                   </select>
                 </div>
 
@@ -570,7 +597,9 @@ const Edit = () => {
                   //  required
                   />
                 </div>
+              </div>
 
+              <div className="grid mt-5 grid-cols-1 md:grid-cols-4 gap-5">
                 {/* Guardian's Name */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700">
@@ -630,25 +659,13 @@ const Edit = () => {
                   //    required
                   />
                 </div>
-
-                {/* State / District */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-700">
-                    State / District <span className="text-red-700">*</span>
-                  </label>
-                  <input
-                    type="text"
-                    name="district"
-                    value={student.district}
-                    onChange={handleChange}
-                    //  placeholder="Route Name"
-                    className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                    required
-                  />
-                </div>
               </div>
 
-              <div className="grid mt-3 grid-cols-1 md:grid-cols-1 gap-5 ">
+              <div className="flex mt-5 space-x-3 mb-5" />
+              <div className="hidden lg:block flex space-x-3 mb-5" />
+              <div className="hidden lg:block flex space-x-3 mb-5" />
+
+              <div className="grid mt-5 grid-cols-1 md:grid-cols-2 gap-5">
                 {/* Address */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700">
@@ -663,6 +680,39 @@ const Edit = () => {
                     className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                     required
                   />
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                  {/* District */}
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700">
+                      District <span className="text-red-700">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      name="district"
+                      value={student.district}
+                      onChange={handleChange}
+                      //  placeholder="Route Name"
+                      className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
+                      required
+                    />
+                  </div>
+                  {/* State */}
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700">
+                      State <span className="text-red-700">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      name="state"
+                      value={student.state}
+                      onChange={handleChange}
+                      //  placeholder="Route Name"
+                      className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
+                      required
+                    />
+                  </div>
                 </div>
               </div>
 
@@ -728,7 +778,7 @@ const Edit = () => {
                     name="courseId1"
                     value={student.courseId1}
                     onChange={handleChange}
-                //    disabled={true}
+                    //    disabled={true}
                     className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                     required
                   >
@@ -761,13 +811,13 @@ const Edit = () => {
                   {/* Year */}
                   <div>
                     <label className="block text-sm font-medium text-gray-700">
-                      Year <span className="text-red-700">*</span>
+                      Year / Std.<span className="text-red-700">*</span>
                     </label>
                     <input
                       type="number"
                       name="year"
                       value={student.year}
-                  //    disabled={student.year ? true : false}
+                      //    disabled={student.year ? true : false}
                       onChange={handleChange}
                       className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                       required
@@ -784,7 +834,7 @@ const Edit = () => {
                       name="fees1"
                       value={student.fees1}
                       //   value={fees1Val}
-                    //  disabled={student.fees1 ? true : false}
+                      //  disabled={student.fees1 ? true : false}
                       onChange={handleChange}
                       className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                     //    required
@@ -827,7 +877,7 @@ const Edit = () => {
                     name="courseId2"
                     value={student.courseId2}
                     onChange={handleChange}
-                //    disabled={student.courseId2 ? true : false}
+                    //    disabled={student.courseId2 ? true : false}
                     className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                   //    required
                   >
@@ -866,7 +916,7 @@ const Edit = () => {
                     name="fees2"
                     value={student.fees2}
                     //   value={fees2Val}
-                //    disabled={student.fees2 ? true : false}
+                    //    disabled={student.fees2 ? true : false}
                     onChange={handleChange}
                     className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                   //    required
@@ -908,7 +958,7 @@ const Edit = () => {
                     name="courseId3"
                     value={student.courseId3}
                     onChange={handleChange}
-                 //   disabled={student.courseId3 ? true : false}
+                    //   disabled={student.courseId3 ? true : false}
                     className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                   //    required
                   >
@@ -947,7 +997,7 @@ const Edit = () => {
                     name="fees3"
                     value={student.fees3}
                     //  value={fees3Val}
-                 //   disabled={student.fees3 ? true : false}
+                    //   disabled={student.fees3 ? true : false}
                     onChange={handleChange}
                     className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                   //    required
@@ -989,7 +1039,7 @@ const Edit = () => {
                     name="courseId4"
                     value={student.courseId4}
                     onChange={handleChange}
-                 //   disabled={student.courseId4 ? true : false}
+                    //   disabled={student.courseId4 ? true : false}
                     className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                   //    required
                   >
@@ -1028,7 +1078,7 @@ const Edit = () => {
                     name="fees4"
                     value={student.fees4}
                     //  value={fees4Val}
-                  //  disabled={student.fees4 ? true : false}
+                    //  disabled={student.fees4 ? true : false}
                     onChange={handleChange}
                     className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                   //    required
@@ -1070,7 +1120,7 @@ const Edit = () => {
                     name="courseId5"
                     value={student.courseId5}
                     onChange={handleChange}
-                  //  disabled={student.courseId5 ? true : false}
+                    //  disabled={student.courseId5 ? true : false}
                     className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                   //   required
                   >
@@ -1109,7 +1159,7 @@ const Edit = () => {
                     name="fees5"
                     value={student.fees5}
                     //  value={fees5Val}
-                  //  disabled={student.fees5 ? true : false}
+                    //  disabled={student.fees5 ? true : false}
                     onChange={handleChange}
                     className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                   //    required
@@ -1166,7 +1216,7 @@ const Edit = () => {
                   <input
                     type="number"
                     name="hostelFees"
-                  //  disabled={student.hostelFees ? true : false}
+                    //  disabled={student.hostelFees ? true : false}
                     value={student.hostelFees}
                     onChange={handleChange}
                     className="mt-2 p-2 block w-full border border-gray-300 rounded-md"

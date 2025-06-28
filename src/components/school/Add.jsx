@@ -173,19 +173,36 @@ const Add = () => {
                 />
               </div>
 
-              {/* District - State */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700">
-                  District & State <span className="text-red-700">*</span>
-                </label>
-                <input
-                  type="text"
-                  name="district"
-                  onChange={handleChange}
-                  //  placeholder="Insert District / State"
-                  className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-                  required
-                />
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                {/* District */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">
+                    District <span className="text-red-700">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    name="district"
+                    onChange={handleChange}
+                    //  placeholder="Insert District / State"
+                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                    required
+                  />
+                </div>
+
+                {/* State */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">
+                    State <span className="text-red-700">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    name="state"
+                    onChange={handleChange}
+                    //  placeholder="Insert District / State"
+                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                    required
+                  />
+                </div>
               </div>
 
               {/* Contact Number */}

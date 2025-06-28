@@ -72,6 +72,7 @@ const List = () => {
             nameNative: sch.nameNative,
             address: sch.address,
             district: sch.district,
+            state: sch.state,
             active: sch.active,
             supervisorId: sch.supervisorId.supervisorId,
             supervisorName: sch.supervisorId.userId.name,
@@ -95,8 +96,12 @@ const List = () => {
   }, []);
 
   const handleFilter = (e) => {
-    const records = schools.filter((sup) => (
-      sup.code.toLowerCase().includes(e.target.value.toLowerCase())
+    const records = schools.filter((school) => (
+      school.code?.toLowerCase().includes(e.target.value.toLowerCase())
+      || school.name?.toLowerCase().includes(e.target.value.toLowerCase())
+      || school.district?.toLowerCase().includes(e.target.value.toLowerCase())
+      || school.state?.toLowerCase().includes(e.target.value.toLowerCase())
+      || school.active?.toLowerCase().includes(e.target.value.toLowerCase())
     ))
     setFilteredSchools(records)
   }
@@ -108,20 +113,31 @@ const List = () => {
   return (
     <div className="p-5 bg-repeat">
       <div className="text-center">
-        <h3 className="text-2xl font-bold px-5 py-0">Manage Niswans</h3>
+        <h3 className="text-2xl font-bold px-5 py-0 text-gray-600">Manage Niswans</h3>
       </div>
-      <div className="flex justify-between items-center mt-5">
+
+      <div className="flex justify-between items-center mt-5 relative">
         {LinkIcon("/dashboard", "Back")}
-        <input
-          type="text"
-          placeholder="Search By Niswan Code"
-          className="px-4 py-0.5 border rounded shadow-lg"
-          onChange={handleFilter}
-        />
+
+        <div className="w-3/4 lg:w-1/2 rounded flex border shadow-lg rounded-md justify-between items-center relative">
+          <div className={`w-full text-md flex justify-center items-center pl-2 rounded-l-md`}>
+            <input
+              type="text"
+              placeholder="Search"
+              class="w-full px-3 py-0.5 border rounded shadow-md justify-center"
+              onChange={handleFilter}
+            />
+          </div>
+          <div className="p-1 mt-0.5 rounded-md items-center justify-center ">
+            {LinkIcon("#", "Search")}
+          </div>
+        </div>
+
         {user.role === "superadmin" || user.role === "hquser" ?
           LinkIcon("/dashboard/add-school", "Add")
           : null}
       </div>
+
       <div className='mt-6 rounded-lg shadow-lg bg-blue-50'>
         <DataTable columns={columns} data={filteredSchool} pagination highlightOnHover striped responsive conditionalRowStyles={conditionalRowStyles} expandableRows expandableRowsComponent={ExpandedComponent} />
       </div>

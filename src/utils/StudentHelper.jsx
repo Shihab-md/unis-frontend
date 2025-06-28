@@ -15,6 +15,39 @@ export const columnsSelect = [
   },
 ];
 
+export const columnsSelectForAcademic = [
+  {
+    name: "AC Year",
+    selector: (row) => row.acYear.acYear,
+    width: "100px",
+  },
+  {
+    name: "Course",
+    selector: (row) => row.courseId1.name,
+    width: "140px",
+  },
+  {
+    name: "Institute",
+    selector: (row) => row.instituteId1.name,
+    width: "160px",
+  },
+  {
+    name: "Reference #",
+    selector: (row) => row.refNumber1,
+    width: "140px",
+  },
+  {
+    name: "Year",
+    selector: (row) => row.year,
+    width: "60px",
+  },
+  {
+    name: "Fees",
+    selector: (row) => row.fees1,
+    width: "70px",
+  },
+];
+
 export const columns = [
   {
     name: "S No",
@@ -35,9 +68,17 @@ export const columns = [
   },
   {
     name: "Course",
-    selector: (row) => row.course,
+    // selector: (row) => row.course,
     //  sortable: true,
     width: "250px",
+    wrap: true,
+    selector: row => (
+      <div>
+        {row.courses.map((course, i) => (
+          <div key={i}>{course.name + ","}</div>
+        ))}
+      </div>
+    ),
   },
   {
     name: "Father / Mother / Guardian Name",

@@ -3,6 +3,8 @@ import React, { useEffect, useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { getBaseUrl, handleRightClickAndFullScreen, getSpinner, checkAuth, getFormattedDate, showSwalAlert } from '../../utils/CommonHelper';
 import ViewCard from "../dashboard/ViewCard";
+import { columnsSelectForAcademic } from '../../utils/StudentHelper'
+import DataTable from 'react-data-table-component'
 import {
   FaRegTimesCircle
 } from "react-icons/fa";
@@ -37,6 +39,7 @@ const View = () => {
         );
         if (responnse.data.success) {
           const student = responnse.data.student;
+
           const academicResponse = await axios.get(
             (await getBaseUrl()).toString() + `student/${student._id}/${'vieww'}`,
             {
@@ -54,6 +57,7 @@ const View = () => {
             showSwalAlert("Error!", "No academic data Found : " + responnse.data.student.userId.name, "error");
             navigate("/dashboard/students/");
           }
+          //  console.log(student._academics[0].acYear.acYear)
         }
       } catch (error) {
         if (error.response && !error.response.data.success) {
@@ -69,7 +73,7 @@ const View = () => {
   return (
     <>
       {student ? (
-        <div className="max-w-3xl mx-auto mt-2 p-8 rounded-md shadow-lg border">
+        <div className="max-w-5xl mx-auto mt-2 p-5 rounded-md shadow-lg border">
           <div className="flex py-2 px-4 items-center justify-center bg-teal-700 text-white rounded-lg shadow-lg">
             <h2 className="text-xl font-semibold items-center justify-center">Student Details</h2>
             <Link to="/dashboard/students" >
@@ -93,6 +97,9 @@ const View = () => {
                 <ViewCard type="data" text={student.rollNumber} />
                 <ViewCard type="title" text="Name" />
                 <ViewCard type="data" text={student.userId && student.userId.name ? student.userId.name : ""} />
+
+                <div className="flex space-x-3 mb-5" />
+
                 <ViewCard type="title" text="Status" />
                 <ViewCard type="data" text={student.active} />
                 <ViewCard type="title" text="Remarks" />
@@ -108,6 +115,8 @@ const View = () => {
                 <ViewCard type="data" text={student.gender} />
                 <ViewCard type="title" text="Marital Status" />
                 <ViewCard type="data" text={student.maritalStatus} />
+                <ViewCard type="title" text="Mother Tongue" />
+                <ViewCard type="data" text={student.motherTongue} />
                 <ViewCard type="title" text="Blood Group" />
                 <ViewCard type="data" text={student.bloodGroup} />
                 <ViewCard type="title" text="Identification Mark 1" />
@@ -142,13 +151,17 @@ const View = () => {
 
                 <ViewCard type="title" text="Address" />
                 <ViewCard type="data" text={student.address} />
-                <ViewCard type="title" text="State / District" />
-                <ViewCard type="data" text={student.district} />
+                <ViewCard type="title" text="State & District" />
+                <ViewCard type="data" text={student.district + ", " + student.state} />
 
                 <div className="flex space-x-3 mb-5" />
 
+                <div className='mb-5 border rounded-md shadow-lg'>
+                  <DataTable columns={columnsSelectForAcademic} data={student._academics} highlightOnHover striped />
+                </div>
+
                 <ViewCard type="title" text="Academic Year" />
-                <ViewCard type="data" text={academic.acYear && academic.acYear.acYear ? academic.acYear.acYear : ""} />
+                <ViewCard type="data" text={student._academics.acYear && student._academics.acYear.acYear ? student._academics.acYear.acYear : ""} />
 
                 <div className="flex space-x-3 mb-5" />
 
@@ -159,7 +172,7 @@ const View = () => {
                 <ViewCard type="data" text={academic.courseId1 && academic.courseId1.name ? academic.courseId1.name : ""} />
                 <ViewCard type="title" text="Reference Number " />
                 <ViewCard type="data" text={academic.refNumber1} />
-                <ViewCard type="title" text="Year " />
+                <ViewCard type="title" text="Year / Std." />
                 <ViewCard type="data" text={academic.year} />
                 <ViewCard type="title" text="Fees " />
                 <ViewCard type="data" text={academic.fees1} />

@@ -88,12 +88,21 @@ const List = () => {
       </div>
       <div className="flex justify-between items-center mt-5">
         {LinkIcon("/dashboard", "Back")}
-        <input
-          type="text"
-          placeholder="Search By Sanadh No."
-          className="px-4 py-0.5 border rounded shadow-lg"
-          onChange={handleFilter}
-        />
+
+        <div className="w-3/4 lg:w-1/2 rounded flex border shadow-lg rounded-md justify-between items-center relative">
+          <div className={`w-full text-md flex justify-center items-center pl-2 rounded-l-md`}>
+            <input
+              type="text"
+              placeholder="Search"
+              class="w-full px-3 py-0.5 border rounded shadow-md justify-center"
+              onChange={handleFilter}
+            />
+          </div>
+          <div className="p-1 mt-0.5 rounded-md items-center justify-center ">
+            {LinkIcon("#", "Search")}
+          </div>
+        </div>
+
         {LinkIcon("/dashboard/add-certificate", "Add")}
       </div>
       <div className='mt-6 rounded-lg shadow-lg'>

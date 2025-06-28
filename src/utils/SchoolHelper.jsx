@@ -40,7 +40,7 @@ export const columns = [
   },
   {
     name: "District & State",
-    selector: (row) => row.district,
+    selector: (row) => row.district + ", " + row.state,
     //  sortable: true,
     width: "250px",
   },
@@ -148,7 +148,7 @@ export const SchoolButtons = ({ Id, onSchoolDelete }) => {
           showSwalAlert("Error!", error.response.data.error, "error");
         }
       }
-  //  } else if (result.dismiss === Swal.DismissReason.cancel) {
+      //  } else if (result.dismiss === Swal.DismissReason.cancel) {
       // Swal.fire('Cancelled', 'Your file is safe!', 'error');
       // Handle cancellation logic (optional)
     }

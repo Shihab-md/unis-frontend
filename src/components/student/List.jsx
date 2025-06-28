@@ -217,7 +217,7 @@ const List = () => {
         setSchools(schools)
         let inputArray = [];
         schools.map((school) => (
-          inputOptions[school._id] = school.code + " : " + school.nameEnglish + ", " + school.district
+          inputOptions[school._id] = school.code + " : " + school.nameEnglish + ", " + school.district + ", " + school.state
         ))
 
         setInputOptions(inputOptions);
@@ -300,8 +300,10 @@ const List = () => {
               schoolName: student.schoolId.nameEnglish,
               rollNumber: student.rollNumber,
               district: student.district,
+              state: student.state,
               active: student.active,
               course: student.courses && student.courses.length > 0 ? student.courses.map(course => course.name ? course.name + ", " : "") : "",
+              courses: student.courses && student.courses.length > 0 ? student.courses : null,
               fatherName: student.fatherName ? student.fatherName : student.motherName ? student.motherName : student.guardianName ? student.guardianName : "",
               action: (<StudentButtons Id={student._id} onStudentDelete={onStudentDelete} />),
             }));
@@ -345,8 +347,8 @@ const List = () => {
 
   const handleFilter = (e) => {
     const records = students.filter((sup) => (
-      sup.course.toLowerCase().includes(e.target.value.toLowerCase())
-      || sup.name.toLowerCase().includes(e.target.value.toLowerCase())
+      sup.course?.toLowerCase().includes(e.target.value.toLowerCase())
+      || sup.name?.toLowerCase().includes(e.target.value.toLowerCase())
     ))
     setFilteredStudents(records)
   }
@@ -360,7 +362,7 @@ const List = () => {
   }
 
   return (
-    <div className="mt-3 p-5">
+    <div className="lg:mt-3 p-5">
       <div className="text-center">
         <h3 className="text-xl lg:text-2xl font-bold px-5 py-0 text-gray-600">Manage Students</h3>
         <h3 className="text-md lg:text-xl mt-3 font-bold text-gray-500 px-5 py-0">{localStorage.getItem('schoolName')}</h3>
@@ -368,14 +370,18 @@ const List = () => {
       <div className="flex justify-between items-center mt-5 relative">
         {LinkIcon("/dashboard", "Back")}
 
-        <div className="flex ml-3 mr-3 w-full lg:w-1/2 justify-end relative">
-          <input
-            type="text"
-            placeholder="Search"
-            class="px-3 py-0.5 w-full lg:w-1/2 border rounded shadow-lg justify-end"
-            onChange={handleSearch}
-          />
-          <img src="/search.jpg" class="absolute rounded w-5 m-1" alt="Search Icon" />
+        <div className="w-3/4 lg:w-1/2 rounded flex border shadow-lg rounded-md justify-between items-center relative">
+          <div className={`w-full text-md flex justify-center items-center pl-2 rounded-l-md`}>
+            <input
+              type="text"
+              placeholder="Search"
+              class="w-full px-3 py-0.5 border rounded shadow-md justify-center"
+              onChange={handleSearch}
+            />
+          </div>
+          <div className="p-1 mt-0.5 rounded-md items-center justify-center ">
+            {LinkIcon("#", "Search")}
+          </div>
         </div>
 
         {/*  <img src="/filter.jpg" class="rounded border border-green-500 w-8 p-1 mr-3 shadow-lg bg-white"/>*/}
@@ -383,14 +389,14 @@ const List = () => {
         {/* <div class="mr-3" onClick={openFilterPopup}>{LinkIcon("#", "Filter")}</div> */}
 
         {LinkIcon("/dashboard/add-student", "Add")}
-        {user.role === "superadmin" || user.role === "hquser" ?
-          <div className="hidden lg:block" onClick={handleImport}>{LinkIcon("#", "Import")}</div> : null}
+        {/* {user.role === "superadmin" || user.role === "hquser" ?
+          <div className="hidden lg:block" onClick={handleImport}>{LinkIcon("#", "Import")}</div> : null} */}
       </div>
 
 
 
       <div className='mt-6 rounded-lg shadow-lg'>
-        <DataTable columns={columns} data={filteredStudent} highlightOnHover striped responsive conditionalRowStyles={conditionalRowStyles} />
+        <DataTable columns={columns} data={filteredStudent} showGridlines highlightOnHover striped responsive conditionalRowStyles={conditionalRowStyles} />
       </div>
     </div>
   )
