@@ -60,7 +60,7 @@ export const columnsSelectForAcademic = [
       </div> : null}
 
     </div>),
-    width: "750px",
+    width: "700px",
     wrap: true,
   },
 ];
