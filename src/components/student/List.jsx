@@ -296,8 +296,8 @@ const List = () => {
             const data = await responnse.data.students.map((student) => ({
               _id: student._id,
               sno: sno++,
-              name: student.userId.name,
-              schoolName: student.schoolId.nameEnglish,
+              name: student.userId?.name,
+              schoolName: student.schoolId?.nameEnglish,
               rollNumber: student.rollNumber,
               district: student.district,
               state: student.state,
