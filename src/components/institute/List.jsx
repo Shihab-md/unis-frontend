@@ -71,7 +71,9 @@ const List = () => {
 
   const handleFilter = (e) => {
     const records = institutes.filter((sup) => (
-      sup.name.toLowerCase().includes(e.target.value.toLowerCase())
+      sup.iCode?.toLowerCase().includes(e.target.value.toLowerCase())
+      || sup.name?.toLowerCase().includes(e.target.value.toLowerCase())
+      || sup.type?.toLowerCase().includes(e.target.value.toLowerCase())
     ))
     setFilteredInstitutes(records)
   }
@@ -83,12 +85,12 @@ const List = () => {
   return (
     <div className="mt-3 p-5">
       <div className="text-center">
-        <h3 className="text-2xl font-bold px-5 py-0">Manage Institutes</h3>
+        <h3 className="text-2xl font-bold px-5 py-0 text-gray-600">Manage Institutes</h3>
       </div>
       <div className="flex justify-between items-center mt-5">
         {LinkIcon("/dashboard/masters", "Back")}
 
-        <div className="w-3/4 lg:w-1/2 rounded flex border shadow-lg rounded-md justify-between items-center relative">
+        <div className="w-3/4 lg:w-1/2 rounded flex border shadow-lg rounded-md justify-between items-center relative bg-[url(/bg-img.jpg)]">
           <div className={`w-full text-md flex justify-center items-center pl-2 rounded-l-md`}>
             <input
               type="text"

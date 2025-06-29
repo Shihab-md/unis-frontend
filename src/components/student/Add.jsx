@@ -681,21 +681,21 @@ const Add = () => {
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                {/* Year */}
+                {/* Year1 */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700">
                     Year / Std. <span className="text-red-700">*</span>
                   </label>
                   <input
                     type="number"
-                    name="year"
+                    name="year1"
                     onChange={handleChange}
                     className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                     required
                   />
                 </div>
 
-                {/* Fees */}
+                {/* Fees1 */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700">
                     Fees
@@ -772,20 +772,36 @@ const Add = () => {
                 />
               </div>
 
-              {/* Fees 2 */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700">
-                  Fees
-                </label>
-                <input
-                  type="number"
-                  name="fees2"
-                  value={fees2Val}
-                  disabled={true}
-                  onChange={handleChange}
-                  className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                //    required
-                />
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                {/* Year2 */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Std. <span className="text-red-700">*</span>
+                  </label>
+                  <input
+                    type="number"
+                    name="year2"
+                    onChange={handleChange}
+                    className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
+                    required
+                  />
+                </div>
+
+                {/* Fees 2 */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Fees
+                  </label>
+                  <input
+                    type="number"
+                    name="fees2"
+                    value={fees2Val}
+                    disabled={true}
+                    onChange={handleChange}
+                    className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
+                  //    required
+                  />
+                </div>
               </div>
 
               <div className="flex space-x-3 mb-5" />
@@ -848,20 +864,36 @@ const Add = () => {
                 />
               </div>
 
-              {/* Fees 3 */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700">
-                  Fees
-                </label>
-                <input
-                  type="number"
-                  name="fees3"
-                  value={fees3Val}
-                  disabled={true}
-                  onChange={handleChange}
-                  className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                //    required
-                />
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                {/* Year3 */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Year <span className="text-red-700">*</span>
+                  </label>
+                  <input
+                    type="number"
+                    name="year3"
+                    onChange={handleChange}
+                    className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
+                    required
+                  />
+                </div>
+
+                {/* Fees 3 */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Fees
+                  </label>
+                  <input
+                    type="number"
+                    name="fees3"
+                    value={fees3Val}
+                    disabled={true}
+                    onChange={handleChange}
+                    className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
+                  //    required
+                  />
+                </div>
               </div>
 
               <div className="flex space-x-3 mb-5" />
@@ -924,20 +956,36 @@ const Add = () => {
                 />
               </div>
 
-              {/* Fees 4 */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700">
-                  Fees
-                </label>
-                <input
-                  type="number"
-                  name="fees4"
-                  value={fees4Val}
-                  disabled={true}
-                  onChange={handleChange}
-                  className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                //    required
-                />
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                {/* Year4 */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Year <span className="text-red-700">*</span>
+                  </label>
+                  <input
+                    type="number"
+                    name="year4"
+                    onChange={handleChange}
+                    className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
+                    required
+                  />
+                </div>
+
+                {/* Fees 4 */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Fees
+                  </label>
+                  <input
+                    type="number"
+                    name="fees4"
+                    value={fees4Val}
+                    disabled={true}
+                    onChange={handleChange}
+                    className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
+                  //    required
+                  />
+                </div>
               </div>
 
               <div className="flex space-x-3 mb-5" />
@@ -1000,20 +1048,36 @@ const Add = () => {
                 />
               </div>
 
-              {/* Fees 5 */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700">
-                  Fees
-                </label>
-                <input
-                  type="number"
-                  name="fees5"
-                  value={fees5Val}
-                  disabled={true}
-                  onChange={handleChange}
-                  className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                //    required
-                />
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                {/* Year5 */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Year <span className="text-red-700">*</span>
+                  </label>
+                  <input
+                    type="number"
+                    name="year5"
+                    onChange={handleChange}
+                    className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
+                    required
+                  />
+                </div>
+
+                {/* Fees 5 */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Fees
+                  </label>
+                  <input
+                    type="number"
+                    name="fees5"
+                    value={fees5Val}
+                    disabled={true}
+                    onChange={handleChange}
+                    className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
+                  //    required
+                  />
+                </div>
               </div>
 
               <div className="flex space-x-3 mb-5" />

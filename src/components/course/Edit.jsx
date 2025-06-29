@@ -77,6 +77,7 @@ const Edit = () => {
             type: course.type,
             remarks: course.remarks,
             fees: course.fees,
+            years: course.years,
 
             subject1: course.subject1,
             subject1MaxMark: course.subject1MaxMark,
@@ -168,7 +169,7 @@ const Edit = () => {
           </div>
           <form onSubmit={handleSubmit} autocomplete="off">
             <div className="py-2 px-4 border mt-5 mb-3 items-center justify-center rounded-lg shadow-lg bg-white">
-              <div className="grid mt-3 grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid mt-3 grid-cols-1 md:grid-cols-2 gap-4 gap-y-7">
 
                 {/* Type */}
                 <div>
@@ -193,7 +194,7 @@ const Edit = () => {
                   </select>
                 </div>
 
-                <div className="flex space-x-3 mb-5" />
+                <div className="hidden lg:block flex space-x-3 mb-5" />
 
                 {/* Code */}
                 <div>
@@ -241,20 +242,40 @@ const Edit = () => {
                   />
                 </div>
 
-                {/* Fees */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-700">
-                    Fees <span className="text-red-700">*</span>
-                  </label>
-                  <input
-                    type="number"
-                    name="fees"
-                    value={course.fees}
-                    onChange={handleChange}
-                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-                    required
-                  />
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 gap-y-7">
+                  {/* Fees */}
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700">
+                      Fees <span className="text-red-700">*</span>
+                    </label>
+                    <input
+                      type="number"
+                      name="fees"
+                      value={course.fees}
+                      onChange={handleChange}
+                      className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                      required
+                    />
+                  </div>
+
+                  {/* Years */}
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700">
+                      Years <span className="text-red-700">*</span>
+                    </label>
+                    <input
+                      type="number"
+                      name="years"
+                      value={course.years}
+                      onChange={handleChange}
+                      className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                      required
+                    />
+                  </div>
                 </div>
+
+                <div className="flex space-x-3 mb-5" />
+                <div className="hidden lg:block flex space-x-3 mb-5" />
 
                 {/* Subject-1 */}
                 <div>

@@ -2,7 +2,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { getBaseUrl, showSwalAlert, showConfirmationSwalAlert } from '../utils/CommonHelper';
 import {
-  FaEye,
+  FaEye, FaUserCheck,
   FaEdit,
   FaTrashAlt,
 } from "react-icons/fa";
@@ -17,34 +17,51 @@ export const columnsSelect = [
 
 export const columnsSelectForAcademic = [
   {
-    name: "AC Year",
+    name: "Aademic Year",
     selector: (row) => row.acYear.acYear,
-    width: "100px",
+    width: "120px",
   },
   {
-    name: "Course",
-    selector: (row) => row.courseId1.name,
-    width: "140px",
-  },
-  {
-    name: "Institute",
-    selector: (row) => row.instituteId1.name,
-    width: "160px",
-  },
-  {
-    name: "Reference #",
-    selector: (row) => row.refNumber1,
-    width: "140px",
-  },
-  {
-    name: "Year",
-    selector: (row) => row.year,
-    width: "60px",
-  },
-  {
-    name: "Fees",
-    selector: (row) => row.fees1,
-    width: "70px",
+    name: "Course Details",
+    selector: (row) => (<div>
+      {row.courseId1 ? <div className="mt-2">
+        <p className='text-md font-bold text-pink-500'>Deeniyath Education</p>
+        <p>{row.courseId1?.name + "  |  " + row.instituteId1?.name}</p>
+        <p>{"Ref. # : " + row.refNumber1 + "  |  " + "Year : " + row.year1 + "  |  "
+          + "Fees : " + row.fees1 + "  |  " + "Status : " + row.status1}.</p>
+      </div> : null}
+
+      {row.courseId2 ? <div className="mt-3">
+        <p className='text-md font-bold text-pink-500'>School Education</p>
+        <p>{row.courseId2?.name + "  |  " + row.instituteId2?.name}</p>
+        <p>{"Ref. # : " + row.refNumber2 + "  |  " + "Year : " + row.year2 + "  |  "
+          + "Fees : " + row.fees2 + "  |  " + "Status : " + row.status2}.</p>
+      </div> : null}
+
+      {row.courseId3 ? <div className="mt-3">
+        <p className='text-md font-bold text-pink-500'>College Education</p>
+        <p>{row.courseId3?.name + "  |  " + row.instituteId3?.name}</p>
+        <p>{"Ref. # : " + row.refNumber3 + "  |  " + "Year : " + row.year3 + "  |  "
+          + "Fees : " + row.fees3 + "  |  " + "Status : " + row.status3}.</p>
+      </div> : null}
+
+      {row.courseId4 ? <div className="mt-3">
+        <p className='text-md font-bold text-pink-500'>Islamic Home Science</p>
+        <p>{row.courseId4?.name + "  |  " + row.instituteId4?.name}</p>
+        <p>{"Ref. # : " + row.refNumber4 + "  |  " + "Year : " + row.year4 + "  |  "
+          + "Fees : " + row.fees4 + "  |  " + "Status : " + row.status4}.</p>
+      </div> : null}
+
+      {row.courseId5 ? <div className="mt-3 mb-3">
+        <p className='text-md font-bold text-pink-500'>Vocational Course</p>
+        <p>{row.courseId5?.name + "  |  " + row.instituteId5?.name}</p>
+        <p>{"Ref. # : " + row.refNumber5 + "  |  " + "Year : " + row.year5 + "  |  "
+          + "Fees : " + row.fees5 + "  |  " + "Status : " + row.status5}.</p>
+      </div> : null}
+
+    </div>),
+    width: "750px",
+    wrap: true,
   },
 ];
 
@@ -73,7 +90,7 @@ export const columns = [
     width: "250px",
     wrap: true,
     selector: row => (
-      <div>
+      <div className="p-1">
         {row.courses.map((course, i) => (
           <div key={i}>{course.name + ","}</div>
         ))}
@@ -225,6 +242,12 @@ export const StudentButtons = ({ Id, onStudentDelete }) => {
         onClick={() => navigate(`/dashboard/students/${Id}`)}
       >
         <FaEye />
+      </button>
+      <button
+        className="px-3 py-1 bg-purple-500 text-white rounded-sm text-shadow-lg"
+        onClick={() => navigate(`/dashboard/students/promote/${Id}`)}
+      >
+        <FaUserCheck />
       </button>
       <button
         className="px-3 py-1 bg-blue-600 text-white rounded-sm text-shadow-lg"

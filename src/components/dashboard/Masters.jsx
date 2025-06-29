@@ -46,7 +46,7 @@ const Masters = () => {
   return (
     <div className="p-7 pt-3 items-center justify-center rounded-lg h-9/10">
       <h5 className="p-1 text-center font-semibold lg:text-xl text-gray-700 mt-14">ٱللَّٰهُمَّ ربِّ زِدْنِي عِلْماً</h5>
-      <h5 className="p-1 mt-1 text-center">Welcome, {user.name}</h5>
+      <h5 className="p-1 mt-1 text-center text-gray-600">Welcome, {user.name}</h5>
       <h5 className="text-2xl mt-1 mb-3 font-bold capitalize text-center text-gray-500 text-shadow-lg">{user.role} Dashboard</h5>
       <h5 className="text-xl mt-2 mb-3 font-bold capitalize text-center text-gray-500 text-shadow-lg">Masters</h5>
 

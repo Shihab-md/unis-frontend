@@ -23,7 +23,8 @@ export const columns = [
     name: "Name",
     selector: (row) => row.name,
     sortable: true,
-    width: "340px",
+    width: "320px",
+    wrap: true,
   },
   {
     name: "Education Type",
@@ -34,11 +35,17 @@ export const columns = [
   {
     name: "Remarks",
     selector: (row) => row.remarks,
-    width: "280px",
+    width: "250px",
+    wrap: true,
   },
   {
     name: "Fees",
     selector: (row) => row.fees,
+    width: "100px",
+  },
+  {
+    name: "Years",
+    selector: (row) => row.years,
     width: "100px",
   },
   {

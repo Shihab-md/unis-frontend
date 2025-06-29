@@ -13,7 +13,7 @@ import {
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
-const Edit = () => {
+const Promote = () => {
 
   // To prevent right-click AND For FULL screen view.
   handleRightClickAndFullScreen();
@@ -41,7 +41,7 @@ const Edit = () => {
   useEffect(() => {
 
     // Authenticate the User.
-    if (checkAuth("studentEdit") === "NO") {
+    if (checkAuth("studentPromote") === "NO") {
       showSwalAlert("Error!", "User Authorization Failed!", "error");
       navigate("/login");
     }
@@ -109,28 +109,6 @@ const Edit = () => {
             name: student.userId && student.userId.name ? student.userId.name : "",
             schoolId: student.schoolId && student.schoolId._id ? student.schoolId._id : "",
             rollNumber: student.rollNumber,
-            //  doa: student.doa,
-            //  dob: student.dob,
-            gender: student.gender,
-            maritalStatus: student.maritalStatus,
-            motherTongue: student.motherTongue,
-            bloodGroup: student.bloodGroup,
-            idMark1: student.idMark1,
-            idMark2: student.idMark2,
-
-            fatherName: student.fatherName,
-            fatherNumber: student.fatherNumber,
-            fatherOccupation: student.fatherOccupation,
-            motherName: student.motherName,
-            motherNumber: student.motherNumber,
-            motherOccupation: student.motherOccupation,
-            guardianName: student.guardianName,
-            guardianNumber: student.guardianNumber,
-            guardianOccupation: student.guardianOccupation,
-            guardianRelation: student.guardianRelation,
-            address: student.address,
-            district: student.district,
-            state: student.state,
 
             active: student.active,
             remarks: student.remarks,
@@ -146,6 +124,7 @@ const Edit = () => {
             courseId1: academic.courseId1 && academic.courseId1._id ? academic.courseId1._id : null,
             refNumber1: academic.refNumber1,
             year1: academic.year1,
+            status1: academic.status1,
             fees1: academic.fees1,
             discount1: academic.discount1,
 
@@ -153,6 +132,7 @@ const Edit = () => {
             courseId2: academic.courseId2 && academic.courseId2._id ? academic.courseId2._id : null,
             refNumber2: academic.refNumber2,
             year2: academic.year2,
+            status2: academic.status2,
             fees2: academic.fees2,
             discount2: academic.discount2,
 
@@ -160,6 +140,7 @@ const Edit = () => {
             courseId3: academic.courseId3 && academic.courseId3._id ? academic.courseId3._id : null,
             refNumber3: academic.refNumber3,
             year3: academic.year3,
+            status3: academic.status3,
             fees3: academic.fees3,
             discount3: academic.discount3,
 
@@ -167,6 +148,7 @@ const Edit = () => {
             courseId4: academic.courseId4 && academic.courseId4._id ? academic.courseId4._id : null,
             refNumber4: academic.refNumber4,
             year4: academic.year4,
+            status4: academic.status4,
             fees4: academic.fees4,
             discount4: academic.discount4,
 
@@ -174,6 +156,7 @@ const Edit = () => {
             courseId5: academic.courseId5 && academic.courseId5._id ? academic.courseId5._id : null,
             refNumber5: academic.refNumber5,
             year5: academic.year5,
+            status5: academic.status5,
             fees5: academic.fees5,
             discount5: academic.discount5,
 
@@ -318,50 +301,6 @@ const Edit = () => {
                   />
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                  {/* Date of Admission */}
-                  <div className="grid grid-cols-1">
-                    <label className="block mt-2 text-sm font-medium text-gray-700">
-                      Date of Admission <span className="text-red-700">*</span>
-                    </label>
-                    <DatePicker
-                      name="doa"
-                      selected={selectedDOADate}
-                      onChange={(date) => setSelectedDOADate(date)}
-                      dateFormat="dd/MM/yyyy"
-                      className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-                      required
-                      showMonthDropdown
-                      showYearDropdown
-                      dropdownMode="select"
-                      isClearable
-                    //showIcon
-                    //toggleCalendarOnIconClick
-                    />
-                  </div>
-
-                  {/* Date of Birth */}
-                  <div className="grid grid-cols-1">
-                    <label className="block mt-2 text-sm font-medium text-gray-700">
-                      Date of Birth <span className="text-red-700">*</span>
-                    </label>
-                    <DatePicker
-                      name="dob"
-                      selected={selectedDOBDate}
-                      onChange={(date) => setSelectedDOBDate(date)}
-                      dateFormat="dd/MM/yyyy"
-                      className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-                      required
-                      showMonthDropdown
-                      showYearDropdown
-                      dropdownMode="select"
-                      isClearable
-                    //showIcon
-                    //toggleCalendarOnIconClick
-                    />
-                  </div>
-                </div>
-
                 <div className="flex space-x-3 mb-5" />
                 <div className="hidden lg:block flex space-x-3 mb-5" />
 
@@ -403,321 +342,6 @@ const Edit = () => {
 
                 <div className="flex space-x-3 mb-5" />
                 <div className="hidden lg:block flex space-x-3 mb-5" />
-              </div>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-                {/* Gender */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-700">
-                    Gender <span className="text-red-700">*</span>
-                  </label>
-                  <select
-                    name="gender"
-                    value={student.gender}
-                    onChange={handleChange}
-                    className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                    required
-                  >
-                    <option value=""></option>
-                    <option value="Male">Male</option>
-                    <option value="Female">Female</option>
-                  </select>
-                </div>
-
-                {/* Marital Status */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-700">
-                    Marital Status <span className="text-red-700">*</span>
-                  </label>
-                  <select
-                    name="maritalStatus"
-                    value={student.maritalStatus}
-                    onChange={handleChange}
-                    placeholder="Marital Status"
-                    className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                    required
-                  >
-                    <option value=""></option>
-                    <option value="Single">Single</option>
-                    <option value="Married">Married</option>
-                  </select>
-                </div>
-
-                {/* Mother Tongue */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-700">
-                    Mother Tongue
-                  </label>
-                  <select
-                    name="motherTongue"
-                    value={student.motherTongue}
-                    onChange={handleChange}
-                    placeholder="Mother Tongue"
-                    className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                  >
-                    <option value=""></option>
-                    <option value="Tamil">Tamil</option>
-                    <option value="Urdu">Urdu</option>
-                    <option value="Telugu">Telugu</option>
-                    <option value="English">English</option>
-                  </select>
-                </div>
-
-                {/* Blood Group */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-700">
-                    Blood Group
-                  </label>
-                  <input
-                    type="text"
-                    name="bloodGroup"
-                    value={student.bloodGroup}
-                    onChange={handleChange}
-                    className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                  //    required
-                  />
-                </div>
-
-                {/* Identification Mark-1 */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-700">
-                    Identification Mark-1 <span className="text-red-700">*</span>
-                  </label>
-                  <input
-                    type="text"
-                    name="idMark1"
-                    value={student.idMark1}
-                    onChange={handleChange}
-                    className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                    required
-                  />
-                </div>
-
-                {/* Identification Mark-2 */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-700">
-                    Identification Mark-2
-                  </label>
-                  <input
-                    type="text"
-                    name="idMark2"
-                    value={student.idMark2}
-                    onChange={handleChange}
-                    className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                  //    required
-                  />
-                </div>
-
-                <div className="flex space-x-3 mb-5" />
-                <div className="hidden lg:block flex space-x-3 mb-5" />
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-                {/* Father's Name */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-700">
-                    Father's Name
-                  </label>
-                  <input
-                    type="text"
-                    name="fatherName"
-                    value={student.fatherName}
-                    onChange={handleChange}
-                    className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                  //  required
-                  />
-                </div>
-
-                {/* Father's Number */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-700">
-                    Father's Number
-                  </label>
-                  <input
-                    type="number"
-                    name="fatherNumber"
-                    value={student.fatherNumber}
-                    onChange={handleChange}
-                    className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                  //  required
-                  />
-                </div>
-
-                {/* Father's Occupation */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-700">
-                    Father's Occupation
-                  </label>
-                  <input
-                    type="text"
-                    name="fatherOccupation"
-                    value={student.fatherOccupation}
-                    onChange={handleChange}
-                    className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                  //  required
-                  />
-                </div>
-
-                {/* Mother's Name */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-700">
-                    Mother's Name
-                  </label>
-                  <input
-                    type="text"
-                    name="motherName"
-                    value={student.motherName}
-                    onChange={handleChange}
-                    className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                  //    required
-                  />
-                </div>
-
-                {/* Mother's Number */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-700">
-                    Mother's Number
-                  </label>
-                  <input
-                    type="number"
-                    name="motherNumber"
-                    value={student.motherNumber}
-                    onChange={handleChange}
-                    className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                  //    required
-                  />
-                </div>
-
-                {/* Mother's Occupation */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-700">
-                    Mother's Occupation
-                  </label>
-                  <input
-                    type="text"
-                    name="motherOccupation"
-                    value={student.motherOccupation}
-                    onChange={handleChange}
-                    className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                  //  required
-                  />
-                </div>
-              </div>
-
-              <div className="grid mt-5 grid-cols-1 md:grid-cols-4 gap-5">
-                {/* Guardian's Name */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-700">
-                    Guardian's Name
-                  </label>
-                  <input
-                    type="text"
-                    name="guardianName"
-                    value={student.guardianName}
-                    onChange={handleChange}
-                    className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                  //    required
-                  />
-                </div>
-
-                {/* Guardian's Number */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-700">
-                    Guardian's Number
-                  </label>
-                  <input
-                    type="number"
-                    name="guardianNumber"
-                    value={student.guardianNumber}
-                    onChange={handleChange}
-                    className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                  //    required
-                  />
-                </div>
-
-                {/* Guardian's Occupation */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-700">
-                    Guardian's Occupation
-                  </label>
-                  <input
-                    type="text"
-                    name="guardianOccupation"
-                    value={student.guardianOccupation}
-                    onChange={handleChange}
-                    className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                  //  required
-                  />
-                </div>
-
-                {/* Guardian's Relationship */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-700">
-                    Guardian's Relationship
-                  </label>
-                  <input
-                    type="text"
-                    name="guardianRelation"
-                    value={student.guardianRelation}
-                    onChange={handleChange}
-                    className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                  //    required
-                  />
-                </div>
-              </div>
-
-              <div className="flex mt-5 space-x-3 mb-5" />
-              <div className="hidden lg:block flex space-x-3 mb-5" />
-              <div className="hidden lg:block flex space-x-3 mb-5" />
-
-              <div className="grid mt-5 grid-cols-1 md:grid-cols-2 gap-5">
-                {/* Address */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-700">
-                    Address <span className="text-red-700">*</span>
-                  </label>
-                  <input
-                    type="text"
-                    name="address"
-                    value={student.address}
-                    onChange={handleChange}
-                    //  placeholder="Address"
-                    className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                    required
-                  />
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                  {/* District */}
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700">
-                      District <span className="text-red-700">*</span>
-                    </label>
-                    <input
-                      type="text"
-                      name="district"
-                      value={student.district}
-                      onChange={handleChange}
-                      //  placeholder="Route Name"
-                      className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                      required
-                    />
-                  </div>
-                  {/* State */}
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700">
-                      State <span className="text-red-700">*</span>
-                    </label>
-                    <input
-                      type="text"
-                      name="state"
-                      value={student.state}
-                      onChange={handleChange}
-                      //  placeholder="Route Name"
-                      className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                      required
-                    />
-                  </div>
-                </div>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
@@ -1303,21 +927,6 @@ const Edit = () => {
                 <div className="flex space-x-3 mb-5" />
                 <div className="hidden lg:block flex space-x-3 mb-5" />
 
-                {/* Image Upload */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-700">
-                    Update Image
-                  </label>
-                  <input
-                    type="file"
-                    name="file"
-                    onChange={handleChange}
-                    placeholder="Upload Image"
-                    accept="image/*"
-                    className="mt-1 p-2 mb-5 block w-full border border-gray-300 rounded-md"
-                  />
-                </div>
-
               </div>
             </div>
             <button
@@ -1335,4 +944,4 @@ const Edit = () => {
   );
 };
 
-export default Edit;
+export default Promote;

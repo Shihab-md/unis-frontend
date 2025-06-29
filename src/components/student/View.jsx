@@ -154,13 +154,14 @@ const View = () => {
                 <ViewCard type="title" text="State & District" />
                 <ViewCard type="data" text={student.district + ", " + student.state} />
 
-                <div className="flex space-x-3 mb-5" />
+                <div className="flex space-x-3 mb-7" />
 
-                <div className='mb-5 border rounded-md shadow-lg'>
-                  <DataTable columns={columnsSelectForAcademic} data={student._academics} highlightOnHover striped />
+                <ViewCard type="header" text="Academic Details" />
+                <div className='mb-3 border rounded-md  p-0'>
+                  <DataTable className="p-0" columns={columnsSelectForAcademic} data={student._academics} highlightOnHover striped />
                 </div>
 
-                <ViewCard type="title" text="Academic Year" />
+            {/**    <ViewCard type="title" text="Academic Year" />
                 <ViewCard type="data" text={student._academics.acYear && student._academics.acYear.acYear ? student._academics.acYear.acYear : ""} />
 
                 <div className="flex space-x-3 mb-5" />
@@ -179,7 +180,7 @@ const View = () => {
                 {/*<ViewCard type="title" text="Discount " />
                 <ViewCard type="data" text={academic.discount1} />
                 <ViewCard type="title" text="Final Fees " />
-                <ViewCard type="data" text={academic.finalFees1} /> */}
+                <ViewCard type="data" text={academic.finalFees1} /> 
 
                 <div className="flex space-x-3 mb-5" />
 
@@ -195,7 +196,7 @@ const View = () => {
                 {/* <ViewCard type="title" text="Discount " />
                 <ViewCard type="data" text={academic.discount2} />
                 <ViewCard type="title" text="Final Fees " />
-                <ViewCard type="data" text={academic.finalFees2} /> */}
+                <ViewCard type="data" text={academic.finalFees2} /> 
 
                 <div className="flex space-x-3 mb-5" />
 
@@ -211,11 +212,11 @@ const View = () => {
                 {/* <ViewCard type="title" text="Discount " />
                 <ViewCard type="data" text={academic.discount3} />
                 <ViewCard type="title" text="Final Fees " />
-                <ViewCard type="data" text={academic.finalFees3} /> */}
+                <ViewCard type="data" text={academic.finalFees3} /> 
 
                 <div className="flex space-x-3 mb-5" />
 
-                <ViewCard type="header" text="Islamic Home Sceince" />
+                <ViewCard type="header" text="Islamic Home Science" />
                 <ViewCard type="title" text="Institute Name" />
                 <ViewCard type="data" text={academic.instituteId4 && academic.instituteId4.name ? academic.instituteId4.name : ""} />
                 <ViewCard type="title" text="Course Name " />
@@ -227,7 +228,7 @@ const View = () => {
                 {/*  <ViewCard type="title" text="Discount " />
                 <ViewCard type="data" text={academic.discount4} />
                 <ViewCard type="title" text="Final Fees " />
-                <ViewCard type="data" text={academic.finalFees4} /> */}
+                <ViewCard type="data" text={academic.finalFees4} /> 
 
                 <div className="flex space-x-3 mb-5" />
 

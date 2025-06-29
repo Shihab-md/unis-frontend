@@ -72,7 +72,11 @@ const List = () => {
 
   const handleFilter = (e) => {
     const records = certificates.filter((sup) => (
-      sup.sanadhNo.toLowerCase().includes(e.target.value.toLowerCase())
+      sup.sanadhNo?.toLowerCase().includes(e.target.value.toLowerCase())
+      || sup.studentName?.toLowerCase().includes(e.target.value.toLowerCase())
+      || sup.rollNumber?.toLowerCase().includes(e.target.value.toLowerCase())
+      || sup.sanadhName?.toLowerCase().includes(e.target.value.toLowerCase())
+      || sup.niswanCode?.toLowerCase().includes(e.target.value.toLowerCase())
     ))
     setFilteredCertificates(records)
   }
@@ -84,12 +88,12 @@ const List = () => {
   return (
     <div className="mt-3 p-5">
       <div className="text-center">
-        <h3 className="text-2xl font-bold px-5 py-0 text-shadow-lg">Manage Certificates</h3>
+        <h3 className="text-2xl font-bold px-5 py-0 text-shadow-lg text-gray-600">Manage Certificates</h3>
       </div>
       <div className="flex justify-between items-center mt-5">
         {LinkIcon("/dashboard", "Back")}
 
-        <div className="w-3/4 lg:w-1/2 rounded flex border shadow-lg rounded-md justify-between items-center relative">
+        <div className="w-3/4 lg:w-1/2 rounded flex border shadow-lg rounded-md justify-between items-center relative bg-[url(/bg-img.jpg)]">
           <div className={`w-full text-md flex justify-center items-center pl-2 rounded-l-md`}>
             <input
               type="text"

@@ -69,7 +69,8 @@ const List = () => {
 
   const handleFilter = (e) => {
     const records = templates.filter((sup) => (
-      sup.code.toLowerCase().includes(e.target.value.toLowerCase())
+      sup.code?.toLowerCase().includes(e.target.value.toLowerCase())
+      || sup.name?.toLowerCase().includes(e.target.value.toLowerCase())
     ))
     setFilteredTemplates(records)
   }
@@ -81,16 +82,25 @@ const List = () => {
   return (
     <div className="mt-3 p-5">
       <div className="text-center">
-        <h3 className="text-2xl font-bold px-5 py-0 text-shadow-lg">Manage Templates</h3>
+        <h3 className="text-2xl font-bold px-5 py-0 text-shadow-lg text-gray-600">Manage Templates</h3>
       </div>
       <div className="flex justify-between items-center mt-5">
         {LinkIcon("/dashboard/masters", "Back")}
-        <input
-          type="text"
-          placeholder="Search By Course"
-          className="px-4 py-0.5 border rounded shadow-lg"
-          onChange={handleFilter}
-        />
+
+        <div className="w-3/4 lg:w-1/2 rounded flex border shadow-lg rounded-md justify-between items-center relative bg-[url(/bg-img.jpg)]">
+          <div className={`w-full text-md flex justify-center items-center pl-2 rounded-l-md`}>
+            <input
+              type="text"
+              placeholder="Search"
+              class="w-full px-3 py-0.5 border rounded shadow-md justify-center"
+              onChange={handleFilter}
+            />
+          </div>
+          <div className="p-1 mt-0.5 rounded-md items-center justify-center ">
+            {LinkIcon("#", "Search")}
+          </div>
+        </div>
+
         {LinkIcon("/dashboard/add-template", "Add")}
       </div>
       <div className='mt-6 rounded-lg shadow-lg'>

@@ -75,7 +75,10 @@ const List = () => {
 
   const handleFilter = (e) => {
     const records = supervisors.filter((sup) => (
-      sup.name.toLowerCase().includes(e.target.value.toLowerCase())
+      sup.supId?.toLowerCase().includes(e.target.value.toLowerCase())
+      || sup.name?.toLowerCase().includes(e.target.value.toLowerCase())
+      || sup.active?.toLowerCase().includes(e.target.value.toLowerCase())
+      || sup.contactNumber?.toLowerCase().includes(e.target.value.toLowerCase())
     ))
     setFilteredSupervisors(records)
   }
@@ -94,7 +97,7 @@ const List = () => {
       <div className="flex justify-between items-center mt-5 lg:mt-7">
         {LinkIcon("/dashboard", "Back")}
 
-        <div className="w-3/4 lg:w-1/2 rounded flex border shadow-lg rounded-md justify-between items-center relative">
+        <div className="w-3/4 lg:w-1/2 rounded flex border shadow-lg rounded-md justify-between items-center relative bg-[url(/bg-img.jpg)]">
           <div className={`w-full text-md flex justify-center items-center pl-2 rounded-l-md`}>
             <input
               type="text"

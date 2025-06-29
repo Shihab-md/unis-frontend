@@ -330,10 +330,10 @@ const List = () => {
 
   const handleSearch = (e) => {
     const records = students.filter((student) => (
-      student.rollNumber.toLowerCase().includes(e.target.value.toLowerCase())
-      || student.name.toLowerCase().includes(e.target.value.toLowerCase())
-      || student.course.toString().toLowerCase().includes(e.target.value.toLowerCase())
-      || student.active.toLowerCase().includes(e.target.value.toLowerCase())
+      student.rollNumber?.toLowerCase().includes(e.target.value.toLowerCase())
+      || student.name?.toLowerCase().includes(e.target.value.toLowerCase())
+      || student.course?.toString().toLowerCase().includes(e.target.value.toLowerCase())
+      || student.active?.toLowerCase().includes(e.target.value.toLowerCase())
     ))
     setFilteredStudents(records)
   }
@@ -370,7 +370,7 @@ const List = () => {
       <div className="flex justify-between items-center mt-5 relative">
         {LinkIcon("/dashboard", "Back")}
 
-        <div className="w-3/4 lg:w-1/2 rounded flex border shadow-lg rounded-md justify-between items-center relative">
+        <div className="w-3/4 lg:w-1/2 rounded flex border shadow-lg rounded-md justify-between items-center relative bg-[url(/bg-img.jpg)]">
           <div className={`w-full text-md flex justify-center items-center pl-2 rounded-l-md`}>
             <input
               type="text"

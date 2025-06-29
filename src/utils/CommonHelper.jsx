@@ -7,7 +7,7 @@ const authorizedScreensFor_SA_HQ_Roles = [
   "supervisorsList", "supervisorAdd", "supervisorEdit", "supervisorView",
   "schoolsList", "schoolAdd", "schoolEdit", "schoolView",
   "employeesList", "employeeAdd", "employeeEdit", "employeeView",
-  "studentsList", "studentAdd", "studentEdit", "studentView",
+  "studentsList", "studentAdd", "studentEdit", "studentPromote", "studentView",
   "institutesList", "instituteAdd", "instituteEdit", "instituteView",
   "coursesList", "courseAdd", "courseEdit", "courseView",
   "acYearsList", "acYearAdd", "acYearEdit", "acYearView",
@@ -26,7 +26,7 @@ const authorizedScreensFor_SUP_Role = [
 const authorizedScreensFor_ADMIN_Role = [
   "schoolsList", "schoolEdit", "schoolView",
   "employeesList", "employeeAdd", "employeeEdit", "employeeView",
-  "studentsList", "studentAdd", "studentEdit", "studentView",
+  "studentsList", "studentAdd", "studentEdit", "studentPromote", "studentView",
   "settings"
 ];
 
@@ -62,7 +62,7 @@ export function checkAuth(screenName) {
 };
 
 export const getBaseUrl = async () => {
-  return "https://unis-server.vercel.app/api/";
+   return "https://unis-server.vercel.app/api/";
 
 };
 

@@ -100,11 +100,11 @@ const Add = () => {
 
       <form onSubmit={handleSubmit} autocomplete="off">
         <div className="py-2 px-4 border mt-5 mb-3 items-center justify-center rounded-lg shadow-lg bg-white">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 gap-y-7">
 
             {/* Type */}
             <div>
-              <label className="block text-sm font-medium text-gray-700">
+              <label className="block mt-5 text-sm font-medium text-gray-700">
                 Education Type <span className="text-red-700">*</span>
               </label>
               <select
@@ -123,7 +123,7 @@ const Add = () => {
               </select>
             </div>
 
-            <div className="flex space-x-3 mb-5" />
+            <div className="hidden lg:block flex space-x-3 mb-5" />
 
             {/* Code */}
             <div>
@@ -167,19 +167,38 @@ const Add = () => {
               />
             </div>
 
-            {/* Fees */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700">
-                Fees <span className="text-red-700">*</span>
-              </label>
-              <input
-                type="number"
-                name="fees"
-                onChange={handleChange}
-                className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-                required
-              />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 gap-y-7">
+              {/* Fees */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700">
+                  Fees <span className="text-red-700">*</span>
+                </label>
+                <input
+                  type="number"
+                  name="fees"
+                  onChange={handleChange}
+                  className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                  required
+                />
+              </div>
+
+              {/* Years */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700">
+                  Years <span className="text-red-700">*</span>
+                </label>
+                <input
+                  type="number"
+                  name="years"
+                  onChange={handleChange}
+                  className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                  required
+                />
+              </div>
             </div>
+
+            <div className="flex space-x-3 mb-5" />
+            <div className="hidden lg:block flex space-x-3 mb-5" />
 
             {/* Subject-1 */}
             <div>
