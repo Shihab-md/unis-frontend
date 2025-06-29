@@ -36,6 +36,8 @@ const Add = () => {
   const [fees5Val, setFees5Val] = useState("");
   const [fees6Val, setFees6Val] = useState("");
 
+  const [acYear, setAcYear] = useState(null);
+
   const navigate = useNavigate()
   const { user } = useAuth();
 
@@ -61,6 +63,18 @@ const Add = () => {
       setAcademicYears(academicYears);
     };
     getAcademicYearsMap();
+  }, []);
+
+  useEffect(() => {
+    const getAcYearMap = async (id) => {
+      let accYear = (new Date().getFullYear() - 1) + "-" + new Date().getFullYear();
+      if (new Date().getMonth() + 1 >= 4) {
+        accYear = new Date().getFullYear() + "-" + (new Date().getFullYear() + 1);
+      }
+      const acYear = academicYears.filter(acYear => acYear.acYear === accYear).map(acYear => acYear._id);
+      setAcYear(acYear);
+    };
+    getAcYearMap();
   }, []);
 
   useEffect(() => {
@@ -154,6 +168,9 @@ const Add = () => {
       }
       if (selectedDOADate) {
         formDataObj.append('doa', selectedDOADate)
+      }
+      if (acYear) {
+        formDataObj.append('acYear', acYear)
       }
       formDataObj.append('schoolId', localStorage.getItem('schoolId'));
 
@@ -607,6 +624,8 @@ const Add = () => {
                 <select
                   name="acYear"
                   onChange={handleChange}
+                  value={acYear}
+                  disabled={true}
                   className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                   required
                 >
@@ -776,14 +795,14 @@ const Add = () => {
                 {/* Year2 */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700">
-                    Std. <span className="text-red-700">*</span>
+                    Std.
                   </label>
                   <input
                     type="number"
                     name="year2"
                     onChange={handleChange}
                     className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                    required
+                  //  required
                   />
                 </div>
 
@@ -868,14 +887,14 @@ const Add = () => {
                 {/* Year3 */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700">
-                    Year <span className="text-red-700">*</span>
+                    Year
                   </label>
                   <input
                     type="number"
                     name="year3"
                     onChange={handleChange}
                     className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                    required
+                  //  required
                   />
                 </div>
 
@@ -960,14 +979,14 @@ const Add = () => {
                 {/* Year4 */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700">
-                    Year <span className="text-red-700">*</span>
+                    Year
                   </label>
                   <input
                     type="number"
                     name="year4"
                     onChange={handleChange}
                     className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                    required
+                  //  required
                   />
                 </div>
 
@@ -1052,14 +1071,14 @@ const Add = () => {
                 {/* Year5 */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700">
-                    Year <span className="text-red-700">*</span>
+                    Year
                   </label>
                   <input
                     type="number"
                     name="year5"
                     onChange={handleChange}
                     className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                    required
+                  //  required
                   />
                 </div>
 

@@ -31,21 +31,21 @@ export const columnsSelectForAcademic = [
           + "Fees : " + row.fees1 + "  |  " + "Status : " + row.status1}.</p>
       </div> : null}
 
-      {row.courseId2 ? <div className="mt-3">
+      {row.courseId2 ? <div className="mt-3 mb-3">
         <p className='text-md font-bold text-pink-500'>School Education</p>
         <p>{row.courseId2?.name + "  |  " + row.instituteId2?.name}</p>
         <p>{"Ref. # : " + row.refNumber2 + "  |  " + "Year : " + row.year2 + "  |  "
           + "Fees : " + row.fees2 + "  |  " + "Status : " + row.status2}.</p>
       </div> : null}
 
-      {row.courseId3 ? <div className="mt-3">
+      {row.courseId3 ? <div className="mt-3 mb-3">
         <p className='text-md font-bold text-pink-500'>College Education</p>
         <p>{row.courseId3?.name + "  |  " + row.instituteId3?.name}</p>
         <p>{"Ref. # : " + row.refNumber3 + "  |  " + "Year : " + row.year3 + "  |  "
           + "Fees : " + row.fees3 + "  |  " + "Status : " + row.status3}.</p>
       </div> : null}
 
-      {row.courseId4 ? <div className="mt-3">
+      {row.courseId4 ? <div className="mt-3 mb-3">
         <p className='text-md font-bold text-pink-500'>Islamic Home Science</p>
         <p>{row.courseId4?.name + "  |  " + row.instituteId4?.name}</p>
         <p>{"Ref. # : " + row.refNumber4 + "  |  " + "Year : " + row.year4 + "  |  "

@@ -111,7 +111,7 @@ export const getSchoolsFromCache = async (id) => {
         },
       }
     );
-    console.log(responnse)
+  //  console.log(responnse)
     if (responnse.data.success) {
       schools = responnse.data.schools;
     }
