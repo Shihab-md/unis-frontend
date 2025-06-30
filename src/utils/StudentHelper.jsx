@@ -17,46 +17,56 @@ export const columnsSelect = [
 
 export const columnsSelectForAcademic = [
   {
-    name: "Aademic Year",
+    name: <div className='text-md font-bold'>AC Year</div>,
     selector: (row) => row.acYear.acYear,
-    width: "120px",
+    width: "95px",
   },
   {
-    name: "Course Details",
+    name: <div className='text-md font-bold' >Course Details</div>,
     selector: (row) => (<div>
       {row.courseId1 ? <div className="mt-2">
-        <p className='text-md font-bold text-pink-500'>Deeniyath Education</p>
-        <p>{row.courseId1?.name + "  |  " + row.instituteId1?.name}</p>
-        <p>{"Ref. # : " + row.refNumber1 + "  |  " + "Year : " + row.year1 + "  |  "
-          + "Fees : " + row.fees1 + "  |  " + "Status : " + row.status1}.</p>
+        <p className='text-md font-bold text-pink-500 mb-0.5'>Deeniyath Education</p>
+        <p>{row.courseId1?.name}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span className='text-gray-300 font-bold'>|</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{row.instituteId1?.name}</p>
+        <p>{"Ref. # : " + row.refNumber1}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span className='text-gray-300 font-bold'>|</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          {"Year : " + row.year1}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span className='text-gray-300 font-bold'>|</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          {"Fees : " + row.fees1}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span className='text-gray-300 font-bold'>|</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          {"Status : " + row.status1}.</p>
       </div> : null}
 
       {row.courseId2 ? <div className="mt-3 mb-3">
-        <p className='text-md font-bold text-pink-500'>School Education</p>
-        <p>{row.courseId2?.name + "  |  " + row.instituteId2?.name}</p>
-        <p>{"Ref. # : " + row.refNumber2 + "  |  " + "Year : " + row.year2 + "  |  "
-          + "Fees : " + row.fees2 + "  |  " + "Status : " + row.status2}.</p>
+        <p className='text-md font-bold text-pink-500 mb-0.5'>School Education</p>
+        <p>{row.courseId2?.name}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span className='text-gray-300  font-bold'>|</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{row.instituteId2?.name}</p>
+        <p>{"Ref. # : " + row.refNumber2}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span className='text-gray-300  font-bold'>|</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          {"Year : " + row.year2}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span className='text-gray-300  font-bold'>|</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          {"Fees : " + row.fees2}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span className='text-gray-300  font-bold'>|</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          {"Status : " + row.status2}.</p>
       </div> : null}
 
       {row.courseId3 ? <div className="mt-3 mb-3">
-        <p className='text-md font-bold text-pink-500'>College Education</p>
-        <p>{row.courseId3?.name + "  |  " + row.instituteId3?.name}</p>
-        <p>{"Ref. # : " + row.refNumber3 + "  |  " + "Year : " + row.year3 + "  |  "
-          + "Fees : " + row.fees3 + "  |  " + "Status : " + row.status3}.</p>
+        <p className='text-md font-bold text-pink-500 mb-0.5'>College Education</p>
+        <p>{row.courseId3?.name}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span className='text-gray-300  font-bold'>|</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{row.instituteId3?.name}</p>
+        <p>{"Ref. # : " + row.refNumber3}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span className='text-gray-300  font-bold'>|</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          {"Year : " + row.year3}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span className='text-gray-300  font-bold'>|</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          {"Fees : " + row.fees3}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span className='text-gray-300  font-bold'>|</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          {"Status : " + row.status3}.</p>
       </div> : null}
 
       {row.courseId4 ? <div className="mt-3 mb-3">
-        <p className='text-md font-bold text-pink-500'>Islamic Home Science</p>
-        <p>{row.courseId4?.name + "  |  " + row.instituteId4?.name}</p>
-        <p>{"Ref. # : " + row.refNumber4 + "  |  " + "Year : " + row.year4 + "  |  "
-          + "Fees : " + row.fees4 + "  |  " + "Status : " + row.status4}.</p>
+        <p className='text-md font-bold text-pink-500 mb-0.5'>Islamic Home Science</p>
+        <p>{row.courseId4?.name}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span className='text-gray-300  font-bold'>|</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{row.instituteId4?.name}</p>
+        <p>{"Ref. # : " + row.refNumber4}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span className='text-gray-300  font-bold'>|</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          {"Year : " + row.year4}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span className='text-gray-300  font-bold'>|</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          {"Fees : " + row.fees4}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span className='text-gray-300  font-bold'>|</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          {"Status : " + row.status4}.</p>
       </div> : null}
 
       {row.courseId5 ? <div className="mt-3 mb-3">
-        <p className='text-md font-bold text-pink-500'>Vocational Course</p>
-        <p>{row.courseId5?.name + "  |  " + row.instituteId5?.name}</p>
-        <p>{"Ref. # : " + row.refNumber5 + "  |  " + "Year : " + row.year5 + "  |  "
-          + "Fees : " + row.fees5 + "  |  " + "Status : " + row.status5}.</p>
+        <p className='text-md font-bold text-pink-500 mb-0.5'>Vocational Course</p>
+        <p>{row.courseId5?.name}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span className='text-gray-300  font-bold'>|</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{row.instituteId5?.name}</p>
+        <p>{"Ref. # : " + row.refNumber5}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span className='text-gray-300  font-bold'>|</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          {"Year : " + row.year5}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span className='text-gray-300  font-bold'>|</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          {"Fees : " + row.fees5}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span className='text-gray-300  font-bold'>|</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          {"Status : " + row.status5}.</p>
       </div> : null}
 
     </div>),

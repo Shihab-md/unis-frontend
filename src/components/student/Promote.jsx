@@ -235,16 +235,16 @@ const Promote = () => {
   return (
     <>
       {student ? (
-        <div className="max-w-4xl mx-auto mt-2 p-5 rounded-md shadow-lg border">
+        <div className="max-w-4xl mx-auto mt-2 p-3 lg:p-5 rounded-md shadow-lg border">
           <div className="flex py-2 px-4 items-center justify-center bg-teal-700 text-white rounded-lg shadow-lg">
-            <h2 className="text-xl font-semibold items-center justify-center">Update Student Details</h2>
+            <h2 className="text-xl font-semibold items-center justify-center">Promote Student</h2>
             <Link to="/dashboard/students" >
               <FaRegTimesCircle className="text-2xl ml-7 text-red-700 bg-gray-200 rounded-xl shadow-md items-center justify-end" />
             </Link>
           </div>
           <form onSubmit={handleSubmit} autocomplete="off">
             <div className="py-2 px-4 border mt-5 mb-3 items-center justify-center rounded-lg shadow-lg bg-white">
-              <div className="grid mt-3 grid-cols-1 md:grid-cols-2 gap-5">
+              <div className="grid mt-3 grid-cols-1 md:grid-cols-1 gap-5">
 
                 {/* School */}
                 <div>
@@ -267,7 +267,9 @@ const Promote = () => {
                     ))}
                   </select>
                 </div>
+              </div>
 
+              <div className="grid mt-5 grid-cols-1 md:grid-cols-2 gap-5">
                 {/* Roll Number (Email) */}
                 <div>
                   <label className="block mt-2 text-sm font-medium text-gray-700">
@@ -283,9 +285,7 @@ const Promote = () => {
                     required
                   />
                 </div>
-              </div>
 
-              <div className="grid mt-5 grid-cols-1 md:grid-cols-2 gap-5">
                 {/* Name */}
                 <div>
                   <label className="block mt-2 text-sm font-medium text-gray-700">
@@ -295,53 +295,12 @@ const Promote = () => {
                     type="text"
                     name="name"
                     value={student.name}
+                    disabled={true}
                     onChange={handleChange}
                     className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                     required
                   />
                 </div>
-
-                <div className="flex space-x-3 mb-5" />
-                <div className="hidden lg:block flex space-x-3 mb-5" />
-
-                {/* Active */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-700">
-                    Status <span className="text-red-700">*</span>
-                  </label>
-                  <select
-                    name="active"
-                    value={student.active}
-                    onChange={handleChange}
-                    className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                    required
-                  >
-                    <option value="">Select Status</option>
-                    <option value="Active">Active</option>
-                    <option value="In-Active">In-Active</option>
-                    <option value="Transferred">Transferred</option>
-                    <option value="Graduated">Graduated</option>
-                    <option value="Discontinued">Discontinued</option>
-                  </select>
-                </div>
-
-                {/* Remarks */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-700">
-                    Reason for Status change
-                  </label>
-                  <input
-                    type="text"
-                    name="remarks"
-                    value={student.remarks}
-                    onChange={handleChange}
-                    className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                  //   required
-                  />
-                </div>
-
-                <div className="flex space-x-3 mb-5" />
-                <div className="hidden lg:block flex space-x-3 mb-5" />
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
@@ -470,107 +429,113 @@ const Promote = () => {
                   </div>
                 </div>
 
-                <div className="flex space-x-3 mb-5" />
-                <div className="hidden lg:block flex space-x-3 mb-5" />
-                <ViewCard type="header" text="School Education" />
-                <div className="hidden lg:block flex space-x-3 mb-5" />
-
-                {/* Institute 2 --------------------------------------------- */}
-                <div>
-                  <label className="block mt-2 text-sm font-medium text-gray-700">
-                    Select Institute
-                  </label>
-                  <select
-                    name="instituteId2"
-                    value={student.instituteId2}
-                    onChange={handleChange}
-                    className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                  //    required
-                  >
-                    <option value="">Select Institute</option>
-                    {institutes.filter(institute => institute.type === "School Education").map((institute) => (
-                      <option key={institute._id} value={institute._id}>
-                        {institute.name}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-                {/* Course 2 */}
-                <div>
-                  <label className="block mt-2 text-sm font-medium text-gray-700">
-                    Select Course
-                  </label>
-                  <select
-                    name="courseId2"
-                    value={student.courseId2}
-                    onChange={handleChange}
-                    //    disabled={student.courseId2 ? true : false}
-                    className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                  //    required
-                  >
-                    <option value="">Select Course</option>
-                    {courses.filter(course => course.type === "School Education").map((course) => (
-                      <option key={course._id} value={course._id}>
-                        {course.name}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-                {/* Reference Number-2 */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-700">
-                    Reference Number
-                  </label>
-                  <input
-                    type="text"
-                    name="refNumber2"
-                    value={student.refNumber2}
-                    onChange={handleChange}
-                    //    placeholder="Qualification"
-                    className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                  //   required
-                  />
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                  {/* Year2 */}
+                {student.instituteId2 && student.courseId2 ?
                   <div>
-                    <label className="block text-sm font-medium text-gray-700">
-                      Std.<span className="text-red-700">*</span>
-                    </label>
-                    <input
-                      type="number"
-                      name="year2"
-                      value={student.year2}
-                      //    disabled={student.year ? true : false}
-                      onChange={handleChange}
-                      className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                      required
-                    />
-                  </div>
+                    <div className="flex space-x-3 mb-5" />
+                    <div className="hidden lg:block flex space-x-3 mb-5" />
+                    <ViewCard type="header" text="School Education" />
+                    <div className="hidden lg:block flex space-x-3 mb-5" />
 
-                  {/* Fees 2 */}
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700">
-                      Fees
-                    </label>
-                    <input
-                      type="number"
-                      name="fees2"
-                      value={student.fees2}
-                      //   value={fees2Val}
-                      //    disabled={student.fees2 ? true : false}
-                      onChange={handleChange}
-                      className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                    //    required
-                    />
-                  </div>
-                </div>
+                    {/* Institute 2 --------------------------------------------- */}
+                    <div>
+                      <label className="block mt-2 text-sm font-medium text-gray-700">
+                        Select Institute
+                      </label>
+                      <select
+                        name="instituteId2"
+                        value={student.instituteId2}
+                        onChange={handleChange}
+                        className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
+                      //    required
+                      >
+                        <option value="">Select Institute</option>
+                        {institutes.filter(institute => institute.type === "School Education").map((institute) => (
+                          <option key={institute._id} value={institute._id}>
+                            {institute.name}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+
+                    {/* Course 2 */}
+                    <div>
+                      <label className="block mt-2 text-sm font-medium text-gray-700">
+                        Select Course
+                      </label>
+                      <select
+                        name="courseId2"
+                        value={student.courseId2}
+                        onChange={handleChange}
+                        //    disabled={student.courseId2 ? true : false}
+                        className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
+                      //    required
+                      >
+                        <option value="">Select Course</option>
+                        {courses.filter(course => course.type === "School Education").map((course) => (
+                          <option key={course._id} value={course._id}>
+                            {course.name}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+
+                    {/* Reference Number-2 */}
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700">
+                        Reference Number
+                      </label>
+                      <input
+                        type="text"
+                        name="refNumber2"
+                        value={student.refNumber2}
+                        onChange={handleChange}
+                        //    placeholder="Qualification"
+                        className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
+                      //   required
+                      />
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                      {/* Year2 */}
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700">
+                          Std.<span className="text-red-700">*</span>
+                        </label>
+                        <input
+                          type="number"
+                          name="year2"
+                          value={student.year2}
+                          //    disabled={student.year ? true : false}
+                          onChange={handleChange}
+                          className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
+                          required
+                        />
+                      </div>
+
+                      {/* Fees 2 */}
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700">
+                          Fees
+                        </label>
+                        <input
+                          type="number"
+                          name="fees2"
+                          value={student.fees2}
+                          //   value={fees2Val}
+                          //    disabled={student.fees2 ? true : false}
+                          onChange={handleChange}
+                          className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
+                        //    required
+                        />
+                      </div>
+                    </div>
+                  
 
                 <div className="flex space-x-3 mb-5" />
+                </div> : null}
                 <div className="hidden lg:block flex space-x-3 mb-5" />
+               
+
                 <ViewCard type="header" text="College Education" />
                 <div className="hidden lg:block flex space-x-3 mb-5" />
 
@@ -864,64 +829,6 @@ const Promote = () => {
                     //    required
                     />
                   </div>
-                </div>
-
-                <div className="flex space-x-3 mb-5" />
-                <div className="hidden lg:block flex space-x-3 mb-5" />
-                <ViewCard type="header" text="Hostel Details" />
-                <div className="hidden lg:block flex space-x-3 mb-5" />
-
-                {/* Hostel */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-700">
-                    Hostel Admission<span className="text-red-700">*</span>
-                  </label>
-                  <select
-                    name="hostel"
-                    onChange={handleChange}
-                    value={student.hostel}
-                    className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                    required
-                  >
-                    <option value="">Select Hostel Admission</option>
-                    <option value="Yes">Yes</option>
-                    <option value="No">No</option>
-                  </select>
-                </div>
-
-                <div className="hidden lg:block flex space-x-3 mb-5" />
-
-                {/* Hostel Reference Number */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-700">
-                    Reference Number
-                  </label>
-                  <input
-                    type="text"
-                    name="hostelRefNumber"
-                    onChange={handleChange}
-                    value={student.hostelRefNumber}
-                    //    placeholder="Qualification"
-                    className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                  //    required
-                  />
-                </div>
-
-
-                {/* Hostel Fees */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-700">
-                    Fees
-                  </label>
-                  <input
-                    type="number"
-                    name="hostelFees"
-                    //  disabled={student.hostelFees ? true : false}
-                    value={student.hostelFees}
-                    onChange={handleChange}
-                    className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                  //    required
-                  />
                 </div>
 
                 <div className="flex space-x-3 mb-5" />
