@@ -1,11 +1,7 @@
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { getBaseUrl, showSwalAlert, showConfirmationSwalAlert } from '../utils/CommonHelper';
-import {
-  FaEye, FaUserCheck,
-  FaEdit,
-  FaTrashAlt,
-} from "react-icons/fa";
+import { FaEye, FaUserCheck, FaEdit, FaTrashAlt } from "react-icons/fa";
 
 export const columnsSelect = [
   {
@@ -15,6 +11,17 @@ export const columnsSelect = [
   },
 ];
 
+function getDetails(title, courseName, instituteName, refNumber, year, fees, status) {
+  return <div className="mt-3 mb-5">
+    <p className='text-md font-bold text-pink-500 mb-2'>{title}</p>
+    <p className='mb-1'>{courseName}<span className='text-gray-300 font-bold ml-5 mr-5'>|</span>{instituteName}</p>
+    <p>{"Ref. # : " + refNumber}<span className='text-gray-300 font-bold ml-5 mr-5'>|</span>
+      {"Year : " + year}<span className='text-gray-300 font-bold ml-5 mr-5'>|</span>
+      {"Fees : " + fees}<span className='text-gray-300 font-bold ml-5 mr-5'>|</span>
+      {"Status : " + status}</p>
+  </div>
+}
+
 export const columnsSelectForAcademic = [
   {
     name: <div className='text-md font-bold'>AC Year</div>,
@@ -22,53 +29,33 @@ export const columnsSelectForAcademic = [
     width: "95px",
   },
   {
-    name: <div className='text-md font-bold' >Course Details</div>,
+    name: <div className='text-md font-bold'>Course Details</div>,
     selector: (row) => (<div>
-      {row.courseId1 ? <div className="mt-2">
-        <p className='text-md font-bold text-pink-500 mb-0.5'>Deeniyath Education</p>
-        <p>{row.courseId1?.name}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span className='text-gray-300 font-bold'>|</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{row.instituteId1?.name}</p>
-        <p>{"Ref. # : " + row.refNumber1}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span className='text-gray-300 font-bold'>|</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          {"Year : " + row.year1}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span className='text-gray-300 font-bold'>|</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          {"Fees : " + row.fees1}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span className='text-gray-300 font-bold'>|</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          {"Status : " + row.status1}.</p>
-      </div> : null}
-
-      {row.courseId2 ? <div className="mt-3 mb-3">
-        <p className='text-md font-bold text-pink-500 mb-0.5'>School Education</p>
-        <p>{row.courseId2?.name}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span className='text-gray-300  font-bold'>|</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{row.instituteId2?.name}</p>
-        <p>{"Ref. # : " + row.refNumber2}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span className='text-gray-300  font-bold'>|</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          {"Year : " + row.year2}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span className='text-gray-300  font-bold'>|</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          {"Fees : " + row.fees2}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span className='text-gray-300  font-bold'>|</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          {"Status : " + row.status2}.</p>
-      </div> : null}
-
-      {row.courseId3 ? <div className="mt-3 mb-3">
-        <p className='text-md font-bold text-pink-500 mb-0.5'>College Education</p>
-        <p>{row.courseId3?.name}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span className='text-gray-300  font-bold'>|</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{row.instituteId3?.name}</p>
-        <p>{"Ref. # : " + row.refNumber3}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span className='text-gray-300  font-bold'>|</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          {"Year : " + row.year3}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span className='text-gray-300  font-bold'>|</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          {"Fees : " + row.fees3}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span className='text-gray-300  font-bold'>|</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          {"Status : " + row.status3}.</p>
-      </div> : null}
-
-      {row.courseId4 ? <div className="mt-3 mb-3">
-        <p className='text-md font-bold text-pink-500 mb-0.5'>Islamic Home Science</p>
-        <p>{row.courseId4?.name}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span className='text-gray-300  font-bold'>|</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{row.instituteId4?.name}</p>
-        <p>{"Ref. # : " + row.refNumber4}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span className='text-gray-300  font-bold'>|</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          {"Year : " + row.year4}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span className='text-gray-300  font-bold'>|</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          {"Fees : " + row.fees4}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span className='text-gray-300  font-bold'>|</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          {"Status : " + row.status4}.</p>
-      </div> : null}
-
-      {row.courseId5 ? <div className="mt-3 mb-3">
-        <p className='text-md font-bold text-pink-500 mb-0.5'>Vocational Course</p>
-        <p>{row.courseId5?.name}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span className='text-gray-300  font-bold'>|</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{row.instituteId5?.name}</p>
-        <p>{"Ref. # : " + row.refNumber5}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span className='text-gray-300  font-bold'>|</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          {"Year : " + row.year5}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span className='text-gray-300  font-bold'>|</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          {"Fees : " + row.fees5}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span className='text-gray-300  font-bold'>|</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          {"Status : " + row.status5}.</p>
-      </div> : null}
-
+      {row.courseId1 ?
+        getDetails(
+          'Deeniyath Education', row.courseId1?.name, row.instituteId1?.name,
+          row.refNumber1, row.year1, row.fees1, row.status1
+        ) : null}
+      {row.courseId2 ?
+        getDetails(
+          'School Education', row.courseId2?.name, row.instituteId2?.name,
+          row.refNumber2, row.year2, row.fees2, row.status2
+        ) : null}
+      {row.courseId3 ?
+        getDetails(
+          'College Education', row.courseId3?.name, row.instituteId3?.name,
+          row.refNumber3, row.year3, row.fees3, row.status3
+        ) : null}
+      {row.courseId4 ?
+        getDetails(
+          'Islamic Home Science', row.courseId4?.name, row.instituteId4?.name,
+          row.refNumber4, row.year4, row.fees4, row.status4
+        ) : null}
+      {row.courseId5 ?
+        getDetails(
+          'Vocational Course', row.courseId5?.name, row.instituteId5?.name,
+          row.refNumber5, row.year5, row.fees5, row.status5
+        ) : null}
     </div>),
     width: "700px",
     wrap: true,

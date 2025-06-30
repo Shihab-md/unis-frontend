@@ -81,7 +81,7 @@ const Promote = () => {
     const fetchStudent = async () => {
       try {
         const responnse = await axios.get(
-          (await getBaseUrl()).toString() + `student/${id}`,
+          (await getBaseUrl()).toString() + `student/promote/${id}`,
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -499,7 +499,7 @@ const Promote = () => {
                       {/* Year2 */}
                       <div>
                         <label className="block text-sm font-medium text-gray-700">
-                          Std.<span className="text-red-700">*</span>
+                          Std.
                         </label>
                         <input
                           type="number"
@@ -508,7 +508,7 @@ const Promote = () => {
                           //    disabled={student.year ? true : false}
                           onChange={handleChange}
                           className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                          required
+                        //  required
                         />
                       </div>
 
@@ -602,7 +602,7 @@ const Promote = () => {
                   {/* Year3 */}
                   <div>
                     <label className="block text-sm font-medium text-gray-700">
-                      Year<span className="text-red-700">*</span>
+                      Year
                     </label>
                     <input
                       type="number"
@@ -611,7 +611,7 @@ const Promote = () => {
                       //    disabled={student.year ? true : false}
                       onChange={handleChange}
                       className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                      required
+                    //  required
                     />
                   </div>
 
@@ -701,7 +701,7 @@ const Promote = () => {
                   {/* Year4 */}
                   <div>
                     <label className="block text-sm font-medium text-gray-700">
-                      Year<span className="text-red-700">*</span>
+                      Year
                     </label>
                     <input
                       type="number"
@@ -710,7 +710,7 @@ const Promote = () => {
                       //    disabled={student.year ? true : false}
                       onChange={handleChange}
                       className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                      required
+                    //  required
                     />
                   </div>
 
@@ -800,7 +800,7 @@ const Promote = () => {
                   {/* Year5 */}
                   <div>
                     <label className="block text-sm font-medium text-gray-700">
-                      Year<span className="text-red-700">*</span>
+                      Year
                     </label>
                     <input
                       type="number"
@@ -809,7 +809,7 @@ const Promote = () => {
                       //    disabled={student.year ? true : false}
                       onChange={handleChange}
                       className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                      required
+                    //  required
                     />
                   </div>
 

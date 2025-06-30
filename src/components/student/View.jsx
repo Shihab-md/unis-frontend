@@ -39,25 +39,7 @@ const View = () => {
         );
         if (responnse.data.success) {
           const student = responnse.data.student;
-
-          const academicResponse = await axios.get(
-            (await getBaseUrl()).toString() + `student/${student._id}/${'vieww'}`,
-            {
-              headers: {
-                Authorization: `Bearer ${localStorage.getItem("token")}`,
-              },
-            }
-          );
-
           setStudent(student);
-
-          if (academicResponse.data.success) {
-            setAcademic(academicResponse.data.academic);
-          } else {
-            showSwalAlert("Error!", "No academic data Found : " + responnse.data.student.userId.name, "error");
-            navigate("/dashboard/students/");
-          }
-          //  console.log(student._academics[0].acYear.acYear)
         }
       } catch (error) {
         if (error.response && !error.response.data.success) {
@@ -161,7 +143,7 @@ const View = () => {
                   <DataTable className="p-0" columns={columnsSelectForAcademic} data={student._academics} highlightOnHover striped />
                 </div>
 
-            {/**    <ViewCard type="title" text="Academic Year" />
+                {/**    <ViewCard type="title" text="Academic Year" />
                 <ViewCard type="data" text={student._academics.acYear && student._academics.acYear.acYear ? student._academics.acYear.acYear : ""} />
 
                 <div className="flex space-x-3 mb-5" />
