@@ -22,11 +22,6 @@ import SchoolAdd from "./components/school/Add";
 import SchoolView from "./components/school/View";
 import SchoolEdit from "./components/school/Edit";
 
-import ClassSectionList from "./components/classSection/List";
-import ClassSectionAdd from "./components/classSection/Add";
-import ClassSectionView from "./components/classSection/View";
-import ClassSectionEdit from "./components/classSection/Edit";
-
 import List from "./components/employee/List";
 import Add from "./components/employee/Add";
 import View from "./components/employee/View";
@@ -61,6 +56,11 @@ import TemplateEdit from "./components/template/Edit";
 import CertificateList from "./components/certificate/List";
 import CertificateAdd from "./components/certificate/Add";
 import CertificateView from "./components/certificate/View";
+
+import DistrictStateList from "./components/districtstate/List";
+import DistrictStateAdd from "./components/districtstate/Add";
+import DistrictStateView from "./components/districtstate/View";
+import DistrictStateEdit from "./components/districtstate/Edit";
 
 import AddSalary from "./components/salary/Add";
 import ViewSalary from "./components/salary/View";
@@ -139,13 +139,13 @@ function App() {
           <Route path="/dashboard/academicYears/:id" element={<AcademicYearView />}></Route>
           <Route path="/dashboard/academicYears/edit/:id" element={<AcademicYearEdit />}></Route>
 
+          <Route path="/dashboard/districtStates" element={<DistrictStateList />}></Route>
+          <Route path="/dashboard/add-districtState" element={<DistrictStateAdd />}></Route>
+          <Route path="/dashboard/districtStates/:id" element={<DistrictStateView />}></Route>
+          <Route path="/dashboard/districtStates/edit/:id" element={<DistrictStateEdit />}></Route>
+
           <Route path="/dashboard/masters" element={<Masters />}></Route>
           <Route path="/dashboard/settings" element={<Setting />}></Route>
-
-          <Route path="/dashboard/classSections" element={<ClassSectionList />}></Route>
-          <Route path="/dashboard/add-classSection" element={<ClassSectionAdd />}></Route>
-          <Route path="/dashboard/classSections/:id" element={<ClassSectionView />}></Route>
-          <Route path="/dashboard/classSections/edit/:id" element={<ClassSectionEdit />}></Route>
 
           {/* 
 

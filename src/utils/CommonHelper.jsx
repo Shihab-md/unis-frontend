@@ -13,7 +13,8 @@ const authorizedScreensFor_SA_HQ_Roles = [
   "acYearsList", "acYearAdd", "acYearEdit", "acYearView",
   "certificatesList", "certificateAdd", "certificateEdit", "certificateView",
   "templatesList", "templateAdd", "templateEdit", "templateView",
-  "settings"
+  "settings",
+  "districtStateAdd", "districtStateEdit", "districtStateView", "districtStateList"
 ];
 
 const authorizedScreensFor_SUP_Role = [

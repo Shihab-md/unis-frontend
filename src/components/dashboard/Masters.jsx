@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext'
 import { getBaseUrl, handleRightClickAndFullScreen, getSpinner, LinkIcon, showSwalAlert } from '../../utils/CommonHelper'
 import {
-  FaUniversity, FaWpforms, FaClipboardList, FaCalendarAlt, FaUserCog,
+  FaUniversity, FaWpforms, FaClipboardList, FaCalendarAlt, FaUserCog, FaMapMarkerAlt
 } from "react-icons/fa";
 import axios from 'axios'
 import { useNavigate } from "react-router-dom";
@@ -88,9 +88,20 @@ const Masters = () => {
               icon={<FaWpforms />}
               text="Templates"
               number={summary.totalTemplates}
-              color="bg-blue-700"
+              color="bg-purple-500"
             />
           </Link> : null}
+
+        {user.role === "superadmin" || user.role === "hquser" ?
+          <Link to="/dashboard/districtStates" >
+            <SummaryCard
+              icon={<FaMapMarkerAlt />}
+              text="District, States"
+              number={summary.totalDistrictStates}
+              color="bg-green-600"
+            />
+          </Link> : null}
+
       </div>
     </div>
   );
