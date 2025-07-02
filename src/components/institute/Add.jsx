@@ -138,6 +138,7 @@ const Add = () => {
                 type="number"
                 name="contactNumber"
                 onChange={handleChange}
+                min="0"
                 className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
               //    required
               />
@@ -208,6 +209,7 @@ const Add = () => {
                 type="number"
                 name="incharge1Number"
                 onChange={handleChange}
+                min="0"
                 className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                 required
               />
@@ -235,6 +237,7 @@ const Add = () => {
                 type="number"
                 name="incharge2Number"
                 onChange={handleChange}
+                min="0"
                 className="mt-1 mb-5 p-2 block w-full border border-gray-300 rounded-md"
               />
             </div>

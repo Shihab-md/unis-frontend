@@ -424,6 +424,7 @@ const Edit = () => {
                     name="incharge1Number"
                     value={school.incharge1Number}
                     onChange={handleChange}
+                    min="0"
                     //  placeholder="Incharge1 Number"
                     className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                     required
@@ -456,6 +457,7 @@ const Edit = () => {
                     name="incharge2Number"
                     value={school.incharge2Number}
                     onChange={handleChange}
+                    min="0"
                     //  placeholder="Incharge2 Number"
                     className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                   //required
@@ -488,6 +490,7 @@ const Edit = () => {
                     name="incharge3Number"
                     value={school.incharge3Number}
                     onChange={handleChange}
+                    min="0"
                     //  placeholder="Incharge3 Number"
                     className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                   //required
@@ -520,6 +523,7 @@ const Edit = () => {
                     name="incharge4Number"
                     value={school.incharge4Number}
                     onChange={handleChange}
+                    min="0"
                     //  placeholder="Incharge4 Number"
                     className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                   //required
@@ -552,6 +556,7 @@ const Edit = () => {
                     name="incharge5Number"
                     value={school.incharge5Number}
                     onChange={handleChange}
+                    min="0"
                     //  placeholder="Incharge5 Number"
                     className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                   //required
@@ -584,6 +589,7 @@ const Edit = () => {
                     name="incharge6Number"
                     value={school.incharge6Number}
                     onChange={handleChange}
+                    min="0"
                     //  placeholder="Incharge5 Number"
                     className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                   //required
@@ -616,6 +622,7 @@ const Edit = () => {
                     name="incharge7Number"
                     value={school.incharge7Number}
                     onChange={handleChange}
+                    min="0"
                     //  placeholder="Incharge5 Number"
                     className="mt-1 mb-3 p-2 block w-full border border-gray-300 rounded-md"
                   //required

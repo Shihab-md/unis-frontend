@@ -186,6 +186,7 @@ const Edit = () => {
                     name="contactNumber"
                     value={institute.contactNumber}
                     onChange={handleChange}
+                    min="0"
                     className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                   //    required
                   />
@@ -261,6 +262,7 @@ const Edit = () => {
                     name="incharge1Number"
                     value={institute.incharge1Number}
                     onChange={handleChange}
+                    min="0"
                     className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                     required
                   />
@@ -290,6 +292,7 @@ const Edit = () => {
                     name="incharge2Number"
                     value={institute.incharge2Number}
                     onChange={handleChange}
+                    min="0"
                     className="mt-1 mb-3 p-2 block w-full border border-gray-300 rounded-md"
                   />
                 </div>

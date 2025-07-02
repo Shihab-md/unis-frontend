@@ -81,7 +81,7 @@ const Edit = () => {
     const fetchStudent = async () => {
       try {
         const responnse = await axios.get(
-          (await getBaseUrl()).toString() + `student/${id}`,
+          (await getBaseUrl()).toString() + `student/edit/${id}`,
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -91,16 +91,17 @@ const Edit = () => {
 
         if (responnse.data.success) {
           const student = responnse.data.student;
-          const academicResponse = await axios.get(
-            (await getBaseUrl()).toString() + `student/${student._id}/${'777'}`,
-            {
-              headers: {
-                Authorization: `Bearer ${localStorage.getItem("token")}`,
-              },
-            }
-          );
+          const academics = student._academics;
+          //  const academicResponse = await axios.get(
+          //    (await getBaseUrl()).toString() + `student/${student._id}/${'777'}`,
+          //    {
+          //      headers: {
+          //        Authorization: `Bearer ${localStorage.getItem("token")}`,
+          //      },
+          //    }
+          //  );
 
-          const academic = academicResponse.data.academic;
+          // const academic = academicResponse.data.academic;
           setSelectedDOBDate(student.dob);
           setSelectedDOADate(student.doa);
 
@@ -140,43 +141,85 @@ const Edit = () => {
             hostelFees: student.hostelFees,
             hostelDiscount: student.hostelDiscount,
 
-            acYear: academic.acYear && academic.acYear._id ? academic.acYear._id : null,
+            acYear: academics[0]?.acYear && academics[0]?.acYear?._id ? academics[0]?.acYear?._id : null,
 
-            instituteId1: academic.instituteId1 && academic.instituteId1._id ? academic.instituteId1._id : null,
-            courseId1: academic.courseId1 && academic.courseId1._id ? academic.courseId1._id : null,
-            refNumber1: academic.refNumber1,
-            year1: academic.year1,
-            fees1: academic.fees1,
-            discount1: academic.discount1,
+            instituteId1: academics[0]?.instituteId1 && academics[0]?.instituteId1?._id ? academics[0]?.instituteId1?._id : null,
+            courseId1: academics[0]?.courseId1 && academics[0]?.courseId1?._id ? academics[0]?.courseId1?._id : null,
+            refNumber1: academics[0]?.refNumber1,
+            year1: academics[0]?.year1,
+            status1: academics[0]?.status1,
+            fees1: academics[0]?.fees1,
+            discount1: academics[0]?.discount1,
 
-            instituteId2: academic.instituteId2 && academic.instituteId2._id ? academic.instituteId2._id : null,
-            courseId2: academic.courseId2 && academic.courseId2._id ? academic.courseId2._id : null,
-            refNumber2: academic.refNumber2,
-            year2: academic.year2,
-            fees2: academic.fees2,
-            discount2: academic.discount2,
+            instituteId2: academics[0]?.instituteId2 && academics[0]?.instituteId2?._id ? academics[0]?.instituteId2?._id : null,
+            courseId2: academics[0]?.courseId2 && academics[0]?.courseId2?._id ? academics[0]?.courseId2?._id : null,
+            refNumber2: academics[0]?.refNumber2,
+            year2: academics[0]?.year2,
+            status2: academics[0]?.status2,
+            fees2: academics[0]?.fees2,
+            discount2: academics[0]?.discount2,
 
-            instituteId3: academic.instituteId3 && academic.instituteId3._id ? academic.instituteId3._id : null,
-            courseId3: academic.courseId3 && academic.courseId3._id ? academic.courseId3._id : null,
-            refNumber3: academic.refNumber3,
-            year3: academic.year3,
-            fees3: academic.fees3,
-            discount3: academic.discount3,
+            instituteId3: academics[0]?.instituteId3 && academics[0]?.instituteId3?._id ? academics[0]?.instituteId3?._id : null,
+            courseId3: academics[0]?.courseId3 && academics[0]?.courseId3?._id ? academics[0]?.courseId3?._id : null,
+            refNumber3: academics[0]?.refNumber3,
+            year3: academics[0]?.year3,
+            status3: academics[0]?.status3,
+            fees3: academics[0]?.fees3,
+            discount3: academics[0]?.discount3,
 
-            instituteId4: academic.instituteId4 && academic.instituteId4._id ? academic.instituteId4._id : null,
-            courseId4: academic.courseId4 && academic.courseId4._id ? academic.courseId4._id : null,
-            refNumber4: academic.refNumber4,
-            year4: academic.year4,
-            fees4: academic.fees4,
-            discount4: academic.discount4,
+            instituteId4: academics[0]?.instituteId4 && academics[0]?.instituteId4?._id ? academics[0]?.instituteId4?._id : null,
+            courseId4: academics[0]?.courseId4 && academics[0]?.courseId4?._id ? academics[0]?.courseId4?._id : null,
+            refNumber4: academics[0]?.refNumber4,
+            year4: academics[0]?.year4,
+            status4: academics[0]?.status4,
+            fees4: academics[0]?.fees4,
+            discount4: academics[0]?.discount4,
 
-            instituteId5: academic.instituteId5 && academic.instituteId5._id ? academic.instituteId5._id : null,
-            courseId5: academic.courseId5 && academic.courseId5._id ? academic.courseId5._id : null,
-            refNumber5: academic.refNumber5,
-            year5: academic.year5,
-            fees5: academic.fees5,
-            discount5: academic.discount5,
+            instituteId5: academics[0]?.instituteId5 && academics[0]?.instituteId5?._id ? academics[0]?.instituteId5?._id : null,
+            courseId5: academics[0]?.courseId5 && academics[0]?.courseId5?._id ? academics[0]?.courseId5?._id : null,
+            refNumber5: academics[0]?.refNumber5,
+            year5: academics[0]?.year5,
+            status5: academics[0]?.status5,
+            fees5: academics[0]?.fees5,
+            discount5: academics[0]?.discount5,
 
+            /*  acYear: academic.acYear && academic.acYear._id ? academic.acYear._id : null,
+  
+              instituteId1: academic.instituteId1 && academic.instituteId1._id ? academic.instituteId1._id : null,
+              courseId1: academic.courseId1 && academic.courseId1._id ? academic.courseId1._id : null,
+              refNumber1: academic.refNumber1,
+              year1: academic.year1,
+              fees1: academic.fees1,
+              discount1: academic.discount1,
+  
+              instituteId2: academic.instituteId2 && academic.instituteId2._id ? academic.instituteId2._id : null,
+              courseId2: academic.courseId2 && academic.courseId2._id ? academic.courseId2._id : null,
+              refNumber2: academic.refNumber2,
+              year2: academic.year2,
+              fees2: academic.fees2,
+              discount2: academic.discount2,
+  
+              instituteId3: academic.instituteId3 && academic.instituteId3._id ? academic.instituteId3._id : null,
+              courseId3: academic.courseId3 && academic.courseId3._id ? academic.courseId3._id : null,
+              refNumber3: academic.refNumber3,
+              year3: academic.year3,
+              fees3: academic.fees3,
+              discount3: academic.discount3,
+  
+              instituteId4: academic.instituteId4 && academic.instituteId4._id ? academic.instituteId4._id : null,
+              courseId4: academic.courseId4 && academic.courseId4._id ? academic.courseId4._id : null,
+              refNumber4: academic.refNumber4,
+              year4: academic.year4,
+              fees4: academic.fees4,
+              discount4: academic.discount4,
+  
+              instituteId5: academic.instituteId5 && academic.instituteId5._id ? academic.instituteId5._id : null,
+              courseId5: academic.courseId5 && academic.courseId5._id ? academic.courseId5._id : null,
+              refNumber5: academic.refNumber5,
+              year5: academic.year5,
+              fees5: academic.fees5,
+              discount5: academic.discount5,
+  */
           }));
         }
       } catch (error) {
@@ -537,6 +580,7 @@ const Edit = () => {
                     name="fatherNumber"
                     value={student.fatherNumber}
                     onChange={handleChange}
+                    min="0"
                     className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                   //  required
                   />
@@ -582,6 +626,7 @@ const Edit = () => {
                     name="motherNumber"
                     value={student.motherNumber}
                     onChange={handleChange}
+                    min="0"
                     className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                   //    required
                   />
@@ -629,6 +674,7 @@ const Edit = () => {
                     name="guardianNumber"
                     value={student.guardianNumber}
                     onChange={handleChange}
+                    min="0"
                     className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                   //    required
                   />
@@ -821,6 +867,7 @@ const Edit = () => {
                       type="number"
                       name="year1"
                       value={student.year1}
+                      min="0"
                       //    disabled={student.year ? true : false}
                       onChange={handleChange}
                       className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
@@ -837,6 +884,7 @@ const Edit = () => {
                       type="number"
                       name="fees1"
                       value={student.fees1}
+                      min="0"
                       //   value={fees1Val}
                       //  disabled={student.fees1 ? true : false}
                       onChange={handleChange}
@@ -920,6 +968,7 @@ const Edit = () => {
                       type="number"
                       name="year2"
                       value={student.year2}
+                      min="0"
                       //    disabled={student.year ? true : false}
                       onChange={handleChange}
                       className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
@@ -936,6 +985,7 @@ const Edit = () => {
                       type="number"
                       name="fees2"
                       value={student.fees2}
+                      min="0"
                       //   value={fees2Val}
                       //    disabled={student.fees2 ? true : false}
                       onChange={handleChange}
@@ -1019,6 +1069,7 @@ const Edit = () => {
                       type="number"
                       name="year3"
                       value={student.year3}
+                      min="0"
                       //    disabled={student.year ? true : false}
                       onChange={handleChange}
                       className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
@@ -1035,6 +1086,7 @@ const Edit = () => {
                       type="number"
                       name="fees3"
                       value={student.fees3}
+                      min="0"
                       //  value={fees3Val}
                       //   disabled={student.fees3 ? true : false}
                       onChange={handleChange}
@@ -1118,6 +1170,7 @@ const Edit = () => {
                       type="number"
                       name="year4"
                       value={student.year4}
+                      min="0"
                       //    disabled={student.year ? true : false}
                       onChange={handleChange}
                       className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
@@ -1134,6 +1187,7 @@ const Edit = () => {
                       type="number"
                       name="fees4"
                       value={student.fees4}
+                      min="0"
                       //  value={fees4Val}
                       //  disabled={student.fees4 ? true : false}
                       onChange={handleChange}
@@ -1217,6 +1271,7 @@ const Edit = () => {
                       type="number"
                       name="year5"
                       value={student.year5}
+                      min="0"
                       //    disabled={student.year ? true : false}
                       onChange={handleChange}
                       className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
@@ -1233,6 +1288,7 @@ const Edit = () => {
                       type="number"
                       name="fees5"
                       value={student.fees5}
+                      min="0"
                       //  value={fees5Val}
                       //  disabled={student.fees5 ? true : false}
                       onChange={handleChange}
@@ -1294,6 +1350,7 @@ const Edit = () => {
                     name="hostelFees"
                     //  disabled={student.hostelFees ? true : false}
                     value={student.hostelFees}
+                    min="0"
                     onChange={handleChange}
                     className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                   //    required

@@ -273,6 +273,7 @@ const Edit = () => {
                     name="contactNumber"
                     value={employee.contactNumber}
                     onChange={handleChange}
+                    min="0"
                     //     placeholder="Contact Number"
                     className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                     required
@@ -448,6 +449,7 @@ const Edit = () => {
                     name="salary"
                     onChange={handleChange}
                     value={employee.salary}
+                    min="0"
                     //    placeholder="Salary"
                     className="mt-1 mb-3 p-2 block w-full border border-gray-300 rounded-md"
                     required

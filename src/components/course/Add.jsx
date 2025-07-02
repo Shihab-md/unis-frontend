@@ -177,6 +177,7 @@ const Add = () => {
                   type="number"
                   name="fees"
                   onChange={handleChange}
+                  min="0"
                   className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                   required
                 />
@@ -191,6 +192,7 @@ const Add = () => {
                   type="number"
                   name="years"
                   onChange={handleChange}
+                  min="0"
                   className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                   required
                 />
@@ -223,6 +225,7 @@ const Add = () => {
                   type="number"
                   name="subject1MaxMark"
                   onChange={handleChange}
+                  min="0"
                   className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                   required
                 />
@@ -237,6 +240,7 @@ const Add = () => {
                   type="number"
                   name="subject1PassMark"
                   onChange={handleChange}
+                  min="0"
                   className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                   required
                 />
@@ -267,6 +271,7 @@ const Add = () => {
                   type="number"
                   name="subject2MaxMark"
                   onChange={handleChange}
+                  min="0"
                   className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                 //    required
                 />
@@ -281,6 +286,7 @@ const Add = () => {
                   type="number"
                   name="subject2PassMark"
                   onChange={handleChange}
+                  min="0"
                   className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                 //    required
                 />
@@ -311,6 +317,7 @@ const Add = () => {
                   type="number"
                   name="subject3MaxMark"
                   onChange={handleChange}
+                  min="0"
                   className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                 //    required
                 />
@@ -325,6 +332,7 @@ const Add = () => {
                   type="number"
                   name="subject3PassMark"
                   onChange={handleChange}
+                  min="0"
                   className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                 //    required
                 />
@@ -355,6 +363,7 @@ const Add = () => {
                   type="number"
                   name="subject4MaxMark"
                   onChange={handleChange}
+                  min="0"
                   className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                 //   required
                 />
@@ -369,6 +378,7 @@ const Add = () => {
                   type="number"
                   name="subject4PassMark"
                   onChange={handleChange}
+                  min="0"
                   className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                 //  required
                 />
@@ -399,6 +409,7 @@ const Add = () => {
                   type="number"
                   name="subject5MaxMark"
                   onChange={handleChange}
+                  min="0"
                   className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                 //  required
                 />
@@ -413,6 +424,7 @@ const Add = () => {
                   type="number"
                   name="subject5PassMark"
                   onChange={handleChange}
+                  min="0"
                   className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                 //   required
                 />
@@ -443,6 +455,7 @@ const Add = () => {
                   type="number"
                   name="subject6MaxMark"
                   onChange={handleChange}
+                  min="0"
                   className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                 //  required
                 />
@@ -457,6 +470,7 @@ const Add = () => {
                   type="number"
                   name="subject6PassMark"
                   onChange={handleChange}
+                  min="0"
                   className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                 //  required
                 />
@@ -487,6 +501,7 @@ const Add = () => {
                   type="number"
                   name="subject7MaxMark"
                   onChange={handleChange}
+                  min="0"
                   className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                 //  required
                 />
@@ -501,6 +516,7 @@ const Add = () => {
                   type="number"
                   name="subject7PassMark"
                   onChange={handleChange}
+                  min="0"
                   className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                 //  required
                 />
@@ -531,6 +547,7 @@ const Add = () => {
                   type="number"
                   name="subject8MaxMark"
                   onChange={handleChange}
+                  min="0"
                   className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                 //  required
                 />
@@ -545,6 +562,7 @@ const Add = () => {
                   type="number"
                   name="subject8PassMark"
                   onChange={handleChange}
+                  min="0"
                   className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                 //  required
                 />
@@ -575,6 +593,7 @@ const Add = () => {
                   type="number"
                   name="subject9MaxMark"
                   onChange={handleChange}
+                  min="0"
                   className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                 //  required
                 />
@@ -589,6 +608,7 @@ const Add = () => {
                   type="number"
                   name="subject9PassMark"
                   onChange={handleChange}
+                  min="0"
                   className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                 //  required
                 />
@@ -619,6 +639,7 @@ const Add = () => {
                   type="number"
                   name="subject10MaxMark"
                   onChange={handleChange}
+                  min="0"
                   className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                 //  required
                 />
@@ -633,6 +654,7 @@ const Add = () => {
                   type="number"
                   name="subject10PassMark"
                   onChange={handleChange}
+                  min="0"
                   className="mt-1 mb-5 p-2 block w-full border border-gray-300 rounded-md"
                 //  required
                 />

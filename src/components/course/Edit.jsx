@@ -253,6 +253,7 @@ const Edit = () => {
                       name="fees"
                       value={course.fees}
                       onChange={handleChange}
+                      min="0"
                       className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                       required
                     />
@@ -268,6 +269,7 @@ const Edit = () => {
                       name="years"
                       value={course.years}
                       onChange={handleChange}
+                      min="0"
                       className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                       required
                     />
@@ -303,6 +305,7 @@ const Edit = () => {
                       name="subject1MaxMark"
                       value={course.subject1MaxMark}
                       onChange={handleChange}
+                      min="0"
                       className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                       required
                     />
@@ -318,6 +321,7 @@ const Edit = () => {
                       name="subject1PassMark"
                       value={course.subject1PassMark}
                       onChange={handleChange}
+                      min="0"
                       className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                       required
                     />
@@ -350,6 +354,7 @@ const Edit = () => {
                       name="subject2MaxMark"
                       value={course.subject2MaxMark}
                       onChange={handleChange}
+                      min="0"
                       className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                     //    required
                     />
@@ -365,6 +370,7 @@ const Edit = () => {
                       name="subject2PassMark"
                       value={course.subject2PassMark}
                       onChange={handleChange}
+                      min="0"
                       className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                     //    required
                     />
@@ -397,6 +403,7 @@ const Edit = () => {
                       name="subject3MaxMark"
                       value={course.subject3MaxMark}
                       onChange={handleChange}
+                      min="0"
                       className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                     //    required
                     />
@@ -412,6 +419,7 @@ const Edit = () => {
                       name="subject3PassMark"
                       value={course.subject3PassMark}
                       onChange={handleChange}
+                      min="0"
                       className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                     //    required
                     />
@@ -444,6 +452,7 @@ const Edit = () => {
                       name="subject4MaxMark"
                       value={course.subject4MaxMark}
                       onChange={handleChange}
+                      min="0"
                       className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                     //  required
                     />
@@ -459,6 +468,7 @@ const Edit = () => {
                       name="subject4PassMark"
                       value={course.subject4PassMark}
                       onChange={handleChange}
+                      min="0"
                       className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                     //  required
                     />
@@ -491,6 +501,7 @@ const Edit = () => {
                       name="subject5MaxMark"
                       value={course.subject5MaxMark}
                       onChange={handleChange}
+                      min="0"
                       className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                     //    required
                     />
@@ -506,6 +517,7 @@ const Edit = () => {
                       name="subject5PassMark"
                       value={course.subject5PassMark}
                       onChange={handleChange}
+                      min="0"
                       className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                     //    required
                     />
@@ -538,6 +550,7 @@ const Edit = () => {
                       name="subject6MaxMark"
                       value={course.subject6MaxMark}
                       onChange={handleChange}
+                      min="0"
                       className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                     //  required
                     />
@@ -553,6 +566,7 @@ const Edit = () => {
                       name="subject6PassMark"
                       value={course.subject6PassMark}
                       onChange={handleChange}
+                      min="0"
                       className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                     //  required
                     />
@@ -585,6 +599,7 @@ const Edit = () => {
                       name="subject7MaxMark"
                       value={course.subject7MaxMark}
                       onChange={handleChange}
+                      min="0"
                       className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                     //  required
                     />
@@ -600,6 +615,7 @@ const Edit = () => {
                       name="subject7PassMark"
                       value={course.subject7PassMark}
                       onChange={handleChange}
+                      min="0"
                       className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                     //  required
                     />
@@ -632,6 +648,7 @@ const Edit = () => {
                       name="subject8MaxMark"
                       value={course.subject8MaxMark}
                       onChange={handleChange}
+                      min="0"
                       className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                     //  required
                     />
@@ -647,6 +664,7 @@ const Edit = () => {
                       name="subject8PassMark"
                       value={course.subject8PassMark}
                       onChange={handleChange}
+                      min="0"
                       className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                     //  required
                     />
@@ -679,6 +697,7 @@ const Edit = () => {
                       name="subject9MaxMark"
                       value={course.subject9MaxMark}
                       onChange={handleChange}
+                      min="0"
                       className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                     //  required
                     />
@@ -694,6 +713,7 @@ const Edit = () => {
                       name="subject9PassMark"
                       value={course.subject9PassMark}
                       onChange={handleChange}
+                      min="0"
                       className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                     //  required
                     />
@@ -726,6 +746,7 @@ const Edit = () => {
                       name="subject10MaxMark"
                       value={course.subject10MaxMark}
                       onChange={handleChange}
+                      min="0"
                       className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                     //  required
                     />
@@ -741,6 +762,7 @@ const Edit = () => {
                       name="subject10PassMark"
                       value={course.subject10PassMark}
                       onChange={handleChange}
+                      min="0"
                       className="mt-1 mb-3 p-2 block w-full border border-gray-300 rounded-md"
                     //  required
                     />

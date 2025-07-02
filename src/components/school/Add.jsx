@@ -214,6 +214,7 @@ const Add = () => {
                   type="number"
                   name="contactNumber"
                   onChange={handleChange}
+                  min="0"
                   //  placeholder="Insert Contact Number"
                   className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                 //required
@@ -338,6 +339,7 @@ const Add = () => {
                   type="number"
                   name="incharge1Number"
                   onChange={handleChange}
+                  min="0"
                   //  placeholder="Incharge1 Number"
                   className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                   required
@@ -368,6 +370,7 @@ const Add = () => {
                   type="number"
                   name="incharge2Number"
                   onChange={handleChange}
+                  min="0"
                   //  placeholder="Incharge2 Number"
                   className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                 //required
@@ -398,6 +401,7 @@ const Add = () => {
                   type="number"
                   name="incharge3Number"
                   onChange={handleChange}
+                  min="0"
                   //  placeholder="Incharge3 Number"
                   className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                 //required
@@ -428,6 +432,7 @@ const Add = () => {
                   type="number"
                   name="incharge4Number"
                   onChange={handleChange}
+                  min="0"
                   //  placeholder="Incharge4 Number"
                   className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                 //required
@@ -458,6 +463,7 @@ const Add = () => {
                   type="number"
                   name="incharge5Number"
                   onChange={handleChange}
+                  min="0"
                   //  placeholder="Incharge5 Number"
                   className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                 //required
@@ -488,6 +494,7 @@ const Add = () => {
                   type="number"
                   name="incharge6Number"
                   onChange={handleChange}
+                  min="0"
                   //  placeholder="Incharge5 Number"
                   className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                 //required
@@ -518,6 +525,7 @@ const Add = () => {
                   type="number"
                   name="incharge7Number"
                   onChange={handleChange}
+                  min="0"
                   //  placeholder="Incharge5 Number"
                   className="mt-1 p-2 mb-5 block w-full border border-gray-300 rounded-md"
                 //required

@@ -87,7 +87,7 @@ export const columns = [
     width: "250px",
     wrap: true,
     selector: row => (
-      <div className="p-1">
+      <div className="mt-2 mb-2">
         {row.courses.map((course, i) => (
           <div key={i}>{course.name + ","}</div>
         ))}

@@ -71,7 +71,9 @@ const Add = () => {
       if (new Date().getMonth() + 1 >= 4) {
         accYear = new Date().getFullYear() + "-" + (new Date().getFullYear() + 1);
       }
-      const acYear = academicYears.filter(acYear => acYear.acYear === accYear).map(acYear => acYear._id);
+      const academicYears = await getAcademicYearsFromCache(id);
+      const acYear = academicYears?.filter(acYear => acYear.acYear === accYear).map(acYear => acYear._id);
+      // console.log("AC Year : " + acYear)
       setAcYear(acYear);
     };
     getAcYearMap();
@@ -204,6 +206,28 @@ const Add = () => {
   if (processing) {
     return getPrcessing();
   }
+
+  const preventMinus = (e) => {
+    if (e.code === 'Minus') {
+      e.preventDefault();
+    }
+  };
+
+  const preventPasteNegative = (e) => {
+    const clipboardData = e.clipboardData || window.clipboardData;
+    const pastedData = parseFloat(clipboardData.getData('text'));
+
+    if (pastedData < 0) {
+      e.preventDefault();
+    }
+  };
+
+  const handleKeyDown = (e) => {
+    // Prevent 'e', 'E', '+', and '-' from being entered
+    if (['e', 'E', '+', '-'].includes(e.key)) {
+      e.preventDefault();
+    }
+  };
 
   return (
     <>
@@ -440,6 +464,7 @@ const Add = () => {
                   type="number"
                   name="fatherNumber"
                   onChange={handleChange}
+                  min="0"
                   className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                 //  required
                 />
@@ -482,6 +507,7 @@ const Add = () => {
                   type="number"
                   name="motherNumber"
                   onChange={handleChange}
+                  min="0"
                   className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                 //    required
                 />
@@ -526,6 +552,7 @@ const Add = () => {
                   type="number"
                   name="guardianNumber"
                   onChange={handleChange}
+                  min="0"
                   className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                 //    required
                 />
@@ -625,7 +652,7 @@ const Add = () => {
                   name="acYear"
                   onChange={handleChange}
                   value={acYear}
-                  disabled={true}
+                  disabled={acYear ? true : false}
                   className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                   required
                 >
@@ -709,6 +736,10 @@ const Add = () => {
                     type="number"
                     name="year1"
                     onChange={handleChange}
+                    min="0"
+                    onPaste={preventPasteNegative}
+                    onKeyPress={preventMinus}
+                    onKeyDown={handleKeyDown}
                     className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                     required
                   />
@@ -725,6 +756,10 @@ const Add = () => {
                     value={fees1Val}
                     disabled={true}
                     onChange={handleChange}
+                    min="0"
+                    onPaste={preventPasteNegative}
+                    onKeyPress={preventMinus}
+                    onKeyDown={handleKeyDown}
                     className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                   //    required
                   />
@@ -801,6 +836,10 @@ const Add = () => {
                     type="number"
                     name="year2"
                     onChange={handleChange}
+                    min="0"
+                    onPaste={preventPasteNegative}
+                    onKeyPress={preventMinus}
+                    onKeyDown={handleKeyDown}
                     className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                   //  required
                   />
@@ -816,7 +855,11 @@ const Add = () => {
                     name="fees2"
                     value={fees2Val}
                     disabled={true}
+                    min="0"
                     onChange={handleChange}
+                    onPaste={preventPasteNegative}
+                    onKeyPress={preventMinus}
+                    onKeyDown={handleKeyDown}
                     className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                   //    required
                   />
@@ -893,6 +936,10 @@ const Add = () => {
                     type="number"
                     name="year3"
                     onChange={handleChange}
+                    min="0"
+                    onPaste={preventPasteNegative}
+                    onKeyPress={preventMinus}
+                    onKeyDown={handleKeyDown}
                     className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                   //  required
                   />
@@ -908,6 +955,10 @@ const Add = () => {
                     name="fees3"
                     value={fees3Val}
                     disabled={true}
+                    min="0"
+                    onPaste={preventPasteNegative}
+                    onKeyPress={preventMinus}
+                    onKeyDown={handleKeyDown}
                     onChange={handleChange}
                     className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                   //    required
@@ -985,6 +1036,10 @@ const Add = () => {
                     type="number"
                     name="year4"
                     onChange={handleChange}
+                    min="0"
+                    onPaste={preventPasteNegative}
+                    onKeyPress={preventMinus}
+                    onKeyDown={handleKeyDown}
                     className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                   //  required
                   />
@@ -1001,6 +1056,10 @@ const Add = () => {
                     value={fees4Val}
                     disabled={true}
                     onChange={handleChange}
+                    min="0"
+                    onPaste={preventPasteNegative}
+                    onKeyPress={preventMinus}
+                    onKeyDown={handleKeyDown}
                     className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                   //    required
                   />
@@ -1077,6 +1136,10 @@ const Add = () => {
                     type="number"
                     name="year5"
                     onChange={handleChange}
+                    min="0"
+                    onPaste={preventPasteNegative}
+                    onKeyPress={preventMinus}
+                    onKeyDown={handleKeyDown}
                     className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                   //  required
                   />
@@ -1093,6 +1156,10 @@ const Add = () => {
                     value={fees5Val}
                     disabled={true}
                     onChange={handleChange}
+                    min="0"
+                    onPaste={preventPasteNegative}
+                    onKeyPress={preventMinus}
+                    onKeyDown={handleKeyDown}
                     className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                   //    required
                   />
@@ -1148,6 +1215,10 @@ const Add = () => {
                   name="hostelFees"
                   value={fees6Val}
                   onChange={handleChange}
+                  min="0"
+                  onPaste={preventPasteNegative}
+                  onKeyPress={preventMinus}
+                  onKeyDown={handleKeyDown}
                   className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                 //    required
                 />
