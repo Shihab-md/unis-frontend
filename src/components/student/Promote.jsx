@@ -492,7 +492,7 @@ const Promote = () => {
                       />
                     </div>
 
-                    {/* Year2 */}
+                    {/* Year2 
                     <div>
                       <label className="block text-sm font-medium text-gray-700">
                         Current Std.
@@ -507,7 +507,7 @@ const Promote = () => {
                         className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                         required
                       />
-                    </div>
+                    </div>*/}
 
                     {/* Status2 */}
                     <div>
@@ -524,6 +524,27 @@ const Promote = () => {
                         <option value="Promoted">Promoted</option>
                         <option value="Completed">Completed</option>
                         <option value="Not-Promoted">Not-Promoted</option>
+                      </select>
+                    </div>
+
+                    {/* Next Course 2 */}
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700">
+                        Next Course
+                      </label>
+                      <select
+                        name="nextCourseId"
+                        //  value={student.courseId2}
+                        onChange={handleChange}
+                        className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
+                      //  disabled={true}
+                      >
+                        <option value="">Select Course</option>
+                        {courses.filter(course => course.type === "School Education").map((course) => (
+                          <option key={course._id} value={course._id}>
+                            {course.name}
+                          </option>
+                        ))}
                       </select>
                     </div>
 
