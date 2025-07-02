@@ -108,6 +108,11 @@ const View = () => {
 
                 <div className="flex space-x-3 mb-5" />
 
+                <ViewCard type="title" text="About Student" />
+                <ViewCard type="data" text={student.about} />
+
+                <div className="flex space-x-3 mb-5" />
+
                 <ViewCard type="title" text="Father's Name" />
                 <ViewCard type="data" text={student.fatherName} />
                 <ViewCard type="title" text="Father's Number" />
@@ -133,8 +138,10 @@ const View = () => {
 
                 <ViewCard type="title" text="Address" />
                 <ViewCard type="data" text={student.address} />
+                <ViewCard type="title" text="Village / Town / City" />
+                <ViewCard type="data" text={student.city} />
                 <ViewCard type="title" text="State & District" />
-                <ViewCard type="data" text={student.district + ", " + student.state} />
+                <ViewCard type="data" text={student.districtStateId ? student.districtStateId?.district + ", " + student.districtStateId?.state : ""} />
 
                 <div className="flex space-x-3 mb-7" />
 
@@ -142,91 +149,6 @@ const View = () => {
                 <div className='mb-3 border rounded-md  p-0'>
                   <DataTable className="p-0" columns={columnsSelectForAcademic} data={student._academics} highlightOnHover striped />
                 </div>
-
-                {/**    <ViewCard type="title" text="Academic Year" />
-                <ViewCard type="data" text={student._academics.acYear && student._academics.acYear.acYear ? student._academics.acYear.acYear : ""} />
-
-                <div className="flex space-x-3 mb-5" />
-
-                <ViewCard type="header" text="Deeniyath Education" />
-                <ViewCard type="title" text="Institute Name" />
-                <ViewCard type="data" text={academic.instituteId1 && academic.instituteId1.name ? academic.instituteId1.name : ""} />
-                <ViewCard type="title" text="Course Name " />
-                <ViewCard type="data" text={academic.courseId1 && academic.courseId1.name ? academic.courseId1.name : ""} />
-                <ViewCard type="title" text="Reference Number " />
-                <ViewCard type="data" text={academic.refNumber1} />
-                <ViewCard type="title" text="Year / Std." />
-                <ViewCard type="data" text={academic.year} />
-                <ViewCard type="title" text="Fees " />
-                <ViewCard type="data" text={academic.fees1} />
-                {/*<ViewCard type="title" text="Discount " />
-                <ViewCard type="data" text={academic.discount1} />
-                <ViewCard type="title" text="Final Fees " />
-                <ViewCard type="data" text={academic.finalFees1} /> 
-
-                <div className="flex space-x-3 mb-5" />
-
-                <ViewCard type="header" text="School Education" />
-                <ViewCard type="title" text="Institute Name" />
-                <ViewCard type="data" text={academic.instituteId2 && academic.instituteId2.name ? academic.instituteId2.name : ""} />
-                <ViewCard type="title" text="Course Name " />
-                <ViewCard type="data" text={academic.instituteId2 && academic.courseId2.name ? academic.courseId2.name : ""} />
-                <ViewCard type="title" text="Reference Number " />
-                <ViewCard type="data" text={academic.refNumber2} />
-                <ViewCard type="title" text="Fees " />
-                <ViewCard type="data" text={academic.fees2} />
-                {/* <ViewCard type="title" text="Discount " />
-                <ViewCard type="data" text={academic.discount2} />
-                <ViewCard type="title" text="Final Fees " />
-                <ViewCard type="data" text={academic.finalFees2} /> 
-
-                <div className="flex space-x-3 mb-5" />
-
-                <ViewCard type="header" text="College Education" />
-                <ViewCard type="title" text="Institute Name" />
-                <ViewCard type="data" text={academic.instituteId3 && academic.instituteId3.name ? academic.instituteId3.name : ""} />
-                <ViewCard type="title" text="Course Name " />
-                <ViewCard type="data" text={academic.instituteId3 && academic.courseId3.name ? academic.courseId3.name : ""} />
-                <ViewCard type="title" text="Reference Number " />
-                <ViewCard type="data" text={academic.refNumber3} />
-                <ViewCard type="title" text="Fees " />
-                <ViewCard type="data" text={academic.fees3} />
-                {/* <ViewCard type="title" text="Discount " />
-                <ViewCard type="data" text={academic.discount3} />
-                <ViewCard type="title" text="Final Fees " />
-                <ViewCard type="data" text={academic.finalFees3} /> 
-
-                <div className="flex space-x-3 mb-5" />
-
-                <ViewCard type="header" text="Islamic Home Science" />
-                <ViewCard type="title" text="Institute Name" />
-                <ViewCard type="data" text={academic.instituteId4 && academic.instituteId4.name ? academic.instituteId4.name : ""} />
-                <ViewCard type="title" text="Course Name " />
-                <ViewCard type="data" text={academic.courseId4 && academic.courseId4.name ? academic.courseId4.name : ""} />
-                <ViewCard type="title" text="Reference Number " />
-                <ViewCard type="data" text={academic.refNumber4} />
-                <ViewCard type="title" text="Fees " />
-                <ViewCard type="data" text={academic.fees4} />
-                {/*  <ViewCard type="title" text="Discount " />
-                <ViewCard type="data" text={academic.discount4} />
-                <ViewCard type="title" text="Final Fees " />
-                <ViewCard type="data" text={academic.finalFees4} /> 
-
-                <div className="flex space-x-3 mb-5" />
-
-                <ViewCard type="header" text="Vocation Course" />
-                <ViewCard type="title" text="Institute Name" />
-                <ViewCard type="data" text={academic.instituteId5 && academic.instituteId5.name ? academic.instituteId5.name : ""} />
-                <ViewCard type="title" text="Course Name " />
-                <ViewCard type="data" text={academic.courseId5 && academic.courseId5.name ? academic.courseId5.name : ""} />
-                <ViewCard type="title" text="Reference Number " />
-                <ViewCard type="data" text={academic.refNumber5} />
-                <ViewCard type="title" text="Fees " />
-                <ViewCard type="data" text={academic.fees5} />
-                {/*  <ViewCard type="title" text="Discount " />
-                <ViewCard type="data" text={academic.discount5} />
-                <ViewCard type="title" text="Final Fees " />
-                <ViewCard type="data" text={academic.finalFees5} /> */}
 
                 <div className="flex space-x-3 mb-5" />
 

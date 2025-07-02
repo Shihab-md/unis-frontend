@@ -217,7 +217,7 @@ const List = () => {
         setSchools(schools)
         let inputArray = [];
         schools.map((school) => (
-          inputOptions[school._id] = school.code + " : " + school.nameEnglish + ", " + school.district + ", " + school.state
+          inputOptions[school._id] = school.code.substring(3) + " : " + school.nameEnglish + ", " + school.district + ", " + school.state
         ))
 
         setInputOptions(inputOptions);
@@ -258,7 +258,7 @@ const List = () => {
           title: "<h3 style='color:blue; font-size: 25px;'>Select the Niswan</h3>",
           input: "select",
           inputOptions: inputOptions,
-          inputPlaceholder: "Select the Niswan",
+          inputPlaceholder: "Select the Niswan : UN-* ",
           showCancelButton: true,
           background: "url(/bg_card.png)",
           inputValidator: (value) => {
@@ -299,8 +299,9 @@ const List = () => {
               name: student.userId?.name,
               schoolName: student.schoolId?.nameEnglish,
               rollNumber: student.rollNumber,
-              district: student.district,
-              state: student.state,
+              address: student.address,
+              city: student.city,
+              district: student.districtStateId ? student.districtStateId.district + ", " + student.districtStateId.State : "",
               active: student.active,
               course: student.courses && student.courses.length > 0 ? student.courses.map(course => course.name ? course.name + ", " : "") : "",
               courses: student.courses && student.courses.length > 0 ? student.courses : null,

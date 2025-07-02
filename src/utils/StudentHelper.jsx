@@ -39,7 +39,7 @@ export const columnsSelectForAcademic = [
       {row.courseId2 ?
         getDetails(
           'School Education', row.courseId2?.name, row.instituteId2?.name,
-          row.refNumber2, row.year2, row.fees2, row.status2
+          row.refNumber2, row.courseId2?.name, row.fees2, row.status2
         ) : null}
       {row.courseId3 ?
         getDetails(

@@ -3,6 +3,7 @@ import { getSchoolsFromCache } from '../../utils/SchoolHelper';
 import { getAcademicYearsFromCache } from '../../utils/AcademicYearHelper';
 import { getInstitutesFromCache } from '../../utils/InstituteHelper';
 import { getCoursesFromCache } from '../../utils/CourseHelper';
+import { getDistrictStatesFromCache } from '../../utils/DistrictStateHelper';
 import axios from "axios";
 import { useNavigate, useParams, Link } from "react-router-dom";
 import { getBaseUrl, handleRightClickAndFullScreen, getSpinner, checkAuth, getPrcessing, showSwalAlert } from '../../utils/CommonHelper';
@@ -37,6 +38,7 @@ const Edit = () => {
   const [academicYears, setAcademicYears] = useState([]);
   const [institutes, setInstitutes] = useState([]);
   const [courses, setCourses] = useState([]);
+  const [districtStates, setDistrictStates] = useState([]);
 
   useEffect(() => {
 
@@ -78,6 +80,14 @@ const Edit = () => {
   }, []);
 
   useEffect(() => {
+    const getDistrictStatesMap = async (id) => {
+      const districtStates = await getDistrictStatesFromCache(id);
+      setDistrictStates(districtStates);
+    };
+    getDistrictStatesMap();
+  }, []);
+
+  useEffect(() => {
     const fetchStudent = async () => {
       try {
         const responnse = await axios.get(
@@ -110,14 +120,14 @@ const Edit = () => {
             name: student.userId && student.userId.name ? student.userId.name : "",
             schoolId: student.schoolId && student.schoolId._id ? student.schoolId._id : "",
             rollNumber: student.rollNumber,
-            //  doa: student.doa,
-            //  dob: student.dob,
+
             gender: student.gender,
             maritalStatus: student.maritalStatus,
             motherTongue: student.motherTongue,
             bloodGroup: student.bloodGroup,
             idMark1: student.idMark1,
             idMark2: student.idMark2,
+            about: student.about,
 
             fatherName: student.fatherName,
             fatherNumber: student.fatherNumber,
@@ -130,8 +140,8 @@ const Edit = () => {
             guardianOccupation: student.guardianOccupation,
             guardianRelation: student.guardianRelation,
             address: student.address,
-            district: student.district,
-            state: student.state,
+            city: student.city,
+            districtStateId: student.districtStateId && student.districtStateId?._id ? student.districtStateId?._id : null,
 
             active: student.active,
             remarks: student.remarks,
@@ -182,44 +192,6 @@ const Edit = () => {
             status5: academics[0]?.status5,
             fees5: academics[0]?.fees5,
             discount5: academics[0]?.discount5,
-
-            /*  acYear: academic.acYear && academic.acYear._id ? academic.acYear._id : null,
-  
-              instituteId1: academic.instituteId1 && academic.instituteId1._id ? academic.instituteId1._id : null,
-              courseId1: academic.courseId1 && academic.courseId1._id ? academic.courseId1._id : null,
-              refNumber1: academic.refNumber1,
-              year1: academic.year1,
-              fees1: academic.fees1,
-              discount1: academic.discount1,
-  
-              instituteId2: academic.instituteId2 && academic.instituteId2._id ? academic.instituteId2._id : null,
-              courseId2: academic.courseId2 && academic.courseId2._id ? academic.courseId2._id : null,
-              refNumber2: academic.refNumber2,
-              year2: academic.year2,
-              fees2: academic.fees2,
-              discount2: academic.discount2,
-  
-              instituteId3: academic.instituteId3 && academic.instituteId3._id ? academic.instituteId3._id : null,
-              courseId3: academic.courseId3 && academic.courseId3._id ? academic.courseId3._id : null,
-              refNumber3: academic.refNumber3,
-              year3: academic.year3,
-              fees3: academic.fees3,
-              discount3: academic.discount3,
-  
-              instituteId4: academic.instituteId4 && academic.instituteId4._id ? academic.instituteId4._id : null,
-              courseId4: academic.courseId4 && academic.courseId4._id ? academic.courseId4._id : null,
-              refNumber4: academic.refNumber4,
-              year4: academic.year4,
-              fees4: academic.fees4,
-              discount4: academic.discount4,
-  
-              instituteId5: academic.instituteId5 && academic.instituteId5._id ? academic.instituteId5._id : null,
-              courseId5: academic.courseId5 && academic.courseId5._id ? academic.courseId5._id : null,
-              refNumber5: academic.refNumber5,
-              year5: academic.year5,
-              fees5: academic.fees5,
-              discount5: academic.discount5,
-  */
           }));
         }
       } catch (error) {
@@ -447,7 +419,8 @@ const Edit = () => {
                 <div className="flex space-x-3 mb-5" />
                 <div className="hidden lg:block flex space-x-3 mb-5" />
               </div>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-5 gap-y-7">
                 {/* Gender */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700">
@@ -555,7 +528,26 @@ const Edit = () => {
                 <div className="hidden lg:block flex space-x-3 mb-5" />
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+              <div className="grid mt-2 grid-cols-1 md:grid-cols-1 gap-5">
+                {/* About */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">
+                    More details about the Student
+                  </label>
+                  <input
+                    type="text"
+                    name="about"
+                    value={student.about}
+                    onChange={handleChange}
+                    className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
+                  //  required
+                  />
+                </div>
+
+                <div className="flex space-x-3 mb-7" />
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-5 gap-y-7">
                 {/* Father's Name */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700">
@@ -649,7 +641,7 @@ const Edit = () => {
                 </div>
               </div>
 
-              <div className="grid mt-5 grid-cols-1 md:grid-cols-4 gap-5">
+              <div className="grid mt-7 grid-cols-1 md:grid-cols-4 gap-5">
                 {/* Guardian's Name */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700">
@@ -716,54 +708,56 @@ const Edit = () => {
               <div className="hidden lg:block flex space-x-3 mb-5" />
               <div className="hidden lg:block flex space-x-3 mb-5" />
 
-              <div className="grid mt-5 grid-cols-1 md:grid-cols-2 gap-5">
+              <div className="grid mt-5 grid-cols-1 md:grid-cols-3 gap-5">
                 {/* Address */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700">
-                    Address <span className="text-red-700">*</span>
+                    Door No. / Street <span className="text-red-700">*</span>
                   </label>
                   <input
                     type="text"
                     name="address"
                     value={student.address}
                     onChange={handleChange}
-                    //  placeholder="Address"
                     className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                     required
                   />
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                  {/* District */}
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700">
-                      District <span className="text-red-700">*</span>
-                    </label>
-                    <input
-                      type="text"
-                      name="district"
-                      value={student.district}
-                      onChange={handleChange}
-                      //  placeholder="Route Name"
-                      className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                      required
-                    />
-                  </div>
-                  {/* State */}
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700">
-                      State <span className="text-red-700">*</span>
-                    </label>
-                    <input
-                      type="text"
-                      name="state"
-                      value={student.state}
-                      onChange={handleChange}
-                      //  placeholder="Route Name"
-                      className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                      required
-                    />
-                  </div>
+                {/* City */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Village / Town / City <span className="text-red-700">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    name="city"
+                    value={student.city}
+                    onChange={handleChange}
+                    className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
+                    required
+                  />
+                </div>
+
+                {/* District & State*/}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Select District & State<span className="text-red-700">*</span>
+                  </label>
+                  <select
+                    name="districtStateId"
+                    value={student.districtStateId}
+                    onChange={handleChange}
+                    className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
+                    required
+                  >
+                    <option value=""></option>
+                    {districtStates.map((districtState) => (
+                      <option key={districtState._id} value={districtState._id}>
+                        {districtState.district + ", " + districtState.state}
+                      </option>
+                    ))}
+                  </select>
                 </div>
               </div>
 
@@ -970,6 +964,7 @@ const Edit = () => {
                       name="year2"
                       value={student.year2}
                       min="0"
+                      disabled={true}
                       //    disabled={student.year ? true : false}
                       onChange={handleChange}
                       className="mt-2 p-2 block w-full border border-gray-300 rounded-md"

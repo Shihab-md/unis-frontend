@@ -160,7 +160,6 @@ const Add = () => {
         fees3: fees3Val,
         fees4: fees4Val,
         fees5: fees5Val,
-
       }));
     }
   };
@@ -451,6 +450,28 @@ const Add = () => {
               <div className="flex space-x-3 mb-5" />
               <div className="hidden lg:block flex space-x-3 mb-5" />
               <div className="hidden lg:block flex space-x-3 mb-5" />
+            </div>
+
+            <div className="grid mt-2 grid-cols-1 md:grid-cols-1 gap-5">
+              {/* About */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700">
+                  More details about the Student
+                </label>
+                <input
+                  type="text"
+                  name="about"
+                  onChange={handleChange}
+                  className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
+                //  required
+                />
+              </div>
+            </div>
+
+            <div className="grid mt-2 grid-cols-1 md:grid-cols-3 gap-5">
+              <div className="flex space-x-3 mb-5" />
+              <div className="hidden lg:block flex space-x-3 mb-5" />
+              <div className="hidden lg:block flex space-x-3 mb-5" />
 
               {/* Father's Name */}
               <div>
@@ -539,7 +560,7 @@ const Add = () => {
               </div>
             </div>
 
-            <div className="grid mt-5 grid-cols-1 md:grid-cols-4 gap-5">
+            <div className="grid mt-7 grid-cols-1 md:grid-cols-4 gap-5">
               {/* Guardian's Name */}
               <div>
                 <label className="block text-sm font-medium text-gray-700">
@@ -602,73 +623,53 @@ const Add = () => {
             <div className="hidden lg:block flex space-x-3 mb-5" />
             <div className="hidden lg:block flex space-x-3 mb-5" />
 
-            <div className="grid mt-5 grid-cols-1 md:grid-cols-2 gap-5">
+            <div className="grid mt-5 grid-cols-1 md:grid-cols-3 gap-5">
               {/* Address */}
               <div>
                 <label className="block text-sm font-medium text-gray-700">
-                  Address <span className="text-red-700">*</span>
+                  Door No. / Street <span className="text-red-700">*</span>
                 </label>
                 <input
                   type="text"
                   name="address"
                   onChange={handleChange}
-                  //  placeholder="Address"
                   className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                   required
                 />
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                {/* School */}
-                <div>
-                  <label className="block mt-2 text-sm font-medium text-gray-700">
-                    Select Niswan <span className="text-red-700">*</span>
-                  </label>
-                  <select
-                    name="schoolId"
-                    value={localStorage.getItem('schoolId')}
-                    onChange={handleChange}
-                    disabled={true}
-                    className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                    required
-                  >
-                    <option value="">Select Niswan</option>
-                    {schools.map((school) => (
-                      <option key={school._id} value={school._id}>
-                        {school.code + " : " + school.nameEnglish}
-                      </option>
-                    ))}
-                  </select>
-                </div>
+              {/* City */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700">
+                  Village / Town / City <span className="text-red-700">*</span>
+                </label>
+                <input
+                  type="text"
+                  name="city"
+                  onChange={handleChange}
+                  className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
+                  required
+                />
+              </div>
 
-                {/* District */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-700">
-                    District <span className="text-red-700">*</span>
-                  </label>
-                  <input
-                    type="text"
-                    name="district"
-                    onChange={handleChange}
-                    //  placeholder="Route Name"
-                    className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                    required
-                  />
-                </div>
-                {/* State */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-700">
-                    State <span className="text-red-700">*</span>
-                  </label>
-                  <input
-                    type="text"
-                    name="state"
-                    onChange={handleChange}
-                    //  placeholder="Route Name"
-                    className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                    required
-                  />
-                </div>
+              {/* District & State*/}
+              <div>
+                <label className="block text-sm font-medium text-gray-700">
+                  Select District & State<span className="text-red-700">*</span>
+                </label>
+                <select
+                  name="districtStateId"
+                  onChange={handleChange}
+                  className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
+                  required
+                >
+                  <option value=""></option>
+                  {districtStates.map((districtState) => (
+                    <option key={districtState._id} value={districtState._id}>
+                      {districtState.district + ", " + districtState.state}
+                    </option>
+                  ))}
+                </select>
               </div>
             </div>
 
@@ -685,7 +686,7 @@ const Add = () => {
                   name="acYear"
                   onChange={handleChange}
                   value={acYear}
-                  disabled={acYear ? true : false}
+                //  disabled={acYear ? true : false}
                   className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                   required
                 >
@@ -870,6 +871,7 @@ const Add = () => {
                     name="year2"
                     onChange={handleChange}
                     min="0"
+                    disabled={true}
                     onPaste={preventPasteNegative}
                     onKeyPress={preventMinus}
                     onKeyDown={handleKeyDown}
