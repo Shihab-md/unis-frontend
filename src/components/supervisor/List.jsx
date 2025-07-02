@@ -78,7 +78,7 @@ const List = () => {
       sup.supId?.toLowerCase().includes(e.target.value.toLowerCase())
       || sup.name?.toLowerCase().includes(e.target.value.toLowerCase())
       || sup.active?.toLowerCase().includes(e.target.value.toLowerCase())
-      || sup.contactNumber?.toLowerCase().includes(e.target.value.toLowerCase())
+      || sup.contactNumber?.toString().toLowerCase().includes(e.target.value.toLowerCase())
     ))
     setFilteredSupervisors(records)
   }

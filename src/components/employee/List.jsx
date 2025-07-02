@@ -81,6 +81,7 @@ const List = () => {
       || sup.schoolCode?.toLowerCase().includes(e.target.value.toLowerCase())
       || sup.designation?.toLowerCase().includes(e.target.value.toLowerCase())
       || sup.active?.toLowerCase().includes(e.target.value.toLowerCase())
+      || sup.contactNumber?.toString().toLowerCase().includes(e.target.value.toLowerCase())
     ))
     setFilteredEmployees(records)
   }
