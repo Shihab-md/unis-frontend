@@ -372,7 +372,7 @@ const Edit = () => {
                       selected={selectedDOADate}
                       onChange={(date) => setSelectedDOADate(date)}
                       dateFormat="dd/MM/yyyy"
-                      className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                      className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                       required
                       showMonthDropdown
                       showYearDropdown
@@ -393,7 +393,7 @@ const Edit = () => {
                       selected={selectedDOBDate}
                       onChange={(date) => setSelectedDOBDate(date)}
                       dateFormat="dd/MM/yyyy"
-                      className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                      className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                       required
                       showMonthDropdown
                       showYearDropdown
