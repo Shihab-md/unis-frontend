@@ -501,6 +501,7 @@ const Edit = () => {
                     <option value="Tamil">Tamil</option>
                     <option value="Urdu">Urdu</option>
                     <option value="Telugu">Telugu</option>
+                    <option value="Malayalam">Malayalam</option>
                     <option value="English">English</option>
                   </select>
                 </div>

@@ -6,6 +6,7 @@ import { getSchoolsFromCache } from '../../utils/SchoolHelper';
 import { getAcademicYearsFromCache } from '../../utils/AcademicYearHelper';
 import { getInstitutesFromCache } from '../../utils/InstituteHelper';
 import { getCoursesFromCache } from '../../utils/CourseHelper';
+import { getDistrictStatesFromCache } from '../../utils/DistrictStateHelper';
 import { getBaseUrl, handleRightClickAndFullScreen, checkAuth, getPrcessing, showSwalAlert } from '../../utils/CommonHelper';
 import ViewCard from "../dashboard/ViewCard";
 import {
@@ -28,6 +29,7 @@ const Add = () => {
   const [academicYears, setAcademicYears] = useState([]);
   const [institutes, setInstitutes] = useState([]);
   const [courses, setCourses] = useState([]);
+  const [districtStates, setDistrictStates] = useState([]);
 
   const [fees1Val, setFees1Val] = useState("");
   const [fees2Val, setFees2Val] = useState("");
@@ -63,6 +65,14 @@ const Add = () => {
       setAcademicYears(academicYears);
     };
     getAcademicYearsMap();
+  }, []);
+
+  useEffect(() => {
+    const getDistrictStatesMap = async (id) => {
+      const districtStates = await getDistrictStatesFromCache(id);
+      setDistrictStates(districtStates);
+    };
+    getDistrictStatesMap();
   }, []);
 
   useEffect(() => {
@@ -391,6 +401,7 @@ const Add = () => {
                   <option value="Tamil">Tamil</option>
                   <option value="Urdu">Urdu</option>
                   <option value="Telugu">Telugu</option>
+                  <option value="Malayalam">Malayalam</option>
                   <option value="English">English</option>
                 </select>
               </div>
@@ -608,6 +619,28 @@ const Add = () => {
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                {/* School */}
+                <div>
+                  <label className="block mt-2 text-sm font-medium text-gray-700">
+                    Select Niswan <span className="text-red-700">*</span>
+                  </label>
+                  <select
+                    name="schoolId"
+                    value={localStorage.getItem('schoolId')}
+                    onChange={handleChange}
+                    disabled={true}
+                    className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
+                    required
+                  >
+                    <option value="">Select Niswan</option>
+                    {schools.map((school) => (
+                      <option key={school._id} value={school._id}>
+                        {school.code + " : " + school.nameEnglish}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
                 {/* District */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700">
