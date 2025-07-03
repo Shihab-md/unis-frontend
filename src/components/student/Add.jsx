@@ -690,7 +690,7 @@ const Add = () => {
               {/* District & State*/}
               <div>
                 <label className="block text-sm font-medium text-slate-500">
-                  Select District & State<span className="text-red-700">*</span>
+                  Select District & State <span className="text-red-700">*</span>
                 </label>
                 <select
                   name="districtStateId"

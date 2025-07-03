@@ -65,6 +65,13 @@ const View = () => {
 
                 <ViewCard type="title" text="Code" />
                 <ViewCard type="data" text={school.code} />
+                <ViewCard type="title" text="Date of Establishment" />
+                <ViewCard type="data" text={getFormattedDate(school.doe)} />
+                <ViewCard type="title" text="Status" />
+                <ViewCard type="data" text={school.active} />
+
+                <div className="flex space-x-3 mb-5" />
+
                 <ViewCard type="title" text="Name in English" />
                 <ViewCard type="data" text={school.nameEnglish} />
                 <ViewCard type="title" text="Name in Arabic" />
@@ -74,18 +81,28 @@ const View = () => {
 
                 <div className="flex space-x-3 mb-5" />
 
-                <ViewCard type="title" text="Address" />
-                <ViewCard type="data" text={school.address} />
                 <ViewCard type="title" text="District & State" />
                 <ViewCard type="data" text={school.district + ", " + school.state} />
                 <ViewCard type="title" text="Contact Number" />
                 <ViewCard type="data" text={school.contactNumber} />
                 <ViewCard type="title" text="Email" />
                 <ViewCard type="data" text={school.email} />
-                <ViewCard type="title" text="Date of Establishment" />
-                <ViewCard type="data" text={getFormattedDate(school.doe)} />
-                <ViewCard type="title" text="Status" />
-                <ViewCard type="data" text={school.active} />
+
+                <div className="flex space-x-3 mb-5" />
+
+                <ViewCard type="title" text="Address" />
+                <ViewCard type="data" text={school.address} />
+                <ViewCard type="title" text="Area & Town / City" />
+                <ViewCard type="data" text={school.city} />
+                <ViewCard type="title" text="Landmark" />
+                <ViewCard type="data" text={school.landmark} />
+                <ViewCard type="title" text="Pincode" />
+                <ViewCard type="data" text={school.pincode} />
+                <ViewCard type="title" text="State & District" />
+                <ViewCard type="data" text={school.districtStateId ? school.districtStateId?.district + ", " + school.districtStateId?.state : ""} />
+
+                <div className="flex space-x-3 mb-5" />
+
                 <ViewCard type="title" text="Supervisor" />
                 <ViewCard type="data" text={school.supervisorId.supervisorId + " : " + school.supervisorId.userId.name} />
 
@@ -93,50 +110,64 @@ const View = () => {
 
                 <ViewCard type="title" text="Incharge-1 Name" />
                 <ViewCard type="data" text={school.incharge1} />
-                <ViewCard type="title" text="Incharge-1 Number" />
+                <ViewCard type="title" text="Mobile Number" />
                 <ViewCard type="data" text={school.incharge1Number} />
+                <ViewCard type="title" text="Designation" />
+                <ViewCard type="data" text={school.designation1} />
 
                 <div className="flex space-x-3 mb-5" />
 
                 <ViewCard type="title" text="Incharge-2 Name" />
                 <ViewCard type="data" text={school.incharge2} />
-                <ViewCard type="title" text="Incharge-2 Number" />
+                <ViewCard type="title" text="Mobile Number" />
                 <ViewCard type="data" text={school.incharge2Number} />
+                <ViewCard type="title" text="Designation" />
+                <ViewCard type="data" text={school.designation2} />
 
                 <div className="flex space-x-3 mb-5" />
 
                 <ViewCard type="title" text="Incharge-3 Name" />
                 <ViewCard type="data" text={school.incharge3} />
-                <ViewCard type="title" text="Incharge-3 Number" />
+                <ViewCard type="title" text="Mobile Number" />
                 <ViewCard type="data" text={school.incharge3Number} />
+                <ViewCard type="title" text="Designation" />
+                <ViewCard type="data" text={school.designation3} />
 
                 <div className="flex space-x-3 mb-5" />
 
                 <ViewCard type="title" text="Incharge-4 Name" />
                 <ViewCard type="data" text={school.incharge4} />
-                <ViewCard type="title" text="Incharge-4 Number" />
+                <ViewCard type="title" text="Mobile Number" />
                 <ViewCard type="data" text={school.incharge4Number} />
+                <ViewCard type="title" text="Designation" />
+                <ViewCard type="data" text={school.designation4} />
 
                 <div className="flex space-x-3 mb-5" />
 
                 <ViewCard type="title" text="Incharge-5 Name" />
                 <ViewCard type="data" text={school.incharge5} />
-                <ViewCard type="title" text="Incharge-5 Number" />
+                <ViewCard type="title" text="Mobile Number" />
                 <ViewCard type="data" text={school.incharge5Number} />
+                <ViewCard type="title" text="Designation" />
+                <ViewCard type="data" text={school.designation5} />
 
                 <div className="flex space-x-3 mb-5" />
 
                 <ViewCard type="title" text="Incharge-6 Name" />
                 <ViewCard type="data" text={school.incharge6} />
-                <ViewCard type="title" text="Incharge-6 Number" />
+                <ViewCard type="title" text="Mobile Number" />
                 <ViewCard type="data" text={school.incharge6Number} />
+                <ViewCard type="title" text="Designation" />
+                <ViewCard type="data" text={school.designation6} />
 
                 <div className="flex space-x-3 mb-5" />
 
                 <ViewCard type="title" text="Incharge-7 Name" />
                 <ViewCard type="data" text={school.incharge7} />
-                <ViewCard type="title" text="Incharge-7 Number" />
+                <ViewCard type="title" text="Mobile Number" />
                 <ViewCard type="data" text={school.incharge7Number} />
+                <ViewCard type="title" text="Designation" />
+                <ViewCard type="data" text={school.designation7} />
 
                 <div className="flex space-x-3 mb-5" />
               </div>

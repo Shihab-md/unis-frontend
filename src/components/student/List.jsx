@@ -301,10 +301,10 @@ const List = () => {
               rollNumber: student.rollNumber,
               address: student.address,
               city: student.city,
-              district: student.districtStateId ? student.districtStateId.district + ", " + student.districtStateId.State : "",
+              district: student.districtStateId ? student.districtStateId?.district + ", " + student.districtStateId?.State : "",
               active: student.active,
-              course: student.courses && student.courses.length > 0 ? student.courses.map(course => course.name ? course.name + ", " : "") : "",
-              courses: student.courses && student.courses.length > 0 ? student.courses : null,
+              course: student.courses && student.courses?.length > 0 ? student.courses.map(course => course.name ? course.name + ", " : "") : "",
+              courses: student.courses && student.courses?.length > 0 ? student.courses : null,
               fatherName: student.fatherName ? student.fatherName : student.motherName ? student.motherName : student.guardianName ? student.guardianName : "",
               action: (<StudentButtons Id={student._id} onStudentDelete={onStudentDelete} />),
             }));

@@ -5,6 +5,7 @@ import { useNavigate, useParams, Link } from "react-router-dom";
 import {
   FaRegTimesCircle
 } from "react-icons/fa";
+import { getDistrictStatesFromCache } from '../../utils/DistrictStateHelper';
 import { getBaseUrl, handleRightClickAndFullScreen, getSpinner, checkAuth, getPrcessing, showSwalAlert } from '../../utils/CommonHelper';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -16,6 +17,7 @@ const Edit = () => {
 
   const [processing, setProcessing] = useState(null)
   const [selectedDOEDate, setSelectedDOEDate] = useState(null);
+  const [districtStates, setDistrictStates] = useState([]);
 
   const [school, setSchool] = useState({
     code: "",
@@ -49,6 +51,14 @@ const Edit = () => {
   }, []);
 
   useEffect(() => {
+    const getDistrictStatesMap = async (id) => {
+      const districtStates = await getDistrictStatesFromCache(id);
+      setDistrictStates(districtStates);
+    };
+    getDistrictStatesMap();
+  }, []);
+
+  useEffect(() => {
 
     // Authenticate the User.
     if (checkAuth("schoolEdit") === "NO") {
@@ -77,27 +87,49 @@ const Edit = () => {
             nameEnglish: school.nameEnglish,
             nameArabic: school.nameArabic,
             nameNative: school.nameNative,
+
             address: school.address,
+            city: school.city,
+            pincode: school.pincode,
+            landmark: school.landmark,
+            districtStateId: school.districtStateId && school.districtStateId?._id ? school.districtStateId?._id : null,
+
             district: school.district,
             state: school.state,
+
             contactNumber: school.contactNumber,
             email: school.email,
             active: school.active,
+
             supervisorId: school.supervisorId,
+
             incharge1: school.incharge1,
             incharge1Number: school.incharge1Number,
+            designation1: school.designation1,
+
             incharge2: school.incharge2,
             incharge2Number: school.incharge2Number,
+            designation2: school.designation2,
+
             incharge3: school.incharge3,
             incharge3Number: school.incharge3Number,
+            designation3: school.designation3,
+
             incharge4: school.incharge4,
             incharge4Number: school.incharge4Number,
+            designation4: school.designation4,
+
             incharge5: school.incharge5,
             incharge5Number: school.incharge5Number,
+            designation5: school.designation5,
+
             incharge6: school.incharge6,
             incharge6Number: school.incharge6Number,
+            designation6: school.designation6,
+
             incharge7: school.incharge7,
             incharge7Number: school.incharge7Number,
+            designation7: school.designation7,
           }));
         }
       } catch (error) {
@@ -152,10 +184,32 @@ const Edit = () => {
     return getPrcessing();
   }
 
+  const preventMinus = (e) => {
+    if (e.code === 'Minus') {
+      e.preventDefault();
+    }
+  };
+
+  const preventPasteNegative = (e) => {
+    const clipboardData = e.clipboardData || window.clipboardData;
+    const pastedData = parseFloat(clipboardData.getData('text'));
+
+    if (pastedData < 0) {
+      e.preventDefault();
+    }
+  };
+
+  const handleKeyDown = (e) => {
+    // Prevent 'e', 'E', '+', and '-' from being entered
+    if (['e', 'E', '+', '-'].includes(e.key)) {
+      e.preventDefault();
+    }
+  };
+
   return (
     <>
       {school ? (
-        <div className="max-w-4xl mx-auto mt-2 p-5 rounded-md shadow-lg border">
+        <div className="max-w-5xl mx-auto mt-2 p-5 rounded-md shadow-lg border">
           <div className="flex py-2 px-4 items-center justify-center bg-teal-700 text-white rounded-lg shadow-lg">
             <h2 className="text-xl font-semibold items-center justify-center">Update Niswan Details</h2>
             <Link to="/dashboard/schools" >
@@ -163,11 +217,12 @@ const Edit = () => {
             </Link>
           </div>
           <form onSubmit={handleSubmit} autocomplete="off">
-            <div className="py-2 px-4 border mt-5 mb-3 items-center justify-center rounded-lg shadow-lg bg-white">
-              <div className="grid mt-3 grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="py-2 px-3 lg:px-5 border mt-5 mb-3 items-center justify-center rounded-lg shadow-lg bg-white">
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 {/* Code */}
                 <div>
-                  <label className="block text-sm font-medium text-slate-500">
+                  <label className="block mt-3 text-sm font-medium text-slate-500">
                     Code <span className="text-red-700">*</span>
                   </label>
                   <input
@@ -182,8 +237,54 @@ const Edit = () => {
                   />
                 </div>
 
-                {/* Name English*/}
+                {/* Date of Establishment */}
+                <div className="grid grid-cols-1">
+                  <label className="block mt-3 text-sm font-medium text-slate-500">
+                    Date of Establishment
+                  </label>
+                  <DatePicker
+                    name="doe"
+                    selected={selectedDOEDate}
+                    onChange={(date) => setSelectedDOEDate(date)}
+                    dateFormat="dd/MM/yyyy"
+                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                    //  required
+                    showMonthDropdown
+                    showYearDropdown
+                    dropdownMode="select"
+                    isClearable
+                  // showIcon
+                  // toggleCalendarOnIconClick
+                  />
+                </div>
+
+                {/* Active */}
                 <div>
+                  <label className="block mt-3 text-sm font-medium text-slate-500">
+                    Active <span className="text-red-700">*</span>
+                  </label>
+                  <select
+                    name="active"
+                    value={school.active}
+                    onChange={handleChange}
+                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                    required
+                  >
+                    <option value="">Select</option>
+                    <option value="Active">Active</option>
+                    <option value="In-Active">In-Active</option>
+                  </select>
+                </div>
+
+                <div className="hidden lg:block flex space-x-3 mb-5" />
+                <div className="hidden lg:block flex space-x-3 mb-5" />
+                <div className="flex space-x-3 mb-5" />
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-8 gap-4 gap-y-7 mb-11">
+                <div className="hidden lg:block flex space-x-3 mb-5" />
+                {/* Name English*/}
+                <div className='col-span-6'>
                   <label className="block text-sm font-medium text-slate-500">
                     Name in English <span className="text-red-700">*</span>
                   </label>
@@ -198,9 +299,11 @@ const Edit = () => {
                     required
                   />
                 </div>
+                <div className="hidden lg:block flex space-x-3 mb-5" />
 
+                <div className="hidden lg:block flex space-x-3 mb-5" />
                 {/* Name Arabic*/}
-                <div>
+                <div className='col-span-6'>
                   <label className="block text-sm font-medium text-slate-500">
                     Name in Arabic
                   </label>
@@ -215,9 +318,11 @@ const Edit = () => {
                   //  required
                   />
                 </div>
+                <div className="hidden lg:block flex space-x-3 mb-5" />
 
+                <div className="hidden lg:block flex space-x-3 mb-5" />
                 {/* Name Native*/}
-                <div>
+                <div className='col-span-6'>
                   <label className="block text-sm font-medium text-slate-500">
                     Name in Native
                   </label>
@@ -232,57 +337,10 @@ const Edit = () => {
                   //  required
                   />
                 </div>
+                <div className="hidden lg:block flex space-x-3 mb-5" />
+              </div>
 
-                {/* Address */}
-                <div>
-                  <label className="block text-sm font-medium text-slate-500">
-                    Address <span className="text-red-700">*</span>
-                  </label>
-                  <input
-                    type="text"
-                    name="address"
-                    value={school.address}
-                    onChange={handleChange}
-                    //  placeholder="Insert Address"
-                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-                    required
-                  />
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                  {/* District */}
-                  <div>
-                    <label className="block text-sm font-medium text-slate-500">
-                      District <span className="text-red-700">*</span>
-                    </label>
-                    <input
-                      type="text"
-                      name="district"
-                      value={school.district}
-                      onChange={handleChange}
-                      //  placeholder="Insert District / State"
-                      className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-                      required
-                    />
-                  </div>
-
-                  {/* State */}
-                  <div>
-                    <label className="block text-sm font-medium text-slate-500">
-                      State <span className="text-red-700">*</span>
-                    </label>
-                    <input
-                      type="text"
-                      name="state"
-                      value={school.state}
-                      onChange={handleChange}
-                      //  placeholder="Insert District / State"
-                      className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-                      required
-                    />
-                  </div>
-                </div>
-
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {/* Contact Number */}
                 <div>
                   <label className="block text-sm font-medium text-slate-500">
@@ -314,49 +372,101 @@ const Edit = () => {
                   //required
                   />
                 </div>
+              </div>
 
-                {/* Date of Establishment */}
-                <div className="grid grid-cols-1">
+              <div className="grid mt-10 grid-cols-1 md:grid-cols-2 gap-5">
+
+                {/* Address */}
+                <div>
                   <label className="block text-sm font-medium text-slate-500">
-                    Date of Establishment
+                    Door No. & Street <span className="text-red-700">*</span>
                   </label>
-                  <DatePicker
-                    name="doe"
-                    selected={selectedDOEDate}
-                    onChange={(date) => setSelectedDOEDate(date)}
-                    dateFormat="dd/MM/yyyy"
+                  <input
+                    type="text"
+                    name="address"
+                    value={school.address}
+                    onChange={handleChange}
+                    //  placeholder="Insert Address"
                     className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-                    //  required
-                    showMonthDropdown
-                    showYearDropdown
-                    dropdownMode="select"
-                    isClearable
-                  // showIcon
-                  // toggleCalendarOnIconClick
+                    required
                   />
                 </div>
 
-                {/* Active */}
+                {/* City */}
                 <div>
                   <label className="block text-sm font-medium text-slate-500">
-                    Active <span className="text-red-700">*</span>
+                    Area & Town / City <span className="text-red-700">*</span>
                   </label>
-                  <select
-                    name="active"
-                    value={school.active}
+                  <input
+                    type="text"
+                    name="city"
+                    value={school.city}
                     onChange={handleChange}
-                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                    className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                     required
-                  >
-                    <option value="">Select</option>
-                    <option value="Active">Active</option>
-                    <option value="In-Active">In-Active</option>
-                  </select>
+                  />
+                </div>
+              </div>
+
+              <div className="grid mt-5 grid-cols-1 md:grid-cols-3 gap-5">
+                {/* LandMark */}
+                <div>
+                  <label className="block text-sm font-medium text-slate-500">
+                    LandMark
+                  </label>
+                  <input
+                    type="text"
+                    name="landmark"
+                    value={school.landmark}
+                    onChange={handleChange}
+                    className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
+                  //  required
+                  />
                 </div>
 
-                <div className="flex space-x-3 mb-5" />
-                <div className="flex space-x-3 mb-5" />
+                {/* Pincode */}
+                <div>
+                  <label className="block text-sm font-medium text-slate-500">
+                    Pincode <span className="text-red-700">*</span>
+                  </label>
+                  <input
+                    type="number"
+                    name="pincode"
+                    value={school.pincode}
+                    onChange={handleChange}
+                    min="0"
+                    onPaste={preventPasteNegative}
+                    onKeyPress={preventMinus}
+                    onKeyDown={handleKeyDown}
+                    className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
+                    required
+                  />
+                </div>
 
+                {/* District & State*/}
+                <div>
+                  <label className="block text-sm font-medium text-slate-500">
+                    Select District & State <span className="text-red-700">*</span>
+                  </label>
+                  <select
+                    name="districtStateId"
+                    onChange={handleChange}
+                    value={school.districtStateId}
+                    className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
+                    required
+                  >
+                    <option value=""></option>
+                    {districtStates.map((districtState) => (
+                      <option key={districtState._id} value={districtState._id}>
+                        {districtState.district + ", " + districtState.state}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+
+              <div className="grid mt-10 grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="hidden lg:block flex space-x-3 mb-5" />
                 {/* Supervisor Id */}
                 <div>
                   <label className="block text-sm font-medium text-slate-500">
@@ -377,31 +487,51 @@ const Edit = () => {
                     ))}
                   </select>
                 </div>
+                <div className="hidden lg:block flex space-x-3 mb-5" />
 
-                {/* Supervisor Id 
+                <div className="hidden lg:block flex space-x-3 mb-5" />
+                {/* District */}
                 <div>
                   <label className="block text-sm font-medium text-slate-500">
-                    Supervisor Id <span className="text-red-700">*</span>
+                    District <span className="text-red-700">*</span>
                   </label>
                   <input
                     type="text"
-                    name="supervisorId"
-                    value={school.supervisorId}
+                    name="district"
+                    value={school.district}
                     onChange={handleChange}
-                    //  placeholder="Incharge1 Name"
+                    //  placeholder="Insert District / State"
                     className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                     required
                   />
-                </div>*/}
+                </div>
+                <div className="hidden lg:block flex space-x-3 mb-5" />
 
-                <div className="flex space-x-3 mb-5" />
-                <div className="flex space-x-3 mb-5" />
-                <div className="flex space-x-3 mb-5" />
-
-                {/* Incharge-1 */}
+                <div className="hidden lg:block flex space-x-3 mb-5" />
+                {/* State */}
                 <div>
                   <label className="block text-sm font-medium text-slate-500">
-                    Incharge-1 Name <span className="text-red-700">*</span>
+                    State <span className="text-red-700">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    name="state"
+                    value={school.state}
+                    onChange={handleChange}
+                    //  placeholder="Insert District / State"
+                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                    required
+                  />
+                </div>
+                <div className="hidden lg:block flex space-x-3 mb-5" />
+              </div>
+
+              <div className="grid mt-10 grid-cols-1 md:grid-cols-4 gap-4 gap-y-7 mb-5">
+                {/* Incharge-1 */}
+                <div className='lg:col-span-2'>
+                  <label className="block text-sm font-medium text-slate-500">
+                    <span className='font-bold text-blue-400'>Incharge-1 : </span> <span>Name </span>
+                    <span className="text-red-700">*</span>
                   </label>
                   <input
                     type="text"
@@ -417,7 +547,7 @@ const Edit = () => {
                 {/* Incharge-1 Number */}
                 <div>
                   <label className="block text-sm font-medium text-slate-500">
-                    Incharge-1 Number <span className="text-red-700">*</span>
+                    Mobile Number <span className="text-red-700">*</span>
                   </label>
                   <input
                     type="number"
@@ -431,10 +561,23 @@ const Edit = () => {
                   />
                 </div>
 
-                {/* Incharge-2 */}
                 <div>
                   <label className="block text-sm font-medium text-slate-500">
-                    Incharge-2 Name
+                    Designation
+                  </label>
+                  <input
+                    type="text"
+                    name="designation1"
+                    value={school.designation1}
+                    onChange={handleChange}
+                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                  />
+                </div>
+
+                {/* Incharge-2 */}
+                <div className='lg:col-span-2'>
+                  <label className="block text-sm font-medium text-slate-500">
+                    <span className='font-bold text-blue-400'>Incharge-2 : </span> <span>Name</span>
                   </label>
                   <input
                     type="text"
@@ -450,7 +593,7 @@ const Edit = () => {
                 {/* Incharge-2 Number */}
                 <div>
                   <label className="block text-sm font-medium text-slate-500">
-                    Incharge-2 Number
+                    Mobile Number
                   </label>
                   <input
                     type="number"
@@ -464,10 +607,23 @@ const Edit = () => {
                   />
                 </div>
 
-                {/* Incharge-3 */}
                 <div>
                   <label className="block text-sm font-medium text-slate-500">
-                    Incharge-3 Name
+                    Designation
+                  </label>
+                  <input
+                    type="text"
+                    name="designation2"
+                    value={school.designation2}
+                    onChange={handleChange}
+                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                  />
+                </div>
+
+                {/* Incharge-3 */}
+                <div className='lg:col-span-2'>
+                  <label className="block text-sm font-medium text-slate-500">
+                    <span className='font-bold text-blue-400'>Incharge-3 : </span> <span>Name</span>
                   </label>
                   <input
                     type="text"
@@ -483,7 +639,7 @@ const Edit = () => {
                 {/* Incharge-3 Number */}
                 <div>
                   <label className="block text-sm font-medium text-slate-500">
-                    Incharge-3 Number
+                    Mobile Number
                   </label>
                   <input
                     type="number"
@@ -497,10 +653,23 @@ const Edit = () => {
                   />
                 </div>
 
-                {/* Incharge-4 */}
                 <div>
                   <label className="block text-sm font-medium text-slate-500">
-                    Incharge-4 Name
+                    Designation
+                  </label>
+                  <input
+                    type="text"
+                    name="designation3"
+                    value={school.designation3}
+                    onChange={handleChange}
+                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                  />
+                </div>
+
+                {/* Incharge-4 */}
+                <div className='lg:col-span-2'>
+                  <label className="block text-sm font-medium text-slate-500">
+                    <span className='font-bold text-blue-400'>Incharge-4 : </span> <span>Name</span>
                   </label>
                   <input
                     type="text"
@@ -516,7 +685,7 @@ const Edit = () => {
                 {/* Incharge-4 Number */}
                 <div>
                   <label className="block text-sm font-medium text-slate-500">
-                    Incharge-4 Number
+                    Mobile Number
                   </label>
                   <input
                     type="number"
@@ -530,10 +699,23 @@ const Edit = () => {
                   />
                 </div>
 
-                {/* Incharge-5 */}
                 <div>
                   <label className="block text-sm font-medium text-slate-500">
-                    Incharge-5 Name
+                    Designation
+                  </label>
+                  <input
+                    type="text"
+                    name="designation4"
+                    value={school.designation4}
+                    onChange={handleChange}
+                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                  />
+                </div>
+
+                {/* Incharge-5 */}
+                <div className='lg:col-span-2'>
+                  <label className="block text-sm font-medium text-slate-500">
+                    <span className='font-bold text-blue-400'>Incharge-5 : </span> <span>Name</span>
                   </label>
                   <input
                     type="text"
@@ -549,7 +731,7 @@ const Edit = () => {
                 {/* Incharge-5 Number */}
                 <div>
                   <label className="block text-sm font-medium text-slate-500">
-                    Incharge-5 Number
+                    Mobile Number
                   </label>
                   <input
                     type="number"
@@ -563,10 +745,23 @@ const Edit = () => {
                   />
                 </div>
 
-                {/* Incharge-6 */}
                 <div>
                   <label className="block text-sm font-medium text-slate-500">
-                    Incharge-6 Name
+                    Designation
+                  </label>
+                  <input
+                    type="text"
+                    name="designation5"
+                    value={school.designation5}
+                    onChange={handleChange}
+                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                  />
+                </div>
+
+                {/* Incharge-6 */}
+                <div className='lg:col-span-2'>
+                  <label className="block text-sm font-medium text-slate-500">
+                    <span className='font-bold text-blue-400'>Incharge-6 : </span> <span>Name</span>
                   </label>
                   <input
                     type="text"
@@ -582,7 +777,7 @@ const Edit = () => {
                 {/* Incharge-6 Number */}
                 <div>
                   <label className="block text-sm font-medium text-slate-500">
-                    Incharge-6 Number
+                    Mobile Number
                   </label>
                   <input
                     type="number"
@@ -596,10 +791,23 @@ const Edit = () => {
                   />
                 </div>
 
-                {/* Incharge-7 */}
                 <div>
                   <label className="block text-sm font-medium text-slate-500">
-                    Incharge-7 Name
+                    Designation
+                  </label>
+                  <input
+                    type="text"
+                    name="designation6"
+                    value={school.designation6}
+                    onChange={handleChange}
+                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                  />
+                </div>
+
+                {/* Incharge-7 */}
+                <div className='lg:col-span-2'>
+                  <label className="block text-sm font-medium text-slate-500">
+                    <span className='font-bold text-blue-400'>Incharge-7 : </span> <span>Name</span>
                   </label>
                   <input
                     type="text"
@@ -615,7 +823,7 @@ const Edit = () => {
                 {/* Incharge-7 Number */}
                 <div>
                   <label className="block text-sm font-medium text-slate-500">
-                    Incharge-7 Number
+                    Mobile Number
                   </label>
                   <input
                     type="number"
@@ -628,8 +836,22 @@ const Edit = () => {
                   //required
                   />
                 </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-slate-500">
+                    Designation
+                  </label>
+                  <input
+                    type="text"
+                    name="designation7"
+                    value={school.designation7}
+                    onChange={handleChange}
+                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                  />
+                </div>
               </div>
             </div>
+
             <button
               type="submit"
               data-ripple-light="true"

@@ -71,8 +71,12 @@ const List = () => {
             nameArabic: sch.nameArabic,
             nameNative: sch.nameNative,
             address: sch.address,
+
             district: sch.district,
             state: sch.state,
+
+            district1: sch.districtStateId ? sch.districtStateId?.district + ", " + sch.districtStateId?.State : "",
+
             active: sch.active,
             supervisorId: sch.supervisorId?.supervisorId,
             supervisorName: sch.supervisorId?.userId?.name,
