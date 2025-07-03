@@ -255,7 +255,7 @@ const Add = () => {
               {/* School */}
               <div>
                 <label className="block mt-2 text-sm font-medium text-gray-700">
-                  Select Niswan <span className="text-red-700">*</span>
+                  Niswan <span className="text-red-700">*</span>
                 </label>
                 <select
                   name="schoolId"
@@ -293,7 +293,7 @@ const Add = () => {
               {/* Name */}
               <div>
                 <label className="block mt-2 text-sm font-medium text-gray-700">
-                  Name <span className="text-red-700">*</span>
+                  Student Name <span className="text-red-700">*</span>
                 </label>
                 <input
                   type="text"
@@ -307,7 +307,7 @@ const Add = () => {
                 {/* Date of Admission */}
                 <div className="grid grid-cols-1">
                   <label className="block mt-2 text-sm font-medium text-gray-700">
-                    Date of Admission <span className="text-red-700">*</span>
+                    Admission Date <span className="text-red-700">*</span>
                   </label>
                   <DatePicker
                     name="doa"
