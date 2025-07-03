@@ -76,7 +76,7 @@ const Masters = () => {
           <Link to="/dashboard/academicYears" >
             <SummaryCard
               icon={<FaCalendarAlt />}
-              text="AC Year"
+              text="AC Years"
               number={summary.totalAcademicYears}
               color="bg-yellow-600"
             />
@@ -96,7 +96,7 @@ const Masters = () => {
           <Link to="/dashboard/districtStates" >
             <SummaryCard
               icon={<FaMapMarkerAlt />}
-              text="District, States"
+              text="Districts, States"
               number={summary.totalDistrictStates}
               color="bg-green-600"
             />
