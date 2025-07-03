@@ -138,8 +138,12 @@ const View = () => {
 
                 <ViewCard type="title" text="Address" />
                 <ViewCard type="data" text={student.address} />
-                <ViewCard type="title" text="Village / Town / City" />
+                <ViewCard type="title" text="Area & Town / City" />
                 <ViewCard type="data" text={student.city} />
+                <ViewCard type="title" text="Landmark" />
+                <ViewCard type="data" text={student.landmark} />
+                <ViewCard type="title" text="Pincode" />
+                <ViewCard type="data" text={student.pincode} />
                 <ViewCard type="title" text="State & District" />
                 <ViewCard type="data" text={student.districtStateId ? student.districtStateId?.district + ", " + student.districtStateId?.state : ""} />
 

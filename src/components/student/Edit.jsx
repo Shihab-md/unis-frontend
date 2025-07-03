@@ -139,8 +139,11 @@ const Edit = () => {
             guardianNumber: student.guardianNumber,
             guardianOccupation: student.guardianOccupation,
             guardianRelation: student.guardianRelation,
+
             address: student.address,
             city: student.city,
+            pincode: student.pincode,
+            landmark: student.landmark,
             districtStateId: student.districtStateId && student.districtStateId?._id ? student.districtStateId?._id : null,
 
             active: student.active,
@@ -263,6 +266,28 @@ const Edit = () => {
   if (processing) {
     return getPrcessing();
   }
+
+  const preventMinus = (e) => {
+    if (e.code === 'Minus') {
+      e.preventDefault();
+    }
+  };
+
+  const preventPasteNegative = (e) => {
+    const clipboardData = e.clipboardData || window.clipboardData;
+    const pastedData = parseFloat(clipboardData.getData('text'));
+
+    if (pastedData < 0) {
+      e.preventDefault();
+    }
+  };
+
+  const handleKeyDown = (e) => {
+    // Prevent 'e', 'E', '+', and '-' from being entered
+    if (['e', 'E', '+', '-'].includes(e.key)) {
+      e.preventDefault();
+    }
+  };
 
   return (
     <>
@@ -708,11 +733,11 @@ const Edit = () => {
               <div className="hidden lg:block flex space-x-3 mb-5" />
               <div className="hidden lg:block flex space-x-3 mb-5" />
 
-              <div className="grid mt-5 grid-cols-1 md:grid-cols-3 gap-5">
+              <div className="grid mt-5 grid-cols-1 md:grid-cols-2 gap-5">
                 {/* Address */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700">
-                    Door No. / Street <span className="text-red-700">*</span>
+                    Door No. & Street <span className="text-red-700">*</span>
                   </label>
                   <input
                     type="text"
@@ -727,13 +752,49 @@ const Edit = () => {
                 {/* City */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700">
-                    Village / Town / City <span className="text-red-700">*</span>
+                    Area & Town / City <span className="text-red-700">*</span>
                   </label>
                   <input
                     type="text"
                     name="city"
                     value={student.city}
                     onChange={handleChange}
+                    className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
+                    required
+                  />
+                </div>
+              </div>
+
+              <div className="grid mt-5 grid-cols-1 md:grid-cols-3 gap-5">
+                {/* LandMark */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">
+                    LandMark
+                  </label>
+                  <input
+                    type="text"
+                    name="landmark"
+                    value={student.landmark}
+                    onChange={handleChange}
+                    className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
+                  //  required
+                  />
+                </div>
+
+                {/* Pincode */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Pincode <span className="text-red-700">*</span>
+                  </label>
+                  <input
+                    type="number"
+                    name="pincode"
+                    value={student.pincode}
+                    onChange={handleChange}
+                    min="0"
+                    onPaste={preventPasteNegative}
+                    onKeyPress={preventMinus}
+                    onKeyDown={handleKeyDown}
                     className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                     required
                   />

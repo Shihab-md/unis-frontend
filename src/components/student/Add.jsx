@@ -623,11 +623,11 @@ const Add = () => {
             <div className="hidden lg:block flex space-x-3 mb-5" />
             <div className="hidden lg:block flex space-x-3 mb-5" />
 
-            <div className="grid mt-5 grid-cols-1 md:grid-cols-3 gap-5">
+            <div className="grid mt-5 grid-cols-1 md:grid-cols-2 gap-5">
               {/* Address */}
               <div>
                 <label className="block text-sm font-medium text-gray-700">
-                  Door No. / Street <span className="text-red-700">*</span>
+                  Door No. & Street <span className="text-red-700">*</span>
                 </label>
                 <input
                   type="text"
@@ -641,12 +641,46 @@ const Add = () => {
               {/* City */}
               <div>
                 <label className="block text-sm font-medium text-gray-700">
-                  Village / Town / City <span className="text-red-700">*</span>
+                  Area & Town / City <span className="text-red-700">*</span>
                 </label>
                 <input
                   type="text"
                   name="city"
                   onChange={handleChange}
+                  className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
+                  required
+                />
+              </div>
+            </div>
+
+            <div className="grid mt-5 grid-cols-1 md:grid-cols-3 gap-5">
+              {/* LandMark */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700">
+                  LandMark
+                </label>
+                <input
+                  type="text"
+                  name="landmark"
+                  onChange={handleChange}
+                  className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
+                //  required
+                />
+              </div>
+
+              {/* Pincode */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700">
+                  Pincode <span className="text-red-700">*</span>
+                </label>
+                <input
+                  type="number"
+                  name="pincode"
+                  onChange={handleChange}
+                  min="0"
+                  onPaste={preventPasteNegative}
+                  onKeyPress={preventMinus}
+                  onKeyDown={handleKeyDown}
                   className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                   required
                 />
@@ -686,7 +720,7 @@ const Add = () => {
                   name="acYear"
                   onChange={handleChange}
                   value={acYear}
-                //  disabled={acYear ? true : false}
+                  //  disabled={acYear ? true : false}
                   className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                   required
                 >

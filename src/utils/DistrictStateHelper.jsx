@@ -11,7 +11,7 @@ export const columns = [
   {
     name: "S No",
     selector: (row) => row.sno,
-    width: "60px",
+    width: "100px",
   },
   {
     name: "District",
@@ -24,6 +24,11 @@ export const columns = [
     selector: (row) => row.state,
     sortable: true,
     width: "250px",
+  },
+  {
+    name: "Total Niswans #",
+    selector: (row) => row.studentsCount,
+    width: "160px",
   },
   {
     name: "Total Students #",

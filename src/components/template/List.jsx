@@ -57,7 +57,7 @@ const List = () => {
         console.log(error.message)
         if (error.response && !error.response.data.success) {
           showSwalAlert("Error!", error.response.data.error, "error");
-          navigate("/dashboard");
+          navigate("/dashboard/masters");
         }
       } finally {
         setSupLoading(false)

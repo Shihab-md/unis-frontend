@@ -44,6 +44,7 @@ const List = () => {
             sno: sno++,
             district: sup.district,
             state: sup.state,
+            studentsCount: sup._studentsCount ? sup._studentsCount : 0,
             action: (<DistrictStateButtons Id={sup._id} onDistrictStateDelete={onDistrictStateDelete} />),
           }));
           setDistrictStates(data);
@@ -53,7 +54,7 @@ const List = () => {
         console.log(error.message)
         if (error.response && !error.response.data.success) {
           showSwalAlert("Error!", error.response.data.error, "error");
-          navigate("/dashboard");
+          navigate("/dashboard/masters");
         }
       } finally {
         setSupLoading(false)
@@ -100,7 +101,7 @@ const List = () => {
         {LinkIcon("/dashboard/add-districtState", "Add")}
       </div>
       <div className='mt-6 rounded-lg shadow-lg'>
-        <DataTable columns={columns} data={filteredDistrictState} pagination />
+        <DataTable columns={columns} data={filteredDistrictState} />
       </div>
     </div>
   )
