@@ -105,6 +105,7 @@ const List = () => {
     const records = schools.filter((school) => (
       school.code?.toLowerCase().includes(e.target.value.toLowerCase())
       || school.name?.toLowerCase().includes(e.target.value.toLowerCase())
+      || school.address?.toLowerCase().includes(e.target.value.toLowerCase())
       || school.districtState?.toLowerCase().includes(e.target.value.toLowerCase())
       || school.city?.toLowerCase().includes(e.target.value.toLowerCase())
       || school.active?.toLowerCase().includes(e.target.value.toLowerCase())
