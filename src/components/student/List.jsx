@@ -217,7 +217,7 @@ const List = () => {
         setSchools(schools)
         let inputArray = [];
         schools.map((school) => (
-          inputOptions[school._id] = school.code + " : " + school.nameEnglish + ", " + school.district + ", " + school.state
+          inputOptions[school._id] = school.code.substring(3) + " : " + school.nameEnglish + ", " + school.district + ", " + school.state
         ))
 
         setInputOptions(inputOptions);
@@ -266,7 +266,7 @@ const List = () => {
               if (value && value != "") {
                 schoolId = value;
                 localStorage.setItem('schoolId', value);
-                localStorage.setItem('schoolName', inputOptions[schoolId]);
+                localStorage.setItem('schoolName', "UN-" + inputOptions[schoolId]);
               } else {
                 navigate("/dashboard");
               }
