@@ -78,7 +78,7 @@ const Setting = () => {
 
           {/* Old Password */}
           <div className="mt-5">
-            <label className="text-sm font-medium text-gray-700">
+            <label className="text-sm font-medium text-slate-500">
               Old Password <span className="text-red-700">*</span>
             </label>
             <input
@@ -93,7 +93,7 @@ const Setting = () => {
 
           {/* New Password */}
           <div className="mt-5">
-            <label className="text-sm mt-5 font-medium text-gray-700">
+            <label className="text-sm mt-5 font-medium text-slate-500">
               New Password <span className="text-red-700">*</span>
             </label>
             <input
@@ -108,7 +108,7 @@ const Setting = () => {
 
           {/* Confirm Password */}
           <div className="mt-5 mb-5">
-            <label className="text-sm mt-5 mb-5 font-medium text-gray-700">
+            <label className="text-sm mt-5 mb-5 font-medium text-slate-500">
               Confirm Password <span className="text-red-700">*</span>
             </label>
             <input

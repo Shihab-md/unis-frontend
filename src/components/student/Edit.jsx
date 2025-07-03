@@ -292,7 +292,7 @@ const Edit = () => {
   return (
     <>
       {student ? (
-        <div className="max-w-4xl mx-auto mt-2 p-5 rounded-md shadow-lg border">
+        <div className="max-w-5xl mx-auto mt-2 p-5 rounded-md shadow-lg border">
           <div className="flex py-2 px-4 items-center justify-center bg-teal-700 text-white rounded-lg shadow-lg">
             <h2 className="text-xl font-semibold items-center justify-center">Update Student Details</h2>
             <Link to="/dashboard/students" >
@@ -300,12 +300,12 @@ const Edit = () => {
             </Link>
           </div>
           <form onSubmit={handleSubmit} autocomplete="off">
-            <div className="py-2 px-4 border mt-5 mb-3 items-center justify-center rounded-lg shadow-lg bg-white">
-              <div className="grid mt-3 grid-cols-1 md:grid-cols-2 gap-5">
+            <div className="py-2 px-4 lg:px-7 border mt-5 mb-3 items-center justify-center rounded-lg shadow-lg bg-white">
+              <div className="grid mt-3 grid-cols-1 md:grid-cols-4 gap-5">
 
                 {/* School */}
-                <div>
-                  <label className="block mt-2 text-sm font-medium text-gray-700">
+                <div className="lg:col-span-3 lg:mb-3">
+                  <label className="block mt-2 text-sm font-medium text-slate-500">
                     Niswan <span className="text-red-700">*</span>
                   </label>
                   <select
@@ -327,7 +327,7 @@ const Edit = () => {
 
                 {/* Roll Number (Email) */}
                 <div>
-                  <label className="block mt-2 text-sm font-medium text-gray-700">
+                  <label className="block mt-2 text-sm font-medium text-slate-500">
                     Roll Number <span className="text-red-700">*</span>
                   </label>
                   <input
@@ -345,7 +345,7 @@ const Edit = () => {
               <div className="grid mt-5 grid-cols-1 md:grid-cols-2 gap-5">
                 {/* Name */}
                 <div>
-                  <label className="block mt-2 text-sm font-medium text-gray-700">
+                  <label className="block mt-2 text-sm font-medium text-slate-500">
                     Student Name <span className="text-red-700">*</span>
                   </label>
                   <input
@@ -361,7 +361,7 @@ const Edit = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                   {/* Date of Admission */}
                   <div className="grid grid-cols-1">
-                    <label className="block mt-2 text-sm font-medium text-gray-700">
+                    <label className="block mt-2 text-sm font-medium text-slate-500">
                       Admission Date <span className="text-red-700">*</span>
                     </label>
                     <DatePicker
@@ -382,7 +382,7 @@ const Edit = () => {
 
                   {/* Date of Birth */}
                   <div className="grid grid-cols-1">
-                    <label className="block mt-2 text-sm font-medium text-gray-700">
+                    <label className="block mt-2 text-sm font-medium text-slate-500">
                       Date of Birth <span className="text-red-700">*</span>
                     </label>
                     <DatePicker
@@ -404,10 +404,12 @@ const Edit = () => {
 
                 <div className="flex space-x-3 mb-5" />
                 <div className="hidden lg:block flex space-x-3 mb-5" />
+              </div>
 
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
                 {/* Active */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">
+                  <label className="block text-sm font-medium text-slate-500">
                     Status <span className="text-red-700">*</span>
                   </label>
                   <select
@@ -427,8 +429,8 @@ const Edit = () => {
                 </div>
 
                 {/* Remarks */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-700">
+                <div className='col-span-2'>
+                  <label className="block text-sm font-medium text-slate-500">
                     Reason for Status change
                   </label>
                   <input
@@ -440,15 +442,17 @@ const Edit = () => {
                   //   required
                   />
                 </div>
-
-                <div className="flex space-x-3 mb-5" />
-                <div className="hidden lg:block flex space-x-3 mb-5" />
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-5 gap-y-7">
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-5 gap-y-7">
+                <div className="flex space-x-3 mb-5" />
+                <div className="hidden lg:block flex space-x-3 mb-5" />
+                <div className="hidden lg:block flex space-x-3 mb-5" />
+                <div className="hidden lg:block flex space-x-3 mb-5" />
+
                 {/* Gender */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">
+                  <label className="block text-sm font-medium text-slate-500">
                     Gender <span className="text-red-700">*</span>
                   </label>
                   <select
@@ -466,7 +470,7 @@ const Edit = () => {
 
                 {/* Marital Status */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">
+                  <label className="block text-sm font-medium text-slate-500">
                     Marital Status <span className="text-red-700">*</span>
                   </label>
                   <select
@@ -485,7 +489,7 @@ const Edit = () => {
 
                 {/* Mother Tongue */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">
+                  <label className="block text-sm font-medium text-slate-500">
                     Mother Tongue
                   </label>
                   <select
@@ -506,7 +510,7 @@ const Edit = () => {
 
                 {/* Blood Group */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">
+                  <label className="block text-sm font-medium text-slate-500">
                     Blood Group
                   </label>
                   <input
@@ -518,10 +522,12 @@ const Edit = () => {
                   //    required
                   />
                 </div>
+              </div>
 
+              <div className="grid mt-7 grid-cols-1 md:grid-cols-2 gap-5 gap-y-7">
                 {/* Identification Mark-1 */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">
+                  <label className="block text-sm font-medium text-slate-500">
                     Identification Mark-1 <span className="text-red-700">*</span>
                   </label>
                   <input
@@ -536,7 +542,7 @@ const Edit = () => {
 
                 {/* Identification Mark-2 */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">
+                  <label className="block text-sm font-medium text-slate-500">
                     Identification Mark-2
                   </label>
                   <input
@@ -548,15 +554,12 @@ const Edit = () => {
                   //    required
                   />
                 </div>
-
-                <div className="flex space-x-3 mb-5" />
-                <div className="hidden lg:block flex space-x-3 mb-5" />
               </div>
 
-              <div className="grid mt-2 grid-cols-1 md:grid-cols-1 gap-5">
+              <div className="grid mt-12 grid-cols-1 md:grid-cols-1 gap-5">
                 {/* About */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">
+                  <label className="block text-sm font-medium text-slate-500">
                     More details about the Student
                   </label>
                   <input
@@ -575,7 +578,7 @@ const Edit = () => {
               <div className="grid grid-cols-1 md:grid-cols-3 gap-5 gap-y-7">
                 {/* Father's Name */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">
+                  <label className="block text-sm font-medium text-slate-500">
                     Father's Name
                   </label>
                   <input
@@ -590,7 +593,7 @@ const Edit = () => {
 
                 {/* Father's Number */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">
+                  <label className="block text-sm font-medium text-slate-500">
                     Father's Number
                   </label>
                   <input
@@ -606,7 +609,7 @@ const Edit = () => {
 
                 {/* Father's Occupation */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">
+                  <label className="block text-sm font-medium text-slate-500">
                     Father's Occupation
                   </label>
                   <input
@@ -621,7 +624,7 @@ const Edit = () => {
 
                 {/* Mother's Name */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">
+                  <label className="block text-sm font-medium text-slate-500">
                     Mother's Name
                   </label>
                   <input
@@ -636,7 +639,7 @@ const Edit = () => {
 
                 {/* Mother's Number */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">
+                  <label className="block text-sm font-medium text-slate-500">
                     Mother's Number
                   </label>
                   <input
@@ -652,7 +655,7 @@ const Edit = () => {
 
                 {/* Mother's Occupation */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">
+                  <label className="block text-sm font-medium text-slate-500">
                     Mother's Occupation
                   </label>
                   <input
@@ -669,7 +672,7 @@ const Edit = () => {
               <div className="grid mt-7 grid-cols-1 md:grid-cols-4 gap-5">
                 {/* Guardian's Name */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">
+                  <label className="block text-sm font-medium text-slate-500">
                     Guardian's Name
                   </label>
                   <input
@@ -684,7 +687,7 @@ const Edit = () => {
 
                 {/* Guardian's Number */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">
+                  <label className="block text-sm font-medium text-slate-500">
                     Guardian's Number
                   </label>
                   <input
@@ -700,7 +703,7 @@ const Edit = () => {
 
                 {/* Guardian's Occupation */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">
+                  <label className="block text-sm font-medium text-slate-500">
                     Guardian's Occupation
                   </label>
                   <input
@@ -715,7 +718,7 @@ const Edit = () => {
 
                 {/* Guardian's Relationship */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">
+                  <label className="block text-sm font-medium text-slate-500">
                     Guardian's Relationship
                   </label>
                   <input
@@ -736,7 +739,7 @@ const Edit = () => {
               <div className="grid mt-5 grid-cols-1 md:grid-cols-2 gap-5">
                 {/* Address */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">
+                  <label className="block text-sm font-medium text-slate-500">
                     Door No. & Street <span className="text-red-700">*</span>
                   </label>
                   <input
@@ -751,7 +754,7 @@ const Edit = () => {
 
                 {/* City */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">
+                  <label className="block text-sm font-medium text-slate-500">
                     Area & Town / City <span className="text-red-700">*</span>
                   </label>
                   <input
@@ -768,7 +771,7 @@ const Edit = () => {
               <div className="grid mt-5 grid-cols-1 md:grid-cols-3 gap-5">
                 {/* LandMark */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">
+                  <label className="block text-sm font-medium text-slate-500">
                     LandMark
                   </label>
                   <input
@@ -783,7 +786,7 @@ const Edit = () => {
 
                 {/* Pincode */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">
+                  <label className="block text-sm font-medium text-slate-500">
                     Pincode <span className="text-red-700">*</span>
                   </label>
                   <input
@@ -802,8 +805,8 @@ const Edit = () => {
 
                 {/* District & State*/}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">
-                    Select District & State<span className="text-red-700">*</span>
+                  <label className="block text-sm font-medium text-slate-500">
+                    Select District & State <span className="text-red-600">*</span>
                   </label>
                   <select
                     name="districtStateId"
@@ -822,14 +825,16 @@ const Edit = () => {
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
                 <div className="flex space-x-3 mb-5" />
                 <div className="hidden lg:block flex space-x-3 mb-5" />
+                <div className="hidden lg:block flex space-x-3 mb-5" />
 
+                <div className="hidden lg:block flex space-x-3 mb-5" />
                 {/* Academic Year */}
                 <div>
-                  <label className="block mt-2 text-sm font-medium text-gray-700">
-                    Select Academic Year <span className="text-red-700">*</span>
+                  <label className="block mt-2 text-sm font-medium text-slate-500">
+                    Academic Year <span className="text-red-700">*</span>
                   </label>
                   <select
                     name="acYear"
@@ -839,7 +844,7 @@ const Edit = () => {
                     className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                     required
                   >
-                    <option value="">Select Academic Year</option>
+                    <option value=""></option>
                     {academicYears.map((acYear) => (
                       <option key={acYear._id} value={acYear._id}>
                         {acYear.acYear}
@@ -847,16 +852,18 @@ const Edit = () => {
                     ))}
                   </select>
                 </div>
-
-                <div className="flex space-x-3 mb-5" />
                 <div className="hidden lg:block flex space-x-3 mb-5" />
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                <div className="flex space-x-3 mb-5" />
                 <div className="hidden lg:block flex space-x-3 mb-5" />
                 <ViewCard type="header" text="Deeniyath Education" />
                 <div className="hidden lg:block flex space-x-3 mb-5" />
 
                 {/* Institute 1 --------------------------------------------- */}
                 <div>
-                  <label className="block mt-2 text-sm font-medium text-gray-700">
+                  <label className="block mt-2 text-sm font-medium text-slate-500">
                     Select Institute <span className="text-red-700">*</span>
                   </label>
                   <select
@@ -866,7 +873,7 @@ const Edit = () => {
                     className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                     required
                   >
-                    <option value="">Select Institute</option>
+                    <option value=""></option>
                     {institutes.filter(institute => institute.type === "Deeniyath Education").map((institute) => (
                       <option key={institute._id} value={institute._id}>
                         {institute.name}
@@ -877,7 +884,7 @@ const Edit = () => {
 
                 {/* Course 1 */}
                 <div>
-                  <label className="block mt-2 text-sm font-medium text-gray-700">
+                  <label className="block mt-2 text-sm font-medium text-slate-500">
                     Select Course <span className="text-red-700">*</span>
                   </label>
                   <select
@@ -888,7 +895,7 @@ const Edit = () => {
                     className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                     required
                   >
-                    <option value="">Select Course</option>
+                    <option value=""></option>
                     {courses.filter(course => course.type === "Deeniyath Education").map((course) => (
                       <option key={course._id} value={course._id}>
                         {course.name}
@@ -899,7 +906,7 @@ const Edit = () => {
 
                 {/* Reference Number-1 */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">
+                  <label className="block text-sm font-medium text-slate-500">
                     Reference Number <span className="text-red-700">*</span>
                   </label>
                   <input
@@ -916,7 +923,7 @@ const Edit = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                   {/* Year1 */}
                   <div>
-                    <label className="block text-sm font-medium text-gray-700">
+                    <label className="block text-sm font-medium text-slate-500">
                       Year / Std.<span className="text-red-700">*</span>
                     </label>
                     <input
@@ -933,7 +940,7 @@ const Edit = () => {
 
                   {/* Fees */}
                   <div>
-                    <label className="block text-sm font-medium text-gray-700">
+                    <label className="block text-sm font-medium text-slate-500">
                       Fees
                     </label>
                     <input
@@ -957,7 +964,7 @@ const Edit = () => {
 
                 {/* Institute 2 --------------------------------------------- */}
                 <div>
-                  <label className="block mt-2 text-sm font-medium text-gray-700">
+                  <label className="block mt-2 text-sm font-medium text-slate-500">
                     Select Institute
                   </label>
                   <select
@@ -967,7 +974,7 @@ const Edit = () => {
                     className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                   //    required
                   >
-                    <option value="">Select Institute</option>
+                    <option value=""></option>
                     {institutes.filter(institute => institute.type === "School Education").map((institute) => (
                       <option key={institute._id} value={institute._id}>
                         {institute.name}
@@ -978,7 +985,7 @@ const Edit = () => {
 
                 {/* Course 2 */}
                 <div>
-                  <label className="block mt-2 text-sm font-medium text-gray-700">
+                  <label className="block mt-2 text-sm font-medium text-slate-500">
                     Select Course
                   </label>
                   <select
@@ -989,7 +996,7 @@ const Edit = () => {
                     className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                   //    required
                   >
-                    <option value="">Select Course</option>
+                    <option value=""></option>
                     {courses.filter(course => course.type === "School Education").map((course) => (
                       <option key={course._id} value={course._id}>
                         {course.name}
@@ -1000,7 +1007,7 @@ const Edit = () => {
 
                 {/* Reference Number-2 */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">
+                  <label className="block text-sm font-medium text-slate-500">
                     Reference Number
                   </label>
                   <input
@@ -1017,7 +1024,7 @@ const Edit = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                   {/* Year2 */}
                   <div>
-                    <label className="block text-sm font-medium text-gray-700">
+                    <label className="block text-sm font-medium text-slate-500">
                       Std.
                     </label>
                     <input
@@ -1035,7 +1042,7 @@ const Edit = () => {
 
                   {/* Fees 2 */}
                   <div>
-                    <label className="block text-sm font-medium text-gray-700">
+                    <label className="block text-sm font-medium text-slate-500">
                       Fees
                     </label>
                     <input
@@ -1059,7 +1066,7 @@ const Edit = () => {
 
                 {/* Institute 3 --------------------------------------------- */}
                 <div>
-                  <label className="block mt-2 text-sm font-medium text-gray-700">
+                  <label className="block mt-2 text-sm font-medium text-slate-500">
                     Select Institute
                   </label>
                   <select
@@ -1069,7 +1076,7 @@ const Edit = () => {
                     className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                   //    required
                   >
-                    <option value="">Select Institute</option>
+                    <option value=""></option>
                     {institutes.filter(institute => institute.type === "College Education").map((institute) => (
                       <option key={institute._id} value={institute._id}>
                         {institute.name}
@@ -1080,7 +1087,7 @@ const Edit = () => {
 
                 {/* Course 3 */}
                 <div>
-                  <label className="block mt-2 text-sm font-medium text-gray-700">
+                  <label className="block mt-2 text-sm font-medium text-slate-500">
                     Select Course
                   </label>
                   <select
@@ -1091,7 +1098,7 @@ const Edit = () => {
                     className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                   //    required
                   >
-                    <option value="">Select Course</option>
+                    <option value=""></option>
                     {courses.filter(course => course.type === "College Education").map((course) => (
                       <option key={course._id} value={course._id}>
                         {course.name}
@@ -1102,7 +1109,7 @@ const Edit = () => {
 
                 {/* Reference Number-3 */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">
+                  <label className="block text-sm font-medium text-slate-500">
                     Reference Number
                   </label>
                   <input
@@ -1119,7 +1126,7 @@ const Edit = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                   {/* Year3 */}
                   <div>
-                    <label className="block text-sm font-medium text-gray-700">
+                    <label className="block text-sm font-medium text-slate-500">
                       Year
                     </label>
                     <input
@@ -1136,7 +1143,7 @@ const Edit = () => {
 
                   {/* Fees 3 */}
                   <div>
-                    <label className="block text-sm font-medium text-gray-700">
+                    <label className="block text-sm font-medium text-slate-500">
                       Fees
                     </label>
                     <input
@@ -1160,7 +1167,7 @@ const Edit = () => {
 
                 {/* Institute 4 --------------------------------------------- */}
                 <div>
-                  <label className="block mt-2 text-sm font-medium text-gray-700">
+                  <label className="block mt-2 text-sm font-medium text-slate-500">
                     Select Institute
                   </label>
                   <select
@@ -1170,7 +1177,7 @@ const Edit = () => {
                     className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                   //    required
                   >
-                    <option value="">Select Institute</option>
+                    <option value=""></option>
                     {institutes.filter(institute => institute.type === "Islamic Home Science").map((institute) => (
                       <option key={institute._id} value={institute._id}>
                         {institute.name}
@@ -1181,7 +1188,7 @@ const Edit = () => {
 
                 {/* Course 4 */}
                 <div>
-                  <label className="block mt-2 text-sm font-medium text-gray-700">
+                  <label className="block mt-2 text-sm font-medium text-slate-500">
                     Select Course
                   </label>
                   <select
@@ -1192,7 +1199,7 @@ const Edit = () => {
                     className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                   //    required
                   >
-                    <option value="">Select Course</option>
+                    <option value=""></option>
                     {courses.filter(course => course.type === "Islamic Home Science").map((course) => (
                       <option key={course._id} value={course._id}>
                         {course.name}
@@ -1203,7 +1210,7 @@ const Edit = () => {
 
                 {/* Reference Number-4 */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">
+                  <label className="block text-sm font-medium text-slate-500">
                     Reference Number
                   </label>
                   <input
@@ -1220,7 +1227,7 @@ const Edit = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                   {/* Year4 */}
                   <div>
-                    <label className="block text-sm font-medium text-gray-700">
+                    <label className="block text-sm font-medium text-slate-500">
                       Year
                     </label>
                     <input
@@ -1237,7 +1244,7 @@ const Edit = () => {
 
                   {/* Fees 4 */}
                   <div>
-                    <label className="block text-sm font-medium text-gray-700">
+                    <label className="block text-sm font-medium text-slate-500">
                       Fees
                     </label>
                     <input
@@ -1261,7 +1268,7 @@ const Edit = () => {
 
                 {/* Institute 5 --------------------------------------------- */}
                 <div>
-                  <label className="block mt-2 text-sm font-medium text-gray-700">
+                  <label className="block mt-2 text-sm font-medium text-slate-500">
                     Select Institute
                   </label>
                   <select
@@ -1271,7 +1278,7 @@ const Edit = () => {
                     className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                   //    required
                   >
-                    <option value="">Select Institute</option>
+                    <option value=""></option>
                     {institutes.filter(institute => institute.type === "Vocational Courses").map((institute) => (
                       <option key={institute._id} value={institute._id}>
                         {institute.name}
@@ -1282,7 +1289,7 @@ const Edit = () => {
 
                 {/* Course 5 */}
                 <div>
-                  <label className="block mt-2 text-sm font-medium text-gray-700">
+                  <label className="block mt-2 text-sm font-medium text-slate-500">
                     Select Course
                   </label>
                   <select
@@ -1293,7 +1300,7 @@ const Edit = () => {
                     className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                   //   required
                   >
-                    <option value="">Select Course</option>
+                    <option value=""></option>
                     {courses.filter(course => course.type === "Vocational Courses").map((course) => (
                       <option key={course._id} value={course._id}>
                         {course.name}
@@ -1304,7 +1311,7 @@ const Edit = () => {
 
                 {/* Reference Number-5 */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">
+                  <label className="block text-sm font-medium text-slate-500">
                     Reference Number
                   </label>
                   <input
@@ -1321,7 +1328,7 @@ const Edit = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                   {/* Year5 */}
                   <div>
-                    <label className="block text-sm font-medium text-gray-700">
+                    <label className="block text-sm font-medium text-slate-500">
                       Year
                     </label>
                     <input
@@ -1338,7 +1345,7 @@ const Edit = () => {
 
                   {/* Fees 5 */}
                   <div>
-                    <label className="block text-sm font-medium text-gray-700">
+                    <label className="block text-sm font-medium text-slate-500">
                       Fees
                     </label>
                     <input
@@ -1359,11 +1366,13 @@ const Edit = () => {
                 <div className="hidden lg:block flex space-x-3 mb-5" />
                 <ViewCard type="header" text="Hostel Details" />
                 <div className="hidden lg:block flex space-x-3 mb-5" />
+              </div>
 
+              <div className="grid mt-5 grid-cols-1 md:grid-cols-3 gap-5">
                 {/* Hostel */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">
-                    Hostel Admission<span className="text-red-700">*</span>
+                  <label className="block text-sm font-medium text-slate-500">
+                    Hostel Admission Required? <span className="text-red-700">*</span>
                   </label>
                   <select
                     name="hostel"
@@ -1372,17 +1381,15 @@ const Edit = () => {
                     className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                     required
                   >
-                    <option value="">Select Hostel Admission</option>
+                    <option value=""></option>
                     <option value="Yes">Yes</option>
                     <option value="No">No</option>
                   </select>
                 </div>
 
-                <div className="hidden lg:block flex space-x-3 mb-5" />
-
                 {/* Hostel Reference Number */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">
+                  <label className="block text-sm font-medium text-slate-500">
                     Reference Number
                   </label>
                   <input
@@ -1396,10 +1403,9 @@ const Edit = () => {
                   />
                 </div>
 
-
                 {/* Hostel Fees */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">
+                  <label className="block text-sm font-medium text-slate-500">
                     Fees
                   </label>
                   <input
@@ -1416,24 +1422,25 @@ const Edit = () => {
 
                 <div className="flex space-x-3 mb-5" />
                 <div className="hidden lg:block flex space-x-3 mb-5" />
+                <div className="hidden lg:block flex space-x-3 mb-5" />
+              </div>
 
-                {/* Image Upload */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-700">
-                    Update Image
-                  </label>
-                  <input
-                    type="file"
-                    name="file"
-                    onChange={handleChange}
-                    placeholder="Upload Image"
-                    accept="image/*"
-                    className="mt-1 p-2 mb-5 block w-full border border-gray-300 rounded-md"
-                  />
-                </div>
-
+              {/* Image Upload */}
+              <div>
+                <label className="block text-sm font-medium text-slate-500">
+                  Update Image
+                </label>
+                <input
+                  type="file"
+                  name="file"
+                  onChange={handleChange}
+                  placeholder="Upload Image"
+                  accept="image/*"
+                  className="mt-1 p-2 mb-5 block w-full border border-gray-300 rounded-md"
+                />
               </div>
             </div>
+
             <button
               type="submit"
               className="w-full mt-3 bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded-lg shadow-lg"

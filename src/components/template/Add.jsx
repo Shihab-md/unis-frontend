@@ -96,7 +96,7 @@ const Add = () => {
         <div className="py-2 px-4 border mt-5 mb-3 items-center justify-center rounded-lg shadow-lg bg-white">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block mt-2 text-sm font-medium text-gray-700">
+              <label className="block mt-2 text-sm font-medium text-slate-500">
                 Select Course <span className="text-red-700">*</span>
               </label>
               <select
@@ -105,7 +105,7 @@ const Add = () => {
                 className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                 required
               >
-                <option value="">Select Course</option>
+                <option value=""></option>
                 {courses.filter(course => course.type === "Deeniyath Education"
                   || course.type === "Islamic Home Science"
                   || course.type === "Teacher Training").map((course) => (
@@ -118,7 +118,7 @@ const Add = () => {
 
             {/* Details */}
             <div>
-              <label className="block mt-2 text-sm font-medium text-gray-700">
+              <label className="block mt-2 text-sm font-medium text-slate-500">
                 Details <span className="text-red-700">*</span>
               </label>
               <input
@@ -132,7 +132,7 @@ const Add = () => {
 
             {/* Template Upload */}
             <div className="mt-5">
-              <label className="block text-sm font-medium text-gray-700">
+              <label className="block text-sm font-medium text-slate-500">
                 Upload Template Image<span className="text-red-700">*</span>
               </label>
               <input

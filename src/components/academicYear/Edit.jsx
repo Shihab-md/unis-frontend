@@ -105,7 +105,7 @@ const Edit = () => {
 
                 {/* Academic Year */}
                 <div>
-                  <label className="block mt-2 text-sm font-medium text-gray-700">
+                  <label className="block mt-2 text-sm font-medium text-slate-500">
                     Academic Year <span className="text-red-700">*</span>
                   </label>
                   <input
@@ -120,7 +120,7 @@ const Edit = () => {
 
                 {/* Description */}
                 <div>
-                  <label className="block mt-2 text-sm font-medium text-gray-700">
+                  <label className="block mt-2 text-sm font-medium text-slate-500">
                     Description <span className="text-red-700">*</span>
                   </label>
                   <input

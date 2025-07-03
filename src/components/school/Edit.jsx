@@ -167,7 +167,7 @@ const Edit = () => {
               <div className="grid mt-3 grid-cols-1 md:grid-cols-2 gap-4">
                 {/* Code */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">
+                  <label className="block text-sm font-medium text-slate-500">
                     Code <span className="text-red-700">*</span>
                   </label>
                   <input
@@ -184,7 +184,7 @@ const Edit = () => {
 
                 {/* Name English*/}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">
+                  <label className="block text-sm font-medium text-slate-500">
                     Name in English <span className="text-red-700">*</span>
                   </label>
                   <input
@@ -201,7 +201,7 @@ const Edit = () => {
 
                 {/* Name Arabic*/}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">
+                  <label className="block text-sm font-medium text-slate-500">
                     Name in Arabic
                   </label>
                   <input
@@ -218,7 +218,7 @@ const Edit = () => {
 
                 {/* Name Native*/}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">
+                  <label className="block text-sm font-medium text-slate-500">
                     Name in Native
                   </label>
                   <input
@@ -235,7 +235,7 @@ const Edit = () => {
 
                 {/* Address */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">
+                  <label className="block text-sm font-medium text-slate-500">
                     Address <span className="text-red-700">*</span>
                   </label>
                   <input
@@ -252,7 +252,7 @@ const Edit = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                   {/* District */}
                   <div>
-                    <label className="block text-sm font-medium text-gray-700">
+                    <label className="block text-sm font-medium text-slate-500">
                       District <span className="text-red-700">*</span>
                     </label>
                     <input
@@ -268,7 +268,7 @@ const Edit = () => {
 
                   {/* State */}
                   <div>
-                    <label className="block text-sm font-medium text-gray-700">
+                    <label className="block text-sm font-medium text-slate-500">
                       State <span className="text-red-700">*</span>
                     </label>
                     <input
@@ -285,7 +285,7 @@ const Edit = () => {
 
                 {/* Contact Number */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">
+                  <label className="block text-sm font-medium text-slate-500">
                     Contact Number
                   </label>
                   <input
@@ -301,7 +301,7 @@ const Edit = () => {
 
                 {/* Email */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">
+                  <label className="block text-sm font-medium text-slate-500">
                     Email
                   </label>
                   <input
@@ -317,7 +317,7 @@ const Edit = () => {
 
                 {/* Date of Establishment */}
                 <div className="grid grid-cols-1">
-                  <label className="block text-sm font-medium text-gray-700">
+                  <label className="block text-sm font-medium text-slate-500">
                     Date of Establishment
                   </label>
                   <DatePicker
@@ -338,7 +338,7 @@ const Edit = () => {
 
                 {/* Active */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">
+                  <label className="block text-sm font-medium text-slate-500">
                     Active <span className="text-red-700">*</span>
                   </label>
                   <select
@@ -359,7 +359,7 @@ const Edit = () => {
 
                 {/* Supervisor Id */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">
+                  <label className="block text-sm font-medium text-slate-500">
                     Select Supervisor <span className="text-red-700">*</span>
                   </label>
                   <select
@@ -380,7 +380,7 @@ const Edit = () => {
 
                 {/* Supervisor Id 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">
+                  <label className="block text-sm font-medium text-slate-500">
                     Supervisor Id <span className="text-red-700">*</span>
                   </label>
                   <input
@@ -400,7 +400,7 @@ const Edit = () => {
 
                 {/* Incharge-1 */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">
+                  <label className="block text-sm font-medium text-slate-500">
                     Incharge-1 Name <span className="text-red-700">*</span>
                   </label>
                   <input
@@ -416,7 +416,7 @@ const Edit = () => {
 
                 {/* Incharge-1 Number */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">
+                  <label className="block text-sm font-medium text-slate-500">
                     Incharge-1 Number <span className="text-red-700">*</span>
                   </label>
                   <input
@@ -433,7 +433,7 @@ const Edit = () => {
 
                 {/* Incharge-2 */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">
+                  <label className="block text-sm font-medium text-slate-500">
                     Incharge-2 Name
                   </label>
                   <input
@@ -449,7 +449,7 @@ const Edit = () => {
 
                 {/* Incharge-2 Number */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">
+                  <label className="block text-sm font-medium text-slate-500">
                     Incharge-2 Number
                   </label>
                   <input
@@ -466,7 +466,7 @@ const Edit = () => {
 
                 {/* Incharge-3 */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">
+                  <label className="block text-sm font-medium text-slate-500">
                     Incharge-3 Name
                   </label>
                   <input
@@ -482,7 +482,7 @@ const Edit = () => {
 
                 {/* Incharge-3 Number */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">
+                  <label className="block text-sm font-medium text-slate-500">
                     Incharge-3 Number
                   </label>
                   <input
@@ -499,7 +499,7 @@ const Edit = () => {
 
                 {/* Incharge-4 */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">
+                  <label className="block text-sm font-medium text-slate-500">
                     Incharge-4 Name
                   </label>
                   <input
@@ -515,7 +515,7 @@ const Edit = () => {
 
                 {/* Incharge-4 Number */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">
+                  <label className="block text-sm font-medium text-slate-500">
                     Incharge-4 Number
                   </label>
                   <input
@@ -532,7 +532,7 @@ const Edit = () => {
 
                 {/* Incharge-5 */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">
+                  <label className="block text-sm font-medium text-slate-500">
                     Incharge-5 Name
                   </label>
                   <input
@@ -548,7 +548,7 @@ const Edit = () => {
 
                 {/* Incharge-5 Number */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">
+                  <label className="block text-sm font-medium text-slate-500">
                     Incharge-5 Number
                   </label>
                   <input
@@ -565,7 +565,7 @@ const Edit = () => {
 
                 {/* Incharge-6 */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">
+                  <label className="block text-sm font-medium text-slate-500">
                     Incharge-6 Name
                   </label>
                   <input
@@ -581,7 +581,7 @@ const Edit = () => {
 
                 {/* Incharge-6 Number */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">
+                  <label className="block text-sm font-medium text-slate-500">
                     Incharge-6 Number
                   </label>
                   <input
@@ -598,7 +598,7 @@ const Edit = () => {
 
                 {/* Incharge-7 */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">
+                  <label className="block text-sm font-medium text-slate-500">
                     Incharge-7 Name
                   </label>
                   <input
@@ -614,7 +614,7 @@ const Edit = () => {
 
                 {/* Incharge-7 Number */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">
+                  <label className="block text-sm font-medium text-slate-500">
                     Incharge-7 Number
                   </label>
                   <input

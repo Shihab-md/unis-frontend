@@ -105,7 +105,7 @@ const Edit = () => {
 
                 {/* District */}
                 <div>
-                  <label className="block mt-2 text-sm font-medium text-gray-700">
+                  <label className="block mt-2 text-sm font-medium text-slate-500">
                     District <span className="text-red-700">*</span>
                   </label>
                   <input
@@ -120,7 +120,7 @@ const Edit = () => {
 
                 {/* State */}
                 <div>
-                  <label className="block mt-2 text-sm font-medium text-gray-700">
+                  <label className="block mt-2 text-sm font-medium text-slate-500">
                     State <span className="text-red-700">*</span>
                   </label>
                   <input

@@ -223,7 +223,7 @@ const Promote = () => {
 
                 {/* School */}
                 <div>
-                  <label className="block mt-2 text-sm font-medium text-gray-700">
+                  <label className="block mt-2 text-sm font-medium text-slate-500">
                     Niswan <span className="text-red-700">*</span>
                   </label>
                   <select
@@ -247,7 +247,7 @@ const Promote = () => {
               <div className="grid mt-5 grid-cols-1 md:grid-cols-2 gap-5">
                 {/* Roll Number (Email) */}
                 <div>
-                  <label className="block mt-2 text-sm font-medium text-gray-700">
+                  <label className="block mt-2 text-sm font-medium text-slate-500">
                     Roll Number <span className="text-red-700">*</span>
                   </label>
                   <input
@@ -263,7 +263,7 @@ const Promote = () => {
 
                 {/* Name */}
                 <div>
-                  <label className="block mt-2 text-sm font-medium text-gray-700">
+                  <label className="block mt-2 text-sm font-medium text-slate-500">
                     Name <span className="text-red-700">*</span>
                   </label>
                   <input
@@ -284,7 +284,7 @@ const Promote = () => {
                 <div className="hidden lg:block flex space-x-3 mb-5" />
                 {/* Academic Year */}
                 <div>
-                  <label className="block mt-2 text-sm font-medium text-gray-700">
+                  <label className="block mt-2 text-sm font-medium text-slate-500">
                     Academic Year <span className="text-red-700">*</span>
                   </label>
                   <select
@@ -314,7 +314,7 @@ const Promote = () => {
 
                 {/* Institute 1 --------------------------------------------- */}
                 <div>
-                  <label className="block mt-2 lg:mt-0 text-sm font-medium text-gray-700">
+                  <label className="block mt-2 lg:mt-0 text-sm font-medium text-slate-500">
                     Institute <span className="text-red-700">*</span>
                   </label>
                   <select
@@ -336,7 +336,7 @@ const Promote = () => {
 
                 {/* Course 1 */}
                 <div>
-                  <label className="block mt-2 lg:mt-0 text-sm font-medium text-gray-700">
+                  <label className="block mt-2 lg:mt-0 text-sm font-medium text-slate-500">
                     Course <span className="text-red-700">*</span>
                   </label>
                   <select
@@ -360,7 +360,7 @@ const Promote = () => {
               <div className="grid mt-7 mb-7 grid-cols-1 md:grid-cols-4 gap-5">
                 {/* Reference Number-1 */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">
+                  <label className="block text-sm font-medium text-slate-500">
                     Reference Number <span className="text-red-700">*</span>
                   </label>
                   <input
@@ -376,7 +376,7 @@ const Promote = () => {
 
                 {/* Year1 */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">
+                  <label className="block text-sm font-medium text-slate-500">
                     Current Year / Std.<span className="text-red-700">*</span>
                   </label>
                   <input
@@ -393,7 +393,7 @@ const Promote = () => {
 
                 {/* Status1 */}
                 <div>
-                  <label className="block mt-2 lg:mt-0 text-sm font-medium text-gray-700">
+                  <label className="block mt-2 lg:mt-0 text-sm font-medium text-slate-500">
                     Status <span className="text-red-700">*</span>
                   </label>
                   <select
@@ -411,7 +411,7 @@ const Promote = () => {
 
                 {/* Fees1 */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">
+                  <label className="block text-sm font-medium text-slate-500">
                     Fees
                   </label>
                   <input
@@ -435,7 +435,7 @@ const Promote = () => {
 
                     {/* Institute 2 --------------------------------------------- */}
                     <div>
-                      <label className="block mt-2 text-sm font-medium text-gray-700">
+                      <label className="block mt-2 text-sm font-medium text-slate-500">
                         Institute
                       </label>
                       <select
@@ -456,7 +456,7 @@ const Promote = () => {
 
                     {/* Course 2 */}
                     <div>
-                      <label className="block mt-2 text-sm font-medium text-gray-700">
+                      <label className="block mt-2 text-sm font-medium text-slate-500">
                         Course
                       </label>
                       <select
@@ -479,7 +479,7 @@ const Promote = () => {
                   <div className="grid mt-7 mb-7 grid-cols-1 md:grid-cols-4 gap-5">
                     {/* Reference Number-2 */}
                     <div>
-                      <label className="block text-sm font-medium text-gray-700">
+                      <label className="block text-sm font-medium text-slate-500">
                         Reference Number
                       </label>
                       <input
@@ -494,7 +494,7 @@ const Promote = () => {
 
                     {/* Year2 
                     <div>
-                      <label className="block text-sm font-medium text-gray-700">
+                      <label className="block text-sm font-medium text-slate-500">
                         Current Std.
                       </label>
                       <input
@@ -511,7 +511,7 @@ const Promote = () => {
 
                     {/* Status2 */}
                     <div>
-                      <label className="block mt-2 lg:mt-0 text-sm font-medium text-gray-700">
+                      <label className="block mt-2 lg:mt-0 text-sm font-medium text-slate-500">
                         Status <span className="text-red-700">*</span>
                       </label>
                       <select
@@ -529,7 +529,7 @@ const Promote = () => {
 
                     {/* Next Course 2 */}
                     <div>
-                      <label className="block text-sm font-medium text-gray-700">
+                      <label className="block text-sm font-medium text-slate-500">
                         Next Course
                       </label>
                       <select
@@ -550,7 +550,7 @@ const Promote = () => {
 
                     {/* Fees 2 */}
                     <div>
-                      <label className="block text-sm font-medium text-gray-700">
+                      <label className="block text-sm font-medium text-slate-500">
                         Fees
                       </label>
                       <input
@@ -576,7 +576,7 @@ const Promote = () => {
 
                     {/* Institute 3 --------------------------------------------- */}
                     <div>
-                      <label className="block mt-2 text-sm font-medium text-gray-700">
+                      <label className="block mt-2 text-sm font-medium text-slate-500">
                         Institute
                       </label>
                       <select
@@ -598,7 +598,7 @@ const Promote = () => {
 
                     {/* Course 3 */}
                     <div>
-                      <label className="block mt-2 text-sm font-medium text-gray-700">
+                      <label className="block mt-2 text-sm font-medium text-slate-500">
                         Course
                       </label>
                       <select
@@ -622,7 +622,7 @@ const Promote = () => {
                   <div className="grid mt-7 mb-7 grid-cols-1 md:grid-cols-4 gap-5">
                     {/* Reference Number-3 */}
                     <div>
-                      <label className="block text-sm font-medium text-gray-700">
+                      <label className="block text-sm font-medium text-slate-500">
                         Reference Number
                       </label>
                       <input
@@ -637,7 +637,7 @@ const Promote = () => {
 
                     {/* Year3 */}
                     <div>
-                      <label className="block text-sm font-medium text-gray-700">
+                      <label className="block text-sm font-medium text-slate-500">
                         Current Year
                       </label>
                       <input
@@ -653,7 +653,7 @@ const Promote = () => {
 
                     {/* Status3 */}
                     <div>
-                      <label className="block mt-2 lg:mt-0 text-sm font-medium text-gray-700">
+                      <label className="block mt-2 lg:mt-0 text-sm font-medium text-slate-500">
                         Status <span className="text-red-700">*</span>
                       </label>
                       <select
@@ -671,7 +671,7 @@ const Promote = () => {
 
                     {/* Fees 3 */}
                     <div>
-                      <label className="block text-sm font-medium text-gray-700">
+                      <label className="block text-sm font-medium text-slate-500">
                         Fees
                       </label>
                       <input
@@ -696,7 +696,7 @@ const Promote = () => {
 
                     {/* Institute 4 --------------------------------------------- */}
                     <div>
-                      <label className="block mt-2 text-sm font-medium text-gray-700">
+                      <label className="block mt-2 text-sm font-medium text-slate-500">
                         Institute
                       </label>
                       <select
@@ -717,7 +717,7 @@ const Promote = () => {
 
                     {/* Course 4 */}
                     <div>
-                      <label className="block mt-2 text-sm font-medium text-gray-700">
+                      <label className="block mt-2 text-sm font-medium text-slate-500">
                         Course
                       </label>
                       <select
@@ -740,7 +740,7 @@ const Promote = () => {
                   <div className="grid mt-7 mb-7 grid-cols-1 md:grid-cols-4 gap-5">
                     {/* Reference Number-4 */}
                     <div>
-                      <label className="block text-sm font-medium text-gray-700">
+                      <label className="block text-sm font-medium text-slate-500">
                         Reference Number
                       </label>
                       <input
@@ -755,7 +755,7 @@ const Promote = () => {
 
                     {/* Year4 */}
                     <div>
-                      <label className="block text-sm font-medium text-gray-700">
+                      <label className="block text-sm font-medium text-slate-500">
                         Current Year
                       </label>
                       <input
@@ -771,7 +771,7 @@ const Promote = () => {
 
                     {/* Status4 */}
                     <div>
-                      <label className="block mt-2 lg:mt-0 text-sm font-medium text-gray-700">
+                      <label className="block mt-2 lg:mt-0 text-sm font-medium text-slate-500">
                         Status <span className="text-red-700">*</span>
                       </label>
                       <select
@@ -789,7 +789,7 @@ const Promote = () => {
 
                     {/* Fees 4 */}
                     <div>
-                      <label className="block text-sm font-medium text-gray-700">
+                      <label className="block text-sm font-medium text-slate-500">
                         Fees
                       </label>
                       <input
@@ -814,7 +814,7 @@ const Promote = () => {
 
                     {/* Institute 5 --------------------------------------------- */}
                     <div>
-                      <label className="block mt-2 text-sm font-medium text-gray-700">
+                      <label className="block mt-2 text-sm font-medium text-slate-500">
                         Institute
                       </label>
                       <select
@@ -835,7 +835,7 @@ const Promote = () => {
 
                     {/* Course 5 */}
                     <div>
-                      <label className="block mt-2 text-sm font-medium text-gray-700">
+                      <label className="block mt-2 text-sm font-medium text-slate-500">
                         Course
                       </label>
                       <select
@@ -858,7 +858,7 @@ const Promote = () => {
                   <div className="grid mt-7 mb-7 grid-cols-1 md:grid-cols-4 gap-5">
                     {/* Reference Number-5 */}
                     <div>
-                      <label className="block text-sm font-medium text-gray-700">
+                      <label className="block text-sm font-medium text-slate-500">
                         Reference Number
                       </label>
                       <input
@@ -873,7 +873,7 @@ const Promote = () => {
 
                     {/* Year5 */}
                     <div>
-                      <label className="block text-sm font-medium text-gray-700">
+                      <label className="block text-sm font-medium text-slate-500">
                         Current Year
                       </label>
                       <input
@@ -889,7 +889,7 @@ const Promote = () => {
 
                     {/* Status5 */}
                     <div>
-                      <label className="block mt-2 lg:mt-0 text-sm font-medium text-gray-700">
+                      <label className="block mt-2 lg:mt-0 text-sm font-medium text-slate-500">
                         Status <span className="text-red-700">*</span>
                       </label>
                       <select
@@ -907,7 +907,7 @@ const Promote = () => {
 
                     {/* Fees 5 */}
                     <div>
-                      <label className="block text-sm font-medium text-gray-700">
+                      <label className="block text-sm font-medium text-slate-500">
                         Fees
                       </label>
                       <input

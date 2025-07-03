@@ -182,7 +182,7 @@ const Create = () => {
 
               {/* Templates */}
               <div>
-                <label className="block mt-2 text-sm font-medium text-gray-700">
+                <label className="block mt-2 text-sm font-medium text-slate-500">
                   Select Template <span className="text-red-700">*</span>
                 </label>
                 <select
@@ -191,7 +191,7 @@ const Create = () => {
                   className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                   required
                 >
-                  <option value="">Select Template</option>
+                  <option value=""></option>
                   {templates.map((template) => (
                     <option key={template._id} value={template._id}>
                       {template.courseId.name}
@@ -202,7 +202,7 @@ const Create = () => {
 
               {/* Schools  */}
               <div>
-                <label className="block mt-2 text-sm font-medium text-gray-700">
+                <label className="block mt-2 text-sm font-medium text-slate-500">
                   Select Niswan<span className="text-red-700">*</span>
                 </label>
                 <select
@@ -211,7 +211,7 @@ const Create = () => {
                   className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                   required
                 >
-                  <option value="">Select Niswan</option>
+                  <option value=""></option>
                   {schools.map((school) => (
                     <option key={school._id} value={school._id}>
                       {school.code + " : " + school.nameEnglish}
@@ -222,7 +222,7 @@ const Create = () => {
 
               {/* Students List */}
               <div className="">
-                <label className="block mt-3 text-sm font-medium text-gray-700">
+                <label className="block mt-3 text-sm font-medium text-slate-500">
                   Select Students <span className="text-red-700">*</span>
                 </label>
               </div>

@@ -160,7 +160,7 @@ const Edit = () => {
               <div className="grid mt-3 grid-cols-1 md:grid-cols-2 gap-4">
                 {/* Name */}
                 <div>
-                  <label className="block mt-2 text-sm font-medium text-gray-700">
+                  <label className="block mt-2 text-sm font-medium text-slate-500">
                     Name <span className="text-red-700">*</span>
                   </label>
                   <input
@@ -176,7 +176,7 @@ const Edit = () => {
 
                 {/* Email */}
                 <div>
-                  <label className="block mt-2 text-sm font-medium text-gray-700">
+                  <label className="block mt-2 text-sm font-medium text-slate-500">
                     Email <span className="text-red-700">*</span>
                   </label>
                   <input
@@ -193,7 +193,7 @@ const Edit = () => {
 
                 {/* Supervisor ID */}
                 <div>
-                  <label className="block mt-2 text-sm font-medium text-gray-700">
+                  <label className="block mt-2 text-sm font-medium text-slate-500">
                     Supervisor ID <span className="text-red-700">*</span>
                   </label>
                   <input
@@ -210,7 +210,7 @@ const Edit = () => {
 
                 {/* Contact Number */}
                 <div>
-                  <label className="block mt-2 text-sm font-medium text-gray-700">
+                  <label className="block mt-2 text-sm font-medium text-slate-500">
                     Contact Number <span className="text-red-700">*</span>
                   </label>
                   <input
@@ -227,7 +227,7 @@ const Edit = () => {
 
                 {/* Address */}
                 <div>
-                  <label className="block mt-2 text-sm font-medium text-gray-700">
+                  <label className="block mt-2 text-sm font-medium text-slate-500">
                     Address <span className="text-red-700">*</span>
                   </label>
                   <input
@@ -243,7 +243,7 @@ const Edit = () => {
 
                 {/* Route Name */}
                 <div>
-                  <label className="block mt-2 text-sm font-medium text-gray-700">
+                  <label className="block mt-2 text-sm font-medium text-slate-500">
                     Route Name <span className="text-red-700">*</span>
                   </label>
                   <input
@@ -259,7 +259,7 @@ const Edit = () => {
 
                 {/* Qualification */}
                 <div>
-                  <label className="block mt-2 text-sm font-medium text-gray-700">
+                  <label className="block mt-2 text-sm font-medium text-slate-500">
                     Qualification <span className="text-red-700">*</span>
                   </label>
                   <input
@@ -275,7 +275,7 @@ const Edit = () => {
 
                 {/* Date of Birth 
                 <div>
-                  <label className="block mt-2 text-sm font-medium text-gray-700">
+                  <label className="block mt-2 text-sm font-medium text-slate-500">
                     Date of Birth <span className="text-red-700">*</span>
                   </label>
                   <input
@@ -291,7 +291,7 @@ const Edit = () => {
 
                 {/* Date of Birth */}
                 <div className="grid grid-cols-1">
-                  <label className="block mt-2 text-sm font-medium text-gray-700">
+                  <label className="block mt-2 text-sm font-medium text-slate-500">
                     Date of Birth <span className="text-red-700">*</span>
                   </label>
                   <DatePicker
@@ -312,7 +312,7 @@ const Edit = () => {
 
                 {/* Gender */}
                 <div>
-                  <label className="block mt-2 text-sm font-medium text-gray-700">
+                  <label className="block mt-2 text-sm font-medium text-slate-500">
                     Gender <span className="text-red-700">*</span>
                   </label>
                   <select
@@ -330,7 +330,7 @@ const Edit = () => {
 
                 {/* Marital Status */}
                 <div>
-                  <label className="block mt-2 text-sm font-medium text-gray-700">
+                  <label className="block mt-2 text-sm font-medium text-slate-500">
                     Marital Status <span className="text-red-700">*</span>
                   </label>
                   <select
@@ -349,7 +349,7 @@ const Edit = () => {
 
                 {/* Job Type */}
                 <div>
-                  <label className="block mt-2 text-sm font-medium text-gray-700">
+                  <label className="block mt-2 text-sm font-medium text-slate-500">
                     Job Type <span className="text-red-700">*</span>
                   </label>
                   <select
@@ -368,7 +368,7 @@ const Edit = () => {
 
                 {/* Date of Joining 
                 <div>
-                  <label className="block mt-2 text-sm font-medium text-gray-700">
+                  <label className="block mt-2 text-sm font-medium text-slate-500">
                     Date of Joining <span className="text-red-700">*</span>
                   </label>
                   <input
@@ -384,7 +384,7 @@ const Edit = () => {
 
                 {/* Date of Joining */}
                 <div className="grid grid-cols-1">
-                  <label className="block mt-2 text-sm font-medium text-gray-700">
+                  <label className="block mt-2 text-sm font-medium text-slate-500">
                     Date of Joining <span className="text-red-700">*</span>
                   </label>
                   <DatePicker
@@ -405,7 +405,7 @@ const Edit = () => {
 
                 {/* Salary */}
                 <div>
-                  <label className="block mt-2 text-sm font-medium text-gray-700">
+                  <label className="block mt-2 text-sm font-medium text-slate-500">
                     Salary <span className="text-red-700">*</span>
                   </label>
                   <input
@@ -422,7 +422,7 @@ const Edit = () => {
 
                 {/* Image Upload */}
                 <div>
-                  <label className="block mt-2 text-sm font-medium text-gray-700">
+                  <label className="block mt-2 text-sm font-medium text-slate-500">
                     Update Image
                   </label>
                   <input

@@ -171,7 +171,7 @@ const Edit = () => {
 
                 {/* School */}
                 <div>
-                  <label className="block mt-2 text-sm font-medium text-gray-700">
+                  <label className="block mt-2 text-sm font-medium text-slate-500">
                     Select Niswan <span className="text-red-700">*</span>
                   </label>
                   <select
@@ -192,7 +192,7 @@ const Edit = () => {
 
                 {/* Name */}
                 <div>
-                  <label className="block mt-2 text-sm font-medium text-gray-700">
+                  <label className="block mt-2 text-sm font-medium text-slate-500">
                     Name <span className="text-red-700">*</span>
                   </label>
                   <input
@@ -208,7 +208,7 @@ const Edit = () => {
 
                 {/* Email */}
                 <div>
-                  <label className="block mt-2 text-sm font-medium text-gray-700">
+                  <label className="block mt-2 text-sm font-medium text-slate-500">
                     Email <span className="text-red-700">*</span>
                   </label>
                   <input
@@ -225,7 +225,7 @@ const Edit = () => {
 
                 {/* Employee ID */}
                 <div>
-                  <label className="block mt-2 text-sm font-medium text-gray-700">
+                  <label className="block mt-2 text-sm font-medium text-slate-500">
                     Employee ID <span className="text-red-700">*</span>
                   </label>
                   <input
@@ -242,7 +242,7 @@ const Edit = () => {
 
                 {/* Role */}
                 <div>
-                  <label className="block mt-2 text-sm font-medium text-gray-700">
+                  <label className="block mt-2 text-sm font-medium text-slate-500">
                     Role <span className="text-red-700">*</span>
                   </label>
                   <select
@@ -265,7 +265,7 @@ const Edit = () => {
 
                 {/* Contact Number */}
                 <div>
-                  <label className="block mt-2 text-sm font-medium text-gray-700">
+                  <label className="block mt-2 text-sm font-medium text-slate-500">
                     Contact Number <span className="text-red-700">*</span>
                   </label>
                   <input
@@ -282,7 +282,7 @@ const Edit = () => {
 
                 {/* Address */}
                 <div>
-                  <label className="block mt-2 text-sm font-medium text-gray-700">
+                  <label className="block mt-2 text-sm font-medium text-slate-500">
                     Address <span className="text-red-700">*</span>
                   </label>
                   <input
@@ -298,7 +298,7 @@ const Edit = () => {
 
                 {/* Designation */}
                 <div>
-                  <label className="block mt-2 text-sm font-medium text-gray-700">
+                  <label className="block mt-2 text-sm font-medium text-slate-500">
                     Designation
                   </label>
                   <input
@@ -314,7 +314,7 @@ const Edit = () => {
 
                 {/* Qualification */}
                 <div>
-                  <label className="block mt-2 text-sm font-medium text-gray-700">
+                  <label className="block mt-2 text-sm font-medium text-slate-500">
                     Qualification <span className="text-red-700">*</span>
                   </label>
                   <input
@@ -330,7 +330,7 @@ const Edit = () => {
 
                 {/* Date of Birth 
                 <div>
-                  <label className="block mt-2 text-sm font-medium text-gray-700">
+                  <label className="block mt-2 text-sm font-medium text-slate-500">
                     Date of Birth <span className="text-red-700">*</span>
                   </label>
                   <input
@@ -346,7 +346,7 @@ const Edit = () => {
 
                 {/* Date of Birth */}
                 <div className="grid grid-cols-1">
-                  <label className="block mt-2 text-sm font-medium text-gray-700">
+                  <label className="block mt-2 text-sm font-medium text-slate-500">
                     Date of Birth <span className="text-red-700">*</span>
                   </label>
                   <DatePicker
@@ -367,7 +367,7 @@ const Edit = () => {
 
                 {/* Gender */}
                 <div>
-                  <label className="block mt-2 text-sm font-medium text-gray-700">
+                  <label className="block mt-2 text-sm font-medium text-slate-500">
                     Gender <span className="text-red-700">*</span>
                   </label>
                   <select
@@ -385,7 +385,7 @@ const Edit = () => {
 
                 {/* Marital Status */}
                 <div>
-                  <label className="block mt-2 text-sm font-medium text-gray-700">
+                  <label className="block mt-2 text-sm font-medium text-slate-500">
                     Marital Status <span className="text-red-700">*</span>
                   </label>
                   <select
@@ -404,7 +404,7 @@ const Edit = () => {
 
                 {/* Date of Joining 
                 <div>
-                  <label className="block mt-2 text-sm font-medium text-gray-700">
+                  <label className="block mt-2 text-sm font-medium text-slate-500">
                     Date of Joining <span className="text-red-700">*</span>
                   </label>
                   <input
@@ -420,7 +420,7 @@ const Edit = () => {
 
                 {/* Date of Joining */}
                 <div className="grid grid-cols-1">
-                  <label className="block mt-2 text-sm font-medium text-gray-700">
+                  <label className="block mt-2 text-sm font-medium text-slate-500">
                     Date of Joining <span className="text-red-700">*</span>
                   </label>
                   <DatePicker
@@ -441,7 +441,7 @@ const Edit = () => {
 
                 {/* Salary */}
                 <div>
-                  <label className="block mt-2 text-sm font-medium text-gray-700">
+                  <label className="block mt-2 text-sm font-medium text-slate-500">
                     Salary <span className="text-red-700">*</span>
                   </label>
                   <input
@@ -458,7 +458,7 @@ const Edit = () => {
 
                 {/* Image Upload */}
                 <div>
-                  <label className="block mt-2 text-sm font-medium text-gray-700">
+                  <label className="block mt-2 text-sm font-medium text-slate-500">
                     Update Image
                   </label>
                   <input

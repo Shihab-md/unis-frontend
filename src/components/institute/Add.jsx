@@ -81,7 +81,7 @@ const Add = () => {
 
             {/* Code */}
             <div>
-              <label className="block mt-2 text-sm font-medium text-gray-700">
+              <label className="block mt-2 text-sm font-medium text-slate-500">
                 Code <span className="text-red-700">*</span>
               </label>
               <input
@@ -95,7 +95,7 @@ const Add = () => {
 
             {/* Name */}
             <div>
-              <label className="block mt-2 text-sm font-medium text-gray-700">
+              <label className="block mt-2 text-sm font-medium text-slate-500">
                 Name <span className="text-red-700">*</span>
               </label>
               <input
@@ -109,7 +109,7 @@ const Add = () => {
 
             {/* Type */}
             <div>
-              <label className="block text-sm font-medium text-gray-700">
+              <label className="block text-sm font-medium text-slate-500">
                 Education Type <span className="text-red-700">*</span>
               </label>
               <select
@@ -131,7 +131,7 @@ const Add = () => {
 
             {/* Contact Number */}
             <div>
-              <label className="block text-sm font-medium text-gray-700">
+              <label className="block text-sm font-medium text-slate-500">
                 Contact Number
               </label>
               <input
@@ -146,7 +146,7 @@ const Add = () => {
 
             {/* Email */}
             <div>
-              <label className="block text-sm font-medium text-gray-700">
+              <label className="block text-sm font-medium text-slate-500">
                 Email
               </label>
               <input
@@ -160,7 +160,7 @@ const Add = () => {
 
             {/* Address */}
             <div>
-              <label className="block text-sm font-medium text-gray-700">
+              <label className="block text-sm font-medium text-slate-500">
                 Address <span className="text-red-700">*</span>
               </label>
               <input
@@ -174,7 +174,7 @@ const Add = () => {
 
             {/* District */}
             <div>
-              <label className="block text-sm font-medium text-gray-700">
+              <label className="block text-sm font-medium text-slate-500">
                 District <span className="text-red-700">*</span>
               </label>
               <input
@@ -188,7 +188,7 @@ const Add = () => {
 
             {/* Incharge1 */}
             <div>
-              <label className="block text-sm font-medium text-gray-700">
+              <label className="block text-sm font-medium text-slate-500">
                 Incharge-1 Name <span className="text-red-700">*</span>
               </label>
               <input
@@ -202,7 +202,7 @@ const Add = () => {
 
             {/* Incharge1 Number */}
             <div>
-              <label className="block text-sm font-medium text-gray-700">
+              <label className="block text-sm font-medium text-slate-500">
                 Incharge-1 Number <span className="text-red-700">*</span>
               </label>
               <input
@@ -217,7 +217,7 @@ const Add = () => {
 
             {/* Incharge2 */}
             <div>
-              <label className="block text-sm font-medium text-gray-700">
+              <label className="block text-sm font-medium text-slate-500">
                 Incharge-2 Name
               </label>
               <input
@@ -230,7 +230,7 @@ const Add = () => {
 
             {/* Incharge2 Number */}
             <div>
-              <label className="block text-sm font-medium text-gray-700">
+              <label className="block text-sm font-medium text-slate-500">
                 Incharge-2 Number
               </label>
               <input

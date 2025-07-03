@@ -128,7 +128,7 @@ const Edit = () => {
               <div className="grid mt-3 grid-cols-1 md:grid-cols-2 gap-4">
                 {/* Course 1 */}
                 <div>
-                  <label className="block mt-2 text-sm font-medium text-gray-700">
+                  <label className="block mt-2 text-sm font-medium text-slate-500">
                     Select Course <span className="text-red-700">*</span>
                   </label>
                   <select
@@ -150,7 +150,7 @@ const Edit = () => {
 
                 {/* Details */}
                 <div>
-                  <label className="block mt-2 text-sm font-medium text-gray-700">
+                  <label className="block mt-2 text-sm font-medium text-slate-500">
                     Details <span className="text-red-700">*</span>
                   </label>
                   <input
@@ -165,7 +165,7 @@ const Edit = () => {
 
                 {/* Template Image Upload */}
                 <div className="mt-5">
-                  <label className="block text-sm font-medium text-gray-700">
+                  <label className="block text-sm font-medium text-slate-500">
                     Update Template <span className="text-red-700">*</span>
                   </label>
                   <input

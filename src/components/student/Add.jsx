@@ -240,7 +240,7 @@ const Add = () => {
 
   return (
     <>
-      <div className="max-w-4xl mx-auto mt-2 p-5 rounded-md shadow-lg border">
+      <div className="max-w-5xl mx-auto mt-2 p-5 rounded-md shadow-lg border">
         <div className="flex py-2 px-4 items-center justify-center bg-teal-700 text-white rounded-lg shadow-lg">
           <h2 className="text-xl font-semibold items-center justify-center">Enter Student Details</h2>
           <Link to="/dashboard/students" >
@@ -254,7 +254,7 @@ const Add = () => {
 
               {/* School */}
               <div>
-                <label className="block mt-2 text-sm font-medium text-gray-700">
+                <label className="block mt-2 text-sm font-medium text-slate-500">
                   Niswan <span className="text-red-700">*</span>
                 </label>
                 <select
@@ -277,7 +277,7 @@ const Add = () => {
             <div className="flex space-x-3 mb-5" />
             {/* Roll Number (Email) 
               <div>
-                <label className="block mt-2 text-sm font-medium text-gray-700">
+                <label className="block mt-2 text-sm font-medium text-slate-500">
                   Roll Number <span className="text-red-700">*</span>
                 </label>
                 <input
@@ -292,7 +292,7 @@ const Add = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
               {/* Name */}
               <div>
-                <label className="block mt-2 text-sm font-medium text-gray-700">
+                <label className="block mt-2 text-sm font-medium text-slate-500">
                   Student Name <span className="text-red-700">*</span>
                 </label>
                 <input
@@ -306,7 +306,7 @@ const Add = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                 {/* Date of Admission */}
                 <div className="grid grid-cols-1">
-                  <label className="block mt-2 text-sm font-medium text-gray-700">
+                  <label className="block mt-2 text-sm font-medium text-slate-500">
                     Admission Date <span className="text-red-700">*</span>
                   </label>
                   <DatePicker
@@ -326,7 +326,7 @@ const Add = () => {
                 </div>
                 {/* Date of Birth */}
                 <div className="grid grid-cols-1">
-                  <label className="block mt-2 text-sm font-medium text-gray-700">
+                  <label className="block mt-2 text-sm font-medium text-slate-500">
                     Date of Birth <span className="text-red-700">*</span>
                   </label>
                   <DatePicker
@@ -349,10 +349,10 @@ const Add = () => {
               <div className="hidden lg:block flex space-x-3 mb-5" />
             </div>
 
-            <div className="grid mt-2 grid-cols-1 md:grid-cols-3 gap-5">
+            <div className="grid mt-2 grid-cols-1 md:grid-cols-4 gap-5">
               {/* Gender */}
               <div>
-                <label className="block text-sm font-medium text-gray-700">
+                <label className="block text-sm font-medium text-slate-500">
                   Gender <span className="text-red-700">*</span>
                 </label>
                 <select
@@ -369,7 +369,7 @@ const Add = () => {
 
               {/* Marital Status */}
               <div>
-                <label className="block text-sm font-medium text-gray-700">
+                <label className="block text-sm font-medium text-slate-500">
                   Marital Status <span className="text-red-700">*</span>
                 </label>
                 <select
@@ -387,7 +387,7 @@ const Add = () => {
 
               {/* Mother Tongue */}
               <div>
-                <label className="block text-sm font-medium text-gray-700">
+                <label className="block text-sm font-medium text-slate-500">
                   Mother Tongue
                 </label>
                 <select
@@ -407,7 +407,7 @@ const Add = () => {
 
               {/* Blood Group */}
               <div>
-                <label className="block text-sm font-medium text-gray-700">
+                <label className="block text-sm font-medium text-slate-500">
                   Blood Group
                 </label>
                 <input
@@ -418,10 +418,12 @@ const Add = () => {
                 //    required
                 />
               </div>
+            </div>
 
+            <div className="grid mt-7 grid-cols-1 md:grid-cols-2 gap-5">
               {/* Identification Mark-1 */}
               <div>
-                <label className="block text-sm font-medium text-gray-700">
+                <label className="block text-sm font-medium text-slate-500">
                   Identification Mark-1 <span className="text-red-700">*</span>
                 </label>
                 <input
@@ -435,7 +437,7 @@ const Add = () => {
 
               {/* Identification Mark-2 */}
               <div>
-                <label className="block text-sm font-medium text-gray-700">
+                <label className="block text-sm font-medium text-slate-500">
                   Identification Mark-2
                 </label>
                 <input
@@ -449,13 +451,12 @@ const Add = () => {
 
               <div className="flex space-x-3 mb-5" />
               <div className="hidden lg:block flex space-x-3 mb-5" />
-              <div className="hidden lg:block flex space-x-3 mb-5" />
             </div>
 
             <div className="grid mt-2 grid-cols-1 md:grid-cols-1 gap-5">
               {/* About */}
               <div>
-                <label className="block text-sm font-medium text-gray-700">
+                <label className="block text-sm font-medium text-slate-500">
                   More details about the Student
                 </label>
                 <input
@@ -475,7 +476,7 @@ const Add = () => {
 
               {/* Father's Name */}
               <div>
-                <label className="block text-sm font-medium text-gray-700">
+                <label className="block text-sm font-medium text-slate-500">
                   Father's Name
                 </label>
                 <input
@@ -489,7 +490,7 @@ const Add = () => {
 
               {/* Father's Number */}
               <div>
-                <label className="block text-sm font-medium text-gray-700">
+                <label className="block text-sm font-medium text-slate-500">
                   Father's Number
                 </label>
                 <input
@@ -504,7 +505,7 @@ const Add = () => {
 
               {/* Father's Occupation */}
               <div>
-                <label className="block text-sm font-medium text-gray-700">
+                <label className="block text-sm font-medium text-slate-500">
                   Father's Occupation
                 </label>
                 <input
@@ -518,7 +519,7 @@ const Add = () => {
 
               {/* Mother's Name */}
               <div>
-                <label className="block text-sm font-medium text-gray-700">
+                <label className="block text-sm font-medium text-slate-500">
                   Mother's Name
                 </label>
                 <input
@@ -532,7 +533,7 @@ const Add = () => {
 
               {/* Mother's Number */}
               <div>
-                <label className="block text-sm font-medium text-gray-700">
+                <label className="block text-sm font-medium text-slate-500">
                   Mother's Number
                 </label>
                 <input
@@ -547,7 +548,7 @@ const Add = () => {
 
               {/* Mother's Occupation */}
               <div>
-                <label className="block text-sm font-medium text-gray-700">
+                <label className="block text-sm font-medium text-slate-500">
                   Mother's Occupation
                 </label>
                 <input
@@ -563,7 +564,7 @@ const Add = () => {
             <div className="grid mt-7 grid-cols-1 md:grid-cols-4 gap-5">
               {/* Guardian's Name */}
               <div>
-                <label className="block text-sm font-medium text-gray-700">
+                <label className="block text-sm font-medium text-slate-500">
                   Guardian's Name
                 </label>
                 <input
@@ -577,7 +578,7 @@ const Add = () => {
 
               {/* Guardian's Number */}
               <div>
-                <label className="block text-sm font-medium text-gray-700">
+                <label className="block text-sm font-medium text-slate-500">
                   Guardian's Number
                 </label>
                 <input
@@ -592,7 +593,7 @@ const Add = () => {
 
               {/* Guardian's Occupation */}
               <div>
-                <label className="block text-sm font-medium text-gray-700">
+                <label className="block text-sm font-medium text-slate-500">
                   Guardian's Occupation
                 </label>
                 <input
@@ -606,7 +607,7 @@ const Add = () => {
 
               {/* Guardian's Relationship */}
               <div>
-                <label className="block text-sm font-medium text-gray-700">
+                <label className="block text-sm font-medium text-slate-500">
                   Guardian's Relationship
                 </label>
                 <input
@@ -626,7 +627,7 @@ const Add = () => {
             <div className="grid mt-5 grid-cols-1 md:grid-cols-2 gap-5">
               {/* Address */}
               <div>
-                <label className="block text-sm font-medium text-gray-700">
+                <label className="block text-sm font-medium text-slate-500">
                   Door No. & Street <span className="text-red-700">*</span>
                 </label>
                 <input
@@ -640,7 +641,7 @@ const Add = () => {
 
               {/* City */}
               <div>
-                <label className="block text-sm font-medium text-gray-700">
+                <label className="block text-sm font-medium text-slate-500">
                   Area & Town / City <span className="text-red-700">*</span>
                 </label>
                 <input
@@ -656,7 +657,7 @@ const Add = () => {
             <div className="grid mt-5 grid-cols-1 md:grid-cols-3 gap-5">
               {/* LandMark */}
               <div>
-                <label className="block text-sm font-medium text-gray-700">
+                <label className="block text-sm font-medium text-slate-500">
                   LandMark
                 </label>
                 <input
@@ -670,7 +671,7 @@ const Add = () => {
 
               {/* Pincode */}
               <div>
-                <label className="block text-sm font-medium text-gray-700">
+                <label className="block text-sm font-medium text-slate-500">
                   Pincode <span className="text-red-700">*</span>
                 </label>
                 <input
@@ -688,7 +689,7 @@ const Add = () => {
 
               {/* District & State*/}
               <div>
-                <label className="block text-sm font-medium text-gray-700">
+                <label className="block text-sm font-medium text-slate-500">
                   Select District & State<span className="text-red-700">*</span>
                 </label>
                 <select
@@ -707,13 +708,15 @@ const Add = () => {
               </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
               <div className="flex space-x-3 mb-5" />
               <div className="hidden lg:block flex space-x-3 mb-5" />
+              <div className="hidden lg:block flex space-x-3 mb-5" />
 
+              <div className="hidden lg:block flex space-x-3 mb-5" />
               {/* Academic Year */}
               <div>
-                <label className="block mt-2 text-sm font-medium text-gray-700">
+                <label className="block mt-2 text-sm font-medium text-slate-500">
                   Select Academic Year <span className="text-red-700">*</span>
                 </label>
                 <select
@@ -732,16 +735,18 @@ const Add = () => {
                   ))}
                 </select>
               </div>
-
-              <div className="flex space-x-3 mb-5" />
               <div className="hidden lg:block flex space-x-3 mb-5" />
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+              <div className="flex space-x-3 mb-5" />
               <div className="hidden lg:block flex space-x-3 mb-5" />
               <ViewCard type="header" text="Deeniyath Education" />
               <div className="hidden lg:block flex space-x-3 mb-5" />
 
               {/* Institute 1 --------------------------------------------- */}
               <div>
-                <label className="block mt-2 text-sm font-medium text-gray-700">
+                <label className="block mt-2 text-sm font-medium text-slate-500">
                   Select Institute <span className="text-red-700">*</span>
                 </label>
                 <select
@@ -750,7 +755,7 @@ const Add = () => {
                   className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                   required
                 >
-                  <option value="">Select Institute</option>
+                  <option value=""></option>
                   {institutes.filter(institute => institute.type === "Deeniyath Education").map((institute) => (
                     <option key={institute._id} value={institute._id}>
                       {institute.name}
@@ -761,7 +766,7 @@ const Add = () => {
 
               {/* Course 1 */}
               <div>
-                <label className="block mt-2 text-sm font-medium text-gray-700">
+                <label className="block mt-2 text-sm font-medium text-slate-500">
                   Select Course <span className="text-red-700">*</span>
                 </label>
                 <select
@@ -770,7 +775,7 @@ const Add = () => {
                   className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                   required
                 >
-                  <option value="">Select Course</option>
+                  <option value=""></option>
                   {courses.filter(course => course.type === "Deeniyath Education").map((course) => (
                     <option key={course._id} value={course._id}>
                       {course.name}
@@ -781,7 +786,7 @@ const Add = () => {
 
               {/* Reference Number-1 */}
               <div>
-                <label className="block text-sm font-medium text-gray-700">
+                <label className="block text-sm font-medium text-slate-500">
                   Reference Number <span className="text-red-700">*</span>
                 </label>
                 <input
@@ -797,7 +802,7 @@ const Add = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                 {/* Year1 */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">
+                  <label className="block text-sm font-medium text-slate-500">
                     Year / Std. <span className="text-red-700">*</span>
                   </label>
                   <input
@@ -815,7 +820,7 @@ const Add = () => {
 
                 {/* Fees1 */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">
+                  <label className="block text-sm font-medium text-slate-500">
                     Fees
                   </label>
                   <input
@@ -841,7 +846,7 @@ const Add = () => {
 
               {/* Institute 2 --------------------------------------------- */}
               <div>
-                <label className="block mt-2 text-sm font-medium text-gray-700">
+                <label className="block mt-2 text-sm font-medium text-slate-500">
                   Select Institute
                 </label>
                 <select
@@ -850,7 +855,7 @@ const Add = () => {
                   className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                 //    required
                 >
-                  <option value="">Select Institute</option>
+                  <option value=""></option>
                   {institutes.filter(institute => institute.type === "School Education").map((institute) => (
                     <option key={institute._id} value={institute._id}>
                       {institute.name}
@@ -861,7 +866,7 @@ const Add = () => {
 
               {/* Course 2 */}
               <div>
-                <label className="block mt-2 text-sm font-medium text-gray-700">
+                <label className="block mt-2 text-sm font-medium text-slate-500">
                   Select Course
                 </label>
                 <select
@@ -870,7 +875,7 @@ const Add = () => {
                   className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                 //    required
                 >
-                  <option value="">Select Course</option>
+                  <option value=""></option>
                   {courses.filter(course => course.type === "School Education").map((course) => (
                     <option key={course._id} value={course._id}>
                       {course.name}
@@ -881,7 +886,7 @@ const Add = () => {
 
               {/* Reference Number-2 */}
               <div>
-                <label className="block text-sm font-medium text-gray-700">
+                <label className="block text-sm font-medium text-slate-500">
                   Reference Number
                 </label>
                 <input
@@ -897,7 +902,7 @@ const Add = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                 {/* Year2 */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">
+                  <label className="block text-sm font-medium text-slate-500">
                     Std.
                   </label>
                   <input
@@ -916,7 +921,7 @@ const Add = () => {
 
                 {/* Fees 2 */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">
+                  <label className="block text-sm font-medium text-slate-500">
                     Fees
                   </label>
                   <input
@@ -942,7 +947,7 @@ const Add = () => {
 
               {/* Institute 3 --------------------------------------------- */}
               <div>
-                <label className="block mt-2 text-sm font-medium text-gray-700">
+                <label className="block mt-2 text-sm font-medium text-slate-500">
                   Select Institute
                 </label>
                 <select
@@ -951,7 +956,7 @@ const Add = () => {
                   className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                 //    required
                 >
-                  <option value="">Select Institute</option>
+                  <option value=""></option>
                   {institutes.filter(institute => institute.type === "College Education").map((institute) => (
                     <option key={institute._id} value={institute._id}>
                       {institute.name}
@@ -962,7 +967,7 @@ const Add = () => {
 
               {/* Course 3 */}
               <div>
-                <label className="block mt-2 text-sm font-medium text-gray-700">
+                <label className="block mt-2 text-sm font-medium text-slate-500">
                   Select Course
                 </label>
                 <select
@@ -971,7 +976,7 @@ const Add = () => {
                   className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                 //    required
                 >
-                  <option value="">Select Course</option>
+                  <option value=""></option>
                   {courses.filter(course => course.type === "College Education").map((course) => (
                     <option key={course._id} value={course._id}>
                       {course.name}
@@ -982,7 +987,7 @@ const Add = () => {
 
               {/* Reference Number-3 */}
               <div>
-                <label className="block text-sm font-medium text-gray-700">
+                <label className="block text-sm font-medium text-slate-500">
                   Reference Number
                 </label>
                 <input
@@ -998,7 +1003,7 @@ const Add = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                 {/* Year3 */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">
+                  <label className="block text-sm font-medium text-slate-500">
                     Year
                   </label>
                   <input
@@ -1016,7 +1021,7 @@ const Add = () => {
 
                 {/* Fees 3 */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">
+                  <label className="block text-sm font-medium text-slate-500">
                     Fees
                   </label>
                   <input
@@ -1042,7 +1047,7 @@ const Add = () => {
 
               {/* Institute 4 --------------------------------------------- */}
               <div>
-                <label className="block mt-2 text-sm font-medium text-gray-700">
+                <label className="block mt-2 text-sm font-medium text-slate-500">
                   Select Institute
                 </label>
                 <select
@@ -1051,7 +1056,7 @@ const Add = () => {
                   className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                 //    required
                 >
-                  <option value="">Select Institute</option>
+                  <option value=""></option>
                   {institutes.filter(institute => institute.type === "Islamic Home Science").map((institute) => (
                     <option key={institute._id} value={institute._id}>
                       {institute.name}
@@ -1062,7 +1067,7 @@ const Add = () => {
 
               {/* Course 4 */}
               <div>
-                <label className="block mt-2 text-sm font-medium text-gray-700">
+                <label className="block mt-2 text-sm font-medium text-slate-500">
                   Select Course
                 </label>
                 <select
@@ -1071,7 +1076,7 @@ const Add = () => {
                   className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                 //    required
                 >
-                  <option value="">Select Course</option>
+                  <option value=""></option>
                   {courses.filter(course => course.type === "Islamic Home Science").map((course) => (
                     <option key={course._id} value={course._id}>
                       {course.name}
@@ -1082,7 +1087,7 @@ const Add = () => {
 
               {/* Reference Number-4 */}
               <div>
-                <label className="block text-sm font-medium text-gray-700">
+                <label className="block text-sm font-medium text-slate-500">
                   Reference Number
                 </label>
                 <input
@@ -1098,7 +1103,7 @@ const Add = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                 {/* Year4 */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">
+                  <label className="block text-sm font-medium text-slate-500">
                     Year
                   </label>
                   <input
@@ -1116,7 +1121,7 @@ const Add = () => {
 
                 {/* Fees 4 */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">
+                  <label className="block text-sm font-medium text-slate-500">
                     Fees
                   </label>
                   <input
@@ -1142,7 +1147,7 @@ const Add = () => {
 
               {/* Institute 5 --------------------------------------------- */}
               <div>
-                <label className="block mt-2 text-sm font-medium text-gray-700">
+                <label className="block mt-2 text-sm font-medium text-slate-500">
                   Select Institute
                 </label>
                 <select
@@ -1151,7 +1156,7 @@ const Add = () => {
                   className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                 //    required
                 >
-                  <option value="">Select Institute</option>
+                  <option value=""></option>
                   {institutes.filter(institute => institute.type === "Vocational Courses").map((institute) => (
                     <option key={institute._id} value={institute._id}>
                       {institute.name}
@@ -1162,7 +1167,7 @@ const Add = () => {
 
               {/* Course 5 */}
               <div>
-                <label className="block mt-2 text-sm font-medium text-gray-700">
+                <label className="block mt-2 text-sm font-medium text-slate-500">
                   Select Course
                 </label>
                 <select
@@ -1171,7 +1176,7 @@ const Add = () => {
                   className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                 //    required
                 >
-                  <option value="">Select Course</option>
+                  <option value=""></option>
                   {courses.filter(course => course.type === "Vocational Courses").map((course) => (
                     <option key={course._id} value={course._id}>
                       {course.name}
@@ -1182,7 +1187,7 @@ const Add = () => {
 
               {/* Reference Number-5 */}
               <div>
-                <label className="block text-sm font-medium text-gray-700">
+                <label className="block text-sm font-medium text-slate-500">
                   Reference Number
                 </label>
                 <input
@@ -1198,7 +1203,7 @@ const Add = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                 {/* Year5 */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">
+                  <label className="block text-sm font-medium text-slate-500">
                     Year
                   </label>
                   <input
@@ -1216,7 +1221,7 @@ const Add = () => {
 
                 {/* Fees 5 */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">
+                  <label className="block text-sm font-medium text-slate-500">
                     Fees
                   </label>
                   <input
@@ -1239,11 +1244,13 @@ const Add = () => {
               <div className="hidden lg:block flex space-x-3 mb-5" />
               <ViewCard type="header" text="Hostel Details" />
               <div className="hidden lg:block flex space-x-3 mb-5" />
+            </div>
 
+            <div className="grid mt-5 grid-cols-1 md:grid-cols-3 gap-5">
               {/* Hostel */}
               <div>
-                <label className="block text-sm font-medium text-gray-700">
-                  Hostel Admission <span className="text-red-700">*</span>
+                <label className="block text-sm font-medium text-slate-500">
+                  Hostel Admission Required? <span className="text-red-700">*</span>
                 </label>
                 <select
                   name="hostel"
@@ -1251,17 +1258,15 @@ const Add = () => {
                   className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                   required
                 >
-                  <option value="">Select Hostel Admission</option>
+                  <option value=""></option>
                   <option value="Yes">Yes</option>
                   <option value="No">No</option>
                 </select>
               </div>
 
-              <div className="hidden lg:block flex space-x-3 mb-5" />
-
               {/* Hostel Reference Number */}
               <div>
-                <label className="block text-sm font-medium text-gray-700">
+                <label className="block text-sm font-medium text-slate-500">
                   Reference Number
                 </label>
                 <input
@@ -1276,7 +1281,7 @@ const Add = () => {
 
               {/* Hostel Fees */}
               <div>
-                <label className="block text-sm font-medium text-gray-700">
+                <label className="block text-sm font-medium text-slate-500">
                   Fees
                 </label>
                 <input
@@ -1295,23 +1300,25 @@ const Add = () => {
 
               <div className="flex space-x-3 mb-5" />
               <div className="hidden lg:block flex space-x-3 mb-5" />
+              <div className="hidden lg:block flex space-x-3 mb-5" />
+            </div>
 
-              {/* Image Upload */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700">
-                  Upload Image
-                </label>
-                <input
-                  type="file"
-                  name="file"
-                  onChange={handleChange}
-                  placeholder="Upload Image"
-                  accept="image/*"
-                  className="mt-2 mb-5 p-2 block w-full border border-gray-300 rounded-md"
-                />
-              </div>
+            {/* Image Upload */}
+            <div>
+              <label className="block text-sm font-medium text-slate-500">
+                Upload Image
+              </label>
+              <input
+                type="file"
+                name="file"
+                onChange={handleChange}
+                placeholder="Upload Image"
+                accept="image/*"
+                className="mt-2 mb-5 p-2 block w-full border border-gray-300 rounded-md"
+              />
             </div>
           </div>
+
           <button
             type="submit"
             className="w-full mt-6 bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded-lg shadow-lg"
