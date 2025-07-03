@@ -240,7 +240,7 @@ const Add = () => {
 
   return (
     <>
-      <div className="max-w-4xl lg:mx-auto mt-2 ml-2 mr-2 pt-5 pb-5 pl-2 pr-2 lg:p-5 rounded-md shadow-lg border">
+      <div className="max-w-4xl mx-auto mt-2 p-5 rounded-md shadow-lg border">
         <div className="flex py-2 px-4 items-center justify-center bg-teal-700 text-white rounded-lg shadow-lg">
           <h2 className="text-xl font-semibold items-center justify-center">Enter Student Details</h2>
           <Link to="/dashboard/students" >
