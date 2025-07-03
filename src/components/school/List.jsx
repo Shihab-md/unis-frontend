@@ -28,7 +28,12 @@ const List = () => {
         <div className='ml-14 p-2 bg-blue-50'>
           <p className='ml-14 text-xs'>{data.nameArabic}</p>
           <p className='ml-14 text-xs'>{data.nameNative}</p>
-          <p className='ml-14 text-xs'>{"Address : " + data.address}</p>
+          <p className='ml-14 text-xs'>{"Address : "}
+            {data.address ? data.address : ""}
+            {data.city ? ", " + data.city : ""}
+            {data.landmark ? ", " + data.landmark : ""}
+            {data.districtState ? ", " + data.districtState : ""}
+          </p>
         </div>
         : null
     );
@@ -71,12 +76,9 @@ const List = () => {
             nameArabic: sch.nameArabic,
             nameNative: sch.nameNative,
             address: sch.address,
-
-            district: sch.district,
-            state: sch.state,
-
-            district1: sch.districtStateId ? sch.districtStateId?.district + ", " + sch.districtStateId?.State : "",
-
+            city: sch.city,
+            landmark: sch.landmark,
+            districtState: sch.districtStateId ? sch.districtStateId?.district + ", " + sch.districtStateId?.state : "",
             active: sch.active,
             supervisorId: sch.supervisorId?.supervisorId,
             supervisorName: sch.supervisorId?.userId?.name,
@@ -103,8 +105,8 @@ const List = () => {
     const records = schools.filter((school) => (
       school.code?.toLowerCase().includes(e.target.value.toLowerCase())
       || school.name?.toLowerCase().includes(e.target.value.toLowerCase())
-      || school.district?.toLowerCase().includes(e.target.value.toLowerCase())
-      || school.state?.toLowerCase().includes(e.target.value.toLowerCase())
+      || school.districtState?.toLowerCase().includes(e.target.value.toLowerCase())
+      || school.city?.toLowerCase().includes(e.target.value.toLowerCase())
       || school.active?.toLowerCase().includes(e.target.value.toLowerCase())
       || school.supervisorId?.toLowerCase().includes(e.target.value.toLowerCase())
       || school.supervisorName?.toLowerCase().includes(e.target.value.toLowerCase())
@@ -145,7 +147,7 @@ const List = () => {
       </div>
 
       <div className='mt-6 rounded-lg shadow-lg bg-blue-50'>
-        <DataTable columns={columns} data={filteredSchool} pagination highlightOnHover striped responsive conditionalRowStyles={conditionalRowStyles} expandableRows expandableRowsComponent={ExpandedComponent} />
+        <DataTable columns={columns} data={filteredSchool} highlightOnHover striped responsive conditionalRowStyles={conditionalRowStyles} expandableRows expandableRowsComponent={ExpandedComponent} />
       </div>
     </div>
   )

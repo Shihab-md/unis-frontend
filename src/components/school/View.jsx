@@ -81,8 +81,6 @@ const View = () => {
 
                 <div className="flex space-x-3 mb-5" />
 
-                <ViewCard type="title" text="District & State" />
-                <ViewCard type="data" text={school.district + ", " + school.state} />
                 <ViewCard type="title" text="Contact Number" />
                 <ViewCard type="data" text={school.contactNumber} />
                 <ViewCard type="title" text="Email" />
@@ -90,7 +88,7 @@ const View = () => {
 
                 <div className="flex space-x-3 mb-5" />
 
-                <ViewCard type="title" text="Address" />
+                <ViewCard type="title" text="Door No. & Street" />
                 <ViewCard type="data" text={school.address} />
                 <ViewCard type="title" text="Area & Town / City" />
                 <ViewCard type="data" text={school.city} />

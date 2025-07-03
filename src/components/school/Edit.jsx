@@ -403,7 +403,7 @@ const Edit = () => {
                     value={school.city}
                     onChange={handleChange}
                     className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                    required
+                  //  required
                   />
                 </div>
               </div>
@@ -439,7 +439,7 @@ const Edit = () => {
                     onKeyPress={preventMinus}
                     onKeyDown={handleKeyDown}
                     className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                    required
+                  //  required
                   />
                 </div>
 
@@ -486,42 +486,6 @@ const Edit = () => {
                       </option>
                     ))}
                   </select>
-                </div>
-                <div className="hidden lg:block flex space-x-3 mb-5" />
-
-                <div className="hidden lg:block flex space-x-3 mb-5" />
-                {/* District */}
-                <div>
-                  <label className="block text-sm font-medium text-slate-500">
-                    District <span className="text-red-700">*</span>
-                  </label>
-                  <input
-                    type="text"
-                    name="district"
-                    value={school.district}
-                    onChange={handleChange}
-                    //  placeholder="Insert District / State"
-                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-                    required
-                  />
-                </div>
-                <div className="hidden lg:block flex space-x-3 mb-5" />
-
-                <div className="hidden lg:block flex space-x-3 mb-5" />
-                {/* State */}
-                <div>
-                  <label className="block text-sm font-medium text-slate-500">
-                    State <span className="text-red-700">*</span>
-                  </label>
-                  <input
-                    type="text"
-                    name="state"
-                    value={school.state}
-                    onChange={handleChange}
-                    //  placeholder="Insert District / State"
-                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-                    required
-                  />
                 </div>
                 <div className="hidden lg:block flex space-x-3 mb-5" />
               </div>

@@ -40,9 +40,9 @@ export const columns = [
   },
   {
     name: "District & State",
-    selector: (row) => row.district + ", " + row.state,
+    selector: (row) => row.districtState,
     //  sortable: true,
-    width: "250px",
+    width: "230px",
   },
   {
     name: "Status",
@@ -54,7 +54,7 @@ export const columns = [
     name: "Supervisor",
     selector: (row) => row.supervisorId + " : " + row.supervisorName,
     //  sortable: true,
-    width: "320px",
+    width: "300px",
   },
   {
     name: "Action",

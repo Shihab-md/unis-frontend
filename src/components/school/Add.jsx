@@ -381,40 +381,6 @@ const Add = () => {
                 </select>
               </div>
               <div className="hidden lg:block flex space-x-3 mb-5" />
-
-              <div className="hidden lg:block flex space-x-3 mb-5" />
-              {/* District */}
-              <div>
-                <label className="block text-sm font-medium text-slate-500">
-                  District <span className="text-red-700">*</span>
-                </label>
-                <input
-                  type="text"
-                  name="district"
-                  onChange={handleChange}
-                  //  placeholder="Insert District / State"
-                  className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-                  required
-                />
-              </div>
-              <div className="hidden lg:block flex space-x-3 mb-5" />
-
-              <div className="hidden lg:block flex space-x-3 mb-5" />
-              {/* State */}
-              <div>
-                <label className="block text-sm font-medium text-slate-500">
-                  State <span className="text-red-700">*</span>
-                </label>
-                <input
-                  type="text"
-                  name="state"
-                  onChange={handleChange}
-                  //  placeholder="Insert District / State"
-                  className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-                  required
-                />
-              </div>
-              <div className="hidden lg:block flex space-x-3 mb-5" />
             </div>
 
             <div className="grid mt-10 grid-cols-1 md:grid-cols-4 gap-4 gap-y-7 mb-5">
