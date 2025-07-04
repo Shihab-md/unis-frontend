@@ -227,11 +227,13 @@ const List = () => {
 
         let selectedOptionInSwal;
         const { value: schId } = await MySwal.fire({
-          title: "<h3 style='color:blue; font-size: 25px;'>Select the Niswan</h3>",
+          //title: "<h3 style='color:blue; font-size: 25px;'>Select the Niswan</h3>",
+          //html: "<div className='text-2xl font-bold text-blue-700'>Select the Niswan</div>",
           background: "url(/bg_card.png)",
           html: (
             <div className="mb-2" style={{ height: '30vh' }}>
-              <Select
+              <div className='text-2xl lg:text-3xl mb-3 text-blue-600'>Select the Niswan</div>
+              <Select className='text-sm'
                 options={schools.map(option => ({
                   value: option._id, label: option.code + " : " + option.nameEnglish
                 }))}
@@ -351,7 +353,7 @@ const List = () => {
     <div className="lg:mt-3 p-5">
       <div className="text-center">
         <h3 className="text-xl lg:text-2xl font-bold px-5 py-0 text-gray-600">Manage Students</h3>
-        <h3 className="text-md lg:text-xl mt-3 font-bold text-gray-500 px-5 py-0">{localStorage.getItem('schoolName')}</h3>
+        <h3 className="text-sm lg:text-xl mt-3 font-bold text-gray-500 px-1 py-0">{localStorage.getItem('schoolName')}</h3>
       </div>
       <div className="flex justify-between items-center mt-5 relative">
         {LinkIcon("/dashboard", "Back")}
