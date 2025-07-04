@@ -39,6 +39,7 @@ const Edit = () => {
   const [institutes, setInstitutes] = useState([]);
   const [courses, setCourses] = useState([]);
   const [districtStates, setDistrictStates] = useState([]);
+  const [acYear, setAcYear] = useState(null);
 
   useEffect(() => {
 
@@ -61,6 +62,20 @@ const Edit = () => {
       setAcademicYears(academicYears);
     };
     getAcademicYearsMap();
+  }, []);
+
+  useEffect(() => {
+    const getAcYearMap = async (id) => {
+      let accYear = (new Date().getFullYear() - 1) + "-" + new Date().getFullYear();
+      if (new Date().getMonth() + 1 >= 4) {
+        accYear = new Date().getFullYear() + "-" + (new Date().getFullYear() + 1);
+      }
+      const academicYears = await getAcademicYearsFromCache(id);
+      const acYear = academicYears?.filter(acYear => acYear.acYear === accYear).map(acYear => acYear._id);
+      // console.log("AC Year : " + acYear)
+      setAcYear(acYear);
+    };
+    getAcYearMap();
   }, []);
 
   useEffect(() => {
@@ -154,47 +169,47 @@ const Edit = () => {
             hostelFees: student.hostelFees,
             hostelDiscount: student.hostelDiscount,
 
-            acYear: academics[0]?.acYear && academics[0]?.acYear?._id ? academics[0]?.acYear?._id : null,
+            acYear: academics && academics[0] && academics[0]?.acYear && academics[0]?.acYear?._id ? academics[0]?.acYear?._id : acYear,
 
-            instituteId1: academics[0]?.instituteId1 && academics[0]?.instituteId1?._id ? academics[0]?.instituteId1?._id : null,
-            courseId1: academics[0]?.courseId1 && academics[0]?.courseId1?._id ? academics[0]?.courseId1?._id : null,
-            refNumber1: academics[0]?.refNumber1,
-            year1: academics[0]?.year1,
-            status1: academics[0]?.status1,
-            fees1: academics[0]?.fees1,
-            discount1: academics[0]?.discount1,
+            instituteId1: academics && academics[0]?.instituteId1 && academics[0]?.instituteId1?._id ? academics[0]?.instituteId1?._id : null,
+            courseId1: academics && academics[0]?.courseId1 && academics[0]?.courseId1?._id ? academics[0]?.courseId1?._id : null,
+            refNumber1: academics && academics[0]?.refNumber1,
+            year1: academics && academics[0]?.year1,
+            status1: academics && academics[0]?.status1,
+            fees1: academics && academics[0]?.fees1,
+            discount1: academics && academics[0]?.discount1,
 
-            instituteId2: academics[0]?.instituteId2 && academics[0]?.instituteId2?._id ? academics[0]?.instituteId2?._id : null,
-            courseId2: academics[0]?.courseId2 && academics[0]?.courseId2?._id ? academics[0]?.courseId2?._id : null,
-            refNumber2: academics[0]?.refNumber2,
-            year2: academics[0]?.year2,
-            status2: academics[0]?.status2,
-            fees2: academics[0]?.fees2,
-            discount2: academics[0]?.discount2,
+            instituteId2: academics && academics[0]?.instituteId2 && academics[0]?.instituteId2?._id ? academics[0]?.instituteId2?._id : null,
+            courseId2: academics && academics[0]?.courseId2 && academics[0]?.courseId2?._id ? academics[0]?.courseId2?._id : null,
+            refNumber2: academics && academics[0]?.refNumber2,
+            year2: academics && academics[0]?.year2,
+            status2: academics && academics[0]?.status2,
+            fees2: academics && academics[0]?.fees2,
+            discount2: academics && academics[0]?.discount2,
 
-            instituteId3: academics[0]?.instituteId3 && academics[0]?.instituteId3?._id ? academics[0]?.instituteId3?._id : null,
-            courseId3: academics[0]?.courseId3 && academics[0]?.courseId3?._id ? academics[0]?.courseId3?._id : null,
-            refNumber3: academics[0]?.refNumber3,
-            year3: academics[0]?.year3,
-            status3: academics[0]?.status3,
-            fees3: academics[0]?.fees3,
-            discount3: academics[0]?.discount3,
+            instituteId3: academics && academics[0]?.instituteId3 && academics[0]?.instituteId3?._id ? academics[0]?.instituteId3?._id : null,
+            courseId3: academics && academics[0]?.courseId3 && academics[0]?.courseId3?._id ? academics[0]?.courseId3?._id : null,
+            refNumber3: academics && academics[0]?.refNumber3,
+            year3: academics && academics[0]?.year3,
+            status3: academics && academics[0]?.status3,
+            fees3: academics && academics[0]?.fees3,
+            discount3: academics && academics[0]?.discount3,
 
-            instituteId4: academics[0]?.instituteId4 && academics[0]?.instituteId4?._id ? academics[0]?.instituteId4?._id : null,
-            courseId4: academics[0]?.courseId4 && academics[0]?.courseId4?._id ? academics[0]?.courseId4?._id : null,
-            refNumber4: academics[0]?.refNumber4,
-            year4: academics[0]?.year4,
-            status4: academics[0]?.status4,
-            fees4: academics[0]?.fees4,
-            discount4: academics[0]?.discount4,
+            instituteId4: academics && academics[0]?.instituteId4 && academics[0]?.instituteId4?._id ? academics[0]?.instituteId4?._id : null,
+            courseId4: academics && academics[0]?.courseId4 && academics[0]?.courseId4?._id ? academics[0]?.courseId4?._id : null,
+            refNumber4: academics && academics[0]?.refNumber4,
+            year4: academics && academics[0]?.year4,
+            status4: academics && academics[0]?.status4,
+            fees4: academics && academics[0]?.fees4,
+            discount4: academics && academics[0]?.discount4,
 
-            instituteId5: academics[0]?.instituteId5 && academics[0]?.instituteId5?._id ? academics[0]?.instituteId5?._id : null,
-            courseId5: academics[0]?.courseId5 && academics[0]?.courseId5?._id ? academics[0]?.courseId5?._id : null,
-            refNumber5: academics[0]?.refNumber5,
-            year5: academics[0]?.year5,
-            status5: academics[0]?.status5,
-            fees5: academics[0]?.fees5,
-            discount5: academics[0]?.discount5,
+            instituteId5: academics && academics[0]?.instituteId5 && academics[0]?.instituteId5?._id ? academics[0]?.instituteId5?._id : null,
+            courseId5: academics && academics[0]?.courseId5 && academics[0]?.courseId5?._id ? academics[0]?.courseId5?._id : null,
+            refNumber5: academics && academics[0]?.refNumber5,
+            year5: academics && academics[0]?.year5,
+            status5: academics && academics[0]?.status5,
+            fees5: academics && academics[0]?.fees5,
+            discount5: academics && academics[0]?.discount5,
           }));
         }
       } catch (error) {
@@ -236,6 +251,9 @@ const Edit = () => {
       } else {
         student.doa = "";
       }
+    //  if (!student.acYear) {
+    //    student.acYear = acYear;
+    //  }
 
       const headers = {
         'Content-Type': 'multipart/form-data',
@@ -840,7 +858,7 @@ const Edit = () => {
                     name="acYear"
                     value={student.acYear}
                     onChange={handleChange}
-                  //  disabled={true}
+                    disabled={true}
                     className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                     required
                   >
