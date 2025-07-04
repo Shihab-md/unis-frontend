@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { getBaseUrl, showSwalAlert, showConfirmationSwalAlert } from '../utils/CommonHelper';
-import { FaEye, FaUserCheck, FaEdit, FaTrashAlt } from "react-icons/fa";
+import { FaEye, FaUserCheck, FaEdit, FaTrashAlt, FaExchangeAlt  } from "react-icons/fa";
 
 export const columnsSelect = [
   {
@@ -241,16 +241,22 @@ export const StudentButtons = ({ Id, onStudentDelete }) => {
         <FaEye />
       </button>
       <button
+        className="px-3 py-1 bg-blue-600 text-white rounded-sm text-shadow-lg"
+        onClick={() => navigate(`/dashboard/students/edit/${Id}`)}
+      >
+        <FaEdit />
+      </button>
+      <button
         className="px-3 py-1 bg-purple-500 text-white rounded-sm text-shadow-lg"
         onClick={() => navigate(`/dashboard/students/promote/${Id}`)}
       >
         <FaUserCheck />
       </button>
       <button
-        className="px-3 py-1 bg-blue-600 text-white rounded-sm text-shadow-lg"
-        onClick={() => navigate(`/dashboard/students/edit/${Id}`)}
+        className="px-3 py-1 bg-yellow-700 text-white rounded-sm text-shadow-lg"
+        onClick={() => navigate(`#`)}
       >
-        <FaEdit />
+        <FaExchangeAlt />
       </button>
       <button
         className="px-3 py-1 bg-red-600 text-white rounded-sm text-shadow-lg"
