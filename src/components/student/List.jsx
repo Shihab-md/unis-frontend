@@ -28,10 +28,14 @@ const List = () => {
   const { user } = useAuth()
 
   let schoolId;
+  let schoolName;
+
   const [excelData, setExcelData] = useState([]);
   const [processing, setProcessing] = useState(null)
 
   const [selectedOptions, setSelectedOptions] = useState([]);
+
+  const [schId, setSchId] = useState('');
 
   const MySwal = withReactContent(Swal);
 
@@ -215,66 +219,46 @@ const List = () => {
       if (!localStorage.getItem('schoolId')) {
         const schools = await getSchoolsFromCache();
         setSchools(schools)
-        let inputArray = [];
-        schools.map((school) => (
-          inputOptions[school._id] = school.code.substring(3) + " : " + school.nameEnglish + ", " + school.district + ", " + school.state
-        ))
+        //  let inputArray = [];
+        //  schools.map((school) => (
+        //    inputOptions[school._id] = school.code.substring(3) + " : " + school.nameEnglish + ", " + school.district + ", " + school.state
+        //  ))
+        //  setInputOptions(inputOptions);
 
-        setInputOptions(inputOptions);
-        //  alert(inputOptions) 
-        {/*  MySwal.fire({
-          title: 'Select the Niswan',
+        let selectedOptionInSwal;
+        const { value: schId } = await MySwal.fire({
+          title: "<h3 style='color:blue; font-size: 25px;'>Select the Niswan</h3>",
           background: "url(/bg_card.png)",
           html: (
             <div className="mb-2" style={{ height: '30vh' }}>
-              <Select id="selectBox" options={
-                schools.map((option) => ({
+              <Select
+                options={schools.map(option => ({
                   value: option._id, label: option.code + " : " + option.nameEnglish
-                }
-                ))
-              }
-                onChange={handleSelectChange}
-                selectedValues={selectedOptions}
-              //  value={selectedOptions}
+                }))}
+                onChange={(selectedOption) => {
+                  selectedOptionInSwal = selectedOption;
+                }}
               />
             </div>
           ),
-          preConfirm: () => {
-
-            // Get selected value from dropdown
-            var drpUserIdInput = $('#selectBox').val();
-            setSelectedOptions(drpUserIdInput)
-          }
-        }).then((result) => {
-          //  const resultStr = JSON.parse(JSON.stringify(result));
-          //  alert(resultStr);
-          if (result.isConfirmed) {
-            // Handle the submitted data
-            console.log('User confirmed selection:', selectedOptions);
-          }
-        });
-*/}
-        await Swal.fire({
-          title: "<h3 style='color:blue; font-size: 25px;'>Select the Niswan</h3>",
-          input: "select",
-          inputOptions: inputOptions,
-          inputPlaceholder: "Select the Niswan : UN-* ",
+          focusConfirm: false,
           showCancelButton: true,
-          background: "url(/bg_card.png)",
-          inputValidator: (value) => {
-            return new Promise((resolve) => {
-              if (value && value != "") {
-                schoolId = value;
-                localStorage.setItem('schoolId', value);
-                localStorage.setItem('schoolName', "UN-" + inputOptions[schoolId]);
-              } else {
-                navigate("/dashboard");
-              }
-              resolve();
-            });
-          }
+          preConfirm: () => {
+            return selectedOptionInSwal ? selectedOptionInSwal.value : null;
+          },
         });
 
+        if (schId) {
+          setSchId(schId);
+          schoolId = schId;
+          localStorage.setItem('schoolId', schoolId);
+          console.log(schoolId)
+
+          schoolName = schools.filter(school => school._id === schoolId)
+            .map((sch) => { return sch.code + " : " + sch.nameEnglish + ", " + sch.districtStateId.district + ", " + sch.districtStateId.state });
+          localStorage.setItem('schoolName', schoolName);
+          console.log(schoolName);
+        }
       } else {
         schoolId = localStorage.getItem('schoolId')
       }
@@ -322,6 +306,7 @@ const List = () => {
           setSupLoading(false)
         }
       } else {
+        showSwalAlert("Info!", 'Niswan NOT selected.', "info");
         navigate("/dashboard");
       }
     };
