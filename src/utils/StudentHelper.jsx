@@ -88,7 +88,7 @@ export const columns = [
     wrap: true,
     selector: row => (
       <div className="mt-2 mb-2">
-        {row.courses.map((course, i) => (
+        {row.courses?.map((course, i) => (
           <div key={i}>{course.name + ","}</div>
         ))}
       </div>

@@ -180,9 +180,9 @@ const Add = () => {
       if (selectedDOADate) {
         formDataObj.append('doa', selectedDOADate)
       }
-      if (acYear) {
-        formDataObj.append('acYear', acYear)
-      }
+    //  if (acYear) {
+    //    formDataObj.append('acYear', acYear)
+    //  }
       formDataObj.append('schoolId', localStorage.getItem('schoolId'));
 
       const headers = {

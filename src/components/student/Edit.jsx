@@ -840,7 +840,7 @@ const Edit = () => {
                     name="acYear"
                     value={student.acYear}
                     onChange={handleChange}
-                    disabled={true}
+                  //  disabled={true}
                     className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                     required
                   >
