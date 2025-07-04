@@ -127,7 +127,7 @@ const Add = () => {
           </Link>
         </div>
 
-        <form onSubmit={handleSubmit} autocomplete="off">
+        <form onSubmit={handleSubmit} autoComplete="off">
           <div className="py-2 px-3 lg:px-5 border mt-5 mb-3 items-center justify-center rounded-lg shadow-lg bg-white">
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">

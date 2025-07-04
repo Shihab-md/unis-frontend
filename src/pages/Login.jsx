@@ -92,7 +92,7 @@ const Login = () => {
         <div className="border p-6 w-80 bg-white shadow-lg rounded-lg bg-[url(/bg-img.jpg)]">
           <h2 className="flex text-2xl font-bold mb-4 content-right">Login</h2>
           {/* {error && <p className="text-red-500">{error}</p>}*/}
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit} autoComplete="off">
             <div className="mb-4">
               <label htmlFor="email" className="block text-gray-700">
                 Email

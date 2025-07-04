@@ -58,7 +58,7 @@ const List = () => {
 
         <div className='grid justify-between items-center relative'>
           <label className='justify-start relative'>Course </label>
-          <select id="swal-course" class="swal2-input w-3/5 lg:w-3/6 ml-10 relative justify-center rounded shadow-lg" style="margin-top: 20px;">
+          <select id="swal-course" className="swal2-input w-3/5 lg:w-3/6 ml-10 relative justify-center rounded shadow-lg" style="margin-top: 20px;">
             <option value="">Select </option>
             <option value="Muballiga">Muballiga</option>
             <option value="Muallama">Muallama</option>
@@ -68,7 +68,7 @@ const List = () => {
         </div>
         <div className='grid justify-between items-center relative'>
           <label className='justify-start relative'>Status </label>
-          <select id="swal-status" class="swal2-input w-3/5 lg:w-3/6 ml-10 relative justify-center rounded shadow-lg" style="margin-top: 30px;">
+          <select id="swal-status" className="swal2-input w-3/5 lg:w-3/6 ml-10 relative justify-center rounded shadow-lg" style="margin-top: 30px;">
             <option value="">Select</option>
             <option value="Active">Active</option>
             <option value="In-Active">In-Active</option>
@@ -376,7 +376,7 @@ const List = () => {
             <input
               type="text"
               placeholder="Search"
-              class="w-full px-3 py-0.5 border rounded shadow-md justify-center"
+              className="w-full px-3 py-0.5 border rounded shadow-md justify-center"
               onChange={handleSearch}
             />
           </div>
@@ -385,9 +385,9 @@ const List = () => {
           </div>
         </div>
 
-        {/*  <img src="/filter.jpg" class="rounded border border-green-500 w-8 p-1 mr-3 shadow-lg bg-white"/>*/}
+        {/*  <img src="/filter.jpg" className="rounded border border-green-500 w-8 p-1 mr-3 shadow-lg bg-white"/>*/}
 
-        {/* <div class="mr-3" onClick={openFilterPopup}>{LinkIcon("#", "Filter")}</div> */}
+        {/* <div className="mr-3" onClick={openFilterPopup}>{LinkIcon("#", "Filter")}</div> */}
 
         {LinkIcon("/dashboard/add-student", "Add")}
         {/* {user.role === "superadmin" || user.role === "hquser" ?
