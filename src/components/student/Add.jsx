@@ -112,16 +112,16 @@ const Add = () => {
   }, []);
 
   const handleIslamicCheckBox = (event) => {
-    setShowIslamicStudies(event.target.checked); // Update state based on checkbox's 'checked' property
+    setShowIslamicStudies(event.target.checked); 
   };
   const handleSchoolCheckBox = (event) => {
-    setShowSchool(event.target.checked); // Update state based on checkbox's 'checked' property
+    setShowSchool(event.target.checked); 
   };
   const handleCollegeCheckBox = (event) => {
-    setShowCollege(event.target.checked); // Update state based on checkbox's 'checked' property
+    setShowCollege(event.target.checked); 
   };
   const handleVocationalCheckBox = (event) => {
-    setShowVocational(event.target.checked); // Update state based on checkbox's 'checked' property
+    setShowVocational(event.target.checked); 
   };
 
   const handleChange = (e) => {
