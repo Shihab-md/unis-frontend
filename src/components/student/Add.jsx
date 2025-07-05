@@ -1309,7 +1309,7 @@ const Add = () => {
               <div className="hidden lg:block flex space-x-3 mb-5" />
             </div>
 
-            {/* Image Upload */}
+            {/* Image Upload 
             <div>
               <label className="block text-sm font-medium text-slate-500">
                 Upload Image
@@ -1322,7 +1322,7 @@ const Add = () => {
                 accept="image/*"
                 className="mt-2 mb-5 p-2 block w-full border border-gray-300 rounded-md"
               />
-            </div>
+            </div>*/}
           </div>
 
           <button
