@@ -251,9 +251,9 @@ const Edit = () => {
       } else {
         student.doa = "";
       }
-    //  if (!student.acYear) {
-    //    student.acYear = acYear;
-    //  }
+      //  if (!student.acYear) {
+      //    student.acYear = acYear;
+      //  }
 
       const headers = {
         'Content-Type': 'multipart/form-data',
@@ -843,6 +843,63 @@ const Edit = () => {
                 </div>
               </div>
 
+
+              <div className="grid mt-5 grid-cols-1 md:grid-cols-3 gap-5">
+                <div className="flex space-x-3 mb-5" />
+                <div className="hidden lg:block flex space-x-3 mb-5" />
+                <div className="hidden lg:block flex space-x-3 mb-5" />
+                {/* Hostel */}
+                <div>
+                  <label className="block text-sm font-medium text-slate-500">
+                    Hostel Admission Required? <span className="text-red-700">*</span>
+                  </label>
+                  <select
+                    name="hostel"
+                    onChange={handleChange}
+                    value={student.hostel}
+                    className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
+                    required
+                  >
+                    <option value=""></option>
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                  </select>
+                </div>
+
+                {/* Hostel Reference Number */}
+                <div>
+                  <label className="block text-sm font-medium text-slate-500">
+                    Reference Number
+                  </label>
+                  <input
+                    type="text"
+                    name="hostelRefNumber"
+                    onChange={handleChange}
+                    value={student.hostelRefNumber}
+                    //    placeholder="Qualification"
+                    className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
+                  //    required
+                  />
+                </div>
+
+                {/* Hostel Fees */}
+                <div>
+                  <label className="block text-sm font-medium text-slate-500">
+                    Fees
+                  </label>
+                  <input
+                    type="number"
+                    name="hostelFees"
+                    //  disabled={student.hostelFees ? true : false}
+                    value={student.hostelFees}
+                    min="0"
+                    onChange={handleChange}
+                    className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
+                  //    required
+                  />
+                </div>
+              </div>
+
               <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
                 <div className="flex space-x-3 mb-5" />
                 <div className="hidden lg:block flex space-x-3 mb-5" />
@@ -968,6 +1025,107 @@ const Edit = () => {
                       min="0"
                       //   value={fees1Val}
                       //  disabled={student.fees1 ? true : false}
+                      onChange={handleChange}
+                      className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
+                    //    required
+                    />
+                  </div>
+                </div>
+
+                <div className="flex space-x-3 mb-5" />
+                <div className="hidden lg:block flex space-x-3 mb-5" />
+                <ViewCard type="header" text="Islamic Home Science" />
+                <div className="hidden lg:block flex space-x-3 mb-5" />
+
+                {/* Institute 4 --------------------------------------------- */}
+                <div>
+                  <label className="block mt-2 text-sm font-medium text-slate-500">
+                    Select Institute
+                  </label>
+                  <select
+                    name="instituteId4"
+                    value={student.instituteId4}
+                    onChange={handleChange}
+                    className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
+                  //    required
+                  >
+                    <option value=""></option>
+                    {institutes.filter(institute => institute.type === "Islamic Home Science").map((institute) => (
+                      <option key={institute._id} value={institute._id}>
+                        {institute.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                {/* Course 4 */}
+                <div>
+                  <label className="block mt-2 text-sm font-medium text-slate-500">
+                    Select Course
+                  </label>
+                  <select
+                    name="courseId4"
+                    value={student.courseId4}
+                    onChange={handleChange}
+                    //   disabled={student.courseId4 ? true : false}
+                    className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
+                  //    required
+                  >
+                    <option value=""></option>
+                    {courses.filter(course => course.type === "Islamic Home Science").map((course) => (
+                      <option key={course._id} value={course._id}>
+                        {course.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                {/* Reference Number-4 */}
+                <div>
+                  <label className="block text-sm font-medium text-slate-500">
+                    Reference Number
+                  </label>
+                  <input
+                    type="text"
+                    name="refNumber4"
+                    value={student.refNumber4}
+                    onChange={handleChange}
+                    //    placeholder="Qualification"
+                    className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
+                  //    required
+                  />
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                  {/* Year4 */}
+                  <div>
+                    <label className="block text-sm font-medium text-slate-500">
+                      Year
+                    </label>
+                    <input
+                      type="number"
+                      name="year4"
+                      value={student.year4}
+                      min="0"
+                      //    disabled={student.year ? true : false}
+                      onChange={handleChange}
+                      className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
+                    //  required
+                    />
+                  </div>
+
+                  {/* Fees 4 */}
+                  <div>
+                    <label className="block text-sm font-medium text-slate-500">
+                      Fees
+                    </label>
+                    <input
+                      type="number"
+                      name="fees4"
+                      value={student.fees4}
+                      min="0"
+                      //  value={fees4Val}
+                      //  disabled={student.fees4 ? true : false}
                       onChange={handleChange}
                       className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                     //    required
@@ -1180,107 +1338,6 @@ const Edit = () => {
 
                 <div className="flex space-x-3 mb-5" />
                 <div className="hidden lg:block flex space-x-3 mb-5" />
-                <ViewCard type="header" text="Islamic Home Science" />
-                <div className="hidden lg:block flex space-x-3 mb-5" />
-
-                {/* Institute 4 --------------------------------------------- */}
-                <div>
-                  <label className="block mt-2 text-sm font-medium text-slate-500">
-                    Select Institute
-                  </label>
-                  <select
-                    name="instituteId4"
-                    value={student.instituteId4}
-                    onChange={handleChange}
-                    className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                  //    required
-                  >
-                    <option value=""></option>
-                    {institutes.filter(institute => institute.type === "Islamic Home Science").map((institute) => (
-                      <option key={institute._id} value={institute._id}>
-                        {institute.name}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-                {/* Course 4 */}
-                <div>
-                  <label className="block mt-2 text-sm font-medium text-slate-500">
-                    Select Course
-                  </label>
-                  <select
-                    name="courseId4"
-                    value={student.courseId4}
-                    onChange={handleChange}
-                    //   disabled={student.courseId4 ? true : false}
-                    className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                  //    required
-                  >
-                    <option value=""></option>
-                    {courses.filter(course => course.type === "Islamic Home Science").map((course) => (
-                      <option key={course._id} value={course._id}>
-                        {course.name}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-                {/* Reference Number-4 */}
-                <div>
-                  <label className="block text-sm font-medium text-slate-500">
-                    Reference Number
-                  </label>
-                  <input
-                    type="text"
-                    name="refNumber4"
-                    value={student.refNumber4}
-                    onChange={handleChange}
-                    //    placeholder="Qualification"
-                    className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                  //    required
-                  />
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                  {/* Year4 */}
-                  <div>
-                    <label className="block text-sm font-medium text-slate-500">
-                      Year
-                    </label>
-                    <input
-                      type="number"
-                      name="year4"
-                      value={student.year4}
-                      min="0"
-                      //    disabled={student.year ? true : false}
-                      onChange={handleChange}
-                      className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                    //  required
-                    />
-                  </div>
-
-                  {/* Fees 4 */}
-                  <div>
-                    <label className="block text-sm font-medium text-slate-500">
-                      Fees
-                    </label>
-                    <input
-                      type="number"
-                      name="fees4"
-                      value={student.fees4}
-                      min="0"
-                      //  value={fees4Val}
-                      //  disabled={student.fees4 ? true : false}
-                      onChange={handleChange}
-                      className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                    //    required
-                    />
-                  </div>
-                </div>
-
-                <div className="flex space-x-3 mb-5" />
-                <div className="hidden lg:block flex space-x-3 mb-5" />
                 <ViewCard type="header" text="Vocational Course" />
                 <div className="hidden lg:block flex space-x-3 mb-5" />
 
@@ -1382,68 +1439,9 @@ const Edit = () => {
 
                 <div className="flex space-x-3 mb-5" />
                 <div className="hidden lg:block flex space-x-3 mb-5" />
-                <ViewCard type="header" text="Hostel Details" />
-                <div className="hidden lg:block flex space-x-3 mb-5" />
               </div>
 
-              <div className="grid mt-5 grid-cols-1 md:grid-cols-3 gap-5">
-                {/* Hostel */}
-                <div>
-                  <label className="block text-sm font-medium text-slate-500">
-                    Hostel Admission Required? <span className="text-red-700">*</span>
-                  </label>
-                  <select
-                    name="hostel"
-                    onChange={handleChange}
-                    value={student.hostel}
-                    className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                    required
-                  >
-                    <option value=""></option>
-                    <option value="Yes">Yes</option>
-                    <option value="No">No</option>
-                  </select>
-                </div>
-
-                {/* Hostel Reference Number */}
-                <div>
-                  <label className="block text-sm font-medium text-slate-500">
-                    Reference Number
-                  </label>
-                  <input
-                    type="text"
-                    name="hostelRefNumber"
-                    onChange={handleChange}
-                    value={student.hostelRefNumber}
-                    //    placeholder="Qualification"
-                    className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                  //    required
-                  />
-                </div>
-
-                {/* Hostel Fees */}
-                <div>
-                  <label className="block text-sm font-medium text-slate-500">
-                    Fees
-                  </label>
-                  <input
-                    type="number"
-                    name="hostelFees"
-                    //  disabled={student.hostelFees ? true : false}
-                    value={student.hostelFees}
-                    min="0"
-                    onChange={handleChange}
-                    className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                  //    required
-                  />
-                </div>
-
-                <div className="flex space-x-3 mb-5" />
-                <div className="hidden lg:block flex space-x-3 mb-5" />
-                <div className="hidden lg:block flex space-x-3 mb-5" />
-              </div>
-
-              {/* Image Upload */}
+              {/* Image Upload 
               <div>
                 <label className="block text-sm font-medium text-slate-500">
                   Update Image
@@ -1456,7 +1454,7 @@ const Edit = () => {
                   accept="image/*"
                   className="mt-1 p-2 mb-5 block w-full border border-gray-300 rounded-md"
                 />
-              </div>
+              </div>*/}
             </div>
 
             <button

@@ -73,79 +73,112 @@ const View = () => {
               <div className="p-2">
                 <div className="flex space-x-3 mb-5" />
 
-                <ViewCard type="title" text="Niswan Name (English)" />
-                <ViewCard type="data" text={student.schoolId && student.schoolId.nameEnglish ? student.schoolId.code + " : " + student.schoolId.nameEnglish : ""} />
-                <ViewCard type="title" text="Roll Number" />
-                <ViewCard type="data" text={student.rollNumber} />
-                <ViewCard type="title" text="Name" />
-                <ViewCard type="data" text={student.userId && student.userId.name ? student.userId.name : ""} />
+                <div className='border-2'>
+                  <ViewCard type="title" text="Niswan Name (English)" />
+                  <ViewCard type="data" text={student.schoolId && student.schoolId.nameEnglish ? student.schoolId.code + " : " + student.schoolId.nameEnglish : ""} />
+                </div>
 
-                <div className="flex space-x-3 mb-5" />
+                <div className="flex space-x-3 mb-10" />
 
-                <ViewCard type="title" text="Status" />
-                <ViewCard type="data" text={student.active} />
-                <ViewCard type="title" text="Remarks" />
-                <ViewCard type="data" text={student.remarks} />
+                <div className='border-2'>
+                  <ViewCard type="title" text="Roll Number" />
+                  <ViewCard type="data" text={student.rollNumber} />
+                  <ViewCard type="title" text="Name" />
+                  <ViewCard type="data" text={student.userId && student.userId.name ? student.userId.name : ""} />
+                  <ViewCard type="title" text="Date of Admission" />
+                  <ViewCard type="data" text={getFormattedDate(student.doa)} />
+                  <ViewCard type="title" text="Date of Birth" />
+                  <ViewCard type="data" text={getFormattedDate(student.dob)} />
+                </div>
 
-                <div className="flex space-x-3 mb-5" />
+                <div className="flex space-x-3 mb-10" />
 
-                <ViewCard type="title" text="Date of Admission" />
-                <ViewCard type="data" text={getFormattedDate(student.doa)} />
-                <ViewCard type="title" text="Date of Birth" />
-                <ViewCard type="data" text={getFormattedDate(student.dob)} />
-                <ViewCard type="title" text="Gender" />
-                <ViewCard type="data" text={student.gender} />
-                <ViewCard type="title" text="Marital Status" />
-                <ViewCard type="data" text={student.maritalStatus} />
-                <ViewCard type="title" text="Mother Tongue" />
-                <ViewCard type="data" text={student.motherTongue} />
-                <ViewCard type="title" text="Blood Group" />
-                <ViewCard type="data" text={student.bloodGroup} />
-                <ViewCard type="title" text="Identification Mark 1" />
-                <ViewCard type="data" text={student.idMark1} />
-                <ViewCard type="title" text="Identification Mark 2" />
-                <ViewCard type="data" text={student.idMark2} />
+                <div className='border-2'>
+                  <ViewCard type="title" text="Status" />
+                  <ViewCard type="data" text={student.active} />
+                  <ViewCard type="title" text="Remarks" />
+                  <ViewCard type="data" text={student.remarks} />
+                </div>
 
-                <div className="flex space-x-3 mb-5" />
+                <div className="flex space-x-3 mb-10" />
 
-                <ViewCard type="title" text="About Student" />
-                <ViewCard type="data" text={student.about} />
+                <div className='border-2'>
+                  <ViewCard type="title" text="Gender" />
+                  <ViewCard type="data" text={student.gender} />
+                  <ViewCard type="title" text="Marital Status" />
+                  <ViewCard type="data" text={student.maritalStatus} />
+                  <ViewCard type="title" text="Mother Tongue" />
+                  <ViewCard type="data" text={student.motherTongue} />
+                  <ViewCard type="title" text="Blood Group" />
+                  <ViewCard type="data" text={student.bloodGroup} />
+                  <ViewCard type="title" text="Identification Mark 1" />
+                  <ViewCard type="data" text={student.idMark1} />
+                  <ViewCard type="title" text="Identification Mark 2" />
+                  <ViewCard type="data" text={student.idMark2} />
+                </div>
 
-                <div className="flex space-x-3 mb-5" />
+                <div className="flex space-x-3 mb-10" />
 
-                <ViewCard type="title" text="Father's Name" />
-                <ViewCard type="data" text={student.fatherName} />
-                <ViewCard type="title" text="Father's Number" />
-                <ViewCard type="data" text={student.fatherNumber} />
-                <ViewCard type="title" text="Father's Occupation" />
-                <ViewCard type="data" text={student.fatherOccupation} />
-                <ViewCard type="title" text="Mother's Name" />
-                <ViewCard type="data" text={student.motherName} />
-                <ViewCard type="title" text="Mother's Number" />
-                <ViewCard type="data" text={student.motherNumber} />
-                <ViewCard type="title" text="Mother's Occupation" />
-                <ViewCard type="data" text={student.motherOccupation} />
-                <ViewCard type="title" text="Guardian's Name" />
-                <ViewCard type="data" text={student.guardianName} />
-                <ViewCard type="title" text="Guardian's Number" />
-                <ViewCard type="data" text={student.guardianNumber} />
-                <ViewCard type="title" text="Guardian's Occupation" />
-                <ViewCard type="data" text={student.guardianOccupation} />
-                <ViewCard type="title" text="Guardian's Relationship" />
-                <ViewCard type="data" text={student.guardianRelation} />
+                <div className='border-2'>
+                  <ViewCard type="title" text="More details about the Student" />
+                  <ViewCard type="data" text={student.about} />
+                </div>
 
-                <div className="flex space-x-3 mb-5" />
+                <div className="flex space-x-3 mb-10" />
 
-                <ViewCard type="title" text="Address" />
-                <ViewCard type="data" text={student.address} />
-                <ViewCard type="title" text="Area & Town / City" />
-                <ViewCard type="data" text={student.city} />
-                <ViewCard type="title" text="Landmark" />
-                <ViewCard type="data" text={student.landmark} />
-                <ViewCard type="title" text="Pincode" />
-                <ViewCard type="data" text={student.pincode} />
-                <ViewCard type="title" text="State & District" />
-                <ViewCard type="data" text={student.districtStateId ? student.districtStateId?.district + ", " + student.districtStateId?.state : ""} />
+                <div className='border-2'>
+                  <ViewCard type="title" text="Father's Name" />
+                  <ViewCard type="data" text={student.fatherName} />
+                  <ViewCard type="title" text="Father's Number" />
+                  <ViewCard type="data" text={student.fatherNumber} />
+                  <ViewCard type="title" text="Father's Occupation" />
+                  <ViewCard type="data" text={student.fatherOccupation} />
+                  <ViewCard type="title" text="Mother's Name" />
+                  <ViewCard type="data" text={student.motherName} />
+                  <ViewCard type="title" text="Mother's Number" />
+                  <ViewCard type="data" text={student.motherNumber} />
+                  <ViewCard type="title" text="Mother's Occupation" />
+                  <ViewCard type="data" text={student.motherOccupation} />
+                  <ViewCard type="title" text="Guardian's Name" />
+                  <ViewCard type="data" text={student.guardianName} />
+                  <ViewCard type="title" text="Guardian's Number" />
+                  <ViewCard type="data" text={student.guardianNumber} />
+                  <ViewCard type="title" text="Guardian's Occupation" />
+                  <ViewCard type="data" text={student.guardianOccupation} />
+                  <ViewCard type="title" text="Guardian's Relationship" />
+                  <ViewCard type="data" text={student.guardianRelation} />
+                </div>
+
+                <div className="flex space-x-3 mb-10" />
+
+                <div className='border-2'>
+                  <ViewCard type="title" text="Address" />
+                  <ViewCard type="data" text={student.address} />
+                  <ViewCard type="title" text="Area & Town / City" />
+                  <ViewCard type="data" text={student.city} />
+                  <ViewCard type="title" text="Landmark" />
+                  <ViewCard type="data" text={student.landmark} />
+                  <ViewCard type="title" text="Pincode" />
+                  <ViewCard type="data" text={student.pincode} />
+                  <ViewCard type="title" text="State & District" />
+                  <ViewCard type="data" text={student.districtStateId ? student.districtStateId?.district + ", " + student.districtStateId?.state : ""} />
+                </div>
+
+                <div className="flex space-x-3 mb-10" />
+
+                {/*  <ViewCard type="header" text="Hostel Details" /> */}
+                <div className='border-2'>
+                  <ViewCard type="title" text="Hostel Admission" />
+                  <ViewCard type="data" text={student.hostel} />
+                  <ViewCard type="title" text="Hostel Reference Number " />
+                  <ViewCard type="data" text={student.hostelRefNumber} />
+                  <ViewCard type="title" text="Hostel Fees " />
+                  <ViewCard type="data" text={student.hostelFees} />
+                  {/*  <ViewCard type="title" text="Hostel Fees Discount " />
+                <ViewCard type="data" text={student.hostelDiscount} />
+                <ViewCard type="title" text="Hostel Final Fees " />
+                <ViewCard type="data" text={student.hostelFinalFees} /> */}
+                </div>
 
                 <div className="flex space-x-3 mb-7" />
 
@@ -154,19 +187,7 @@ const View = () => {
                   <DataTable className="p-0" columns={columnsSelectForAcademic} data={student._academics} highlightOnHover striped />
                 </div>
 
-                <div className="flex space-x-3 mb-5" />
-
-                <ViewCard type="header" text="Hostel Details" />
-                <ViewCard type="title" text="Hostel Admission" />
-                <ViewCard type="data" text={student.hostel} />
-                <ViewCard type="title" text="Hostel Reference Number " />
-                <ViewCard type="data" text={student.hostelRefNumber} />
-                <ViewCard type="title" text="Hostel Fees " />
-                <ViewCard type="data" text={student.hostelFees} />
-                {/*  <ViewCard type="title" text="Hostel Fees Discount " />
-                <ViewCard type="data" text={student.hostelDiscount} />
-                <ViewCard type="title" text="Hostel Final Fees " />
-                <ViewCard type="data" text={student.hostelFinalFees} /> */}
+                <div className="flex space-x-3 mb-3" />
 
               </div>
             </div>

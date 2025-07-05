@@ -390,7 +390,7 @@ const Add = () => {
                   <option value="Married">Married</option>
                 </select>
               </div>
-
+ 
               {/* Mother Tongue */}
               <div>
                 <label className="block text-sm font-medium text-slate-500">
@@ -715,7 +715,6 @@ const Add = () => {
             </div>
 
             <div className="grid mt-5 grid-cols-1 md:grid-cols-3 gap-5">
-
               <div className="flex space-x-3 mb-5" />
               <div className="hidden lg:block flex space-x-3 mb-5" />
               <div className="hidden lg:block flex space-x-3 mb-5" />
