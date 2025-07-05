@@ -158,7 +158,7 @@ const Edit = () => {
   return (
     <>
       {employee ? (
-        <div className="max-w-4xl mx-auto mt-2 p-5 rounded-md shadow-lg border">
+        <div className="max-w-5xl mx-auto mt-2 p-5 shadow-lg border">
           <div className="flex py-2 px-4 items-center justify-center bg-teal-700 text-white rounded-lg shadow-lg">
             <h2 className="text-xl font-semibold items-center justify-center">Update Employee Details</h2>
             <Link to="/dashboard/employees" >

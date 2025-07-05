@@ -246,7 +246,7 @@ const Add = () => {
 
   return (
     <>
-      <div className="max-w-5xl mx-auto mt-2 p-5 rounded-md shadow-lg border">
+      <div className="max-w-5xl mx-auto mt-2 p-5 shadow-lg border">
         <div className="flex py-2 px-4 items-center justify-center bg-teal-700 text-white rounded-lg shadow-lg">
           <h2 className="text-xl font-semibold items-center justify-center">Enter Student Details</h2>
           <Link to="/dashboard/students" >
@@ -255,7 +255,7 @@ const Add = () => {
         </div>
 
         <form onSubmit={handleSubmit} autoComplete="off">
-          <div className="py-2 px-3 lg:px-5 border mt-5 mb-3 items-center justify-center rounded-lg shadow-lg bg-white">
+          <div className="py-2 px-3 lg:px-5 border mt-5 mb-3 items-center justify-center shadow-lg bg-white">
             <div className="grid grid-cols-1 md:grid-cols-1 gap-5">
 
               {/* School */}
