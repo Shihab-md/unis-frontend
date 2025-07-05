@@ -1306,7 +1306,6 @@ const Add = () => {
 
               <div className="flex space-x-3 mb-5" />
               <div className="hidden lg:block flex space-x-3 mb-5" />
-              <div className="hidden lg:block flex space-x-3 mb-5" />
             </div>
 
             {/* Image Upload 
