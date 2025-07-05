@@ -148,6 +148,10 @@ const Add = () => {
       setFees5Val(value);
     }
 
+    if (name === "acYear") {
+      setAcYear(value);
+    }
+
     if (name === "file") {
       setFormData((prevData) => ({ ...prevData, [name]: files[0] }));
     } else {
@@ -180,9 +184,11 @@ const Add = () => {
       if (selectedDOADate) {
         formDataObj.append('doa', selectedDOADate)
       }
-    //  if (acYear) {
-    //    formDataObj.append('acYear', acYear)
-    //  }
+      if (acYear) {
+        formDataObj.delete('acYear')
+        formDataObj.append('acYear', acYear)
+      }
+
       formDataObj.append('schoolId', localStorage.getItem('schoolId'));
 
       const headers = {
