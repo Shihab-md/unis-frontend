@@ -714,6 +714,64 @@ const Add = () => {
               </div>
             </div>
 
+            <div className="grid mt-5 grid-cols-1 md:grid-cols-3 gap-5">
+
+              <div className="flex space-x-3 mb-5" />
+              <div className="hidden lg:block flex space-x-3 mb-5" />
+              <div className="hidden lg:block flex space-x-3 mb-5" />
+
+              {/* Hostel */}
+              <div>
+                <label className="block text-sm font-medium text-slate-500">
+                  Hostel Admission Required? <span className="text-red-700">*</span>
+                </label>
+                <select
+                  name="hostel"
+                  onChange={handleChange}
+                  className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
+                  required
+                >
+                  <option value=""></option>
+                  <option value="Yes">Yes</option>
+                  <option value="No">No</option>
+                </select>
+              </div>
+
+              {/* Hostel Reference Number */}
+              <div>
+                <label className="block text-sm font-medium text-slate-500">
+                  Reference Number
+                </label>
+                <input
+                  type="text"
+                  name="hostelRefNumber"
+                  onChange={handleChange}
+                  //    placeholder="Qualification"
+                  className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
+                //    required
+                />
+              </div>
+
+              {/* Hostel Fees */}
+              <div>
+                <label className="block text-sm font-medium text-slate-500">
+                  Fees
+                </label>
+                <input
+                  type="number"
+                  name="hostelFees"
+                  value={fees6Val}
+                  onChange={handleChange}
+                  min="0"
+                  onPaste={preventPasteNegative}
+                  onKeyPress={preventMinus}
+                  onKeyDown={handleKeyDown}
+                  className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
+                //    required
+                />
+              </div>
+            </div>
+
             <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
               <div className="flex space-x-3 mb-5" />
               <div className="hidden lg:block flex space-x-3 mb-5" />
@@ -1244,64 +1302,6 @@ const Add = () => {
                   //    required
                   />
                 </div>
-              </div>
-
-              <div className="flex space-x-3 mb-5" />
-              <div className="hidden lg:block flex space-x-3 mb-5" />
-              <ViewCard type="header" text="Hostel Details" />
-              <div className="hidden lg:block flex space-x-3 mb-5" />
-            </div>
-
-            <div className="grid mt-5 grid-cols-1 md:grid-cols-3 gap-5">
-              {/* Hostel */}
-              <div>
-                <label className="block text-sm font-medium text-slate-500">
-                  Hostel Admission Required? <span className="text-red-700">*</span>
-                </label>
-                <select
-                  name="hostel"
-                  onChange={handleChange}
-                  className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                  required
-                >
-                  <option value=""></option>
-                  <option value="Yes">Yes</option>
-                  <option value="No">No</option>
-                </select>
-              </div>
-
-              {/* Hostel Reference Number */}
-              <div>
-                <label className="block text-sm font-medium text-slate-500">
-                  Reference Number
-                </label>
-                <input
-                  type="text"
-                  name="hostelRefNumber"
-                  onChange={handleChange}
-                  //    placeholder="Qualification"
-                  className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                //    required
-                />
-              </div>
-
-              {/* Hostel Fees */}
-              <div>
-                <label className="block text-sm font-medium text-slate-500">
-                  Fees
-                </label>
-                <input
-                  type="number"
-                  name="hostelFees"
-                  value={fees6Val}
-                  onChange={handleChange}
-                  min="0"
-                  onPaste={preventPasteNegative}
-                  onKeyPress={preventMinus}
-                  onKeyDown={handleKeyDown}
-                  className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                //    required
-                />
               </div>
 
               <div className="flex space-x-3 mb-5" />

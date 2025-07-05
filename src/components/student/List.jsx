@@ -231,9 +231,9 @@ const List = () => {
           //html: "<div className='text-2xl font-bold text-blue-700'>Select the Niswan</div>",
           background: "url(/bg_card.png)",
           html: (
-            <div className="mb-2" style={{ height: '30vh' }}>
+            <div className="mb-2 h-80 w-full">
               <div className='text-2xl lg:text-3xl mb-3 text-blue-600'>Select the Niswan</div>
-              <Select className='text-sm'
+              <Select className='text-sm justify-start items-start'
                 options={schools.map(option => ({
                   value: option._id, label: option.code + " : " + option.nameEnglish
                 }))}
@@ -245,6 +245,7 @@ const List = () => {
           ),
           focusConfirm: false,
           showCancelButton: true,
+          width: '800px',
           preConfirm: () => {
             return selectedOptionInSwal ? selectedOptionInSwal.value : null;
           },
