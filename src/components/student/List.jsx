@@ -233,7 +233,7 @@ const List = () => {
           html: (
             <div className="mb-2 h-80 w-full">
               <div className='text-2xl lg:text-3xl mb-3 text-blue-600'>Select the Niswan</div>
-              <Select className='text-sm justify-start items-start'
+              <Select className='text-sm text-start'
                 options={schools.map(option => ({
                   value: option._id, label: option.code + " : " + option.nameEnglish
                 }))}
