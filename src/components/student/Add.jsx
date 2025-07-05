@@ -40,6 +40,11 @@ const Add = () => {
 
   const [acYear, setAcYear] = useState(null);
 
+  const [showIslamicStudies, setShowIslamicStudies] = useState(null)
+  const [showSchool, setShowSchool] = useState(null)
+  const [showCollege, setShowCollege] = useState(null)
+  const [showVocational, setShowVocational] = useState(null)
+
   const navigate = useNavigate()
   const { user } = useAuth();
 
@@ -105,6 +110,19 @@ const Add = () => {
     };
     getCoursesMap();
   }, []);
+
+  const handleIslamicCheckBox = (event) => {
+    setShowIslamicStudies(event.target.checked); // Update state based on checkbox's 'checked' property
+  };
+  const handleSchoolCheckBox = (event) => {
+    setShowSchool(event.target.checked); // Update state based on checkbox's 'checked' property
+  };
+  const handleCollegeCheckBox = (event) => {
+    setShowCollege(event.target.checked); // Update state based on checkbox's 'checked' property
+  };
+  const handleVocationalCheckBox = (event) => {
+    setShowVocational(event.target.checked); // Update state based on checkbox's 'checked' property
+  };
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
@@ -390,7 +408,7 @@ const Add = () => {
                   <option value="Married">Married</option>
                 </select>
               </div>
- 
+
               {/* Mother Tongue */}
               <div>
                 <label className="block text-sm font-medium text-slate-500">
@@ -803,9 +821,9 @@ const Add = () => {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
               <div className="flex space-x-3 mb-5" />
-              <div className="hidden lg:block flex space-x-3 mb-5" />
+              <div className="hidden lg:block flex space-x-3 mb-3" />
               <ViewCard type="header" text="Deeniyath Education" />
-              <div className="hidden lg:block flex space-x-3 mb-5" />
+              <div className="hidden lg:block flex space-x-3 mb-3" />
 
               {/* Institute 1 --------------------------------------------- */}
               <div>
@@ -901,411 +919,523 @@ const Add = () => {
                   />
                 </div>
               </div>
-
-              <div className="flex space-x-3 mb-5" />
-              <div className="hidden lg:block flex space-x-3 mb-5" />
-              <ViewCard type="header" text="Islamic Home Science" />
-              <div className="hidden lg:block flex space-x-3 mb-5" />
-
-              {/* Institute 4 --------------------------------------------- */}
-              <div>
-                <label className="block mt-2 text-sm font-medium text-slate-500">
-                  Select Institute
-                </label>
-                <select
-                  name="instituteId4"
-                  onChange={handleChange}
-                  className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                //    required
-                >
-                  <option value=""></option>
-                  {institutes.filter(institute => institute.type === "Islamic Home Science").map((institute) => (
-                    <option key={institute._id} value={institute._id}>
-                      {institute.name}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              {/* Course 4 */}
-              <div>
-                <label className="block mt-2 text-sm font-medium text-slate-500">
-                  Select Course
-                </label>
-                <select
-                  name="courseId4"
-                  onChange={handleChange}
-                  className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                //    required
-                >
-                  <option value=""></option>
-                  {courses.filter(course => course.type === "Islamic Home Science").map((course) => (
-                    <option key={course._id} value={course._id}>
-                      {course.name}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              {/* Reference Number-4 */}
-              <div>
-                <label className="block text-sm font-medium text-slate-500">
-                  Reference Number
-                </label>
-                <input
-                  type="text"
-                  name="refNumber4"
-                  onChange={handleChange}
-                  //    placeholder="Qualification"
-                  className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                //    required
-                />
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                {/* Year4 */}
-                <div>
-                  <label className="block text-sm font-medium text-slate-500">
-                    Year
-                  </label>
-                  <input
-                    type="number"
-                    name="year4"
-                    onChange={handleChange}
-                    min="0"
-                    onPaste={preventPasteNegative}
-                    onKeyPress={preventMinus}
-                    onKeyDown={handleKeyDown}
-                    className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                  //  required
-                  />
-                </div>
-
-                {/* Fees 4 */}
-                <div>
-                  <label className="block text-sm font-medium text-slate-500">
-                    Fees
-                  </label>
-                  <input
-                    type="number"
-                    name="fees4"
-                    value={fees4Val}
-                    disabled={true}
-                    onChange={handleChange}
-                    min="0"
-                    onPaste={preventPasteNegative}
-                    onKeyPress={preventMinus}
-                    onKeyDown={handleKeyDown}
-                    className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                  //    required
-                  />
-                </div>
-              </div>
-
-              <div className="flex space-x-3 mb-5" />
-              <div className="hidden lg:block flex space-x-3 mb-5" />
-              <ViewCard type="header" text="School Education" />
-              <div className="hidden lg:block flex space-x-3 mb-5" />
-
-              {/* Institute 2 --------------------------------------------- */}
-              <div>
-                <label className="block mt-2 text-sm font-medium text-slate-500">
-                  Select Institute
-                </label>
-                <select
-                  name="instituteId2"
-                  onChange={handleChange}
-                  className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                //    required
-                >
-                  <option value=""></option>
-                  {institutes.filter(institute => institute.type === "School Education").map((institute) => (
-                    <option key={institute._id} value={institute._id}>
-                      {institute.name}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              {/* Course 2 */}
-              <div>
-                <label className="block mt-2 text-sm font-medium text-slate-500">
-                  Select Course
-                </label>
-                <select
-                  name="courseId2"
-                  onChange={handleChange}
-                  className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                //    required
-                >
-                  <option value=""></option>
-                  {courses.filter(course => course.type === "School Education").map((course) => (
-                    <option key={course._id} value={course._id}>
-                      {course.name}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              {/* Reference Number-2 */}
-              <div>
-                <label className="block text-sm font-medium text-slate-500">
-                  Reference Number
-                </label>
-                <input
-                  type="text"
-                  name="refNumber2"
-                  onChange={handleChange}
-                  //    placeholder="Qualification"
-                  className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                //    required
-                />
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                {/* Year2 */}
-                <div>
-                  <label className="block text-sm font-medium text-slate-500">
-                    Std.
-                  </label>
-                  <input
-                    type="number"
-                    name="year2"
-                    onChange={handleChange}
-                    min="0"
-                    disabled={true}
-                    onPaste={preventPasteNegative}
-                    onKeyPress={preventMinus}
-                    onKeyDown={handleKeyDown}
-                    className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                  //  required
-                  />
-                </div>
-
-                {/* Fees 2 */}
-                <div>
-                  <label className="block text-sm font-medium text-slate-500">
-                    Fees
-                  </label>
-                  <input
-                    type="number"
-                    name="fees2"
-                    value={fees2Val}
-                    disabled={true}
-                    min="0"
-                    onChange={handleChange}
-                    onPaste={preventPasteNegative}
-                    onKeyPress={preventMinus}
-                    onKeyDown={handleKeyDown}
-                    className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                  //    required
-                  />
-                </div>
-              </div>
-
-              <div className="flex space-x-3 mb-5" />
-              <div className="hidden lg:block flex space-x-3 mb-5" />
-              <ViewCard type="header" text="College Education" />
-              <div className="hidden lg:block flex space-x-3 mb-5" />
-
-              {/* Institute 3 --------------------------------------------- */}
-              <div>
-                <label className="block mt-2 text-sm font-medium text-slate-500">
-                  Select Institute
-                </label>
-                <select
-                  name="instituteId3"
-                  onChange={handleChange}
-                  className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                //    required
-                >
-                  <option value=""></option>
-                  {institutes.filter(institute => institute.type === "College Education").map((institute) => (
-                    <option key={institute._id} value={institute._id}>
-                      {institute.name}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              {/* Course 3 */}
-              <div>
-                <label className="block mt-2 text-sm font-medium text-slate-500">
-                  Select Course
-                </label>
-                <select
-                  name="courseId3"
-                  onChange={handleChange}
-                  className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                //    required
-                >
-                  <option value=""></option>
-                  {courses.filter(course => course.type === "College Education").map((course) => (
-                    <option key={course._id} value={course._id}>
-                      {course.name}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              {/* Reference Number-3 */}
-              <div>
-                <label className="block text-sm font-medium text-slate-500">
-                  Reference Number
-                </label>
-                <input
-                  type="text"
-                  name="refNumber3"
-                  onChange={handleChange}
-                  //    placeholder="Qualification"
-                  className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                //    required
-                />
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                {/* Year3 */}
-                <div>
-                  <label className="block text-sm font-medium text-slate-500">
-                    Year
-                  </label>
-                  <input
-                    type="number"
-                    name="year3"
-                    onChange={handleChange}
-                    min="0"
-                    onPaste={preventPasteNegative}
-                    onKeyPress={preventMinus}
-                    onKeyDown={handleKeyDown}
-                    className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                  //  required
-                  />
-                </div>
-
-                {/* Fees 3 */}
-                <div>
-                  <label className="block text-sm font-medium text-slate-500">
-                    Fees
-                  </label>
-                  <input
-                    type="number"
-                    name="fees3"
-                    value={fees3Val}
-                    disabled={true}
-                    min="0"
-                    onPaste={preventPasteNegative}
-                    onKeyPress={preventMinus}
-                    onKeyDown={handleKeyDown}
-                    onChange={handleChange}
-                    className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                  //    required
-                  />
-                </div>
-              </div>
-
-              <div className="flex space-x-3 mb-5" />
-              <div className="hidden lg:block flex space-x-3 mb-5" />
-              <ViewCard type="header" text="Vocational Course" />
-              <div className="hidden lg:block flex space-x-3 mb-5" />
-
-              {/* Institute 5 --------------------------------------------- */}
-              <div>
-                <label className="block mt-2 text-sm font-medium text-slate-500">
-                  Select Institute
-                </label>
-                <select
-                  name="instituteId5"
-                  onChange={handleChange}
-                  className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                //    required
-                >
-                  <option value=""></option>
-                  {institutes.filter(institute => institute.type === "Vocational Courses").map((institute) => (
-                    <option key={institute._id} value={institute._id}>
-                      {institute.name}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              {/* Course 5 */}
-              <div>
-                <label className="block mt-2 text-sm font-medium text-slate-500">
-                  Select Course
-                </label>
-                <select
-                  name="courseId5"
-                  onChange={handleChange}
-                  className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                //    required
-                >
-                  <option value=""></option>
-                  {courses.filter(course => course.type === "Vocational Courses").map((course) => (
-                    <option key={course._id} value={course._id}>
-                      {course.name}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              {/* Reference Number-5 */}
-              <div>
-                <label className="block text-sm font-medium text-slate-500">
-                  Reference Number
-                </label>
-                <input
-                  type="text"
-                  name="refNumber5"
-                  onChange={handleChange}
-                  //    placeholder="Qualification"
-                  className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                //    required
-                />
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                {/* Year5 */}
-                <div>
-                  <label className="block text-sm font-medium text-slate-500">
-                    Year
-                  </label>
-                  <input
-                    type="number"
-                    name="year5"
-                    onChange={handleChange}
-                    min="0"
-                    onPaste={preventPasteNegative}
-                    onKeyPress={preventMinus}
-                    onKeyDown={handleKeyDown}
-                    className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                  //  required
-                  />
-                </div>
-
-                {/* Fees 5 */}
-                <div>
-                  <label className="block text-sm font-medium text-slate-500">
-                    Fees
-                  </label>
-                  <input
-                    type="number"
-                    name="fees5"
-                    value={fees5Val}
-                    disabled={true}
-                    onChange={handleChange}
-                    min="0"
-                    onPaste={preventPasteNegative}
-                    onKeyPress={preventMinus}
-                    onKeyDown={handleKeyDown}
-                    className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                  //    required
-                  />
-                </div>
-              </div>
-
-              <div className="flex space-x-3 mb-5" />
-              <div className="hidden lg:block flex space-x-3 mb-5" />
             </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-1 mt-10 mb-4 p-2 lg:p-5 gap-5 pt-5 lg:ml-16 lg:mr-20 border-2 border-green-500 rounded-md shadow-lg">
+              <div className="flex justify-center">
+                <label className='flex text-sm lg:text-md text-pink-600 ml-2 lg:ml-1 mr-2 lg:mr-1'>
+                  If the student is studying below courses also with our Niswan, Please check the relevant checkboxes and fill the details.</label>
+              </div>
+
+              {/* For Mobile display*/}
+              <div className='block lg:hidden'>
+                <div className="ml-14 justify-center items-center mb-3">
+                  <input
+                    type="checkbox"
+                    checked={showIslamicStudies}
+                    onChange={handleIslamicCheckBox}
+                    style={{ transform: "scale(1.25)" }}
+                  />
+                  <span className='text-sm lg:text-md text-blue-600 ml-2'> Islamic Home Science</span>
+                </div>
+                <div className="ml-14 justify-center items-center mb-3">
+                  <input
+                    type="checkbox"
+                    checked={showSchool}
+                    onChange={handleSchoolCheckBox}
+                    style={{ transform: "scale(1.25)" }}
+                  />
+                  <span className='text-sm lg:text-md text-blue-600 ml-2'> School Education</span>
+                </div>
+                <div className="ml-14 justify-center items-center mb-3">
+                  <input
+                    type="checkbox"
+                    checked={showCollege}
+                    onChange={handleCollegeCheckBox}
+                    style={{ transform: "scale(1.25)" }}
+                  />
+                  <span className='text-sm lg:text-md text-blue-600 ml-2'> College Education</span>
+                </div>
+                <div className="ml-14 justify-center items-center mb-3">
+                  <input
+                    type="checkbox"
+                    checked={showVocational}
+                    onChange={handleVocationalCheckBox}
+                    style={{ transform: "scale(1.25)" }}
+                  />
+                  <span className='text-sm lg:text-md text-blue-600 ml-2'> Vocational Course</span>
+                </div>
+              </div>
+
+              {/* For Screen display*/}
+              <div className="hidden lg:block">
+                <div className="flex justify-center">
+                  <div>
+                    <input className="ml-5"
+                      type="checkbox"
+                      checked={showIslamicStudies}
+                      onChange={handleIslamicCheckBox}
+                      style={{ transform: "scale(1.25)" }}
+                    />
+                  </div>
+                  <div>
+                    <p className='text-sm lg:text-md text-blue-600 ml-2'> Islamic Home Science</p>
+                  </div>
+
+                  <div>
+                    <input className="ml-5"
+                      type="checkbox"
+                      checked={showSchool}
+                      onChange={handleSchoolCheckBox}
+                      style={{ transform: "scale(1.25)" }}
+                    />
+                  </div>
+                  <div>
+                    <p className='text-sm lg:text-md text-blue-600 ml-2'> School Education</p>
+                  </div>
+
+                  <div>
+                    <input className="ml-5"
+                      type="checkbox"
+                      checked={showCollege}
+                      onChange={handleCollegeCheckBox}
+                      style={{ transform: "scale(1.25)" }}
+                    />
+                  </div>
+                  <div>
+                    <p className='text-sm lg:text-md text-blue-600 ml-2'> College Education</p>
+                  </div>
+
+                  <div>
+                    <input className="ml-5"
+                      type="checkbox"
+                      checked={showVocational}
+                      onChange={handleVocationalCheckBox}
+                      style={{ transform: "scale(1.25)" }}
+                    />
+                  </div>
+                  <div>
+                    <p className='text-sm lg:text-md text-blue-600 ml-2'> Vocational Course</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {showIslamicStudies ?
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                <div className="flex space-x-3" />
+                <div className="hidden lg:block flex space-x-3" />
+                <ViewCard type="header" text="Islamic Home Science" />
+                <div className="hidden lg:block flex space-x-3 mb-5" />
+
+                {/* Institute 4 --------------------------------------------- */}
+                <div>
+                  <label className="block mt-2 text-sm font-medium text-slate-500">
+                    Select Institute
+                  </label>
+                  <select
+                    name="instituteId4"
+                    onChange={handleChange}
+                    className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
+                  //    required
+                  >
+                    <option value=""></option>
+                    {institutes.filter(institute => institute.type === "Islamic Home Science").map((institute) => (
+                      <option key={institute._id} value={institute._id}>
+                        {institute.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                {/* Course 4 */}
+                <div>
+                  <label className="block mt-2 text-sm font-medium text-slate-500">
+                    Select Course
+                  </label>
+                  <select
+                    name="courseId4"
+                    onChange={handleChange}
+                    className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
+                  //    required
+                  >
+                    <option value=""></option>
+                    {courses.filter(course => course.type === "Islamic Home Science").map((course) => (
+                      <option key={course._id} value={course._id}>
+                        {course.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                {/* Reference Number-4 */}
+                <div>
+                  <label className="block text-sm font-medium text-slate-500">
+                    Reference Number
+                  </label>
+                  <input
+                    type="text"
+                    name="refNumber4"
+                    onChange={handleChange}
+                    //    placeholder="Qualification"
+                    className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
+                  //    required
+                  />
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                  {/* Year4 */}
+                  <div>
+                    <label className="block text-sm font-medium text-slate-500">
+                      Year
+                    </label>
+                    <input
+                      type="number"
+                      name="year4"
+                      onChange={handleChange}
+                      min="0"
+                      onPaste={preventPasteNegative}
+                      onKeyPress={preventMinus}
+                      onKeyDown={handleKeyDown}
+                      className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
+                    //  required
+                    />
+                  </div>
+
+                  {/* Fees 4 */}
+                  <div>
+                    <label className="block text-sm font-medium text-slate-500">
+                      Fees
+                    </label>
+                    <input
+                      type="number"
+                      name="fees4"
+                      value={fees4Val}
+                      disabled={true}
+                      onChange={handleChange}
+                      min="0"
+                      onPaste={preventPasteNegative}
+                      onKeyPress={preventMinus}
+                      onKeyDown={handleKeyDown}
+                      className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
+                    //    required
+                    />
+                  </div>
+                </div>
+              </div> : null}
+
+            {showSchool ?
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mt-7">
+                <div className="flex space-x-3" />
+                <div className="hidden lg:block flex space-x-3" />
+                <ViewCard type="header" text="School Education" />
+                <div className="hidden lg:block flex space-x-3 mb-5" />
+
+                {/* Institute 2 --------------------------------------------- */}
+                <div>
+                  <label className="block mt-2 text-sm font-medium text-slate-500">
+                    Select Institute
+                  </label>
+                  <select
+                    name="instituteId2"
+                    onChange={handleChange}
+                    className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
+                  //    required
+                  >
+                    <option value=""></option>
+                    {institutes.filter(institute => institute.type === "School Education").map((institute) => (
+                      <option key={institute._id} value={institute._id}>
+                        {institute.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                {/* Course 2 */}
+                <div>
+                  <label className="block mt-2 text-sm font-medium text-slate-500">
+                    Select Course
+                  </label>
+                  <select
+                    name="courseId2"
+                    onChange={handleChange}
+                    className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
+                  //    required
+                  >
+                    <option value=""></option>
+                    {courses.filter(course => course.type === "School Education").map((course) => (
+                      <option key={course._id} value={course._id}>
+                        {course.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                {/* Reference Number-2 */}
+                <div>
+                  <label className="block text-sm font-medium text-slate-500">
+                    Reference Number
+                  </label>
+                  <input
+                    type="text"
+                    name="refNumber2"
+                    onChange={handleChange}
+                    //    placeholder="Qualification"
+                    className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
+                  //    required
+                  />
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                  {/* Year2 */}
+                  <div>
+                    <label className="block text-sm font-medium text-slate-500">
+                      Std.
+                    </label>
+                    <input
+                      type="number"
+                      name="year2"
+                      onChange={handleChange}
+                      min="0"
+                      disabled={true}
+                      onPaste={preventPasteNegative}
+                      onKeyPress={preventMinus}
+                      onKeyDown={handleKeyDown}
+                      className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
+                    //  required
+                    />
+                  </div>
+
+                  {/* Fees 2 */}
+                  <div>
+                    <label className="block text-sm font-medium text-slate-500">
+                      Fees
+                    </label>
+                    <input
+                      type="number"
+                      name="fees2"
+                      value={fees2Val}
+                      disabled={true}
+                      min="0"
+                      onChange={handleChange}
+                      onPaste={preventPasteNegative}
+                      onKeyPress={preventMinus}
+                      onKeyDown={handleKeyDown}
+                      className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
+                    //    required
+                    />
+                  </div>
+                </div>
+              </div> : null}
+
+            {showCollege ?
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mt-7">
+                <div className="flex space-x-3" />
+                <div className="hidden lg:block flex space-x-3" />
+                <ViewCard type="header" text="College Education" />
+                <div className="hidden lg:block flex space-x-3 mb-5" />
+
+                {/* Institute 3 --------------------------------------------- */}
+                <div>
+                  <label className="block mt-2 text-sm font-medium text-slate-500">
+                    Select Institute
+                  </label>
+                  <select
+                    name="instituteId3"
+                    onChange={handleChange}
+                    className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
+                  //    required
+                  >
+                    <option value=""></option>
+                    {institutes.filter(institute => institute.type === "College Education").map((institute) => (
+                      <option key={institute._id} value={institute._id}>
+                        {institute.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                {/* Course 3 */}
+                <div>
+                  <label className="block mt-2 text-sm font-medium text-slate-500">
+                    Select Course
+                  </label>
+                  <select
+                    name="courseId3"
+                    onChange={handleChange}
+                    className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
+                  //    required
+                  >
+                    <option value=""></option>
+                    {courses.filter(course => course.type === "College Education").map((course) => (
+                      <option key={course._id} value={course._id}>
+                        {course.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                {/* Reference Number-3 */}
+                <div>
+                  <label className="block text-sm font-medium text-slate-500">
+                    Reference Number
+                  </label>
+                  <input
+                    type="text"
+                    name="refNumber3"
+                    onChange={handleChange}
+                    //    placeholder="Qualification"
+                    className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
+                  //    required
+                  />
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                  {/* Year3 */}
+                  <div>
+                    <label className="block text-sm font-medium text-slate-500">
+                      Year
+                    </label>
+                    <input
+                      type="number"
+                      name="year3"
+                      onChange={handleChange}
+                      min="0"
+                      onPaste={preventPasteNegative}
+                      onKeyPress={preventMinus}
+                      onKeyDown={handleKeyDown}
+                      className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
+                    //  required
+                    />
+                  </div>
+
+                  {/* Fees 3 */}
+                  <div>
+                    <label className="block text-sm font-medium text-slate-500">
+                      Fees
+                    </label>
+                    <input
+                      type="number"
+                      name="fees3"
+                      value={fees3Val}
+                      disabled={true}
+                      min="0"
+                      onPaste={preventPasteNegative}
+                      onKeyPress={preventMinus}
+                      onKeyDown={handleKeyDown}
+                      onChange={handleChange}
+                      className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
+                    //    required
+                    />
+                  </div>
+                </div>
+              </div> : null}
+
+            {showVocational ?
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mt-7">
+                <div className="flex space-x-3" />
+                <div className="hidden lg:block flex space-x-3" />
+                <ViewCard type="header" text="Vocational Course" />
+                <div className="hidden lg:block flex space-x-3 mb-5" />
+
+                {/* Institute 5 --------------------------------------------- */}
+                <div>
+                  <label className="block mt-2 text-sm font-medium text-slate-500">
+                    Select Institute
+                  </label>
+                  <select
+                    name="instituteId5"
+                    onChange={handleChange}
+                    className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
+                  //    required
+                  >
+                    <option value=""></option>
+                    {institutes.filter(institute => institute.type === "Vocational Courses").map((institute) => (
+                      <option key={institute._id} value={institute._id}>
+                        {institute.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                {/* Course 5 */}
+                <div>
+                  <label className="block mt-2 text-sm font-medium text-slate-500">
+                    Select Course
+                  </label>
+                  <select
+                    name="courseId5"
+                    onChange={handleChange}
+                    className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
+                  //    required
+                  >
+                    <option value=""></option>
+                    {courses.filter(course => course.type === "Vocational Courses").map((course) => (
+                      <option key={course._id} value={course._id}>
+                        {course.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                {/* Reference Number-5 */}
+                <div>
+                  <label className="block text-sm font-medium text-slate-500">
+                    Reference Number
+                  </label>
+                  <input
+                    type="text"
+                    name="refNumber5"
+                    onChange={handleChange}
+                    //    placeholder="Qualification"
+                    className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
+                  //    required
+                  />
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                  {/* Year5 */}
+                  <div>
+                    <label className="block text-sm font-medium text-slate-500">
+                      Year
+                    </label>
+                    <input
+                      type="number"
+                      name="year5"
+                      onChange={handleChange}
+                      min="0"
+                      onPaste={preventPasteNegative}
+                      onKeyPress={preventMinus}
+                      onKeyDown={handleKeyDown}
+                      className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
+                    //  required
+                    />
+                  </div>
+
+                  {/* Fees 5 */}
+                  <div>
+                    <label className="block text-sm font-medium text-slate-500">
+                      Fees
+                    </label>
+                    <input
+                      type="number"
+                      name="fees5"
+                      value={fees5Val}
+                      disabled={true}
+                      onChange={handleChange}
+                      min="0"
+                      onPaste={preventPasteNegative}
+                      onKeyPress={preventMinus}
+                      onKeyDown={handleKeyDown}
+                      className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
+                    //    required
+                    />
+                  </div>
+                </div>
+              </div> : null}
+
+            <div className="flex space-x-3 mb-5" />
+            <div className="hidden lg:block flex space-x-3 mb-5" />
 
             {/* Image Upload 
             <div>
