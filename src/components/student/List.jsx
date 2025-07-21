@@ -9,6 +9,7 @@ import withReactContent from 'sweetalert2-react-content';
 import Select from 'react-select';
 import { useAuth } from '../../context/AuthContext'
 import { getSchoolsFromCache } from '../../utils/SchoolHelper';
+import { getCoursesFromCache } from '../../utils/CourseHelper';
 import 'animate.css';
 import * as XLSX from 'xlsx';
 
@@ -23,6 +24,7 @@ const List = () => {
   const [supLoading, setSupLoading] = useState(false)
   const [showFilter, setShowFilter] = useState(null);
   const [filteredStudent, setFilteredStudents] = useState(null)
+  const [courses, setCourses] = useState([]);
 
   const navigate = useNavigate()
   const { user } = useAuth()
@@ -38,6 +40,15 @@ const List = () => {
   const [schId, setSchId] = useState('');
 
   const MySwal = withReactContent(Swal);
+
+  useEffect(() => {
+    const getCoursesMap = async (id) => {
+      const courses = await getCoursesFromCache(id);
+      // console.log(courses);
+      setCourses(courses);
+    };
+    getCoursesMap();
+  }, []);
 
   function NiswanSelect({ options, onChange, selectedValues }) {
     return <Select options={
@@ -55,56 +66,100 @@ const List = () => {
   };
 
   const openFilterPopup = async () => {
+    let selectedCourse;
+    let selectedStatus;
     const { value: formValues } = await MySwal.fire({
-      title: 'Filters',
+      //  title: 'Filters',
       background: "url(/bg_card.png)",
-      html: `
+      html: (
+        <div className="mb-2 h-80 w-full">
+          <div className='text-2xl lg:text-3xl mb-3 text-green-600'>Filter</div>
+          <div className='grid mt-5'><span>Select Course</span>
+            <Select className='text-sm text-start mt-2 mb-2'
+              options={courses.map(option => ({
+                value: option._id, label: option.name
+              }))}
+              onChange={(selectedOption) => {
+                selectedCourse = selectedOption.value;
+              }}
+            />
+          </div>
 
-        <div className='grid justify-between items-center relative'>
-          <label className='justify-start relative'>Course </label>
-          <select id="swal-course" className="swal2-input w-3/5 lg:w-3/6 ml-10 relative justify-center rounded shadow-lg" style="margin-top: 20px;">
-            <option value="">Select </option>
-            <option value="Muballiga">Muballiga</option>
-            <option value="Muallama">Muallama</option>
-            <option value="Makthab">Makthab</option>
-            <option value="Munavvara">Munavvara</option>
-          </select>
+          <div className='grid mt-2 text-purple-500'><span>Select Status</span>
+            <Select className='text-sm text-start mt-2'
+              options={
+                [{ value: 'Active', label: 'Active' },
+                { value: 'In-Active', label: 'In-Active' },
+                { value: 'Transferred', label: 'Transferred' },
+                { value: 'Graduated', label: 'Graduated' },
+                { value: 'Discontinued', label: 'Discontinued' }]
+              }
+              onChange={(selectedOption) => {
+                selectedStatus = selectedOption.value;
+              }}
+            />
+          </div>
         </div>
-        <div className='grid justify-between items-center relative'>
-          <label className='justify-start relative'>Status </label>
-          <select id="swal-status" className="swal2-input w-3/5 lg:w-3/6 ml-10 relative justify-center rounded shadow-lg" style="margin-top: 30px;">
-            <option value="">Select</option>
-            <option value="Active">Active</option>
-            <option value="In-Active">In-Active</option>
-          </select>
-        </div>
-      `,
+      ),
       focusConfirm: false,
       showCancelButton: true,
-      cancelButtonText: "Clear",
+      // cancelButtonText: "Clear",
       // cancelButtonAriaLabel: "Clear",
       preConfirm: () => {
-        const select1 = document.getElementById('swal-course').value;
-        const select2 = document.getElementById('swal-status').value;
+        const select1 = selectedCourse ? selectedCourse : null;
+        const select2 = selectedStatus ? selectedStatus : null;
         return [select1, select2];
       }
     });
 
     if (formValues) {
       console.log('Selected values:', formValues);
-      const course = formValues[0] ? formValues[0] : null;
+      const courseId = formValues[0] ? formValues[0] : null;
       const status = formValues[1] ? formValues[1] : null;
       console.log('Selected value1:', formValues[0]);
       console.log('Selected value2:', formValues[1]);
 
-      const records = students.filter((student) => {
-        console.log('Selected value3:', student.course + ", " + course);
-        let crc = student.course.toString();
-        crc.toLowerCase().includes("makthab".toLowerCase())
-        // || student.active && status ? student.active.toLowerCase().includes(status.toString().toLowerCase()) : false
-      });
+      try {
+        const responnse = await axios.get(
+          (await getBaseUrl()).toString() + "student/byFilter/" + localStorage.getItem('schoolId') + "/" + courseId + "/" + status,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        );
+        if (responnse.data.success) {
+          let sno = 1;
+          const data = await responnse.data.students.map((student) => ({
+            _id: student._id,
+            sno: sno++,
+            name: student.userId?.name,
+            schoolName: student.schoolId?.nameEnglish,
+            rollNumber: student.rollNumber,
+            address: student.address,
+            city: student.city,
+            district: student.districtStateId ? student.districtStateId?.district + ", " + student.districtStateId?.State : "",
+            active: student.active,
+            course: student.courses && student.courses?.length > 0 ? student.courses.map(course => course.name ? course.name + ", " : "") : "",
+            courses: student.courses && student.courses?.length > 0 ? student.courses : null,
+            fatherName: student.fatherName ? student.fatherName : student.motherName ? student.motherName : student.guardianName ? student.guardianName : "",
+            // action: (<StudentButtons Id={student._id} onStudentDelete={onStudentDelete} />),
+            action: (<StudentButtons Id={student._id} />),
+          }));
+          setStudents(data);
+          setFilteredStudents(data)
+        }
 
-      setFilteredStudents(records)
+      } catch (error) {
+        console.log(error.message)
+        if (error.response && !error.response.data.success) {
+          showSwalAlert("Error!", error.response.data.error, "error");
+          //  navigate("/dashboard");
+        }
+      } finally {
+        setSupLoading(false)
+      }
+
     } else {
       setFilteredStudents(students)
     }
@@ -335,9 +390,9 @@ const List = () => {
   };
 
   const handleFilter = (e) => {
-    const records = students.filter((sup) => (
-      sup.course?.toLowerCase().includes(e.target.value.toLowerCase())
-      || sup.name?.toLowerCase().includes(e.target.value.toLowerCase())
+    const records = students.filter((student) => (
+      student.course?.toLowerCase().includes(e.target.value.toLowerCase())
+      || student.name?.toLowerCase().includes(e.target.value.toLowerCase())
     ))
     setFilteredStudents(records)
   }
@@ -359,30 +414,28 @@ const List = () => {
       <div className="flex justify-between items-center mt-5 relative">
         {LinkIcon("/dashboard", "Back")}
 
-        <div className="w-3/4 lg:w-1/2 rounded flex border shadow-lg rounded-md justify-between items-center relative bg-[url(/bg-img.jpg)]">
+        <div className="w-3/4 lg:w-1/2 rounded flex lg:border lg:shadow-lg rounded-md justify-between items-center relative lg:bg-[url(/bg-img.jpg)]">
           <div className={`w-full text-md flex justify-center items-center pl-2 rounded-l-md`}>
             <input
               type="text"
               placeholder="Search"
-              className="w-full px-3 py-0.5 border rounded shadow-md justify-center"
+              className="w-full px-3 py-0.5 border rounded shadow-md justify-center ml-1 lg:ml-0 mr-3 lg:mr-0"
               onChange={handleSearch}
             />
           </div>
-          <div className="p-1 mt-0.5 rounded-md items-center justify-center ">
+          <div className="hidden lg:block p-1 mt-0.5 rounded-md items-center justify-center">
             {LinkIcon("#", "Search")}
           </div>
         </div>
 
         {/*  <img src="/filter.jpg" className="rounded border border-green-500 w-8 p-1 mr-3 shadow-lg bg-white"/>*/}
 
-        {/* <div className="mr-3" onClick={openFilterPopup}>{LinkIcon("#", "Filter")}</div> */}
+        <div className="mr-3" onClick={openFilterPopup}>{LinkIcon("#", "Filter")}</div>
 
         {LinkIcon("/dashboard/add-student", "Add")}
         {/* {user.role === "superadmin" || user.role === "hquser" ?
           <div className="hidden lg:block" onClick={handleImport}>{LinkIcon("#", "Import")}</div> : null} */}
       </div>
-
-
 
       <div className='mt-6 rounded-lg shadow-lg'>
         <DataTable columns={columns} data={filteredStudent} showGridlines highlightOnHover striped responsive conditionalRowStyles={conditionalRowStyles} />

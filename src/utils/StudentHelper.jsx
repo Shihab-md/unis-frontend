@@ -235,34 +235,34 @@ export const StudentButtons = ({ Id, onStudentDelete }) => {
   return (
     <div className="flex space-x-3">
       <button
-        className="px-3 py-1 bg-teal-600 text-white rounded-sm text-shadow-lg"
+        className="px-1.5 py-1 m-1 bg-teal-600 text-lg text-teal-100 rounded-md shadow-md shadow-teal-200"
         onClick={() => navigate(`/dashboard/students/${Id}`)}
       >
-        <FaEye />
+        <FaEye className="m-1"/>
       </button>
       <button
-        className="px-3 py-1 bg-blue-600 text-white rounded-sm text-shadow-lg"
+        className="px-1.5 py-1 m-1 bg-blue-600 text-lg text-blue-100 rounded-md shadow-md shadow-blue-200"
         onClick={() => navigate(`/dashboard/students/edit/${Id}`)}
       >
-        <FaEdit />
+        <FaEdit className="m-1"/>
       </button>
       <button
-        className="px-3 py-1 bg-purple-500 text-white rounded-sm text-shadow-lg"
+        className="px-1.5 py-1 m-1 bg-purple-500 text-lg text-purple-100 rounded-md shadow-md shadow-purple-200"
         onClick={() => navigate(`/dashboard/students/promote/${Id}`)}
       >
-        <FaUserCheck />
+        <FaUserCheck className="m-1"/>
       </button>
       <button
-        className="px-3 py-1 bg-yellow-700 text-white rounded-sm text-shadow-lg"
+        className="px-1.5 py-1 m-1 bg-yellow-700 text-lg text-yellow-100 rounded-md shadow-md shadow-yellow-200"
         onClick={() => navigate(`#`)}
       >
-        <FaExchangeAlt />
+        <FaExchangeAlt className="m-1"/>
       </button>
       <button
-        className="px-3 py-1 bg-red-600 text-white rounded-sm text-shadow-lg"
+        className="px-1.5 py-1 m-1 bg-red-600 text-lg text-red-100 rounded-md shadow-md shadow-red-200"
         onClick={() => handleDelete(Id)}
       >
-        <FaTrashAlt />
+        <FaTrashAlt className="m-1"/>
       </button>
     </div>
   );
