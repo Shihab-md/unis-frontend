@@ -1,6 +1,8 @@
 
 import { Link } from 'react-router-dom';
-import { FaPlusSquare, FaArrowAltCircleLeft, FaAngleDoubleDown, FaRegCaretSquareDown, FaFilter, FaSearch } from "react-icons/fa";
+import {
+  FaPlusSquare, FaArrowAltCircleLeft, FaRegCaretSquareDown, FaFilter, FaSearch
+} from "react-icons/fa";
 import Swal from 'sweetalert2';
 
 const authorizedScreensFor_SA_HQ_Roles = [
@@ -64,7 +66,7 @@ export function checkAuth(screenName) {
 
 export const getBaseUrl = async () => {
    return "https://unis-server.vercel.app/api/";
-
+ 
 };
 
 export function handleRightClickAndFullScreen() {
