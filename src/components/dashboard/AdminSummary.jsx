@@ -25,6 +25,9 @@ const AdminSummary = () => {
     if (user.role === "superadmin" || user.role === "hquser" || user.role === "supervisor") {
       localStorage.removeItem("schoolId");
       localStorage.removeItem("schoolName");
+      localStorage.removeItem("students");
+      localStorage.removeItem('courseId');
+      localStorage.removeItem('status');
     }
 
     const fetchSummary = async () => {

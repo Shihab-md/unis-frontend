@@ -21,6 +21,7 @@ const List = () => {
   const [schools, setSchools] = useState([]);
   const [inputOptions, setInputOptions] = useState([]);
   const [students, setStudents] = useState([])
+  const [prevStudents, setPrevStudents] = useState([])
   const [supLoading, setSupLoading] = useState(false)
   const [showFilter, setShowFilter] = useState(null);
   const [filteredStudent, setFilteredStudents] = useState(null)
@@ -73,19 +74,21 @@ const List = () => {
       background: "url(/bg_card.png)",
       html: (
         <div className="mb-2 h-80 w-full">
-          <div className='text-2xl lg:text-3xl mb-3 text-green-600'>Filter</div>
+          <div className='text-xl font-bold mb-2 text-green-600'>Filter</div>
           <div className='grid mt-5'><span>Select Course</span>
             <Select className='text-sm text-start mt-2 mb-2'
               options={courses.map(option => ({
                 value: option._id, label: option.name
               }))}
+
               onChange={(selectedOption) => {
                 selectedCourse = selectedOption.value;
               }}
+              maxMenuHeight={210}
             />
           </div>
 
-          <div className='grid mt-2 text-purple-500'><span>Select Status</span>
+          <div className='grid mt-2'><span>Select Status</span>
             <Select className='text-sm text-start mt-2'
               options={
                 [{ value: 'Active', label: 'Active' },
@@ -94,16 +97,18 @@ const List = () => {
                 { value: 'Graduated', label: 'Graduated' },
                 { value: 'Discontinued', label: 'Discontinued' }]
               }
+              // defaultValue={selectedStatus}
               onChange={(selectedOption) => {
                 selectedStatus = selectedOption.value;
               }}
+              maxMenuHeight={160}
             />
           </div>
         </div>
       ),
       focusConfirm: false,
-      showCancelButton: true,
-      // cancelButtonText: "Clear",
+      //  showCancelButton: true,
+      //  cancelButtonText: "Reset",
       // cancelButtonAriaLabel: "Clear",
       preConfirm: () => {
         const select1 = selectedCourse ? selectedCourse : null;
@@ -112,58 +117,75 @@ const List = () => {
       }
     });
 
-    if (formValues) {
+    if (formValues && (formValues[0] || formValues[1])) {
       console.log('Selected values:', formValues);
       const courseId = formValues[0] ? formValues[0] : null;
       const status = formValues[1] ? formValues[1] : null;
       console.log('Selected value1:', formValues[0]);
       console.log('Selected value2:', formValues[1]);
 
-      try {
-        const responnse = await axios.get(
-          (await getBaseUrl()).toString() + "student/byFilter/" + localStorage.getItem('schoolId') + "/" + courseId + "/" + status,
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          }
-        );
-        if (responnse.data.success) {
-          let sno = 1;
-          const data = await responnse.data.students.map((student) => ({
-            _id: student._id,
-            sno: sno++,
-            name: student.userId?.name,
-            schoolName: student.schoolId?.nameEnglish,
-            rollNumber: student.rollNumber,
-            address: student.address,
-            city: student.city,
-            district: student.districtStateId ? student.districtStateId?.district + ", " + student.districtStateId?.State : "",
-            active: student.active,
-            course: student.courses && student.courses?.length > 0 ? student.courses.map(course => course.name ? course.name + ", " : "") : "",
-            courses: student.courses && student.courses?.length > 0 ? student.courses : null,
-            fatherName: student.fatherName ? student.fatherName : student.motherName ? student.motherName : student.guardianName ? student.guardianName : "",
-            // action: (<StudentButtons Id={student._id} onStudentDelete={onStudentDelete} />),
-            action: (<StudentButtons Id={student._id} />),
-          }));
-          setStudents(data);
-          setFilteredStudents(data)
-        }
+      localStorage.setItem('courseId', courseId);
+      localStorage.setItem('status', status);
 
-      } catch (error) {
-        console.log(error.message)
-        if (error.response && !error.response.data.success) {
-          showSwalAlert("Error!", error.response.data.error, "error");
-          //  navigate("/dashboard");
-        }
-      } finally {
-        setSupLoading(false)
-      }
+      getFilteredStudents();
 
     } else {
-      setFilteredStudents(students)
+      localStorage.removeItem('students');
+      localStorage.removeItem('courseId');
+      localStorage.removeItem('status');
+      getStudents();
+      // setFilteredStudents(students)
     }
   };
+
+  const getFilteredStudents = async () => {
+
+    try {
+      const responnse = await axios.get(
+        (await getBaseUrl()).toString() + "student/byFilter/"
+        + localStorage.getItem('schoolId') + "/"
+        + localStorage.getItem('courseId') + "/"
+        + localStorage.getItem('status'),
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+      if (responnse.data.success) {
+        let sno = 1;
+        const data = await responnse.data.students.map((student) => ({
+          _id: student._id,
+          sno: sno++,
+          name: student.userId?.name,
+          schoolName: student.schoolId?.nameEnglish,
+          rollNumber: student.rollNumber,
+          address: student.address,
+          city: student.city,
+          district: student.districtStateId ? student.districtStateId?.district + ", " + student.districtStateId?.State : "",
+          active: student.active,
+          course: student.courses && student.courses?.length > 0 ? student.courses.map(course => course.name ? course.name + ", " : "") : "",
+          courses: student.courses && student.courses?.length > 0 ? student.courses : null,
+          fatherName: student.fatherName ? student.fatherName : student.motherName ? student.motherName : student.guardianName ? student.guardianName : "",
+          // action: (<StudentButtons Id={student._id} onStudentDelete={onStudentDelete} />),
+          action: (<StudentButtons Id={student._id} />),
+        }));
+        setStudents(data);
+        setFilteredStudents(data);
+        localStorage.removeItem('students');
+        localStorage.setItem('students', JSON.stringify(responnse.data));
+      }
+
+    } catch (error) {
+      console.log(error.message)
+      if (error.response && !error.response.data.success) {
+        showSwalAlert("Error!", error.response.data.error, "error");
+        //  navigate("/dashboard");
+      }
+    } finally {
+      setSupLoading(false)
+    }
+  }
 
   const handleImport = async () => {
     const { value: file } = await Swal.fire({
@@ -265,11 +287,59 @@ const List = () => {
       navigate("/login");
     }
 
+    const fetchStudents = async () => {
+      const data = localStorage.getItem('students');
+      console.log("Course Id : " + localStorage.getItem('courseId') + ", Status : " + localStorage.getItem('status'))
+      if (localStorage.getItem('courseId')
+        || localStorage.getItem('status')) {
+        console.log("111")
+        getFilteredStudents();
+      } else {
+        console.log("222")
+        getStudents();
+      }
+    }
+    fetchStudents();
+  }, []);
+
+  const getStudents = async () => {
+
     const onStudentDelete = () => {
-      fetchStudents()
+      const data = localStorage.getItem('students');
+      if (data) {
+        console.log("333")
+        getFilteredStudents();
+      } else {
+        console.log("444")
+        getStudents();
+      }
     }
 
-    const fetchStudents = async () => {
+    const data = localStorage.getItem('students');
+    console.log("Existing Data - " + JSON.parse(data))
+    if (data && (localStorage.getItem('courseId')
+      || localStorage.getItem('status'))) {
+      let sno = 1;
+      const data1 = JSON.parse(data).students.map((student) => ({
+        _id: student._id,
+        sno: sno++,
+        name: student.userId?.name,
+        schoolName: student.schoolId?.nameEnglish,
+        rollNumber: student.rollNumber,
+        address: student.address,
+        city: student.city,
+        district: student.districtStateId ? student.districtStateId?.district + ", " + student.districtStateId?.State : "",
+        active: student.active,
+        course: student.courses && student.courses?.length > 0 ? student.courses.map(course => course.name ? course.name + ", " : "") : "",
+        courses: student.courses && student.courses?.length > 0 ? student.courses : null,
+        fatherName: student.fatherName ? student.fatherName : student.motherName ? student.motherName : student.guardianName ? student.guardianName : "",
+        action: (<StudentButtons Id={student._id} onStudentDelete={onStudentDelete} />),
+      }));
+      setStudents(data1);
+      setFilteredStudents(data1);
+      console.log("Data from local storage")
+
+    } else {
 
       if (!localStorage.getItem('schoolId')) {
         const schools = await getSchoolsFromCache();
@@ -351,7 +421,9 @@ const List = () => {
               action: (<StudentButtons Id={student._id} onStudentDelete={onStudentDelete} />),
             }));
             setStudents(data);
-            setFilteredStudents(data)
+            setFilteredStudents(data);
+            localStorage.removeItem('students');
+            localStorage.setItem('students', JSON.stringify(responnse.data));
           }
 
         } catch (error) {
@@ -368,9 +440,7 @@ const List = () => {
         navigate("/dashboard");
       }
     };
-
-    fetchStudents();
-  }, []);
+  }
 
   const handleSearch = (e) => {
     const records = students.filter((student) => (
@@ -378,21 +448,6 @@ const List = () => {
       || student.name?.toLowerCase().includes(e.target.value.toLowerCase())
       || student.course?.toString().toLowerCase().includes(e.target.value.toLowerCase())
       || student.active?.toLowerCase().includes(e.target.value.toLowerCase())
-    ))
-    setFilteredStudents(records)
-  }
-
-  const handleShowFilter = async () => {
-    setShowFilter("show");
-  };
-  const handleHideFilter = async () => {
-    setShowFilter(null);
-  };
-
-  const handleFilter = (e) => {
-    const records = students.filter((student) => (
-      student.course?.toLowerCase().includes(e.target.value.toLowerCase())
-      || student.name?.toLowerCase().includes(e.target.value.toLowerCase())
     ))
     setFilteredStudents(records)
   }
@@ -437,7 +492,14 @@ const List = () => {
           <div className="hidden lg:block" onClick={handleImport}>{LinkIcon("#", "Import")}</div> : null} */}
       </div>
 
-      <div className='mt-6 rounded-lg shadow-lg'>
+      {localStorage.getItem('courseId') != null || localStorage.getItem('status') != null ?
+        <div className='grid lg:flex mt-3 text-sm text-lime-600 items-center justify-center'>
+          <p>{localStorage.getItem('courseId') != 'null' ? "Course : " + courses.filter(course => course._id === localStorage.getItem('courseId')).map(course => course.name) + ", " : null}</p>
+          <p className='lg:ml-3'>{localStorage.getItem('status') != 'null' ? "Status : " + localStorage.getItem('status') : null}</p>
+        </div>
+        : <div className='flex mt-3'></div>}
+
+      <div className='mt-3 rounded-lg shadow-lg'>
         <DataTable columns={columns} data={filteredStudent} showGridlines highlightOnHover striped responsive conditionalRowStyles={conditionalRowStyles} />
       </div>
     </div>

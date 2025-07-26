@@ -66,7 +66,7 @@ export function checkAuth(screenName) {
 
 export const getBaseUrl = async () => {
    return "https://unis-server.vercel.app/api/";
- 
+  
 };
 
 export function handleRightClickAndFullScreen() {
@@ -121,7 +121,7 @@ export function LinkIcon(toPage, purpose) {
 
   } else if (purpose === "Search") {
     return <Link to={toPage} >
-      <FaSearch className="text-3xl text-purple-600 rounded p-1" /> </Link>
+      <FaSearch className="text-3xl text-cyan-700 rounded p-1" /> </Link>
   }
 }
 
