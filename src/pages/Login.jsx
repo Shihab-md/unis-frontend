@@ -60,6 +60,7 @@ const Login = () => {
     } catch (error) {
       setProcessing(false);
       if (error.response && !error.response.data.success) {
+        console.log(error)
         showSwalAlert("Error!", "Server is busy : Please try after sometime.", "error");
         setError(error.response.data.error)
       } else {

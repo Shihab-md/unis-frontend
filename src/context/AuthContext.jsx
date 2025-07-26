@@ -29,6 +29,7 @@ const AuthContext = ({ children }) => {
           setLoading(false)
         }
       } catch (error) {
+        console.log(error)
         if (error.response && !error.response.data.error) {
           setUser(null);
         }
@@ -54,6 +55,8 @@ const AuthContext = ({ children }) => {
       localStorage.removeItem("role");
       localStorage.removeItem("schoolId");
       localStorage.removeItem("schoolName");
+      localStorage.removeItem("courseId");
+      localStorage.removeItem("status");
 
       //  } else if (result.dismiss === Swal.DismissReason.cancel) {
       // Swal.fire('Cancelled', 'Your file is safe!', 'error');
