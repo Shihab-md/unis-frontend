@@ -494,6 +494,7 @@ const List = () => {
 
       {localStorage.getItem('courseId') != null || localStorage.getItem('status') != null ?
         <div className='grid lg:flex mt-3 text-sm text-lime-600 items-center justify-center'>
+          <p className='lg:mr-3 font-bold justify-center'>Filter Applied: </p>
           <p>{localStorage.getItem('courseId') != 'null' ? "Course : " + courses.filter(course => course._id === localStorage.getItem('courseId')).map(course => course.name) + ", " : null}</p>
           <p className='lg:ml-3'>{localStorage.getItem('status') != 'null' ? "Status : " + localStorage.getItem('status') : null}</p>
         </div>
