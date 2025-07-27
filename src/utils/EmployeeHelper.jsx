@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { getBaseUrl, showSwalAlert, showConfirmationSwalAlert } from '../utils/CommonHelper';
+import { getBaseUrl, showSwalAlert, showConfirmationSwalAlert, getButtonStyle } from '../utils/CommonHelper';
 import { useAuth } from '../context/AuthContext'
 import {
   FaEye,
@@ -124,22 +124,22 @@ export const EmployeeButtons = ({ Id, onEmployeeDelete }) => {
       {user.role === "superadmin" || user.role === "hquser" || user.role === "admin" ?
         <div className="flex space-x-3">
           <button
-            className="px-3 py-1 bg-teal-600 text-white rounded-sm text-shadow-lg"
+            className={getButtonStyle('View')}
             onClick={() => navigate(`/dashboard/employees/${Id}`)}
           >
-            <FaEye />
+            <FaEye className="m-1" />
           </button>
           <button
-            className="px-3 py-1 bg-blue-600 text-white rounded-sm text-shadow-lg"
+            className={getButtonStyle('Edit')}
             onClick={() => navigate(`/dashboard/employees/edit/${Id}`)}
           >
-            <FaEdit />
+            <FaEdit className="m-1" />
           </button>
           <button
-            className="px-3 py-1 bg-red-600 text-white rounded-sm text-shadow-lg"
+            className={getButtonStyle('Delete')}
             onClick={() => handleDelete(Id)}
           >
-            <FaTrashAlt />
+            <FaTrashAlt className="m-1" />
           </button>
         </div> : null}
     </div>

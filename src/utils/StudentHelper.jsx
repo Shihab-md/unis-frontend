@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { getBaseUrl, showSwalAlert, showConfirmationSwalAlert } from '../utils/CommonHelper';
-import { FaEye, FaUserCheck, FaEdit, FaTrashAlt, FaExchangeAlt  } from "react-icons/fa";
+import { getBaseUrl, showSwalAlert, showConfirmationSwalAlert, getButtonStyle } from '../utils/CommonHelper';
+import { FaEye, FaUserCheck, FaEdit, FaTrashAlt, FaExchangeAlt } from "react-icons/fa";
 
 export const columnsSelect = [
   {
@@ -235,34 +235,34 @@ export const StudentButtons = ({ Id, onStudentDelete }) => {
   return (
     <div className="flex space-x-3">
       <button
-        className="px-1.5 py-1 m-1 bg-teal-600 text-lg text-teal-100 rounded-md shadow-md shadow-teal-200"
+        className={getButtonStyle('View')}
         onClick={() => navigate(`/dashboard/students/${Id}`)}
       >
-        <FaEye className="m-1"/>
+        <FaEye className="m-1" />
       </button>
       <button
-        className="px-1.5 py-1 m-1 bg-blue-600 text-lg text-blue-100 rounded-md shadow-md shadow-blue-200"
+        className={getButtonStyle('Edit')}
         onClick={() => navigate(`/dashboard/students/edit/${Id}`)}
       >
-        <FaEdit className="m-1"/>
+        <FaEdit className="m-1" />
       </button>
       <button
-        className="px-1.5 py-1 m-1 bg-purple-500 text-lg text-purple-100 rounded-md shadow-md shadow-purple-200"
+        className={getButtonStyle('Promote')}
         onClick={() => navigate(`/dashboard/students/promote/${Id}`)}
       >
-        <FaUserCheck className="m-1"/>
+        <FaUserCheck className="m-1" />
       </button>
       <button
-        className="px-1.5 py-1 m-1 bg-yellow-700 text-lg text-yellow-100 rounded-md shadow-md shadow-yellow-200"
+        className={getButtonStyle('Transfer')}
         onClick={() => navigate(`#`)}
       >
-        <FaExchangeAlt className="m-1"/>
+        <FaExchangeAlt className="m-1" />
       </button>
       <button
-        className="px-1.5 py-1 m-1 bg-red-600 text-lg text-red-100 rounded-md shadow-md shadow-red-200"
+        className={getButtonStyle('Delete')}
         onClick={() => handleDelete(Id)}
       >
-        <FaTrashAlt className="m-1"/>
+        <FaTrashAlt className="m-1" />
       </button>
     </div>
   );

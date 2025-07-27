@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { getBaseUrl, showSwalAlert, showConfirmationSwalAlert } from '../utils/CommonHelper';
+import { getBaseUrl, showSwalAlert, showConfirmationSwalAlert, getButtonStyle } from '../utils/CommonHelper';
 import { useAuth } from '../context/AuthContext'
 import {
   FaEye,
@@ -141,7 +141,7 @@ export const SupervisorButtons = ({ Id, onSupervisorDelete }) => {
           showSwalAlert("Error!", error.response.data.error, "error");
         }
       }
-  //  } else if (result.dismiss === Swal.DismissReason.cancel) {
+      //  } else if (result.dismiss === Swal.DismissReason.cancel) {
       // Swal.fire('Cancelled', 'Your file is safe!', 'error');
       // Handle cancellation logic (optional)
     }
@@ -154,22 +154,22 @@ export const SupervisorButtons = ({ Id, onSupervisorDelete }) => {
       {user.role === "superadmin" || user.role === "hquser" ?
         <div className="flex space-x-3 rounded-sm shadow-lg">
           <button
-            className="px-3 py-1 bg-teal-600 text-white rounded-sm text-shadow-lg"
+            className={getButtonStyle('View')}
             onClick={() => navigate(`/dashboard/supervisors/${Id}`)}
           >
-            <FaEye />
+            <FaEye className="m-1" />
           </button>
           <button
-            className="px-3 py-1 bg-blue-600 text-white rounded-sm text-shadow-lg"
+            className={getButtonStyle('Edit')}
             onClick={() => navigate(`/dashboard/supervisors/edit/${Id}`)}
           >
-            <FaEdit />
+            <FaEdit className="m-1" />
           </button>
           <button
-            className="px-3 py-1 bg-red-600 text-white rounded-sm text-shadow-lg"
+            className={getButtonStyle('Delete')}
             onClick={() => handleDelete(Id)}
           >
-            <FaTrashAlt />
+            <FaTrashAlt className="m-1" />
           </button>
         </div> : null}
     </div>

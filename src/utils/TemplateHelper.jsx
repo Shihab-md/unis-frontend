@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { getBaseUrl, showSwalAlert, showConfirmationSwalAlert } from '../utils/CommonHelper';
+import { getBaseUrl, showSwalAlert, showConfirmationSwalAlert, getButtonStyle } from '../utils/CommonHelper';
 import {
   FaEye,
   FaEdit,
@@ -111,22 +111,22 @@ export const TemplateButtons = ({ Id, onTemplateDelete }) => {
   return (
     <div className="flex space-x-3 rounded-sm shadow-lg">
       <button
-        className="px-3 py-1 bg-teal-600 text-white rounded-sm text-shadow-lg"
+        className={getButtonStyle('View')}
         onClick={() => navigate(`/dashboard/templates/${Id}`)}
       >
-        <FaEye />
+        <FaEye className="m-1" />
       </button>
       <button
-        className="px-3 py-1 bg-blue-600 text-white rounded-sm text-shadow-lg"
+        className={getButtonStyle('Edit')}
         onClick={() => navigate(`/dashboard/templates/edit/${Id}`)}
       >
-        <FaEdit />
+        <FaEdit className="m-1" />
       </button>
       <button
-        className="px-3 py-1 bg-red-600 text-white rounded-sm text-shadow-lg"
+        className={getButtonStyle('Delete')}
         onClick={() => handleDelete(Id)}
       >
-        <FaTrashAlt />
+        <FaTrashAlt className="m-1" />
       </button>
     </div>
   );

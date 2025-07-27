@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { getBaseUrl, showSwalAlert, showConfirmationSwalAlert } from '../utils/CommonHelper';
+import { getBaseUrl, showSwalAlert, showConfirmationSwalAlert, getButtonStyle } from '../utils/CommonHelper';
 import { FaEye, } from "react-icons/fa";
 
 export const columns = [
@@ -95,10 +95,10 @@ export const CertificateButtons = ({ Id, onCertificateDelete }) => {
   return (
     <div className="flex space-x-3 rounded-sm shadow-lg">
       <button
-        className="px-3 py-1 bg-teal-600 text-white rounded-sm text-shadow-lg"
+        className={getButtonStyle('View')}
         onClick={() => navigate(`/dashboard/certificates/${Id}`)}
       >
-        <FaEye />
+        <FaEye className="m-1" />
       </button>
     </div>
   );

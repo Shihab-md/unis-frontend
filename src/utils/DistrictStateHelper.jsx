@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { getBaseUrl, showSwalAlert, showConfirmationSwalAlert } from './CommonHelper';
+import { getBaseUrl, showSwalAlert, showConfirmationSwalAlert, getButtonStyle } from './CommonHelper';
 import {
   FaEye,
   FaEdit,
@@ -121,22 +121,22 @@ export const DistrictStateButtons = ({ Id, onDistrictStateDelete }) => {
   return (
     <div className="flex space-x-3">
       <button
-        className="px-3 py-1 bg-teal-600 text-white rounded-sm text-shadow-lg"
+        className={getButtonStyle('View')}
         onClick={() => navigate(`/dashboard/districtStates/${Id}`)}
       >
-        <FaEye />
+        <FaEye className="m-1" />
       </button>
       <button
-        className="px-3 py-1 bg-blue-600 text-white rounded-sm text-shadow-lg"
+        className={getButtonStyle('Edit')}
         onClick={() => navigate(`/dashboard/districtStates/edit/${Id}`)}
       >
-        <FaEdit />
+        <FaEdit className="m-1" />
       </button>
       <button
-        className="px-3 py-1 bg-red-600 text-white rounded-sm text-shadow-lg"
+        className={getButtonStyle('Delete')}
         onClick={() => handleDelete(Id)}
       >
-        <FaTrashAlt />
+        <FaTrashAlt className="m-1" />
       </button>
     </div>
   );
