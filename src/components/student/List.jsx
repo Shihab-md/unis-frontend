@@ -203,6 +203,7 @@ const List = () => {
       getFilteredStudents();
 
     } else {
+
       localStorage.removeItem('students');
       localStorage.removeItem('courseId');
       localStorage.removeItem('status');
@@ -368,7 +369,7 @@ const List = () => {
     }
 
     const fetchStudents = async () => {
-      const data = localStorage.getItem('students');
+    //  const data = localStorage.getItem('students');
       console.log("Course Id : " + localStorage.getItem('courseId')
         + ", Status : " + localStorage.getItem('status')
         + ", AC Year : " + localStorage.getItem('acYear'))
@@ -562,7 +563,7 @@ const List = () => {
             <input
               type="text"
               placeholder="Search"
-              className="w-full px-3 py-0.5 border rounded shadow-md justify-center ml-1 lg:ml-0 mr-3 lg:mr-0"
+              class="w-full px-3 py-0.5 border rounded shadow-md justify-center ml-1 lg:ml-0 mr-3 lg:mr-0"
               onChange={handleSearch}
             />
           </div>

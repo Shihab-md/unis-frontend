@@ -57,6 +57,9 @@ const AuthContext = ({ children }) => {
       localStorage.removeItem("schoolName");
       localStorage.removeItem("courseId");
       localStorage.removeItem("status");
+      localStorage.removeItem('supervisorId');
+      localStorage.removeItem('districtStateId');
+      localStorage.removeItem('schStatus');
 
       //  } else if (result.dismiss === Swal.DismissReason.cancel) {
       // Swal.fire('Cancelled', 'Your file is safe!', 'error');

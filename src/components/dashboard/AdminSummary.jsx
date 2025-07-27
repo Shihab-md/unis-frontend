@@ -28,6 +28,9 @@ const AdminSummary = () => {
       localStorage.removeItem("students");
       localStorage.removeItem('courseId');
       localStorage.removeItem('status');
+      localStorage.removeItem('supervisorId');
+      localStorage.removeItem('districtStateId');
+      localStorage.removeItem('schStatus');
     }
 
     const fetchSummary = async () => {
