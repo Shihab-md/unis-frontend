@@ -57,6 +57,9 @@ const AuthContext = ({ children }) => {
       localStorage.removeItem("schoolName");
       localStorage.removeItem("courseId");
       localStorage.removeItem("status");
+      localStorage.removeItem("acYear");
+      localStorage.removeItem('maritalStatus');
+      localStorage.removeItem('hosteller');
       localStorage.removeItem('supervisorId');
       localStorage.removeItem('districtStateId');
       localStorage.removeItem('schStatus');

@@ -216,9 +216,10 @@ const List = () => {
     const fetchSchools = async () => {
       setSchLoading(true)
 
-      if (localStorage.getItem('supervisorId')
+      const data = localStorage.getItem('schools');
+      if (data && (localStorage.getItem('supervisorId')
         || localStorage.getItem('districtStateId')
-        || localStorage.getItem('schStatus')) {
+        || localStorage.getItem('schStatus'))) {
         console.log("111")
         getFilteredSchools();
       } else {
@@ -367,22 +368,23 @@ const List = () => {
           : null}
       </div>
 
-      {localStorage.getItem('supervisorId') != null || localStorage.getItem('districtStateId') != null
-        || localStorage.getItem('schStatus') != null ?
+      {(localStorage.getItem('supervisorId') != null && localStorage.getItem('supervisorId') != 'null')
+        || (localStorage.getItem('districtStateId') != null && localStorage.getItem('districtStateId') != 'null')
+        || (localStorage.getItem('schStatus') != null && localStorage.getItem('schStatus') != 'null') ?
         <div className='grid lg:flex mt-3 text-xs text-lime-600 items-center justify-center'>
           <p className='lg:mr-3 justify-center text-center'>Filter Applied: </p>
 
-          <p>{localStorage.getItem('supervisorId') != 'null' ?
+          <p>{localStorage.getItem('supervisorId') != null && localStorage.getItem('supervisorId') != 'null' ?
             <span className='text-blue-500'>Supervisor: <span className='text-gray-500'>
               {supervisors.filter(supervisor => supervisor._id === localStorage.getItem('supervisorId')).map(supervisor => supervisor.supervisorId + " : " + supervisor.userId.name) + ", "}
             </span></span> : null}</p>
 
-          <p className='lg:ml-3'>{localStorage.getItem('districtStateId') != 'null' ?
+          <p className='lg:ml-3'>{localStorage.getItem('districtStateId') != null && localStorage.getItem('districtStateId') != 'null' ?
             <span className='text-blue-500'>District & State: <span className='text-gray-500'>
               {districtStates.filter(districtState => districtState._id === localStorage.getItem('districtStateId')).map(districtState => districtState.district + ", " + districtState.state) + ", "}
             </span></span> : null}</p>
 
-          <p className='lg:ml-3'>{localStorage.getItem('schStatus') != 'null' ?
+          <p className='lg:ml-3'>{localStorage.getItem('schStatus') != null && localStorage.getItem('schStatus') != 'null' ?
             <span className='text-blue-500'>Status: <span className='text-gray-500'>
               {localStorage.getItem('schStatus')}</span></span> : null}</p>
 

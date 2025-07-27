@@ -369,15 +369,17 @@ const List = () => {
     }
 
     const fetchStudents = async () => {
-    //  const data = localStorage.getItem('students');
+      const data = localStorage.getItem('students');
       console.log("Course Id : " + localStorage.getItem('courseId')
         + ", Status : " + localStorage.getItem('status')
-        + ", AC Year : " + localStorage.getItem('acYear'))
-      if (localStorage.getItem('courseId')
+        + ", AC Year : " + localStorage.getItem('acYear')
+        + ", maritalStatus : " + localStorage.getItem('maritalStatus')
+        + ", hosteller : " + localStorage.getItem('hosteller'))
+      if (data && (localStorage.getItem('courseId')
         || localStorage.getItem('status')
         || localStorage.getItem('acYear')
         || localStorage.getItem('maritalStatus')
-        || localStorage.getItem('hosteller')) {
+        || localStorage.getItem('hosteller'))) {
         console.log("111")
         getFilteredStudents();
       } else {
@@ -581,31 +583,35 @@ const List = () => {
           <div className="hidden lg:block" onClick={handleImport}>{LinkIcon("#", "Import")}</div> : null} */}
       </div>
 
-      {localStorage.getItem('courseId') != null || localStorage.getItem('status') != null || localStorage.getItem('acYear') != null
-        || localStorage.getItem('maritalStatus') != null || localStorage.getItem('hosteller') != null ?
+      {(localStorage.getItem('courseId') != null && localStorage.getItem('courseId') != 'null')
+        || (localStorage.getItem('status') != null && localStorage.getItem('status') != 'null')
+        || (localStorage.getItem('acYear') != null && localStorage.getItem('acYear') != 'null')
+        || (localStorage.getItem('maritalStatus') != null && localStorage.getItem('maritalStatus') != 'null')
+        || (localStorage.getItem('hosteller') != null && localStorage.getItem('hosteller') != 'null') ?
+
         <div className='grid lg:flex mt-3 text-xs text-lime-600 items-center justify-center'>
           <p className='lg:mr-3 justify-center text-center'>Filter Applied: </p>
 
-          <p>{localStorage.getItem('courseId') != 'null' ?
+          <p>{localStorage.getItem('courseId') != null && localStorage.getItem('courseId') != 'null' ?
             <span className='text-blue-500'>Course: <span className='text-gray-500'>
               {courses.filter(course => course._id === localStorage.getItem('courseId')).map(course => course.name) + ", "}
             </span></span> : null}</p>
 
           <div className='flex'>
-            <p className='lg:ml-3'>{localStorage.getItem('status') != 'null' ?
+            <p className='lg:ml-3'>{localStorage.getItem('status') != null && localStorage.getItem('status') != 'null' ?
               <span className='text-blue-500'>Status: <span className='text-gray-500'>
                 {localStorage.getItem('status') + ", "}</span></span> : null}</p>
 
-            <p className='lg:ml-3'>{localStorage.getItem('acYear') != 'null' ?
+            <p className='lg:ml-3'>{localStorage.getItem('acYear') != null && localStorage.getItem('acYear') != 'null' ?
               <span className='text-blue-500'>AC Year: <span className='text-gray-500'>
                 {academicYears.filter(acYear => acYear._id === localStorage.getItem('acYear')).map(acYear => acYear.acYear) + ", "}
               </span></span> : null}</p>
 
-            <p className='lg:ml-3'>{localStorage.getItem('maritalStatus') != 'null' ?
+            <p className='lg:ml-3'>{localStorage.getItem('maritalStatus') != null && localStorage.getItem('maritalStatus') != 'null' ?
               <span className='text-blue-500'>Marital Status: <span className='text-gray-500'>
                 {localStorage.getItem('maritalStatus') + ", "}</span></span> : null}</p>
 
-            <p className='lg:ml-3'>{localStorage.getItem('hosteller') != 'null' ?
+            <p className='lg:ml-3'>{localStorage.getItem('hosteller') != null && localStorage.getItem('hosteller') != 'null' ?
               <span className='text-blue-500'>Hostel: <span className='text-gray-500'>
                 {localStorage.getItem('hosteller')}</span></span> : null}</p>
 
