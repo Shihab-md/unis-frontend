@@ -187,7 +187,7 @@ const List = () => {
           supervisorName: sch.supervisorId?.userId?.name,
           studentsCount: sch._studentsCount ? sch._studentsCount : 0,
           action: (<SchoolButtons Id={sch._id} />),
-        }));
+        })); 
         setSchools(data);
         setFilteredSchools(data)
         localStorage.removeItem('schools');
