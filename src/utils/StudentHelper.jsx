@@ -15,8 +15,8 @@ function getDetails(title, courseName, instituteName, refNumber, year, fees, sta
   return <div className="mt-3 mb-5">
     <p className='text-md font-bold text-pink-500 mb-2'>{title}</p>
     <p className='mb-1'>{courseName}<span className='text-gray-300 font-bold ml-5 mr-5'>|</span>{instituteName}</p>
-    <p>{"Ref. # : " + refNumber}<span className='text-gray-300 font-bold ml-5 mr-5'>|</span>
-      {"Year : " + year}<span className='text-gray-300 font-bold ml-5 mr-5'>|</span>
+    <p>{"Ref. No. : " + refNumber}<span className='text-gray-300 font-bold ml-5 mr-5'>|</span>
+      {year ? <span><span>Year : {year}</span><span className='text-gray-300 font-bold ml-5 mr-5'>|</span></span> : null}
       {"Fees : " + fees}<span className='text-gray-300 font-bold ml-5 mr-5'>|</span>
       {"Status : " + status}</p>
   </div>
@@ -24,37 +24,46 @@ function getDetails(title, courseName, instituteName, refNumber, year, fees, sta
 
 export const columnsSelectForAcademic = [
   {
-    name: <div className='text-md font-bold'>AC Year</div>,
+    name: <div className='text-sm font-bold text-lime-600'>AC Year</div>,
     selector: (row) => row.acYear.acYear,
     width: "95px",
   },
   {
-    name: <div className='text-md font-bold'>Course Details</div>,
+    name: <div className='text-sm font-bold text-lime-600'>Course Details</div>,
     selector: (row) => (<div>
       {row.courseId1 ?
         getDetails(
           'Deeniyath Education', row.courseId1?.name, row.instituteId1?.name,
-          row.refNumber1, row.year1, row.fees1, row.status1
+          row.refNumber1 ? row.refNumber1 : '-', row.year1,
+          row.fees1 ? row.fees1 : 0, row.status1 ? row.status1 : ''
         ) : null}
-      {row.courseId2 ?
-        getDetails(
-          'School Education', row.courseId2?.name, row.instituteId2?.name,
-          row.refNumber2, row.courseId2?.name, row.fees2, row.status2
-        ) : null}
-      {row.courseId3 ?
-        getDetails(
-          'College Education', row.courseId3?.name, row.instituteId3?.name,
-          row.refNumber3, row.year3, row.fees3, row.status3
-        ) : null}
+
       {row.courseId4 ?
         getDetails(
           'Islamic Home Science', row.courseId4?.name, row.instituteId4?.name,
-          row.refNumber4, row.year4, row.fees4, row.status4
+          row.refNumber4 ? row.refNumber4 : '-', null,
+          row.fees4 ? row.fees4 : 0, row.status4 ? row.status4 : ''
         ) : null}
+
+      {row.courseId2 ?
+        getDetails(
+          'School Education', row.courseId2?.name, row.instituteId2?.name,
+          row.refNumber2 ? row.refNumber2 : '-', null,
+          row.fees2 ? row.fees2 : 0, row.status2 ? row.status2 : ''
+        ) : null}
+
+      {row.courseId3 ?
+        getDetails(
+          'College Education', row.courseId3?.name, row.instituteId3?.name,
+          row.refNumber3 ? row.refNumber3 : '-', row.year3,
+          row.fees3 ? row.fees3 : 0, row.status3 ? row.status3 : ''
+        ) : null}
+
       {row.courseId5 ?
         getDetails(
           'Vocational Course', row.courseId5?.name, row.instituteId5?.name,
-          row.refNumber5, row.year5, row.fees5, row.status5
+          row.refNumber5 ? row.refNumber5 : '-', null,
+          row.fees5 ? row.fees5 : 0, row.status5 ? row.status5 : ''
         ) : null}
     </div>),
     width: "700px",

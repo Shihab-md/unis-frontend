@@ -1168,92 +1168,77 @@ const Edit = () => {
               </div>
 
               {showIslamicStudies ?
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                  <div className="flex space-x-3" />
-                  <div className="hidden lg:block flex space-x-3" />
-                  <ViewCard type="header" text="Islamic Home Science" />
-                  <div className="hidden lg:block flex space-x-3 mb-5" />
-
-                  {/* Institute 4 --------------------------------------------- */}
-                  <div>
-                    <label className="block mt-2 text-sm font-medium text-slate-500">
-                      Select Institute
-                    </label>
-                    <select
-                      name="instituteId4"
-                      value={student.instituteId4}
-                      onChange={handleChange}
-                      className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                    //    required
-                    >
-                      <option value=""></option>
-                      {institutes.filter(institute => institute.type === "Islamic Home Science").map((institute) => (
-                        <option key={institute._id} value={institute._id}>
-                          {institute.name}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-
-                  {/* Course 4 */}
-                  <div>
-                    <label className="block mt-2 text-sm font-medium text-slate-500">
-                      Select Course
-                    </label>
-                    <select
-                      name="courseId4"
-                      value={student.courseId4}
-                      onChange={handleChange}
-                      //   disabled={student.courseId4 ? true : false}
-                      className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                    //    required
-                    >
-                      <option value=""></option>
-                      {courses.filter(course => course.type === "Islamic Home Science").map((course) => (
-                        <option key={course._id} value={course._id}>
-                          {course.name}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-
-                  {/* Reference Number-4 */}
-                  <div>
-                    <label className="block text-sm font-medium text-slate-500">
-                      Reference Number
-                    </label>
-                    <input
-                      type="text"
-                      name="refNumber4"
-                      value={student.refNumber4}
-                      onChange={handleChange}
-                      //    placeholder="Qualification"
-                      className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                    //    required
-                    />
-                  </div>
-
+                <div>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                    {/* Year4 */}
-                    <div>
-                      <label className="block text-sm font-medium text-slate-500">
-                        Year
+                    <div className="flex space-x-3" />
+                    <div className="hidden lg:block flex space-x-3" />
+                    <ViewCard type="header" text="Islamic Home Science" />
+                    <div className="hidden lg:block flex space-x-3 mb-5" />
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-10 gap-5 mt-2">
+                    {/* Institute 4 --------------------------------------------- */}
+                    <div className='md:col-span-3'>
+                      <label className="block mt-2 text-sm font-medium text-slate-500">
+                        Select Institute
                       </label>
-                      <input
-                        type="number"
-                        name="year4"
-                        value={student.year4}
-                        min="0"
-                        //    disabled={student.year ? true : false}
+                      <select
+                        name="instituteId4"
+                        value={student.instituteId4}
                         onChange={handleChange}
                         className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                      //  required
+                      //    required
+                      >
+                        <option value=""></option>
+                        {institutes.filter(institute => institute.type === "Islamic Home Science").map((institute) => (
+                          <option key={institute._id} value={institute._id}>
+                            {institute.name}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+
+                    {/* Course 4 */}
+                    <div className='md:col-span-4'>
+                      <label className="block mt-2 text-sm font-medium text-slate-500">
+                        Select Course
+                      </label>
+                      <select
+                        name="courseId4"
+                        value={student.courseId4}
+                        onChange={handleChange}
+                        //   disabled={student.courseId4 ? true : false}
+                        className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
+                      //    required
+                      >
+                        <option value=""></option>
+                        {courses.filter(course => course.type === "Islamic Home Science").map((course) => (
+                          <option key={course._id} value={course._id}>
+                            {course.name}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+
+                    {/* Reference Number-4 */}
+                    <div className='md:col-span-2'>
+                      <label className="block md:mt-2 text-sm font-medium text-slate-500">
+                        Reference Number
+                      </label>
+                      <input
+                        type="text"
+                        name="refNumber4"
+                        value={student.refNumber4}
+                        onChange={handleChange}
+                        //    placeholder="Qualification"
+                        className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
+                      //    required
                       />
                     </div>
 
                     {/* Fees 4 */}
-                    <div>
-                      <label className="block text-sm font-medium text-slate-500">
+                    <div className='md:col-span-1'>
+                      <label className="block md:mt-2 text-sm font-medium text-slate-500">
                         Fees
                       </label>
                       <input
@@ -1272,93 +1257,77 @@ const Edit = () => {
                 </div> : null}
 
               {showSchool ?
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mt-7">
-                  <div className="flex space-x-3" />
-                  <div className="hidden lg:block flex space-x-3" />
-                  <ViewCard type="header" text="School Education" />
-                  <div className="hidden lg:block flex space-x-3 mb-5" />
-
-                  {/* Institute 2 --------------------------------------------- */}
-                  <div>
-                    <label className="block mt-2 text-sm font-medium text-slate-500">
-                      Select Institute
-                    </label>
-                    <select
-                      name="instituteId2"
-                      value={student.instituteId2}
-                      onChange={handleChange}
-                      className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                    //    required
-                    >
-                      <option value=""></option>
-                      {institutes.filter(institute => institute.type === "School Education").map((institute) => (
-                        <option key={institute._id} value={institute._id}>
-                          {institute.name}
-                        </option>
-                      ))}
-                    </select>
+                <div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mt-7">
+                    <div className="flex space-x-3" />
+                    <div className="hidden lg:block flex space-x-3" />
+                    <ViewCard type="header" text="School Education" />
+                    <div className="hidden lg:block flex space-x-3 mb-5" />
                   </div>
 
-                  {/* Course 2 */}
-                  <div>
-                    <label className="block mt-2 text-sm font-medium text-slate-500">
-                      Select Course
-                    </label>
-                    <select
-                      name="courseId2"
-                      value={student.courseId2}
-                      onChange={handleChange}
-                      //    disabled={student.courseId2 ? true : false}
-                      className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                    //    required
-                    >
-                      <option value=""></option>
-                      {courses.filter(course => course.type === "School Education").map((course) => (
-                        <option key={course._id} value={course._id}>
-                          {course.name}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-
-                  {/* Reference Number-2 */}
-                  <div>
-                    <label className="block text-sm font-medium text-slate-500">
-                      Reference Number
-                    </label>
-                    <input
-                      type="text"
-                      name="refNumber2"
-                      value={student.refNumber2}
-                      onChange={handleChange}
-                      //    placeholder="Qualification"
-                      className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                    //   required
-                    />
-                  </div>
-
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                    {/* Year2 */}
-                    <div>
-                      <label className="block text-sm font-medium text-slate-500">
-                        Std.
+                  <div className="grid grid-cols-1 md:grid-cols-10 gap-5 mt-2">
+                    {/* Institute 2 --------------------------------------------- */}
+                    <div className='md:col-span-4'>
+                      <label className="block mt-2 text-sm font-medium text-slate-500">
+                        Select Institute
                       </label>
-                      <input
-                        type="number"
-                        name="year2"
-                        value={student.year2}
-                        min="0"
-                        disabled={true}
-                        //    disabled={student.year ? true : false}
+                      <select
+                        name="instituteId2"
+                        value={student.instituteId2}
                         onChange={handleChange}
                         className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                      //  required
+                      //    required
+                      >
+                        <option value=""></option>
+                        {institutes.filter(institute => institute.type === "School Education").map((institute) => (
+                          <option key={institute._id} value={institute._id}>
+                            {institute.name}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+
+                    {/* Course 2 */}
+                    <div className='md:col-span-3'>
+                      <label className="block mt-2 text-sm font-medium text-slate-500">
+                        Select Course
+                      </label>
+                      <select
+                        name="courseId2"
+                        value={student.courseId2}
+                        onChange={handleChange}
+                        //    disabled={student.courseId2 ? true : false}
+                        className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
+                      //    required
+                      >
+                        <option value=""></option>
+                        {courses.filter(course => course.type === "School Education").map((course) => (
+                          <option key={course._id} value={course._id}>
+                            {course.name}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+
+                    {/* Reference Number-2 */}
+                    <div className='md:col-span-2'>
+                      <label className="block md:mt-2 text-sm font-medium text-slate-500">
+                        Reference Number
+                      </label>
+                      <input
+                        type="text"
+                        name="refNumber2"
+                        value={student.refNumber2}
+                        onChange={handleChange}
+                        //    placeholder="Qualification"
+                        className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
+                      //   required
                       />
                     </div>
 
                     {/* Fees 2 */}
-                    <div>
-                      <label className="block text-sm font-medium text-slate-500">
+                    <div className='md:col-span-1'>
+                      <label className="block md:mt-2 text-sm font-medium text-slate-500">
                         Fees
                       </label>
                       <input
@@ -1481,92 +1450,77 @@ const Edit = () => {
                 </div> : null}
 
               {showVocational ?
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mt-7">
-                  <div className="flex space-x-3" />
-                  <div className="hidden lg:block flex space-x-3" />
-                  <ViewCard type="header" text="Vocational Course" />
-                  <div className="hidden lg:block flex space-x-3 mb-5" />
-
-                  {/* Institute 5 --------------------------------------------- */}
-                  <div>
-                    <label className="block mt-2 text-sm font-medium text-slate-500">
-                      Select Institute
-                    </label>
-                    <select
-                      name="instituteId5"
-                      value={student.instituteId5}
-                      onChange={handleChange}
-                      className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                    //    required
-                    >
-                      <option value=""></option>
-                      {institutes.filter(institute => institute.type === "Vocational Courses").map((institute) => (
-                        <option key={institute._id} value={institute._id}>
-                          {institute.name}
-                        </option>
-                      ))}
-                    </select>
+                <div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mt-7">
+                    <div className="flex space-x-3" />
+                    <div className="hidden lg:block flex space-x-3" />
+                    <ViewCard type="header" text="Vocational Course" />
+                    <div className="hidden lg:block flex space-x-3 mb-5" />
                   </div>
 
-                  {/* Course 5 */}
-                  <div>
-                    <label className="block mt-2 text-sm font-medium text-slate-500">
-                      Select Course
-                    </label>
-                    <select
-                      name="courseId5"
-                      value={student.courseId5}
-                      onChange={handleChange}
-                      //  disabled={student.courseId5 ? true : false}
-                      className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                    //   required
-                    >
-                      <option value=""></option>
-                      {courses.filter(course => course.type === "Vocational Courses").map((course) => (
-                        <option key={course._id} value={course._id}>
-                          {course.name}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-
-                  {/* Reference Number-5 */}
-                  <div>
-                    <label className="block text-sm font-medium text-slate-500">
-                      Reference Number
-                    </label>
-                    <input
-                      type="text"
-                      name="refNumber5"
-                      value={student.refNumber5}
-                      onChange={handleChange}
-                      //    placeholder="Qualification"
-                      className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                    //    required
-                    />
-                  </div>
-
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                    {/* Year5 */}
-                    <div>
-                      <label className="block text-sm font-medium text-slate-500">
-                        Year
+                  <div className="grid grid-cols-1 md:grid-cols-10 gap-5 mt-2">
+                    {/* Institute 5 --------------------------------------------- */}
+                    <div className='md:col-span-3'>
+                      <label className="block mt-2 text-sm font-medium text-slate-500">
+                        Select Institute
                       </label>
-                      <input
-                        type="number"
-                        name="year5"
-                        value={student.year5}
-                        min="0"
-                        //    disabled={student.year ? true : false}
+                      <select
+                        name="instituteId5"
+                        value={student.instituteId5}
                         onChange={handleChange}
                         className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                      //  required
+                      //    required
+                      >
+                        <option value=""></option>
+                        {institutes.filter(institute => institute.type === "Vocational Courses").map((institute) => (
+                          <option key={institute._id} value={institute._id}>
+                            {institute.name}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+
+                    {/* Course 5 */}
+                    <div className='md:col-span-4'>
+                      <label className="block mt-2 text-sm font-medium text-slate-500">
+                        Select Course
+                      </label>
+                      <select
+                        name="courseId5"
+                        value={student.courseId5}
+                        onChange={handleChange}
+                        //  disabled={student.courseId5 ? true : false}
+                        className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
+                      //   required
+                      >
+                        <option value=""></option>
+                        {courses.filter(course => course.type === "Vocational Courses").map((course) => (
+                          <option key={course._id} value={course._id}>
+                            {course.name}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+
+                    {/* Reference Number-5 */}
+                    <div className='md:col-span-2'>
+                      <label className="block md:mt-2 text-sm font-medium text-slate-500">
+                        Reference Number
+                      </label>
+                      <input
+                        type="text"
+                        name="refNumber5"
+                        value={student.refNumber5}
+                        onChange={handleChange}
+                        //    placeholder="Qualification"
+                        className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
+                      //    required
                       />
                     </div>
 
                     {/* Fees 5 */}
-                    <div>
-                      <label className="block text-sm font-medium text-slate-500">
+                    <div className='md:col-span-1'>
+                      <label className="block md:mt-2 text-sm font-medium text-slate-500">
                         Fees
                       </label>
                       <input
