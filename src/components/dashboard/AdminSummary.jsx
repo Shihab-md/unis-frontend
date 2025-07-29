@@ -102,7 +102,7 @@ const AdminSummary = () => {
             <SummaryCard
               icon={<FaTasks />}
               text="Attendance"
-              number={summary.totalEmployees}
+              number="*"
               color="bg-purple-700"
             />
           </Link> : null}
@@ -112,7 +112,7 @@ const AdminSummary = () => {
             <SummaryCard
               icon={<FaCalendarAlt />}
               text="Leaves"
-              number={summary.totalEmployees}
+              number="*"
               color="bg-gray-500"
             />
           </Link> : null}
@@ -122,7 +122,7 @@ const AdminSummary = () => {
             <SummaryCard
               icon={<FaClipboardList />}
               text="Exams"
-              number={summary.totalEmployees}
+              number="*"
               color="bg-emerald-600"
             />
           </Link> : null}
@@ -132,7 +132,7 @@ const AdminSummary = () => {
             <SummaryCard
               icon={<FaMedal />}
               text="Certificates"
-              number="*"
+              number={summary.totalCertificates}
               color="bg-yellow-600"
             />
           </Link> : null}
@@ -142,7 +142,7 @@ const AdminSummary = () => {
             <SummaryCard
               icon={<FaRupeeSign />}
               text="Accounts"
-              number={summary.totalEmployees}
+              number="*"
               color="bg-orange-700"
             />
           </Link> : null}
@@ -162,7 +162,7 @@ const AdminSummary = () => {
             <SummaryCard
               icon={<FaFileContract />}
               text="Reports"
-              number={summary.totalEmployees}
+              number="*"
               color="bg-pink-500"
             />
           </Link> : null}
