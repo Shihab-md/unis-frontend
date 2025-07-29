@@ -148,6 +148,7 @@ const List = () => {
 
     } else {
 
+      localStorage.removeItem('schools');
       localStorage.removeItem('supervisorId');
       localStorage.removeItem('districtStateId');
       localStorage.removeItem('schStatus');

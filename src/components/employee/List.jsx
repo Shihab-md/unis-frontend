@@ -118,6 +118,7 @@ const List = () => {
 
     } else {
 
+      localStorage.removeItem('employees');
       localStorage.removeItem('empSchoolId');
       localStorage.removeItem('empRole');
       localStorage.removeItem('empStatus');

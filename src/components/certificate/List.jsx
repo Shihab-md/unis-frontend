@@ -137,6 +137,7 @@ const List = () => {
 
     } else {
 
+      localStorage.removeItem('certificates');
       localStorage.removeItem('certSchoolId');
       localStorage.removeItem('certCourseId');
       localStorage.removeItem('certACYearId');
