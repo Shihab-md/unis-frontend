@@ -192,7 +192,7 @@ const List = () => {
         console.log("222")
         getEmployees();
       }
-    }
+    } 
     fetchEmployees();
   }, []);
 
@@ -313,7 +313,7 @@ const List = () => {
               onChange={handleFilter}
             />
           </div>
-          <div className="hidden lg:block p-1 mt-0.5 rounded-md items-center justify-center ">
+          <div className="hidden lg:block p-1 mt-0.5 rounded-md items-center justify-center">
             {LinkIcon("#", "Search")}
           </div>
         </div>

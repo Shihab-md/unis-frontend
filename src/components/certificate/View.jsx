@@ -103,21 +103,21 @@ const View = () => {
               </div>
 
               <div className="flex mt-1 space-x-3 mb-5" />
-
+ 
               <ViewCard type="title" text="Sanadh Number" />
               <ViewCard type="data" text={certificate.code} />
 
               <ViewCard type="title" text="Sanadh Name" />
-              <ViewCard type="data" text={certificate.courseId.name} />
+              <ViewCard type="data" text={certificate.courseId?.name} />
 
               <ViewCard type="title" text="Student Roll Number" />
-              <ViewCard type="data" text={certificate.studentId.rollNumber} />
+              <ViewCard type="data" text={certificate.studentId?.rollNumber} />
 
               <ViewCard type="title" text="Student Name" />
-              <ViewCard type="data" text={certificate.userId.name} />
+              <ViewCard type="data" text={certificate.userId?.name} />
 
               <ViewCard type="title" text="Niswan Name" />
-              <ViewCard type="data" text={certificate.schoolId.code + " : " + certificate.schoolId.nameEnglish} />
+              <ViewCard type="data" text={certificate.schoolId?.code + " : " + certificate.schoolId?.nameEnglish} />
 
               <div className="flex mt-1 space-x-3 mb-5" />
             </div>

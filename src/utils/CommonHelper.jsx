@@ -188,16 +188,26 @@ export function removeLocalStorage() {
 
   localStorage.removeItem("schoolId");
   localStorage.removeItem("schoolName");
+
   localStorage.removeItem("students");
   localStorage.removeItem('courseId');
   localStorage.removeItem('status');
   localStorage.removeItem("acYear");
   localStorage.removeItem('maritalStatus');
   localStorage.removeItem('hosteller');
+
+  localStorage.removeItem('supervisors');
   localStorage.removeItem('supervisorId');
   localStorage.removeItem('districtStateId');
   localStorage.removeItem('schStatus');
+
+  localStorage.removeItem('employees');
   localStorage.removeItem('empSchoolId');
   localStorage.removeItem('empRole');
   localStorage.removeItem('empStatus');
+
+  localStorage.removeItem('certificates');
+  localStorage.removeItem('certSchoolId');
+  localStorage.removeItem('certCourseId');
+  localStorage.removeItem('certACYearId');
 }
