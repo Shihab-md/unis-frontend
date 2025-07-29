@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import SummaryCard from "./SummaryCard";
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext'
-import { getBaseUrl, handleRightClickAndFullScreen, getSpinner, showSwalAlert } from '../../utils/CommonHelper'
+import { getBaseUrl, handleRightClickAndFullScreen, getSpinner, showSwalAlert, removeLocalStorage } from '../../utils/CommonHelper'
 import {
   FaMosque, FaUserFriends, FaCoins, FaGraduationCap,
   FaUsers, FaHouseUser, FaClipboardList, FaTasks, FaCalendarAlt,
@@ -23,17 +23,7 @@ const AdminSummary = () => {
   useEffect(() => {
 
     if (user.role === "superadmin" || user.role === "hquser" || user.role === "supervisor") {
-      localStorage.removeItem("schoolId");
-      localStorage.removeItem("schoolName");
-      localStorage.removeItem("students");
-      localStorage.removeItem('courseId');
-      localStorage.removeItem('status');
-      localStorage.removeItem("acYear");
-      localStorage.removeItem('maritalStatus');
-      localStorage.removeItem('hosteller');
-      localStorage.removeItem('supervisorId');
-      localStorage.removeItem('districtStateId');
-      localStorage.removeItem('schStatus');
+      removeLocalStorage();
     }
 
     const fetchSummary = async () => {

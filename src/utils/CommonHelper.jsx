@@ -66,7 +66,7 @@ export function checkAuth(screenName) {
 
 export const getBaseUrl = async () => {
    return "https://unis-server.vercel.app/api/";
-
+  
 };
 
 export function handleRightClickAndFullScreen() {
@@ -182,4 +182,22 @@ export function getButtonStyle(buttonType) {
     return "px-1.5 py-1 m-1 bg-yellow-700 text-base text-yellow-100 rounded-md shadow-md shadow-yellow-200";
 
   }
+}
+
+export function removeLocalStorage() {
+
+  localStorage.removeItem("schoolId");
+  localStorage.removeItem("schoolName");
+  localStorage.removeItem("students");
+  localStorage.removeItem('courseId');
+  localStorage.removeItem('status');
+  localStorage.removeItem("acYear");
+  localStorage.removeItem('maritalStatus');
+  localStorage.removeItem('hosteller');
+  localStorage.removeItem('supervisorId');
+  localStorage.removeItem('districtStateId');
+  localStorage.removeItem('schStatus');
+  localStorage.removeItem('empSchoolId');
+  localStorage.removeItem('empRole');
+  localStorage.removeItem('empStatus');
 }

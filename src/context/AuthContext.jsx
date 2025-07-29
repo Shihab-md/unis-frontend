@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { getBaseUrl, showSwalAlert, showConfirmationSwalAlert } from '../utils/CommonHelper'
+import { getBaseUrl, showSwalAlert, showConfirmationSwalAlert, removeLocalStorage } from '../utils/CommonHelper'
 
 const userContext = createContext();
 
@@ -51,18 +51,7 @@ const AuthContext = ({ children }) => {
       showSwalAlert("Success!", "Successfully Logged out!", "success");
 
       setUser(null);
-      localStorage.removeItem("token");
-      localStorage.removeItem("role");
-      localStorage.removeItem("schoolId");
-      localStorage.removeItem("schoolName");
-      localStorage.removeItem("courseId");
-      localStorage.removeItem("status");
-      localStorage.removeItem("acYear");
-      localStorage.removeItem('maritalStatus');
-      localStorage.removeItem('hosteller');
-      localStorage.removeItem('supervisorId');
-      localStorage.removeItem('districtStateId');
-      localStorage.removeItem('schStatus');
+      removeLocalStorage();
 
       //  } else if (result.dismiss === Swal.DismissReason.cancel) {
       // Swal.fire('Cancelled', 'Your file is safe!', 'error');
