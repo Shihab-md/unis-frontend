@@ -1,7 +1,7 @@
 
 import { Link } from 'react-router-dom';
 import {
-  FaPlusSquare, FaArrowAltCircleLeft, FaRegCaretSquareDown, FaFilter, FaSearch
+  FaPlusSquare, FaArrowAltCircleLeft, FaRegCaretSquareDown, FaFilter, FaSearch, FaTasks
 } from "react-icons/fa";
 import Swal from 'sweetalert2';
 
@@ -117,7 +117,7 @@ export function LinkIcon(toPage, purpose) {
 
   } else if (purpose === "Filter") {
     return <Link to={toPage} >
-      <FaFilter className="text-3xl lg:text-4xl text-fuchsia-500 bg-white rounded shadow-lg border-2 border-fuchsia-700 p-1 lg:p-2" /> </Link>
+      <FaTasks className="text-3xl lg:text-4xl text-fuchsia-500 bg-white rounded shadow-lg border-2 border-fuchsia-700 p-1 lg:p-1.5" /> </Link>
 
   } else if (purpose === "Search") {
     return <Link to={toPage} >
