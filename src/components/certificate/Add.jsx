@@ -6,6 +6,7 @@ import { getSchoolsFromCache } from '../../utils/SchoolHelper'
 import { columnsSelect, getStudentsBySchoolAndCourse } from '../../utils/StudentHelper'
 import { getTemplatesFromCache } from '../../utils/TemplateHelper'
 import DataTable from 'react-data-table-component'
+import Select from 'react-select';
 import {
   FaRegTimesCircle
 } from "react-icons/fa";
@@ -20,6 +21,7 @@ const Create = () => {
   const [templates, setTemplates] = useState([]);
   const [students, setStudents] = useState([]);
   const [tempId, setTempId] = useState([]);
+  const [schoolId, setSchoolId] = useState([]);
 
   const [studentsLoading, setStudentsLoading] = useState(false)
   const [createdAll, setCreatedAll] = useState(null)
@@ -49,7 +51,10 @@ const Create = () => {
   const handleReload = async (schoolIdIdVal) => {
     setStudentsLoading(true)
     try {
-      if (schoolIdIdVal) {
+      console.log("Hi : " + schoolIdIdVal + ", " + tempId)
+      if (schoolIdIdVal && schoolIdIdVal != null && schoolIdIdVal != ''
+        && tempId && tempId != null && tempId != '') {
+        setStudents([]);
         const students = await getStudentsBySchoolAndCourse(schoolIdIdVal, tempId);
         setStudents(students);
       } else {
@@ -82,10 +87,12 @@ const Create = () => {
     const { name, value } = e.target;
 
     if (name === "templateId") {
+      console.log('HIHIIH - ' + value)
       setTempId(value);
     }
 
     if (name === "schoolId") {
+      setSchoolId(value);
       handleReload(value);
     }
     setFormData((prevData) => ({ ...prevData, [name]: value }));
@@ -110,8 +117,8 @@ const Create = () => {
         }
 
         const formDataNew = new FormData();
-        formDataNew.set("templateId", formDataObj.get("templateId"));
-        formDataNew.set("schoolId", formDataObj.get("schoolId"));
+        formDataNew.set("templateId", tempId);//formDataObj.get("templateId"));
+        formDataNew.set("schoolId", schoolId);//formDataObj.get("schoolId"));
         let downloaded = false;
         setCreatedAll(true);
         for (const selectedRow of selectedRows) {
@@ -178,10 +185,10 @@ const Create = () => {
 
         <form onSubmit={handleSubmit} autoComplete="off">
           <div className="py-2 px-4 border mt-5 mb-3 items-center justify-center rounded-lg shadow-lg bg-white">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
 
               {/* Templates */}
-              <div>
+              <div className='md:col-span-1'>
                 <label className="block mt-2 text-sm font-medium text-slate-500">
                   Select Template <span className="text-red-700">*</span>
                 </label>
@@ -201,33 +208,35 @@ const Create = () => {
               </div>
 
               {/* Schools  */}
-              <div>
+              <div className='md:col-span-2'>
                 <label className="block mt-2 text-sm font-medium text-slate-500">
-                  Select Niswan<span className="text-red-700">*</span>
+                  Select Niswan <span className="text-red-700">*</span>
                 </label>
-                <select
+
+                <Select className='mt-2 text-sm text-start mb-3'
                   name="schoolId"
-                  onChange={handleChange}
-                  className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                  required
-                >
-                  <option value=""></option>
-                  {schools.map((school) => (
-                    <option key={school._id} value={school._id}>
-                      {school.code + " : " + school.nameEnglish}
-                    </option>
-                  ))}
-                </select>
+                  options={schools.map(option => ({
+                    value: option._id, label: option.code + " : " + option.nameEnglish
+                  }))}
+
+                  onChange={(selectedOption) => {
+                    setSchoolId(selectedOption.value);
+                    handleReload(selectedOption.value);
+                    handleChange;
+                  }}
+                  maxMenuHeight={210}
+                  defaultOptions={[{ value: '', label: '' }]}
+                />
               </div>
 
               {/* Students List */}
-              <div className="">
+              <div className=''>
                 <label className="block mt-3 text-sm font-medium text-slate-500">
                   Select Students <span className="text-red-700">*</span>
                 </label>
               </div>
               <div className="flex space-x-1" />
-              <div className='mb-5 border rounded-md shadow-lg'>
+              <div className='md:col-span-3 mb-5 border rounded-md shadow-lg'>
                 {!studentsLoading ?
                   <DataTable columns={columnsSelect} data={students} reloadData={handleReload} selectableRows onSelectedRowsChange={handleRowChange} clearSelectedRows={toggledClearRows} highlightOnHover striped />
                   : <div className='flex items-center justify-center rounded-lg shadow-xl border'>
