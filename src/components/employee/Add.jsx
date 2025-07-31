@@ -7,6 +7,7 @@ import { getBaseUrl, handleRightClickAndFullScreen, checkAuth, getPrcessing, sho
 import {
   FaRegTimesCircle
 } from "react-icons/fa";
+import Select from 'react-select';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
@@ -15,12 +16,16 @@ const Add = () => {
   // To prevent right-click AND For FULL screen view.
   handleRightClickAndFullScreen();
 
-  const [processing, setProcessing] = useState(null)
+  const [processing, setProcessing] = useState()
   const [formData, setFormData] = useState({});
   const [schools, setSchools] = useState([]);
   const [selectedDOBDate, setSelectedDOBDate] = useState(null);
   const [selectedDOJDate, setSelectedDOJDate] = useState(null);
-  const navigate = useNavigate()
+
+  const [schoolId, setSchoolId] = useState([]);
+  //  const [selectedDOJDate, setSelectedDOJDate] = useState(null);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     // Authenticate the User.
@@ -48,6 +53,11 @@ const Add = () => {
     }
   };
 
+  const handleSchChange = (option) => {
+    setSchoolId(option.value);
+    console.log("Option : " + option + ", value : " + option.value)
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setProcessing(true);
@@ -63,6 +73,13 @@ const Add = () => {
       }
       if (selectedDOJDate) {
         formDataObj.append('doj', selectedDOJDate)
+      }
+      if (schoolId && schoolId != null && schoolId != '') {
+        formDataObj.append('schoolId', schoolId)
+        console.log("111 - " + schoolId)
+      } else {
+        formDataObj.append('schoolId', localStorage.getItem('schoolId'))
+        console.log("222 - " + localStorage.getItem('schoolId'))
       }
 
       const headers = {
@@ -117,11 +134,13 @@ const Add = () => {
                 <label className="block mt-2 text-sm font-medium text-slate-500">
                   Select Niswan <span className="text-red-700">*</span>
                 </label>
-                <select
+                {/*  <select
                   name="schoolId"
+                  value={localStorage.getItem('schoolId')}
                   onChange={handleChange}
                   className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-                  required
+                  //required
+                  disabled={user.role === "superadmin" ? false : true}
                 >
                   <option value="">Select Niswan</option>
                   {schools.map((school) => (
@@ -130,6 +149,20 @@ const Add = () => {
                     </option>
                   ))}
                 </select>
+*/}
+                <Select className='mt-2 text-sm text-start mb-3'
+                  name="schoolId"
+                  options={schools.map(option => ({
+                    value: option._id, label: option.code + " : " + option.nameEnglish
+                  }))}
+
+                  value={schools.filter(school => school._id === localStorage.getItem('schoolId')).map(option => ({
+                    value: option._id, label: option.code + " : " + option.nameEnglish
+                  }))}
+                  onChange={handleSchChange}
+                  maxMenuHeight={210}
+                  isDisabled={user.role === "superadmin" ? false : true}
+                />
               </div>
 
               {/* Name */}
