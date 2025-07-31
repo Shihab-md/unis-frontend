@@ -128,9 +128,9 @@ const Add = () => {
 
         <form onSubmit={handleSubmit} autoComplete="off">
           <div className="py-2 px-4 border mt-5 mb-3 items-center justify-center rounded-lg shadow-lg bg-white">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-3">
               {/* School */}
-              <div>
+              <div className='md:col-span-2'>
                 <label className="block mt-2 text-sm font-medium text-slate-500">
                   Select Niswan <span className="text-red-700">*</span>
                 </label>
@@ -149,8 +149,8 @@ const Add = () => {
                     </option>
                   ))}
                 </select>
-*/}
-                <Select className='mt-2 text-sm text-start mb-3'
+                  */}
+                <Select className='mt-1 p-1 text-sm text-start'
                   name="schoolId"
                   options={schools.map(option => ({
                     value: option._id, label: option.code + " : " + option.nameEnglish
@@ -192,7 +192,9 @@ const Add = () => {
                   required
                 />
               </div>
+            </div>
 
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-3 mt-7">
               {/* Employee ID */}
               <div>
                 <label className="block mt-2 text-sm font-medium text-slate-500">
@@ -244,9 +246,11 @@ const Add = () => {
                   required
                 />
               </div>
+            </div>
 
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-7">
               {/* Address */}
-              <div>
+              <div className='md:col-span-2'>
                 <label className="block mt-2 text-sm font-medium text-slate-500">
                   Address <span className="text-red-700">*</span>
                 </label>
@@ -257,21 +261,6 @@ const Add = () => {
                   //  placeholder="Address"
                   className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                   required
-                />
-              </div>
-
-              {/* Designation */}
-              <div>
-                <label className="block mt-2 text-sm font-medium text-slate-500">
-                  Designation
-                </label>
-                <input
-                  type="text"
-                  name="designation"
-                  onChange={handleChange}
-                  //  placeholder="Route Name"
-                  className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-                //  required
                 />
               </div>
 
@@ -289,6 +278,9 @@ const Add = () => {
                   required
                 />
               </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mt-7">
 
               {/* Date of Birth 
               <div>
@@ -307,7 +299,7 @@ const Add = () => {
 
               {/* Date of Birth */}
               <div className="grid grid-cols-1">
-                <label className="block mt-2 text-sm font-medium text-slate-500">
+                <label className="block mt-3 text-sm font-medium text-slate-500">
                   Date of Birth <span className="text-red-700">*</span>
                 </label>
                 <DatePicker
@@ -328,7 +320,7 @@ const Add = () => {
 
               {/* Gender */}
               <div>
-                <label className="block mt-2 text-sm font-medium text-slate-500">
+                <label className="block mt-3 text-sm font-medium text-slate-500">
                   Gender <span className="text-red-700">*</span>
                 </label>
                 <select
@@ -337,7 +329,7 @@ const Add = () => {
                   className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                   required
                 >
-                  <option value="">Select Gender</option>
+                  <option value=""></option>
                   <option value="Male">Male</option>
                   <option value="Female">Female</option>
                 </select>
@@ -345,7 +337,7 @@ const Add = () => {
 
               {/* Marital Status */}
               <div>
-                <label className="block mt-2 text-sm font-medium text-slate-500">
+                <label className="block mt-3 text-sm font-medium text-slate-500">
                   Marital Status <span className="text-red-700">*</span>
                 </label>
                 <select
@@ -355,7 +347,7 @@ const Add = () => {
                   className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                   required
                 >
-                  <option value="">Select Status</option>
+                  <option value=""></option>
                   <option value="Single">Single</option>
                   <option value="Married">Married</option>
                 </select>
@@ -378,7 +370,7 @@ const Add = () => {
 
               {/* Date of Joining */}
               <div className="grid grid-cols-1">
-                <label className="block mt-2 text-sm font-medium text-slate-500">
+                <label className="block mt-3 text-sm font-medium text-slate-500">
                   Date of Joining <span className="text-red-700">*</span>
                 </label>
                 <DatePicker
@@ -396,7 +388,9 @@ const Add = () => {
                 //toggleCalendarOnIconClick
                 />
               </div>
+            </div>
 
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-7">
               {/* Salary */}
               <div>
                 <label className="block mt-2 text-sm font-medium text-slate-500">
@@ -439,14 +433,31 @@ const Add = () => {
                   onChange={handleChange}
                   placeholder="Upload Image"
                   accept="image/*"
-                  className="mt-1 mb-5 p-2 block w-full border border-gray-300 rounded-md"
+                  className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                />
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-7 mb-5">
+              {/* Designation */}
+              <div className='md:col-span-3'>
+                <label className="block mt-2 text-sm font-medium text-slate-500">
+                  More details about the Employee
+                </label>
+                <input
+                  type="text"
+                  name="designation"
+                  onChange={handleChange}
+                  //  placeholder="Route Name"
+                  className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                //  required
                 />
               </div>
             </div>
           </div>
           <button
             type="submit"
-            className="w-full mt-6 bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded-lg shadow-lg"
+            className="w-full mt-3 bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded-lg shadow-lg"
           >
             Add Employee
           </button>
