@@ -97,7 +97,8 @@ const AdminSummary = () => {
             />
           </Link> : null}
 
-        {user.role === "superadmin" || user.role === "hquser" || user.role === "admin" || user.role === "teacher" ?
+        {user.role === "superadmin" || user.role === "hquser" || user.role === "admin"
+          || user.role === "teacher" || user.role === "usthadh" ?
           <Link to="#" >
             <SummaryCard
               icon={<FaTasks />}
@@ -107,7 +108,8 @@ const AdminSummary = () => {
             />
           </Link> : null}
 
-        {user.role === "superadmin" || user.role === "hquser" || user.role === "admin" || user.role === "teacher" ?
+        {user.role === "superadmin" || user.role === "hquser" || user.role === "admin"
+          || user.role === "teacher" || user.role === "usthadh" || user.role === "student" ?
           <Link to="#" >
             <SummaryCard
               icon={<FaCalendarAlt />}
@@ -137,7 +139,7 @@ const AdminSummary = () => {
             />
           </Link> : null}
 
-        {user.role === "superadmin" || user.role === "hquser" || user.role === "admin" ?
+        {user.role === "superadmin" || user.role === "admin" ?
           <Link to="#" >
             <SummaryCard
               icon={<FaRupeeSign />}
@@ -147,7 +149,7 @@ const AdminSummary = () => {
             />
           </Link> : null}
 
-        {user.role === "superadmin" || user.role === "hquser" ?
+        {user.role === "superadmin" ?
           <Link to="/dashboard/masters" >
             <SummaryCard
               icon={<FaCoins />}

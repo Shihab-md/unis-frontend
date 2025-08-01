@@ -327,7 +327,7 @@ const List = () => {
           <div className="mr-3" onClick={openFilterPopup}>{LinkIcon("#", "Filter")}</div>
           : null}
 
-        {user.role === "superadmin" || user.role === "hquser" || user.role === "admin" ?
+        {user.role === "superadmin" || user.role === "admin" ?
           LinkIcon("/dashboard/add-employee", "Add") : null}
       </div>
 

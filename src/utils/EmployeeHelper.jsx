@@ -129,6 +129,10 @@ export const EmployeeButtons = ({ Id, onEmployeeDelete }) => {
           >
             <FaEye className="m-1" />
           </button>
+        </div> : null}
+
+      {user.role === "superadmin" || user.role === "admin" ?
+        <div>
           <button
             className={getButtonStyle('Edit')}
             onClick={() => navigate(`/dashboard/employees/edit/${Id}`)}
