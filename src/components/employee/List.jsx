@@ -239,6 +239,7 @@ const List = () => {
     } else {
 
       try {
+        setFilteredEmployees(null);
         const responnse = await axios.get(
           (await getBaseUrl()).toString() + "employee",
           {
@@ -334,7 +335,7 @@ const List = () => {
         || (localStorage.getItem('empRole') != null && localStorage.getItem('empRole') != 'null')
         || (localStorage.getItem('empStatus') != null && localStorage.getItem('empStatus') != 'null') ?
 
-        <div className='grid lg:flex mt-3 text-xs text-lime-600 items-center justify-center'>
+        <div className='grid lg:flex mt-3 lg:mt-7 text-xs text-lime-600 items-center justify-center'>
           <p className='lg:mr-3 justify-center text-center'>Filter Applied: </p>
 
           <p>{localStorage.getItem('empSchoolId') != null && localStorage.getItem('empSchoolId') != 'null' ?
@@ -351,11 +352,11 @@ const List = () => {
               {localStorage.getItem('empStatus')}</span></span> : null}</p>
 
         </div>
-        : <div className='flex mt-3'></div>}
+        : <div className='flex mt-3 lg:mt-7'></div>}
 
       {filtering ?
         getFilterGif() :
-        <div className='mt-3 rounded-lg shadow-lg'>
+        <div className='mt-3 lg:mt-7 rounded-lg shadow-lg'>
           <DataTable columns={columns} data={filteredEmployee} pagination highlightOnHover striped responsive conditionalRowStyles={conditionalRowStyles} />
         </div>}
     </div>

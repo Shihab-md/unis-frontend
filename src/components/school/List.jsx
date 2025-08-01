@@ -280,6 +280,7 @@ const List = () => {
     } else {
 
       try {
+        setFilteredSchools(null);
         const responnse = await axios.get(
           (await getBaseUrl()).toString() + "school",
           {
@@ -378,7 +379,7 @@ const List = () => {
       {(localStorage.getItem('supervisorId') != null && localStorage.getItem('supervisorId') != 'null')
         || (localStorage.getItem('districtStateId') != null && localStorage.getItem('districtStateId') != 'null')
         || (localStorage.getItem('schStatus') != null && localStorage.getItem('schStatus') != 'null') ?
-        <div className='grid lg:flex mt-3 text-xs text-lime-600 items-center justify-center'>
+        <div className='grid lg:flex mt-3 lg:mt-7 text-xs text-lime-600 items-center justify-center'>
           <p className='lg:mr-3 justify-center text-center'>Filter Applied: </p>
 
           <p>{localStorage.getItem('supervisorId') != null && localStorage.getItem('supervisorId') != 'null' ?
@@ -396,12 +397,12 @@ const List = () => {
               {localStorage.getItem('schStatus')}</span></span> : null}</p>
 
         </div>
-        : <div className='flex mt-3'></div>}
+        : <div className='flex mt-3 lg:mt-7'></div>}
 
       {filtering ?
         getFilterGif() :
-        <div className='mt-3 rounded-lg shadow-lg bg-blue-50'>
-          <DataTable columns={columns} data={filteredSchool} highlightOnHover pagination striped responsive conditionalRowStyles={conditionalRowStyles} expandableRows expandableRowsComponent={ExpandedComponent} />
+        <div className='mt-3 lg:mt-7 rounded-lg shadow-lg bg-blue-50'>
+          <DataTable columns={columns} data={filteredSchool} highlightOnHover striped responsive conditionalRowStyles={conditionalRowStyles} expandableRows expandableRowsComponent={ExpandedComponent} />
         </div>}
     </div>
   )

@@ -253,6 +253,7 @@ const List = () => {
     } else {
 
       try {
+        setFilteredCertificates(null)
         const responnse = await axios.get(
           (await getBaseUrl()).toString() + "certificate",
           {
@@ -338,7 +339,7 @@ const List = () => {
         || (localStorage.getItem('certCourseId') != null && localStorage.getItem('certCourseId') != 'null')
         || (localStorage.getItem('certACYearId') != null && localStorage.getItem('certACYearId') != 'null') ?
 
-        <div className='grid lg:flex mt-3 text-xs text-lime-600 items-center justify-center'>
+        <div className='grid lg:flex mt-3 lg:mt-7 text-xs text-lime-600 items-center justify-center'>
           <p className='lg:mr-3 justify-center text-center'>Filter Applied: </p>
 
           <p>{localStorage.getItem('certSchoolId') != null && localStorage.getItem('certSchoolId') != 'null' ?
@@ -357,11 +358,11 @@ const List = () => {
             </span></span> : null}</p>
 
         </div>
-        : <div className='flex mt-3'></div>}
+        : <div className='flex mt-3 lg:mt-7'></div>}
 
       {filtering ?
         getFilterGif() :
-        <div className='mt-3 rounded-lg shadow-lg'>
+        <div className='mt-3 lg:mt-7 rounded-lg shadow-lg'>
           <DataTable columns={columns} data={filteredCertificate} pagination highlightOnHover striped responsive />
         </div>}
     </div>
