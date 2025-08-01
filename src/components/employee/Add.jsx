@@ -39,6 +39,10 @@ const Add = () => {
     const getSchoolsMap = async (id) => {
       const schools = await getSchoolsFromCache(id);
       setSchools(schools);
+
+      setSchoolId(schools.filter(school => school._id === localStorage.getItem('schoolId')).map(option => ({
+        value: option._id, label: option.code + " : " + option.nameEnglish
+      })));
     };
     getSchoolsMap();
   }, []);
@@ -54,7 +58,7 @@ const Add = () => {
   };
 
   const handleSchChange = (option) => {
-    setSchoolId(option.value);
+    setSchoolId(option);
     console.log("Option : " + option + ", value : " + option.value)
   };
 
@@ -74,9 +78,9 @@ const Add = () => {
       if (selectedDOJDate) {
         formDataObj.append('doj', selectedDOJDate)
       }
-      if (schoolId && schoolId != null && schoolId != '') {
-        formDataObj.append('schoolId', schoolId)
-        console.log("111 - " + schoolId)
+      if (user.role === "superadmin" && schoolId && schoolId != null && schoolId != '' && schoolId != 'undefined') {
+        formDataObj.append('schoolId', schoolId.value)
+        console.log("111 - " + schoolId.value)
       } else {
         formDataObj.append('schoolId', localStorage.getItem('schoolId'))
         console.log("222 - " + localStorage.getItem('schoolId'))
@@ -156,9 +160,8 @@ const Add = () => {
                     value: option._id, label: option.code + " : " + option.nameEnglish
                   }))}
 
-                  value={schools.filter(school => school._id === localStorage.getItem('schoolId')).map(option => ({
-                    value: option._id, label: option.code + " : " + option.nameEnglish
-                  }))}
+                  value={schoolId}
+
                   onChange={handleSchChange}
                   maxMenuHeight={210}
                   isDisabled={user.role === "superadmin" ? false : true}
