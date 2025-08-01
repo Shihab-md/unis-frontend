@@ -254,10 +254,11 @@ const Edit = () => {
                     onChange={handleChange}
                     className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                     required
-                    disabled={user.role === "superadmin" || user.role === "hquser" ?
+                    disabled={user.role === "superadmin" ?
                       false : true}
                   >
                     <option value="">Select Role</option>
+                    <option value="hquser">HQUser</option>
                     <option value="admin">Admin</option>
                     <option value="teacher">Teacher</option>
                     <option value="usthadh">Usthadh</option>

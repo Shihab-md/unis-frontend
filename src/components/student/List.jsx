@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { columns, StudentButtons, conditionalRowStyles } from '../../utils/StudentHelper'
 import DataTable from 'react-data-table-component'
 import axios from 'axios'
-import { getBaseUrl, handleRightClickAndFullScreen, getSpinner, getPrcessing, checkAuth, LinkIcon, showSwalAlert } from '../../utils/CommonHelper';
+import { getBaseUrl, handleRightClickAndFullScreen, getSpinner, getPrcessing, checkAuth, LinkIcon, showSwalAlert, getFilterGif } from '../../utils/CommonHelper';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import Select from 'react-select';
@@ -24,6 +24,7 @@ const List = () => {
   const [students, setStudents] = useState([])
   const [prevStudents, setPrevStudents] = useState([])
   const [supLoading, setSupLoading] = useState(false)
+  const [filtering, setFiltering] = useState(false)
   const [showFilter, setShowFilter] = useState(null);
   const [filteredStudent, setFilteredStudents] = useState(null)
   const [courses, setCourses] = useState([]);
@@ -217,7 +218,7 @@ const List = () => {
   };
 
   const getFilteredStudents = async () => {
-
+    setFiltering(true)
     try {
       const responnse = await axios.get(
         (await getBaseUrl()).toString() + "student/byFilter/"
@@ -264,7 +265,7 @@ const List = () => {
         //  navigate("/dashboard");
       }
     } finally {
-      setSupLoading(false)
+      setFiltering(false)
     }
   }
 
@@ -618,9 +619,11 @@ const List = () => {
           </div></div>
         : <div className='flex mt-3'></div>}
 
-      <div className='mt-3 rounded-lg shadow-lg'>
-        <DataTable columns={columns} data={filteredStudent} showGridlines highlightOnHover striped responsive conditionalRowStyles={conditionalRowStyles} />
-      </div>
+      {filtering ?
+        getFilterGif() :
+        <div className='mt-3 rounded-lg shadow-lg'>
+          <DataTable columns={columns} data={filteredStudent} showGridlines highlightOnHover striped responsive conditionalRowStyles={conditionalRowStyles} />
+        </div>}
     </div>
   )
 }

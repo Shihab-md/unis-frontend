@@ -9,7 +9,7 @@ import Select from 'react-select';
 import { useAuth } from '../../context/AuthContext'
 import { getSupervisorsFromCache } from '../../utils/SupervisorHelper';
 import { getDistrictStatesFromCache } from '../../utils/DistrictStateHelper';
-import { getBaseUrl, handleRightClickAndFullScreen, getSpinner, checkAuth, LinkIcon, showSwalAlert } from '../../utils/CommonHelper'
+import { getBaseUrl, handleRightClickAndFullScreen, getSpinner, checkAuth, LinkIcon, showSwalAlert, getFilterGif } from '../../utils/CommonHelper'
 
 const List = () => {
 
@@ -18,6 +18,7 @@ const List = () => {
 
   const [schools, setSchools] = useState([])
   const [schLoading, setSchLoading] = useState(false)
+  const [filtering, setFiltering] = useState(false)
   const [filteredSchool, setFilteredSchools] = useState(null)
   const [supervisors, setSupervisors] = useState([]);
   const [districtStates, setDistrictStates] = useState([]);
@@ -158,6 +159,7 @@ const List = () => {
   };
 
   const getFilteredSchools = async () => {
+    setFiltering(true)
     try {
       const responnse = await axios.get(
         (await getBaseUrl()).toString() + "school/bySchFilter/"
@@ -188,7 +190,7 @@ const List = () => {
           supervisorName: sch.supervisorId?.userId?.name,
           studentsCount: sch._studentsCount ? sch._studentsCount : 0,
           action: (<SchoolButtons Id={sch._id} />),
-        })); 
+        }));
         setSchools(data);
         setFilteredSchools(data)
         localStorage.removeItem('schools');
@@ -202,9 +204,13 @@ const List = () => {
         //  navigate("/dashboard");
       }
     } finally {
-      setSchLoading(false)
+      setFiltering(false)
     }
   }
+
+  //  if (filtering) {
+  //    return getSpinner();
+  //  }
 
   useEffect(() => {
 
@@ -392,9 +398,11 @@ const List = () => {
         </div>
         : <div className='flex mt-3'></div>}
 
-      <div className='mt-3 rounded-lg shadow-lg bg-blue-50'>
-        <DataTable columns={columns} data={filteredSchool} highlightOnHover striped responsive conditionalRowStyles={conditionalRowStyles} expandableRows expandableRowsComponent={ExpandedComponent} />
-      </div>
+      {filtering ?
+        getFilterGif() :
+        <div className='mt-3 rounded-lg shadow-lg bg-blue-50'>
+          <DataTable columns={columns} data={filteredSchool} highlightOnHover pagination striped responsive conditionalRowStyles={conditionalRowStyles} expandableRows expandableRowsComponent={ExpandedComponent} />
+        </div>}
     </div>
   )
 }

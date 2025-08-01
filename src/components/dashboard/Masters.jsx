@@ -48,7 +48,7 @@ const Masters = () => {
       <h5 className="p-1 text-center font-semibold lg:text-xl text-gray-600 mt-14">إيمان : تقوى : حياء : أخلاق : دعاء : دعوة</h5>
       <h5 className="p-1 mt-1 text-center text-gray-600">Welcome, {user.name}</h5>
       <h5 className="text-2xl mt-1 mb-3 font-bold capitalize text-center text-gray-500 text-shadow-lg">{user.role} Dashboard</h5>
-      <h5 className="text-xl mt-2 mb-3 font-bold capitalize text-center text-gray-500 text-shadow-lg">Masters</h5>
+      <h5 className="text-xl mt-2 mb-3 font-bold capitalize text-center text-green-600 text-shadow-lg">Masters</h5>
 
       <div className="content-center rounded-lg grid grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-10 mt-16 flex rounded-lg">
 

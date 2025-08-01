@@ -222,6 +222,8 @@ const Add = () => {
                 >
                   <option value="">Select Role</option>
                   {user.role === "superadmin" ?
+                    <option value="hquser">HQUser</option> : null}
+                  {user.role === "superadmin" ?
                     <option value="admin">Admin</option> : null}
                   {user.role === "superadmin" ?
                     <option value="teacher">Teacher</option> : null}

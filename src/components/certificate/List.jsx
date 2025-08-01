@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { columns, CertificateButtons } from '../../utils/CertificateHelper'
-import { getBaseUrl, handleRightClickAndFullScreen, getSpinner, checkAuth, LinkIcon, showSwalAlert } from '../../utils/CommonHelper';
+import { getBaseUrl, handleRightClickAndFullScreen, getSpinner, checkAuth, LinkIcon, showSwalAlert, getFilterGif } from '../../utils/CommonHelper';
 import DataTable from 'react-data-table-component'
 import axios from 'axios'
 import Swal from 'sweetalert2';
@@ -19,7 +19,7 @@ const List = () => {
   const [certificates, setCertificates] = useState([])
   const [supLoading, setSupLoading] = useState(false)
   const [filteredCertificate, setFilteredCertificates] = useState(null)
-
+  const [filtering, setFiltering] = useState(false)
   const [schools, setSchools] = useState([]);
   const [courses, setCourses] = useState([]);
   const [academicYears, setAcademicYears] = useState([]);
@@ -147,7 +147,7 @@ const List = () => {
   };
 
   const getFilteredCertificates = async () => {
-
+    setFiltering(true)
     try {
       const responnse = await axios.get(
         (await getBaseUrl()).toString() + "certificate/byCertFilter/"
@@ -186,7 +186,7 @@ const List = () => {
         //  navigate("/dashboard");
       }
     } finally {
-      setSupLoading(false)
+      setFiltering(false)
     }
   }
 
@@ -359,9 +359,11 @@ const List = () => {
         </div>
         : <div className='flex mt-3'></div>}
 
-      <div className='mt-3 rounded-lg shadow-lg'>
-        <DataTable columns={columns} data={filteredCertificate} pagination highlightOnHover striped responsive />
-      </div>
+      {filtering ?
+        getFilterGif() :
+        <div className='mt-3 rounded-lg shadow-lg'>
+          <DataTable columns={columns} data={filteredCertificate} pagination highlightOnHover striped responsive />
+        </div>}
     </div>
   )
 }

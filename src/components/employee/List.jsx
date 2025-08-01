@@ -7,7 +7,7 @@ import { getSchoolsFromCache } from '../../utils/SchoolHelper';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import Select from 'react-select';
-import { getBaseUrl, handleRightClickAndFullScreen, getSpinner, checkAuth, LinkIcon, showSwalAlert } from '../../utils/CommonHelper';
+import { getBaseUrl, handleRightClickAndFullScreen, getSpinner, checkAuth, LinkIcon, showSwalAlert, toCamelCase, getFilterGif } from '../../utils/CommonHelper';
 import { useAuth } from '../../context/AuthContext'
 
 const List = () => {
@@ -19,6 +19,7 @@ const List = () => {
   const [employees, setEmployees] = useState([])
   const [supLoading, setSupLoading] = useState(false)
   const [filteredEmployee, setFilteredEmployees] = useState(null)
+  const [filtering, setFiltering] = useState(false)
   const navigate = useNavigate()
 
   const MySwal = withReactContent(Swal);
@@ -59,7 +60,8 @@ const List = () => {
             <span className='text-sm mb-1 text-start text-blue-500'>Role</span>
             <Select className='text-sm text-start mb-3'
               options={
-                [{ value: 'admin', label: 'Admin' },
+                [{ value: 'hquser', label: 'HQUser' },
+                { value: 'admin', label: 'Admin' },
                 { value: 'teacher', label: 'Teacher' },
                 { value: 'usthadh', label: 'Usthadh' },
                 { value: 'warden', label: 'Warden' },
@@ -128,6 +130,7 @@ const List = () => {
   };
 
   const getFilteredEmployees = async () => {
+    setFiltering(true)
     try {
       const responnse = await axios.get(
         (await getBaseUrl()).toString() + "employee/byEmpFilter/"
@@ -168,7 +171,7 @@ const List = () => {
         //  navigate("/dashboard");
       }
     } finally {
-      setSupLoading(false)
+      setFiltering(false)
     }
   }
 
@@ -193,7 +196,7 @@ const List = () => {
         console.log("222")
         getEmployees();
       }
-    } 
+    }
     fetchEmployees();
   }, []);
 
@@ -341,7 +344,7 @@ const List = () => {
 
           <p className='lg:ml-3'>{localStorage.getItem('empRole') != null && localStorage.getItem('empRole') != 'null' ?
             <span className='text-blue-500'>Status: <span className='text-gray-500'>
-              {localStorage.getItem('empRole')}</span></span> : null}</p>
+              {toCamelCase(localStorage.getItem('empRole'))}</span></span> : null}</p>
 
           <p className='lg:ml-3'>{localStorage.getItem('empStatus') != null && localStorage.getItem('empStatus') != 'null' ?
             <span className='text-blue-500'>Status: <span className='text-gray-500'>
@@ -350,9 +353,11 @@ const List = () => {
         </div>
         : <div className='flex mt-3'></div>}
 
-      <div className='mt-3 rounded-lg shadow-lg'>
-        <DataTable columns={columns} data={filteredEmployee} pagination highlightOnHover striped responsive conditionalRowStyles={conditionalRowStyles} />
-      </div>
+      {filtering ?
+        getFilterGif() :
+        <div className='mt-3 rounded-lg shadow-lg'>
+          <DataTable columns={columns} data={filteredEmployee} pagination highlightOnHover striped responsive conditionalRowStyles={conditionalRowStyles} />
+        </div>}
     </div>
   )
 }

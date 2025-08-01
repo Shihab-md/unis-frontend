@@ -69,6 +69,10 @@ export const getBaseUrl = async () => {
   
 };
 
+export function toCamelCase(inputString) {
+  return inputString ? inputString.toLowerCase().replace(/(^\w{1})|(\s{1}\w{1})/g, match => match.toUpperCase()) : null;
+}
+
 export function handleRightClickAndFullScreen() {
 
   const isDisableRightClick = true;
@@ -100,6 +104,18 @@ export function getPrcessing() {
   >
     <img width={320} className='flex items-center justify-center rounded-lg shadow-xl border' src="/spinner1.gif" />
   </dialog></div>
+}
+
+export function getFilterGif() {
+  return <div className="p-5 mt-7 rounded-lg">
+    <dialog
+      className="bg-[url(/bg-img.jpg)] dialog rounded-3xl"
+      style={{ position: 'absolute' }}
+      open
+    >
+      <img width={160} className='flex items-center justify-center rounded-3xl shadow-2xl border' src="/filter.gif" />
+    </dialog>
+  </div>
 }
 
 export function LinkIcon(toPage, purpose) {
