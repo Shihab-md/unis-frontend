@@ -889,7 +889,7 @@ const Add = () => {
                     type="number"
                     name="year1"
                     onChange={handleChange}
-                    min="0"
+                    min="1"
                     onPaste={preventPasteNegative}
                     onKeyPress={preventMinus}
                     onKeyDown={handleKeyDown}
@@ -1260,7 +1260,7 @@ const Add = () => {
                         type="number"
                         name="year3"
                         onChange={handleChange}
-                        min="0"
+                        min="1"
                         onPaste={preventPasteNegative}
                         onKeyPress={preventMinus}
                         onKeyDown={handleKeyDown}
@@ -1397,7 +1397,7 @@ const Add = () => {
 
           <button
             type="submit"
-            className="w-full mt-6 bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded-lg shadow-lg"
+            className="w-full mt-3 bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded-lg shadow-lg"
           >
             Add Student
           </button>

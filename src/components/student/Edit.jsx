@@ -135,6 +135,8 @@ const Edit = () => {
         if (responnse.data.success) {
           const student = responnse.data.student;
           const academics = student._academics;
+
+          console.log(academics)
           //  const academicResponse = await axios.get(
           //    (await getBaseUrl()).toString() + `student/${student._id}/${'777'}`,
           //    {
@@ -964,12 +966,11 @@ const Edit = () => {
                 <div className="hidden lg:block flex space-x-3 mb-5" />
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                <div className="flex space-x-3 mb-5" />
-                <div className="hidden lg:block flex space-x-3 mb-5" />
+              <div className="grid mt-10 grid-cols-1 gap-5 mb-3">
                 <ViewCard type="header" text="Deeniyath Education" />
-                <div className="hidden lg:block flex space-x-3 mb-5" />
+              </div>
 
+              <div className="grid mt-5 grid-cols-1 md:grid-cols-2 gap-5">
                 {/* Institute 1 --------------------------------------------- */}
                 <div>
                   <label className="block mt-2 text-sm font-medium text-slate-500">
@@ -1039,15 +1040,18 @@ const Edit = () => {
                       type="number"
                       name="year1"
                       value={student.year1}
-                      min="0"
+                      min="1"
                       //    disabled={student.year ? true : false}
                       onChange={handleChange}
+                      onPaste={preventPasteNegative}
+                      onKeyPress={preventMinus}
+                      onKeyDown={handleKeyDown}
                       className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                       required
                     />
                   </div>
 
-                  {/* Fees */}
+                  {/* Fees1 */}
                   <div>
                     <label className="block text-sm font-medium text-slate-500">
                       Fees
@@ -1060,6 +1064,9 @@ const Edit = () => {
                       //   value={fees1Val}
                       //  disabled={student.fees1 ? true : false}
                       onChange={handleChange}
+                      onPaste={preventPasteNegative}
+                      onKeyPress={preventMinus}
+                      onKeyDown={handleKeyDown}
                       className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                     //    required
                     />
@@ -1067,10 +1074,10 @@ const Edit = () => {
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-1 mt-10 mb-4 p-2 lg:p-5 gap-5 pt-5 lg:ml-16 lg:mr-20 border-2 border-green-500 rounded-md shadow-lg">
+              <div className="grid grid-cols-1 md:grid-cols-1 mt-14 mb-4 p-2 lg:p-5 gap-5 pt-5 lg:ml-16 lg:mr-20 border-2 border-green-500 rounded-md shadow-lg">
                 <div className="flex justify-center">
                   <label className='flex text-sm lg:text-md text-pink-600 ml-2 lg:ml-1 mr-2 lg:mr-1'>
-                    If the student is studying below courses also with our Niswan, Please check the relevant checkboxes and fill the details.</label>
+                    If the student is studying / planning to study below courses also with our Niswan, Please check the relevant checkboxes and fill the details.</label>
                 </div>
 
                 {/* For Mobile display*/}
@@ -1168,15 +1175,12 @@ const Edit = () => {
               </div>
 
               {showIslamicStudies ?
-                <div>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                    <div className="flex space-x-3" />
-                    <div className="hidden lg:block flex space-x-3" />
+                <div className="grid mt-3">
+                  <div className="grid mt-10 grid-cols-1 gap-5">
                     <ViewCard type="header" text="Islamic Home Science" />
-                    <div className="hidden lg:block flex space-x-3 mb-5" />
                   </div>
 
-                  <div className="grid grid-cols-1 md:grid-cols-10 gap-5 mt-2">
+                  <div className="grid mt-5 grid-cols-1 md:grid-cols-10 gap-5 mt-2">
                     {/* Institute 4 --------------------------------------------- */}
                     <div className='md:col-span-3'>
                       <label className="block mt-2 text-sm font-medium text-slate-500">
@@ -1246,6 +1250,9 @@ const Edit = () => {
                         name="fees4"
                         value={student.fees4}
                         min="0"
+                        onPaste={preventPasteNegative}
+                        onKeyPress={preventMinus}
+                        onKeyDown={handleKeyDown}
                         //  value={fees4Val}
                         //  disabled={student.fees4 ? true : false}
                         onChange={handleChange}
@@ -1257,12 +1264,9 @@ const Edit = () => {
                 </div> : null}
 
               {showSchool ?
-                <div>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mt-7">
-                    <div className="flex space-x-3" />
-                    <div className="hidden lg:block flex space-x-3" />
+                <div className="grid mt-3">
+                  <div className="grid mt-10 grid-cols-1 gap-5 mb-5">
                     <ViewCard type="header" text="School Education" />
-                    <div className="hidden lg:block flex space-x-3 mb-5" />
                   </div>
 
                   <div className="grid grid-cols-1 md:grid-cols-10 gap-5 mt-2">
@@ -1338,6 +1342,9 @@ const Edit = () => {
                         //   value={fees2Val}
                         //    disabled={student.fees2 ? true : false}
                         onChange={handleChange}
+                        onPaste={preventPasteNegative}
+                        onKeyPress={preventMinus}
+                        onKeyDown={handleKeyDown}
                         className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                       //    required
                       />
@@ -1346,116 +1353,120 @@ const Edit = () => {
                 </div> : null}
 
               {showCollege ?
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mt-7">
-                  <div className="flex space-x-3" />
-                  <div className="hidden lg:block flex space-x-3" />
-                  <ViewCard type="header" text="College Education" />
-                  <div className="hidden lg:block flex space-x-3 mb-5" />
-
-                  {/* Institute 3 --------------------------------------------- */}
-                  <div>
-                    <label className="block mt-2 text-sm font-medium text-slate-500">
-                      Select Institute
-                    </label>
-                    <select
-                      name="instituteId3"
-                      value={student.instituteId3}
-                      onChange={handleChange}
-                      className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                    //    required
-                    >
-                      <option value=""></option>
-                      {institutes.filter(institute => institute.type === "College Education").map((institute) => (
-                        <option key={institute._id} value={institute._id}>
-                          {institute.name}
-                        </option>
-                      ))}
-                    </select>
+                <div className="grid mt-3">
+                  <div className="grid mt-10 grid-cols-1 gap-5 mb-3">
+                    <ViewCard type="header" text="College Education" />
                   </div>
 
-                  {/* Course 3 */}
-                  <div>
-                    <label className="block mt-2 text-sm font-medium text-slate-500">
-                      Select Course
-                    </label>
-                    <select
-                      name="courseId3"
-                      value={student.courseId3}
-                      onChange={handleChange}
-                      //   disabled={student.courseId3 ? true : false}
-                      className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                    //    required
-                    >
-                      <option value=""></option>
-                      {courses.filter(course => course.type === "College Education").map((course) => (
-                        <option key={course._id} value={course._id}>
-                          {course.name}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-
-                  {/* Reference Number-3 */}
-                  <div>
-                    <label className="block text-sm font-medium text-slate-500">
-                      Reference Number
-                    </label>
-                    <input
-                      type="text"
-                      name="refNumber3"
-                      value={student.refNumber3}
-                      onChange={handleChange}
-                      //    placeholder="Qualification"
-                      className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                    //   required
-                    />
-                  </div>
-
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                    {/* Year3 */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mt-5">
+                    {/* Institute 3 --------------------------------------------- */}
                     <div>
-                      <label className="block text-sm font-medium text-slate-500">
-                        Year
+                      <label className="block mt-2 text-sm font-medium text-slate-500">
+                        Select Institute
                       </label>
-                      <input
-                        type="number"
-                        name="year3"
-                        value={student.year3}
-                        min="0"
-                        //    disabled={student.year ? true : false}
-                        onChange={handleChange}
-                        className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                      //  required
-                      />
-                    </div>
-
-                    {/* Fees 3 */}
-                    <div>
-                      <label className="block text-sm font-medium text-slate-500">
-                        Fees
-                      </label>
-                      <input
-                        type="number"
-                        name="fees3"
-                        value={student.fees3}
-                        min="0"
-                        //  value={fees3Val}
-                        //   disabled={student.fees3 ? true : false}
+                      <select
+                        name="instituteId3"
+                        value={student.instituteId3}
                         onChange={handleChange}
                         className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                       //    required
+                      >
+                        <option value=""></option>
+                        {institutes.filter(institute => institute.type === "College Education").map((institute) => (
+                          <option key={institute._id} value={institute._id}>
+                            {institute.name}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+
+                    {/* Course 3 */}
+                    <div>
+                      <label className="block mt-2 text-sm font-medium text-slate-500">
+                        Select Course
+                      </label>
+                      <select
+                        name="courseId3"
+                        value={student.courseId3}
+                        onChange={handleChange}
+                        //   disabled={student.courseId3 ? true : false}
+                        className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
+                      //    required
+                      >
+                        <option value=""></option>
+                        {courses.filter(course => course.type === "College Education").map((course) => (
+                          <option key={course._id} value={course._id}>
+                            {course.name}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+
+                    {/* Reference Number-3 */}
+                    <div>
+                      <label className="block text-sm font-medium text-slate-500">
+                        Reference Number
+                      </label>
+                      <input
+                        type="text"
+                        name="refNumber3"
+                        value={student.refNumber3}
+                        onChange={handleChange}
+                        //    placeholder="Qualification"
+                        className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
+                      //   required
                       />
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                      {/* Year3 */}
+                      <div>
+                        <label className="block text-sm font-medium text-slate-500">
+                          Year
+                        </label>
+                        <input
+                          type="number"
+                          name="year3"
+                          value={student.year3}
+                          min="1"
+                          //    disabled={student.year ? true : false}
+                          onChange={handleChange}
+                          onPaste={preventPasteNegative}
+                          onKeyPress={preventMinus}
+                          onKeyDown={handleKeyDown}
+                          className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
+                        //  required
+                        />
+                      </div>
+
+                      {/* Fees 3 */}
+                      <div>
+                        <label className="block text-sm font-medium text-slate-500">
+                          Fees
+                        </label>
+                        <input
+                          type="number"
+                          name="fees3"
+                          value={student.fees3}
+                          min="0"
+                          //  value={fees3Val}
+                          //   disabled={student.fees3 ? true : false}
+                          onChange={handleChange}
+                          onPaste={preventPasteNegative}
+                          onKeyPress={preventMinus}
+                          onKeyDown={handleKeyDown}
+                          className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
+                        //    required
+                        />
+                      </div>
                     </div>
                   </div>
                 </div> : null}
 
               {showVocational ?
-                <div>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mt-7">
-                    <div className="flex space-x-3" />
-                    <div className="hidden lg:block flex space-x-3" />
+                <div className="grid mt-3">
+                  <div className="grid mt-10 grid-cols-1 gap-5 mb-5">
                     <ViewCard type="header" text="Vocational Course" />
-                    <div className="hidden lg:block flex space-x-3 mb-5" />
                   </div>
 
                   <div className="grid grid-cols-1 md:grid-cols-10 gap-5 mt-2">
@@ -1531,6 +1542,9 @@ const Edit = () => {
                         //  value={fees5Val}
                         //  disabled={student.fees5 ? true : false}
                         onChange={handleChange}
+                        onPaste={preventPasteNegative}
+                        onKeyPress={preventMinus}
+                        onKeyDown={handleKeyDown}
                         className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                       //    required
                       />
