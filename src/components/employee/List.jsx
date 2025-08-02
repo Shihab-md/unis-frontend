@@ -53,6 +53,7 @@ const List = () => {
                 selectedSchool = selectedOption.value;
               }}
               maxMenuHeight={210}
+              placeholder=''
             />
           </div>
 
@@ -72,6 +73,7 @@ const List = () => {
                 selectedRole = selectedOption.value;
               }}
               maxMenuHeight={210}
+              placeholder=''
             />
           </div>
 
@@ -87,6 +89,7 @@ const List = () => {
                 selectedStatus = selectedOption.value;
               }}
               maxMenuHeight={140}
+              placeholder=''
             />
           </div>
         </div>

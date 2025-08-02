@@ -529,6 +529,7 @@ const List = () => {
                   selectedOptionInSwal = selectedOption;
                 }}
                 maxMenuHeight={230}
+                placeholder=''
               />
             </div>
           ),

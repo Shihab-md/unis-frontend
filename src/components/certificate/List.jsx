@@ -76,6 +76,7 @@ const List = () => {
                 selectedSchoolId = selectedOption.value;
               }}
               maxMenuHeight={210}
+              placeholder=''
             />
           </div>
 
@@ -90,6 +91,7 @@ const List = () => {
                 selectedCourseId = selectedOption.value;
               }}
               maxMenuHeight={210}
+              placeholder=''
             />
           </div>
 
@@ -104,6 +106,7 @@ const List = () => {
                 selectedACYearId = selectedOption.value;
               }}
               maxMenuHeight={210}
+              placeholder=''
             />
           </div>
         </div>

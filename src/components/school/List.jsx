@@ -87,6 +87,7 @@ const List = () => {
                 selectedSupervisor = selectedOption.value;
               }}
               maxMenuHeight={210}
+              placeholder=''
             />
           </div>
 
@@ -101,6 +102,7 @@ const List = () => {
                 selectedDistrictState = selectedOption.value;
               }}
               maxMenuHeight={210}
+              placeholder=''
             />
           </div>
 
@@ -116,6 +118,7 @@ const List = () => {
                 selectedStatus = selectedOption.value;
               }}
               maxMenuHeight={140}
+              placeholder=''
             />
           </div>
         </div>
