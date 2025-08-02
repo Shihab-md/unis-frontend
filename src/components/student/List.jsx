@@ -661,7 +661,8 @@ const List = () => {
         || (localStorage.getItem('acYear') != null && localStorage.getItem('acYear') != 'null')
         || (localStorage.getItem('maritalStatus') != null && localStorage.getItem('maritalStatus') != 'null')
         || (localStorage.getItem('hosteller') != null && localStorage.getItem('hosteller') != 'null')
-        || (localStorage.getItem('year') != null && localStorage.getItem('year') != 'null') ?
+        || (localStorage.getItem('year') != null && localStorage.getItem('year') != 'null')
+        || (localStorage.getItem('instituteId') != null && localStorage.getItem('instituteId') != 'null') ?
 
         <div className='grid lg:flex mt-3 lg:mt-7 text-xs text-lime-600 items-center justify-center'>
           <p className='lg:mr-3 justify-center text-center'>Filter Applied: </p>
@@ -671,19 +672,25 @@ const List = () => {
               {courses.filter(course => course._id === localStorage.getItem('courseId')).map(course => course.name) + ", "}
             </span></span> : null}</p>
 
-          <p className='lg:ml-3'>{localStorage.getItem('year') != null && localStorage.getItem('year') != 'null' ?
-            <span className='text-blue-500'>Year: <span className='text-gray-500'>
-              {localStorage.getItem('year') + ", "}</span></span> : null}</p>
+          <div className='grid grid-cols-1 md:flex'>
 
-          <div className='flex'>
-            <p className='lg:ml-3'>{localStorage.getItem('status') != null && localStorage.getItem('status') != 'null' ?
-              <span className='text-blue-500'>Status: <span className='text-gray-500'>
-                {localStorage.getItem('status') + ", "}</span></span> : null}</p>
+            <p className='lg:ml-3'>{localStorage.getItem('year') != null && localStorage.getItem('year') != 'null' ?
+              <span className='text-blue-500'>Year: <span className='text-gray-500'>
+                {localStorage.getItem('year') + ", "}</span></span> : null}</p>
+
+            <p className='lg:ml-3'>{localStorage.getItem('instituteId') != null && localStorage.getItem('instituteId') != 'null' ?
+              <span className='text-blue-500'>Institute: <span className='text-gray-500'>
+                {institutes.filter(institute => institute._id === localStorage.getItem('instituteId')).map(institute => institute.name) + ", "}
+              </span></span> : null}</p>
 
             <p className='lg:ml-3'>{localStorage.getItem('acYear') != null && localStorage.getItem('acYear') != 'null' ?
               <span className='text-blue-500'>AC Year: <span className='text-gray-500'>
                 {academicYears.filter(acYear => acYear._id === localStorage.getItem('acYear')).map(acYear => acYear.acYear) + ", "}
               </span></span> : null}</p>
+
+            <p className='lg:ml-3'>{localStorage.getItem('status') != null && localStorage.getItem('status') != 'null' ?
+              <span className='text-blue-500'>Status: <span className='text-gray-500'>
+                {localStorage.getItem('status') + ", "}</span></span> : null}</p>
 
             <p className='lg:ml-3'>{localStorage.getItem('maritalStatus') != null && localStorage.getItem('maritalStatus') != 'null' ?
               <span className='text-blue-500'>Marital Status: <span className='text-gray-500'>
