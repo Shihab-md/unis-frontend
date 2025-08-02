@@ -109,6 +109,7 @@ const List = () => {
         </div>
       ),
       focusConfirm: false,
+      showCancelButton: true,
       preConfirm: () => {
         const select1 = selectedSchoolId ? selectedSchoolId : null;
         const select2 = selectedCourseId ? selectedCourseId : null;
@@ -118,31 +119,33 @@ const List = () => {
       }
     });
 
-    if (formValues && (formValues[0] || formValues[1] || formValues[2])) {
+    if (formValues) {
+      if (formValues[0] || formValues[1] || formValues[2]) {
 
-      console.log('Selected values:', formValues);
-      const certSchoolId = formValues[0] ? formValues[0] : null;
-      const certCourseId = formValues[1] ? formValues[1] : null;
-      const certACYearId = formValues[2] ? formValues[2] : null;
+        console.log('Selected values:', formValues);
+        const certSchoolId = formValues[0] ? formValues[0] : null;
+        const certCourseId = formValues[1] ? formValues[1] : null;
+        const certACYearId = formValues[2] ? formValues[2] : null;
 
-      console.log('Selected certSchoolId:', formValues[0]);
-      console.log('Selected certCourseId:', formValues[1]);
-      console.log('Selected certACYearId:', formValues[2]);
+        console.log('Selected certSchoolId:', formValues[0]);
+        console.log('Selected certCourseId:', formValues[1]);
+        console.log('Selected certACYearId:', formValues[2]);
 
-      localStorage.setItem('certSchoolId', certSchoolId);
-      localStorage.setItem('certCourseId', certCourseId);
-      localStorage.setItem('certACYearId', certACYearId);
+        localStorage.setItem('certSchoolId', certSchoolId);
+        localStorage.setItem('certCourseId', certCourseId);
+        localStorage.setItem('certACYearId', certACYearId);
 
-      getFilteredCertificates();
+        getFilteredCertificates();
 
-    } else {
+      } else {
 
-      localStorage.removeItem('certificates');
-      localStorage.removeItem('certSchoolId');
-      localStorage.removeItem('certCourseId');
-      localStorage.removeItem('certACYearId');
+        localStorage.removeItem('certificates');
+        localStorage.removeItem('certSchoolId');
+        localStorage.removeItem('certCourseId');
+        localStorage.removeItem('certACYearId');
 
-      getCertificates();
+        getCertificates();
+      }
     }
   };
 

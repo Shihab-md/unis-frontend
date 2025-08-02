@@ -10,6 +10,7 @@ import Select from 'react-select';
 import { useAuth } from '../../context/AuthContext'
 import { getSchoolsFromCache } from '../../utils/SchoolHelper';
 import { getCoursesFromCache } from '../../utils/CourseHelper';
+import { getInstitutesFromCache } from '../../utils/InstituteHelper';
 import { getAcademicYearsFromCache } from '../../utils/AcademicYearHelper';
 import 'animate.css';
 import * as XLSX from 'xlsx';
@@ -29,6 +30,7 @@ const List = () => {
   const [filteredStudent, setFilteredStudents] = useState(null)
   const [courses, setCourses] = useState([]);
   const [academicYears, setAcademicYears] = useState([]);
+  const [institutes, setInstitutes] = useState([]);
 
   const navigate = useNavigate()
   const { user } = useAuth()
@@ -52,6 +54,15 @@ const List = () => {
       setCourses(courses);
     };
     getCoursesMap();
+  }, []);
+
+  useEffect(() => {
+    const getInstitutesMap = async (id) => {
+      const institutes = await getInstitutesFromCache(id);
+      // alert(institutes)
+      setInstitutes(institutes);
+    };
+    getInstitutesMap();
   }, []);
 
   useEffect(() => {
@@ -79,18 +90,23 @@ const List = () => {
 
   const openFilterPopup = async () => {
     let selectedCourse;
+    let selectedYear;
     let selectedStatus;
     let selectedACYear;
     let selectedMaritalStatus;
     let selectedHosteller;
+    let selectedInstitute;
     const { value: formValues } = await MySwal.fire({
       //  title: 'Filters',
       background: "url(/bg_card.png)",
       html: (
         <div className="mb-2 h-80 w-full">
-          <div className='text-xl font-bold mb-1 text-green-600 text-center'>Filter</div>
-          <div className='grid'><span className='text-sm mb-1 text-start text-blue-500'>Course</span>
-            <Select className='text-sm text-start mb-3'
+          <div className='text-xl font-bold md:mb-1 text-green-600 text-center'>Filter</div>
+          <div className='grid grid-cols-3 md:grid-cols-4 gap-x-3 lg:gap-x-5'>
+            <span className='col-span-2 md:col-span-3 text-sm mb-1 text-start text-blue-500'>Course</span>
+            <span className='text-sm mb-1 text-start text-blue-500'>Year</span>
+
+            <Select className='col-span-2 md:col-span-3 text-sm text-start mb-3'
               options={courses.map(option => ({
                 value: option._id, label: option.name
               }))}
@@ -99,12 +115,58 @@ const List = () => {
                 selectedCourse = selectedOption.value;
               }}
               maxMenuHeight={210}
+              placeholder=''
+            />
+
+            <Select className='text-sm text-start mb-3'
+              options={
+                [{ value: '1', label: '1' },
+                { value: '2', label: '2' },
+                { value: '3', label: '3' }]
+              }
+              // defaultValue={selectedStatus}
+              onChange={(selectedOption) => {
+                selectedYear = selectedOption.value;
+              }}
+              maxMenuHeight={140}
+              placeholder=''
             />
           </div>
 
-          <div className='grid grid-cols-2 gap-x-3 lg:gap-x-5'>
+          <div className='grid grid-cols-3 gap-x-3 lg:gap-x-5'>
+            <span className='col-span-2 text-sm mb-1 text-start text-blue-500'>Institute</span>
+            <span className='text-sm mb-1 text-start text-blue-500'>AC year</span>
+
+            <Select className='col-span-2 text-sm text-start mb-3'
+              options={institutes.map(option => ({
+                value: option._id, label: option.name
+              }))}
+              // defaultValue={selectedStatus}
+              onChange={(selectedOption) => {
+                selectedInstitute = selectedOption.value;
+              }}
+              maxMenuHeight={140}
+              placeholder=''
+            />
+
+            <Select className='text-sm text-start mb-2'
+              options={academicYears.map(option => ({
+                value: option._id, label: option.acYear
+              }))}
+
+              onChange={(selectedOption) => {
+                selectedACYear = selectedOption.value;
+              }}
+              maxMenuHeight={210}
+              placeholder=''
+            />
+
+          </div>
+
+          <div className='grid grid-cols-3 gap-x-2 lg:gap-x-5'>
             <span className='text-sm mb-1 text-start text-blue-500'>Status</span>
-            <span className='text-sm mb-1 text-start text-blue-500'>Academic year</span>
+            <span className='text-sm mb-1 text-start text-blue-500'>Marital Status</span>
+            <span className='text-sm mb-1 text-start text-blue-500'>Hosteller</span>
 
             <Select className='text-sm text-start mb-3'
               options={
@@ -118,25 +180,9 @@ const List = () => {
               onChange={(selectedOption) => {
                 selectedStatus = selectedOption.value;
               }}
-              maxMenuHeight={140}
+              maxMenuHeight={160}
+              placeholder=''
             />
-
-            <Select className='text-sm text-start mb-2'
-              options={academicYears.map(option => ({
-                value: option._id, label: option.acYear
-              }))}
-
-              onChange={(selectedOption) => {
-                selectedACYear = selectedOption.value;
-              }}
-              maxMenuHeight={210}
-            />
-
-          </div>
-
-          <div className='grid grid-cols-2 gap-x-3 lg:gap-x-5'>
-            <span className='text-sm mb-1 text-start text-blue-500'>Marital Status</span>
-            <span className='text-sm mb-1 text-start text-blue-500'>Hosteller</span>
 
             <Select className='text-sm text-start mb-3'
               options={
@@ -148,6 +194,7 @@ const List = () => {
                 selectedMaritalStatus = selectedOption.value;
               }}
               maxMenuHeight={160}
+              placeholder=''
             />
 
             <Select className='text-sm text-start mb-3'
@@ -160,13 +207,19 @@ const List = () => {
                 selectedHosteller = selectedOption.value;
               }}
               maxMenuHeight={160}
+              placeholder=''
             />
 
           </div>
         </div>
       ),
       focusConfirm: false,
-      //  showCancelButton: true,
+      showCancelButton: true,
+      //  width: 700,
+      //  scrollbarPadding: false,
+      //  heightAuto: false,
+      //  grow: true,
+      // padding: '0px', // top, right, bottom, left
       //  cancelButtonText: "Reset",
       // cancelButtonAriaLabel: "Clear",
       preConfirm: () => {
@@ -175,45 +228,54 @@ const List = () => {
         const select3 = selectedACYear ? selectedACYear : null;
         const select4 = selectedMaritalStatus ? selectedMaritalStatus : null;
         const select5 = selectedHosteller ? selectedHosteller : null;
-        return [select1, select2, select3, select4, select5];
+        const select6 = selectedYear ? selectedYear : null;
+        const select7 = selectedInstitute ? selectedInstitute : null;
+        return [select1, select2, select3, select4, select5, select6, select7];
       }
     });
 
-    if (formValues && (formValues[0] || formValues[1] || formValues[2]
-      || formValues[3] || formValues[4]
-    )) {
-      console.log('Selected values:', formValues);
-      const courseId = formValues[0] ? formValues[0] : null;
-      const status = formValues[1] ? formValues[1] : null;
-      const acYear = formValues[2] ? formValues[2] : null;
-      const maritalStatus = formValues[3] ? formValues[3] : null;
-      const hosteller = formValues[4] ? formValues[4] : null;
+    if (formValues) {
+      if (formValues[0] || formValues[1] || formValues[2] || formValues[3]
+        || formValues[4] || formValues[5] || formValues[6]) {
 
-      console.log('Selected courseId:', formValues[0]);
-      console.log('Selected status:', formValues[1]);
-      console.log('Selected acYear:', formValues[2]);
-      console.log('Selected maritalStatus:', formValues[3]);
-      console.log('Selected hosteller:', formValues[4]);
+        console.log('Selected values:', formValues);
+        const courseId = formValues[0] ? formValues[0] : null;
+        const status = formValues[1] ? formValues[1] : null;
+        const acYear = formValues[2] ? formValues[2] : null;
+        const maritalStatus = formValues[3] ? formValues[3] : null;
+        const hosteller = formValues[4] ? formValues[4] : null;
+        const year = formValues[5] ? formValues[5] : null;
+        const instituteId = formValues[6] ? formValues[6] : null;
 
-      localStorage.setItem('courseId', courseId);
-      localStorage.setItem('status', status);
-      localStorage.setItem('acYear', acYear);
-      localStorage.setItem('maritalStatus', maritalStatus);
-      localStorage.setItem('hosteller', hosteller);
+        console.log('Selected Values : ' + 'courseId:', formValues[0] + ', '
+          + 'status:', formValues[1] + ', ' + 'acYear:', formValues[2] + ', '
+        + 'maritalStatus:', formValues[3] + ', ' + 'hosteller:', formValues[4] + ', '
+        + 'year:', formValues[5] + ', ' + 'instituteId:', formValues[6])
 
-      getFilteredStudents();
+        localStorage.setItem('courseId', courseId);
+        localStorage.setItem('status', status);
+        localStorage.setItem('acYear', acYear);
+        localStorage.setItem('maritalStatus', maritalStatus);
+        localStorage.setItem('hosteller', hosteller);
+        localStorage.setItem('year', year);
+        localStorage.setItem('instituteId', instituteId);
 
-    } else {
+        getFilteredStudents();
 
-      localStorage.removeItem('students');
-      localStorage.removeItem('courseId');
-      localStorage.removeItem('status');
-      localStorage.removeItem('acYear');
-      localStorage.removeItem('maritalStatus');
-      localStorage.removeItem('hosteller');
+      } else {
 
-      getStudents();
-      // setFilteredStudents(students)
+        localStorage.removeItem('students');
+        localStorage.removeItem('courseId');
+        localStorage.removeItem('status');
+        localStorage.removeItem('acYear');
+        localStorage.removeItem('maritalStatus');
+        localStorage.removeItem('hosteller');
+        localStorage.removeItem('year');
+        localStorage.removeItem('instituteId');
+
+        getStudents();
+        // setFilteredStudents(students)
+      }
     }
   };
 
@@ -227,7 +289,9 @@ const List = () => {
         + localStorage.getItem('status') + "/"
         + localStorage.getItem('acYear') + "/"
         + localStorage.getItem('maritalStatus') + "/"
-        + localStorage.getItem('hosteller'),
+        + localStorage.getItem('hosteller') + "/"
+        + localStorage.getItem('year') + "/"
+        + localStorage.getItem('instituteId'),
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -375,12 +439,17 @@ const List = () => {
         + ", Status : " + localStorage.getItem('status')
         + ", AC Year : " + localStorage.getItem('acYear')
         + ", maritalStatus : " + localStorage.getItem('maritalStatus')
-        + ", hosteller : " + localStorage.getItem('hosteller'))
+        + ", hosteller : " + localStorage.getItem('hosteller')
+        + ", year : " + localStorage.getItem('year')
+        + ", instituteId : " + localStorage.getItem('instituteId'))
+
       if (data && (localStorage.getItem('courseId')
         || localStorage.getItem('status')
         || localStorage.getItem('acYear')
         || localStorage.getItem('maritalStatus')
-        || localStorage.getItem('hosteller'))) {
+        || localStorage.getItem('hosteller')
+        || localStorage.getItem('year')
+        || localStorage.getItem('instituteId'))) {
         console.log("111")
         getFilteredStudents();
       } else {
@@ -410,7 +479,9 @@ const List = () => {
       || localStorage.getItem('status')
       || localStorage.getItem('acYear')
       || localStorage.getItem('maritalStatus')
-      || localStorage.getItem('hosteller'))) {
+      || localStorage.getItem('hosteller')
+      || localStorage.getItem('year')
+      || localStorage.getItem('instituteId'))) {
       let sno = 1;
       const data1 = JSON.parse(data).students.map((student) => ({
         _id: student._id,
@@ -451,12 +522,13 @@ const List = () => {
             <div className="mb-2 h-80 w-full">
               <div className='text-2xl lg:text-3xl mb-3 text-blue-600'>Select the Niswan</div>
               <Select className='text-sm text-start'
-                options={schools.map(option => ({
+                options={schools.filter(school => school.code !== 'UN-00-001').map(option => ({
                   value: option._id, label: option.code + " : " + option.nameEnglish
                 }))}
                 onChange={(selectedOption) => {
                   selectedOptionInSwal = selectedOption;
                 }}
+                maxMenuHeight={230}
               />
             </div>
           ),
@@ -588,7 +660,8 @@ const List = () => {
         || (localStorage.getItem('status') != null && localStorage.getItem('status') != 'null')
         || (localStorage.getItem('acYear') != null && localStorage.getItem('acYear') != 'null')
         || (localStorage.getItem('maritalStatus') != null && localStorage.getItem('maritalStatus') != 'null')
-        || (localStorage.getItem('hosteller') != null && localStorage.getItem('hosteller') != 'null') ?
+        || (localStorage.getItem('hosteller') != null && localStorage.getItem('hosteller') != 'null')
+        || (localStorage.getItem('year') != null && localStorage.getItem('year') != 'null') ?
 
         <div className='grid lg:flex mt-3 lg:mt-7 text-xs text-lime-600 items-center justify-center'>
           <p className='lg:mr-3 justify-center text-center'>Filter Applied: </p>
@@ -597,6 +670,10 @@ const List = () => {
             <span className='text-blue-500'>Course: <span className='text-gray-500'>
               {courses.filter(course => course._id === localStorage.getItem('courseId')).map(course => course.name) + ", "}
             </span></span> : null}</p>
+
+          <p className='lg:ml-3'>{localStorage.getItem('year') != null && localStorage.getItem('year') != 'null' ?
+            <span className='text-blue-500'>Year: <span className='text-gray-500'>
+              {localStorage.getItem('year') + ", "}</span></span> : null}</p>
 
           <div className='flex'>
             <p className='lg:ml-3'>{localStorage.getItem('status') != null && localStorage.getItem('status') != 'null' ?

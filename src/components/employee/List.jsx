@@ -92,6 +92,7 @@ const List = () => {
         </div>
       ),
       focusConfirm: false,
+      showCancelButton: true,
       preConfirm: () => {
         const select1 = selectedSchool ? selectedSchool : null;
         const select2 = selectedRole ? selectedRole : null;
@@ -101,31 +102,33 @@ const List = () => {
       }
     });
 
-    if (formValues && (formValues[0] || formValues[1] || formValues[2])) {
+    if (formValues) {
+      if (formValues[0] || formValues[1] || formValues[2]) {
 
-      console.log('Selected values:', formValues);
-      const empSchoolId = formValues[0] ? formValues[0] : null;
-      const empRole = formValues[1] ? formValues[1] : null;
-      const empStatus = formValues[2] ? formValues[2] : null;
+        console.log('Selected values:', formValues);
+        const empSchoolId = formValues[0] ? formValues[0] : null;
+        const empRole = formValues[1] ? formValues[1] : null;
+        const empStatus = formValues[2] ? formValues[2] : null;
 
-      console.log('Selected empSchoolId:', formValues[0]);
-      console.log('Selected empRole:', formValues[1]);
-      console.log('Selected empStatus:', formValues[2]);
+        console.log('Selected empSchoolId:', formValues[0]);
+        console.log('Selected empRole:', formValues[1]);
+        console.log('Selected empStatus:', formValues[2]);
 
-      localStorage.setItem('empSchoolId', empSchoolId);
-      localStorage.setItem('empRole', empRole);
-      localStorage.setItem('empStatus', empStatus);
+        localStorage.setItem('empSchoolId', empSchoolId);
+        localStorage.setItem('empRole', empRole);
+        localStorage.setItem('empStatus', empStatus);
 
-      getFilteredEmployees();
+        getFilteredEmployees();
 
-    } else {
+      } else {
 
-      localStorage.removeItem('employees');
-      localStorage.removeItem('empSchoolId');
-      localStorage.removeItem('empRole');
-      localStorage.removeItem('empStatus');
+        localStorage.removeItem('employees');
+        localStorage.removeItem('empSchoolId');
+        localStorage.removeItem('empRole');
+        localStorage.removeItem('empStatus');
 
-      getEmployees();
+        getEmployees();
+      }
     }
   };
 

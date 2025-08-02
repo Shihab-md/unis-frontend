@@ -211,6 +211,8 @@ export function removeLocalStorage() {
   localStorage.removeItem("acYear");
   localStorage.removeItem('maritalStatus');
   localStorage.removeItem('hosteller');
+  localStorage.removeItem('year');
+  localStorage.removeItem('instituteId');
 
   localStorage.removeItem('supervisors');
   localStorage.removeItem('supervisorId');

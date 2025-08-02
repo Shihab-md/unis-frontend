@@ -121,6 +121,7 @@ const List = () => {
         </div>
       ),
       focusConfirm: false,
+      showCancelButton: true,
       preConfirm: () => {
         const select1 = selectedSupervisor ? selectedSupervisor : null;
         const select2 = selectedDistrictState ? selectedDistrictState : null;
@@ -130,31 +131,33 @@ const List = () => {
       }
     });
 
-    if (formValues && (formValues[0] || formValues[1] || formValues[2])) {
+    if (formValues) {
+      if (formValues[0] || formValues[1] || formValues[2]) {
 
-      console.log('Selected values:', formValues);
-      const supervisorId = formValues[0] ? formValues[0] : null;
-      const districtStateId = formValues[1] ? formValues[1] : null;
-      const schStatus = formValues[2] ? formValues[2] : null;
+        console.log('Selected values:', formValues);
+        const supervisorId = formValues[0] ? formValues[0] : null;
+        const districtStateId = formValues[1] ? formValues[1] : null;
+        const schStatus = formValues[2] ? formValues[2] : null;
 
-      console.log('Selected supervisorId:', formValues[0]);
-      console.log('Selected districtStateId:', formValues[1]);
-      console.log('Selected schStatus:', formValues[2]);
+        console.log('Selected supervisorId:', formValues[0]);
+        console.log('Selected districtStateId:', formValues[1]);
+        console.log('Selected schStatus:', formValues[2]);
 
-      localStorage.setItem('supervisorId', supervisorId);
-      localStorage.setItem('districtStateId', districtStateId);
-      localStorage.setItem('schStatus', schStatus);
+        localStorage.setItem('supervisorId', supervisorId);
+        localStorage.setItem('districtStateId', districtStateId);
+        localStorage.setItem('schStatus', schStatus);
 
-      getFilteredSchools();
+        getFilteredSchools();
 
-    } else {
+      } else {
 
-      localStorage.removeItem('schools');
-      localStorage.removeItem('supervisorId');
-      localStorage.removeItem('districtStateId');
-      localStorage.removeItem('schStatus');
+        localStorage.removeItem('schools');
+        localStorage.removeItem('supervisorId');
+        localStorage.removeItem('districtStateId');
+        localStorage.removeItem('schStatus');
 
-      getSchools();
+        getSchools();
+      }
     }
   };
 
