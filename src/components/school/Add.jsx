@@ -372,7 +372,7 @@ const Add = () => {
                   className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                   required
                 >
-                  <option value="">Select Supervisor</option>
+                  <option value=""></option>
                   {supervisors.map((supervisor) => (
                     <option key={supervisor._id} value={supervisor._id}>
                       {supervisor.supervisorId + " : " + supervisor.userId.name}

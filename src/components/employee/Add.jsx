@@ -223,7 +223,7 @@ const Add = () => {
                   className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                   required
                 >
-                  <option value="">Select Role</option>
+                  <option value=""></option>
                   {user.role === "superadmin" ?
                     <option value="hquser">HQUser</option> : null}
                   {user.role === "superadmin" ?

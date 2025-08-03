@@ -165,7 +165,7 @@ const Edit = () => {
                     className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                     required
                   >
-                    <option value="">Select Education Type</option>
+                    <option value=""></option>
                     <option value="Deeniyath Education">Deeniyath Education</option>
                     <option value="School Education">School Education</option>
                     <option value="College Education">College Education</option>

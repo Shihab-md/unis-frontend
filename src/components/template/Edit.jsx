@@ -139,7 +139,7 @@ const Edit = () => {
                     className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                     required
                   >
-                    <option value="">Select Course</option>
+                    <option value=""></option>
                     {courses.map((course) => (
                       <option key={course._id} value={course._id}>
                         {course.name}

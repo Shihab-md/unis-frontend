@@ -182,7 +182,7 @@ const Edit = () => {
                     required
                     disabled={true}
                   >
-                    <option value="">Select Niswan</option>
+                    <option value=""></option>
                     {schools.map((school) => (
                       <option key={school._id} value={school._id}>
                         {school.code + " : " + school.nameEnglish}
@@ -257,7 +257,7 @@ const Edit = () => {
                     disabled={user.role === "superadmin" ?
                       false : true}
                   >
-                    <option value="">Select Role</option>
+                    <option value=""></option>
                     <option value="hquser">HQUser</option>
                     <option value="admin">Admin</option>
                     <option value="teacher">Teacher</option>

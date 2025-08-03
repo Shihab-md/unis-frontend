@@ -261,7 +261,7 @@ const Edit = () => {
                 {/* Active */}
                 <div>
                   <label className="block mt-3 text-sm font-medium text-slate-500">
-                    Active <span className="text-red-700">*</span>
+                    Status <span className="text-red-700">*</span>
                   </label>
                   <select
                     name="active"
@@ -270,7 +270,7 @@ const Edit = () => {
                     className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                     required
                   >
-                    <option value="">Select</option>
+                    <option value=""></option>
                     <option value="Active">Active</option>
                     <option value="In-Active">In-Active</option>
                   </select>
@@ -479,7 +479,7 @@ const Edit = () => {
                     className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                     required
                   >
-                    <option value="">Select Supervisor</option>
+                    <option value=""></option>
                     {supervisors.map((supervisor) => (
                       <option key={supervisor._id} value={supervisor._id}>
                         {supervisor.supervisorId + " : " + supervisor.userId.name}

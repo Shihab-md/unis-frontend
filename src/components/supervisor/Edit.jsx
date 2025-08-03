@@ -322,7 +322,7 @@ const Edit = () => {
                     className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                     required
                   >
-                    <option value="">Select Gender</option>
+                    <option value=""></option>
                     <option value="Male">Male</option>
                     <option value="Female">Female</option>
                   </select>
@@ -341,7 +341,7 @@ const Edit = () => {
                     className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                     required
                   >
-                    <option value="">Select Status</option>
+                    <option value=""></option>
                     <option value="Single">Single</option>
                     <option value="Married">Married</option>
                   </select>
@@ -360,7 +360,7 @@ const Edit = () => {
                     className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                     required
                   >
-                    <option value="">Select Job Type</option>
+                    <option value=""></option>
                     <option value="Full-Time">Full-Time</option>
                     <option value="Part-Time">Part-Time</option>
                   </select>

@@ -371,7 +371,7 @@ const Edit = () => {
                     className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                     required
                   >
-                    <option value="">Select Niswan</option>
+                    <option value=""></option>
                     {schools.map((school) => (
                       <option key={school._id} value={school._id}>
                         {school.code + " : " + school.nameEnglish}
@@ -474,7 +474,7 @@ const Edit = () => {
                     className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                     required
                   >
-                    <option value="">Select Status</option>
+                    <option value=""></option>
                     <option value="Active">Active</option>
                     <option value="In-Active">In-Active</option>
                     <option value="Transferred">Transferred</option>

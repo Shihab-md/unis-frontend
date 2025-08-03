@@ -234,7 +234,7 @@ const Promote = () => {
                     className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                     required
                   >
-                    <option value="">Niswan</option>
+                    <option value=""></option>
                     {schools.map((school) => (
                       <option key={school._id} value={school._id}>
                         {school.code + " : " + school.nameEnglish}
@@ -295,7 +295,7 @@ const Promote = () => {
                     className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                     required
                   >
-                    <option value="">Academic Year</option>
+                    <option value=""></option>
                     {academicYears.map((acYear) => (
                       <option key={acYear._id} value={acYear._id}>
                         {acYear.acYear}
@@ -341,7 +341,7 @@ const Promote = () => {
                       className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                       required
                     >
-                      <option value="">Select Status</option>
+                      <option value=""></option>
                       <option value="Promoted">Promoted</option>
                       <option value="Completed">Completed</option>
                       <option value="Not-Promoted">Not-Promoted</option>
@@ -399,7 +399,7 @@ const Promote = () => {
                           className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                           required
                         >
-                          <option value="">Select Status</option>
+                          <option value=""></option>
                           <option value="Promoted">Promoted</option>
                           <option value="Completed">Completed</option>
                           <option value="Not-Promoted">Not-Promoted</option>
@@ -458,7 +458,7 @@ const Promote = () => {
                           className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                           required
                         >
-                          <option value="">Select Status</option>
+                          <option value=""></option>
                           <option value="Promoted">Promoted</option>
                           <option value="Completed">Completed</option>
                           <option value="Not-Promoted">Not-Promoted</option>
@@ -477,7 +477,7 @@ const Promote = () => {
                           className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                         //  disabled={true}
                         >
-                          <option value="">Select Course</option>
+                          <option value=""></option>
                           {courses.filter(course => course.type === "School Education").map((course) => (
                             <option key={course._id} value={course._id}>
                               {course.name}
@@ -542,7 +542,7 @@ const Promote = () => {
                           className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                           required
                         >
-                          <option value="">Select Status</option>
+                          <option value=""></option>
                           <option value="Promoted">Promoted</option>
                           <option value="Completed">Completed</option>
                           <option value="Not-Promoted">Not-Promoted</option>
@@ -601,7 +601,7 @@ const Promote = () => {
                           className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                           required
                         >
-                          <option value="">Select Status</option>
+                          <option value=""></option>
                           <option value="Promoted">Promoted</option>
                           <option value="Completed">Completed</option>
                           <option value="Not-Promoted">Not-Promoted</option>
