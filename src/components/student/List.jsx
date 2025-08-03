@@ -639,6 +639,7 @@ const List = () => {
       || student.name?.toLowerCase().includes(e.target.value.toLowerCase())
       || student.course?.toString().toLowerCase().includes(e.target.value.toLowerCase())
       || student.active?.toLowerCase().includes(e.target.value.toLowerCase())
+      || student.fatherName?.toLowerCase().includes(e.target.value.toLowerCase())
     ))
     setFilteredStudents(records)
   }
