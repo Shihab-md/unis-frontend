@@ -50,6 +50,7 @@ const List = () => {
             contactNumber: sup.contactNumber,
             routeName: sup.routeName,
             active: sup.active,
+            jobType: sup.jobType,
             //  dob: new Date(sup.dob).toLocaleDateString(),
             schoolsCount: sup._schoolsCount ? sup._schoolsCount : 0,
             //  profileImage: <img width={40} className='rounded-full' src={(getBaseUrl()).toString() + `${sup.userId.profileImage}`} />,
@@ -78,6 +79,7 @@ const List = () => {
       sup.supId?.toLowerCase().includes(e.target.value.toLowerCase())
       || sup.name?.toLowerCase().includes(e.target.value.toLowerCase())
       || sup.active?.toLowerCase().includes(e.target.value.toLowerCase())
+      || sup.jobType?.toLowerCase().includes(e.target.value.toLowerCase())
       || sup.contactNumber?.toString().toLowerCase().includes(e.target.value.toLowerCase())
     ))
     setFilteredSupervisors(records)
@@ -92,7 +94,10 @@ const List = () => {
   return (
     <div className="mt-3 p-5 lg:mt-7">
       <div className="text-center">
-        <h3 className="text-2xl font-bold px-5 py-0 text-shadow-lg text-gray-600">Manage Supervisors</h3>
+        <h3 className="text-2xl font-bold px-5 py-0 text-shadow-lg text-gray-600">Manage Supervisors
+          <p className='flex md:grid text-sm md:text-base justify-center text-rose-700'>
+            (Records Count : {filteredSupervisor ? filteredSupervisor.length : 0}) </p>
+        </h3>
       </div>
       <div className="flex justify-between items-center mt-5 lg:mt-7">
         {LinkIcon("/dashboard", "Back")}

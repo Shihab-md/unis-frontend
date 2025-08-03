@@ -316,7 +316,10 @@ const List = () => {
   return (
     <div className="mt-3 p-5">
       <div className="text-center">
-        <h3 className="text-2xl font-bold px-5 py-0 text-shadow-lg text-gray-600">Manage Certificates</h3>
+        <h3 className="text-2xl font-bold px-5 py-0 text-shadow-lg text-gray-600">Manage Certificates
+          <p className='flex md:grid text-sm md:text-base justify-center text-rose-700'>
+            (Records Count : {filteredCertificate ? filteredCertificate.length : 0}) </p>
+        </h3>
       </div>
       <div className="flex justify-between items-center mt-5">
         {LinkIcon("/dashboard", "Back")}

@@ -654,7 +654,10 @@ const List = () => {
   return (
     <div className="lg:mt-3 p-5">
       <div className="text-center">
-        <h3 className="text-xl lg:text-2xl font-bold px-5 py-0 text-gray-600">Manage Students</h3>
+        <h3 className="text-xl lg:text-2xl font-bold px-5 py-0 text-gray-600">Manage Students
+          <p className='flex md:grid text-sm md:text-base justify-center text-rose-700'>
+            (Records Count : {filteredStudent ? filteredStudent.length : 0}) </p>
+        </h3>
         <h3 className="text-sm lg:text-xl mt-3 font-bold text-gray-500 px-1 py-0">{localStorage.getItem('schoolName')}</h3>
       </div>
       <div className="flex justify-between items-center mt-5 relative">

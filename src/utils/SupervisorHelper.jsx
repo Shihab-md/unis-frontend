@@ -18,7 +18,7 @@ export const columns = [
     name: "Supervisor",
     selector: (row) => row.supId + " : " + row.name,
     sortable: true,
-    width: "470px",
+    width: "410px",
   },
   {
     name: "Contact Number",
@@ -45,8 +45,8 @@ export const columns = [
   },
   {
     name: "Status",
-    selector: (row) => row.active,
-    width: "110px",
+    selector: (row) => row.active + ", " + row.jobType,
+    width: "160px",
   },
   {
     name: "Action",
