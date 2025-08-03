@@ -213,6 +213,7 @@ export function removeLocalStorage() {
   localStorage.removeItem('hosteller');
   localStorage.removeItem('year');
   localStorage.removeItem('instituteId');
+  localStorage.removeItem('courseStatus');
 
   localStorage.removeItem('supervisors');
   localStorage.removeItem('supervisorId');

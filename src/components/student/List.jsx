@@ -91,6 +91,7 @@ const List = () => {
   const openFilterPopup = async () => {
     let selectedCourse;
     let selectedYear;
+    let selectedCourseStatus;
     let selectedStatus;
     let selectedACYear;
     let selectedMaritalStatus;
@@ -102,9 +103,10 @@ const List = () => {
       html: (
         <div className="mb-2 h-80 w-full">
           <div className='text-xl font-bold md:mb-1 text-green-600 text-center'>Filter</div>
-          <div className='grid grid-cols-3 md:grid-cols-4 gap-x-3 lg:gap-x-5'>
+          <div className='grid grid-cols-4 md:grid-cols-6 gap-x-3 lg:gap-x-5'>
             <span className='col-span-2 md:col-span-3 text-sm mb-1 text-start text-blue-500'>Course</span>
             <span className='text-sm mb-1 text-start text-blue-500'>Year</span>
+            <span className='md:col-span-2 text-sm mb-1 text-start text-blue-500'>Course Status</span>
 
             <Select className='col-span-2 md:col-span-3 text-sm text-start mb-3'
               options={courses.map(option => ({
@@ -129,6 +131,21 @@ const List = () => {
                 selectedYear = selectedOption.value;
               }}
               maxMenuHeight={140}
+              placeholder=''
+            />
+
+            <Select className='md:col-span-2 text-sm text-start mb-3'
+              options={
+                [{ value: 'Admission', label: 'Admission' },
+                { value: 'Promoted', label: 'Promoted' },
+                { value: 'Completed', label: 'Completed' },
+                { value: 'Not-Promoted', label: 'Not-Promoted' }]
+              }
+              // defaultValue={selectedStatus}
+              onChange={(selectedOption) => {
+                selectedCourseStatus = selectedOption.value;
+              }}
+              maxMenuHeight={160}
               placeholder=''
             />
           </div>
@@ -230,13 +247,15 @@ const List = () => {
         const select5 = selectedHosteller ? selectedHosteller : null;
         const select6 = selectedYear ? selectedYear : null;
         const select7 = selectedInstitute ? selectedInstitute : null;
-        return [select1, select2, select3, select4, select5, select6, select7];
+        const select8 = selectedCourseStatus ? selectedCourseStatus : null;
+
+        return [select1, select2, select3, select4, select5, select6, select7, select8];
       }
     });
 
     if (formValues) {
       if (formValues[0] || formValues[1] || formValues[2] || formValues[3]
-        || formValues[4] || formValues[5] || formValues[6]) {
+        || formValues[4] || formValues[5] || formValues[6] || formValues[7]) {
 
         console.log('Selected values:', formValues);
         const courseId = formValues[0] ? formValues[0] : null;
@@ -246,11 +265,12 @@ const List = () => {
         const hosteller = formValues[4] ? formValues[4] : null;
         const year = formValues[5] ? formValues[5] : null;
         const instituteId = formValues[6] ? formValues[6] : null;
+        const courseStatus = formValues[7] ? formValues[7] : null;
 
         console.log('Selected Values : ' + 'courseId:', formValues[0] + ', '
           + 'status:', formValues[1] + ', ' + 'acYear:', formValues[2] + ', '
         + 'maritalStatus:', formValues[3] + ', ' + 'hosteller:', formValues[4] + ', '
-        + 'year:', formValues[5] + ', ' + 'instituteId:', formValues[6])
+        + 'year:', formValues[5] + ', ' + 'instituteId:', formValues[6] + ', ' + 'courseStatus:', formValues[7])
 
         localStorage.setItem('courseId', courseId);
         localStorage.setItem('status', status);
@@ -259,6 +279,7 @@ const List = () => {
         localStorage.setItem('hosteller', hosteller);
         localStorage.setItem('year', year);
         localStorage.setItem('instituteId', instituteId);
+        localStorage.setItem('courseStatus', courseStatus);
 
         getFilteredStudents();
 
@@ -272,6 +293,7 @@ const List = () => {
         localStorage.removeItem('hosteller');
         localStorage.removeItem('year');
         localStorage.removeItem('instituteId');
+        localStorage.removeItem('courseStatus');
 
         getStudents();
         // setFilteredStudents(students)
@@ -291,7 +313,8 @@ const List = () => {
         + localStorage.getItem('maritalStatus') + "/"
         + localStorage.getItem('hosteller') + "/"
         + localStorage.getItem('year') + "/"
-        + localStorage.getItem('instituteId'),
+        + localStorage.getItem('instituteId') + "/"
+        + localStorage.getItem('courseStatus'),
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -441,7 +464,8 @@ const List = () => {
         + ", maritalStatus : " + localStorage.getItem('maritalStatus')
         + ", hosteller : " + localStorage.getItem('hosteller')
         + ", year : " + localStorage.getItem('year')
-        + ", instituteId : " + localStorage.getItem('instituteId'))
+        + ", instituteId : " + localStorage.getItem('instituteId')
+        + ", courseStatus : " + localStorage.getItem('courseStatus'))
 
       if (data && (localStorage.getItem('courseId')
         || localStorage.getItem('status')
@@ -449,7 +473,8 @@ const List = () => {
         || localStorage.getItem('maritalStatus')
         || localStorage.getItem('hosteller')
         || localStorage.getItem('year')
-        || localStorage.getItem('instituteId'))) {
+        || localStorage.getItem('instituteId')
+        || localStorage.getItem('courseStatus'))) {
         console.log("111")
         getFilteredStudents();
       } else {
@@ -481,7 +506,8 @@ const List = () => {
       || localStorage.getItem('maritalStatus')
       || localStorage.getItem('hosteller')
       || localStorage.getItem('year')
-      || localStorage.getItem('instituteId'))) {
+      || localStorage.getItem('instituteId')
+      || localStorage.getItem('courseStatus'))) {
       let sno = 1;
       const data1 = JSON.parse(data).students.map((student) => ({
         _id: student._id,
@@ -658,12 +684,13 @@ const List = () => {
       </div>
 
       {(localStorage.getItem('courseId') != null && localStorage.getItem('courseId') != 'null')
-        || (localStorage.getItem('status') != null && localStorage.getItem('status') != 'null')
-        || (localStorage.getItem('acYear') != null && localStorage.getItem('acYear') != 'null')
-        || (localStorage.getItem('maritalStatus') != null && localStorage.getItem('maritalStatus') != 'null')
-        || (localStorage.getItem('hosteller') != null && localStorage.getItem('hosteller') != 'null')
         || (localStorage.getItem('year') != null && localStorage.getItem('year') != 'null')
-        || (localStorage.getItem('instituteId') != null && localStorage.getItem('instituteId') != 'null') ?
+        || (localStorage.getItem('courseStatus') != null && localStorage.getItem('courseStatus') != 'null')
+        || (localStorage.getItem('instituteId') != null && localStorage.getItem('instituteId') != 'null')
+        || (localStorage.getItem('acYear') != null && localStorage.getItem('acYear') != 'null')
+        || (localStorage.getItem('status') != null && localStorage.getItem('status') != 'null')
+        || (localStorage.getItem('maritalStatus') != null && localStorage.getItem('maritalStatus') != 'null')
+        || (localStorage.getItem('hosteller') != null && localStorage.getItem('hosteller') != 'null') ?
 
         <div className='grid lg:flex mt-3 lg:mt-7 text-xs text-lime-600 items-center justify-center'>
           <p className='lg:mr-3 justify-center text-center'>Filter Applied: </p>
@@ -679,6 +706,10 @@ const List = () => {
               <span className='text-blue-500'>Year: <span className='text-gray-500'>
                 {localStorage.getItem('year') + ", "}</span></span> : null}</p>
 
+            <p className='lg:ml-3'>{localStorage.getItem('courseStatus') != null && localStorage.getItem('courseStatus') != 'null' ?
+              <span className='text-blue-500'>Course's Status: <span className='text-gray-500'>
+                {localStorage.getItem('courseStatus') + ", "}</span></span> : null}</p>
+
             <p className='lg:ml-3'>{localStorage.getItem('instituteId') != null && localStorage.getItem('instituteId') != 'null' ?
               <span className='text-blue-500'>Institute: <span className='text-gray-500'>
                 {institutes.filter(institute => institute._id === localStorage.getItem('instituteId')).map(institute => institute.name) + ", "}
@@ -690,7 +721,7 @@ const List = () => {
               </span></span> : null}</p>
 
             <p className='lg:ml-3'>{localStorage.getItem('status') != null && localStorage.getItem('status') != 'null' ?
-              <span className='text-blue-500'>Status: <span className='text-gray-500'>
+              <span className='text-blue-500'>Student's Status: <span className='text-gray-500'>
                 {localStorage.getItem('status') + ", "}</span></span> : null}</p>
 
             <p className='lg:ml-3'>{localStorage.getItem('maritalStatus') != null && localStorage.getItem('maritalStatus') != 'null' ?
