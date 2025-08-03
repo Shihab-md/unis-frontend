@@ -741,7 +741,7 @@ const List = () => {
 
       {filtering ?
         getFilterGif() :
-        <div className='mt-3 lg:mt-7 rounded-lg shadow-lg'>
+        <div className='mt-3 lg:mt-5 rounded-lg shadow-lg'>
           <DataTable columns={columns} data={filteredStudent} showGridlines highlightOnHover striped responsive conditionalRowStyles={conditionalRowStyles} />
         </div>}
     </div>
