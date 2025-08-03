@@ -331,7 +331,7 @@ const List = () => {
           rollNumber: student.rollNumber,
           address: student.address,
           city: student.city,
-          district: student.districtStateId ? student.districtStateId?.district + ", " + student.districtStateId?.State : "",
+          district: student.districtStateId ? student.districtStateId?.district + ", " + student.districtStateId?.state : "",
           active: student.active,
           course: student.courses && student.courses?.length > 0 ? student.courses.map(course => course.name ? course.name + ", " : "") : "",
           courses: student.courses && student.courses?.length > 0 ? student.courses : null,
@@ -517,7 +517,7 @@ const List = () => {
         rollNumber: student.rollNumber,
         address: student.address,
         city: student.city,
-        district: student.districtStateId ? student.districtStateId?.district + ", " + student.districtStateId?.State : "",
+        district: student.districtStateId ? student.districtStateId?.district + ", " + student.districtStateId?.state : "",
         active: student.active,
         course: student.courses && student.courses?.length > 0 ? student.courses.map(course => course.name ? course.name + ", " : "") : "",
         courses: student.courses && student.courses?.length > 0 ? student.courses : null,
@@ -604,7 +604,7 @@ const List = () => {
               rollNumber: student.rollNumber,
               address: student.address,
               city: student.city,
-              district: student.districtStateId ? student.districtStateId?.district + ", " + student.districtStateId?.State : "",
+              district: student.districtStateId ? student.districtStateId?.district + ", " + student.districtStateId?.state : "",
               active: student.active,
               course: student.courses && student.courses?.length > 0 ? student.courses.map(course => course.name ? course.name + ", " : "") : "",
               courses: student.courses && student.courses?.length > 0 ? student.courses : null,
@@ -640,6 +640,7 @@ const List = () => {
       || student.course?.toString().toLowerCase().includes(e.target.value.toLowerCase())
       || student.active?.toLowerCase().includes(e.target.value.toLowerCase())
       || student.fatherName?.toLowerCase().includes(e.target.value.toLowerCase())
+      || student.district?.toLowerCase().includes(e.target.value.toLowerCase())
     ))
     setFilteredStudents(records)
   }

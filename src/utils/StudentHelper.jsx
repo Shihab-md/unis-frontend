@@ -87,7 +87,7 @@ export const columns = [
     name: "Student Name",
     selector: (row) => row.name,
     //  sortable: true,
-    width: "300px",
+    width: "280px",
   },
   {
     name: "Course",
@@ -107,13 +107,19 @@ export const columns = [
     name: "Father / Mother / Guardian Name",
     selector: (row) => row.fatherName,
     //  sortable: true,
-    width: "300px",
+    width: "250px",
+  },
+  {
+    name: "District",
+    selector: (row) => row.district,
+    //  sortable: true,
+    width: "190px",
   },
   {
     name: "Status",
     selector: (row) => row.active,
     //  sortable: true,
-    width: "120px",
+    width: "140px",
   },
   {
     name: "Action",
