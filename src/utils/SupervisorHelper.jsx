@@ -45,8 +45,11 @@ export const columns = [
   },
   {
     name: "Status",
-    selector: (row) => row.active + ", " + row.jobType,
-    width: "160px",
+    selector: (row) => (<div>
+      <p>{row.active}</p>
+      <p>{row.jobType}</p>
+    </div>),
+    width: "120px",
   },
   {
     name: "Action",
