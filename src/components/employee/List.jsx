@@ -11,7 +11,7 @@ import { getBaseUrl, handleRightClickAndFullScreen, getSpinner, checkAuth, LinkI
 import { useAuth } from '../../context/AuthContext'
 
 const List = () => {
-
+ 
   // To prevent right-click AND For FULL screen view.
   handleRightClickAndFullScreen();
 
@@ -236,7 +236,7 @@ const List = () => {
         schoolName: sup.schoolId?.nameEnglish,
         designation: sup.designation,
         active: sup.active,
-        action: (<SchoolButtons Id={sup._id} onSchoolDelete={onSchoolDelete} />),
+        action: (<EmployeeButtons Id={sup._id} onEmployeeDelete={onEmployeeDelete} />),
       }));
       setEmployees(data1);
       setFilteredEmployees(data1);
@@ -353,7 +353,7 @@ const List = () => {
             </span></span> : null}</p>
 
           <p className='lg:ml-3'>{localStorage.getItem('empRole') != null && localStorage.getItem('empRole') != 'null' ?
-            <span className='text-blue-500'>Status: <span className='text-gray-500'>
+            <span className='text-blue-500'>Role: <span className='text-gray-500'>
               {toCamelCase(localStorage.getItem('empRole'))}</span></span> : null}</p>
 
           <p className='lg:ml-3'>{localStorage.getItem('empStatus') != null && localStorage.getItem('empStatus') != 'null' ?
@@ -366,7 +366,7 @@ const List = () => {
       {filtering ?
         getFilterGif() :
         <div className='mt-3 lg:mt-7 rounded-lg shadow-lg'>
-          <DataTable columns={columns} data={filteredEmployee} pagination highlightOnHover striped responsive conditionalRowStyles={conditionalRowStyles} />
+          <DataTable columns={columns} data={filteredEmployee} highlightOnHover striped responsive conditionalRowStyles={conditionalRowStyles} />
         </div>}
     </div>
   )

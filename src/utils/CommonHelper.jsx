@@ -205,6 +205,12 @@ export function removeLocalStorage() {
   localStorage.removeItem("schoolId");
   localStorage.removeItem("schoolName");
 
+  // Supervisor Filter
+  localStorage.removeItem('supSchoolId');
+  localStorage.removeItem('supStatus');
+  localStorage.removeItem('supType');
+
+  // Student Filter
   localStorage.removeItem("students");
   localStorage.removeItem('courseId');
   localStorage.removeItem('status');
@@ -215,16 +221,19 @@ export function removeLocalStorage() {
   localStorage.removeItem('instituteId');
   localStorage.removeItem('courseStatus');
 
+  // School Filter
   localStorage.removeItem('supervisors');
   localStorage.removeItem('supervisorId');
   localStorage.removeItem('districtStateId');
   localStorage.removeItem('schStatus');
 
+  // Employee Filter
   localStorage.removeItem('employees');
   localStorage.removeItem('empSchoolId');
   localStorage.removeItem('empRole');
   localStorage.removeItem('empStatus');
 
+  // Certificate Filter
   localStorage.removeItem('certificates');
   localStorage.removeItem('certSchoolId');
   localStorage.removeItem('certCourseId');
