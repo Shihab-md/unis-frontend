@@ -684,8 +684,8 @@ const List = () => {
         <div className="mr-3" onClick={openFilterPopup}>{LinkIcon("#", "Filter")}</div>
 
         {LinkIcon("/dashboard/add-student", "Add")}
-        {/* {user.role === "superadmin" || user.role === "hquser" ?
-          <div className="hidden lg:block" onClick={handleImport}>{LinkIcon("#", "Import")}</div> : null} */}
+         {user.role === "superadmin" || user.role === "hquser" ?
+          <div className="hidden lg:block" onClick={handleImport}>{LinkIcon("#", "Import")}</div> : null}
       </div>
 
       {(localStorage.getItem('courseId') != null && localStorage.getItem('courseId') != 'null')
