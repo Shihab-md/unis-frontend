@@ -39,6 +39,7 @@ const List = () => {
   let schoolName;
 
   const [excelData, setExcelData] = useState([]);
+  const [studentsDataList, setStudentsDataList] = useState("");
   const [processing, setProcessing] = useState(null)
 
   const [selectedOptions, setSelectedOptions] = useState([]);
@@ -375,22 +376,18 @@ const List = () => {
     if (file) {
       try {
         setProcessing(true);
-        const reader = new FileReader();
-        //let studentsDataList;
-        reader.onload = (event) => {
-          const binaryString = event.target.result;
-          const workbook = XLSX.read(binaryString, { type: 'binary' });
-          const sheetName = workbook.SheetNames[0];
-          const worksheet = workbook.Sheets[sheetName];
-          const jsonData = XLSX.utils.sheet_to_json(worksheet);
-          setExcelData(jsonData);
-          //studentsDataList = JSON.stringify(excelData);
-        };
-        reader.readAsBinaryString(file);
 
-        const studentsDataList = JSON.stringify(excelData);
+        const buffer = await file.arrayBuffer();
+        const wb = XLSX.read(buffer, { type: "array" });
+        const ws = wb.Sheets[wb.SheetNames[0]];
+        const rawRows = XLSX.utils.sheet_to_json(ws, {
+          defval: "",     // keep blanks
+          raw: true       // keep numbers (needed for Excel serial dates)
+        });
+
+        const studentsDataList = JSON.stringify(rawRows);
+       // alert(studentsDataList)
         if (studentsDataList) {
-          alert(studentsDataList)
           const response = await fetch((await getBaseUrl()).toString() + "student/import", {
             method: 'POST',
             headers: { 'Authorization': `Bearer ${localStorage.getItem("token")}`, 'Content-Type': 'application/json' },
@@ -400,7 +397,12 @@ const List = () => {
           if (response.ok) {
             setProcessing(false);
 
-            const blob = await response.blob();
+            const text = await response.text();
+            // If the server returns escaped newlines like "\\n"
+            const fixed = text.replace(/\\n/g, "\r\n");
+            const blob = new Blob([fixed], { type: "text/plain;charset=utf-8" });
+
+            //const blob = await response.blob();
             const url = window.URL.createObjectURL(blob);
             const link = document.createElement('a');
             link.href = url;
@@ -684,7 +686,7 @@ const List = () => {
         <div className="mr-3" onClick={openFilterPopup}>{LinkIcon("#", "Filter")}</div>
 
         {LinkIcon("/dashboard/add-student", "Add")}
-         {user.role === "superadmin" || user.role === "hquser" ?
+        {user.role === "superadmin" || user.role === "hquser" ?
           <div className="hidden lg:block" onClick={handleImport}>{LinkIcon("#", "Import")}</div> : null}
       </div>
 
