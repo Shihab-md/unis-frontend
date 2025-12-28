@@ -23,9 +23,24 @@ const Add = () => {
   const [selectedDOJDate, setSelectedDOJDate] = useState(null);
 
   const [schoolId, setSchoolId] = useState([]);
-  //  const [selectedDOJDate, setSelectedDOJDate] = useState(null);
 
   const navigate = useNavigate();
+
+  const { user } = useAuth();
+
+  const roleOptions = [
+    { value: "superadmin", label: "SuperAdmin", superadminOnly: true },
+    { value: "hquser", label: "HQUser", superadminOnly: true },
+    { value: "admin", label: "Admin", superadminOnly: true },
+    { value: "teacher", label: "Teacher", superadminOnly: true },
+    { value: "usthadh", label: "Usthadh" },
+    { value: "warden", label: "Warden" },
+    { value: "staff", label: "Staff" },
+  ];
+
+  const sortedRoleOptions = roleOptions
+    .filter((o) => user.role === "superadmin" || !o.superadminOnly)
+    .sort((a, b) => a.label.localeCompare(b.label, undefined, { sensitivity: "base" }));
 
   useEffect(() => {
     // Authenticate the User.
@@ -113,8 +128,6 @@ const Add = () => {
       }
     }
   };
-
-  const { user } = useAuth();
 
   if (processing) {
     return getPrcessing();
@@ -222,8 +235,16 @@ const Add = () => {
                   onChange={handleChange}
                   className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                   required
+                  sort
                 >
                   <option value=""></option>
+
+                  {sortedRoleOptions.map((opt) => (
+                    <option key={opt.value} value={opt.value}>
+                      {opt.label}
+                    </option>
+                  ))}
+                  {/*  <option value=""></option>
                   {user.role === "superadmin" ?
                     <option value="hquser">HQUser</option> : null}
                   {user.role === "superadmin" ?
@@ -232,7 +253,7 @@ const Add = () => {
                     <option value="teacher">Teacher</option> : null}
                   <option value="usthadh">Usthadh</option>
                   <option value="warden">Warden</option>
-                  <option value="staff">Staff</option>
+                  <option value="staff">Staff</option> */}
                 </select>
               </div>
 

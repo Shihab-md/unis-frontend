@@ -39,6 +39,22 @@ const Edit = () => {
   const { id } = useParams();
   const [schools, setSchools] = useState([]);
 
+  const { user } = useAuth();
+
+  const roleOptions = [
+    { value: "superadmin", label: "SuperAdmin", superadminOnly: true },
+    { value: "hquser", label: "HQUser", superadminOnly: true },
+    { value: "admin", label: "Admin", superadminOnly: true },
+    { value: "teacher", label: "Teacher", superadminOnly: true },
+    { value: "usthadh", label: "Usthadh" },
+    { value: "warden", label: "Warden" },
+    { value: "staff", label: "Staff" },
+  ];
+
+  const sortedRoleOptions = roleOptions
+    .filter((o) => user.role === "superadmin" || !o.superadminOnly)
+    .sort((a, b) => a.label.localeCompare(b.label, undefined, { sensitivity: "base" }));
+
   useEffect(() => {
 
     // Authenticate the User.
@@ -149,8 +165,6 @@ const Edit = () => {
     }
   };
 
-  const { user } = useAuth();
-
   if (processing) {
     return getPrcessing();
   }
@@ -250,20 +264,19 @@ const Edit = () => {
                   </label>
                   <select
                     name="role"
-                    value={employee.role}
+                    value={employee.role || ""}
                     onChange={handleChange}
                     className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                     required
-                    disabled={user.role === "superadmin" ?
-                      false : true}
+                    disabled={user.role !== "superadmin"}
                   >
                     <option value=""></option>
-                    <option value="hquser">HQUser</option>
-                    <option value="admin">Admin</option>
-                    <option value="teacher">Teacher</option>
-                    <option value="usthadh">Usthadh</option>
-                    <option value="warden">Warden</option>
-                    <option value="staff">Staff</option>
+
+                    {sortedRoleOptions.map((opt) => (
+                      <option key={opt.value} value={opt.value}>
+                        {opt.label}
+                      </option>
+                    ))}
                   </select>
                 </div>
 
