@@ -210,7 +210,7 @@ const List = () => {
   const getEmployees = async () => {
 
     const onEmployeeDelete = () => {
-      const data = localStorage.getItem('employees');
+      const data = null;//localStorage.getItem('employees');
       if (data) {
         console.log("333")
         getFilteredEmployees();
