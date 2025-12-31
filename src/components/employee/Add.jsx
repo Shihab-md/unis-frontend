@@ -1,144 +1,179 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
-import { getSchoolsFromCache } from '../../utils/SchoolHelper';
-import { useAuth } from '../../context/AuthContext'
-import { getBaseUrl, handleRightClickAndFullScreen, checkAuth, getPrcessing, showSwalAlert } from '../../utils/CommonHelper';
+import { getSchoolsFromCache } from "../../utils/SchoolHelper";
+import { useAuth } from "../../context/AuthContext";
 import {
-  FaRegTimesCircle
-} from "react-icons/fa";
-import Select from 'react-select';
-import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
+  getBaseUrl,
+  handleRightClickAndFullScreen,
+  checkAuth,
+  getPrcessing,
+  showSwalAlert,
+  validatePassword,
+  PASSWORD_REGEX,
+  isPasswordStrong,
+} from "../../utils/CommonHelper";
+import { FaRegTimesCircle } from "react-icons/fa";
+import Select from "react-select";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 const Add = () => {
+  const navigate = useNavigate();
+  const { user } = useAuth();
 
-  // To prevent right-click AND For FULL screen view.
-  handleRightClickAndFullScreen();
-
-  const [processing, setProcessing] = useState()
+  const [processing, setProcessing] = useState(false);
   const [formData, setFormData] = useState({});
   const [schools, setSchools] = useState([]);
   const [selectedDOBDate, setSelectedDOBDate] = useState(null);
   const [selectedDOJDate, setSelectedDOJDate] = useState(null);
+  const [schoolId, setSchoolId] = useState(null);
 
-  const [schoolId, setSchoolId] = useState([]);
+  const [passwordError, setPasswordError] = useState("");
 
-  const navigate = useNavigate();
-
-  const { user } = useAuth();
-
-  const roleOptions = [
-    { value: "superadmin", label: "SuperAdmin", superadminOnly: true },
-    { value: "hquser", label: "HQUser", superadminOnly: true },
-    { value: "admin", label: "Admin", superadminOnly: true },
-    { value: "teacher", label: "Teacher", superadminOnly: true },
-    { value: "usthadh", label: "Usthadh" },
-    { value: "warden", label: "Warden" },
-    { value: "staff", label: "Staff" },
-  ];
-
-  const sortedRoleOptions = roleOptions
-    .filter((o) => user.role === "superadmin" || !o.superadminOnly)
-    .sort((a, b) => a.label.localeCompare(b.label, undefined, { sensitivity: "base" }));
-
+  // Run once (avoid adding event listeners on every render)
   useEffect(() => {
-    // Authenticate the User.
+    handleRightClickAndFullScreen();
+  }, []);
+
+  // Auth check: add dependency array to avoid running on every render
+  useEffect(() => {
     if (checkAuth("employeeAdd") === "NO") {
       showSwalAlert("Error!", "User Authorization Failed!", "error");
       navigate("/login");
     }
-  });
+  }, [navigate]);
 
+  // Load schools once
   useEffect(() => {
-    const getSchoolsMap = async (id) => {
-      const schools = await getSchoolsFromCache(id);
-      setSchools(schools);
+    const getSchoolsMap = async () => {
+      const res = await getSchoolsFromCache(); // ✅ don’t pass undefined id
 
-      setSchoolId(schools.filter(school => school._id === localStorage.getItem('schoolId')).map(option => ({
-        value: option._id, label: option.code + " : " + option.nameEnglish
-      })));
+      // ✅ handle different return shapes safely
+      const list = Array.isArray(res) ? res : (res?.schools || []);
+      setSchools(list);
+
+      const mySchoolId = localStorage.getItem("schoolId");
+      const found = list.find((s) => s._id === mySchoolId);
+
+      // ✅ react-select expects {value,label} not array
+      setSchoolId(
+        found ? { value: found._id, label: `${found.code} : ${found.nameEnglish}` } : null
+      );
     };
+
     getSchoolsMap();
   }, []);
+
+
+  const roleOptions = useMemo(
+    () => [
+      { value: "superadmin", label: "SuperAdmin", superadminOnly: true },
+      { value: "hquser", label: "HQUser", superadminOnly: true },
+      { value: "admin", label: "Admin", superadminOnly: true },
+      { value: "teacher", label: "Teacher", superadminOnly: true },
+      { value: "usthadh", label: "Usthadh" },
+      { value: "warden", label: "Warden" },
+      { value: "staff", label: "Staff" },
+    ],
+    []
+  );
+
+  const sortedRoleOptions = useMemo(() => {
+    return roleOptions
+      .filter((o) => user.role === "superadmin" || !o.superadminOnly)
+      .sort((a, b) => a.label.localeCompare(b.label, undefined, { sensitivity: "base" }));
+  }, [roleOptions, user.role]);
+
+  const password = formData.password || ""; // ✅ single source of truth
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
 
     if (name === "file") {
-      setFormData((prevData) => ({ ...prevData, [name]: files[0] }));
-    } else {
-      setFormData((prevData) => ({ ...prevData, [name]: value }));
+      setFormData((prev) => ({ ...prev, [name]: files?.[0] }));
+      return;
+    }
+
+    setFormData((prev) => ({ ...prev, [name]: value }));
+
+    if (name === "password") {
+      setPasswordError(validatePassword(value));
     }
   };
 
   const handleSchChange = (option) => {
     setSchoolId(option);
-    console.log("Option : " + option + ", value : " + option.value)
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // ✅ Always validate (password is required)
+    const err = validatePassword(password);
+    setPasswordError(err);
+    if (err) return;
+
     setProcessing(true);
 
-    const formDataObj = new FormData()
+    const formDataObj = new FormData();
+
+    // Append all form fields (including password)
     Object.keys(formData).forEach((key) => {
-      formDataObj.append(key, formData[key])
-    })
+      formDataObj.append(key, formData[key]);
+    });
 
     try {
-      if (selectedDOBDate) {
-        formDataObj.append('dob', selectedDOBDate)
-      }
-      if (selectedDOJDate) {
-        formDataObj.append('doj', selectedDOJDate)
-      }
-      if (user.role === "superadmin" && schoolId && schoolId != null && schoolId != '' && schoolId != 'undefined') {
-        formDataObj.append('schoolId', schoolId.value)
-        console.log("111 - " + schoolId.value)
+      if (selectedDOBDate) formDataObj.append("dob", selectedDOBDate);
+      if (selectedDOJDate) formDataObj.append("doj", selectedDOJDate);
+
+      // School selection
+      if (user.role === "superadmin" && schoolId?.value) {
+        formDataObj.append("schoolId", schoolId.value);
       } else {
-        formDataObj.append('schoolId', localStorage.getItem('schoolId'))
-        console.log("222 - " + localStorage.getItem('schoolId'))
+        formDataObj.append("schoolId", localStorage.getItem("schoolId"));
       }
 
       const headers = {
-        'Content-Type': 'multipart/form-data',
-        'Authorization': `Bearer ${localStorage.getItem("token")}`,
-        'Access-Control-Allow-Origin': '*',
-        'Accept': 'application/json'
-      }
+        "Content-Type": "multipart/form-data",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        Accept: "application/json",
+      };
 
       const response = await axios.post(
         (await getBaseUrl()).toString() + "employee/add",
         formDataObj,
-        {
-          headers: headers
-        }
+        { headers }
       );
+
       if (response.data.success) {
         setProcessing(false);
         showSwalAlert("Success!", "Successfully Added!", "success");
         navigate("/dashboard/employees");
+      } else {
+        setProcessing(false);
+        showSwalAlert("Error!", response.data.error || "Add failed", "error");
       }
     } catch (error) {
       setProcessing(false);
-      //  error.response.render({ form: formData });
       if (error.response && !error.response.data.success) {
         showSwalAlert("Error!", error.response.data.error, "error");
+      } else {
+        showSwalAlert("Error!", "Server error", "error");
       }
     }
   };
 
-  if (processing) {
-    return getPrcessing();
-  }
+  if (processing) return getPrcessing();
 
   return (
     <>
       <div className="max-w-5xl mx-auto mt-2 p-5 shadow-lg border">
         <div className="flex py-2 px-4 items-center justify-center bg-teal-700 text-white rounded-lg shadow-lg">
-          <h2 className="text-xl font-semibold items-center justify-center">Enter Employee Details</h2>
-          <Link to="/dashboard/employees" >
+          <h2 className="text-xl font-semibold items-center justify-center">
+            Enter Employee Details
+          </h2>
+          <Link to="/dashboard/employees">
             <FaRegTimesCircle className="text-2xl ml-7 text-red-700 bg-gray-200 rounded-xl shadow-md items-center justify-end" />
           </Link>
         </div>
@@ -147,37 +182,22 @@ const Add = () => {
           <div className="py-2 px-4 border mt-5 mb-3 items-center justify-center rounded-lg shadow-lg bg-white">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-3">
               {/* School */}
-              <div className='md:col-span-2'>
+              <div className="md:col-span-2">
                 <label className="block mt-2 text-sm font-medium text-slate-500">
                   Select Niswan <span className="text-red-700">*</span>
                 </label>
-                {/*  <select
+
+                <Select
+                  className="mt-1 p-1 text-sm text-start"
                   name="schoolId"
-                  value={localStorage.getItem('schoolId')}
-                  onChange={handleChange}
-                  className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-                  //required
-                  disabled={user.role === "superadmin" ? false : true}
-                >
-                  <option value="">Select Niswan</option>
-                  {schools.map((school) => (
-                    <option key={school._id} value={school._id}>
-                      {school.code + " : " + school.nameEnglish}
-                    </option>
-                  ))}
-                </select>
-                  */}
-                <Select className='mt-1 p-1 text-sm text-start'
-                  name="schoolId"
-                  options={schools.map(option => ({
-                    value: option._id, label: option.code + " : " + option.nameEnglish
+                  options={schools.map((s) => ({
+                    value: s._id,
+                    label: `${s.code} : ${s.nameEnglish}`,
                   }))}
-
                   value={schoolId}
-
                   onChange={handleSchChange}
                   maxMenuHeight={210}
-                  isDisabled={user.role === "superadmin" ? false : true}
+                  isDisabled={user.role !== "superadmin"}
                 />
               </div>
 
@@ -235,25 +255,13 @@ const Add = () => {
                   onChange={handleChange}
                   className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                   required
-                  sort
                 >
                   <option value=""></option>
-
                   {sortedRoleOptions.map((opt) => (
                     <option key={opt.value} value={opt.value}>
                       {opt.label}
                     </option>
                   ))}
-                  {/*  <option value=""></option>
-                  {user.role === "superadmin" ?
-                    <option value="hquser">HQUser</option> : null}
-                  {user.role === "superadmin" ?
-                    <option value="admin">Admin</option> : null}
-                  {user.role === "superadmin" ?
-                    <option value="teacher">Teacher</option> : null}
-                  <option value="usthadh">Usthadh</option>
-                  <option value="warden">Warden</option>
-                  <option value="staff">Staff</option> */}
                 </select>
               </div>
 
@@ -267,7 +275,6 @@ const Add = () => {
                   name="contactNumber"
                   onChange={handleChange}
                   min="0"
-                  //  placeholder="Contact Number"
                   className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                   required
                 />
@@ -276,7 +283,7 @@ const Add = () => {
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-7">
               {/* Address */}
-              <div className='md:col-span-2'>
+              <div className="md:col-span-2">
                 <label className="block mt-2 text-sm font-medium text-slate-500">
                   Address <span className="text-red-700">*</span>
                 </label>
@@ -284,7 +291,6 @@ const Add = () => {
                   type="text"
                   name="address"
                   onChange={handleChange}
-                  //  placeholder="Address"
                   className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                   required
                 />
@@ -299,7 +305,6 @@ const Add = () => {
                   type="text"
                   name="qualification"
                   onChange={handleChange}
-                  //    placeholder="Qualification"
                   className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                   required
                 />
@@ -307,23 +312,7 @@ const Add = () => {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mt-7">
-
-              {/* Date of Birth 
-              <div>
-                <label className="block mt-2 text-sm font-medium text-slate-500">
-                  Date of Birth <span className="text-red-700">*</span>
-                </label>
-                <input
-                  type="date"
-                  name="dob"
-                  onChange={handleChange}
-                  //    placeholder="DOB"
-                  className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-                  required
-                />
-              </div>*/}
-
-              {/* Date of Birth */}
+              {/* DOB */}
               <div className="grid grid-cols-1">
                 <label className="block mt-3 text-sm font-medium text-slate-500">
                   Date of Birth <span className="text-red-700">*</span>
@@ -339,8 +328,6 @@ const Add = () => {
                   showYearDropdown
                   dropdownMode="select"
                   isClearable
-                //showIcon
-                //toggleCalendarOnIconClick
                 />
               </div>
 
@@ -369,7 +356,6 @@ const Add = () => {
                 <select
                   name="maritalStatus"
                   onChange={handleChange}
-                  placeholder="Marital Status"
                   className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                   required
                 >
@@ -379,22 +365,7 @@ const Add = () => {
                 </select>
               </div>
 
-              {/* Date of Joining 
-              <div>
-                <label className="block mt-2 text-sm font-medium text-slate-500">
-                  Date of Joining <span className="text-red-700">*</span>
-                </label>
-                <input
-                  type="date"
-                  name="doj"
-                  onChange={handleChange}
-                  //      placeholder="DOJ"
-                  className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-                  required
-                />
-              </div>*/}
-
-              {/* Date of Joining */}
+              {/* DOJ */}
               <div className="grid grid-cols-1">
                 <label className="block mt-3 text-sm font-medium text-slate-500">
                   Date of Joining <span className="text-red-700">*</span>
@@ -410,8 +381,6 @@ const Add = () => {
                   showYearDropdown
                   dropdownMode="select"
                   isClearable
-                //showIcon
-                //toggleCalendarOnIconClick
                 />
               </div>
             </div>
@@ -427,7 +396,6 @@ const Add = () => {
                   name="salary"
                   onChange={handleChange}
                   min="0"
-                  //    placeholder="Salary"
                   className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                   required
                 />
@@ -442,10 +410,16 @@ const Add = () => {
                   type="password"
                   name="password"
                   placeholder="******"
+                  value={password}
                   onChange={handleChange}
                   className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                   required
+                  pattern={PASSWORD_REGEX.source}
+                  title="8-64 chars, 1 uppercase, 1 lowercase, 1 number, 1 special, no spaces"
                 />
+                {passwordError && (
+                  <p className="text-red-600 text-sm mt-1">{passwordError}</p>
+                )}
               </div>
 
               {/* Image Upload */}
@@ -457,7 +431,6 @@ const Add = () => {
                   type="file"
                   name="file"
                   onChange={handleChange}
-                  placeholder="Upload Image"
                   accept="image/*"
                   className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                 />
@@ -466,7 +439,7 @@ const Add = () => {
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-7 mb-5">
               {/* Designation */}
-              <div className='md:col-span-3'>
+              <div className="md:col-span-3">
                 <label className="block mt-2 text-sm font-medium text-slate-500">
                   More details about the Employee
                 </label>
@@ -474,16 +447,16 @@ const Add = () => {
                   type="text"
                   name="designation"
                   onChange={handleChange}
-                  //  placeholder="Route Name"
                   className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-                //  required
                 />
               </div>
             </div>
           </div>
+
           <button
             type="submit"
-            className="w-full mt-3 bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded-lg shadow-lg"
+            disabled={processing || !isPasswordStrong(password)}
+            className="w-full mt-3 bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded-lg shadow-lg disabled:opacity-50"
           >
             Add Employee
           </button>
