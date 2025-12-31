@@ -66,7 +66,7 @@ export function checkAuth(screenName) {
 
 export const getBaseUrl = async () => {
    return "https://unis-server.vercel.app/api/";
-  
+  // return "http://localhost:5000/api/";
 };
 
 export function toCamelCase(inputString) {
@@ -105,6 +105,24 @@ export function getPrcessing() {
     <img width={320} className='flex items-center justify-center rounded-lg shadow-xl border' src="/spinner1.gif" />
   </dialog></div>
 }
+
+// Strong password: 8–64 chars, 1 upper, 1 lower, 1 number, 1 special, no spaces
+export const PASSWORD_REGEX =
+  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\w\s])\S{8,64}$/;
+
+export const validatePassword = (pw) => {
+  if (!pw) return "Password is required";
+  if (pw.length < 8) return "Password must be at least 8 characters";
+  if (pw.length > 64) return "Password must be at most 64 characters";
+  if (/\s/.test(pw)) return "Password must not contain spaces";
+  if (!/[a-z]/.test(pw)) return "Password must include a lowercase letter";
+  if (!/[A-Z]/.test(pw)) return "Password must include an uppercase letter";
+  if (!/\d/.test(pw)) return "Password must include a number";
+  if (!/[^\w\s]/.test(pw)) return "Password must include a special character";
+  return "";
+};
+
+export const isPasswordStrong = (pw) => PASSWORD_REGEX.test(pw || "");
 
 export function getFilterGif() {
   return <div className="p-5 mt-7 rounded-lg">
