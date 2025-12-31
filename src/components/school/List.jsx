@@ -179,7 +179,8 @@ const List = () => {
       );
       if (responnse.data.success) {
         let sno = 1;
-        const data = await responnse.data.schools.filter(school => school.code !== 'UN-00-001').map((sch) => ({
+        //const data = await responnse.data.schools.filter(school => school.code !== 'UN-00-001').map((sch) => ({
+          const data = await responnse.data.schools.map((sch) => ({
           _id: sch._id,
           sno: sno++,
           code: sch.code,
@@ -261,7 +262,7 @@ const List = () => {
       || localStorage.getItem('districtStateId')
       || localStorage.getItem('schStatus'))) {
       let sno = 1;
-      const data1 = JSON.parse(data).schools.filter(school => school.code !== 'UN-00-001').map((sch) => ({
+      const data1 = JSON.parse(data).schools.map((sch) => ({
         _id: sch._id,
         sno: sno++,
         code: sch.code,
@@ -298,7 +299,7 @@ const List = () => {
         );
         if (responnse.data.success) {
           let sno = 1;
-          const data = await responnse.data.schools.filter(school => school.code !== 'UN-00-001').map((sch) => ({
+          const data = await responnse.data.schools.map((sch) => ({
             _id: sch._id,
             sno: sno++,
             code: sch.code,
