@@ -334,6 +334,7 @@ const List = () => {
           city: student.city,
           district: student.districtStateId ? student.districtStateId?.district + ", " + student.districtStateId?.state : "",
           active: student.active,
+          feesPaid: student.feesPaid,
           course: student.courses && student.courses?.length > 0 ? student.courses.map(course => course.name ? course.name + ", " : "") : "",
           courses: student.courses && student.courses?.length > 0 ? student.courses : null,
           fatherName: student.fatherName ? student.fatherName : student.motherName ? student.motherName : student.guardianName ? student.guardianName : "",
@@ -386,7 +387,7 @@ const List = () => {
         });
 
         const studentsDataList = JSON.stringify(rawRows);
-       // alert(studentsDataList)
+        // alert(studentsDataList)
         if (studentsDataList) {
           const response = await fetch((await getBaseUrl()).toString() + "student/import", {
             method: 'POST',
@@ -422,6 +423,7 @@ const List = () => {
             });
 
             navigate("/dashboard/students");
+            window.location.reload();
           } else {
             const resData = JSON.parse(JSON.stringify(await response.json()));
             setProcessing(false);
@@ -445,11 +447,143 @@ const List = () => {
           background: "url(/bg_card.png)",
         });
       }
+
     } else {
       //  Swal.fire("Please select correct file and try again!");
     }
   }
- 
+
+  // ✅ 1) Build members list from students (studentId) where feesPaid == 0 (UNPAID)
+  const buildUnpaidMembersFromStudents = (students) => {
+    const list = Array.isArray(students) ? students : [];
+
+    return list
+      .filter((s) => s && s._id && Number(s.feesPaid) === 0)
+      .map((s) => ({
+        _id: s._id, // studentId
+        name: `${s.rollNumber ? s.rollNumber + " - " : ""}${s.name || ""}`.trim(),
+      }));
+  };
+
+  // ✅ 2) Swal2 multi-select popup (returns selected studentIds)
+  const openStudentPicker = async (students = []) => {
+    const members = buildUnpaidMembersFromStudents(students);
+
+    if (members.length === 0) {
+      await Swal.fire({
+        title: "No unpaid students",
+        text: "All students already paid the fees (or no students found).",
+        icon: "info",
+        background: "url(/bg_card.png)",
+      });
+      return [];
+    }
+
+    const optionsHtml = members
+      .map((m) => `<option value="${m._id}">${m.name}</option>`)
+      .join("");
+
+    const { value: selectedStudentIds } = await Swal.fire({
+      title: "Select Students (Unpaid)",
+      html: `
+      <select id="studentSelect" multiple size="10"
+        style="width:100%; padding:8px; border:1px solid #ccc; border-radius:6px;">
+        ${optionsHtml}
+      </select>
+      <div style="margin-top:8px; font-size:12px; color:#666;">
+        Hold Ctrl to select multiple students.
+      </div>
+    `,
+      showCancelButton: true,
+      confirmButtonText: "Mark as Paid",
+      focusConfirm: false,
+      background: "url(/bg_card.png)",
+      preConfirm: () => {
+        const el = document.getElementById("studentSelect");
+        if (!el) return [];
+
+        const ids = Array.from(el.selectedOptions).map((o) => o.value);
+        if (ids.length === 0) {
+          Swal.showValidationMessage("Please select at least one student.");
+          return;
+        }
+        return ids; // ✅ array of studentIds
+      },
+    });
+
+    return selectedStudentIds || [];
+  };
+
+  // ✅ 3) Call API with payload key: studentIds
+  const postSelectedStudents = async (selectedStudentIds = []) => {
+    const base = await getBaseUrl();
+    const token = localStorage.getItem("token");
+
+    const resp = await fetch(`${base}student/markFeesPaid`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      body: JSON.stringify({ studentIds: selectedStudentIds }), // ✅ key = studentIds
+    });
+
+    const data = await resp.json().catch(() => ({}));
+
+    if (!resp.ok || data?.success === false) {
+      throw new Error(data?.error || "API request failed");
+    }
+
+    return data;
+  };
+
+  // ✅ 4) Full flow: pick -> call API -> show result -> navigate
+  const handleFeesPaid = async () => {
+    try {
+      if (!Array.isArray(students) || students.length === 0) {
+        await Swal.fire({
+          title: "No Students Found",
+          text: "No students found in the list.",
+          icon: "info",
+          background: "url(/bg_card.png)",
+        });
+        return;
+      }
+
+      const selectedStudentIds = await openStudentPicker(students);
+      if (!selectedStudentIds.length) return; // cancelled
+
+      Swal.fire({
+        title: "Updating...",
+        html: "Please wait…",
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+        didOpen: () => Swal.showLoading(),
+        background: "url(/bg_card.png)",
+      });
+
+      const result = await postSelectedStudents(selectedStudentIds);
+
+      await Swal.fire({
+        title: "Success!",
+        text: result?.message || "Fees marked as paid to selected students.",
+        icon: "success",
+        background: "url(/bg_card.png)",
+      });
+
+      window.location.reload();
+      return result;
+    } catch (err) {
+      Swal.fire({
+        title: "Error!",
+        text: err?.message || String(err),
+        icon: "error",
+        background: "url(/bg_card.png)",
+      });
+    }
+  };
+
   useEffect(() => {
 
     // Authenticate the User.
@@ -521,6 +655,7 @@ const List = () => {
         city: student.city,
         district: student.districtStateId ? student.districtStateId?.district + ", " + student.districtStateId?.state : "",
         active: student.active,
+        feesPaid: student.feesPaid,
         course: student.courses && student.courses?.length > 0 ? student.courses.map(course => course.name ? course.name + ", " : "") : "",
         courses: student.courses && student.courses?.length > 0 ? student.courses : null,
         fatherName: student.fatherName ? student.fatherName : student.motherName ? student.motherName : student.guardianName ? student.guardianName : "",
@@ -608,6 +743,7 @@ const List = () => {
               city: student.city,
               district: student.districtStateId ? student.districtStateId?.district + ", " + student.districtStateId?.state : "",
               active: student.active,
+              feesPaid: student.feesPaid,
               course: student.courses && student.courses?.length > 0 ? student.courses.map(course => course.name ? course.name + ", " : "") : "",
               courses: student.courses && student.courses?.length > 0 ? student.courses : null,
               fatherName: student.fatherName ? student.fatherName : student.motherName ? student.motherName : student.guardianName ? student.guardianName : "",
@@ -686,6 +822,10 @@ const List = () => {
         <div className="mr-3" onClick={openFilterPopup}>{LinkIcon("#", "Filter")}</div>
 
         {LinkIcon("/dashboard/add-student", "Add")}
+
+        {user.role === "superadmin" || user.role === "hquser" ?
+          <div className="hidden lg:block" onClick={handleFeesPaid}>{LinkIcon("#", "FeesPaid")}</div> : null}
+
         {user.role === "superadmin" || user.role === "hquser" ?
           <div className="hidden lg:block" onClick={handleImport}>{LinkIcon("#", "Import")}</div> : null}
       </div>

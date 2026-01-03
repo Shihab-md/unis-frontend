@@ -1,7 +1,7 @@
 
 import { Link } from 'react-router-dom';
 import {
-  FaPlusSquare, FaArrowAltCircleLeft, FaRegCaretSquareDown, FaFilter, FaSearch, FaTasks
+  FaPlusSquare, FaArrowAltCircleLeft, FaRegCaretSquareDown, FaFilter, FaSearch, FaTasks, FaCheck
 } from "react-icons/fa";
 import Swal from 'sweetalert2';
 
@@ -66,7 +66,7 @@ export function checkAuth(screenName) {
 
 export const getBaseUrl = async () => {
    return "https://unis-server.vercel.app/api/";
-  // return "http://localhost:5000/api/";
+  //return "http://localhost:5000/api/";
 };
 
 export function toCamelCase(inputString) {
@@ -152,6 +152,10 @@ export function LinkIcon(toPage, purpose) {
   } else if (purpose === "Filter") {
     return <Link to={toPage} >
       <FaTasks className="text-3xl lg:text-4xl text-fuchsia-500 bg-white rounded shadow-lg border-2 border-fuchsia-700 p-1 lg:p-1.5" /> </Link>
+
+  } else if (purpose === "FeesPaid") {
+    return <Link to={toPage} >
+      <FaCheck className="text-3xl lg:text-4xl bg-white text-yellow-700 border-2 border-yellow-700 rounded shadow-lg p-1 lg:p-1.5" /> </Link>
 
   } else if (purpose === "Search") {
     return <Link to={toPage} >

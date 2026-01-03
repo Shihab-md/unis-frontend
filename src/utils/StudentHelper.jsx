@@ -260,7 +260,7 @@ export const StudentButtons = ({ Id, onStudentDelete }) => {
         onClick={() => navigate(`/dashboard/students/edit/${Id}`)}
       >
         <FaEdit className="m-1" />
-      </button>
+      </button> 
       <button
         className={getButtonStyle('Promote')}
         onClick={() => navigate(`/dashboard/students/promote/${Id}`)}
