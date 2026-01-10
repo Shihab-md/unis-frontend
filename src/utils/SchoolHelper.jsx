@@ -30,7 +30,7 @@ export const columns = [
       ),*/
     selector: (row) => row.code,
     //  sortable: true,
-    width: "110px",
+    width: "140px",
   },
   {
     name: "Name",
