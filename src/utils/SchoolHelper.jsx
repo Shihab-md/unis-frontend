@@ -88,7 +88,7 @@ export const getSchools = async (id) => {
         },
       }
     );
-    console.log(responnse)
+    //console.log(responnse)
     if (responnse.data.success) {
       schools = responnse.data.schools;
     }
@@ -165,7 +165,7 @@ export const SchoolButtons = ({ Id, onSchoolDelete }) => {
         <FaEye className="m-1" />
       </button>
 
-      {user.role === "superadmin" || user.role === "hquser" || user.role === "admin" ?
+      {user.role === "superadmin" || user.role === "hquser" ?
         <div className="flex space-x-3">
           <button
             className={getButtonStyle('Edit')}
