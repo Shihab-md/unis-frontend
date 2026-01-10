@@ -215,7 +215,7 @@ const Create = () => {
 
                 <Select className='mt-2 text-sm text-start mb-3'
                   name="schoolId"
-                  options={schools.filter(school => school.code !== 'UN-00-001').map(option => ({
+                  options={schools.filter(school => school.code !== 'UN-00-00001').map(option => ({
                     value: option._id, label: option.code + " : " + option.nameEnglish
                   }))}
 

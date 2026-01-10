@@ -179,7 +179,7 @@ const List = () => {
       );
       if (responnse.data.success) {
         let sno = 1;
-        //const data = await responnse.data.schools.filter(school => school.code !== 'UN-00-001').map((sch) => ({
+        //const data = await responnse.data.schools.filter(school => school.code !== 'UN-00-00001').map((sch) => ({
           const data = await responnse.data.schools.map((sch) => ({
           _id: sch._id,
           sno: sno++,
