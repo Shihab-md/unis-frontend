@@ -46,6 +46,17 @@ const List = () => {
 
   const [schId, setSchId] = useState('');
 
+  const ExpandedComponent = ({ data }) => {
+    return (
+      data?.remarks ?
+        <div className='ml-14 p-2 bg-blue-50'>
+          <p className='ml-14 text-xs'>{"Remarks : "}
+            {data.remarks ? data.remarks : ""}
+          </p>
+        </div>
+        : null);
+  }
+
   const MySwal = withReactContent(Swal);
 
   useEffect(() => {
@@ -335,6 +346,7 @@ const List = () => {
           district: student.districtStateId ? student.districtStateId?.district + ", " + student.districtStateId?.state : "",
           active: student.active,
           feesPaid: student.feesPaid,
+          remarks: student.remarks,
           course: student.courses && student.courses?.length > 0 ? student.courses.map(course => course.name ? course.name + ", " : "") : "",
           courses: student.courses && student.courses?.length > 0 ? student.courses : null,
           fatherName: student.fatherName ? student.fatherName : student.motherName ? student.motherName : student.guardianName ? student.guardianName : "",
@@ -656,6 +668,7 @@ const List = () => {
         district: student.districtStateId ? student.districtStateId?.district + ", " + student.districtStateId?.state : "",
         active: student.active,
         feesPaid: student.feesPaid,
+        remarks: student.remarks,
         course: student.courses && student.courses?.length > 0 ? student.courses.map(course => course.name ? course.name + ", " : "") : "",
         courses: student.courses && student.courses?.length > 0 ? student.courses : null,
         fatherName: student.fatherName ? student.fatherName : student.motherName ? student.motherName : student.guardianName ? student.guardianName : "",
@@ -744,6 +757,7 @@ const List = () => {
               district: student.districtStateId ? student.districtStateId?.district + ", " + student.districtStateId?.state : "",
               active: student.active,
               feesPaid: student.feesPaid,
+              remarks: student.remarks,
               course: student.courses && student.courses?.length > 0 ? student.courses.map(course => course.name ? course.name + ", " : "") : "",
               courses: student.courses && student.courses?.length > 0 ? student.courses : null,
               fatherName: student.fatherName ? student.fatherName : student.motherName ? student.motherName : student.guardianName ? student.guardianName : "",
@@ -885,7 +899,7 @@ const List = () => {
       {filtering ?
         getFilterGif() :
         <div className='mt-3 lg:mt-5 rounded-lg shadow-lg'>
-          <DataTable columns={columns} data={filteredStudent} showGridlines highlightOnHover striped responsive conditionalRowStyles={conditionalRowStyles} />
+          <DataTable columns={columns} data={filteredStudent} showGridlines highlightOnHover striped responsive conditionalRowStyles={conditionalRowStyles} expandableRows expandableRowsComponent={ExpandedComponent} />
         </div>}
     </div>
   )
