@@ -66,7 +66,7 @@ export function checkAuth(screenName) {
 
 export const getBaseUrl = async () => {
   return "https://unis-server.vercel.app/api/";
-  // return "http://localhost:5000/api/";
+  //return "http://localhost:5000/api/";
 };
 
 export function toCamelCase(inputString) {
@@ -226,7 +226,7 @@ export function showSwalAlert(title, message, icon) {
     title: title,
     html: "<b>" + message + "</b>",
     icon: icon,
-    timer: 1600,
+    timer: 5700,
     timerProgressBar: true,
     showConfirmButton: false,
     background: "url(/bg_card.png)",
