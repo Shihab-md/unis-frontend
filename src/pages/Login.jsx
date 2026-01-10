@@ -10,14 +10,13 @@ import {
 } from "../utils/CommonHelper";
 
 const Login = () => {
-  const [email, setEmail] = useState("");
+  const [loginId, setLoginId] = useState(""); // ✅ employeeId or email
   const [password, setPassword] = useState("");
 
   const { login } = useAuth();
   const navigate = useNavigate();
   const [processing, setProcessing] = useState(false);
 
-  // ✅ run once (not every render)
   useEffect(() => {
     handleRightClickAndFullScreen();
   }, []);
@@ -32,13 +31,17 @@ const Login = () => {
 
     try {
       const base = await getBaseUrl();
+
+      // ✅ send loginId (preferred). Also send email for backward compatibility
+      // - after backend update, it will use loginId
+      // - before backend update, it can still use email
       const response = await axios.post(`${base}auth/login`, {
-        email: email.trim(),
+        loginId: loginId.trim(),
+        email: loginId.trim(), // backward compatible
         password,
       });
 
       if (!response.data?.success) {
-        // fallback (backend should use HTTP status, but keep safe)
         showSwalAlert("Login failed", response.data?.error || "Login failed", "error");
         setProcessing(false);
         return;
@@ -49,7 +52,6 @@ const Login = () => {
       localStorage.setItem("role", response.data.user.role);
       localStorage.setItem("userId", response.data.user._id);
 
-      // optional school info (for HQ roles it can be null)
       if (response.data.user.schoolId) {
         localStorage.setItem("schoolId", response.data.user.schoolId);
       } else {
@@ -71,25 +73,23 @@ const Login = () => {
       const status = err?.response?.status;
       const apiMessage = err?.response?.data?.error;
 
-      // ✅ New backend behavior: 401 for both wrong email/password
+      // ✅ do not reveal user existence (generic)
       if (status === 401) {
-        showSwalAlert("Login failed", "Invalid email or password.", "error");
+        showSwalAlert("Login failed", "Invalid Employee ID/Email or password.", "error");
         return;
       }
 
-      // Setup issues (not linked to school)
+      // Setup issues (e.g., user not linked to school)
       if (status === 400) {
         showSwalAlert("Login failed", apiMessage || "Invalid request.", "error");
         return;
       }
 
-      // Network error / no response
       if (!err?.response) {
         showSwalAlert("Network error", "Unable to reach server. Please try again.", "error");
         return;
       }
 
-      // Everything else
       showSwalAlert("Error!", apiMessage || "Server error. Please try again later.", "error");
     }
   };
@@ -110,19 +110,22 @@ const Login = () => {
 
           <form onSubmit={handleSubmit} autoComplete="off">
             <div className="mb-4">
-              <label htmlFor="email" className="block text-gray-700">Email</label>
+              <label htmlFor="loginId" className="block text-gray-700">
+                User ID
+              </label>
               <input
-                type="email"
+                type="text"
                 className="w-full px-3 py-2 mt-1 border rounded-md"
-                placeholder="Enter Email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                value={loginId}
+                onChange={(e) => setLoginId(e.target.value)}
                 required
               />
             </div>
 
             <div className="mb-5">
-              <label htmlFor="password" className="block text-gray-700">Password</label>
+              <label htmlFor="password" className="block text-gray-700">
+                Password
+              </label>
               <input
                 type="password"
                 className="w-full px-3 py-2 mt-1 border rounded-md"

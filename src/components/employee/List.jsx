@@ -30,6 +30,8 @@ const List = () => {
 
   const navigate = useNavigate()
 
+  const { user } = useAuth();
+
   const MySwal = withReactContent(Swal);
 
   const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
@@ -259,6 +261,7 @@ const List = () => {
             });
 
             navigate("/dashboard/employees");
+            window.location.reload();
           } else {
             const resData = JSON.parse(JSON.stringify(await response.json()));
             setProcessing(false);
@@ -325,26 +328,34 @@ const List = () => {
       }
     }
 
+    const me = String(user?._id || "");
     const data = localStorage.getItem('employees');
     console.log("Existing Data - " + JSON.parse(data))
+    //alert(user._id)
     if (data && (localStorage.getItem('empSchoolId')
       || localStorage.getItem('empRole')
       || localStorage.getItem('empStatus'))) {
       let sno = 1;
-      const data1 = JSON.parse(data).employees.map((sup) => ({
-        _id: sup._id,
-        sno: sno++,
-        empId: sup.employeeId,
-        name: sup.userId?.name,
-        role: sup.userId?.role,
-        contactNumber: sup.contactNumber,
-        email: sup.userId?.email,
-        schoolCode: sup.schoolId?.code,
-        schoolName: sup.schoolId?.nameEnglish,
-        designation: sup.designation,
-        active: sup.active,
-        action: (<EmployeeButtons Id={sup._id} onEmployeeDelete={onEmployeeDelete} />),
-      }));
+      const data1 = JSON.parse(data).employees
+        .filter((sup) => {
+          const supUserId = String(sup?.userId?._id || sup?.userId || "");
+          console.log(supUserId)
+          return supUserId !== me;
+        })
+        .map((sup) => ({
+          _id: sup._id,
+          sno: sno++,
+          empId: sup.employeeId,
+          name: sup.userId?.name,
+          role: sup.userId?.role,
+          contactNumber: sup.contactNumber,
+          email: sup.userId?.email,
+          schoolCode: sup.schoolId?.code,
+          schoolName: sup.schoolId?.nameEnglish,
+          designation: sup.designation,
+          active: sup.active,
+          action: (<EmployeeButtons Id={sup._id} onEmployeeDelete={onEmployeeDelete} />),
+        }));
       setEmployees(data1);
       setFilteredEmployees(data1);
       console.log("Data from local storage")
@@ -363,22 +374,26 @@ const List = () => {
         );
         if (responnse.data.success) {
           let sno = 1;
-          const data = await responnse.data.employees.map((sup) => ({
-            _id: sup._id,
-            sno: sno++,
-            empId: sup.employeeId,
-            name: sup.userId?.name,
-            role: sup.userId?.role,
-            contactNumber: sup.contactNumber,
-            email: sup.userId?.email,
-            schoolCode: sup.schoolId?.code,
-            schoolName: sup.schoolId?.nameEnglish,
-            designation: sup.designation,
-            active: sup.active,
-            //dob: new Date(sup.dob).toLocaleDateString(),
-            //  profileImage: <img width={40} className='rounded-full' src={`https://unis-server.vercel.app/${sup.userId.profileImage}`} />,
-            action: (<EmployeeButtons Id={sup._id} onEmployeeDelete={onEmployeeDelete} />),
-          }));
+          const data = await responnse.data.employees
+            .filter((sup) => {
+              const supUserId = String(sup?.userId?._id || sup?.userId || "");
+              return supUserId !== me;
+            }).map((sup) => ({
+              _id: sup._id,
+              sno: sno++,
+              empId: sup.employeeId,
+              name: sup.userId?.name,
+              role: sup.userId?.role,
+              contactNumber: sup.contactNumber,
+              email: sup.userId?.email,
+              schoolCode: sup.schoolId?.code,
+              schoolName: sup.schoolId?.nameEnglish,
+              designation: sup.designation,
+              active: sup.active,
+              //dob: new Date(sup.dob).toLocaleDateString(),
+              //  profileImage: <img width={40} className='rounded-full' src={`https://unis-server.vercel.app/${sup.userId.profileImage}`} />,
+              action: (<EmployeeButtons Id={sup._id} onEmployeeDelete={onEmployeeDelete} />),
+            }));
           setEmployees(data);
           setFilteredEmployees(data);
           localStorage.removeItem('employees');
@@ -416,8 +431,6 @@ const List = () => {
   if (processing) {
     return getPrcessing();
   }
-
-  const { user } = useAuth();
 
   return (
     <div className="mt-3 p-5">

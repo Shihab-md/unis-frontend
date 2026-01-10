@@ -250,7 +250,7 @@ const Edit = () => {
                     name="employeeId"
                     value={employee.employeeId}
                     onChange={handleChange}
-                    // disabled={true}
+                    disabled={true}
                     //      placeholder="Employee ID"
                     className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                     required

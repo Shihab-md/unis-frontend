@@ -231,7 +231,7 @@ const Add = () => {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-3 mt-7">
-              {/* Employee ID */}
+              {/* Employee ID 
               <div>
                 <label className="block mt-2 text-sm font-medium text-slate-500">
                   Employee ID <span className="text-red-700">*</span>
@@ -243,7 +243,7 @@ const Add = () => {
                   className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                   required
                 />
-              </div>
+              </div>*/}
 
               {/* Role */}
               <div>
@@ -279,6 +279,25 @@ const Add = () => {
                   required
                 />
               </div>
+
+              {/* DOJ */}
+              <div className="grid grid-cols-1">
+                <label className="block mt-3 text-sm font-medium text-slate-500">
+                  Date of Joining <span className="text-red-700">*</span>
+                </label>
+                <DatePicker
+                  name="doj"
+                  selected={selectedDOJDate}
+                  onChange={(date) => setSelectedDOJDate(date)}
+                  dateFormat="dd/MM/yyyy"
+                  className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                  required
+                  showMonthDropdown
+                  showYearDropdown
+                  dropdownMode="select"
+                  isClearable
+                />
+              </div>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-7">
@@ -311,7 +330,7 @@ const Add = () => {
               </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mt-7">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-7">
               {/* DOB */}
               <div className="grid grid-cols-1">
                 <label className="block mt-3 text-sm font-medium text-slate-500">
@@ -363,25 +382,6 @@ const Add = () => {
                   <option value="Single">Single</option>
                   <option value="Married">Married</option>
                 </select>
-              </div>
-
-              {/* DOJ */}
-              <div className="grid grid-cols-1">
-                <label className="block mt-3 text-sm font-medium text-slate-500">
-                  Date of Joining <span className="text-red-700">*</span>
-                </label>
-                <DatePicker
-                  name="doj"
-                  selected={selectedDOJDate}
-                  onChange={(date) => setSelectedDOJDate(date)}
-                  dateFormat="dd/MM/yyyy"
-                  className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-                  required
-                  showMonthDropdown
-                  showYearDropdown
-                  dropdownMode="select"
-                  isClearable
-                />
               </div>
             </div>
 
