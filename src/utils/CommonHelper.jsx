@@ -65,8 +65,8 @@ export function checkAuth(screenName) {
 };
 
 export const getBaseUrl = async () => {
-   return "https://unis-server.vercel.app/api/";
-  //return "http://localhost:5000/api/";
+  return "https://unis-server.vercel.app/api/";
+  // return "http://localhost:5000/api/";
 };
 
 export function toCamelCase(inputString) {
@@ -74,9 +74,53 @@ export function toCamelCase(inputString) {
 }
 
 export function handleRightClickAndFullScreen() {
+  const isDisableRightClick = true;
+  const isOpenFullScreen = true;
+
+  // ✅ Detect mobile only (Android/iOS + small screens)
+  const isMobile =
+    /Android|iPhone|iPad|iPod/i.test(navigator.userAgent || "") ||
+    window.matchMedia?.("(max-width: 768px)")?.matches;
+
+  if (!isMobile) return; // ✅ Do nothing for web/desktop
+
+  // -------- Right click disable (mostly desktop feature; keep only if you want) --------
+  const handleRightClick = (e) => e.preventDefault();
+
+  if (isDisableRightClick) {
+    document.removeEventListener("contextmenu", handleRightClick); // prevent duplicates
+    document.addEventListener("contextmenu", handleRightClick);
+  }
+
+  // -------- Fullscreen (must be triggered by user gesture) --------
+  if (isOpenFullScreen) {
+    const enterFs = async () => {
+      try {
+        // Already fullscreen? no-op
+        if (document.fullscreenElement) return;
+
+        // Fullscreen API supported?
+        const el = document.documentElement;
+        if (el?.requestFullscreen) {
+          await el.requestFullscreen();
+        }
+      } catch {
+        // iOS Safari will usually fail; ignore silently
+      }
+    };
+
+    // ✅ IMPORTANT: do NOT force fullscreen on ANY click.
+    // Instead use a "one-time tap anywhere" on mobile only.
+    document.body.removeEventListener("click", enterFs);
+    document.body.addEventListener("click", enterFs, { once: true });
+  }
+}
+
+{/*
+export function handleRightClickAndFullScreen() {
 
   const isDisableRightClick = true;
-  const isOpenFullScreen = false;
+  const isOpenFullScreen = true;
 
   if (isDisableRightClick) {
     document.addEventListener('contextmenu', handleRightClick);
@@ -84,7 +128,7 @@ export function handleRightClickAndFullScreen() {
   if (isOpenFullScreen) {
     document.body.addEventListener('click', () => document.documentElement.requestFullscreen(), { once: true });
   }
-}
+} */}
 
 export function handleRightClick(event) {
   event.preventDefault();

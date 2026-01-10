@@ -2,6 +2,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { getBaseUrl, showSwalAlert, showConfirmationSwalAlert, getButtonStyle } from '../utils/CommonHelper';
 import { FaEye, FaUserCheck, FaEdit, FaTrashAlt, FaExchangeAlt } from "react-icons/fa";
+import { useAuth } from '../context/AuthContext'
 
 export const columnsSelect = [
   {
@@ -247,6 +248,8 @@ export const StudentButtons = ({ Id, onStudentDelete }) => {
     }
   };
 
+  const { user } = useAuth();
+
   return (
     <div className="flex space-x-3">
       <button
@@ -260,19 +263,23 @@ export const StudentButtons = ({ Id, onStudentDelete }) => {
         onClick={() => navigate(`/dashboard/students/edit/${Id}`)}
       >
         <FaEdit className="m-1" />
-      </button> 
-      <button
-        className={getButtonStyle('Promote')}
-        onClick={() => navigate(`/dashboard/students/promote/${Id}`)}
-      >
-        <FaUserCheck className="m-1" />
       </button>
-      <button
-        className={getButtonStyle('Transfer')}
-        onClick={() => navigate(`#`)}
-      >
-        <FaExchangeAlt className="m-1" />
-      </button>
+      {user.role === "superadmin" || user.role === "hquser" || user.role === "admin" ?
+        <div className="flex space-x-3">
+          <button
+            className={getButtonStyle('Promote')}
+            onClick={() => navigate(`/dashboard/students/promote/${Id}`)}
+          >
+            <FaUserCheck className="m-1" />
+          </button> </div> : null}
+      {user.role === "superadmin" || user.role === "hquser" ?
+        <div className="flex space-x-3">
+          <button
+            className={getButtonStyle('Transfer')}
+            onClick={() => navigate(`#`)}
+          >
+            <FaExchangeAlt className="m-1" />
+          </button> </div> : null}
       <button
         className={getButtonStyle('Delete')}
         onClick={() => handleDelete(Id)}
