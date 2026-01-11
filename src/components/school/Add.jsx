@@ -134,13 +134,13 @@ const Add = () => {
               {/* Code */}
               <div>
                 <label className="block mt-3 text-sm font-medium text-slate-500">
-                  Code <span className="text-red-700">*</span>
+                  Code (Prefix) <span className="text-red-700">*</span>
                 </label>
                 <input
                   type="text"
                   name="code"
                   onChange={handleChange}
-                  placeholder=""
+                  placeholder="UN-XX"
                   className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                   required
                 />
