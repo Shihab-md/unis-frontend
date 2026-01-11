@@ -47,16 +47,14 @@ const Add = () => {
   // Load schools once
   useEffect(() => {
     const getSchoolsMap = async () => {
-      const res = await getSchoolsFromCache(); // ✅ don’t pass undefined id
+      const res = await getSchoolsFromCache();
 
-      // ✅ handle different return shapes safely
       const list = Array.isArray(res) ? res : (res?.schools || []);
       setSchools(list);
 
       const mySchoolId = localStorage.getItem("schoolId");
       const found = list.find((s) => s._id === mySchoolId);
 
-      // ✅ react-select expects {value,label} not array
       setSchoolId(
         found ? { value: found._id, label: `${found.code} : ${found.nameEnglish}` } : null
       );
@@ -85,7 +83,7 @@ const Add = () => {
       .sort((a, b) => a.label.localeCompare(b.label, undefined, { sensitivity: "base" }));
   }, [roleOptions, user.role]);
 
-  const password = formData.password || ""; // ✅ single source of truth
+  const password = formData.password || "";
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
