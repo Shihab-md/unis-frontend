@@ -160,7 +160,7 @@ const AdminSummary = () => {
           </Link> : null}
 
         {user.role === "superadmin" || user.role === "hquser" || user.role === "supervisor" || user.role === "admin" ?
-          <Link to="#" >
+          <Link to="/dashboard/reports" >
             <SummaryCard
               icon={<FaFileContract />}
               text="Reports"

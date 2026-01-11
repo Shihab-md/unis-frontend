@@ -58,6 +58,8 @@ import DistrictStateAdd from "./components/districtstate/Add";
 import DistrictStateView from "./components/districtstate/View";
 import DistrictStateEdit from "./components/districtstate/Edit";
 
+import ReportsHome from "./components/report/ReportsHome";
+
 import AddSalary from "./components/salary/Add";
 import ViewSalary from "./components/salary/View";
 import Summary from './components/EmployeeDashboard/Summary'
@@ -142,6 +144,8 @@ function App() {
 
           <Route path="/dashboard/masters" element={<Masters />}></Route>
           <Route path="/dashboard/changePassword" element={<ChangePassword />}></Route>
+
+          <Route path="/dashboard/reports" element={<ReportsHome />}></Route>
 
           {/* 
 
