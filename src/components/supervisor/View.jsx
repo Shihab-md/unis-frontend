@@ -1,7 +1,10 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
-import { getBaseUrl, handleRightClickAndFullScreen, getSpinner, checkAuth, getFormattedDate, showSwalAlert } from '../../utils/CommonHelper';
+import {
+  getBaseUrl, handleRightClickAndFullScreen, getSpinner, checkAuth,
+  getFormattedDate, showSwalAlert
+} from '../../utils/CommonHelper';
 import ViewCard from "../dashboard/ViewCard";
 import {
   FaRegTimesCircle
@@ -109,6 +112,8 @@ const View = () => {
                 <ViewCard type="title" text="Salary" />
                 <ViewCard type="data" text={supervisor.salary} />
 
+                <ViewCard type="title" text="Remarks" />
+                <ViewCard type="data" text={supervisor.remarks} />
               </div>
             </div>
             <button

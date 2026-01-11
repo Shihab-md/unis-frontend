@@ -13,7 +13,7 @@ import {
 } from "../../utils/CommonHelper";
 import { FaRegTimesCircle } from "react-icons/fa";
 
-const Setting = () => {
+const ChangePassword = () => {
   const [processing, setProcessing] = useState(false);
   const navigate = useNavigate();
   const { user } = useAuth();
@@ -250,4 +250,4 @@ const Setting = () => {
   );
 };
 
-export default Setting;
+export default ChangePassword;

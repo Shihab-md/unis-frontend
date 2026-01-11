@@ -279,7 +279,7 @@ const Add = () => {
                   required
                 />
               </div>
-
+ 
               {/* DOJ */}
               <div className="grid grid-cols-1">
                 <label className="block mt-3 text-sm font-medium text-slate-500">
@@ -438,7 +438,7 @@ const Add = () => {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-7 mb-5">
-              {/* Designation */}
+              {/* More details about the Employee */}
               <div className="md:col-span-3">
                 <label className="block mt-2 text-sm font-medium text-slate-500">
                   More details about the Employee

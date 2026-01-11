@@ -6,11 +6,7 @@ import PrivateRoutes from "./utils/PrivateRoutes";
 import RoleBaseRoutes from "./utils/RoleBaseRoutes";
 import AdminSummary from "./components/dashboard/AdminSummary";
 import Masters from "./components/dashboard/Masters";
-import Setting from "./components/dashboard/Setting";
-
-import DepartmentList from "./components/department/DepartmentList";
-import AddDepartment from "./components/department/AddDepartment";
-import EditDepartment from "./components/department/EditDepartment";
+import ChangePassword from "./components/dashboard/ChangePassword";
 
 import SupervisorList from "./components/supervisor/List";
 import SupervisorAdd from "./components/supervisor/Add";
@@ -145,7 +141,7 @@ function App() {
           <Route path="/dashboard/districtStates/edit/:id" element={<DistrictStateEdit />}></Route>
 
           <Route path="/dashboard/masters" element={<Masters />}></Route>
-          <Route path="/dashboard/settings" element={<Setting />}></Route>
+          <Route path="/dashboard/changePassword" element={<ChangePassword />}></Route>
 
           {/* 
 

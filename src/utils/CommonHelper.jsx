@@ -202,13 +202,13 @@ export const PASSWORD_REGEX =
 
 export const validatePassword = (pw) => {
   if (!pw) return "Password is required";
-  if (pw.length < 8) return "Password must be at least 8 characters";
-  if (pw.length > 64) return "Password must be at most 64 characters";
-  if (/\s/.test(pw)) return "Password must not contain spaces";
-  if (!/[a-z]/.test(pw)) return "Password must include a lowercase letter";
-  if (!/[A-Z]/.test(pw)) return "Password must include an uppercase letter";
-  if (!/\d/.test(pw)) return "Password must include a number";
-  if (!/[^\w\s]/.test(pw)) return "Password must include a special character";
+  if (pw.length < 8) return "Password format error";
+  if (pw.length > 64) return "Password format error";
+  if (/\s/.test(pw)) return "Password format error";
+  if (!/[a-z]/.test(pw)) return "Password format error";
+  if (!/[A-Z]/.test(pw)) return "Password format error";
+  if (!/\d/.test(pw)) return "Password format error";
+  if (!/[^\w\s]/.test(pw)) return "Password format error";
   return "";
 };
 
@@ -272,7 +272,7 @@ export function showSwalAlert(title, message, icon) {
     title: title,
     html: "<b>" + message + "</b>",
     icon: icon,
-    timer: 5700,
+    timer: 4300,
     timerProgressBar: true,
     showConfirmButton: false,
     background: "url(/bg_card.png)",

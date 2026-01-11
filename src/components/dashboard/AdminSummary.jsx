@@ -169,10 +169,10 @@ const AdminSummary = () => {
             />
           </Link> : null}
 
-        <Link to="/dashboard/settings" >
+        <Link to="/dashboard/changePassword" >
           <SummaryCard
             icon={<FaCogs />}
-            text="Settings"
+            text="Change Password"
             number="***"
             color="bg-lime-700"
           />

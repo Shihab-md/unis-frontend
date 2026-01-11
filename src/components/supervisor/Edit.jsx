@@ -1,7 +1,11 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate, useParams, Link } from "react-router-dom";
-import { getBaseUrl, handleRightClickAndFullScreen, getSpinner, checkAuth, getPrcessing, showSwalAlert } from '../../utils/CommonHelper';
+import { useAuth } from '../../context/AuthContext'
+import {
+  getBaseUrl, handleRightClickAndFullScreen, getSpinner, checkAuth,
+  getPrcessing, showSwalAlert
+} from '../../utils/CommonHelper';
 import {
   FaRegTimesCircle
 } from "react-icons/fa";
@@ -14,6 +18,9 @@ const Edit = () => {
   handleRightClickAndFullScreen();
 
   const navigate = useNavigate()
+  const { user } = useAuth();
+  const { id } = useParams();
+
   const [processing, setProcessing] = useState(null)
   const [selectedDOBDate, setSelectedDOBDate] = useState(null);
   const [selectedDOJDate, setSelectedDOJDate] = useState(null);
@@ -33,8 +40,6 @@ const Edit = () => {
     salary: "",
     jobType: "",
   });
-
-  const { id } = useParams();
 
   useEffect(() => {
 
@@ -75,7 +80,9 @@ const Edit = () => {
             //  doj: supervisor.doj,
             designation: supervisor.designation,
             salary: supervisor.salary,
-            jobType: supervisor.jobType
+            jobType: supervisor.jobType,
+            remarks: supervisor.remarks,
+            active: supervisor.active
           }));
         }
       } catch (error) {
@@ -147,7 +154,7 @@ const Edit = () => {
   return (
     <>
       {supervisor ? (
-        <div className="max-w-4xl mx-auto mt-2 p-5 shadow-lg border">
+        <div className="max-w-5xl mx-auto mt-2 p-5 shadow-lg border">
           <div className="flex py-2 px-4 items-center justify-center bg-teal-700 text-white rounded-lg shadow-lg">
             <h2 className="text-xl font-semibold items-center justify-center">Update Supervisor Details</h2>
             <Link to="/dashboard/supervisors" >
@@ -158,6 +165,7 @@ const Edit = () => {
           <form onSubmit={handleSubmit} autoComplete="off">
             <div className="py-2 px-4 border mt-5 mb-3 items-center justify-center rounded-lg shadow-lg bg-white">
               <div className="grid mt-3 grid-cols-1 md:grid-cols-2 gap-4">
+
                 {/* Name */}
                 <div>
                   <label className="block mt-2 text-sm font-medium text-slate-500">
@@ -190,7 +198,9 @@ const Edit = () => {
                     required
                   />
                 </div>
+              </div>
 
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-3 mt-7">
                 {/* Supervisor ID */}
                 <div>
                   <label className="block mt-2 text-sm font-medium text-slate-500">
@@ -225,22 +235,6 @@ const Edit = () => {
                   />
                 </div>
 
-                {/* Address */}
-                <div>
-                  <label className="block mt-2 text-sm font-medium text-slate-500">
-                    Address <span className="text-red-700">*</span>
-                  </label>
-                  <input
-                    type="text"
-                    name="address"
-                    value={supervisor.address}
-                    onChange={handleChange}
-                    //    placeholder="Address"
-                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-                    required
-                  />
-                </div>
-
                 {/* Route Name */}
                 <div>
                   <label className="block mt-2 text-sm font-medium text-slate-500">
@@ -252,6 +246,24 @@ const Edit = () => {
                     value={supervisor.routeName}
                     onChange={handleChange}
                     //    placeholder="Route Name"
+                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                    required
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mt-7">
+                {/* Address */}
+                <div className="md:col-span-2">
+                  <label className="block mt-2 text-sm font-medium text-slate-500">
+                    Address <span className="text-red-700">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    name="address"
+                    value={supervisor.address}
+                    onChange={handleChange}
+                    //    placeholder="Address"
                     className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                     required
                   />
@@ -272,23 +284,9 @@ const Edit = () => {
                     required
                   />
                 </div>
+              </div>
 
-                {/* Date of Birth 
-                <div>
-                  <label className="block mt-2 text-sm font-medium text-slate-500">
-                    Date of Birth <span className="text-red-700">*</span>
-                  </label>
-                  <input
-                    type="date"
-                    name="dob"
-                    value={moment(new Date(supervisor.dob)).format("YYYY-MM-DD")}
-                    onChange={handleChange}
-                    //    placeholder="DOB"
-                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-                    required
-                  />
-                </div> */}
-
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mt-7">
                 {/* Date of Birth */}
                 <div className="grid grid-cols-1">
                   <label className="block mt-2 text-sm font-medium text-slate-500">
@@ -346,7 +344,9 @@ const Edit = () => {
                     <option value="Married">Married</option>
                   </select>
                 </div>
+              </div>
 
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-5 mt-7">
                 {/* Job Type */}
                 <div>
                   <label className="block mt-2 text-sm font-medium text-slate-500">
@@ -365,22 +365,6 @@ const Edit = () => {
                     <option value="Part-Time">Part-Time</option>
                   </select>
                 </div>
-
-                {/* Date of Joining 
-                <div>
-                  <label className="block mt-2 text-sm font-medium text-slate-500">
-                    Date of Joining <span className="text-red-700">*</span>
-                  </label>
-                  <input
-                    type="date"
-                    name="doj"
-                    value={moment(new Date(supervisor.doj)).format("YYYY-MM-DD")}
-                    onChange={handleChange}
-                    //     placeholder="DOJ"
-                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-                    required
-                  />
-                </div>*/}
 
                 {/* Date of Joining */}
                 <div className="grid grid-cols-1">
@@ -420,6 +404,26 @@ const Edit = () => {
                   />
                 </div>
 
+                {/* Active */}
+                <div>
+                  <label className="block mt-3 text-sm font-medium text-slate-500">
+                    Status <span className="text-red-700">*</span>
+                  </label>
+                  <select
+                    name="active"
+                    value={supervisor.active}
+                    onChange={handleChange}
+                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                    required
+                  >
+                    <option value=""></option>
+                    <option value="Active">Active</option>
+                    <option value="In-Active">In-Active</option>
+                  </select>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mt-7">
                 {/* Image Upload */}
                 <div>
                   <label className="block mt-2 text-sm font-medium text-slate-500">
@@ -431,12 +435,26 @@ const Edit = () => {
                     onChange={handleChange}
                     placeholder="Upload Image"
                     accept="image/*"
-                    className="mt-1 p-2 mb-5 block w-full border border-gray-300 rounded-md"
+                    className="mt-1 p-1 mb-5 block w-full border border-gray-300 rounded-md"
                   />
                 </div>
 
+                {/* More details about the Supervisor */}
+                <div className="md:col-span-2">
+                  <label className="block mt-2 text-sm font-medium text-slate-500">
+                    More details about the Supervisor
+                  </label>
+                  <input
+                    type="text"
+                    name="remarks"
+                    value={supervisor.remarks}
+                    onChange={handleChange}
+                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                  />
+                </div>
               </div>
             </div>
+
             <button
               type="submit"
               className="w-full mt-3 bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded-lg shadow-lg"

@@ -1,7 +1,14 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
-import { getBaseUrl, handleRightClickAndFullScreen, checkAuth, getPrcessing, showSwalAlert } from '../../utils/CommonHelper';
+import {
+  getBaseUrl, handleRightClickAndFullScreen, checkAuth, getPrcessing,
+  showSwalAlert,
+  validatePassword,
+  PASSWORD_REGEX,
+  isPasswordStrong,
+} from '../../utils/CommonHelper';
+import { useAuth } from "../../context/AuthContext";
 import {
   FaRegTimesCircle
 } from "react-icons/fa";
@@ -11,9 +18,13 @@ import 'react-datepicker/dist/react-datepicker.css';
 const Add = () => {
 
   // To prevent right-click AND For FULL screen view.
-  handleRightClickAndFullScreen();
+  useEffect(() => {
+    handleRightClickAndFullScreen();
+  }, []);
 
   const navigate = useNavigate();
+  const { user } = useAuth();
+
   useEffect(() => {
     // Authenticate the User.
     if (checkAuth("supervisorAdd") === "NO") {
@@ -27,6 +38,10 @@ const Add = () => {
   const [selectedDOBDate, setSelectedDOBDate] = useState(null);
   const [selectedDOJDate, setSelectedDOJDate] = useState(null);
 
+  const [passwordError, setPasswordError] = useState("");
+
+  const password = formData.password || "";
+
   const handleChange = (e) => {
     const { name, value, files } = e.target;
 
@@ -35,10 +50,20 @@ const Add = () => {
     } else {
       setFormData((prevData) => ({ ...prevData, [name]: value }));
     }
+
+    if (name === "password") {
+      setPasswordError(validatePassword(value));
+    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // ✅ Always validate (password is required)
+    const err = validatePassword(password);
+    setPasswordError(err);
+    if (err) return;
+
     setProcessing(true);
 
     const formDataObj = new FormData()
@@ -88,9 +113,11 @@ const Add = () => {
   }
 
   return (
-    <div className="max-w-4xl mx-auto mt-2 p-5 shadow-lg border content-center">
+    <div className="max-w-5xl mx-auto mt-2 p-5 shadow-lg border">
       <div className="flex py-2 px-4 items-center justify-center bg-teal-700 text-white rounded-lg shadow-lg">
-        <h2 className="text-xl font-semibold items-center justify-center">Enter Supervisor Details</h2>
+        <h2 className="text-xl font-semibold items-center justify-center">
+          Enter Supervisor Details
+        </h2>
         <Link to="/dashboard/supervisors" >
           <FaRegTimesCircle className="text-2xl ml-7 text-red-700 bg-gray-200 rounded-xl shadow-md items-center justify-end" />
         </Link>
@@ -98,7 +125,7 @@ const Add = () => {
 
       <form onSubmit={handleSubmit} autoComplete="off">
         <div className="py-2 px-4 border mt-5 mb-3 items-center justify-center rounded-lg shadow-lg bg-white">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-3">
             {/* Name */}
             <div>
               <label className="block mt-2 text-sm font-medium text-slate-500">
@@ -129,7 +156,9 @@ const Add = () => {
                 required
               />
             </div>
+          </div>
 
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-3 mt-7">
             {/* Supervisor ID */}
             <div>
               <label className="block mt-2 text-sm font-medium text-slate-500">
@@ -161,21 +190,6 @@ const Add = () => {
               />
             </div>
 
-            {/* Address */}
-            <div>
-              <label className="block mt-2 text-sm font-medium text-slate-500">
-                Address <span className="text-red-700">*</span>
-              </label>
-              <input
-                type="text"
-                name="address"
-                onChange={handleChange}
-                //  placeholder="Address"
-                className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-                required
-              />
-            </div>
-
             {/* Route Name */}
             <div>
               <label className="block mt-2 text-sm font-medium text-slate-500">
@@ -186,6 +200,23 @@ const Add = () => {
                 name="routeName"
                 onChange={handleChange}
                 //  placeholder="Route Name"
+                className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                required
+              />
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mt-7">
+            {/* Address */}
+            <div className="md:col-span-2">
+              <label className="block mt-2 text-sm font-medium text-slate-500">
+                Address <span className="text-red-700">*</span>
+              </label>
+              <input
+                type="text"
+                name="address"
+                onChange={handleChange}
+                //  placeholder="Address"
                 className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                 required
               />
@@ -205,23 +236,9 @@ const Add = () => {
                 required
               />
             </div>
+          </div>
 
-            {/* Date of Birth
-            <div>
-              <label className="block text-sm font-medium text-slate-500">
-                Date of Birth <span className="text-red-700">*</span>
-              </label>
-              <input
-                type="date"
-                name="dob"
-                onChange={handleChange}
-                value={dateValue}
-                //    placeholder="DOB"
-                className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-                required
-              />
-            </div> */}
-
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mt-7">
             {/* Date of Birth */}
             <div className="grid grid-cols-1">
               <label className="block mt-2 text-sm font-medium text-slate-500">
@@ -277,7 +294,9 @@ const Add = () => {
                 <option value="Married">Married</option>
               </select>
             </div>
+          </div>
 
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-5 mt-7">
             {/* Job Type */}
             <div>
               <label className="block mt-2 text-sm font-medium text-slate-500">
@@ -293,26 +312,11 @@ const Add = () => {
                 <option value=""></option>
                 <option value="Full-Time">Full-Time</option>
                 <option value="Part-Time">Part-Time</option>
-              </select>
+              </select><p></p>
             </div>
 
-            {/* Date of Joining
-            <div>
-              <label className="block text-sm font-medium text-slate-500">
-                Date of Joining <span className="text-red-700">*</span>
-              </label>
-              <input
-                type="date"
-                name="doj"
-                onChange={handleChange}
-                //      placeholder="DOJ"
-                className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-                required
-              />
-            </div> */}
-
             {/* Date of Joining */}
-            <div className="grid grid-cols-1">
+            <div className="grid">
               <label className="block mt-2 text-sm font-medium text-slate-500">
                 Date of Joining <span className="text-red-700">*</span>
               </label>
@@ -329,7 +333,7 @@ const Add = () => {
                 isClearable
               //showIcon
               //toggleCalendarOnIconClick
-              />
+              /><p></p>
             </div>
 
             {/* Salary */}
@@ -345,7 +349,7 @@ const Add = () => {
                 //    placeholder="Salary"
                 className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                 required
-              />
+              /><p></p>
             </div>
 
             {/* Password */}
@@ -357,12 +361,17 @@ const Add = () => {
                 type="password"
                 name="password"
                 placeholder="******"
+                value={password}
                 onChange={handleChange}
                 className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                 required
+                pattern={PASSWORD_REGEX.source}
+                title="8-64 chars, 1 uppercase, 1 lowercase, 1 number, 1 special, no spaces"
               />
             </div>
+          </div>
 
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mt-7">
             {/* Image Upload */}
             <div>
               <label className="block mt-2 text-sm font-medium text-slate-500">
@@ -374,19 +383,34 @@ const Add = () => {
                 onChange={handleChange}
                 placeholder="Upload Image"
                 accept="image/*"
-                className="mt-1 p-2 mb-5 block w-full border border-gray-300 rounded-md"
+                className="mt-1 p-1 mb-5 block w-full border border-gray-300 rounded-md"
+              />
+            </div>
+
+            {/* More details about the Supervisor */}
+            <div className="md:col-span-2">
+              <label className="block mt-2 text-sm font-medium text-slate-500">
+                More details about the Supervisor
+              </label>
+              <input
+                type="text"
+                name="remarks"
+                onChange={handleChange}
+                className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
               />
             </div>
           </div>
         </div>
+
         <button
           type="submit"
-          className="w-full mt-4 bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded-lg shadow-lg"
+          disabled={processing || !isPasswordStrong(password)}
+          className="w-full mt-3 bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded-lg shadow-lg disabled:opacity-50"
         >
           Add Supervisor
         </button>
-      </form>
-    </div>
+      </form >
+    </div >
   );
 };
 
