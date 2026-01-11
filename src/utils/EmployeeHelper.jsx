@@ -121,7 +121,7 @@ export const EmployeeButtons = ({ Id, onEmployeeDelete }) => {
 
   return (
     <div className="flex space-x-3">
-      {user.role === "superadmin" || user.role === "hquser" || user.role === "admin" ?
+      {user.role === "superadmin" || user.role === "hquser" || user.role === "supervisor" || user.role === "admin" ?
         <div className="flex space-x-3">
           <button
             className={getButtonStyle('View')}
@@ -131,8 +131,8 @@ export const EmployeeButtons = ({ Id, onEmployeeDelete }) => {
           </button>
         </div> : null}
 
-      {user.role === "superadmin" || user.role === "admin" ?
-        <div>
+      {user.role === "superadmin" || user.role === "supervisor" || user.role === "admin" ?
+        <div className="flex space-x-4">
           <button
             className={getButtonStyle('Edit')}
             onClick={() => navigate(`/dashboard/employees/edit/${Id}`)}

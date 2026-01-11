@@ -42,17 +42,43 @@ const Edit = () => {
   const { user } = useAuth();
 
   const roleOptions = [
-    { value: "superadmin", label: "SuperAdmin", superadminOnly: true },
-    { value: "hquser", label: "HQUser", superadminOnly: true },
-    { value: "admin", label: "Admin", superadminOnly: true },
-    { value: "teacher", label: "Teacher", superadminOnly: true },
+    { value: "superadmin", label: "SuperAdmin" },
+    { value: "hquser", label: "HQUser" },
+    { value: "admin", label: "Admin" },
+    { value: "teacher", label: "Teacher" },
     { value: "usthadh", label: "Usthadh" },
     { value: "warden", label: "Warden" },
     { value: "staff", label: "Staff" },
   ];
 
+  const getAllowedRoleValues = (loginRole) => {
+    const r = String(loginRole || "").toLowerCase();
+
+    if (r === "superadmin") {
+      return roleOptions.map((o) => o.value); // all
+    }
+
+    if (r === "hquser") {
+      return roleOptions
+        .filter((o) => o.value !== "superadmin") // all except superadmin
+        .map((o) => o.value);
+    }
+
+    if (r === "supervisor") {
+      return ["admin"];
+    }
+
+    if (r === "admin") {
+      return ["usthadh", "warden", "staff"];
+    }
+
+    return []; // safe default
+  };
+
+  const allowed = new Set(getAllowedRoleValues(user?.role));
+
   const sortedRoleOptions = roleOptions
-    .filter((o) => user.role === "superadmin" || !o.superadminOnly)
+    .filter((o) => allowed.has(o.value))
     .sort((a, b) => a.label.localeCompare(b.label, undefined, { sensitivity: "base" }));
 
   useEffect(() => {

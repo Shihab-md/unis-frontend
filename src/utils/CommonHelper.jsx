@@ -15,22 +15,22 @@ const authorizedScreensFor_SA_HQ_Roles = [
   "acYearsList", "acYearAdd", "acYearEdit", "acYearView",
   "certificatesList", "certificateAdd", "certificateEdit", "certificateView",
   "templatesList", "templateAdd", "templateEdit", "templateView",
-  "settings",
+  "settings", "profile",
   "districtStateAdd", "districtStateEdit", "districtStateView", "districtStateList"
 ];
 
 const authorizedScreensFor_SUP_Role = [
   "supervisorsList",
   "schoolsList", "schoolView",
-  "employeesList", "employeeView",
-  "settings"
+  "employeesList", "employeeView", "employeeEdit",
+  "settings", "profile"
 ];
 
 const authorizedScreensFor_ADMIN_Role = [
-  "schoolsList", "schoolEdit", "schoolView",
+  "schoolsList", "schoolView",
   "employeesList", "employeeAdd", "employeeEdit", "employeeView",
   "studentsList", "studentAdd", "studentEdit", "studentPromote", "studentView",
-  "settings"
+  "settings", "profile"
 ];
 
 export function checkAuth(screenName) {
@@ -66,11 +66,57 @@ export function checkAuth(screenName) {
 
 export const getBaseUrl = async () => {
   return "https://unis-server.vercel.app/api/";
-  //return "http://localhost:5000/api/";
+  // return "http://localhost:5000/api/";
 };
 
+{/*
 export function toCamelCase(inputString) {
   return inputString ? inputString.toLowerCase().replace(/(^\w{1})|(\s{1}\w{1})/g, match => match.toUpperCase()) : null;
+}
+*/}
+export function toCamelCase(inputString) {
+  if (inputString === undefined || inputString === null) return null;
+
+  let s = String(inputString).trim();
+  if (!s) return "";
+
+  // Normalize separators
+  s = s.replace(/[_]+/g, " ");          // "_" -> space
+  s = s.replace(/[ \t]+/g, " ");        // collapse spaces
+
+  // 1) Fix dotted abbreviations anywhere: "b.b.a" -> "B.B.A"
+  // also keeps an optional trailing dot: "m.sc." -> "M.Sc."
+  s = s.replace(/\b(?:[a-zA-Z]\.){1,}[a-zA-Z]?\b\.?/g, (abbr) =>
+    abbr
+      .toUpperCase()
+      .replace(/\.{2,}/g, ".") // safety
+  );
+
+  // 2) Title-case the rest of words, but keep already-abbreviated tokens as-is
+  const parts = s.split(" ").filter(Boolean);
+
+  const out = parts.map((word) => {
+    // If word looks like abbreviation with dots after normalization, keep it
+    if (/^(?:[A-Z]\.){1,}[A-Z]?$/.test(word) || /^(?:[A-Z]\.){1,}[A-Z]\.$/.test(word)) {
+      return word.endsWith(".") ? word : word; // keep as is
+    }
+
+    // Handle hyphenated words: "abdul-rahman" -> "Abdul-Rahman"
+    return word
+      .split("-")
+      .filter(Boolean)
+      .map((w) => {
+        // Keep numbers-only parts
+        if (/^\d+$/.test(w)) return w;
+
+        // Normal title case
+        const lower = w.toLowerCase();
+        return lower.charAt(0).toUpperCase() + lower.slice(1);
+      })
+      .join("-");
+  });
+
+  return out.join(" ");
 }
 
 export function handleRightClickAndFullScreen() {
