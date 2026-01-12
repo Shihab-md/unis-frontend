@@ -86,7 +86,7 @@ const Add = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const v = validateSchoolPrefix(form.code);
+    const v = validateSchoolPrefix(formData.code);
     if (!v.ok) {
       setErrors((p) => ({ ...p, code: v.msg }));
       return; // ❌ block submit
