@@ -20,6 +20,8 @@ const Add = () => {
   const [supervisors, setSupervisors] = useState([]);
   const [districtStates, setDistrictStates] = useState([]);
   const [formData, setFormData] = useState({});
+  const [errors, setErrors] = useState({ code: "" });
+
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -46,8 +48,34 @@ const Add = () => {
     getDistrictStatesMap();
   }, []);
 
+  const SCHOOL_PREFIX_REGEX = /^UN-[A-Z0-9]{2}$/;
+
+  function normalizeSchoolPrefix(v) {
+    return (v ?? "").toString().trim().toUpperCase();
+  }
+
+  function validateSchoolPrefix(v) {
+    const value = normalizeSchoolPrefix(v);
+    if (!value) return { ok: false, msg: "Prefix is required (example: UN-01)" };
+    if (!SCHOOL_PREFIX_REGEX.test(value)) {
+      return { ok: false, msg: "Invalid prefix. Use format like UN-01 / UN-AP / UN-75" };
+    }
+    return { ok: true, msg: "" };
+  }
+
   const handleChange = (e) => {
     const { name, value, files } = e.target;
+
+    if (name === "code") {
+      const normalized = normalizeSchoolPrefix(value);
+
+      setFormData((p) => ({ ...p, code: normalized }));
+
+      const v = validateSchoolPrefix(normalized);
+      setErrors((p) => ({ ...p, code: v.ok ? "" : v.msg }));
+      return;
+    }
+
     if (name === "image") {
       setFormData((prevData) => ({ ...prevData, [name]: files[0] }));
     } else {
@@ -57,6 +85,13 @@ const Add = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const v = validateSchoolPrefix(form.code);
+    if (!v.ok) {
+      setErrors((p) => ({ ...p, code: v.msg }));
+      return; // ❌ block submit
+    }
+
     setProcessing(true);
 
     const formDataObj = new FormData()
@@ -141,9 +176,14 @@ const Add = () => {
                   name="code"
                   onChange={handleChange}
                   placeholder="UN-XX"
-                  className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                  className={`mt-1 p-2 block w-full border rounded-md ${errors.code ? "border-red-500" : "border-gray-300"
+                    }`}
                   required
                 />
+
+                {errors.code && (
+                  <p className="text-xs text-red-600 mt-1">{errors.code}</p>
+                )}
               </div>
 
               {/* Date of Establishment */}
