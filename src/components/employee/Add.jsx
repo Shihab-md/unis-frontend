@@ -44,16 +44,81 @@ const Add = () => {
     }
   }, [navigate]);
 
+  {/*
+  useEffect(() => {
+  const getSchoolsMap = async () => {
+    const res = await getSchoolsFromCache();
+
+    // ✅ supports both array response and { schools: [...] }
+    const list = Array.isArray(res) ? res : (Array.isArray(res?.schools) ? res.schools : []);
+
+    // login user role from localStorage (or your state if you have)
+    const userStr = localStorage.getItem("user");
+    const loginUser = userStr ? JSON.parse(userStr) : null;
+    const role = String(loginUser?.role || "").toLowerCase();
+
+    // ✅ supervisor allowed schoolIds stored in localStorage
+    const supSchoolIds = (() => {
+      try {
+        return JSON.parse(localStorage.getItem("schoolIds") || "[]");
+      } catch {
+        return [];
+      }
+    })();
+
+    // ✅ if supervisor -> only allowed schools; else keep all
+    const filtered =
+      role === "supervisor" && Array.isArray(supSchoolIds) && supSchoolIds.length > 0
+        ? list.filter((s) => s && supSchoolIds.includes(String(s._id)))
+        : [];
+
+    setSchools(filtered);
+
+    const mySchoolId = localStorage.getItem("schoolId");
+
+    // ✅ pick selected school:
+    // 1) if mySchoolId exists and in filtered list -> select it
+    // 2) else if supervisor -> select first allowed school
+    // 3) else -> null
+    const found =
+      (mySchoolId && filtered.find((s) => String(s._id) === String(mySchoolId))) ||
+      (role === "supervisor" ? filtered[0] : null);
+
+    setSchoolId(
+      found ? { value: found._id, label: `${found.code} : ${found.nameEnglish}` } : null
+    );
+
+    // ✅ optional: persist selected schoolId (useful for supervisor)
+    if (found?._id) localStorage.setItem("schoolId", String(found._id));
+  };
+
+  getSchoolsMap();
+}, []);
+*/}
+
   // Load schools once
   useEffect(() => {
     const getSchoolsMap = async () => {
       const res = await getSchoolsFromCache();
 
       const list = Array.isArray(res) ? res : (res?.schools || []);
-      setSchools(list);
+      //console.log("list : " + list)
+      const supSchoolIds = JSON.parse(localStorage.getItem("schoolIds"));
+      //console.log("supSchoolIds : " + supSchoolIds)
+      const role = localStorage.getItem("role");
+      //console.log("role : " + role)
+      //console.log(Array.isArray(supSchoolIds))
+      const filtered =
+        role === "supervisor" && Array.isArray(supSchoolIds) && supSchoolIds.length > 0
+          ? list.filter((s) => s && supSchoolIds.includes(String(s._id)))
+          : list;
+
+      setSchools(filtered);
+      //setSchools(list);
 
       const mySchoolId = localStorage.getItem("schoolId");
       const found = list.find((s) => s._id === mySchoolId);
+      //const found = filtered.find((s) => s._id === mySchoolId);
 
       setSchoolId(
         found ? { value: found._id, label: `${found.code} : ${found.nameEnglish}` } : null
@@ -63,7 +128,7 @@ const Add = () => {
     getSchoolsMap();
   }, []);
 
-
+  {/*
   const roleOptions = useMemo(
     () => [
       { value: "superadmin", label: "SuperAdmin", superadminOnly: true },
@@ -72,7 +137,6 @@ const Add = () => {
       { value: "teacher", label: "Teacher", superadminOnly: true },
       { value: "usthadh", label: "Usthadh" },
       { value: "warden", label: "Warden" },
-      { value: "staff", label: "Staff" },
     ],
     []
   );
@@ -82,6 +146,36 @@ const Add = () => {
       .filter((o) => user.role === "superadmin" || !o.superadminOnly)
       .sort((a, b) => a.label.localeCompare(b.label, undefined, { sensitivity: "base" }));
   }, [roleOptions, user.role]);
+*/}
+
+  const roleOptions = useMemo(
+    () => [
+      { value: "superadmin", label: "SuperAdmin" },
+      { value: "hquser", label: "HQUser" },
+      { value: "admin", label: "Admin" },
+      { value: "teacher", label: "Teacher" },
+      { value: "usthadh", label: "Usthadh" },
+      { value: "warden", label: "Warden" },
+    ],
+    []
+  );
+
+  const sortedRoleOptions = useMemo(() => {
+    const role = String(user?.role || "").toLowerCase();
+
+    const allowedByRole = {
+      superadmin: null, // null = all
+      hquser: ["admin", "teacher"],
+      supervisor: ["admin"],
+      admin: ["usthadh", "warden"],
+    };
+
+    const allowed = allowedByRole[role];
+
+    return roleOptions
+      .filter((o) => !allowed || allowed.includes(o.value))
+      .sort((a, b) => a.label.localeCompare(b.label, undefined, { sensitivity: "base" }));
+  }, [roleOptions, user?.role]);
 
   const password = formData.password || "";
 
@@ -195,7 +289,7 @@ const Add = () => {
                   value={schoolId}
                   onChange={handleSchChange}
                   maxMenuHeight={210}
-                  isDisabled={user.role !== "superadmin"}
+                  isDisabled={!(user.role === "superadmin" || user.role === "hquser" || user.role === "supervisor")}
                 />
               </div>
 
@@ -277,7 +371,7 @@ const Add = () => {
                   required
                 />
               </div>
- 
+
               {/* DOJ */}
               <div className="grid grid-cols-1">
                 <label className="block mt-3 text-sm font-medium text-slate-500">

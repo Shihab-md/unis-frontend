@@ -78,8 +78,7 @@ const List = () => {
                 { value: 'admin', label: 'Admin' },
                 { value: 'teacher', label: 'Teacher' },
                 { value: 'usthadh', label: 'Usthadh' },
-                { value: 'warden', label: 'Warden' },
-                { value: 'staff', label: 'Staff' }]
+                { value: 'warden', label: 'Warden' }]
               }
 
               onChange={(selectedOption) => {
@@ -330,7 +329,7 @@ const List = () => {
 
     const me = String(user?._id || "");
     const data = localStorage.getItem('employees');
-    console.log("Existing Data - " + JSON.parse(data))
+    //console.log("Existing Data - " + JSON.parse(data))
     //alert(user._id)
     if (data && (localStorage.getItem('empSchoolId')
       || localStorage.getItem('empRole')
@@ -339,7 +338,7 @@ const List = () => {
       const data1 = JSON.parse(data).employees
         .filter((sup) => {
           const supUserId = String(sup?.userId?._id || sup?.userId || "");
-          console.log(supUserId)
+          //console.log(supUserId)
           return supUserId !== me;
         })
         .map((sup) => ({
@@ -461,9 +460,9 @@ const List = () => {
           <div className="mr-3" onClick={openFilterPopup}>{LinkIcon("#", "Filter")}</div>
           : null}
 
-        {user.role === "superadmin" || user.role === "admin" ?
+        {user.role === "superadmin"  || user.role === "hquser" || user.role === "supervisor" || user.role === "admin" ?
           LinkIcon("/dashboard/add-employee", "Add") : null}
-        {user.role === "superadmin" || user.role === "hquser" ?
+        {user.role === "superadmin" ?
           <div className="hidden lg:block" onClick={handleImport}>{LinkIcon("#", "Import")}</div> : null}
       </div>
 

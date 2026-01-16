@@ -22,7 +22,7 @@ const authorizedScreensFor_SA_HQ_Roles = [
 const authorizedScreensFor_SUP_Role = [
   "supervisorsList",
   "schoolsList", "schoolView",
-  "employeesList", "employeeView", "employeeEdit",
+  "employeesList", "employeeView", "employeeAdd", "employeeEdit",
   "settings", "profile"
 ];
 
@@ -66,7 +66,7 @@ export function checkAuth(screenName) {
 
 export const getBaseUrl = async () => {
   return "https://unis-server.vercel.app/api/";
-  // return "http://localhost:5000/api/";
+  //return "http://localhost:5000/api/";
 };
 
 {/*

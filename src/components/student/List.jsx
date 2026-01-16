@@ -48,10 +48,10 @@ const List = () => {
 
   const ExpandedComponent = ({ data }) => {
     return (
-      data?.remarks ?
+      data?.about ?
         <div className='ml-14 p-2 bg-blue-50'>
-          <p className='ml-14 text-xs'>{"Remarks : "}
-            {data.remarks ? data.remarks : ""}
+          <p className='ml-14 text-xs'>{"More details : "}
+            {data.about ? data.about : ""}
           </p>
         </div>
         : null);
@@ -347,6 +347,7 @@ const List = () => {
           active: student.active,
           feesPaid: student.feesPaid,
           remarks: student.remarks,
+          about: student.about,
           course: student.courses && student.courses?.length > 0 ? student.courses.map(course => course.name ? course.name + ", " : "") : "",
           courses: student.courses && student.courses?.length > 0 ? student.courses : null,
           fatherName: student.fatherName ? student.fatherName : student.motherName ? student.motherName : student.guardianName ? student.guardianName : "",
@@ -669,6 +670,7 @@ const List = () => {
         active: student.active,
         feesPaid: student.feesPaid,
         remarks: student.remarks,
+        about: student.about,
         course: student.courses && student.courses?.length > 0 ? student.courses.map(course => course.name ? course.name + ", " : "") : "",
         courses: student.courses && student.courses?.length > 0 ? student.courses : null,
         fatherName: student.fatherName ? student.fatherName : student.motherName ? student.motherName : student.guardianName ? student.guardianName : "",
@@ -758,6 +760,7 @@ const List = () => {
               active: student.active,
               feesPaid: student.feesPaid,
               remarks: student.remarks,
+              about: student.about,
               course: student.courses && student.courses?.length > 0 ? student.courses.map(course => course.name ? course.name + ", " : "") : "",
               courses: student.courses && student.courses?.length > 0 ? student.courses : null,
               fatherName: student.fatherName ? student.fatherName : student.motherName ? student.motherName : student.guardianName ? student.guardianName : "",

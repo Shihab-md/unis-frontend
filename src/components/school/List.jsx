@@ -136,14 +136,14 @@ const List = () => {
     if (formValues) {
       if (formValues[0] || formValues[1] || formValues[2]) {
 
-        console.log('Selected values:', formValues);
+        //console.log('Selected values:', formValues);
         const supervisorId = formValues[0] ? formValues[0] : null;
         const districtStateId = formValues[1] ? formValues[1] : null;
         const schStatus = formValues[2] ? formValues[2] : null;
 
-        console.log('Selected supervisorId:', formValues[0]);
-        console.log('Selected districtStateId:', formValues[1]);
-        console.log('Selected schStatus:', formValues[2]);
+        //console.log('Selected supervisorId:', formValues[0]);
+        //console.log('Selected districtStateId:', formValues[1]);
+        //console.log('Selected schStatus:', formValues[2]);
 
         localStorage.setItem('supervisorId', supervisorId);
         localStorage.setItem('districtStateId', districtStateId);
@@ -257,7 +257,7 @@ const List = () => {
     }
 
     const data = localStorage.getItem('schools');
-    console.log("Existing Data - " + JSON.parse(data))
+    //console.log("Existing Data - " + JSON.parse(data))
     if (data && (localStorage.getItem('supervisorId')
       || localStorage.getItem('districtStateId')
       || localStorage.getItem('schStatus'))) {

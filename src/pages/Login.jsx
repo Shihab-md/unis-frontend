@@ -64,6 +64,16 @@ const Login = () => {
         localStorage.removeItem("schoolName");
       }
 
+      // ✅ store schoolIds only for supervisor
+      if (response.data.user?.role === "supervisor") {
+        localStorage.setItem("schoolIds", JSON.stringify(response.data.user.schoolIds || []));
+        // optional: store school list for dropdowns
+        localStorage.setItem("schools", JSON.stringify(response.data.user.schools || []));
+      } else {
+        localStorage.removeItem("schoolIds");
+        localStorage.removeItem("schools");
+      }
+
       login(response.data.user);
       setProcessing(false);
       navigate("/dashboard");

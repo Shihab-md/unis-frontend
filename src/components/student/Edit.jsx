@@ -5,6 +5,7 @@ import { getInstitutesFromCache } from '../../utils/InstituteHelper';
 import { getCoursesFromCache } from '../../utils/CourseHelper';
 import { getDistrictStatesFromCache } from '../../utils/DistrictStateHelper';
 import axios from "axios";
+import { useAuth } from '../../context/AuthContext'
 import { useNavigate, useParams, Link } from "react-router-dom";
 import { getBaseUrl, handleRightClickAndFullScreen, getSpinner, checkAuth, getPrcessing, showSwalAlert } from '../../utils/CommonHelper';
 import ViewCard from "../dashboard/ViewCard";
@@ -33,6 +34,8 @@ const Edit = () => {
   });
 
   const navigate = useNavigate();
+  const { user } = useAuth();
+
   const { id } = useParams();
   const [schools, setSchools] = useState([]);
   const [academicYears, setAcademicYears] = useState([]);
@@ -982,6 +985,7 @@ const Edit = () => {
                     onChange={handleChange}
                     className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                     required
+                    disabled={!(user.role === "superadmin" || user.role === "hquser")}
                   >
                     <option value=""></option>
                     {institutes.filter(institute => institute.type === "Deeniyath Education").map((institute) => (
@@ -1004,6 +1008,7 @@ const Edit = () => {
                     //    disabled={true}
                     className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                     required
+                    disabled={!(user.role === "superadmin" || user.role === "hquser")}
                   >
                     <option value=""></option>
                     {courses.filter(course => course.type === "Deeniyath Education").map((course) => (
@@ -1048,6 +1053,7 @@ const Edit = () => {
                       onKeyDown={handleKeyDown}
                       className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                       required
+                      disabled={!(user.role === "superadmin" || user.role === "hquser")}
                     />
                   </div>
 
@@ -1068,7 +1074,8 @@ const Edit = () => {
                       onKeyPress={preventMinus}
                       onKeyDown={handleKeyDown}
                       className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                    //    required
+                      //    required
+                      disabled={!(user.role === "superadmin" || user.role === "hquser")}
                     />
                   </div>
                 </div>
