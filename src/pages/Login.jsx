@@ -8,6 +8,7 @@ import {
   getPrcessing,
   showSwalAlert,
 } from "../utils/CommonHelper";
+import { useKeyboardAvoidance } from "../utils/useKeyboardAvoidance";
 
 const Login = () => {
   const [loginId, setLoginId] = useState(""); // ✅ employeeId or email
@@ -16,6 +17,14 @@ const Login = () => {
   const { login } = useAuth();
   const navigate = useNavigate();
   const [processing, setProcessing] = useState(false);
+
+  // ✅ Keyboard avoidance (common, reusable)
+  const { containerRef, keyboardPadding } = useKeyboardAvoidance({
+    extraOffset: 16,
+    scrollDelay: 250,
+    behavior: "smooth",
+    enabled: true,
+  });
 
   useEffect(() => {
     handleRightClickAndFullScreen();
@@ -111,56 +120,63 @@ const Login = () => {
       <meta name="apple-mobile-web-app-capable" content="yes" />
       <meta name="mobile-web-app-capable" content="yes" />
 
-      <div className="flex flex-col items-center justify-center min-h-screen space-y-6 h-75 bg-[url(/bg-img.jpg)] bg-fixed bg-cover bg-center bg-repeat">
-        <img width={140} className="rounded-md shadow-lg w-34 border" src="/Logo - UNIS.PNG" />
-        <p className="p-5 font-bold text-shadow-lg text-indigo-900 text-4xl">UNIS ACADEMY</p>
+      <div
+        ref={containerRef}
+        className="min-h-[100dvh] overflow-y-auto"
+        style={{ paddingBottom: keyboardPadding }}
+      >
 
-        <div className="border p-6 w-80 bg-white shadow-lg rounded-lg bg-[url(/bg-img.jpg)]">
-          <h2 className="flex text-2xl font-bold mb-4 content-right">Login</h2>
+        <div className="flex flex-col items-center justify-center min-h-screen space-y-6 h-75 bg-[url(/bg-img.jpg)] bg-fixed bg-cover bg-center bg-repeat">
+          <img width={140} className="rounded-md shadow-lg w-34 border" src="/Logo - UNIS.PNG" />
+          <p className="p-5 font-bold text-shadow-lg text-indigo-900 text-4xl">UNIS ACADEMY</p>
 
-          <form onSubmit={handleSubmit} autoComplete="off">
-            <div className="mb-4">
-              <label htmlFor="loginId" className="block text-gray-700">
-                User ID
-              </label>
-              <input
-                type="text"
-                className="w-full px-3 py-2 mt-1 border rounded-md"
-                value={loginId}
-                onChange={(e) => setLoginId(e.target.value)}
-                required
-              />
-            </div>
+          <div className="border p-6 w-80 bg-white shadow-lg rounded-lg bg-[url(/bg-img.jpg)]">
+            <h2 className="flex text-2xl font-bold mb-4 content-right">Login</h2>
 
-            <div className="mb-5">
-              <label htmlFor="password" className="block text-gray-700">
-                Password
-              </label>
-              <input
-                type="password"
-                className="w-full px-3 py-2 mt-1 border rounded-md"
-                placeholder="*****"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-              />
-            </div>
+            <form onSubmit={handleSubmit} autoComplete="off">
+              <div className="mb-4">
+                <label htmlFor="loginId" className="block text-gray-700">
+                  User ID
+                </label>
+                <input
+                  type="text"
+                  className="w-full px-3 py-2 mt-1 border rounded-md"
+                  value={loginId}
+                  onChange={(e) => setLoginId(e.target.value)}
+                  required
+                />
+              </div>
 
-            <div className="mb-5 flex items-center justify-between">
-              <a href="#" onClick={handleForgotPass} className="text-yellow-700">
-                Forgot password?
-              </a>
-            </div>
+              <div className="mb-5">
+                <label htmlFor="password" className="block text-gray-700">
+                  Password
+                </label>
+                <input
+                  type="password"
+                  className="w-full px-3 py-2 mt-1 border rounded-md"
+                  placeholder="*****"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                />
+              </div>
 
-            <div className="mb-3">
-              <button
-                type="submit"
-                className="flex w-full bg-teal-600 text-white py-2 items-center justify-center rounded-lg shadow-xl hover:bg-teal-700"
-              >
-                بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيْم
-              </button>
-            </div>
-          </form>
+              <div className="mb-5 flex items-center justify-between">
+                <a href="#" onClick={handleForgotPass} className="text-yellow-700">
+                  Forgot password?
+                </a>
+              </div>
+
+              <div className="mb-3">
+                <button
+                  type="submit"
+                  className="flex w-full bg-teal-600 text-white py-2 items-center justify-center rounded-lg shadow-xl hover:bg-teal-700"
+                >
+                  بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيْم
+                </button>
+              </div>
+            </form>
+          </div>
         </div>
       </div>
     </div>
