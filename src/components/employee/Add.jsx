@@ -19,6 +19,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
 const Add = () => {
+
   const navigate = useNavigate();
   const { user } = useAuth();
 
@@ -155,7 +156,7 @@ const Add = () => {
       { value: "admin", label: "Admin" },
       { value: "teacher", label: "Teacher" },
       { value: "usthadh", label: "Usthadh" },
-      { value: "warden", label: "Warden" },
+      { value: "warden", label: "Warden" }
     ],
     []
   );
@@ -219,8 +220,9 @@ const Add = () => {
       if (selectedDOBDate) formDataObj.append("dob", selectedDOBDate);
       if (selectedDOJDate) formDataObj.append("doj", selectedDOJDate);
 
+      //alert(user?.role)
       // School selection
-      if (user.role === "superadmin" && schoolId?.value) {
+      if (["superadmin", "hquser", "supervisor"].includes(user?.role) && schoolId?.value) {
         formDataObj.append("schoolId", schoolId.value);
       } else {
         formDataObj.append("schoolId", localStorage.getItem("schoolId"));
