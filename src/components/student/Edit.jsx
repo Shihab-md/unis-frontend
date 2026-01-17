@@ -50,28 +50,36 @@ const Edit = () => {
   };
 
   const buildLocksFromLoadedStudent = (s) => ({
+
+    about: hasValue(s.about),
+
     instituteId1: hasValue(s.instituteId1),
     courseId1: hasValue(s.courseId1),
+    refNumber1: hasValue(s.refNumber1),
     year1: hasValue(s.year1),
     fees1: hasValue(s.fees1),
 
     instituteId2: hasValue(s.instituteId2),
     courseId2: hasValue(s.courseId2),
+    refNumber2: hasValue(s.refNumber2),
     year2: hasValue(s.year2),
     fees2: hasValue(s.fees2),
 
     instituteId3: hasValue(s.instituteId3),
     courseId3: hasValue(s.courseId3),
+    refNumber3: hasValue(s.refNumber3),
     year3: hasValue(s.year3),
     fees3: hasValue(s.fees3),
 
     instituteId4: hasValue(s.instituteId4),
     courseId4: hasValue(s.courseId4),
+    refNumber4: hasValue(s.refNumber4),
     year4: hasValue(s.year4),
     fees4: hasValue(s.fees4),
 
     instituteId5: hasValue(s.instituteId5),
     courseId5: hasValue(s.courseId5),
+    refNumber5: hasValue(s.refNumber5),
     year5: hasValue(s.year5),
     fees5: hasValue(s.fees5),
   });
@@ -678,7 +686,8 @@ const Edit = () => {
                     value={student.about}
                     onChange={handleChange}
                     className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                  //  required
+                    //  required
+                    disabled={isLocked("about")}
                   />
                 </div>
 
@@ -1085,7 +1094,8 @@ const Edit = () => {
                     onChange={handleChange}
                     //    placeholder="Qualification"
                     className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                  //required
+                    //required
+                    disabled={isLocked("refNumber1")}
                   />
                 </div>
 
@@ -1301,7 +1311,8 @@ const Edit = () => {
                         onChange={handleChange}
                         //    placeholder="Qualification"
                         className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                      //    required
+                        //    required
+                        disabled={isLocked("refNumber4")}
                       />
                     </div>
 
@@ -1393,7 +1404,8 @@ const Edit = () => {
                         onChange={handleChange}
                         //    placeholder="Qualification"
                         className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                      //   required
+                        //   required
+                        disabled={isLocked("refNumber2")}
                       />
                     </div>
 
@@ -1485,7 +1497,8 @@ const Edit = () => {
                         onChange={handleChange}
                         //    placeholder="Qualification"
                         className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                      //   required
+                        //   required
+                        disabled={isLocked("refNumber3")}
                       />
                     </div>
 
@@ -1600,7 +1613,8 @@ const Edit = () => {
                         onChange={handleChange}
                         //    placeholder="Qualification"
                         className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                      //    required
+                        //    required
+                        disabled={isLocked("refNumber5")}
                       />
                     </div>
 
