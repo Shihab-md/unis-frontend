@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { getSchoolsFromCache } from '../../utils/SchoolHelper';
 import { getAcademicYearsFromCache } from '../../utils/AcademicYearHelper';
 import { getInstitutesFromCache } from '../../utils/InstituteHelper';
@@ -7,7 +7,10 @@ import { getDistrictStatesFromCache } from '../../utils/DistrictStateHelper';
 import axios from "axios";
 import { useAuth } from '../../context/AuthContext'
 import { useNavigate, useParams, Link } from "react-router-dom";
-import { getBaseUrl, handleRightClickAndFullScreen, getSpinner, checkAuth, getPrcessing, showSwalAlert } from '../../utils/CommonHelper';
+import {
+  getBaseUrl, handleRightClickAndFullScreen, getSpinner, checkAuth, useInitialLockMap,
+  getPrcessing, showSwalAlert
+} from '../../utils/CommonHelper';
 import ViewCard from "../dashboard/ViewCard";
 import {
   FaRegTimesCircle
@@ -18,7 +21,10 @@ import 'react-datepicker/dist/react-datepicker.css';
 const Edit = () => {
 
   // To prevent right-click AND For FULL screen view.
-  handleRightClickAndFullScreen();
+  useEffect(() => {
+    handleRightClickAndFullScreen();
+  }, []);
+
   const [processing, setProcessing] = useState(null)
   const [selectedDOBDate, setSelectedDOBDate] = useState(null);
   const [selectedDOADate, setSelectedDOADate] = useState(null);
@@ -32,6 +38,45 @@ const Edit = () => {
     gender: "",
     maritalStatus: "",
   });
+
+  // ✅ lock based on initial loaded values ONLY
+  const [fieldLocks, setFieldLocks] = useState({});
+  const didInitLocks = useRef(false);
+
+  const hasValue = (v) => {
+    if (v === null || v === undefined) return false;
+    const s = String(v).trim();
+    return s !== "" && s !== "null" && s !== "undefined";
+  };
+
+  const buildLocksFromLoadedStudent = (s) => ({
+    instituteId1: hasValue(s.instituteId1),
+    courseId1: hasValue(s.courseId1),
+    year1: hasValue(s.year1),
+    fees1: hasValue(s.fees1),
+
+    instituteId2: hasValue(s.instituteId2),
+    courseId2: hasValue(s.courseId2),
+    year2: hasValue(s.year2),
+    fees2: hasValue(s.fees2),
+
+    instituteId3: hasValue(s.instituteId3),
+    courseId3: hasValue(s.courseId3),
+    year3: hasValue(s.year3),
+    fees3: hasValue(s.fees3),
+
+    instituteId4: hasValue(s.instituteId4),
+    courseId4: hasValue(s.courseId4),
+    year4: hasValue(s.year4),
+    fees4: hasValue(s.fees4),
+
+    instituteId5: hasValue(s.instituteId5),
+    courseId5: hasValue(s.courseId5),
+    year5: hasValue(s.year5),
+    fees5: hasValue(s.fees5),
+  });
+
+  const isLocked = (name) => fieldLocks?.[name] === true;
 
   const navigate = useNavigate();
   const { user } = useAuth();
@@ -170,10 +215,10 @@ const Edit = () => {
             console.log(error)
           }
 
-          setStudent((prev) => ({
-            ...prev,
-            name: student.userId && student.userId.name ? student.userId.name : "",
-            schoolId: student.schoolId && student.schoolId._id ? student.schoolId._id : "",
+          // ✅ Build a single object representing what will be set in state
+          const loaded = {
+            name: student.userId?.name || "",
+            schoolId: student.schoolId?._id || "",
             rollNumber: student.rollNumber,
 
             gender: student.gender,
@@ -199,7 +244,7 @@ const Edit = () => {
             city: student.city,
             pincode: student.pincode,
             landmark: student.landmark,
-            districtStateId: student.districtStateId && student.districtStateId?._id ? student.districtStateId?._id : null,
+            districtStateId: student.districtStateId?._id || null,
 
             active: student.active,
             remarks: student.remarks,
@@ -209,48 +254,56 @@ const Edit = () => {
             hostelFees: student.hostelFees,
             hostelDiscount: student.hostelDiscount,
 
-            acYear: academics && academics[0] && academics[0]?.acYear && academics[0]?.acYear?._id ? academics[0]?.acYear?._id : acYear,
+            acYear: academics?.[0]?.acYear?._id ? academics[0].acYear._id : acYear,
 
-            instituteId1: academics && academics[0]?.instituteId1 && academics[0]?.instituteId1?._id ? academics[0]?.instituteId1?._id : null,
-            courseId1: academics && academics[0]?.courseId1 && academics[0]?.courseId1?._id ? academics[0]?.courseId1?._id : null,
-            refNumber1: academics && academics[0]?.refNumber1,
-            year1: academics && academics[0]?.year1,
-            status1: academics && academics[0]?.status1,
-            fees1: academics && academics[0]?.fees1,
-            discount1: academics && academics[0]?.discount1,
+            instituteId1: academics?.[0]?.instituteId1?._id || null,
+            courseId1: academics?.[0]?.courseId1?._id || null,
+            refNumber1: academics?.[0]?.refNumber1,
+            year1: academics?.[0]?.year1,
+            status1: academics?.[0]?.status1,
+            fees1: academics?.[0]?.fees1,
+            discount1: academics?.[0]?.discount1,
 
-            instituteId2: academics && academics[0]?.instituteId2 && academics[0]?.instituteId2?._id ? academics[0]?.instituteId2?._id : null,
-            courseId2: academics && academics[0]?.courseId2 && academics[0]?.courseId2?._id ? academics[0]?.courseId2?._id : null,
-            refNumber2: academics && academics[0]?.refNumber2,
-            year2: academics && academics[0]?.year2,
-            status2: academics && academics[0]?.status2,
-            fees2: academics && academics[0]?.fees2,
-            discount2: academics && academics[0]?.discount2,
+            instituteId2: academics?.[0]?.instituteId2?._id || null,
+            courseId2: academics?.[0]?.courseId2?._id || null,
+            refNumber2: academics?.[0]?.refNumber2,
+            year2: academics?.[0]?.year2,
+            status2: academics?.[0]?.status2,
+            fees2: academics?.[0]?.fees2,
+            discount2: academics?.[0]?.discount2,
 
-            instituteId3: academics && academics[0]?.instituteId3 && academics[0]?.instituteId3?._id ? academics[0]?.instituteId3?._id : null,
-            courseId3: academics && academics[0]?.courseId3 && academics[0]?.courseId3?._id ? academics[0]?.courseId3?._id : null,
-            refNumber3: academics && academics[0]?.refNumber3,
-            year3: academics && academics[0]?.year3,
-            status3: academics && academics[0]?.status3,
-            fees3: academics && academics[0]?.fees3,
-            discount3: academics && academics[0]?.discount3,
+            instituteId3: academics?.[0]?.instituteId3?._id || null,
+            courseId3: academics?.[0]?.courseId3?._id || null,
+            refNumber3: academics?.[0]?.refNumber3,
+            year3: academics?.[0]?.year3,
+            status3: academics?.[0]?.status3,
+            fees3: academics?.[0]?.fees3,
+            discount3: academics?.[0]?.discount3,
 
-            instituteId4: academics && academics[0]?.instituteId4 && academics[0]?.instituteId4?._id ? academics[0]?.instituteId4?._id : null,
-            courseId4: academics && academics[0]?.courseId4 && academics[0]?.courseId4?._id ? academics[0]?.courseId4?._id : null,
-            refNumber4: academics && academics[0]?.refNumber4,
-            year4: academics && academics[0]?.year4,
-            status4: academics && academics[0]?.status4,
-            fees4: academics && academics[0]?.fees4,
-            discount4: academics && academics[0]?.discount4,
+            instituteId4: academics?.[0]?.instituteId4?._id || null,
+            courseId4: academics?.[0]?.courseId4?._id || null,
+            refNumber4: academics?.[0]?.refNumber4,
+            year4: academics?.[0]?.year4,
+            status4: academics?.[0]?.status4,
+            fees4: academics?.[0]?.fees4,
+            discount4: academics?.[0]?.discount4,
 
-            instituteId5: academics && academics[0]?.instituteId5 && academics[0]?.instituteId5?._id ? academics[0]?.instituteId5?._id : null,
-            courseId5: academics && academics[0]?.courseId5 && academics[0]?.courseId5?._id ? academics[0]?.courseId5?._id : null,
-            refNumber5: academics && academics[0]?.refNumber5,
-            year5: academics && academics[0]?.year5,
-            status5: academics && academics[0]?.status5,
-            fees5: academics && academics[0]?.fees5,
-            discount5: academics && academics[0]?.discount5,
-          }));
+            instituteId5: academics?.[0]?.instituteId5?._id || null,
+            courseId5: academics?.[0]?.courseId5?._id || null,
+            refNumber5: academics?.[0]?.refNumber5,
+            year5: academics?.[0]?.year5,
+            status5: academics?.[0]?.status5,
+            fees5: academics?.[0]?.fees5,
+            discount5: academics?.[0]?.discount5,
+          };
+
+          setStudent((prev) => ({ ...prev, ...loaded }));
+
+          // ✅ Initialize locks only once, based on loaded data
+          if (!didInitLocks.current) {
+            setFieldLocks(buildLocksFromLoadedStudent(loaded));
+            didInitLocks.current = true;
+          }
         }
       } catch (error) {
         if (error.response && !error.response.data.success) {
@@ -271,9 +324,8 @@ const Edit = () => {
       setStudent((prevData) => ({ ...prevData, [name]: files[0] }));
     } else {
       setStudent((prevData) => ({
-        ...prevData, [name]: value,
-
-      }));
+        ...prevData, [name]: value
+      }))
     }
   };
 
@@ -981,11 +1033,12 @@ const Edit = () => {
                   </label>
                   <select
                     name="instituteId1"
-                    value={student.instituteId1}
+                    value={student?.instituteId1 || ""}
                     onChange={handleChange}
                     className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                     required
-                    disabled={!(user.role === "superadmin" || user.role === "hquser")}
+                    // disabled={!(user.role === "superadmin" || user.role === "hquser")}
+                    disabled={isLocked("instituteId1")}
                   >
                     <option value=""></option>
                     {institutes.filter(institute => institute.type === "Deeniyath Education").map((institute) => (
@@ -1003,12 +1056,13 @@ const Edit = () => {
                   </label>
                   <select
                     name="courseId1"
-                    value={student.courseId1}
+                    value={student?.courseId1 || ""}
                     onChange={handleChange}
                     //    disabled={true}
                     className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                     required
-                    disabled={!(user.role === "superadmin" || user.role === "hquser")}
+                    // disabled={!(user.role === "superadmin" || user.role === "hquser")}
+                    disabled={isLocked("courseId1")}
                   >
                     <option value=""></option>
                     {courses.filter(course => course.type === "Deeniyath Education").map((course) => (
@@ -1022,7 +1076,7 @@ const Edit = () => {
                 {/* Reference Number-1 */}
                 <div>
                   <label className="block text-sm font-medium text-slate-500">
-                    Reference Number <span className="text-red-700">*</span>
+                    Reference Number
                   </label>
                   <input
                     type="text"
@@ -1031,7 +1085,7 @@ const Edit = () => {
                     onChange={handleChange}
                     //    placeholder="Qualification"
                     className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                    required
+                  //required
                   />
                 </div>
 
@@ -1044,7 +1098,7 @@ const Edit = () => {
                     <input
                       type="number"
                       name="year1"
-                      value={student.year1}
+                      value={student?.year1 || ""}
                       min="1"
                       //    disabled={student.year ? true : false}
                       onChange={handleChange}
@@ -1053,7 +1107,8 @@ const Edit = () => {
                       onKeyDown={handleKeyDown}
                       className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                       required
-                      disabled={!(user.role === "superadmin" || user.role === "hquser")}
+                      // disabled={!(user.role === "superadmin" || user.role === "hquser")}
+                      disabled={isLocked("year1")}
                     />
                   </div>
 
@@ -1065,7 +1120,7 @@ const Edit = () => {
                     <input
                       type="number"
                       name="fees1"
-                      value={student.fees1}
+                      value={student?.fees1 || ""}
                       min="0"
                       //   value={fees1Val}
                       //  disabled={student.fees1 ? true : false}
@@ -1075,7 +1130,8 @@ const Edit = () => {
                       onKeyDown={handleKeyDown}
                       className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                       //    required
-                      disabled={!(user.role === "superadmin" || user.role === "hquser")}
+                      // disabled={!(user.role === "superadmin" || user.role === "hquser")}
+                      disabled={isLocked("fees1")}
                     />
                   </div>
                 </div>
@@ -1195,10 +1251,11 @@ const Edit = () => {
                       </label>
                       <select
                         name="instituteId4"
-                        value={student.instituteId4}
+                        value={student?.instituteId4 || ""}
                         onChange={handleChange}
                         className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                      //    required
+                        //    required
+                        disabled={isLocked("instituteId4")}
                       >
                         <option value=""></option>
                         {institutes.filter(institute => institute.type === "Islamic Home Science").map((institute) => (
@@ -1216,11 +1273,12 @@ const Edit = () => {
                       </label>
                       <select
                         name="courseId4"
-                        value={student.courseId4}
+                        value={student?.courseId4 || ""}
                         onChange={handleChange}
                         //   disabled={student.courseId4 ? true : false}
                         className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                      //    required
+                        //    required
+                        disabled={isLocked("courseId4")}
                       >
                         <option value=""></option>
                         {courses.filter(course => course.type === "Islamic Home Science").map((course) => (
@@ -1255,7 +1313,7 @@ const Edit = () => {
                       <input
                         type="number"
                         name="fees4"
-                        value={student.fees4}
+                        value={student?.fees4 || ""}
                         min="0"
                         onPaste={preventPasteNegative}
                         onKeyPress={preventMinus}
@@ -1264,7 +1322,8 @@ const Edit = () => {
                         //  disabled={student.fees4 ? true : false}
                         onChange={handleChange}
                         className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                      //    required
+                        //    required
+                        disabled={isLocked("fees4")}
                       />
                     </div>
                   </div>
@@ -1284,10 +1343,11 @@ const Edit = () => {
                       </label>
                       <select
                         name="instituteId2"
-                        value={student.instituteId2}
+                        value={student?.instituteId2 || ""}
                         onChange={handleChange}
                         className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                      //    required
+                        //    required
+                        disabled={isLocked("instituteId2")}
                       >
                         <option value=""></option>
                         {institutes.filter(institute => institute.type === "School Education").map((institute) => (
@@ -1305,11 +1365,12 @@ const Edit = () => {
                       </label>
                       <select
                         name="courseId2"
-                        value={student.courseId2}
+                        value={student?.courseId2 || ""}
                         onChange={handleChange}
                         //    disabled={student.courseId2 ? true : false}
                         className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                      //    required
+                        //    required
+                        disabled={isLocked("courseId2")}
                       >
                         <option value=""></option>
                         {courses.filter(course => course.type === "School Education").map((course) => (
@@ -1344,7 +1405,7 @@ const Edit = () => {
                       <input
                         type="number"
                         name="fees2"
-                        value={student.fees2}
+                        value={student?.fees2 || ""}
                         min="0"
                         //   value={fees2Val}
                         //    disabled={student.fees2 ? true : false}
@@ -1353,7 +1414,8 @@ const Edit = () => {
                         onKeyPress={preventMinus}
                         onKeyDown={handleKeyDown}
                         className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                      //    required
+                        //    required
+                        disabled={isLocked("fees2")}
                       />
                     </div>
                   </div>
@@ -1373,10 +1435,11 @@ const Edit = () => {
                       </label>
                       <select
                         name="instituteId3"
-                        value={student.instituteId3}
+                        value={student?.instituteId3 || ""}
                         onChange={handleChange}
                         className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                      //    required
+                        //    required
+                        disabled={isLocked("instituteId3")}
                       >
                         <option value=""></option>
                         {institutes.filter(institute => institute.type === "College Education").map((institute) => (
@@ -1394,11 +1457,12 @@ const Edit = () => {
                       </label>
                       <select
                         name="courseId3"
-                        value={student.courseId3}
+                        value={student?.courseId3 || ""}
                         onChange={handleChange}
                         //   disabled={student.courseId3 ? true : false}
                         className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                      //    required
+                        //    required
+                        disabled={isLocked("courseId3")}
                       >
                         <option value=""></option>
                         {courses.filter(course => course.type === "College Education").map((course) => (
@@ -1434,7 +1498,7 @@ const Edit = () => {
                         <input
                           type="number"
                           name="year3"
-                          value={student.year3}
+                          value={student?.year3 || ""}
                           min="1"
                           //    disabled={student.year ? true : false}
                           onChange={handleChange}
@@ -1442,7 +1506,8 @@ const Edit = () => {
                           onKeyPress={preventMinus}
                           onKeyDown={handleKeyDown}
                           className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                        //  required
+                          //  required
+                          disabled={isLocked("year3")}
                         />
                       </div>
 
@@ -1463,7 +1528,8 @@ const Edit = () => {
                           onKeyPress={preventMinus}
                           onKeyDown={handleKeyDown}
                           className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                        //    required
+                          //    required
+                          disabled={isLocked("fees3")}
                         />
                       </div>
                     </div>
@@ -1484,10 +1550,11 @@ const Edit = () => {
                       </label>
                       <select
                         name="instituteId5"
-                        value={student.instituteId5}
+                        value={student?.instituteId5 || ""}
                         onChange={handleChange}
                         className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                      //    required
+                        //    required
+                        disabled={isLocked("instituteId5")}
                       >
                         <option value=""></option>
                         {institutes.filter(institute => institute.type === "Vocational Courses").map((institute) => (
@@ -1505,11 +1572,12 @@ const Edit = () => {
                       </label>
                       <select
                         name="courseId5"
-                        value={student.courseId5}
+                        value={student?.courseId5 || ""}
                         onChange={handleChange}
                         //  disabled={student.courseId5 ? true : false}
                         className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                      //   required
+                        //   required
+                        disabled={isLocked("courseId5")}
                       >
                         <option value=""></option>
                         {courses.filter(course => course.type === "Vocational Courses").map((course) => (
@@ -1544,7 +1612,7 @@ const Edit = () => {
                       <input
                         type="number"
                         name="fees5"
-                        value={student.fees5}
+                        value={student?.fees5 || ""}
                         min="0"
                         //  value={fees5Val}
                         //  disabled={student.fees5 ? true : false}
@@ -1553,7 +1621,8 @@ const Edit = () => {
                         onKeyPress={preventMinus}
                         onKeyDown={handleKeyDown}
                         className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                      //    required
+                        //    required
+                        disabled={isLocked("fees5")}
                       />
                     </div>
                   </div>

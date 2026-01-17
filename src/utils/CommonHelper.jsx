@@ -1,5 +1,6 @@
 
 import { Link } from 'react-router-dom';
+import { useEffect, useRef, useCallback } from "react";
 import {
   FaPlusSquare, FaArrowAltCircleLeft, FaRegCaretSquareDown, FaFilter, FaSearch, FaTasks, FaCheck
 } from "react-icons/fa";
@@ -65,9 +66,35 @@ export function checkAuth(screenName) {
 };
 
 export const getBaseUrl = async () => {
-  return "https://unis-server.vercel.app/api/";
+   return "https://unis-server.vercel.app/api/";
   //return "http://localhost:5000/api/";
 };
+
+/**
+ * Locks fields that already had value at initial load.
+ * Pass your object (student) and field names to snapshot.
+ */
+export function useInitialLockMap(obj, fieldNames = []) {
+  const lockRef = useRef(null);
+
+  useEffect(() => {
+    if (lockRef.current !== null) return;
+
+    const o = obj || {};
+    const map = {};
+    for (const f of fieldNames) {
+      const v = o?.[f];
+      map[f] = !!(v !== undefined && v !== null && String(v).trim() !== "");
+    }
+    lockRef.current = map;
+  }, [obj, fieldNames]);
+
+  const isLocked = useCallback((field) => {
+    return lockRef.current?.[field] === true;
+  }, []);
+
+  return { isLocked };
+}
 
 {/*
 export function toCamelCase(inputString) {

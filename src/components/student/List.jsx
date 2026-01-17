@@ -682,6 +682,7 @@ const List = () => {
 
     } else {
 
+      console.log("schoolId : " + localStorage.getItem('schoolId'))
       if (!localStorage.getItem('schoolId')) {
         const schools = await getSchoolsFromCache();
         setSchools(schools)
