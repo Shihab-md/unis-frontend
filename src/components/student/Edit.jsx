@@ -84,7 +84,9 @@ const Edit = () => {
     fees5: hasValue(s.fees5),
   });
 
-  const isLocked = (name) => fieldLocks?.[name] === true;
+  const UNLOCKED_FIELDS = new Set(["superadmin", "hquuser"]);
+
+  const isLocked = (name) => !UNLOCKED_FIELDS.has(user?.role) && fieldLocks?.[name] === true;
 
   const navigate = useNavigate();
   const { user } = useAuth();
