@@ -1110,8 +1110,9 @@ const Edit = () => {
                     <input
                       type="number"
                       name="year1"
-                      value={student?.year1 || ""}
-                      min="1"
+                      value={student?.year1}
+                      min="0"
+                      // min={student?.course === "Makthab" ? 0 : 1}
                       //    disabled={student.year ? true : false}
                       onChange={handleChange}
                       onPaste={preventPasteNegative}

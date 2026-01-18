@@ -17,7 +17,7 @@ function getDetails(title, courseName, instituteName, refNumber, year, fees, sta
     <p className='text-md font-bold text-pink-500 mb-2'>{title}</p>
     <p className='mb-1'>{courseName}<span className='text-gray-300 font-bold ml-5 mr-5'>|</span>{instituteName}</p>
     <p>{"Ref. No. : " + refNumber}<span className='text-gray-300 font-bold ml-5 mr-5'>|</span>
-      {year ? <span><span>Year : {year}</span><span className='text-gray-300 font-bold ml-5 mr-5'>|</span></span> : null}
+      {year || year === 0 ? <span><span>Year : {year}</span><span className='text-gray-300 font-bold ml-5 mr-5'>|</span></span> : null}
       {"Fees : " + fees}<span className='text-gray-300 font-bold ml-5 mr-5'>|</span>
       {"Status : " + status}</p>
   </div>
