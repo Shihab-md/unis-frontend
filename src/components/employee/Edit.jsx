@@ -3,8 +3,10 @@ import { getSchoolsFromCache } from "../../utils/SchoolHelper";
 import axios from "axios";
 import { useNavigate, useParams, Link } from "react-router-dom";
 import { useAuth } from '../../context/AuthContext'
-import { getBaseUrl, handleRightClickAndFullScreen, getSpinner, checkAuth, 
-  getPrcessing, showSwalAlert } from '../../utils/CommonHelper';
+import {
+  getBaseUrl, handleRightClickAndFullScreen, getSpinner, checkAuth,
+  getPrcessing, showSwalAlert
+} from '../../utils/CommonHelper';
 import {
   FaRegTimesCircle
 } from "react-icons/fa";
@@ -48,8 +50,7 @@ const Edit = () => {
     { value: "admin", label: "Admin" },
     { value: "teacher", label: "Teacher" },
     { value: "usthadh", label: "Usthadh" },
-    { value: "warden", label: "Warden" },
-    { value: "staff", label: "Staff" },
+    { value: "warden", label: "Warden" }
   ];
 
   const getAllowedRoleValues = (loginRole) => {
@@ -127,7 +128,8 @@ const Edit = () => {
             qualification: employee.qualification,
             gender: employee.gender,
             maritalStatus: employee.maritalStatus,
-            salary: employee.salary
+            salary: employee.salary,
+            active: employee.active
           }));
         }
       } catch (error) {
@@ -206,7 +208,7 @@ const Edit = () => {
               <FaRegTimesCircle className="text-2xl ml-7 text-red-700 bg-gray-200 rounded-xl shadow-md items-center justify-end" />
             </Link>
           </div>
-          
+
           <form onSubmit={handleSubmit} autoComplete="off">
             <div className="py-2 px-4 border mt-5 mb-3 items-center justify-center rounded-lg shadow-lg bg-white">
               <div className="grid mt-3 grid-cols-1 md:grid-cols-2 gap-5 mb-3">
@@ -267,7 +269,7 @@ const Edit = () => {
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-3 mt-7">
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-3 mt-7">
                 {/* Employee ID */}
                 <div>
                   <label className="block mt-2 text-sm font-medium text-slate-500">
@@ -305,6 +307,24 @@ const Edit = () => {
                         {opt.label}
                       </option>
                     ))}
+                  </select>
+                </div>
+
+                {/* Active */}
+                <div>
+                  <label className="block mt-3 text-sm font-medium text-slate-500">
+                    Status <span className="text-red-700">*</span>
+                  </label>
+                  <select
+                    name="active"
+                    value={employee.active}
+                    onChange={handleChange}
+                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                    required
+                  >
+                    <option value=""></option>
+                    <option value="Active">Active</option>
+                    <option value="In-Active">In-Active</option>
                   </select>
                 </div>
 
