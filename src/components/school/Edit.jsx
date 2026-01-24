@@ -465,10 +465,10 @@ const Edit = () => {
                 </div>
               </div>
 
-              <div className="grid mt-10 grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="grid mt-10 grid-cols-1 md:grid-cols-5 gap-3">
                 <div className="hidden lg:block flex space-x-3 mb-5" />
                 {/* Supervisor Id */}
-                <div>
+                <div className='lg:col-span-3'>
                   <label className="block text-sm font-medium text-slate-500">
                     Select Supervisor <span className="text-red-700">*</span>
                   </label>

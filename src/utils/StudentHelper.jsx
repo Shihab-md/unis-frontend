@@ -22,7 +22,7 @@ function getDetails(title, courseName, instituteName, refNumber, year, fees, sta
       {"Status : " + status}</p>
   </div>
 }
-
+ 
 export const columnsSelectForAcademic = [
   {
     name: <div className='text-sm font-bold text-lime-600'>AC Year</div>,

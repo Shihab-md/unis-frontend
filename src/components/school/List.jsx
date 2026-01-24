@@ -180,7 +180,7 @@ const List = () => {
       if (responnse.data.success) {
         let sno = 1;
         //const data = await responnse.data.schools.filter(school => school.code !== 'UN-00-00001').map((sch) => ({
-          const data = await responnse.data.schools.map((sch) => ({
+        const data = await responnse.data.schools.map((sch) => ({
           _id: sch._id,
           sno: sno++,
           code: sch.code,
@@ -194,7 +194,8 @@ const List = () => {
           active: sch.active,
           supervisorId: sch.supervisorId?.supervisorId,
           supervisorName: sch.supervisorId?.userId?.name,
-          studentsCount: sch._studentsCount ? sch._studentsCount : 0,
+          studentCount: sch.studentCount ? sch.studentCount : 0,
+          studentCountsByCourse: sch.studentCountsByCourse && sch.studentCountsByCourse?.length > 0 ? sch.studentCountsByCourse : null,
           action: (<SchoolButtons Id={sch._id} />),
         }));
         setSchools(data);
@@ -276,7 +277,8 @@ const List = () => {
         active: sch.active,
         supervisorId: sch.supervisorId?.supervisorId,
         supervisorName: sch.supervisorId?.userId?.name,
-        studentsCount: sch._studentsCount ? sch._studentsCount : 0,
+        studentCount: sch.studentCount ? sch.studentCount : 0,
+        studentCountsByCourse: sch.studentCountsByCourse && sch.studentCountsByCourse?.length > 0 ? sch.studentCountsByCourse : null,
         action: (<SchoolButtons Id={sch._id} onSchoolDelete={onSchoolDelete} />),
       }));
       setSchools(data1);
@@ -313,7 +315,8 @@ const List = () => {
             active: sch.active,
             supervisorId: sch.supervisorId?.supervisorId,
             supervisorName: sch.supervisorId?.userId?.name,
-            studentsCount: sch._studentsCount ? sch._studentsCount : 0,
+            studentCount: sch.studentCount ? sch.studentCount : 0,
+            studentCountsByCourse: sch.studentCountsByCourse && sch.studentCountsByCourse?.length > 0 ? sch.studentCountsByCourse : null,
             action: (<SchoolButtons Id={sch._id} onSchoolDelete={onSchoolDelete} />),
           }));
           setSchools(data);

@@ -1,7 +1,6 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Login from "./pages/Login";
 import AdminDashboard from "./pages/AdminDashboard";
-import EmployeeDashboard from "./pages/EmployeeDashboard";
 import PrivateRoutes from "./utils/PrivateRoutes";
 import RoleBaseRoutes from "./utils/RoleBaseRoutes";
 import AdminSummary from "./components/dashboard/AdminSummary";
@@ -59,17 +58,6 @@ import DistrictStateView from "./components/districtstate/View";
 import DistrictStateEdit from "./components/districtstate/Edit";
 
 import ReportsHome from "./components/report/ReportsHome";
-
-import AddSalary from "./components/salary/Add";
-import ViewSalary from "./components/salary/View";
-import Summary from './components/EmployeeDashboard/Summary'
-import LeaveList from './components/leave/List'
-import AddLeave from './components/leave/Add'
-
-import Table from "./components/leave/Table";
-import Detail from "./components/leave/Detail";
-import Attendance from "./components/attendance/Attendance";
-import AttendanceReport from "./components/attendance/AttendanceReport";
 
 function App() {
   return (

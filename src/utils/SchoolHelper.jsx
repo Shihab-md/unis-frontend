@@ -9,11 +9,11 @@ import {
 } from "react-icons/fa";
 
 export const columns = [
-  {
+  /*{
     name: "S.No",
     selector: (row) => row.sno,
     width: "60px",
-  },
+  },*/
   {
     name: "Code",
     /*  name: (
@@ -30,19 +30,35 @@ export const columns = [
       ),*/
     selector: (row) => row.code,
     //  sortable: true,
-    width: "140px",
+    width: "120px",
   },
   {
     name: "Name",
     selector: (row) => row.name,
     //  sortable: true,
-    width: "430px",
+    width: "370px",
+  },
+  {
+    name: "No. of Students",
+    //selector: (row) => row.studentCount,
+    wrap: true,
+    selector: row => (
+      <div className="mt-2 mb-2">
+        {"Total : " + row.studentCount}
+        <div className="mt-1 mb-1"></div>
+        {row.studentCountsByCourse?.map((course, i) => (
+          <div key={i}>{course.courseName + " : " + course.count}</div>
+        ))}
+      </div>
+    ),
+    //  sortable: true,
+    width: "120px",
   },
   {
     name: "District & State",
     selector: (row) => row.districtState,
     //  sortable: true,
-    width: "230px",
+    width: "210px",
   },
   {
     name: "Status",
@@ -54,7 +70,7 @@ export const columns = [
     name: "Supervisor",
     selector: (row) => row.supervisorId + " : " + row.supervisorName,
     //  sortable: true,
-    width: "300px",
+    width: "320px",
   },
   {
     name: "Action",

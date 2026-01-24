@@ -158,8 +158,9 @@ const List = () => {
           active: sup.active,
           jobType: sup.jobType,
           remarks: sup.remarks,
-          //  dob: new Date(sup.dob).toLocaleDateString(),
           schoolsCount: sup._schoolsCount ? sup._schoolsCount : 0,
+          studentCount: sup.studentCount ? sup.studentCount : 0,
+          studentCountsByCourse: sup.studentCountsByCourse && sup.studentCountsByCourse?.length > 0 ? sup.studentCountsByCourse : null,
           //  profileImage: <img width={40} className='rounded-full' src={(getBaseUrl()).toString() + `${sup.userId.profileImage}`} />,
           action: (<SupervisorButtons Id={sup._id} />),
         }));
@@ -238,6 +239,8 @@ const List = () => {
         remarks: sup.remarks,
         //  dob: new Date(sup.dob).toLocaleDateString(),
         schoolsCount: sup._schoolsCount ? sup._schoolsCount : 0,
+        studentCount: sup.studentCount ? sup.studentCount : 0,
+        studentCountsByCourse: sup.studentCountsByCourse && sup.studentCountsByCourse?.length > 0 ? sup.studentCountsByCourse : null,
         //  profileImage: <img width={40} className='rounded-full' src={(getBaseUrl()).toString() + `${sup.userId.profileImage}`} />,
         action: (<SupervisorButtons Id={sup._id} onSupervisorDelete={onSupervisorDelete} />),
       }));
@@ -272,6 +275,8 @@ const List = () => {
             remarks: sup.remarks,
             //  dob: new Date(sup.dob).toLocaleDateString(),
             schoolsCount: sup._schoolsCount ? sup._schoolsCount : 0,
+            studentCount: sup.studentCount ? sup.studentCount : 0,
+            studentCountsByCourse: sup.studentCountsByCourse && sup.studentCountsByCourse?.length > 0 ? sup.studentCountsByCourse : null,
             //  profileImage: <img width={40} className='rounded-full' src={(getBaseUrl()).toString() + `${sup.userId.profileImage}`} />,
             action: (<SupervisorButtons Id={sup._id} onSupervisorDelete={onSupervisorDelete} />),
           }));

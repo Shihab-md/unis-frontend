@@ -7,7 +7,7 @@ import {
   FaEdit,
   FaTrashAlt,
 } from "react-icons/fa";
-
+ 
 export const columns = [
   {
     name: "#",
@@ -18,38 +18,46 @@ export const columns = [
     name: "Supervisor",
     selector: (row) => row.supId + " : " + row.name,
     sortable: true,
-    width: "410px",
+    width: "430px",
   },
   {
-    name: "Contact Number",
-    selector: (row) => row.contactNumber,
-    width: "140px",
+    name: "Contact",
+    selector: (row) => <div className="mt-2 mb-2">
+      <p>{"Mobile : " + row.contactNumber}</p>
+      <p>{"Email : " + row.email}</p>
+      <p>{"Route : " + row.routeName}</p>
+      </div>,
+    width: "320px",
   },
   {
-    name: "Email",
-    selector: (row) => row.email,
-    sortable: true,
-    width: "260px",
-  },
-  {
-    name: "Route",
-    selector: (row) => row.routeName,
-    sortable: true,
-    width: "160px",
-  },
-  {
-    name: "No. of Niswans",
+    name: "Niswans #",
     selector: (row) => row.schoolsCount,
     sortable: true,
-    width: "130px",
+    width: "120px",
+  },
+    {
+    name: "Students #",
+    //selector: (row) => row.studentCount,
+    wrap: true,
+    selector: row => (
+      <div className="mt-2 mb-2">
+        {"Total : " + row.studentCount}
+        <div className="mt-1 mb-1"></div>
+        {row.studentCountsByCourse?.map((course, i) => (
+          <div key={i}>{course.courseName + " : " + course.count}</div>
+        ))}
+      </div>
+    ),
+    //  sortable: true,
+    width: "160px",
   },
   {
     name: "Status",
     selector: (row) => (<div>
-      <p>{row.active}</p>
-      <p>{row.jobType}</p>
+      <p>{"Status : " + row.active}</p>
+      <p>{"Job Type : " + row.jobType}</p>
     </div>),
-    width: "120px",
+    width: "160px",
   },
   {
     name: "Action",

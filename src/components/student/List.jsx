@@ -772,7 +772,7 @@ const List = () => {
             localStorage.removeItem('students');
             localStorage.setItem('students', JSON.stringify(responnse.data));
           }
-
+ 
         } catch (error) {
           console.log(error.message)
           if (error.response && !error.response.data.success) {
