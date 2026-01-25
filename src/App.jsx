@@ -1,6 +1,8 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import HomePage from "./pages/HomePage";
 import Login from "./pages/Login";
 import AdminDashboard from "./pages/AdminDashboard";
+
 import PrivateRoutes from "./utils/PrivateRoutes";
 import RoleBaseRoutes from "./utils/RoleBaseRoutes";
 import AdminSummary from "./components/dashboard/AdminSummary";
@@ -59,11 +61,15 @@ import DistrictStateEdit from "./components/districtstate/Edit";
 
 import ReportsHome from "./components/report/ReportsHome";
 
+import BatchApprovals from "./components/fees/BatchApprovals";
+import BulkPaymentCreate from "./components/fees/BulkPaymentCreate";
+
 function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Navigate to="/dashboard" />}></Route>
+         {/* <Route path="/" element={<Navigate to="/dashboard" />}></Route>*/}
+        <Route path="/" element={<HomePage />}></Route>
         <Route path="/login" element={<Login />}></Route>
 
         {/* <Route path="/" element={<Navigate to="/login" />}></Route>
@@ -135,28 +141,14 @@ function App() {
 
           <Route path="/dashboard/reports" element={<ReportsHome />}></Route>
 
-          {/* 
-
-          <Route path="/dashboard/departments" element={<DepartmentList />}></Route>
-          <Route path="/dashboard/add-department" element={<AddDepartment />}></Route>
-          <Route path="/dashboard/department/:id" element={<EditDepartment />}></Route>
-
-          <Route path="/dashboard/employees/salary/:id" element={<ViewSalary />}></Route>
-
-          <Route path="/dashboard/salary/add" element={<AddSalary />}></Route>
-          <Route path="/dashboard/leaves" element={<Table />}></Route>
-          <Route path="/dashboard/leaves/:id" element={<Detail />}></Route>
-          <Route path="/dashboard/employees/leaves/:id" element={<LeaveList />}></Route>
-
-          
-          <Route path="/dashboard/attendance" element={<Attendance />}></Route>
-          <Route path="/dashboard/attendance-report" element={<AttendanceReport />}></Route> */}
+          <Route path="/dashboard/hq/fees" element={<BatchApprovals />}></Route>
+          <Route path="/dashboard/fees" element={<BulkPaymentCreate />}></Route>
 
         </Route>
 
         {/* <Route
           path="/employee-dashboard"
-          element={
+          element={ 
             <PrivateRoutes>
               <RoleBaseRoutes requiredRole={["admin", "employee"]}>
                 <EmployeeDashboard />

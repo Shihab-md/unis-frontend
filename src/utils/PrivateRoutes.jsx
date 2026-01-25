@@ -10,7 +10,7 @@ const PrivateRoutes = ({children}) => {
     return getSpinner();
   }
 
-  return user ? children : <Navigate to="/login" />
+  return user ? children : <Navigate to="/" />
 }
 
 export default PrivateRoutes

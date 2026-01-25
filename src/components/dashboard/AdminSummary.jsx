@@ -139,15 +139,24 @@ const AdminSummary = () => {
             />
           </Link> : null}
 
-        {user.role === "superadmin" || user.role === "admin" ?
-          <Link to="#" >
+        {user.role === "superadmin" ?
+          <Link to="/dashboard/hq/fees" >
             <SummaryCard
               icon={<FaRupeeSign />}
               text="Accounts"
               number="*"
               color="bg-orange-700"
             />
-          </Link> : null}
+          </Link> :
+          user.role === "admin" ?
+            <Link to="/dashboard/fees" >
+              <SummaryCard
+                icon={<FaRupeeSign />}
+                text="Accounts"
+                number="*"
+                color="bg-orange-700"
+              />
+            </Link> : null}
 
         {user.role === "superadmin" ?
           <Link to="/dashboard/masters" >
