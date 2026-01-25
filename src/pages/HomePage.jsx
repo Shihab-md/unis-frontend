@@ -536,15 +536,20 @@ export default function HomePage() {
 
         const load = async () => {
             try {
-                const res = await axios.get(
-                    (await getBaseUrl()).toString() + "public/stats"
-                );
+                const base = await getBaseUrl();
+                const url = new URL("public/stats", base).toString(); // ✅ correct join
+
+                const token = localStorage.getItem("token"); // optional
+                const headers = token ? { Authorization: `Bearer ${token}` } : undefined;
+
+                const res = await axios.get(url, { headers, timeout: 15000 });
 
                 if (!res.data?.success) {
                     showSwalAlert("Error", res.data?.error || "Unable to load stats", "error");
                     return;
                 }
-                setStats(res.data.stats);
+
+                if (alive) setStats(res.data.stats);
             } catch (err) {
                 console.log("STATS API ERROR", {
                     message: err?.message,
@@ -567,6 +572,7 @@ export default function HomePage() {
             alive = false;
         };
     }, []);
+
 
     // ✅ ALWAYS required order (not by total)
     const sortedTypes = useMemo(() => {
