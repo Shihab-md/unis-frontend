@@ -537,19 +537,26 @@ export default function HomePage() {
         const load = async () => {
             try {
                 const base = await getBaseUrl();
-                const res = await axios.get(`${base}public/stats`);
-                if (!alive) return;
+                const url = new URL("public/stats", base).toString(); // ✅ safe join
+                const res = await axios.get(url, { timeout: 15000 });
 
                 if (!res.data?.success) {
                     showSwalAlert("Error", res.data?.error || "Unable to load stats", "error");
-                    setLoading(false);
                     return;
                 }
-
                 setStats(res.data.stats);
-            } catch (e) {
-                if (!alive) return;
-                showSwalAlert("Error", "Unable to load stats", "error");
+            } catch (err) {
+                console.log("STATS API ERROR", {
+                    message: err?.message,
+                    status: err?.response?.status,
+                    data: err?.response?.data,
+                    url: err?.config?.url,
+                });
+
+                const msg =
+                    err?.response?.data?.error ||
+                    (err?.response ? `Server error (${err.response.status})` : "Network/CORS error");
+                showSwalAlert("Error", msg, "error");
             } finally {
                 if (alive) setLoading(false);
             }
