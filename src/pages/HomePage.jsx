@@ -536,17 +536,8 @@ export default function HomePage() {
 
         const load = async () => {
             try {
-                const base = await getBaseUrl();
-                const url = new URL("public/stats", base).toString(); // ✅ safe join
-                //const res = await axios.get(url, { timeout: 15000 });
-
                 const res = await axios.get(
-                    (await getBaseUrl()).toString() + "public/stats",
-                    {
-                        headers: {
-                            Authorization: `Bearer ${localStorage.getItem("token")}`,
-                        },
-                    }
+                    (await getBaseUrl()).toString() + "public/stats"
                 );
 
                 if (!res.data?.success) {
