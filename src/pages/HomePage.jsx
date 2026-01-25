@@ -538,7 +538,16 @@ export default function HomePage() {
             try {
                 const base = await getBaseUrl();
                 const url = new URL("public/stats", base).toString(); // ✅ safe join
-                const res = await axios.get(url, { timeout: 15000 });
+                //const res = await axios.get(url, { timeout: 15000 });
+
+                const res = await axios.get(
+                    (await getBaseUrl()).toString() + "public/stats",
+                    {
+                        headers: {
+                            Authorization: `Bearer ${localStorage.getItem("token")}`,
+                        },
+                    }
+                );
 
                 if (!res.data?.success) {
                     showSwalAlert("Error", res.data?.error || "Unable to load stats", "error");
