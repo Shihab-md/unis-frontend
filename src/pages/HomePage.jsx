@@ -876,7 +876,7 @@ export default function HomePage() {
                 month: "Feb",
                 fullDate: "05 Feb 2026",
                 title: "Monthly Exam - Makthab",
-                venue: "School Campus",
+                venue: "Niswan Campus",
                 time: "10:00 AM",
                 description: "Students must bring ID card. Reporting time: 9:30 AM.",
             },
@@ -889,7 +889,7 @@ export default function HomePage() {
                 title: "Supervisors Meeting",
                 venue: "HQ Auditorium",
                 time: "02:30 PM",
-                description: "Agenda: School performance review and upcoming plans.",
+                description: "Agenda: Niswan performance review and upcoming plans.",
             },
             {
                 tag: "Event",
@@ -1096,7 +1096,7 @@ export default function HomePage() {
                         icon="📌"
                     />
                     <StatCard
-                        title="Active Schools"
+                        title="Active Niswans"
                         value={stats.schoolsCount}
                         loading={loading}
                         colorClass="bg-gradient-to-br from-emerald-600 to-teal-500"
