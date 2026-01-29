@@ -87,7 +87,7 @@ const List = () => {
 
   function NiswanSelect({ options, onChange, selectedValues }) {
     return <Select options={
-      options.map((option) => ({
+      options.filter(option => option.active === 'Active').map((option) => ({
         value: option._id, label: option.code + " : " + option.nameEnglish
       }
       ))
@@ -701,7 +701,7 @@ const List = () => {
             <div className="mb-2 h-80 w-full">
               <div className='text-2xl lg:text-3xl mb-3 text-blue-600'>Select the Niswan</div>
               <Select className='text-sm text-start'
-                options={schools.filter(school => school.code !== 'UN-00-00001').map(option => ({
+                options={schools.filter((school) => school.code !== 'UN-00-00001' && school.active === 'Active').map(option => ({
                   value: option._id, label: option.code + " : " + option.nameEnglish
                 }))}
                 onChange={(selectedOption) => {
