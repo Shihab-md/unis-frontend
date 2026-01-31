@@ -686,6 +686,7 @@ const List = () => {
       if (!localStorage.getItem('schoolId')) {
         const schools = await getSchoolsFromCache();
         setSchools(schools)
+        //console.log("inside - " + schools)
         //  let inputArray = [];
         //  schools.map((school) => (
         //    inputOptions[school._id] = school.code.substring(3) + " : " + school.nameEnglish + ", " + school.district + ", " + school.state
@@ -701,8 +702,8 @@ const List = () => {
             <div className="mb-2 h-80 w-full">
               <div className='text-2xl lg:text-3xl mb-3 text-blue-600'>Select the Niswan</div>
               <Select className='text-sm text-start'
-                options={schools.filter((school) => school.code !== 'UN-00-00001' && school.active === 'Active').map(option => ({
-                  value: option._id, label: option.code + " : " + option.nameEnglish
+                options={schools.filter((school) => school.code !== 'UN-00-00001' && school.active === 'Active')
+                  .map(option => ({value: option._id, label: option.code + " : " + option.nameEnglish
                 }))}
                 onChange={(selectedOption) => {
                   selectedOptionInSwal = selectedOption;
@@ -719,7 +720,7 @@ const List = () => {
             return selectedOptionInSwal ? selectedOptionInSwal.value : null;
           },
         });
-
+        console.log("schId : " + schId)
         if (schId) {
           setSchId(schId);
           schoolId = schId;
