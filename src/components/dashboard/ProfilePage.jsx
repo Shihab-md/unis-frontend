@@ -157,25 +157,22 @@ export default function ProfilePage() {
         }
 
         try {
-            const base = await getBaseUrl();
-            const url = new URL("updatePassword", base).toString();
-
+            setProcessing(true);
             const res = await axios.put((await getBaseUrl()).toString() + "profile/updatePassword",
                 { oldPassword: pass.oldPassword, newPassword: pass.newPassword },
                 { headers: authHeaders() }
             );
 
             if (res.data.success) {
-                setProcessing(false);
                 showSwalAlert("Success!", "Password changed Successfully...!", "success");
                 window.location.reload();
                 navigate("/dashboard/profile");
             } else {
-                setProcessing(false);
                 const msg = res.data.error || "Password change failed";
                 setErrors((prev) => ({ ...prev, form: msg }));
                 showSwalAlert("Error!", msg, "error");
             }
+            setProcessing(false);
         } catch (err) {
             const msg =
                 err?.response?.data?.error ||
