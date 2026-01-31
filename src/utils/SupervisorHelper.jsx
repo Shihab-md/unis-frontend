@@ -7,7 +7,7 @@ import {
   FaEdit,
   FaTrashAlt,
 } from "react-icons/fa";
- 
+
 export const columns = [
   {
     name: "#",
@@ -26,7 +26,7 @@ export const columns = [
       <p>{"Mobile : " + row.contactNumber}</p>
       <p>{"Email : " + row.email}</p>
       <p>{"Route : " + row.routeName}</p>
-      </div>,
+    </div>,
     width: "320px",
   },
   {
@@ -35,7 +35,7 @@ export const columns = [
     sortable: true,
     width: "120px",
   },
-    {
+  {
     name: "Students #",
     //selector: (row) => row.studentCount,
     wrap: true,
@@ -172,12 +172,14 @@ export const SupervisorButtons = ({ Id, onSupervisorDelete }) => {
           </button>
           <button
             className={getButtonStyle('Edit')}
+            disabled={user?.role === "guest"}
             onClick={() => navigate(`/dashboard/supervisors/edit/${Id}`)}
           >
             <FaEdit className="m-1" />
           </button>
           <button
             className={getButtonStyle('Delete')}
+            disabled={user?.role === "guest"}
             onClick={() => handleDelete(Id)}
           >
             <FaTrashAlt className="m-1" />

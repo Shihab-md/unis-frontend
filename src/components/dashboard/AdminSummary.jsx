@@ -59,7 +59,7 @@ const AdminSummary = () => {
 
       <div className="content-center rounded-lg grid grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-7 lg:gap-14 mt-7 lg:mt-16 flex rounded-lg">
 
-        {user.role === "superadmin" || user.role === "hquser" || user.role === "supervisor" ?
+        {user.role === "superadmin" || user.role === "hquser" || user.role === "supervisor" || user.role === "guest" ?
           <Link to="/dashboard/supervisors" >
             <SummaryCard
               icon={<FaUserFriends />}
@@ -69,7 +69,7 @@ const AdminSummary = () => {
             />
           </Link> : null}
 
-        {user.role === "superadmin" || user.role === "hquser" || user.role === "supervisor" || user.role === "admin" ?
+        {user.role === "superadmin" || user.role === "hquser" || user.role === "supervisor" || user.role === "admin" || user.role === "guest" ?
           <Link to="/dashboard/schools" >
             <SummaryCard
               icon={<FaMosque />}
@@ -79,7 +79,7 @@ const AdminSummary = () => {
             />
           </Link> : null}
 
-        {user.role === "superadmin" || user.role === "hquser" || user.role === "supervisor" || user.role === "admin" ?
+        {user.role === "superadmin" || user.role === "hquser" || user.role === "supervisor" || user.role === "admin" || user.role === "guest" ?
           <Link to="/dashboard/employees" >
             <SummaryCard
               icon={<FaHouseUser />}
@@ -89,7 +89,7 @@ const AdminSummary = () => {
             />
           </Link> : null}
 
-        {user.role === "superadmin" || user.role === "hquser" || user.role === "admin" ?
+        {user.role === "superadmin" || user.role === "hquser" || user.role === "admin" || user.role === "guest" ?
           <Link to="/dashboard/students"  >
             <SummaryCard
               icon={<FaUsers />}
@@ -100,7 +100,7 @@ const AdminSummary = () => {
           </Link> : null}
 
         {user.role === "superadmin" || user.role === "hquser" || user.role === "admin"
-          || user.role === "teacher" || user.role === "usthadh" ?
+          || user.role === "teacher" || user.role === "usthadh" || user.role === "guest" ?
           <Link to="#" >
             <SummaryCard
               icon={<FaTasks />}
@@ -111,7 +111,7 @@ const AdminSummary = () => {
           </Link> : null}
 
         {user.role === "superadmin" || user.role === "hquser" || user.role === "admin"
-          || user.role === "teacher" || user.role === "usthadh" || user.role === "student" ?
+          || user.role === "teacher" || user.role === "usthadh" || user.role === "student" || user.role === "guest" ?
           <Link to="#" >
             <SummaryCard
               icon={<FaCalendarAlt />}
@@ -121,7 +121,7 @@ const AdminSummary = () => {
             />
           </Link> : null}
 
-        {user.role === "superadmin" || user.role === "hquser" ?
+        {user.role === "superadmin" || user.role === "hquser" || user.role === "guest" ?
           <Link to="#" >
             <SummaryCard
               icon={<FaClipboardList />}
@@ -131,7 +131,7 @@ const AdminSummary = () => {
             />
           </Link> : null}
 
-        {user.role === "superadmin" || user.role === "hquser" ?
+        {user.role === "superadmin" || user.role === "hquser" || user.role === "guest" ?
           <Link to="/dashboard/certificates" >
             <SummaryCard
               icon={<FaMedal />}
@@ -160,7 +160,7 @@ const AdminSummary = () => {
               />
             </Link> : null}
 
-        {user.role === "superadmin" ?
+        {user.role === "superadmin" || user.role === "guest" ?
           <Link to="/dashboard/masters" >
             <SummaryCard
               icon={<FaCoins />}
@@ -170,7 +170,7 @@ const AdminSummary = () => {
             />
           </Link> : null}
 
-        {user.role === "superadmin" || user.role === "hquser" || user.role === "supervisor" || user.role === "admin" ?
+        {user.role === "superadmin" || user.role === "hquser" || user.role === "supervisor" || user.role === "admin" || user.role === "guest" ?
           <Link to="/dashboard/reports" >
             <SummaryCard
               icon={<FaFileContract />}

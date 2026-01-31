@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
+import { useAuth } from '../../context/AuthContext'
 import { getBaseUrl, getPrcessing, showSwalAlert } from "../../utils/CommonHelper";
 import {
     FaUserCircle,
@@ -44,7 +45,7 @@ const roleLabel = (role) => {
         usthadh: "Usthadh",
         parent: "Parent",
         warden: "Warden",
-        staff: "Staff",
+        guest: "guest",
     };
     return map[r] ?? (r ? r.charAt(0).toUpperCase() + r.slice(1) : "-");
 };
@@ -103,6 +104,7 @@ export default function ProfilePage() {
     const [data, setData] = useState({ user: null, employee: null });
 
     const navigate = useNavigate();
+    const { user } = useAuth()
 
     const [pass, setPass] = useState({
         oldPassword: "",
@@ -400,6 +402,7 @@ export default function ProfilePage() {
 
                                             <button
                                                 type="submit"
+                                                disabled={user?.role === "guest"}
                                                 className="mt-6 w-full rounded-2xl bg-gradient-to-r from-indigo-300 via-violet-300 to-rose-300 px-4 py-3 text-sm font-bold text-blue-700 shadow-lg hover:opacity-95"
                                             >
                                                 Update Password

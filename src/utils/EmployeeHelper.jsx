@@ -135,12 +135,14 @@ export const EmployeeButtons = ({ Id, onEmployeeDelete }) => {
         <div className="flex space-x-4">
           <button
             className={getButtonStyle('Edit')}
+            disabled={user?.role === "guest"}
             onClick={() => navigate(`/dashboard/employees/edit/${Id}`)}
           >
             <FaEdit className="m-1" />
           </button>
           <button
             className={getButtonStyle('Delete')}
+            disabled={user?.role === "guest"}
             onClick={() => handleDelete(Id)}
           >
             <FaTrashAlt className="m-1" />

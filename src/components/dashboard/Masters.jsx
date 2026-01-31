@@ -54,7 +54,7 @@ const Masters = () => {
 
       <div className="content-center rounded-lg grid grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-10 mt-16 flex rounded-lg">
 
-        {user.role === "superadmin" || user.role === "hquser" ?
+        {user.role === "superadmin" || user.role === "hquser" || user.role === "guest" ?
           <Link to="/dashboard/institutes" >
             <SummaryCard
               icon={<FaUniversity />}
@@ -64,7 +64,7 @@ const Masters = () => {
             />
           </Link> : null}
 
-        {user.role === "superadmin" || user.role === "hquser" ?
+        {user.role === "superadmin" || user.role === "hquser" || user.role === "guest" ?
           <Link to="/dashboard/courses" >
             <SummaryCard
               icon={<FaClipboardList />}
@@ -74,7 +74,7 @@ const Masters = () => {
             />
           </Link> : null}
 
-        {user.role === "superadmin" || user.role === "hquser" ?
+        {user.role === "superadmin" || user.role === "hquser" || user.role === "guest" ?
           <Link to="/dashboard/academicYears" >
             <SummaryCard
               icon={<FaCalendarAlt />}
@@ -84,7 +84,7 @@ const Masters = () => {
             />
           </Link> : null}
 
-        {user.role === "superadmin" || user.role === "hquser" ?
+        {user.role === "superadmin" || user.role === "hquser" || user.role === "guest" ?
           <Link to="/dashboard/templates" >
             <SummaryCard
               icon={<FaWpforms />}
@@ -94,7 +94,7 @@ const Masters = () => {
             />
           </Link> : null}
 
-        {user.role === "superadmin" || user.role === "hquser" ?
+        {user.role === "superadmin" || user.role === "hquser" || user.role === "guest" ?
           <Link to="/dashboard/districtStates" >
             <SummaryCard
               icon={<FaMapMarkerAlt />}

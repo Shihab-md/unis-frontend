@@ -6,6 +6,7 @@ import {
   FaEdit,
   FaTrashAlt,
 } from "react-icons/fa";
+import { useAuth } from '../context/AuthContext'
 
 export const columns = [
   {
@@ -118,6 +119,8 @@ export const AcademicYearButtons = ({ Id, onAcademicYearDelete }) => {
     }
   };
 
+  const { user } = useAuth();
+
   return (
     <div className="flex space-x-3">
       <button
@@ -128,12 +131,14 @@ export const AcademicYearButtons = ({ Id, onAcademicYearDelete }) => {
       </button>
       <button
         className={getButtonStyle('Edit')}
+        disabled={user?.role === "guest"}
         onClick={() => navigate(`/dashboard/academicYears/edit/${Id}`)}
       >
         <FaEdit className="m-1" />
       </button>
       <button
         className={getButtonStyle('Delete')}
+        disabled={user?.role === "guest"}
         onClick={() => handleDelete(Id)}
       >
         <FaTrashAlt className="m-1" />

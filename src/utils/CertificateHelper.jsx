@@ -2,6 +2,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { getBaseUrl, showSwalAlert, showConfirmationSwalAlert, getButtonStyle } from '../utils/CommonHelper';
 import { FaEye, } from "react-icons/fa";
+import { useAuth } from '../context/AuthContext'
 
 export const columns = [
   {
@@ -91,6 +92,8 @@ export const CertificateButtons = ({ Id, onCertificateDelete }) => {
       }
     }
   };
+
+  const { user } = useAuth();
 
   return (
     <div className="flex space-x-3 rounded-sm shadow-lg">

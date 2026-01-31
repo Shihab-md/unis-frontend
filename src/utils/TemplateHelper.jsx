@@ -6,6 +6,7 @@ import {
   FaEdit,
   FaTrashAlt,
 } from "react-icons/fa";
+import { useAuth } from '../context/AuthContext'
 
 export const columns = [
   {
@@ -108,6 +109,8 @@ export const TemplateButtons = ({ Id, onTemplateDelete }) => {
     }
   };
 
+  const { user } = useAuth();
+
   return (
     <div className="flex space-x-3 rounded-sm shadow-lg">
       <button
@@ -118,12 +121,14 @@ export const TemplateButtons = ({ Id, onTemplateDelete }) => {
       </button>
       <button
         className={getButtonStyle('Edit')}
+        disabled={user?.role === "guest"}
         onClick={() => navigate(`/dashboard/templates/edit/${Id}`)}
       >
         <FaEdit className="m-1" />
       </button>
       <button
         className={getButtonStyle('Delete')}
+        disabled={user?.role === "guest"}
         onClick={() => handleDelete(Id)}
       >
         <FaTrashAlt className="m-1" />

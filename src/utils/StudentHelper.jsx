@@ -22,7 +22,7 @@ function getDetails(title, courseName, instituteName, refNumber, year, fees, sta
       {"Status : " + status}</p>
   </div>
 }
- 
+
 export const columnsSelectForAcademic = [
   {
     name: <div className='text-sm font-bold text-lime-600'>AC Year</div>,
@@ -260,6 +260,7 @@ export const StudentButtons = ({ Id, onStudentDelete }) => {
       </button>
       <button
         className={getButtonStyle('Edit')}
+        disabled={user?.role === "guest"}
         onClick={() => navigate(`/dashboard/students/edit/${Id}`)}
       >
         <FaEdit className="m-1" />
@@ -268,6 +269,7 @@ export const StudentButtons = ({ Id, onStudentDelete }) => {
         <div className="flex space-x-3">
           <button
             className={getButtonStyle('Promote')}
+            disabled={user?.role === "guest"}
             onClick={() => navigate(`/dashboard/students/promote/${Id}`)}
           >
             <FaUserCheck className="m-1" />
@@ -276,12 +278,14 @@ export const StudentButtons = ({ Id, onStudentDelete }) => {
         <div className="flex space-x-3">
           <button
             className={getButtonStyle('Transfer')}
+            disabled={user?.role === "guest"}
             onClick={() => navigate(`#`)}
           >
             <FaExchangeAlt className="m-1" />
           </button> </div> : null}
       <button
         className={getButtonStyle('Delete')}
+        disabled={user?.role === "guest"}
         onClick={() => handleDelete(Id)}
       >
         <FaTrashAlt className="m-1" />
