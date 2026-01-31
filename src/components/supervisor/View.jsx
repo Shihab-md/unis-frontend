@@ -13,7 +13,9 @@ import {
 const View = () => {
 
   // To prevent right-click AND For FULL screen view.
-  handleRightClickAndFullScreen();
+  useEffect(() => {
+    handleRightClickAndFullScreen();
+  }, []);;
 
   const { id } = useParams();
   const [supervisor, setSupervisor] = useState(null);

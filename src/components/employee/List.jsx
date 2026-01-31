@@ -18,7 +18,9 @@ import * as XLSX from 'xlsx';
 const List = () => {
 
   // To prevent right-click AND For FULL screen view.
-  handleRightClickAndFullScreen();
+  useEffect(() => {
+    handleRightClickAndFullScreen();
+  }, []);;
 
   const [schools, setSchools] = useState([])
   const [employees, setEmployees] = useState([])
@@ -460,7 +462,7 @@ const List = () => {
           <div className="mr-3" onClick={openFilterPopup}>{LinkIcon("#", "Filter")}</div>
           : null}
 
-        {user.role === "superadmin"  || user.role === "hquser" || user.role === "supervisor" || user.role === "admin" ?
+        {user.role === "superadmin" || user.role === "hquser" || user.role === "supervisor" || user.role === "admin" ?
           LinkIcon("/dashboard/add-employee", "Add") : null}
         {user.role === "superadmin" ?
           <div className="hidden lg:block" onClick={handleImport}>{LinkIcon("#", "Import")}</div> : null}

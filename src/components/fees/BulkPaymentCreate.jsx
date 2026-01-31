@@ -27,7 +27,7 @@ export default function BulkPaymentCreate() {
       } catch {
         if (!alive) return;
         setInvoices([]);
-        showSwalAlert("Error", "Failed to load invoices", "error");
+        showSwalAlert("Error!", "Failed to load invoices", "error");
       }
     };
     if (schoolId && acYear) run();
@@ -74,13 +74,13 @@ export default function BulkPaymentCreate() {
     try {
       const payload = { schoolId, acYear, mode, referenceNo, proofUrl, items };
       const resp = await createPaymentBatch(payload);
-      if (!resp?.success) showSwalAlert("Error", resp?.error || "Failed", "error");
+      if (!resp?.success) showSwalAlert("Error!", resp?.error || "Failed", "error");
       else {
-        showSwalAlert("Success", `Batch created: ${resp.batchNo}`, "success");
+        showSwalAlert("Success!", `Batch created: ${resp.batchNo}`, "success");
         setSelected({});
       }
     } catch {
-      showSwalAlert("Error", "Failed to create batch", "error");
+      showSwalAlert("Error!", "Failed to create batch", "error");
     } finally {
       setLoading(false);
     }
@@ -117,7 +117,7 @@ export default function BulkPaymentCreate() {
                 setProofUrl(url);
                 showSwalAlert("Uploaded", "Proof uploaded successfully", "success");
               } catch {
-                showSwalAlert("Error", "Proof upload failed", "error");
+                showSwalAlert("Error!", "Proof upload failed", "error");
               }
             }}
           />

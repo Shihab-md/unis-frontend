@@ -14,7 +14,9 @@ import {
 const Create = () => {
 
   // To prevent right-click AND For FULL screen view.
-  handleRightClickAndFullScreen();
+  useEffect(() => {
+    handleRightClickAndFullScreen();
+  }, []);
 
   const [formData, setFormData] = useState(1);
   const [schools, setSchools] = useState([]);

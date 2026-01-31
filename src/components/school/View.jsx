@@ -10,7 +10,9 @@ import { getBaseUrl, handleRightClickAndFullScreen, getSpinner, checkAuth, getFo
 const View = () => {
 
   // To prevent right-click AND For FULL screen view.
-  handleRightClickAndFullScreen();
+  useEffect(() => {
+    handleRightClickAndFullScreen();
+  }, []);;
 
   const { id, page } = useParams();
   const [school, setSchool] = useState(null);

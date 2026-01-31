@@ -8,7 +8,9 @@ import axios from 'axios'
 const List = () => {
 
   // To prevent right-click AND For FULL screen view.
-  handleRightClickAndFullScreen();
+  useEffect(() => {
+    handleRightClickAndFullScreen();
+  }, []);;
 
   const [templates, setTemplates] = useState([])
   const [supLoading, setSupLoading] = useState(false)

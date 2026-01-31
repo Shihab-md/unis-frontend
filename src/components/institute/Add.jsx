@@ -9,7 +9,9 @@ import {
 const Add = () => {
 
   // To prevent right-click AND For FULL screen view.
-  handleRightClickAndFullScreen();
+  useEffect(() => {
+    handleRightClickAndFullScreen();
+  }, []);;
 
   const [processing, setProcessing] = useState(null)
   const [institute, setInstitute] = useState({
@@ -125,7 +127,7 @@ const Add = () => {
                 <option value="Islamic Home Science">Islamic Home Science</option>
                 <option value="Vocational Courses">Vocational Courses</option>
               </select>
-            </div> 
+            </div>
 
             <div className="flex space-x-3 mb-5" />
 

@@ -120,7 +120,7 @@ export default function ProfilePage() {
                 });
 
                 if (!res.data?.success) {
-                    showSwalAlert("Error", res.data?.error || "Unable to load profile", "error");
+                    showSwalAlert("Error!", res.data?.error || "Unable to load profile", "error");
                     return;
                 }
 
@@ -130,7 +130,7 @@ export default function ProfilePage() {
                 const msg =
                     err?.response?.data?.error ||
                     (err?.response ? `Server error (${err.response.status})` : "Network/CORS error");
-                showSwalAlert("Error", msg, "error");
+                showSwalAlert("Error!", msg, "error");
             } finally {
                 if (alive) setLoading(false);
             }
@@ -152,7 +152,7 @@ export default function ProfilePage() {
         e1.preventDefault();
 
         if (pass.newPassword !== pass.confirmPassword) {
-            showSwalAlert("Error", "New password and Confirm password must match", "error");
+            showSwalAlert("Error!", "New password and Confirm password must match", "error");
             return;
         }
 
@@ -177,7 +177,8 @@ export default function ProfilePage() {
             const msg =
                 err?.response?.data?.error ||
                 (err?.response ? `Server error (${err.response.status})` : "Network/CORS error");
-            showSwalAlert("Error", msg, "error");
+            showSwalAlert("Error!", msg, "error");
+            setProcessing(false);
         }
     };
 

@@ -10,7 +10,9 @@ import {
 const View = () => {
 
   // To prevent right-click AND For FULL screen view.
-  handleRightClickAndFullScreen();
+  useEffect(() => {
+    handleRightClickAndFullScreen();
+  }, []);
 
   const { id } = useParams();
   const [certificate, setCertificate] = useState(null);
@@ -103,7 +105,7 @@ const View = () => {
               </div>
 
               <div className="flex mt-1 space-x-3 mb-5" />
- 
+
               <ViewCard type="title" text="Sanadh Number" />
               <ViewCard type="data" text={certificate.code} />
 

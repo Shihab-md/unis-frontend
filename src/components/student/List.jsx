@@ -18,7 +18,9 @@ import * as XLSX from 'xlsx';
 const List = () => {
 
   // To prevent right-click AND For FULL screen view.
-  handleRightClickAndFullScreen();
+  useEffect(() => {
+    handleRightClickAndFullScreen();
+  }, []);;
 
   const [schools, setSchools] = useState([]);
   const [inputOptions, setInputOptions] = useState([]);
@@ -704,8 +706,9 @@ const List = () => {
               <div className='text-2xl lg:text-3xl mb-3 text-blue-600'>Select the Niswan</div>
               <Select className='text-sm text-start'
                 options={schools.filter((school) => school.code !== 'UN-00-00001' && school.active === 'Active')
-                  .map(option => ({value: option._id, label: option.code + " : " + option.nameEnglish
-                }))}
+                  .map(option => ({
+                    value: option._id, label: option.code + " : " + option.nameEnglish
+                  }))}
                 onChange={(selectedOption) => {
                   selectedOptionInSwal = selectedOption;
                 }}
@@ -774,7 +777,7 @@ const List = () => {
             localStorage.removeItem('students');
             localStorage.setItem('students', JSON.stringify(responnse.data));
           }
- 
+
         } catch (error) {
           console.log(error.message)
           if (error.response && !error.response.data.success) {

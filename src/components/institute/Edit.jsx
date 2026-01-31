@@ -9,7 +9,9 @@ import { getBaseUrl, handleRightClickAndFullScreen, getSpinner, checkAuth, getPr
 const Edit = () => {
 
   // To prevent right-click AND For FULL screen view.
-  handleRightClickAndFullScreen();
+  useEffect(() => {
+    handleRightClickAndFullScreen();
+  }, []);;
 
   const [processing, setProcessing] = useState(null)
   const [institute, setInstitute] = useState({

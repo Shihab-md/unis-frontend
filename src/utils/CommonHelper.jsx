@@ -66,8 +66,8 @@ export function checkAuth(screenName) {
 };
 
 export const getBaseUrl = async () => {
-   return "https://unis-server.vercel.app/api/";
-  //return "http://localhost:5000/api/";
+  return "https://unis-server.vercel.app/api/";
+  //return "http://localhost:5001/api/";
 };
 
 /**
@@ -299,7 +299,7 @@ export function showSwalAlert(title, message, icon) {
     title: title,
     html: "<b>" + message + "</b>",
     icon: icon,
-    timer: 4300,
+    timer: title === "Success!" ? 1600 : 5200,
     timerProgressBar: true,
     showConfirmButton: false,
     background: "url(/bg_card.png)",

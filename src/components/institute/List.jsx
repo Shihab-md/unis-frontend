@@ -8,7 +8,9 @@ import { getBaseUrl, handleRightClickAndFullScreen, getSpinner, checkAuth, LinkI
 const List = () => {
 
   // To prevent right-click AND For FULL screen view.
-  handleRightClickAndFullScreen();
+  useEffect(() => {
+    handleRightClickAndFullScreen();
+  }, []);;
 
   const [institutes, setInstitutes] = useState([])
   const [supLoading, setSupLoading] = useState(false)

@@ -934,7 +934,7 @@ export default function HomePage() {
                 const res = await axios.get(url, { headers, timeout: 15000 });
 
                 if (!res.data?.success) {
-                    showSwalAlert("Error", res.data?.error || "Unable to load stats", "error");
+                    showSwalAlert("Error!", res.data?.error || "Unable to load stats", "error");
                     return;
                 }
 
@@ -952,7 +952,7 @@ export default function HomePage() {
                     (err?.response
                         ? `Server error (${err.response.status})`
                         : "Network/CORS error");
-                showSwalAlert("Error", msg, "error");
+                showSwalAlert("Error!", msg, "error");
             } finally {
                 if (alive) setLoading(false);
             }
@@ -1000,7 +1000,7 @@ export default function HomePage() {
 
                             <div className="leading-tight">
                                 <div className="flex items-center justify-center gap-2">
-                                    <div className="text-lg font-extrabold tracking-wide text-slate-900">
+                                    <div className="text-lg font-bold tracking-wide text-slate-900">
                                         <span className="text-blue-700">UNIS ACADEMY</span>
                                     </div>
                                 </div>
@@ -1015,7 +1015,7 @@ export default function HomePage() {
                         <div className="flex items-center gap-2 sm:gap-3">
                             <button
                                 onClick={() => navigate("/login")}
-                                className="group relative overflow-hidden rounded-lg bg-gradient-to-r from-teal-600 to-emerald-600 px-3 py-2 text-sm font-extrabold text-white shadow-lg transition hover:brightness-110 active:scale-[0.98]"
+                                className="group relative overflow-hidden rounded-lg bg-gradient-to-r from-teal-600 to-emerald-600 px-3 py-2 text-sm font-semibold text-white shadow-lg transition hover:brightness-110 active:scale-[0.98]"
                             >
                                 <span className="absolute inset-0 opacity-0 transition group-hover:opacity-100 bg-white/10" />
                                 <span className="relative flex items-center gap-2">
@@ -1032,7 +1032,7 @@ export default function HomePage() {
             <section className="mx-auto max-w-6xl px-3 sm:px-4 py-8 sm:py-10">
                 <div className="grid grid-cols-1 gap-6 rounded-2xl border bg-white/70 backdrop-blur p-5 sm:p-6 shadow-sm md:grid-cols-2 md:p-10">
                     <div>
-                        <h1 className="text-3xl font-extrabold text-slate-900 md:text-4xl">
+                        <h1 className="text-3xl font-bold text-slate-900 md:text-4xl">
                             Empowering students through knowledge & values
                         </h1>
                         <p className="mt-4 text-slate-700">

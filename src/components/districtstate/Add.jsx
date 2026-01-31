@@ -9,7 +9,9 @@ import {
 const Add = () => {
 
   // To prevent right-click AND For FULL screen view.
-  handleRightClickAndFullScreen();
+  useEffect(() => {
+    handleRightClickAndFullScreen();
+  }, []);;
 
   const [processing, setProcessing] = useState(null)
   const [districtState, setDistrictState] = useState({

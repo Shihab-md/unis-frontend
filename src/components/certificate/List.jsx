@@ -14,7 +14,9 @@ import { getAcademicYearsFromCache } from '../../utils/AcademicYearHelper';
 const List = () => {
 
   // To prevent right-click AND For FULL screen view.
-  handleRightClickAndFullScreen();
+  useEffect(() => {
+    handleRightClickAndFullScreen();
+  }, []);
 
   const [certificates, setCertificates] = useState([])
   const [supLoading, setSupLoading] = useState(false)

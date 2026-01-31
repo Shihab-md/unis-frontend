@@ -12,7 +12,9 @@ import { useNavigate } from "react-router-dom";
 const Masters = () => {
 
   // To prevent right-click AND For FULL screen view.
-  handleRightClickAndFullScreen();
+  useEffect(() => {
+    handleRightClickAndFullScreen();
+  }, []);;
 
   const [summary, setSummary] = useState(null)
   const navigate = useNavigate()

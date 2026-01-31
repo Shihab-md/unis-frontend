@@ -13,7 +13,9 @@ import 'react-datepicker/dist/react-datepicker.css';
 const Add = () => {
 
   // To prevent right-click AND For FULL screen view.
-  handleRightClickAndFullScreen();
+  useEffect(() => {
+    handleRightClickAndFullScreen();
+  }, []);;
 
   const [processing, setProcessing] = useState(null)
   const [selectedDOEDate, setSelectedDOEDate] = useState(null);

@@ -28,7 +28,7 @@ export default function BatchApprovals() {
       const d = await fetchBatchDetails(b._id);
       setDetails(d);
     } catch {
-      showSwalAlert("Error", "Failed to load batch details", "error");
+      showSwalAlert("Error!", "Failed to load batch details", "error");
     }
   };
 
@@ -38,13 +38,13 @@ export default function BatchApprovals() {
     try {
       const resp = await approveBatch(selectedBatch._id);
       if (resp?.success) {
-        showSwalAlert("Success", `Approved. Applied: ${resp.result?.applied}, Failed: ${resp.result?.failed}`, "success");
+        showSwalAlert("Success!", `Approved. Applied: ${resp.result?.applied}, Failed: ${resp.result?.failed}`, "success");
         setSelectedBatch(null);
         setDetails(null);
         load();
-      } else showSwalAlert("Error", resp?.error || "Approve failed", "error");
+      } else showSwalAlert("Error!", resp?.error || "Approve failed", "error");
     } catch {
-      showSwalAlert("Error", "Approve failed", "error");
+      showSwalAlert("Error!", "Approve failed", "error");
     } finally {
       setLoading(false);
     }
@@ -63,9 +63,9 @@ export default function BatchApprovals() {
         setSelectedBatch(null);
         setDetails(null);
         load();
-      } else showSwalAlert("Error", resp?.error || "Reject failed", "error");
+      } else showSwalAlert("Error!", resp?.error || "Reject failed", "error");
     } catch {
-      showSwalAlert("Error", "Reject failed", "error");
+      showSwalAlert("Error!", "Reject failed", "error");
     } finally {
       setLoading(false);
     }
