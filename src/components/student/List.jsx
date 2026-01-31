@@ -47,6 +47,7 @@ const List = () => {
   const [schId, setSchId] = useState('');
 
   const ExpandedComponent = ({ data }) => {
+    console.log("About : " + data.about)
     return (
       data?.about ?
         <div className='ml-14 p-2 bg-blue-50'>
