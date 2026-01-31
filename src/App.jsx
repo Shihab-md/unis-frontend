@@ -8,6 +8,7 @@ import RoleBaseRoutes from "./utils/RoleBaseRoutes";
 import AdminSummary from "./components/dashboard/AdminSummary";
 import Masters from "./components/dashboard/Masters";
 import ChangePassword from "./components/dashboard/ChangePassword";
+import ProfilePage from "./components/dashboard/ProfilePage";
 
 import SupervisorList from "./components/supervisor/List";
 import SupervisorAdd from "./components/supervisor/Add";
@@ -137,6 +138,7 @@ function App() {
           <Route path="/dashboard/districtStates/edit/:id" element={<DistrictStateEdit />}></Route>
 
           <Route path="/dashboard/masters" element={<Masters />}></Route>
+          <Route path="/dashboard/profile" element={<ProfilePage />}></Route>
           <Route path="/dashboard/changePassword" element={<ChangePassword />}></Route>
 
           <Route path="/dashboard/reports" element={<ReportsHome />}></Route>
