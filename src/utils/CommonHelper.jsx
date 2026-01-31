@@ -6,7 +6,7 @@ import {
 } from "react-icons/fa";
 import Swal from 'sweetalert2';
 
-const authorizedScreensFor_SA_HQ_Roles = [
+const authorizedScreensFor_SA_HQ_Role = [
   "supervisorsList", "supervisorAdd", "supervisorEdit", "supervisorView",
   "schoolsList", "schoolAdd", "schoolEdit", "schoolView",
   "employeesList", "employeeAdd", "employeeEdit", "employeeView",
@@ -18,6 +18,19 @@ const authorizedScreensFor_SA_HQ_Roles = [
   "templatesList", "templateAdd", "templateEdit", "templateView",
   "settings", "profile",
   "districtStateAdd", "districtStateEdit", "districtStateView", "districtStateList"
+];
+
+const authorizedScreensFor_GUEST_Role = [
+  "supervisorsList", "supervisorView",
+  "schoolsList", "schoolView",
+  "employeesList", "employeeView",
+  "studentsList", "studentView",
+  "institutesList", "instituteView",
+  "coursesList", "courseView",
+  "acYearsList", "acYearView",
+  "certificatesList", "certificateView",
+  "templatesList", "templateView",
+  "districtStateList", "districtStateView"
 ];
 
 const authorizedScreensFor_SUP_Role = [
@@ -55,6 +68,8 @@ export function checkAuth(screenName) {
 
   } else if (role === "parent") {
 
+  } else if (role === "guest" && authorizedScreensFor_GUEST_Role.includes(screenName)) {
+    return "OK";
   }
 
   return "NO";

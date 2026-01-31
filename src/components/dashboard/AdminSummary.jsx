@@ -24,7 +24,7 @@ const AdminSummary = () => {
 
   useEffect(() => {
 
-    if (user.role === "superadmin" || user.role === "hquser" || user.role === "supervisor") {
+    if (user.role === "superadmin" || user.role === "hquser" || user.role === "supervisor" || user.role === "guest") {
       removeLocalStorage();
     }
 
