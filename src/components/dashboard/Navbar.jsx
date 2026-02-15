@@ -22,7 +22,7 @@ const Navbar = () => {
             {String(user.role).charAt(0).toUpperCase() + String(user.role).slice(1)}
           </span>
           <span className="text-[5px] md:text-[12px] md:mt-1 mb-1 lg:text-sm font-bold text-teal-400">
-            {!(user.role === "superadmin" || user.role == "hquser") ? localStorage.getItem('schoolName') : "-"}
+            {!(user.role === "superadmin" || user.role == "hquser") ? localStorage.getItem('schoolName') : user.name}
           </span>
           </div>
         )}
