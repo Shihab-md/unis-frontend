@@ -6,7 +6,7 @@ import { showSwalAlert } from "../../utils/CommonHelper";
 export default function BulkPaymentCreate() {
 
   const schoolId = localStorage.getItem("schoolId");
-  const acYear = '68612e92eeebf699b9d34a21';//localStorage.getItem("acYearId");
+  const acYear = '680485d9361ed06368c57f7c';//2024-2025 //localStorage.getItem("acYearId");
 
   const [invoices, setInvoices] = useState([]);
   const [selected, setSelected] = useState({});
@@ -78,6 +78,7 @@ export default function BulkPaymentCreate() {
       else {
         showSwalAlert("Success!", `Batch created: ${resp.batchNo}`, "success");
         setSelected({});
+        window.location.reload();
       }
     } catch {
       showSwalAlert("Error!", "Failed to create batch", "error");
@@ -87,26 +88,25 @@ export default function BulkPaymentCreate() {
   };
 
   return (
-    <div className="p-4 max-w-4xl mx-auto">
-      <h2 className="text-xl font-bold mb-4">Bulk Fee Payment (Send to HQ)</h2>
+    <div className="p-4 max-w-6xl mx-auto">
+      <h2 className="text-md font-bold mb-4">Bulk Fee Payment (Send to HQ)</h2>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-4">
-        <select className="border p-2 rounded" value={mode} onChange={(e) => setMode(e.target.value)}>
+      <div className="grid grid-cols-1 md:grid-cols-12 gap-3 mb-4">
+        <select className="col-span-3 border p-2 rounded" value={mode} onChange={(e) => setMode(e.target.value)}>
           <option value="bank">Bank</option>
           <option value="cash">Cash</option>
           <option value="upi">UPI</option>
-          <option value="online">Online</option>
         </select>
-
+        <div className="col-span-1"></div>
         <input
-          className="border p-2 rounded"
-          placeholder="Reference No"
+          className="col-span-3 border p-2 rounded"
+          placeholder="Details"
           value={referenceNo}
           onChange={(e) => setReferenceNo(e.target.value)}
         />
-
-        <div className="border p-2 rounded">
-          <input
+        <div className="col-span-1"></div>
+        <div className="col-span-4 border p-2 rounded">
+          {/*<input
             type="file"
             accept=".jpg,.jpeg,.png,.pdf"
             onChange={async (e) => {
@@ -122,31 +122,34 @@ export default function BulkPaymentCreate() {
             }}
           />
           {proofUrl && <div className="text-xs text-green-700 mt-1">Proof: {proofUrl}</div>}
+          */}
         </div>
       </div>
 
       <div className="mb-3 font-semibold">Total: {total}</div>
 
       <div className="border rounded">
-        <div className="grid grid-cols-12 p-2 font-bold bg-gray-100">
-          <div className="col-span-1">Sel</div>
-          <div className="col-span-3">Invoice</div>
-          <div className="col-span-4">StudentId</div>
-          <div className="col-span-2">Balance</div>
-          <div className="col-span-2">Pay</div>
+        <div className="grid grid-cols-12 p-2 font-bold text-xs bg-gray-100">
+          <div className="grid col-span-1 place-items-center">#</div>
+          <div className="col-span-4">Student Name</div>
+          <div className="col-span-3">Course</div>
+          <div className="col-span-2">Fees Type</div>
+          <div className="col-span-1">Balance</div>
+          <div className="col-span-1">Pay</div>
         </div>
 
         {invoices.map((inv) => {
           const checked = selected[inv._id] !== undefined;
           return (
-            <div key={inv._id} className="grid grid-cols-12 p-2 border-t items-center">
-              <div className="col-span-1">
+            <div key={inv._id} className="grid grid-cols-12 p-2 border-t text-xs items-center">
+              <div className="grid col-span-1 place-items-center">
                 <input type="checkbox" checked={checked} onChange={() => toggle(inv)} />
               </div>
-              <div className="col-span-3">{inv.invoiceNo}</div>
-              <div className="col-span-4">{String(inv.studentId)}</div>
-              <div className="col-span-2">{inv.balance}</div>
-              <div className="col-span-2">
+              <div className="col-span-4">{String(inv.userId.name)}</div>
+              <div className="col-span-3">{String(inv.courseId.name)}</div>
+              <div className="col-span-2">{String(inv.source)}</div>
+              <div className="col-span-1">{inv.balance}</div>
+              <div className="col-span-1">
                 <input
                   disabled={!checked}
                   type="number"

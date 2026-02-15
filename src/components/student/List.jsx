@@ -530,12 +530,83 @@ const List = () => {
     return selectedStudentIds || [];
   };
 
+  const openStudentPickerForRemove = async (students = []) => {
+    const members = students;//buildUnpaidMembersFromStudents(students);
+
+    if (members.length === 0) {
+      await Swal.fire({
+        title: "No students to remove",
+        //text: "All students already paid the fees (or no students found).",
+        icon: "info",
+        background: "url(/bg_card.png)",
+      });
+      return [];
+    }
+
+    const optionsHtml = members
+      .map((m) => `<option value="${m._id}">${m.name}</option>`)
+      .join("");
+
+    const { value: selectedStudentIds } = await Swal.fire({
+      title: "Select Students (Unpaid)",
+      html: `
+      <select id="studentSelect" multiple size="10"
+        style="width:100%; padding:8px; border:1px solid #ccc; border-radius:6px;">
+        ${optionsHtml}
+      </select>
+      <div style="margin-top:8px; font-size:12px; color:#666;">
+        Hold Ctrl to select multiple students.
+      </div>
+    `,
+      showCancelButton: true,
+      confirmButtonText: "Remove Students",
+      focusConfirm: false,
+      background: "url(/bg_card.png)",
+      preConfirm: () => {
+        const el = document.getElementById("studentSelect");
+        if (!el) return [];
+
+        const ids = Array.from(el.selectedOptions).map((o) => o.value);
+        if (ids.length === 0) {
+          Swal.showValidationMessage("Please select at least one student.");
+          return;
+        }
+        return ids; // ✅ array of studentIds
+      },
+    });
+
+    return selectedStudentIds || [];
+  };
+
   // ✅ 3) Call API with payload key: studentIds
   const postSelectedStudents = async (selectedStudentIds = []) => {
     const base = await getBaseUrl();
     const token = localStorage.getItem("token");
 
     const resp = await fetch(`${base}student/markFeesPaid`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      body: JSON.stringify({ studentIds: selectedStudentIds }), // ✅ key = studentIds
+    });
+
+    const data = await resp.json().catch(() => ({}));
+
+    if (!resp.ok || data?.success === false) {
+      throw new Error(data?.error || "API request failed");
+    }
+
+    return data;
+  };
+
+  const removeSelectedStudents = async (selectedStudentIds = []) => {
+    const base = await getBaseUrl();
+    const token = localStorage.getItem("token");
+
+    const resp = await fetch(`${base}student/removeStudents`, {
       method: "POST",
       headers: {
         Authorization: `Bearer ${token}`,
@@ -584,6 +655,51 @@ const List = () => {
       await Swal.fire({
         title: "Success!",
         text: result?.message || "Fees marked as paid to selected students.",
+        icon: "success",
+        background: "url(/bg_card.png)",
+      });
+
+      window.location.reload();
+      return result;
+    } catch (err) {
+      Swal.fire({
+        title: "Error!",
+        text: err?.message || String(err),
+        icon: "error",
+        background: "url(/bg_card.png)",
+      });
+    }
+  };
+
+  const handleRemoveStudents = async () => {
+    try {
+      if (!Array.isArray(students) || students.length === 0) {
+        await Swal.fire({
+          title: "No Students Found",
+          text: "No students found in the list.",
+          icon: "info",
+          background: "url(/bg_card.png)",
+        });
+        return;
+      }
+
+      const selectedStudentIds = await openStudentPickerForRemove(students);
+      if (!selectedStudentIds.length) return; // cancelled
+
+      Swal.fire({
+        title: "Updating...",
+        html: "Please wait…",
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+        didOpen: () => Swal.showLoading(),
+        background: "url(/bg_card.png)",
+      });
+
+      const result = await removeSelectedStudents(selectedStudentIds);
+
+      await Swal.fire({
+        title: "Success!",
+        text: result?.message || "Selected students are removed.",
         icon: "success",
         background: "url(/bg_card.png)",
       });
@@ -846,8 +962,11 @@ const List = () => {
 
         {LinkIcon("/dashboard/add-student", "Add")}
 
+        {/*{user.role === "superadmin" || user.role === "hquser" ?
+          <div className="hidden lg:block" onClick={handleFeesPaid}>{LinkIcon("#", "FeesPaid")}</div> : null}*/}
+
         {user.role === "superadmin" || user.role === "hquser" ?
-          <div className="hidden lg:block" onClick={handleFeesPaid}>{LinkIcon("#", "FeesPaid")}</div> : null}
+          <div className="hidden lg:block" onClick={handleRemoveStudents}>{LinkIcon("#", "RemoveStudents")}</div> : null}
 
         {user.role === "superadmin" || user.role === "hquser" ?
           <div className="hidden lg:block" onClick={handleImport}>{LinkIcon("#", "Import")}</div> : null}

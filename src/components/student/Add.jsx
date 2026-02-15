@@ -869,7 +869,7 @@ const Add = () => {
               {/* Reference Number-1 */}
               <div>
                 <label className="block text-sm font-medium text-slate-500">
-                  Reference Number <span className="text-red-700">*</span>
+                  Reference Number
                 </label>
                 <input
                   type="text"
@@ -877,7 +877,7 @@ const Add = () => {
                   onChange={handleChange}
                   //    placeholder="Qualification"
                   className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                  required
+                  //required
                 />
               </div>
 

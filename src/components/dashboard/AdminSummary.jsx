@@ -184,7 +184,7 @@ const AdminSummary = () => {
           <SummaryCard
             icon={<FaCogs />}
             text="Profile"
-            number="***"
+            number="*"
             color="bg-lime-700"
           />
         </Link>

@@ -6,11 +6,10 @@ const authHeaders = () => ({
 });
 
 export const fetchDueInvoices = async ({ schoolId, acYear }) => {
-  const base = (await getBaseUrl()).toString();
-  console.log(base, schoolId, acYear)
+  const url = (await getBaseUrl()).toString() + "fees/invoices/" + schoolId.toString() + "/" + acYear.toString();
+  console.log(url)
 
-  const res = await axios.get(
-    (await getBaseUrl()).toString() + "fees/invoices/" + schoolId.toString() + "/" + acYear.toString(),
+  const res = await axios.get(url,
     {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
