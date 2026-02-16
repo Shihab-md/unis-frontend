@@ -1,12 +1,11 @@
-import React, { useEffect, useMemo, useState } from "react";
-import { fetchDueInvoices, createPaymentBatch } from "../../api/feesApi.js"
+import React, { useEffect, useMemo, useRef, useState } from "react";
+import { fetchDueInvoices, createPaymentBatch } from "../../api/feesApi.js";
 import { uploadProofFile } from "../../api/uploadApi.js";
 import { showSwalAlert } from "../../utils/CommonHelper";
 
 export default function BulkPaymentCreate() {
-
   const schoolId = localStorage.getItem("schoolId");
-  const acYear = '680485d9361ed06368c57f7c';//2024-2025 //localStorage.getItem("acYearId");
+  const acYear = "680485d9361ed06368c57f7c"; //2024-2025 //localStorage.getItem("acYearId");
 
   const [invoices, setInvoices] = useState([]);
   const [selected, setSelected] = useState({});
@@ -15,13 +14,16 @@ export default function BulkPaymentCreate() {
   const [proofUrl, setProofUrl] = useState("");
   const [loading, setLoading] = useState(false);
 
+  // ✅ Select-all checkbox ref (for indeterminate UI)
+  const selectAllRef = useRef(null);
+
   useEffect(() => {
     let alive = true;
     const run = async () => {
       try {
-        console.log("School Id : " + schoolId + ", AC Year : " + acYear)
+        console.log("School Id : " + schoolId + ", AC Year : " + acYear);
         const data = await fetchDueInvoices({ schoolId, acYear });
-        console.log(data)
+        console.log(data);
         if (!alive) return;
         setInvoices(Array.isArray(data) ? data : []);
       } catch {
@@ -34,7 +36,32 @@ export default function BulkPaymentCreate() {
     return () => (alive = false);
   }, [schoolId, acYear]);
 
-  const total = useMemo(() => Object.values(selected).reduce((s, v) => s + Number(v || 0), 0), [selected]);
+  const total = useMemo(
+    () => Object.values(selected).reduce((s, v) => s + Number(v || 0), 0),
+    [selected]
+  );
+
+  // ✅ Total invoice count (only those displayed)
+  const invoiceCount = invoices.length;
+
+  // ✅ Selected count only for currently loaded invoices
+  const selectedCount = useMemo(() => {
+    if (!invoiceCount) return 0;
+    const selectedIds = new Set(Object.keys(selected));
+    return invoices.reduce((cnt, inv) => (selectedIds.has(String(inv._id)) ? cnt + 1 : cnt), 0);
+  }, [invoices, selected, invoiceCount]);
+
+  // ✅ Select-all states
+  const allChecked = invoiceCount > 0 && selectedCount === invoiceCount;
+  const noneChecked = selectedCount === 0;
+  const isIndeterminate = invoiceCount > 0 && !allChecked && !noneChecked;
+
+  // ✅ Apply indeterminate state to DOM checkbox
+  useEffect(() => {
+    if (selectAllRef.current) {
+      selectAllRef.current.indeterminate = isIndeterminate;
+    }
+  }, [isIndeterminate]);
 
   const toggle = (inv) => {
     setSelected((prev) => {
@@ -42,6 +69,23 @@ export default function BulkPaymentCreate() {
       if (copy[inv._id] !== undefined) delete copy[inv._id];
       else copy[inv._id] = Number(inv.balance || 0);
       return copy;
+    });
+  };
+
+  // ✅ Select All toggle
+  const toggleSelectAll = () => {
+    if (!invoices.length) return;
+
+    setSelected((prev) => {
+      // If already all selected -> clear all
+      if (allChecked) return {};
+
+      // Else select all invoices with full balance
+      const next = { ...prev };
+      for (const inv of invoices) {
+        next[String(inv._id)] = Number(inv.balance || 0);
+      }
+      return next;
     });
   };
 
@@ -56,7 +100,7 @@ export default function BulkPaymentCreate() {
   const submit = async () => {
     const items = Object.keys(selected)
       .map((invoiceId) => {
-        const inv = invoices.find((x) => x._id === invoiceId);
+        const inv = invoices.find((x) => String(x._id) === String(invoiceId));
         return {
           invoiceId,
           studentId: inv?.studentId,
@@ -92,21 +136,30 @@ export default function BulkPaymentCreate() {
       <h2 className="text-md font-bold mb-4">Bulk Fee Payment (Send to HQ)</h2>
 
       <div className="grid grid-cols-1 md:grid-cols-12 gap-3 mb-4">
-        <select className="col-span-3 border p-2 rounded" value={mode} onChange={(e) => setMode(e.target.value)}>
+        <select
+          className="col-span-3 border p-2 rounded"
+          value={mode}
+          onChange={(e) => setMode(e.target.value)}
+        >
           <option value="bank">Bank</option>
           <option value="cash">Cash</option>
           <option value="upi">UPI</option>
         </select>
+
         <div className="col-span-1"></div>
+
         <input
           className="col-span-3 border p-2 rounded"
           placeholder="Details"
           value={referenceNo}
           onChange={(e) => setReferenceNo(e.target.value)}
         />
+
         <div className="col-span-1"></div>
+
         <div className="col-span-4 border p-2 rounded">
-          {/*<input
+          {/*
+          <input
             type="file"
             accept=".jpg,.jpeg,.png,.pdf"
             onChange={async (e) => {
@@ -126,11 +179,26 @@ export default function BulkPaymentCreate() {
         </div>
       </div>
 
-      <div className="mb-3 font-semibold">Total: {total}</div>
+      <div className="mb-3 font-semibold">
+        Total: {total}{" "}
+        <span className="text-xs font-normal text-gray-500">
+          (Selected {selectedCount}/{invoiceCount})
+        </span>
+      </div>
 
       <div className="border rounded">
         <div className="grid grid-cols-12 p-2 font-bold text-xs bg-gray-100">
-          <div className="grid col-span-1 place-items-center">#</div>
+          {/* ✅ Select All checkbox in header */}
+          <div className="grid col-span-1 place-items-center">
+            <input
+              ref={selectAllRef}
+              type="checkbox"
+              checked={allChecked}
+              onChange={toggleSelectAll}
+              disabled={!invoices.length}
+              title="Select all"
+            />
+          </div>
           <div className="col-span-4">Student Name</div>
           <div className="col-span-3">Course</div>
           <div className="col-span-2">Fees Type</div>
@@ -145,9 +213,9 @@ export default function BulkPaymentCreate() {
               <div className="grid col-span-1 place-items-center">
                 <input type="checkbox" checked={checked} onChange={() => toggle(inv)} />
               </div>
-              <div className="col-span-4">{String(inv.userId.name)}</div>
-              <div className="col-span-3">{String(inv.courseId.name)}</div>
-              <div className="col-span-2">{String(inv.source)}</div>
+              <div className="col-span-4">{String(inv.userId?.name || "-")}</div>
+              <div className="col-span-3">{String(inv.courseId?.name || "-")}</div>
+              <div className="col-span-2">{String(inv.source || "-")}</div>
               <div className="col-span-1">{inv.balance}</div>
               <div className="col-span-1">
                 <input
