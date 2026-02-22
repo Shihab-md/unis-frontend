@@ -14,7 +14,8 @@ export default function PaymentBatchesList() {
   const [schools, setSchools] = useState([]);
 
   const [acYear, setAcYear] = useState("");
-  const [schoolId, setSchoolId] = useState(isHQ ? "" : fixedSchoolId);
+  // ✅ HQ default = ALL schools
+  const [schoolId, setSchoolId] = useState(isHQ ? "ALL" : fixedSchoolId);
   const [status, setStatus] = useState("ALL");
 
   const [loading, setLoading] = useState(false);
@@ -58,7 +59,9 @@ export default function PaymentBatchesList() {
   const runSearch = async () => {
     const missing = [];
     if (!acYear) missing.push("Academic Year");
-    if (!schoolId) missing.push("Niswan");
+    // ✅ admin must have schoolId, HQ can be ALL
+    if (!schoolId && !isHQ) missing.push("Niswan");
+
     if (missing.length) {
       showSwalAlert("Info", `Please select: ${missing.join(", ")}`, "info");
       return;
@@ -84,17 +87,41 @@ export default function PaymentBatchesList() {
 
   // auto load when year + school ready
   useEffect(() => {
-    if (acYear && schoolId) runSearch();
+    if (acYear && (isHQ ? true : !!schoolId)) runSearch();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [acYear, schoolId, status]);
 
   const statusBadge = (s) => {
-    const base = "px-3 py-1 rounded-full text-[10px] font-extrabold tracking-wide";
-    if (s === "PENDING_APPROVAL") return <span className={`${base} bg-gradient-to-r from-yellow-200 to-amber-200 text-amber-900 border border-amber-300`}>PENDING</span>;
-    if (s === "APPROVED") return <span className={`${base} bg-gradient-to-r from-green-200 to-emerald-200 text-emerald-900 border border-emerald-300`}>APPROVED</span>;
-    if (s === "REJECTED") return <span className={`${base} bg-gradient-to-r from-rose-200 to-red-200 text-red-900 border border-red-300`}>REJECTED</span>;
-    if (s === "CANCELLED") return <span className={`${base} bg-gradient-to-r from-slate-200 to-gray-200 text-slate-800 border border-slate-300`}>CANCELLED</span>;
-    return <span className={`${base} bg-gradient-to-r from-slate-100 to-slate-200 text-slate-800 border border-slate-300`}>{s || "-"}</span>;
+    const base = "px-3 py-1 rounded-full text-[10px] font-bold tracking-wide";
+    if (s === "PENDING_APPROVAL")
+      return (
+        <span className={`${base} bg-gradient-to-r from-yellow-200 to-amber-200 text-amber-900 border border-amber-300`}>
+          PENDING
+        </span>
+      );
+    if (s === "APPROVED")
+      return (
+        <span className={`${base} bg-gradient-to-r from-green-200 to-emerald-200 text-emerald-900 border border-emerald-300`}>
+          APPROVED
+        </span>
+      );
+    if (s === "REJECTED")
+      return (
+        <span className={`${base} bg-gradient-to-r from-rose-200 to-red-200 text-red-900 border border-red-300`}>
+          REJECTED
+        </span>
+      );
+    if (s === "CANCELLED")
+      return (
+        <span className={`${base} bg-gradient-to-r from-slate-200 to-gray-200 text-slate-800 border border-slate-300`}>
+          CANCELLED
+        </span>
+      );
+    return (
+      <span className={`${base} bg-gradient-to-r from-slate-100 to-slate-200 text-slate-800 border border-slate-300`}>
+        {s || "-"}
+      </span>
+    );
   };
 
   // ✅ Summary cards
@@ -130,29 +157,33 @@ export default function PaymentBatchesList() {
     };
 
     const rows = [];
-    rows.push([
-      "BatchNo",
-      "ReceiptNumber",
-      "BatchStatus",
-      "PaidDate",
-      "Mode",
-      "ReferenceNo",
-      "SchoolCode",
-      "SchoolName",
-      "District",
-      "State",
-      "TotalAmount",
-      "ItemCount",
-      "StudentName",
-      "RollNumber",
-      "CourseName",
-      "CourseType",
-      "InvoiceNo",
-      "InvoiceSource",
-      "ItemAmount",
-      "ItemStatus",
-      "ItemError",
-    ].map(esc).join(","));
+    rows.push(
+      [
+        "BatchNo",
+        "ReceiptNumber",
+        "BatchStatus",
+        "PaidDate",
+        "Mode",
+        "ReferenceNo",
+        "SchoolCode",
+        "SchoolName",
+        "District",
+        "State",
+        "TotalAmount",
+        "ItemCount",
+        "StudentName",
+        "RollNumber",
+        "CourseName",
+        "CourseType",
+        "InvoiceNo",
+        "InvoiceSource",
+        "ItemAmount",
+        "ItemStatus",
+        "ItemError",
+      ]
+        .map(esc)
+        .join(",")
+    );
 
     for (const b of batches) {
       const school = b?.schoolId || {};
@@ -174,21 +205,33 @@ export default function PaymentBatchesList() {
 
       const items = Array.isArray(b?.items) ? b.items : [];
       if (items.length === 0) {
-        rows.push([
-          batchBase.batchNo,
-          batchBase.receiptNumber,
-          batchBase.batchStatus,
-          batchBase.paidDate,
-          batchBase.mode,
-          batchBase.referenceNo,
-          batchBase.schoolCode,
-          batchBase.schoolName,
-          batchBase.district,
-          batchBase.state,
-          batchBase.totalAmount,
-          batchBase.itemCount,
-          "", "", "", "", "", "", "", "", "",
-        ].map(esc).join(","));
+        rows.push(
+          [
+            batchBase.batchNo,
+            batchBase.receiptNumber,
+            batchBase.batchStatus,
+            batchBase.paidDate,
+            batchBase.mode,
+            batchBase.referenceNo,
+            batchBase.schoolCode,
+            batchBase.schoolName,
+            batchBase.district,
+            batchBase.state,
+            batchBase.totalAmount,
+            batchBase.itemCount,
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+          ]
+            .map(esc)
+            .join(",")
+        );
         continue;
       }
 
@@ -198,29 +241,33 @@ export default function PaymentBatchesList() {
         const inv = it?.invoiceId || {};
         const c = inv?.courseId || {};
 
-        rows.push([
-          batchBase.batchNo,
-          batchBase.receiptNumber,
-          batchBase.batchStatus,
-          batchBase.paidDate,
-          batchBase.mode,
-          batchBase.referenceNo,
-          batchBase.schoolCode,
-          batchBase.schoolName,
-          batchBase.district,
-          batchBase.state,
-          batchBase.totalAmount,
-          batchBase.itemCount,
-          u?.name || "",
-          stu?.rollNumber || "",
-          c?.name || "",
-          c?.type || "",
-          inv?.invoiceNo || "",
-          inv?.source || "",
-          it?.amount ?? "",
-          it?.status || "",
-          it?.error || "",
-        ].map(esc).join(","));
+        rows.push(
+          [
+            batchBase.batchNo,
+            batchBase.receiptNumber,
+            batchBase.batchStatus,
+            batchBase.paidDate,
+            batchBase.mode,
+            batchBase.referenceNo,
+            batchBase.schoolCode,
+            batchBase.schoolName,
+            batchBase.district,
+            batchBase.state,
+            batchBase.totalAmount,
+            batchBase.itemCount,
+            u?.name || "",
+            stu?.rollNumber || "",
+            c?.name || "",
+            c?.type || "",
+            inv?.invoiceNo || "",
+            inv?.source || "",
+            it?.amount ?? "",
+            it?.status || "",
+            it?.error || "",
+          ]
+            .map(esc)
+            .join(",")
+        );
       }
     }
 
@@ -244,15 +291,12 @@ export default function PaymentBatchesList() {
     <div className="p-4 max-w-7xl mx-auto">
       {/* Header */}
       <div className="flex items-center justify-between gap-3">
-        {/*<div className="flex items-center justify-between gap-3 mb-3 rounded-2xl border bg-white/70 backdrop-blur p-3 shadow-sm">*/}
         <div className="flex items-center gap-3 mb-5">
           <div>{LinkIcon("/dashboard/accountsPage", "Back")}</div>
 
           <div className="flex flex-col leading-tight">
             <h2 className="text-lg font-bold">Sent to HQ (Batches)</h2>
-            <div className="text-xs text-gray-600 mt-1">
-              View payments submitted to HQ with filters.
-            </div>
+            <div className="text-xs text-gray-600 mt-1">View payments submitted to HQ with filters.</div>
           </div>
         </div>
 
@@ -270,7 +314,11 @@ export default function PaymentBatchesList() {
       <div className="grid grid-cols-1 md:grid-cols-12 gap-3 mb-4">
         <div className="md:col-span-3">
           <label className="block text-xs font-semibold text-slate-700 mb-1">Academic Year</label>
-          <select className="w-full border p-2 text-sm rounded" value={acYear} onChange={(e) => setAcYear(e.target.value)}>
+          <select
+            className="w-full border p-2 text-sm rounded"
+            value={acYear}
+            onChange={(e) => setAcYear(e.target.value)}
+          >
             <option value="">Select Academic Year</option>
             {academicYears.map((a) => (
               <option key={a._id} value={a._id}>
@@ -283,8 +331,12 @@ export default function PaymentBatchesList() {
         {isHQ ? (
           <div className="md:col-span-5">
             <label className="block text-xs font-semibold text-slate-700 mb-1">Niswan</label>
-            <select className="w-full border p-2 text-sm rounded" value={schoolId} onChange={(e) => setSchoolId(e.target.value)}>
-              <option value="">Select Niswan</option>
+            <select
+              className="w-full border p-2 text-sm rounded"
+              value={schoolId}
+              onChange={(e) => setSchoolId(e.target.value)}
+            >
+              <option value="ALL">All Schools</option>
               {schoolOptions.map((s) => (
                 <option key={s._id} value={s._id}>
                   {s.code} : {s.nameEnglish}
@@ -305,7 +357,11 @@ export default function PaymentBatchesList() {
 
         <div className="md:col-span-2">
           <label className="block text-xs font-semibold text-slate-700 mb-1">Status</label>
-          <select className="w-full border p-2 text-sm rounded" value={status} onChange={(e) => setStatus(e.target.value)}>
+          <select
+            className="w-full border p-2 text-sm rounded"
+            value={status}
+            onChange={(e) => setStatus(e.target.value)}
+          >
             <option value="ALL">ALL</option>
             <option value="PENDING_APPROVAL">PENDING_APPROVAL</option>
             <option value="APPROVED">APPROVED</option>
@@ -327,34 +383,40 @@ export default function PaymentBatchesList() {
 
       {/* Summary cards */}
       <div className="grid grid-cols-2 md:grid-cols-6 gap-3 mb-4">
-        <div className="rounded-md border bg-gradient-to-br from-indigo-400 to-sky-500 p-3 text-white shadow-lg hover:shadow-2xl">
-          <div className="text-[11px] font-semibold text-slate-900/80">Total Batches</div>
-          <div className="text-lg font-bold text-slate-900/80">{summary.total}</div>
+        <div className="relative overflow-hidden rounded-xl border border-white/20 bg-gradient-to-br from-indigo-500 to-sky-500 p-4 text-white shadow-lg hover:shadow-2xl transition">
+          <div className="pointer-events-none absolute -right-10 -top-10 h-28 w-28 rounded-full bg-white/25 blur-2xl" />
+          <div className="text-[11px] font-semibold text-white/90">Total Batches</div>
+          <div className="mt-1 text-lg font-bold text-white drop-shadow">{summary.total}</div>
         </div>
 
-        <div className="rounded-md border bg-gradient-to-br from-amber-400 to-yellow-300 p-3 text-slate-900 shadow-lg hover:shadow-2xl">
+        <div className="relative overflow-hidden rounded-xl border border-amber-200 bg-gradient-to-br from-amber-300 to-yellow-200 p-4 text-slate-900 shadow-lg hover:shadow-2xl transition">
+          <div className="pointer-events-none absolute -right-10 -top-10 h-28 w-28 rounded-full bg-white/35 blur-2xl" />
           <div className="text-[11px] font-semibold text-slate-900/80">Pending</div>
-          <div className="text-lg font-bold text-slate-900/80">{summary.pending}</div>
+          <div className="mt-1 text-lg font-bold text-slate-900 drop-shadow">{summary.pending}</div>
         </div>
 
-        <div className="rounded-md border bg-gradient-to-br from-emerald-400 to-teal-500 p-3 text-white shadow-lg hover:shadow-2xl">
-          <div className="text-[11px] font-semibold text-slate-900/80">Approved</div>
-          <div className="text-lg font-bold text-slate-900/80">{summary.approved}</div>
+        <div className="relative overflow-hidden rounded-xl border border-white/20 bg-gradient-to-br from-emerald-500 to-teal-500 p-4 text-white shadow-lg hover:shadow-2xl transition">
+          <div className="pointer-events-none absolute -right-10 -top-10 h-28 w-28 rounded-full bg-white/25 blur-2xl" />
+          <div className="text-[11px] font-semibold text-white/90">Approved</div>
+          <div className="mt-1 text-lg font-bold text-white drop-shadow">{summary.approved}</div>
         </div>
 
-        <div className="rounded-md border bg-gradient-to-br from-rose-400 to-red-500 p-3 text-white shadow-lg hover:shadow-2xl">
-          <div className="text-[11px] font-semibold text-slate-900/80">Rejected</div>
-          <div className="text-lg font-bold text-slate-900/80">{summary.rejected}</div>
+        <div className="relative overflow-hidden rounded-xl border border-white/20 bg-gradient-to-br from-rose-500 to-red-500 p-4 text-white shadow-lg hover:shadow-2xl transition">
+          <div className="pointer-events-none absolute -right-10 -top-10 h-28 w-28 rounded-full bg-white/25 blur-2xl" />
+          <div className="text-[11px] font-semibold text-white/90">Rejected</div>
+          <div className="mt-1 text-lg font-bold text-white drop-shadow">{summary.rejected}</div>
         </div>
 
-        <div className="rounded-md border bg-gradient-to-br from-slate-400 to-gray-500 p-3 text-white shadow-lg hover:shadow-2xl">
-          <div className="text-[11px] font-semibold text-slate-900/80">Cancelled</div>
-          <div className="text-lg font-bold text-slate-900/80">{summary.cancelled}</div>
+        <div className="relative overflow-hidden rounded-xl border border-white/20 bg-gradient-to-br from-slate-500 to-gray-500 p-4 text-white shadow-lg hover:shadow-2xl transition">
+          <div className="pointer-events-none absolute -right-10 -top-10 h-28 w-28 rounded-full bg-white/25 blur-2xl" />
+          <div className="text-[11px] font-semibold text-white/90">Cancelled</div>
+          <div className="mt-1 text-lg font-bold text-white drop-shadow">{summary.cancelled}</div>
         </div>
 
-        <div className="rounded-md border bg-gradient-to-br from-violet-400 to-fuchsia-500 p-3 text-white shadow-lg hover:shadow-2xl">
-          <div className="text-[11px] font-semibold text-slate-900/80">Total Amount</div>
-          <div className="text-lg font-bold text-slate-900/80">{summary.totalAmount}</div>
+        <div className="relative overflow-hidden rounded-xl border border-white/20 bg-gradient-to-br from-violet-500 to-fuchsia-500 p-4 text-white shadow-lg hover:shadow-2xl transition">
+          <div className="pointer-events-none absolute -right-10 -top-10 h-28 w-28 rounded-full bg-white/25 blur-2xl" />
+          <div className="text-[11px] font-semibold text-white/90">Total Amount</div>
+          <div className="mt-1 text-lg font-bold text-white drop-shadow">{summary.totalAmount}</div>
         </div>
       </div>
 
@@ -379,7 +441,9 @@ export default function PaymentBatchesList() {
               >
                 <div className="col-span-3 font-bold text-slate-800">
                   {b.batchNo}{" "}
-                  {b.receiptNumber ? <span className="text-[10px] text-green-700">({b.receiptNumber})</span> : null}
+                  {b.receiptNumber ? (
+                    <span className="text-[10px] text-green-700">({b.receiptNumber})</span>
+                  ) : null}
                 </div>
                 <div className="col-span-2">{b.paidDate ? new Date(b.paidDate).toLocaleDateString() : "-"}</div>
                 <div className="col-span-2 font-semibold">{b.totalAmount}</div>
@@ -423,7 +487,9 @@ export default function PaymentBatchesList() {
                       </div>
                     ))}
 
-                    {(!b.items || b.items.length === 0) && <div className="p-3 text-xs text-gray-600">No items</div>}
+                    {(!b.items || b.items.length === 0) && (
+                      <div className="p-3 text-xs text-gray-600">No items</div>
+                    )}
                   </div>
                 </div>
               )}
