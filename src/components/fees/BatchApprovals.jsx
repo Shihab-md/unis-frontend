@@ -1,17 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { fetchPendingBatches, fetchBatchDetails, approveBatch, rejectBatch } from "../../api/feesApi.js";
-import { showSwalAlert } from "../../utils/CommonHelper";
+import { showSwalAlert, LinkIcon, getPrcessing } from "../../utils/CommonHelper";
 
 export default function BatchApprovals() {
   const [batches, setBatches] = useState([]);
   const [selectedBatch, setSelectedBatch] = useState(null);
   const [details, setDetails] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const [processing, setProcessing] = useState(false);
+  const [batchLoading, setBatchLoading] = useState(false);
 
   const load = async () => {
     try {
+      setProcessing(true);
       const data = await fetchPendingBatches({});
       setBatches(Array.isArray(data) ? data : []);
+      setProcessing(false);
     } catch {
       setBatches([]);
     }
@@ -25,8 +28,10 @@ export default function BatchApprovals() {
     setSelectedBatch(b);
     setDetails(null);
     try {
+      setProcessing(true);
       const d = await fetchBatchDetails(b._id);
       setDetails(d);
+      setProcessing(false);
     } catch {
       showSwalAlert("Error!", "Failed to load batch details", "error");
     }
@@ -34,19 +39,21 @@ export default function BatchApprovals() {
 
   const doApprove = async () => {
     if (!selectedBatch) return;
-    setLoading(true);
+    setProcessing(true);
     try {
       const resp = await approveBatch(selectedBatch._id);
       if (resp?.success) {
+        setProcessing(false);
         showSwalAlert("Success!", `Approved. Applied: ${resp.result?.applied}, Failed: ${resp.result?.failed}`, "success");
         setSelectedBatch(null);
         setDetails(null);
         load();
       } else showSwalAlert("Error!", resp?.error || "Approve failed", "error");
     } catch {
+      setProcessing(false);
       showSwalAlert("Error!", "Approve failed", "error");
     } finally {
-      setLoading(false);
+
     }
   };
 
@@ -55,25 +62,32 @@ export default function BatchApprovals() {
     const reason = prompt("Reject reason?");
     if (!reason) return;
 
-    setLoading(true);
+    setProcessing(true);
     try {
       const resp = await rejectBatch(selectedBatch._id, reason);
       if (resp?.success) {
+        setProcessing(false);
         showSwalAlert("Rejected", "Batch rejected", "info");
         setSelectedBatch(null);
         setDetails(null);
         load();
       } else showSwalAlert("Error!", resp?.error || "Reject failed", "error");
     } catch {
+      setProcessing(false);
       showSwalAlert("Error!", "Reject failed", "error");
     } finally {
-      setLoading(false);
+      setProcessing(false);
     }
   };
 
+  if (processing) return getPrcessing();
+
   return (
     <div className="p-4 max-w-6xl mx-auto">
-      <h2 className="text-md font-bold mb-4">HQ Payment Batch Approvals</h2>
+      <div className="flex items-center gap-3 mb-5">
+        <div>{LinkIcon("/dashboard/accountsPage", "Back")}</div>
+        <h3 className="pl-2 text-lg font-semibold text-left">HQ Payment Batch Approvals</h3>
+      </div>
 
       <div className="grid grid-cols-1 text-xs md:grid-cols-4 gap-4">
         <div className="border rounded">
@@ -133,7 +147,7 @@ export default function BatchApprovals() {
                     );
                   })}
                 </div>
-              )}
+              )} 
 
               {Array.isArray(details?.items) && details.items.length === 0 && (
                 <div className="mt-3 text-xs text-gray-600">No items found for this batch.</div>
@@ -141,14 +155,14 @@ export default function BatchApprovals() {
 
               <div className="mt-4 flex gap-2">
                 <button
-                  disabled={loading}
+                  disabled={processing}
                   onClick={doApprove}
                   className="flex-1 bg-green-600 text-white p-2 rounded hover:bg-green-700 disabled:opacity-60"
                 >
-                  {loading ? "Working..." : "Approve"}
+                  {processing ? "Working..." : "Approve"}
                 </button>
                 <button
-                  disabled={loading}
+                  disabled={processing}
                   onClick={doReject}
                   className="flex-1 bg-red-600 text-white p-2 rounded hover:bg-red-700 disabled:opacity-60"
                 >

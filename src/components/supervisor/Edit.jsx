@@ -84,7 +84,7 @@ const Edit = () => {
             salary: supervisor.salary,
             jobType: supervisor.jobType,
             remarks: supervisor.remarks,
-            active: supervisor.active
+            active: supervisor.active 
           }));
         }
       } catch (error) {

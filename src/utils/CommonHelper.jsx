@@ -2,7 +2,7 @@
 import { Link } from 'react-router-dom';
 import { useEffect, useRef, useCallback } from "react";
 import {
-  FaPlusSquare, FaArrowAltCircleLeft, FaRegCaretSquareDown, FaFilter, FaTrashAlt, FaSearch, FaTasks, FaCheck
+  FaPlusSquare, FaArrowAltCircleLeft, FaRegCaretSquareDown, FaUserCheck, FaTrashAlt, FaSearch, FaTasks, FaCheck
 } from "react-icons/fa";
 import Swal from 'sweetalert2';
 
@@ -289,9 +289,13 @@ export function LinkIcon(toPage, purpose) {
     return <Link to={toPage} >
       <FaCheck className="text-3xl lg:text-4xl bg-white text-yellow-700 border-2 border-yellow-700 rounded shadow-lg p-1 lg:p-1.5" /> </Link>
 
-} else if (purpose === "RemoveStudents") {
+  } else if (purpose === "RemoveStudents") {
     return <Link to={toPage} >
       <FaTrashAlt className="text-3xl lg:text-4xl bg-white text-red-500 border-2 border-red-500 rounded shadow-lg p-1 lg:p-1.5" /> </Link>
+
+  } else if (purpose === "Promote") {
+    return <Link to={toPage} >
+      <FaUserCheck className="text-3xl lg:text-4xl bg-white text-purple-500 border-2 border-purple-500 rounded shadow-lg p-1 lg:p-1.5" /> </Link>
 
   } else if (purpose === "Search") {
     return <Link to={toPage} >

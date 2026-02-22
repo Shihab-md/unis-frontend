@@ -12,19 +12,25 @@ export const columns = [
   {
     name: "S No",
     selector: (row) => row.sno,
-    width: "60px",
+    width: "70px",
   },
   {
     name: "Academic year",
     selector: (row) => row.acYear,
     sortable: true,
-    width: "190px",
+    width: "160px",
   },
   {
     name: "Description",
     selector: (row) => row.desc,
     sortable: true,
-    width: "250px",
+    width: "210px",
+  },
+  {
+    name: "Status",
+    selector: (row) => row.active,
+    //  sortable: true,
+    width: "130px",
   },
   {
     name: "New Admissions #",

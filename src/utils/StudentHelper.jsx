@@ -73,11 +73,11 @@ export const columnsSelectForAcademic = [
 ];
 
 export const columns = [
-  {
-    name: "S No",
-    selector: (row) => row.sno,
-    width: "60px",
-  },
+//  {
+  //  name: "S No",
+   // selector: (row) => row.sno,
+  //  width: "60px",
+  //},
   {
     name: "Roll Number",
     selector: (row) => row.rollNumber,
@@ -120,7 +120,7 @@ export const columns = [
     name: "Status",
     selector: (row) => row.active,
     //  sortable: true,
-    width: "140px",
+    width: "130px",
   },
   {
     name: "Action",
@@ -265,7 +265,7 @@ export const StudentButtons = ({ Id, onStudentDelete }) => {
       >
         <FaEdit className="m-1" />
       </button>
-      {user.role === "superadmin" || user.role === "hquser" || user.role === "admin" ?
+      {/*{user.role === "superadmin" || user.role === "hquser" || user.role === "admin" ?
         <div className="flex space-x-3">
           <button
             className={getButtonStyle('Promote')}
@@ -273,7 +273,7 @@ export const StudentButtons = ({ Id, onStudentDelete }) => {
             onClick={() => navigate(`/dashboard/students/promote/${Id}`)}
           >
             <FaUserCheck className="m-1" />
-          </button> </div> : null}
+          </button> </div> : null}*/}
       {user.role === "superadmin" || user.role === "hquser" ?
         <div className="flex space-x-3">
           <button

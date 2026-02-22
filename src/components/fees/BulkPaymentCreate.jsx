@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { fetchDueInvoices, createPaymentBatch } from "../../api/feesApi.js";
 import { uploadProofFile } from "../../api/uploadApi.js";
-import { showSwalAlert } from "../../utils/CommonHelper";
+import { showSwalAlert, LinkIcon, getPrcessing } from "../../utils/CommonHelper";
 
 export default function BulkPaymentCreate() {
   const schoolId = localStorage.getItem("schoolId");
@@ -12,7 +12,7 @@ export default function BulkPaymentCreate() {
   const [mode, setMode] = useState("bank");
   const [referenceNo, setReferenceNo] = useState("");
   const [proofUrl, setProofUrl] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [processing, setProcessing] = useState(false);
 
   // ✅ Select-all checkbox ref (for indeterminate UI)
   const selectAllRef = useRef(null);
@@ -21,9 +21,10 @@ export default function BulkPaymentCreate() {
     let alive = true;
     const run = async () => {
       try {
-        console.log("School Id : " + schoolId + ", AC Year : " + acYear);
+        setProcessing(true);
+        //console.log("School Id : " + schoolId + ", AC Year : " + acYear);
         const data = await fetchDueInvoices({ schoolId, acYear });
-        console.log(data);
+        //console.log(data);
         if (!alive) return;
         setInvoices(Array.isArray(data) ? data : []);
       } catch {
@@ -31,7 +32,9 @@ export default function BulkPaymentCreate() {
         setInvoices([]);
         showSwalAlert("Error!", "Failed to load invoices", "error");
       }
+      setProcessing(false);
     };
+    
     if (schoolId && acYear) run();
     return () => (alive = false);
   }, [schoolId, acYear]);
@@ -114,26 +117,33 @@ export default function BulkPaymentCreate() {
       return;
     }
 
-    setLoading(true);
+    setProcessing(true);
     try {
       const payload = { schoolId, acYear, mode, referenceNo, proofUrl, items };
       const resp = await createPaymentBatch(payload);
       if (!resp?.success) showSwalAlert("Error!", resp?.error || "Failed", "error");
       else {
+        setProcessing(false);
         showSwalAlert("Success!", `Batch created: ${resp.batchNo}`, "success");
         setSelected({});
         window.location.reload();
       }
     } catch {
+      setProcessing(false);
       showSwalAlert("Error!", "Failed to create batch", "error");
     } finally {
-      setLoading(false);
+      
     }
   };
 
+  if (processing) return getPrcessing();
+
   return (
     <div className="p-4 max-w-6xl mx-auto">
-      <h2 className="text-md font-bold mb-4">Bulk Fee Payment (Send to HQ)</h2>
+      <div className="flex items-center gap-3 mb-5">
+        <div>{LinkIcon("/dashboard/accountsPage", "Back")}</div>
+        <h3 className="pl-2 text-lg font-semibold text-left">Bulk Fee Payment (Send to HQ)</h3>
+      </div>
 
       <div className="grid grid-cols-1 md:grid-cols-12 gap-3 mb-4">
         <select
@@ -233,11 +243,11 @@ export default function BulkPaymentCreate() {
       </div>
 
       <button
-        disabled={loading}
+        disabled={processing}
         onClick={submit}
         className="mt-4 w-full bg-teal-600 text-white p-2 rounded hover:bg-teal-700"
       >
-        {loading ? "Submitting..." : "Submit Batch to HQ"}
+        {processing ? "Submitting..." : "Submit Batch to HQ"}
       </button>
     </div>
   );

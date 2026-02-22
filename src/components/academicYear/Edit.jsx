@@ -43,6 +43,7 @@ const Edit = () => {
             ...prev,
             acYear: academicYear.acYear,
             desc: academicYear.desc,
+            active: academicYear.active
           }));
         }
       } catch (error) {
@@ -103,7 +104,7 @@ const Edit = () => {
           </div>
           <form onSubmit={handleSubmit} autoComplete="off">
             <div className="py-2 px-4 border mt-5 mb-3 items-center justify-center rounded-lg shadow-lg bg-white">
-              <div className="grid mt-3 grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid mt-3 grid-cols-1 md:grid-cols-3 gap-4">
 
                 {/* Academic Year */}
                 <div>
@@ -133,6 +134,25 @@ const Edit = () => {
                     className="mt-1 p-2 mb-5 block w-full border border-gray-300 rounded-md"
                     required
                   />
+                </div>
+
+                {/* Active */}
+                <div>
+                  <label className="block mt-3 text-sm font-medium text-slate-500">
+                    Status <span className="text-red-700">*</span>
+                  </label>
+                  <select
+                    name="active"
+                    value={academicYear.active}
+                    onChange={handleChange}
+                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                    required
+                  >
+                    <option value=""></option>
+                    <option value="Active">Active</option>
+                    <option value="In-Active">In-Active</option>
+                    <option value="Next">Next</option>
+                  </select>
                 </div>
               </div>
             </div>

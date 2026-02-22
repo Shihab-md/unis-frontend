@@ -46,6 +46,7 @@ const List = () => {
             sno: sno++,
             acYear: sup.acYear,
             desc: sup.desc,
+            active: sup.active,
             newAddmissions: 0,
             studentsCount: 0,
             action: (<AcademicYearButtons Id={sup._id} onAcademicYearDelete={onAcademicYearDelete} />),
@@ -101,7 +102,7 @@ const List = () => {
           <div className="p-1 mt-0.5 rounded-md items-center justify-center ">
             {LinkIcon("#", "Search")}
           </div>
-        </div>
+        </div> 
 
         {LinkIcon("/dashboard/add-academicYear", "Add")}
       </div>

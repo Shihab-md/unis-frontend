@@ -30,6 +30,7 @@ import StudentAdd from "./components/student/Add";
 import StudentView from "./components/student/View";
 import StudentEdit from "./components/student/Edit";
 import StudentPromote from "./components/student/Promote";
+import StudentBulkPromote from "./components/student/BulkPromote";
 
 import InstituteList from "./components/institute/List";
 import InstituteAdd from "./components/institute/Add";
@@ -62,14 +63,16 @@ import DistrictStateEdit from "./components/districtstate/Edit";
 
 import ReportsHome from "./components/report/ReportsHome";
 
+import AccountsPage from "./components/dashboard/AccountsPage";
 import BatchApprovals from "./components/fees/BatchApprovals";
 import BulkPaymentCreate from "./components/fees/BulkPaymentCreate";
+import PaymentBatchesList from "./components/fees/PaymentBatchesList";
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
-         {/* <Route path="/" element={<Navigate to="/dashboard" />}></Route>*/}
+        {/* <Route path="/" element={<Navigate to="/dashboard" />}></Route>*/}
         <Route path="/" element={<HomePage />}></Route>
         <Route path="/login" element={<Login />}></Route>
 
@@ -107,6 +110,7 @@ function App() {
           <Route path="/dashboard/students/:id" element={<StudentView />}></Route>
           <Route path="/dashboard/students/edit/:id" element={<StudentEdit />}></Route>
           <Route path="/dashboard/students/promote/:id" element={<StudentPromote />}></Route>
+          <Route path="/dashboard/students/bulkpromote" element={<StudentBulkPromote />}></Route>
 
           <Route path="/dashboard/institutes" element={<InstituteList />}></Route>
           <Route path="/dashboard/add-institute" element={<InstituteAdd />}></Route>
@@ -143,8 +147,10 @@ function App() {
 
           <Route path="/dashboard/reports" element={<ReportsHome />}></Route>
 
+          <Route path="/dashboard/accountsPage" element={<AccountsPage />}></Route>
           <Route path="/dashboard/hq/fees" element={<BatchApprovals />}></Route>
           <Route path="/dashboard/fees" element={<BulkPaymentCreate />}></Route>
+          <Route path="/dashboard/fees/sent-to-hq" element={<PaymentBatchesList />}></Route>
 
         </Route>
 

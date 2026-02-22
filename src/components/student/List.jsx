@@ -52,8 +52,8 @@ const List = () => {
     console.log("About : " + data.about)
     return (
       data?.about ?
-        <div className='ml-14 p-2 bg-blue-50'>
-          <p className='ml-14 text-xs'>{"More details : "}
+        <div className='ml-12 p-2 bg-blue-50'>
+          <p className='pl-2 text-xs'>{"More details : "}
             {data.about ? data.about : ""}
           </p>
         </div>
@@ -964,6 +964,9 @@ const List = () => {
 
         {/*{user.role === "superadmin" || user.role === "hquser" ?
           <div className="hidden lg:block" onClick={handleFeesPaid}>{LinkIcon("#", "FeesPaid")}</div> : null}*/}
+
+        {user.role === "superadmin" || user.role === "hquser" || user.role === "admin" ?
+          <div className="hidden lg:block" onClick={() => navigate(`/dashboard/students/bulkpromote`)}>{LinkIcon("#", "Promote")}</div> : null}
 
         {user.role === "superadmin" || user.role === "hquser" ?
           <div className="hidden lg:block" onClick={handleRemoveStudents}>{LinkIcon("#", "RemoveStudents")}</div> : null}
