@@ -383,37 +383,37 @@ export default function PaymentBatchesList() {
 
       {/* Summary cards */}
       <div className="grid grid-cols-2 md:grid-cols-6 gap-3 mb-4">
-        <div className="relative overflow-hidden rounded-xl border border-white/20 bg-gradient-to-br from-indigo-500 to-sky-500 p-4 text-white shadow-lg hover:shadow-2xl transition">
+        <div className="relative overflow-hidden rounded-md border border-white/80 bg-gradient-to-br from-indigo-500 to-sky-500 p-4 text-white shadow-lg hover:shadow-2xl transition">
           <div className="pointer-events-none absolute -right-10 -top-10 h-28 w-28 rounded-full bg-white/25 blur-2xl" />
           <div className="text-[11px] font-semibold text-white/90">Total Batches</div>
           <div className="mt-1 text-lg font-bold text-white drop-shadow">{summary.total}</div>
         </div>
 
-        <div className="relative overflow-hidden rounded-xl border border-amber-200 bg-gradient-to-br from-amber-300 to-yellow-200 p-4 text-slate-900 shadow-lg hover:shadow-2xl transition">
+        <div className="relative overflow-hidden rounded-md border border-white/80 bg-gradient-to-br from-amber-300 to-yellow-200 p-4 text-slate-900 shadow-lg hover:shadow-2xl transition">
           <div className="pointer-events-none absolute -right-10 -top-10 h-28 w-28 rounded-full bg-white/35 blur-2xl" />
           <div className="text-[11px] font-semibold text-slate-900/80">Pending</div>
           <div className="mt-1 text-lg font-bold text-slate-900 drop-shadow">{summary.pending}</div>
         </div>
 
-        <div className="relative overflow-hidden rounded-xl border border-white/20 bg-gradient-to-br from-emerald-500 to-teal-500 p-4 text-white shadow-lg hover:shadow-2xl transition">
+        <div className="relative overflow-hidden rounded-md border border-white/80 bg-gradient-to-br from-emerald-500 to-teal-500 p-4 text-white shadow-lg hover:shadow-2xl transition">
           <div className="pointer-events-none absolute -right-10 -top-10 h-28 w-28 rounded-full bg-white/25 blur-2xl" />
           <div className="text-[11px] font-semibold text-white/90">Approved</div>
           <div className="mt-1 text-lg font-bold text-white drop-shadow">{summary.approved}</div>
         </div>
 
-        <div className="relative overflow-hidden rounded-xl border border-white/20 bg-gradient-to-br from-rose-500 to-red-500 p-4 text-white shadow-lg hover:shadow-2xl transition">
+        <div className="relative overflow-hidden rounded-md border border-white/80 bg-gradient-to-br from-rose-500 to-red-500 p-4 text-white shadow-lg hover:shadow-2xl transition">
           <div className="pointer-events-none absolute -right-10 -top-10 h-28 w-28 rounded-full bg-white/25 blur-2xl" />
           <div className="text-[11px] font-semibold text-white/90">Rejected</div>
           <div className="mt-1 text-lg font-bold text-white drop-shadow">{summary.rejected}</div>
         </div>
 
-        <div className="relative overflow-hidden rounded-xl border border-white/20 bg-gradient-to-br from-slate-500 to-gray-500 p-4 text-white shadow-lg hover:shadow-2xl transition">
+        <div className="relative overflow-hidden rounded-md border border-white/80 bg-gradient-to-br from-slate-500 to-gray-500 p-4 text-white shadow-lg hover:shadow-2xl transition">
           <div className="pointer-events-none absolute -right-10 -top-10 h-28 w-28 rounded-full bg-white/25 blur-2xl" />
           <div className="text-[11px] font-semibold text-white/90">Cancelled</div>
           <div className="mt-1 text-lg font-bold text-white drop-shadow">{summary.cancelled}</div>
         </div>
 
-        <div className="relative overflow-hidden rounded-xl border border-white/20 bg-gradient-to-br from-violet-500 to-fuchsia-500 p-4 text-white shadow-lg hover:shadow-2xl transition">
+        <div className="relative overflow-hidden rounded-md border border-white/80 bg-gradient-to-br from-violet-500 to-fuchsia-500 p-4 text-white shadow-lg hover:shadow-2xl transition">
           <div className="pointer-events-none absolute -right-10 -top-10 h-28 w-28 rounded-full bg-white/25 blur-2xl" />
           <div className="text-[11px] font-semibold text-white/90">Total Amount</div>
           <div className="mt-1 text-lg font-bold text-white drop-shadow">{summary.totalAmount}</div>
