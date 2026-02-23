@@ -966,7 +966,7 @@ const List = () => {
           <div className="hidden lg:block" onClick={handleFeesPaid}>{LinkIcon("#", "FeesPaid")}</div> : null}*/}
 
         {user.role === "superadmin" || user.role === "hquser" || user.role === "admin" ?
-          <div className="hidden lg:block" onClick={() => navigate(`/dashboard/students/bulkpromote`)}>{LinkIcon("#", "Promote")}</div> : null}
+          <div className="ml-3" onClick={() => navigate(`/dashboard/students/bulkpromote`)}>{LinkIcon("#", "Promote")}</div> : null}
 
         {user.role === "superadmin" || user.role === "hquser" ?
           <div className="hidden lg:block" onClick={handleRemoveStudents}>{LinkIcon("#", "RemoveStudents")}</div> : null}

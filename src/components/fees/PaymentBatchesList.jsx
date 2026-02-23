@@ -295,8 +295,8 @@ export default function PaymentBatchesList() {
           <div>{LinkIcon("/dashboard/accountsPage", "Back")}</div>
 
           <div className="flex flex-col leading-tight">
-            <h2 className="text-lg font-bold">Sent to HQ (Batches)</h2>
-            <div className="text-xs text-gray-600 mt-1">View payments submitted to HQ with filters.</div>
+            <h2 className="text-lg font-bold">Received Payment Batches</h2>
+            <div className="text-xs text-gray-600 mt-1">View payments received at HQ with filters.</div>
           </div>
         </div>
 
@@ -336,7 +336,7 @@ export default function PaymentBatchesList() {
               value={schoolId}
               onChange={(e) => setSchoolId(e.target.value)}
             >
-              <option value="ALL">All Schools</option>
+              <option value="ALL">All Niswans</option>
               {schoolOptions.map((s) => (
                 <option key={s._id} value={s._id}>
                   {s.code} : {s.nameEnglish}
