@@ -39,8 +39,8 @@ const StatCard = ({ title, value, loading, colorClass, icon, sub }) => {
   const animated = useCountUp(loading ? 0 : value, 950);
 
   return (
-    <div className={`relative overflow-hidden rounded-2xl border bg-white/80 p-5 shadow-sm ${colorClass}`}>
-      <div className="pointer-events-none absolute -right-10 -top-10 h-28 w-28 rounded-full bg-white/35 blur-xl" />
+    <div className={`relative overflow-hidden rounded-xl border bg-white/80 p-5 shadow-lg hover:shadow-2xl ${colorClass}`}>
+      <div className="pointer-events-none absolute -right-10 -top-10 h-28 w-28 rounded-md bg-white/35 blur-xl" />
       <div className="flex items-start justify-between gap-3">
         <div>
           <div className="text-xs font-bold uppercase tracking-wide text-white/90">{title}</div>
@@ -50,7 +50,7 @@ const StatCard = ({ title, value, loading, colorClass, icon, sub }) => {
           {sub ? <div className="mt-1 text-xs font-bold text-white/85">{sub}</div> : null}
         </div>
 
-        <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-white/25 text-2xl text-white shadow-sm">
+        <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-white/25 text-2xl text-white shadow-md">
           {icon}
         </div>
       </div>
@@ -225,15 +225,6 @@ export default function PendingInvoicesNotSentHQ() {
           <div className="text-xs text-gray-600 mt-1">
             Invoices (ISSUED / PARTIAL) excluding those already in Payment Batch.
           </div>
-        </div>
-
-        <div className="ml-auto hidden md:block">
-          <button
-            onClick={runSearch}
-            className="rounded bg-gradient-to-r from-indigo-500 via-violet-500 to-rose-500 px-4 py-2 text-sm font-extrabold text-white shadow hover:opacity-95"
-          >
-            ⟳ Refresh
-          </button>
         </div>
       </div>
 
