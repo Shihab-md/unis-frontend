@@ -67,6 +67,7 @@ import AccountsPage from "./components/dashboard/AccountsPage";
 import BatchApprovals from "./components/fees/BatchApprovals";
 import BulkPaymentCreate from "./components/fees/BulkPaymentCreate";
 import PaymentBatchesList from "./components/fees/PaymentBatchesList";
+import PendingInvoicesNotSentHQ from "./components/fees/PendingInvoicesNotSentHQ";
 
 function App() {
   return (
@@ -151,6 +152,7 @@ function App() {
           <Route path="/dashboard/hq/fees" element={<BatchApprovals />}></Route>
           <Route path="/dashboard/fees" element={<BulkPaymentCreate />}></Route>
           <Route path="/dashboard/fees/sent-to-hq" element={<PaymentBatchesList />}></Route>
+          <Route path="/dashboard/hq/pending-invoices" element={<PendingInvoicesNotSentHQ />}></Route>
 
         </Route>
 

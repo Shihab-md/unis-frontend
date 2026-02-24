@@ -75,3 +75,13 @@ export const fetchHQFeesDashboard = async ({ acYear }) => {
   const res = await axios.get(`${base}hq/fees/dashboard?${qs.toString()}`, authHeaders());
   return res.data?.dashboard;
 };
+
+export const fetchPendingInvoicesHQNotSent = async ({ acYear, schoolId = "ALL" }) => {
+  const base = await getBaseUrl();
+  const sid = schoolId || "ALL";
+  const res = await axios.get(
+    `${base}hq/fees/pending-invoices-not-sent/${acYear}/${sid}`,
+    authHeaders()
+  );
+  return res.data; // { success, invoices }
+};

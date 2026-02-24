@@ -209,9 +209,10 @@ export default function BulkPaymentCreate() {
               title="Select all"
             />
           </div>
-          <div className="col-span-4">Student Name</div>
+          <div className="col-span-2">Invoice #</div>
+          <div className="col-span-3">Student Name</div>
           <div className="col-span-3">Course</div>
-          <div className="col-span-2">Fees Type</div>
+          <div className="col-span-1">Fees Type</div>
           <div className="col-span-1">Balance</div>
           <div className="col-span-1">Pay</div>
         </div>
@@ -223,9 +224,10 @@ export default function BulkPaymentCreate() {
               <div className="grid col-span-1 place-items-center">
                 <input type="checkbox" checked={checked} onChange={() => toggle(inv)} />
               </div>
-              <div className="col-span-4">{String(inv.userId?.name || "-")}</div>
+              <div className="col-span-2">{inv.invoiceNo}</div>
+              <div className="col-span-3">{String(inv.userId?.name || "-")}</div>
               <div className="col-span-3">{String(inv.courseId?.name || "-")}</div>
-              <div className="col-span-2">{String(inv.source || "-")}</div>
+              <div className="col-span-1">{String(inv.source || "-")}</div>
               <div className="col-span-1">{inv.balance}</div>
               <div className="col-span-1">
                 <input

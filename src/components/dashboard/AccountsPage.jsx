@@ -3,7 +3,7 @@ import SummaryCard from "./SummaryCard";
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext'
 import { getBaseUrl, handleRightClickAndFullScreen, getSpinner, LinkIcon, showSwalAlert } from '../../utils/CommonHelper'
-import { FaCalculator , FaRegMoneyBillAlt, FaCheck, FaRegClock } from "react-icons/fa";
+import { FaCalculator, FaRegMoneyBillAlt, FaCheck, FaRegClock } from "react-icons/fa";
 import axios from 'axios'
 import { useNavigate } from "react-router-dom";
 
@@ -78,6 +78,16 @@ const AccountsPage = () => {
               text={user.role === "superadmin" || user.role === "hquser" ? "Received Batches" : "Sent Batches"}
               number="*"
               color="bg-pink-500"
+            />
+          </Link> : null}
+
+        {user.role === "superadmin" || user.role === "hquser" ?
+          <Link to="/dashboard/hq/pending-invoices" >
+            <SummaryCard
+              icon={<FaRegMoneyBillAlt />}
+              text="Pending Invoices"
+              number="*"
+              color="bg-indigo-500"
             />
           </Link> : null}
 
