@@ -39,15 +39,15 @@ const StatCard = ({ title, value, loading, colorClass, icon, sub }) => {
   const animated = useCountUp(loading ? 0 : value, 950);
 
   return (
-    <div className={`relative overflow-hidden rounded-xl border bg-white/80 p-5 shadow-lg hover:shadow-2xl ${colorClass}`}>
-      <div className="pointer-events-none absolute -right-10 -top-10 h-28 w-28 rounded-md bg-white/35 blur-xl" />
+    <div className={`relative overflow-hidden rounded-lg border border-white/80 bg-white/80 p-5 shadow-lg hover:shadow-2xl ${colorClass}`}>
+      <div className="pointer-events-none absolute -right-10 -top-10 h-18 w-18 rounded-md bg-white/35 blur-xl" />
       <div className="flex items-start justify-between gap-3">
         <div>
-          <div className="text-xs font-bold uppercase tracking-wide text-white/90">{title}</div>
-          <div className="mt-2 text-4xl font-extrabold text-white drop-shadow">
+          <div className="text-xs font-semibold uppercase tracking-wide text-white/90">{title}</div>
+          <div className="mt-2 text-xl font-bold text-white drop-shadow">
             {loading ? "0" : animated}
           </div>
-          {sub ? <div className="mt-1 text-xs font-bold text-white/85">{sub}</div> : null}
+
         </div>
 
         <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-white/25 text-2xl text-white shadow-md">
@@ -185,7 +185,7 @@ export default function PendingInvoicesNotSentHQ() {
       headCells: {
         style: {
           fontWeight: 900,
-          fontSize: "12px",
+          fontSize: "10px",
           color: "#0f172a",
           textTransform: "uppercase",
           letterSpacing: "0.05em",
@@ -225,34 +225,6 @@ export default function PendingInvoicesNotSentHQ() {
         </div>
       </div>
 
-      {/* Stats (colorful cards) */}
-      <div className="grid grid-cols-1 gap-3 md:grid-cols-3 mb-4">
-        <StatCard
-          title="Total Invoices"
-          value={summary.total}
-          loading={loading}
-          icon="🧾"
-          colorClass="bg-gradient-to-br from-indigo-500 to-violet-500 border-white/20"
-          sub="Not received at HQ"
-        />
-        <StatCard
-          title="Total Balance"
-          value={summary.totalBalance}
-          loading={loading}
-          icon="💰"
-          colorClass="bg-gradient-to-br from-rose-500 to-orange-400 border-white/20"
-          sub="Sum of balances"
-        />
-        <StatCard
-          title="Niswans"
-          value={summary.uniqSchools}
-          loading={loading}
-          icon="🏫"
-          colorClass="bg-gradient-to-br from-teal-500 to-emerald-500 border-white/20"
-          sub="Unique Niswan"
-        />
-      </div>
-
       {/* Filters (keep same simple style like Received Batches) */}
       <div className="grid grid-cols-1 md:grid-cols-12 gap-3 mb-4">
         <div className="md:col-span-3">
@@ -290,15 +262,43 @@ export default function PendingInvoicesNotSentHQ() {
         <div className="md:col-span-2 flex items-end">
           <button
             onClick={runSearch}
-            className="w-full rounded bg-gradient-to-r from-indigo-500 via-violet-500 to-rose-500 p-2 font-semibold text-white shadow hover:opacity-95"
+            className="w-full rounded bg-gradient-to-r from-indigo-300 via-violet-300 to-rose-300 p-2 font-semibold text-slate shadow hover:opacity-95"
           >
             Refresh
           </button>
         </div>
       </div>
 
+      {/* Stats (colorful cards) */}
+      <div className="grid grid-cols-1 gap-3 md:grid-cols-3 mb-4 mt-5">
+        <StatCard
+          title="Total Pending Invoices"
+          value={summary.total}
+          loading={loading}
+          icon="🧾"
+          colorClass="bg-gradient-to-br from-indigo-500 to-violet-500 border-white/20"
+          sub="Not received at HQ"
+        />
+        <StatCard
+          title="Total Balance"
+          value={summary.totalBalance}
+          loading={loading}
+          icon="💰"
+          colorClass="bg-gradient-to-br from-rose-500 to-orange-400 border-white/20"
+          sub="Sum of balances"
+        />
+        <StatCard
+          title="Niswans"
+          value={summary.uniqSchools}
+          loading={loading}
+          icon="🏫"
+          colorClass="bg-gradient-to-br from-teal-500 to-emerald-500 border-white/20"
+          sub="Unique Niswan"
+        />
+      </div>
+
       {/* Table */}
-      <div className="border rounded bg-white">
+      <div className="border rounded bg-white mt-5">
         <div className="p-2 font-bold text-xs bg-gray-100 flex items-center justify-between">
           <span>Invoices (Not Received at HQ)</span>
           <span className="text-[11px] font-bold text-gray-600">{invoices?.length || 0} record(s)</span>
