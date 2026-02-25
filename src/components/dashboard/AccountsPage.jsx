@@ -3,7 +3,7 @@ import SummaryCard from "./SummaryCard";
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext'
 import { getBaseUrl, handleRightClickAndFullScreen, getSpinner, LinkIcon, showSwalAlert } from '../../utils/CommonHelper'
-import { FaCalculator, FaRegMoneyBillAlt, FaCheck, FaRegClock } from "react-icons/fa";
+import { FaCalculator, FaRegMoneyBillAlt, FaCheck, FaRegClock, FaRegListAlt } from "react-icons/fa";
 import axios from 'axios'
 import { useNavigate } from "react-router-dom";
 
@@ -55,7 +55,7 @@ const AccountsPage = () => {
           <Link to="/dashboard/fees" >
             <SummaryCard
               icon={<FaRegMoneyBillAlt />}
-              text="Payments"
+              text="Invoice Payments"
               number="*"
               color="bg-purple-500"
             />
@@ -65,7 +65,7 @@ const AccountsPage = () => {
           <Link to="/dashboard/hq/fees" >
             <SummaryCard
               icon={<FaCheck />}
-              text="Approvals"
+              text="For Approval"
               number="*"
               color="bg-blue-500"
             />
@@ -74,20 +74,20 @@ const AccountsPage = () => {
         {user.role === "superadmin" || user.role === "hquser" || user.role === "admin" ?
           <Link to="/dashboard/fees/sent-to-hq" >
             <SummaryCard
-              icon={<FaRegClock />}
+              icon={<FaRegListAlt />}
               text={user.role === "superadmin" || user.role === "hquser" ? "Received Batches" : "Sent Batches"}
               number="*"
-              color="bg-pink-500"
+              color="bg-teal-500"
             />
           </Link> : null}
 
         {user.role === "superadmin" || user.role === "hquser" ?
           <Link to="/dashboard/hq/pending-invoices" >
             <SummaryCard
-              icon={<FaRegMoneyBillAlt />}
+              icon={<FaRegClock />}
               text="Pending Invoices"
               number="*"
-              color="bg-indigo-500"
+              color="bg-pink-500"
             />
           </Link> : null}
 

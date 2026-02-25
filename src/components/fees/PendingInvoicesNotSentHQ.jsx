@@ -222,9 +222,6 @@ export default function PendingInvoicesNotSentHQ() {
 
         <div className="flex flex-col leading-tight">
           <h2 className="text-lg font-bold">Pending Invoices (Not Received at HQ)</h2>
-          <div className="text-xs text-gray-600 mt-1">
-            Invoices (ISSUED / PARTIAL) excluding those already in Payment Batch.
-          </div>
         </div>
       </div>
 

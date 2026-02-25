@@ -293,10 +293,16 @@ export default function PaymentBatchesList() {
       <div className="flex items-center justify-between gap-3">
         <div className="flex items-center gap-3 mb-5">
           <div>{LinkIcon("/dashboard/accountsPage", "Back")}</div>
-
           <div className="flex flex-col leading-tight">
-            <h2 className="text-lg font-bold">Received Payment Batches</h2>
-            <div className="text-xs text-gray-600 mt-1">View payments received at HQ with filters.</div>
+            <h2 className="text-lg font-bold">
+              {isHQ ? "Received Invoice Payment Batches" : "Invoice Payment Batches sent to HQ"}
+            </h2>
+
+            <div className="text-xs text-gray-600 mt-1">
+              {isHQ
+                ? "View payments received at HQ with filters."
+                : "View payments sent to HQ with filters."}
+            </div>
           </div>
         </div>
 
