@@ -8,7 +8,7 @@ export const columns = [
   {
     name: "S No",
     selector: (row) => row.sno,
-    width: "60px",
+    width: "70px",
   },
   {
     name: "Sanadh No",
@@ -19,22 +19,30 @@ export const columns = [
   {
     name: "Sanadh Name",
     selector: (row) => row.sanadhName,
-    width: "140px",
+    width: "210px",
   },
   {
-    name: "Student Name",
-    selector: (row) => row.studentName,
-    width: "320px",
-  },
-  {
-    name: "Roll Number",
-    selector: (row) => row.rollNumber,
-    width: "140px",
+    name: "Student Details",
+    selector: (row) => (<div className="mt-2 mb-2">
+      <p className="mb-1">
+        <span className="text-blue-700 mr-4">Roll Number:</span> {row.rollNumber}
+      </p>
+      <p className="mb-1">
+        <span className="text-blue-700 mr-2">Student Name:</span> {row.studentName}
+      </p>
+      <p>
+        <span className="text-blue-700 mr-3">Parent / Guardian name:</span> {row.fatherName}
+      </p>
+    </div>),
+    width: "480px",
   },
   {
     name: "Niswan",
-    selector: (row) => row.niswanCode + " : " + row.niswanName,
-    width: "610px",
+    selector: (row) => (<div className="mt-2 mb-2">
+      <p className="mb-1">{row.niswanCode}</p>
+      <p className="mb-1">{row.niswanName}</p>
+    </div>),
+    width: "520px",
   },
   {
     name: "Action",

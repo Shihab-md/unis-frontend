@@ -7,13 +7,10 @@ import { columnsSelect, getStudentsBySchoolAndCourse } from '../../utils/Student
 import { getTemplatesFromCache } from '../../utils/TemplateHelper'
 import DataTable from 'react-data-table-component'
 import Select from 'react-select';
-import {
-  FaRegTimesCircle
-} from "react-icons/fa";
+import { FaRegTimesCircle } from "react-icons/fa";
 
 const Create = () => {
 
-  // To prevent right-click AND For FULL screen view.
   useEffect(() => {
     handleRightClickAndFullScreen();
   }, []);
@@ -34,7 +31,6 @@ const Create = () => {
   const navigate = useNavigate()
 
   useEffect(() => {
-    // Authenticate the User.
     if (checkAuth("certificateAdd") === "NO") {
       showSwalAlert("Error!", "User Authorization Failed!", "error");
       navigate("/login");
@@ -45,7 +41,6 @@ const Create = () => {
     setSelectedRows(selectedRows);
   };
 
-  // Toggle the state so React Data Table changes to clearSelectedRows are triggered
   const handleClearRows = () => {
     setToggleClearRows(!toggledClearRows);
   }
@@ -66,7 +61,6 @@ const Create = () => {
     } finally {
       setStudentsLoading(false)
     }
-
   };
 
   useEffect(() => {
@@ -119,32 +113,32 @@ const Create = () => {
         }
 
         const formDataNew = new FormData();
-        formDataNew.set("templateId", tempId);//formDataObj.get("templateId"));
-        formDataNew.set("schoolId", schoolId);//formDataObj.get("schoolId"));
+        formDataNew.set("templateId", tempId);
+        formDataNew.set("schoolId", schoolId);
+
         let downloaded = false;
         setCreatedAll(true);
+
         for (const selectedRow of selectedRows) {
-          //  alert(selectedRow._id);
           formDataNew.delete("studentId");
           formDataNew.set("studentId", selectedRow._id);
 
           const url = (await getBaseUrl()).toString() + "certificate/add";
-          const response = await axios.post(url, formDataNew,
-            {
-              headers: headers
-            }
-          );
+          const response = await axios.post(url, formDataNew, { headers: headers });
+
           if (response.data.success) {
             let resData = response.data;
             if (resData.image && resData.image != "") {
-              let image = resData.image;
               const link = document.createElement('a');
+
               if (resData.type === 'base64') {
-                link.href = "data:image/jpeg;base64," + image;
+                link.href = "data:image/jpeg;base64," + resData.image;
               } else {
-                link.href = image;
+                // ✅ prefer downloadUrl when provided (Drive)
+                link.href = resData.downloadUrl || resData.image;
               }
-              link.download = resData.fileName || 'downloaded_image.png'; // Use provided name or default
+
+              link.download = resData.fileName || 'downloaded_image.png';
               document.body.appendChild(link);
               link.click();
               document.body.removeChild(link);
@@ -152,6 +146,7 @@ const Create = () => {
             }
           }
         }
+
         if (downloaded) {
           setCreatedAll(false);
           showSwalAlert("Success!", "Successfully Created!", "success");

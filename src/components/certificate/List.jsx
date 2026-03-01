@@ -281,6 +281,13 @@ const List = () => {
             sanadhName: sup.courseId?.name,
             niswanCode: sup.schoolId?.code,
             niswanName: sup.schoolId?.nameEnglish,
+            fatherName: sup?.studentId?.fatherName
+              ? sup?.studentId?.fatherName
+              : sup?.studentId?.motherName
+                ? sup?.studentId?.motherName
+                : sup?.studentId?.guardianName
+                  ? sup?.studentId?.guardianName
+                  : "",
             action: (<CertificateButtons Id={sup._id} onCertificateDelete={onCertificateDelete} />),
           }));
           setCertificates(data);

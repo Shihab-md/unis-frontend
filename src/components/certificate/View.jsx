@@ -3,13 +3,10 @@ import React, { useEffect, useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { getBaseUrl, handleRightClickAndFullScreen, getSpinner, checkAuth, showSwalAlert } from '../../utils/CommonHelper';
 import ViewCard from "../dashboard/ViewCard";
-import {
-  FaRegTimesCircle, FaDownload
-} from "react-icons/fa";
+import { FaRegTimesCircle, FaDownload } from "react-icons/fa";
 
 const View = () => {
 
-  // To prevent right-click AND For FULL screen view.
   useEffect(() => {
     handleRightClickAndFullScreen();
   }, []);
@@ -20,10 +17,20 @@ const View = () => {
   const navigate = useNavigate();
 
   const handleDownload = () => {
-    if (certificate.certificate) {
+    if (!certificate) return;
+
+    const url =
+      certificate.certificateDriveDownloadUrl ||
+      certificate.certificate ||
+      "";
+
+    if (url) {
       const link = document.createElement('a');
-      link.href = certificate.certificate != "" ? certificate.certificate : "/certificate.jpg";
-      link.download = certificate.courseId.name + "_" + certificate.studentId.rollNumber + "_" + certificate.userId.name + ".png" || 'downloaded_image.png'; // Use provided name or default
+      link.href = url;
+      link.download =
+        (certificate.courseId?.name || "CERT") + "_" +
+        (certificate.studentId?.rollNumber || "") + "_" +
+        (certificate.userId?.name || "") + ".png";
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
@@ -39,7 +46,6 @@ const View = () => {
 
   useEffect(() => {
 
-    // Authenticate the User.
     if (checkAuth("certificateView") === "NO") {
       showSwalAlert("Error!", "User Authorization Failed!", "error");
       navigate("/login");
@@ -69,6 +75,18 @@ const View = () => {
     fetchCertificate();
   }, []);
 
+  const fatherName = certificate?.studentId?.fatherName
+      ? certificate?.studentId?.fatherName
+      : certificate?.studentId?.motherName
+        ? certificate?.studentId?.motherName
+        : certificate?.studentId?.guardianName
+          ? certificate?.studentId?.guardianName
+          : "";
+  const fileId = certificate?.certificateDriveFileId;
+  const imgSrc = fileId
+    ? `https://drive.google.com/thumbnail?id=${fileId}&sz=w1200`
+    : (certificate?.certificateDrivePreviewUrl || certificate?.certificate || "");
+
   return (
     <>
       {certificate ? (
@@ -84,22 +102,27 @@ const View = () => {
             <div className="py-2 px-4 border mt-5 mb-1 items-center justify-center rounded-lg shadow-lg bg-white">
 
               {show ?
-                <div className="bg-white rounded-lg" title="Click to Close"><dialog
-                  className="dialog rounded-lg"
-                  style={{ position: 'absolute' }}
-                  open
-                  onClick={handleHideDialog}
-                >
-                  <img
-                    className="p-2 size-100 border items-center justify-center shadow-lg" onClick={handleHideDialog}
-                    src={certificate.certificate && certificate.certificate != "" ? certificate.certificate + "?" + new Date().getTime() : "/certificate.jpg"}
-                  />
-                </dialog></div>
+                <div className="bg-white rounded-lg" title="Click to Close">
+                  <dialog
+                    className="dialog rounded-lg"
+                    style={{ position: 'absolute' }}
+                    open
+                    onClick={handleHideDialog}
+                  >
+                    <img
+                      className="p-2 size-100 border items-center justify-center shadow-lg"
+                      onClick={handleHideDialog}
+                      src={imgSrc ? `${imgSrc}` : "/certificate.jpg"}
+                    />
+                  </dialog>
+                </div>
                 : <div></div>}
 
               <div className="flex mt-2 space-x-10 mb-3 items-center justify-center" title="Click to ZOOM">
-                <img className='size-40 mt-3 border items-center justify-center rounded-lg shadow-lg' onClick={handleShowDialog}
-                  src={certificate.certificate && certificate.certificate != "" ? certificate.certificate + "?" + new Date().getTime() : "/certificate.jpg"}
+                <img
+                  className='size-40 mt-3 border items-center justify-center rounded-lg shadow-lg'
+                  onClick={handleShowDialog}
+                  src={imgSrc ? `${imgSrc}` : "/certificate.jpg"}
                 />
                 <FaDownload onClick={handleDownload} className="text-3xl text-green-700 bg-gray-200 border rounded shadow-xl items-bottom justify-end" />
               </div>
@@ -118,6 +141,9 @@ const View = () => {
               <ViewCard type="title" text="Student Name" />
               <ViewCard type="data" text={certificate.userId?.name} />
 
+              <ViewCard type="title" text="Father / Mother / Guardian Name" />
+              <ViewCard type="data" text={fatherName} />
+
               <ViewCard type="title" text="Niswan Name" />
               <ViewCard type="data" text={certificate.schoolId?.code + " : " + certificate.schoolId?.nameEnglish} />
 
@@ -127,7 +153,8 @@ const View = () => {
               className="w-full mt-1 mb-3 bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded-lg shadow-lg"
               data-ripple-light="true"
               onClick={() => navigate(`/dashboard/certificates`)}
-            >  Back
+            >
+              Back
             </button>
           </div>
         </div>
