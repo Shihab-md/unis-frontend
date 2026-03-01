@@ -322,7 +322,7 @@ export function showSwalAlert(title, message, icon) {
     title: title,
     html: "<b>" + message + "</b>",
     icon: icon,
-    timer: title === "Success!" ? 1600 : 5200,
+    timer: title === "Success!" || "Uploaded" ? 1600 : 5200,
     timerProgressBar: true,
     showConfirmButton: false,
     background: "url(/bg_card.png)",
