@@ -1092,21 +1092,21 @@ export default function HomePage() {
                         title="Active Supervisors"
                         value={stats.supervisorsCount}
                         loading={loading}
-                        colorClass="bg-gradient-to-br from-indigo-600 to-sky-500"
+                        colorClass="bg-gradient-to-br from-indigo-600 to-sky-500 shadow-lg hover:shadow-2xl transition"
                         icon="📌"
                     />
                     <StatCard
                         title="Active Niswans"
                         value={stats.schoolsCount}
                         loading={loading}
-                        colorClass="bg-gradient-to-br from-emerald-600 to-teal-500"
+                        colorClass="bg-gradient-to-br from-emerald-600 to-teal-500 shadow-lg hover:shadow-2xl transition"
                         icon="🏛️"
                     />
                     <StatCard
                         title="Active Students"
                         value={stats.studentsCount}
                         loading={loading}
-                        colorClass="bg-gradient-to-br from-amber-500 to-red-400"
+                        colorClass="bg-gradient-to-br from-amber-500 to-red-400 shadow-lg hover:shadow-2xl transition"
                         icon="📊"
                     />
                 </div>
