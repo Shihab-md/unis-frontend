@@ -17,6 +17,7 @@ export default function BatchApprovals() {
       setProcessing(false);
     } catch {
       setBatches([]);
+      setProcessing(false);
     }
   };
 
@@ -33,6 +34,7 @@ export default function BatchApprovals() {
       setDetails(d);
       setProcessing(false);
     } catch {
+      setProcessing(false);
       showSwalAlert("Error!", "Failed to load batch details", "error");
     }
   };
@@ -44,16 +46,21 @@ export default function BatchApprovals() {
       const resp = await approveBatch(selectedBatch._id);
       if (resp?.success) {
         setProcessing(false);
-        showSwalAlert("Success!", `Approved. Applied: ${resp.result?.applied}, Failed: ${resp.result?.failed}`, "success");
+        showSwalAlert(
+          "Success!",
+          `Approved. Applied: ${resp.result?.applied}, Failed: ${resp.result?.failed}`,
+          "success"
+        );
         setSelectedBatch(null);
         setDetails(null);
         load();
-      } else showSwalAlert("Error!", resp?.error || "Approve failed", "error");
+      } else {
+        setProcessing(false);
+        showSwalAlert("Error!", resp?.error || "Approve failed", "error");
+      }
     } catch {
       setProcessing(false);
       showSwalAlert("Error!", "Approve failed", "error");
-    } finally {
-
     }
   };
 
@@ -71,7 +78,10 @@ export default function BatchApprovals() {
         setSelectedBatch(null);
         setDetails(null);
         load();
-      } else showSwalAlert("Error!", resp?.error || "Reject failed", "error");
+      } else {
+        setProcessing(false);
+        showSwalAlert("Error!", resp?.error || "Reject failed", "error");
+      }
     } catch {
       setProcessing(false);
       showSwalAlert("Error!", "Reject failed", "error");
@@ -81,6 +91,14 @@ export default function BatchApprovals() {
   };
 
   if (processing) return getPrcessing();
+
+  // ✅ helper: pick proof links (Drive first, fallback proofUrl)
+  const getProofLinks = (b) => {
+    const view = b?.proofDriveViewUrl || b?.proofUrl || "";
+    const download = b?.proofDriveDownloadUrl || "";
+    const name = b?.proofFileName || "";
+    return { view, download, name };
+  };
 
   return (
     <div className="p-4 max-w-6xl mx-auto">
@@ -92,12 +110,41 @@ export default function BatchApprovals() {
       <div className="grid grid-cols-1 text-xs md:grid-cols-4 gap-4">
         <div className="border rounded">
           <div className="p-2 font-bold text-xs bg-gray-100">Pending Batches</div>
-          {batches.map((b) => (
-            <button key={b._id} onClick={() => openBatch(b)} className="w-full text-left p-2 border-t hover:bg-gray-50">
-              <div className="font-semibold">{b.batchNo} - {"Amount : " + b.totalAmount}</div>
-              <div className="text-gray-600">{new Date(b.paidDate).toLocaleString()}</div>
-            </button>
-          ))}
+
+          {batches.map((b) => {
+            const { view } = getProofLinks(b);
+            return (
+              <button
+                key={b._id}
+                onClick={() => openBatch(b)}
+                className="w-full text-left p-2 border-t hover:bg-gray-50"
+              >
+                <div className="font-semibold">
+                  {b.batchNo} - {"Amount : " + b.totalAmount}
+                </div>
+
+                <div className="text-gray-600 flex items-center justify-between gap-2">
+                  <span>{new Date(b.paidDate).toLocaleString()}</span>
+
+                  {/* ✅ NEW: clickable proof link in left list 
+                  {view ? (
+                    <a
+                      href={view}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="text-blue-700 underline font-bold"
+                      onClick={(e) => e.stopPropagation()} // do not trigger openBatch
+                    >
+                      View Proof
+                    </a>
+                  ) : (
+                    <span className="text-gray-400 font-bold">No Proof</span>
+                  )}*/}
+                </div>
+              </button>
+            );
+          })}
+
           {batches.length === 0 && <div className="p-3 text-xs text-gray-600">No pending batches</div>}
         </div>
 
@@ -112,6 +159,44 @@ export default function BatchApprovals() {
               <div className="mb-2"><b>Total :</b> {selectedBatch.totalAmount}</div>
               <div className="mb-2"><b>Mode :</b> {selectedBatch.mode}</div>
               <div className="mb-2"><b>Ref # :</b> {selectedBatch.referenceNo || "-"}</div>
+
+              {/* ✅ NEW: Proof view/download in details */}
+              <div className="mb-2">
+                <b>Proof :</b>{" "}
+                {(() => {
+                  const { view, download, name } = getProofLinks(selectedBatch);
+                  if (!view) return <span className="text-gray-400 font-bold">-</span>;
+
+                  return (
+                    <>
+                      <a
+                        className="text-blue-700 underline font-bold"
+                        href={view}
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        View
+                      </a>
+
+                      {/*{download ? (
+                        <>
+                          {" / "}
+                          <a
+                            className="text-emerald-700 underline font-bold"
+                            href={download}
+                            target="_blank"
+                            rel="noreferrer"
+                          >
+                            Download
+                          </a>
+                        </>
+                      ) : null}*/}
+
+                      {name ? <span className="text-[11px] text-gray-500"> ({name})</span> : null}
+                    </>
+                  );
+                })()}
+              </div>
 
               <div className="mb-2">
                 <b>Niswan :</b>{" "}
@@ -147,7 +232,7 @@ export default function BatchApprovals() {
                     );
                   })}
                 </div>
-              )} 
+              )}
 
               {Array.isArray(details?.items) && details.items.length === 0 && (
                 <div className="mt-3 text-xs text-gray-600">No items found for this batch.</div>

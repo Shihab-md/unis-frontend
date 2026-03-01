@@ -14,7 +14,6 @@ export default function PaymentBatchesList() {
   const [schools, setSchools] = useState([]);
 
   const [acYear, setAcYear] = useState("");
-  // ✅ HQ default = ALL schools
   const [schoolId, setSchoolId] = useState(isHQ ? "ALL" : fixedSchoolId);
   const [status, setStatus] = useState("ALL");
 
@@ -22,7 +21,6 @@ export default function PaymentBatchesList() {
   const [batches, setBatches] = useState([]);
   const [openId, setOpenId] = useState(null);
 
-  // Load dropdown data
   useEffect(() => {
     const load = async () => {
       try {
@@ -30,7 +28,6 @@ export default function PaymentBatchesList() {
         const yearsList = Array.isArray(years) ? years : years?.academicYears || [];
         setAcademicYears(yearsList);
 
-        // default year: Active else latest by string
         const active = yearsList.find((x) => String(x.active) === "Active");
         const sorted = yearsList
           .slice()
@@ -56,10 +53,20 @@ export default function PaymentBatchesList() {
     return (schools || []).sort((a, b) => String(a.code || "").localeCompare(String(b.code || "")));
   }, [schools]);
 
+  const availableSchools = useMemo(() => {
+    const map = new Map(); // schoolId -> { _id, code, nameEnglish }
+    for (const b of batches || []) {
+      const s = b?.schoolId;
+      if (s?._id) map.set(String(s._id), s);
+    }
+    return Array.from(map.values()).sort((a, b) =>
+      String(a.code || "").localeCompare(String(b.code || ""))
+    );
+  }, [batches]);
+
   const runSearch = async () => {
     const missing = [];
     if (!acYear) missing.push("Academic Year");
-    // ✅ admin must have schoolId, HQ can be ALL
     if (!schoolId && !isHQ) missing.push("Niswan");
 
     if (missing.length) {
@@ -85,7 +92,6 @@ export default function PaymentBatchesList() {
     }
   };
 
-  // auto load when year + school ready
   useEffect(() => {
     if (acYear && (isHQ ? true : !!schoolId)) runSearch();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -124,7 +130,6 @@ export default function PaymentBatchesList() {
     );
   };
 
-  // ✅ Summary cards
   const summary = useMemo(() => {
     let totalAmount = 0;
     let pending = 0;
@@ -143,7 +148,6 @@ export default function PaymentBatchesList() {
     return { totalAmount, pending, approved, rejected, cancelled, total: batches.length };
   }, [batches]);
 
-  // ✅ Export CSV (batches + items rows)
   const exportCsv = () => {
     if (!batches?.length) {
       showSwalAlert("Info", "No data to export", "info");
@@ -287,6 +291,32 @@ export default function PaymentBatchesList() {
 
   if (loading) return getPrcessing();
 
+  // ✅ helper: show proof links (Drive first, fallback proofUrl)
+  const renderProof = (b) => {
+    const view = b?.proofDriveViewUrl || b?.proofUrl || "";
+    const download = b?.proofDriveDownloadUrl || "";
+    const name = b?.proofFileName || "";
+
+    if (!view) return <b>-</b>;
+
+    return (
+      <>
+        <a className="text-blue-700 underline font-bold" href={view} target="_blank" rel="noreferrer">
+          View
+        </a>
+        {/*{download ? (
+          <>
+            {" / "}
+            <a className="text-emerald-700 underline font-bold" href={download} target="_blank" rel="noreferrer">
+              Download
+            </a>
+          </>
+        ) : null}*/}
+        {name ? <span className="text-[11px] text-gray-500"> ({name})</span> : null}
+      </>
+    );
+  };
+
   return (
     <div className="p-4 max-w-7xl mx-auto">
       {/* Header */}
@@ -297,12 +327,6 @@ export default function PaymentBatchesList() {
             <h2 className="text-lg font-bold">
               {isHQ ? "Received Invoice Payment Batches" : "Invoice Payment Batches sent to HQ"}
             </h2>
-
-            <div className="text-xs text-gray-600 mt-1">
-              {isHQ
-                ? "View payments received at HQ with filters."
-                : "View payments sent to HQ with filters."}
-            </div>
           </div>
         </div>
 
@@ -320,11 +344,7 @@ export default function PaymentBatchesList() {
       <div className="grid grid-cols-1 md:grid-cols-12 gap-3 mb-4">
         <div className="md:col-span-3">
           <label className="block text-xs font-semibold text-slate-700 mb-1">Academic Year</label>
-          <select
-            className="w-full border p-2 text-sm rounded"
-            value={acYear}
-            onChange={(e) => setAcYear(e.target.value)}
-          >
+          <select className="w-full border p-2 text-sm rounded" value={acYear} onChange={(e) => setAcYear(e.target.value)}>
             <option value="">Select Academic Year</option>
             {academicYears.map((a) => (
               <option key={a._id} value={a._id}>
@@ -337,13 +357,9 @@ export default function PaymentBatchesList() {
         {isHQ ? (
           <div className="md:col-span-5">
             <label className="block text-xs font-semibold text-slate-700 mb-1">Niswan</label>
-            <select
-              className="w-full border p-2 text-sm rounded"
-              value={schoolId}
-              onChange={(e) => setSchoolId(e.target.value)}
-            >
+            <select className="w-full border p-2 text-sm rounded" value={schoolId} onChange={(e) => setSchoolId(e.target.value)}>
               <option value="ALL">All Niswans</option>
-              {schoolOptions.map((s) => (
+              {availableSchools.map((s) => (
                 <option key={s._id} value={s._id}>
                   {s.code} : {s.nameEnglish}
                 </option>
@@ -353,42 +369,29 @@ export default function PaymentBatchesList() {
         ) : (
           <div className="md:col-span-5">
             <label className="block text-xs font-semibold text-slate-700 mb-1">Niswan</label>
-            <input
-              className="w-full border p-2 text-sm rounded bg-gray-50"
-              value={localStorage.getItem("schoolName") || ""}
-              readOnly
-            />
+            <input className="w-full border p-2 text-sm rounded bg-gray-50" value={localStorage.getItem("schoolName") || ""} readOnly />
           </div>
         )}
 
         <div className="md:col-span-2">
           <label className="block text-xs font-semibold text-slate-700 mb-1">Status</label>
-          <select
-            className="w-full border p-2 text-sm rounded"
-            value={status}
-            onChange={(e) => setStatus(e.target.value)}
-          >
+          <select className="w-full border p-2 text-sm rounded" value={status} onChange={(e) => setStatus(e.target.value)}>
             <option value="ALL">ALL</option>
             <option value="PENDING_APPROVAL">PENDING_APPROVAL</option>
             <option value="APPROVED">APPROVED</option>
             <option value="REJECTED">REJECTED</option>
-            <option value="CANCELLED">CANCELLED</option>
           </select>
         </div>
 
         <div className="md:col-span-2 flex items-end">
-          <button
-            onClick={runSearch}
-            disabled={loading}
-            className="w-full border rounded bg-white p-2 font-semibold hover:bg-gray-50 disabled:opacity-60"
-          >
+          <button onClick={runSearch} disabled={loading} className="w-full border rounded bg-white p-2 font-semibold hover:bg-gray-50 disabled:opacity-60">
             {loading ? "Loading..." : "Search"}
           </button>
         </div>
       </div>
 
       {/* Summary cards */}
-      <div className="grid grid-cols-2 md:grid-cols-6 gap-3 mb-4">
+      <div className="grid grid-cols-2 md:grid-cols-5 gap-5 mb-4">
         <div className="relative overflow-hidden rounded-md border border-white/80 bg-gradient-to-br from-indigo-500 to-sky-500 p-4 text-white shadow-lg hover:shadow-2xl transition">
           <div className="pointer-events-none absolute -right-10 -top-10 h-28 w-28 rounded-full bg-white/25 blur-2xl" />
           <div className="text-[11px] font-semibold text-white/90">Total Batches</div>
@@ -412,17 +415,19 @@ export default function PaymentBatchesList() {
           <div className="text-[11px] font-semibold text-white/90">Rejected</div>
           <div className="mt-1 text-lg font-bold text-white drop-shadow">{summary.rejected}</div>
         </div>
-
+        {/*
         <div className="relative overflow-hidden rounded-md border border-white/80 bg-gradient-to-br from-slate-500 to-gray-500 p-4 text-white shadow-lg hover:shadow-2xl transition">
           <div className="pointer-events-none absolute -right-10 -top-10 h-28 w-28 rounded-full bg-white/25 blur-2xl" />
           <div className="text-[11px] font-semibold text-white/90">Cancelled</div>
           <div className="mt-1 text-lg font-bold text-white drop-shadow">{summary.cancelled}</div>
         </div>
-
+*/}
         <div className="relative overflow-hidden rounded-md border border-white/80 bg-gradient-to-br from-violet-500 to-fuchsia-500 p-4 text-white shadow-lg hover:shadow-2xl transition">
           <div className="pointer-events-none absolute -right-10 -top-10 h-28 w-28 rounded-full bg-white/25 blur-2xl" />
           <div className="text-[11px] font-semibold text-white/90">Total Amount</div>
-          <div className="mt-1 text-lg font-bold text-white drop-shadow">{summary.totalAmount}</div>
+          <div className="mt-1 text-lg font-bold text-white drop-shadow">
+            ₹ {Number(summary.totalAmount || 0).toLocaleString("en-IN")}
+          </div>
         </div>
       </div>
 
@@ -447,12 +452,10 @@ export default function PaymentBatchesList() {
               >
                 <div className="col-span-3 font-bold text-slate-800">
                   {b.batchNo}{" "}
-                  {b.receiptNumber ? (
-                    <span className="text-[10px] text-green-700">({b.receiptNumber})</span>
-                  ) : null}
+                  {b.receiptNumber ? <span className="text-[10px] text-green-700">({b.receiptNumber})</span> : null}
                 </div>
                 <div className="col-span-2">{b.paidDate ? new Date(b.paidDate).toLocaleDateString() : "-"}</div>
-                <div className="col-span-2 font-semibold">{b.totalAmount}</div>
+                <div className="col-span-2 font-semibold text-right">₹ {Number(b.totalAmount || 0).toLocaleString("en-IN")}</div>
                 <div className="col-span-2">{b.mode || "-"}</div>
                 <div className="col-span-3 flex items-center gap-2">
                   {statusBadge(b.status)}
@@ -462,8 +465,9 @@ export default function PaymentBatchesList() {
 
               {open && (
                 <div className="p-2 bg-white">
+                  {/* ✅ UPDATED: Proof View/Download */}
                   <div className="text-xs text-gray-600 mb-2">
-                    Ref: <b>{b.referenceNo || "-"}</b> &nbsp; | &nbsp; Proof: <b>{b.proofUrl ? "Uploaded" : "-"}</b>
+                    Ref: <b>{b.referenceNo || "-"}</b> &nbsp; | &nbsp; Proof: {renderProof(b)}
                   </div>
 
                   <div className="border rounded">
@@ -493,9 +497,7 @@ export default function PaymentBatchesList() {
                       </div>
                     ))}
 
-                    {(!b.items || b.items.length === 0) && (
-                      <div className="p-3 text-xs text-gray-600">No items</div>
-                    )}
+                    {(!b.items || b.items.length === 0) && <div className="p-3 text-xs text-gray-600">No items</div>}
                   </div>
                 </div>
               )}

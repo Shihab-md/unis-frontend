@@ -69,6 +69,8 @@ import BulkPaymentCreate from "./components/fees/BulkPaymentCreate";
 import PaymentBatchesList from "./components/fees/PaymentBatchesList";
 import PendingInvoicesNotSentHQ from "./components/fees/PendingInvoicesNotSentHQ";
 
+import ConnectDriveHidden from "./components/admin/ConnectDriveHidden";
+
 function App() {
   return (
     <BrowserRouter>
@@ -153,6 +155,8 @@ function App() {
           <Route path="/dashboard/fees" element={<BulkPaymentCreate />}></Route>
           <Route path="/dashboard/fees/sent-to-hq" element={<PaymentBatchesList />}></Route>
           <Route path="/dashboard/hq/pending-invoices" element={<PendingInvoicesNotSentHQ />}></Route>
+
+          <Route path="/dashboard/admin/connect-drive" element={<ConnectDriveHidden />} />
 
         </Route>
 

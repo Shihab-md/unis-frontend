@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { fetchDueInvoices, createPaymentBatch } from "../../api/feesApi.js";
-import { uploadProofFile } from "../../api/uploadApi.js";
+import { uploadPaymentProofToDrive } from "../../api/integrationsApi.js";
 import { showSwalAlert, LinkIcon, getPrcessing } from "../../utils/CommonHelper";
 
 export default function BulkPaymentCreate() {
@@ -11,8 +11,15 @@ export default function BulkPaymentCreate() {
   const [selected, setSelected] = useState({});
   const [mode, setMode] = useState("bank");
   const [referenceNo, setReferenceNo] = useState("");
+
+  // legacy (kept)
   const [proofUrl, setProofUrl] = useState("");
+
+  // ✅ NEW: drive proof object
+  const [proofDrive, setProofDrive] = useState(null); // { fileId, fileName, viewUrl, downloadUrl }
+
   const [processing, setProcessing] = useState(false);
+  const [uploadingProof, setUploadingProof] = useState(false);
 
   // ✅ Select-all checkbox ref (for indeterminate UI)
   const selectAllRef = useRef(null);
@@ -22,9 +29,7 @@ export default function BulkPaymentCreate() {
     const run = async () => {
       try {
         setProcessing(true);
-        //console.log("School Id : " + schoolId + ", AC Year : " + acYear);
         const data = await fetchDueInvoices({ schoolId, acYear });
-        //console.log(data);
         if (!alive) return;
         setInvoices(Array.isArray(data) ? data : []);
       } catch {
@@ -34,7 +39,7 @@ export default function BulkPaymentCreate() {
       }
       setProcessing(false);
     };
-    
+
     if (schoolId && acYear) run();
     return () => (alive = false);
   }, [schoolId, acYear]);
@@ -80,10 +85,8 @@ export default function BulkPaymentCreate() {
     if (!invoices.length) return;
 
     setSelected((prev) => {
-      // If already all selected -> clear all
       if (allChecked) return {};
 
-      // Else select all invoices with full balance
       const next = { ...prev };
       for (const inv of invoices) {
         next[String(inv._id)] = Number(inv.balance || 0);
@@ -99,6 +102,8 @@ export default function BulkPaymentCreate() {
       [id]: !Number.isFinite(n) ? 0 : Math.max(0, Math.min(n, Number(maxBalance || 0))),
     }));
   };
+
+  const proofAttached = !!(proofDrive?.viewUrl || proofUrl);
 
   const submit = async () => {
     const items = Object.keys(selected)
@@ -117,9 +122,30 @@ export default function BulkPaymentCreate() {
       return;
     }
 
+    // ✅ Proof required validation
+    if (!proofAttached) {
+      showSwalAlert("Info", "Please attach proof (image/pdf) before submit", "info");
+      return;
+    }
+
     setProcessing(true);
     try {
-      const payload = { schoolId, acYear, mode, referenceNo, proofUrl, items };
+      const payload = {
+        schoolId,
+        acYear,
+        mode,
+        referenceNo,
+        proofUrl, // legacy
+
+        // ✅ NEW: send drive proof fields
+        proofDriveFileId: proofDrive?.fileId || "",
+        proofDriveViewUrl: proofDrive?.viewUrl || "",
+        proofDriveDownloadUrl: proofDrive?.downloadUrl || "",
+        proofFileName: proofDrive?.fileName || "",
+
+        items,
+      };
+
       const resp = await createPaymentBatch(payload);
       if (!resp?.success) showSwalAlert("Error!", resp?.error || "Failed", "error");
       else {
@@ -131,8 +157,6 @@ export default function BulkPaymentCreate() {
     } catch {
       setProcessing(false);
       showSwalAlert("Error!", "Failed to create batch", "error");
-    } finally {
-      
     }
   };
 
@@ -145,53 +169,123 @@ export default function BulkPaymentCreate() {
         <h3 className="pl-2 text-lg font-semibold text-left">Bulk Fee Payment (Send to HQ)</h3>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-12 gap-3 mb-4">
-        <select
-          className="col-span-3 border p-2 rounded"
-          value={mode}
-          onChange={(e) => setMode(e.target.value)}
-        >
-          <option value="bank">Bank</option>
-          <option value="cash">Cash</option>
-          <option value="upi">UPI</option>
-        </select>
+      <div className="grid grid-cols-1 md:grid-cols-12 gap-5 mb-4">
+        {/* Mode card */}
+        <div className="col-span-4 relative overflow-hidden rounded-md border border-white/80 bg-gradient-to-br from-indigo-500 to-sky-500 p-4 text-white shadow-lg hover:shadow-2xl transition">
+          <div className="pointer-events-none absolute -right-10 -top-10 h-28 w-28 rounded-full bg-white/25 blur-2xl" />
+          <label className="block text-[11px] font-semibold text-white/90 mb-2">
+            Payment Mode
+          </label>
+          <select
+            className="w-full rounded border border-white/60 bg-white p-2 text-sm text-slate-900 shadow-sm outline-none focus:ring-2 focus:ring-white/50"
+            value={mode}
+            onChange={(e) => setMode(e.target.value)}
+          >
+            <option className="text-slate-900" value="bank">Bank</option>
+            <option className="text-slate-900" value="cash">Cash</option>
+            <option className="text-slate-900" value="upi">UPI</option>
+          </select>
+        </div>
 
-        <div className="col-span-1"></div>
+        {/* Reference card */}
+        <div className="col-span-4 relative overflow-hidden rounded-md border border-white/80 bg-gradient-to-br from-violet-500 to-fuchsia-500 p-4 text-white shadow-lg hover:shadow-2xl transition">
+          <div className="pointer-events-none absolute -right-10 -top-10 h-18 md:h-28 w-28 rounded-full bg-white/25 blur-2xl" />
+          <label className="block text-[11px] font-semibold text-white/90 mb-2">
+            Reference / Details
+          </label>
 
-        <input
-          className="col-span-3 border p-2 rounded"
-          placeholder="Details"
-          value={referenceNo}
-          onChange={(e) => setReferenceNo(e.target.value)}
-        />
+          <input
+            className="w-full rounded border border-white/60 bg-white p-2 text-sm text-slate-900 shadow-sm placeholder-slate-400 outline-none focus:ring-2 focus:ring-white/50"
+            placeholder="Bank ref / UPI txn / notes"
+            value={referenceNo}
+            onChange={(e) => setReferenceNo(e.target.value)}
+          />
+        </div>
 
-        <div className="col-span-1"></div>
+        {/* Proof upload card */}
+        <div className="col-span-4 relative overflow-hidden rounded-md border border-white/80 bg-gradient-to-br from-emerald-500 to-teal-500 p-4 text-white shadow-lg hover:shadow-2xl transition">
+          <div className="pointer-events-none absolute -right-10 -top-10 h-28 w-28 rounded-full bg-white/25 blur-2xl" />
 
-        <div className="col-span-4 border p-2 rounded">
-          {/*
+          <div className="flex items-center justify-between mb-2">
+            <label className="block text-[11px] font-semibold text-white/90">
+              Attach Proof <span className="text-yellow-200 font-bold">*</span>
+            </label>
+
+            <div className="text-[11px] text-white/85">
+              (Allowed: jpg/png/pdf • Max: 2MB)
+            </div>
+          </div>
+
           <input
             type="file"
             accept=".jpg,.jpeg,.png,.pdf"
+            disabled={uploadingProof}
+            className="block w-full text-xs text-white file:mr-3 file:rounded file:border-0 file:bg-white/25 file:px-3 file:py-2 file:text-white file:font-bold hover:file:bg-white/35 disabled:opacity-60"
             onChange={async (e) => {
               const f = e.target.files?.[0];
               if (!f) return;
+
+              const ok = ["image/jpeg", "image/png", "application/pdf"].includes(f.type);
+              if (!ok) {
+                showSwalAlert("Error!", "Only jpg/png/pdf allowed", "error");
+                return;
+              }
+              if (f.size > 5 * 1024 * 1024) {
+                showSwalAlert("Error!", "Max file size is 5MB", "error");
+                return;
+              }
+
               try {
-                const url = await uploadProofFile(f);
-                setProofUrl(url);
-                showSwalAlert("Uploaded", "Proof uploaded successfully", "success");
-              } catch {
-                showSwalAlert("Error!", "Proof upload failed", "error");
+                setUploadingProof(true);
+
+                const up = await uploadPaymentProofToDrive(f);
+                if (!up?.success) {
+                  showSwalAlert("Error!", up?.error || "Proof upload failed", "error");
+                  return;
+                }
+
+                setProofDrive({
+                  fileId: up.fileId,
+                  fileName: up.fileName,
+                  viewUrl: up.viewUrl,
+                  downloadUrl: up.downloadUrl,
+                });
+
+                setProofUrl("");
+                showSwalAlert("Uploaded", "Proof uploaded to Google Drive", "success");
+              } catch (err) {
+                console.log(err);
+                showSwalAlert("Error!", err?.message || "Proof upload failed", "error");
+              } finally {
+                setUploadingProof(false);
+                e.target.value = "";
               }
             }}
           />
-          {proofUrl && <div className="text-xs text-green-700 mt-1">Proof: {proofUrl}</div>}
-          */}
+
+          {uploadingProof ? (
+            <div className="text-xs mt-2 font-bold text-white/90">Uploading…</div>
+          ) : proofDrive?.viewUrl ? (
+            <div className="text-xs mt-2">
+              <span className="font-bold text-white/90">Proof:</span>{" "}
+              <a className="underline font-bold" href={proofDrive.viewUrl} target="_blank" rel="noreferrer">
+                View
+              </a>
+              {proofDrive?.fileName ? (
+                <span className="text-[11px] text-white/80"> ({proofDrive.fileName})</span>
+              ) : null}
+            </div>
+          ) : proofUrl ? (
+            <div className="text-xs mt-2 font-bold text-white/90">Proof: {proofUrl}</div>
+          ) : (
+            <div className="text-xs mt-2 font-bold text-yellow-100">Proof not attached</div>
+          )}
         </div>
       </div>
 
       <div className="mb-3 font-semibold">
-        Total: {total}{" "}
-        <span className="text-xs font-normal text-gray-500">
+        Total: ₹ {Number(total || 0).toLocaleString("en-IN")}   
+        <span className="ml-5 text-xs font-normal text-gray-500">
           (Selected {selectedCount}/{invoiceCount})
         </span>
       </div>
@@ -228,7 +322,7 @@ export default function BulkPaymentCreate() {
               <div className="col-span-3">{String(inv.userId?.name || "-")}</div>
               <div className="col-span-3">{String(inv.courseId?.name || "-")}</div>
               <div className="col-span-1">{String(inv.source || "-")}</div>
-              <div className="col-span-1">{inv.balance}</div>
+              <div className="col-span-1 text-right mr-5">₹ {Number(inv.balance || 0).toLocaleString("en-IN")}</div>
               <div className="col-span-1">
                 <input
                   disabled={!checked}
@@ -245,11 +339,15 @@ export default function BulkPaymentCreate() {
       </div>
 
       <button
-        disabled={processing}
+        disabled={processing || uploadingProof || !proofAttached}
         onClick={submit}
-        className="mt-4 w-full bg-teal-600 text-white p-2 rounded hover:bg-teal-700"
+        className={`mt-4 w-full text-white p-2 rounded ${processing || uploadingProof || !proofAttached
+          ? "bg-gray-400 cursor-not-allowed"
+          : "bg-teal-600 hover:bg-teal-700"
+          }`}
+        title={!proofAttached ? "Attach proof to submit" : ""}
       >
-        {processing ? "Submitting..." : "Submit Batch to HQ"}
+        {uploadingProof ? "Uploading Proof..." : processing ? "Submitting..." : "Submit Batch to HQ"}
       </button>
     </div>
   );
