@@ -110,7 +110,7 @@ const View = () => {
                     onClick={handleHideDialog}
                   >
                     <img
-                      className="p-2 size-100 border items-center justify-center shadow-lg"
+                      className="p-2 size-100 border items-center justify-center shadow-lg hover:-translate-y-0.5"
                       onClick={handleHideDialog}
                       src={imgSrc ? `${imgSrc}` : "/certificate.jpg"}
                     />
@@ -120,11 +120,11 @@ const View = () => {
 
               <div className="flex mt-2 space-x-10 mb-3 items-center justify-center" title="Click to ZOOM">
                 <img
-                  className='size-40 mt-3 border items-center justify-center rounded-lg shadow-lg'
+                  className='size-40 mt-3 border items-center justify-center rounded-lg shadow-lg hover:-translate-y-0.5'
                   onClick={handleShowDialog}
                   src={imgSrc ? `${imgSrc}` : "/certificate.jpg"}
                 />
-                <FaDownload onClick={handleDownload} className="text-3xl text-green-700 bg-gray-200 border rounded shadow-xl items-bottom justify-end" />
+                <FaDownload onClick={handleDownload} className="text-3xl text-green-700 bg-gray-200 border rounded shadow-xl items-bottom justify-end hover:-translate-y-0.5" />
               </div>
 
               <div className="flex mt-1 space-x-3 mb-5" />

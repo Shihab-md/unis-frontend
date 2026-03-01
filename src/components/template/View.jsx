@@ -90,14 +90,14 @@ const View = () => {
                   onClick={handleHideDialog}
                 >
                   <img
-                    className="p-2 size-100 border items-center justify-center shadow-lg rounded-lg" onClick={handleHideDialog}
+                    className="p-2 size-100 border items-center justify-center shadow-lg rounded-lg hover:-translate-y-0.5" onClick={handleHideDialog}
                     src={template.template && template.template != "" ? template.template + "?" + new Date().getTime() : "/template.jpg"}
                   />
                 </dialog></div>
                 : <div></div>}
 
               <div className="flex mt-2 space-x-3 mb-3 items-center justify-center" title="Click to ZOOM" >
-                <img className='size-40 mt-5 border items-center justify-center rounded-lg shadow-lg' onClick={handleShowDialog}
+                <img className='size-40 mt-5 border items-center justify-center rounded-lg shadow-lg hover:-translate-y-0.5' onClick={handleShowDialog}
                   src={template.template && template.template != "" ? template.template + "?" + new Date().getTime() : "/template.jpg"}
                 />
                 {/* <button onClick={handleDownload}>
