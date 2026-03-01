@@ -732,7 +732,7 @@ const Add = () => {
           <button
             type="submit"
             data-ripple-light="true"
-            className="w-full mt-6 bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded-lg shadow-lg"
+            className="w-full mt-6 bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded-lg shadow-lg hover:-translate-y-0.5"
           >
             Add Niswan
           </button>

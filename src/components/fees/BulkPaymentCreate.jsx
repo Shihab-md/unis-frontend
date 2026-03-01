@@ -6,6 +6,7 @@ import { showSwalAlert, LinkIcon, getPrcessing } from "../../utils/CommonHelper"
 export default function BulkPaymentCreate() {
   const schoolId = localStorage.getItem("schoolId");
   const acYear = "680485d9361ed06368c57f7c"; //2024-2025 //localStorage.getItem("acYearId");
+  // acYear will be replaced in controller.
 
   const [invoices, setInvoices] = useState([]);
   const [selected, setSelected] = useState({});
@@ -230,8 +231,8 @@ export default function BulkPaymentCreate() {
                 showSwalAlert("Error!", "Only jpg/png/pdf allowed", "error");
                 return;
               }
-              if (f.size > 5 * 1024 * 1024) {
-                showSwalAlert("Error!", "Max file size is 5MB", "error");
+              if (f.size > 2 * 1024 * 1024) {
+                showSwalAlert("Error!", "Max file size is 2MB", "error");
                 return;
               }
 

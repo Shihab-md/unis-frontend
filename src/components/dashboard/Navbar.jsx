@@ -20,7 +20,7 @@ const Navbar = () => {
         </Link>
       </div>
       <div className="relative z-10 flex flex-col items-center mt-2">
-        <p className={`font-bold text-shadow-lg ${isHQ ? "text-xl lg:text-2xl" : "text-xl lg:text-3xl"}`}>
+        <p className={`font-bold drop-shadow-4xl ${isHQ ? "text-xl lg:text-2xl" : "text-xl lg:text-3xl"}`}>
           UNIS ACADEMY
         </p>
 

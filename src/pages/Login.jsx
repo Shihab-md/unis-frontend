@@ -128,9 +128,9 @@ const Login = () => {
 
         <div className="flex flex-col items-center justify-center min-h-screen space-y-6 h-75 bg-[url(/bg-img.jpg)] bg-fixed bg-cover bg-center bg-repeat">
           <img width={140} className="rounded-md shadow-lg w-34 border hover:-translate-y-0.5" src="/Logo - UNIS.PNG" />
-          <p className="p-5 font-bold text-shadow-lg text-indigo-900 text-4xl">UNIS ACADEMY</p>
+          <p className="p-5 font-bold drop-shadow-lg text-indigo-900 text-4xl hover:-translate-y-0.5">UNIS ACADEMY</p>
 
-          <div className="border p-6 w-80 bg-white shadow-lg rounded-lg bg-[url(/bg-img.jpg)]">
+          <div className="border p-6 w-80 bg-white shadow-lg rounded-lg bg-[url(/bg-img.jpg)] hover:-translate-y-0.5">
             <h2 className="flex text-2xl font-bold mb-4 content-right">Login</h2>
 
             <form onSubmit={handleSubmit} autoComplete="off">

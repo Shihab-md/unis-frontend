@@ -44,13 +44,13 @@ export default function BulkPromote() {
 
         const coursesList = Array.isArray(c) ? c : c?.courses || [];
         const yearsList = Array.isArray(a) ? a : a?.academicYears || [];
-        console.log(yearsList);
+        //console.log(yearsList);
         setCourses(Array.isArray(coursesList) ? coursesList : []);
         setAcademicYears(Array.isArray(yearsList) ? yearsList : []);
 
-        const active = (yearsList || []).find((x) => String(x.active) === "Active");
+        const next = (yearsList || []).find((x) => String(x.active) === "Next");
 
-        setTargetAcYear(active._id);
+        setTargetAcYear(next._id);
       } catch (e) {
         console.log("BulkPromote cache load error:", e);
         setCourses([]);
@@ -186,6 +186,7 @@ export default function BulkPromote() {
       cancelButtonText: "Cancel",
       reverseButtons: true,
       allowOutsideClick: !loading,
+      background: "url(/bg_card.png)",
     });
 
     if (!result.isConfirmed) return;
@@ -350,7 +351,7 @@ export default function BulkPromote() {
             <button
               onClick={() => confirmAndSubmit("PROMOTE")}
               disabled={loading || selectedCount === 0}
-              className="flex-1 sm:flex-none rounded-lg bg-teal-600 px-4 py-2 text-sm font-semibold text-white hover:bg-teal-700 disabled:opacity-60"
+              className="flex-1 sm:flex-none rounded-lg bg-teal-600 px-4 py-2 text-sm font-semibold text-white hover:bg-teal-700 disabled:opacity-60 hover:-translate-y-0.5"
             >
               {loading ? "Working..." : `Promote`}
             </button>
@@ -358,7 +359,7 @@ export default function BulkPromote() {
             <button
               onClick={() => confirmAndSubmit("NOT_PROMOTE")}
               disabled={loading || selectedCount === 0}
-              className="flex-1 sm:flex-none rounded-lg bg-amber-500 px-4 py-2 text-sm font-semibold text-white hover:bg-amber-600 disabled:opacity-60"
+              className="flex-1 sm:flex-none rounded-lg bg-amber-500 px-4 py-2 text-sm font-semibold text-white hover:bg-amber-600 disabled:opacity-60 hover:-translate-y-0.5"
             >
               {loading ? "Working..." : `Not Promote`}
             </button>
@@ -366,7 +367,7 @@ export default function BulkPromote() {
             <button
               onClick={() => confirmAndSubmit("COMPLETE")}
               disabled={loading || selectedCount === 0}
-              className="flex-1 sm:flex-none rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-700 disabled:opacity-60"
+              className="flex-1 sm:flex-none rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-700 disabled:opacity-60 hover:-translate-y-0.5"
             >
               {loading ? "Working..." : `Complete`}
             </button>

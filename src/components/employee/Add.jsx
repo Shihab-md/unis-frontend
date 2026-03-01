@@ -550,7 +550,7 @@ const Add = () => {
           <button
             type="submit"
             disabled={processing || !isPasswordStrong(password)}
-            className="w-full mt-3 bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded-lg shadow-lg disabled:opacity-50"
+            className="w-full mt-3 bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded-lg shadow-lg disabled:opacity-50 hover:-translate-y-0.5"
           >
             Add Employee
           </button>

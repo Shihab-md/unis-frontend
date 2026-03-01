@@ -150,7 +150,7 @@ const View = () => {
               <div className="flex mt-1 space-x-3 mb-5" />
             </div>
             <button
-              className="w-full mt-1 mb-3 bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded-lg shadow-lg"
+              className="w-full mt-1 mb-3 bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded-lg shadow-lg hover:-translate-y-0.5"
               data-ripple-light="true"
               onClick={() => navigate(`/dashboard/certificates`)}
             >
