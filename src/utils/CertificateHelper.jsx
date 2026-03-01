@@ -29,7 +29,7 @@ export const columns = [
       </p>
       <p className="mb-1">
         <span className="text-blue-700 mr-2">Student Name:</span> {row.studentName}
-      </p>
+      </p> 
       <p>
         <span className="text-blue-700 mr-3">Parent / Guardian name:</span> {row.fatherName}
       </p>

@@ -171,7 +171,7 @@ export default function BulkPaymentCreate() {
 
       <div className="grid grid-cols-1 md:grid-cols-12 gap-5 mb-4">
         {/* Mode card */}
-        <div className="col-span-4 relative overflow-hidden rounded-md border border-white/80 bg-gradient-to-br from-indigo-500 to-sky-500 p-4 text-white shadow-lg hover:shadow-2xl transition">
+        <div className="col-span-4 relative overflow-hidden rounded-md border border-white/80 bg-gradient-to-br from-indigo-500 to-sky-500 p-4 text-white shadow-lg hover:shadow-2xl transition hover:-translate-y-0.5">
           <div className="pointer-events-none absolute -right-10 -top-10 h-28 w-28 rounded-full bg-white/25 blur-2xl" />
           <label className="block text-[11px] font-semibold text-white/90 mb-2">
             Payment Mode
@@ -188,7 +188,7 @@ export default function BulkPaymentCreate() {
         </div>
 
         {/* Reference card */}
-        <div className="col-span-4 relative overflow-hidden rounded-md border border-white/80 bg-gradient-to-br from-violet-500 to-fuchsia-500 p-4 text-white shadow-lg hover:shadow-2xl transition">
+        <div className="col-span-4 relative overflow-hidden rounded-md border border-white/80 bg-gradient-to-br from-violet-500 to-fuchsia-500 p-4 text-white shadow-lg hover:shadow-2xl transition hover:-translate-y-0.5">
           <div className="pointer-events-none absolute -right-10 -top-10 h-18 md:h-28 w-28 rounded-full bg-white/25 blur-2xl" />
           <label className="block text-[11px] font-semibold text-white/90 mb-2">
             Reference / Details
@@ -203,7 +203,7 @@ export default function BulkPaymentCreate() {
         </div>
 
         {/* Proof upload card */}
-        <div className="col-span-4 relative overflow-hidden rounded-md border border-white/80 bg-gradient-to-br from-emerald-500 to-teal-500 p-4 text-white shadow-lg hover:shadow-2xl transition">
+        <div className="col-span-4 relative overflow-hidden rounded-md border border-white/80 bg-gradient-to-br from-emerald-500 to-teal-500 p-4 text-white shadow-lg hover:shadow-2xl transition hover:-translate-y-0.5">
           <div className="pointer-events-none absolute -right-10 -top-10 h-28 w-28 rounded-full bg-white/25 blur-2xl" />
 
           <div className="flex items-center justify-between mb-2">
@@ -341,7 +341,7 @@ export default function BulkPaymentCreate() {
       <button
         disabled={processing || uploadingProof || !proofAttached}
         onClick={submit}
-        className={`mt-4 w-full text-white p-2 rounded ${processing || uploadingProof || !proofAttached
+        className={`mt-4 w-full text-white p-2 rounded hover:-translate-y-0.5 ${processing || uploadingProof || !proofAttached
           ? "bg-gray-400 cursor-not-allowed"
           : "bg-teal-600 hover:bg-teal-700"
           }`}

@@ -990,11 +990,11 @@ export default function HomePage() {
                         {/* Left: Brand */}
                         <div className="flex items-center gap-3">
                             <div className="relative">
-                                <div className="absolute -inset-1 rounded-2xl bg-gradient-to-br from-indigo-500 via-teal-400 to-amber-400 blur-md opacity-60" />
+                                <div className="absolute -inset-1 rounded-2xl bg-gradient-to-br from-indigo-500 via-teal-400 to-amber-400 blur-md opacity-60 hover:-translate-y-0.5" />
                                 <img
                                     src="/Logo - UNIS.PNG"
                                     alt="UNIS"
-                                    className="relative h-11 w-11 rounded-md border border-white/60 bg-white/70 p-1 shadow"
+                                    className="relative h-11 w-11 rounded-md border border-white/60 bg-white/70 p-1 shadow hover:-translate-y-0.5"
                                 />
                             </div>
 
@@ -1015,7 +1015,7 @@ export default function HomePage() {
                         <div className="flex items-center gap-2 sm:gap-3">
                             <button
                                 onClick={() => navigate("/login")}
-                                className="group relative overflow-hidden rounded-lg bg-gradient-to-r from-teal-600 to-emerald-600 px-3 py-2 text-sm font-semibold text-white shadow-lg transition hover:brightness-110 active:scale-[0.98]"
+                                className="group relative overflow-hidden rounded-lg bg-gradient-to-r from-teal-600 to-emerald-600 px-3 py-2 text-sm font-semibold text-white shadow-lg transition hover:brightness-110 active:scale-[0.98] hover:-translate-y-0.5"
                             >
                                 <span className="absolute inset-0 opacity-0 transition group-hover:opacity-100 bg-white/10" />
                                 <span className="relative flex items-center gap-2">
@@ -1092,21 +1092,21 @@ export default function HomePage() {
                         title="Active Supervisors"
                         value={stats.supervisorsCount}
                         loading={loading}
-                        colorClass="bg-gradient-to-br from-indigo-600 to-sky-500 shadow-lg hover:shadow-2xl transition"
+                        colorClass="bg-gradient-to-br from-indigo-600 to-sky-500 shadow-lg hover:shadow-2xl transition hover:-translate-y-0.5"
                         icon="📌"
                     />
                     <StatCard
                         title="Active Niswans"
                         value={stats.schoolsCount}
                         loading={loading}
-                        colorClass="bg-gradient-to-br from-emerald-600 to-teal-500 shadow-lg hover:shadow-2xl transition"
+                        colorClass="bg-gradient-to-br from-emerald-600 to-teal-500 shadow-lg hover:shadow-2xl transition hover:-translate-y-0.5"
                         icon="🏛️"
                     />
                     <StatCard
                         title="Active Students"
                         value={stats.studentsCount}
                         loading={loading}
-                        colorClass="bg-gradient-to-br from-amber-500 to-red-400 shadow-lg hover:shadow-2xl transition"
+                        colorClass="bg-gradient-to-br from-amber-500 to-red-400 shadow-lg hover:shadow-2xl transition hover:-translate-y-0.5"
                         icon="📊"
                     />
                 </div>

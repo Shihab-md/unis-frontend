@@ -39,7 +39,7 @@ const StatCard = ({ title, value, loading, colorClass, icon, sub }) => {
   const animated = useCountUp(loading ? 0 : value, 950);
 
   return (
-    <div className={`relative overflow-hidden rounded-lg border border-white/80 bg-white/80 p-5 shadow-lg hover:shadow-2xl ${colorClass}`}>
+    <div className={`relative overflow-hidden rounded-lg border border-white/80 bg-white/80 p-5 shadow-lg hover:-translate-y-0.5 hover:shadow-2xl ${colorClass}`}>
       <div className="pointer-events-none absolute -right-10 -top-10 h-18 w-18 rounded-md bg-white/35 blur-xl" />
       <div className="flex items-start justify-between gap-3">
         <div>
@@ -298,7 +298,7 @@ export default function PendingInvoicesNotSentHQ() {
       </div>
 
       {/* Table */}
-      <div className="border rounded bg-white mt-5">
+      <div className="border rounded bg-white mt-5 hover:-translate-y-0.5">
         <div className="p-2 font-bold text-xs bg-gray-100 flex items-center justify-between">
           <span>Invoices (Not Received at HQ)</span>
           <span className="text-[11px] font-bold text-gray-600">{invoices?.length || 0} record(s)</span>

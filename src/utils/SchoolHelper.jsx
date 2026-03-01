@@ -44,10 +44,17 @@ export const columns = [
     wrap: true,
     selector: row => (
       <div className="mt-2 mb-2">
-        {"Total : " + row.studentCount}
+        <p>
+          <span className="font-semibold text-blue-700 mr-1">Total:</span> {row.studentCount}
+        </p>
         <div className="mt-1 mb-1"></div>
         {row.studentCountsByCourse?.map((course, i) => (
-          <div key={i}>{course.courseName + " : " + course.count}</div>
+          <div key={i}>
+            <p className="mr-1">
+              <span className="text-blue-700">{course.courseName}{" : "}</span>
+              <span>{course.count}</span>
+            </p>
+          </div>
         ))}
       </div>
     ),

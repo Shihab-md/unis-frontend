@@ -263,7 +263,7 @@ export function getFilterGif() {
       style={{ position: 'absolute' }}
       open
     >
-      <img width={160} className='flex items-center justify-center rounded-3xl shadow-2xl border' src="/filter.gif" />
+      <img width={160} className='flex items-center justify-center rounded-3xl shadow-2xl border hover:-translate-y-0.5' src="/filter.gif" />
     </dialog>
   </div>
 }
@@ -271,35 +271,35 @@ export function getFilterGif() {
 export function LinkIcon(toPage, purpose) {
   if (purpose === "Add") {
     return <Link to={toPage} >
-      <FaPlusSquare className="text-3xl lg:text-4xl bg-teal-700 text-white rounded shadow-lg" /></Link>
+      <FaPlusSquare className="text-3xl lg:text-4xl bg-teal-700 text-white rounded shadow-lg hover:-translate-y-0.5" /></Link>
 
   } else if (purpose === "Back") {
     return <Link to={toPage} >
-      <FaArrowAltCircleLeft className="text-3xl lg:text-4xl bg-blue-700 text-white rounded shadow-lg" /> </Link>
+      <FaArrowAltCircleLeft className="text-3xl lg:text-4xl bg-blue-700 text-white rounded shadow-lg hover:-translate-y-0.5" /> </Link>
 
   } else if (purpose === "Import") {
     return <Link to={toPage} >
-      <FaRegCaretSquareDown className="text-3xl lg:text-4xl bg-indigo-700 text-white rounded shadow-lg" /> </Link>
+      <FaRegCaretSquareDown className="text-3xl lg:text-4xl bg-indigo-700 text-white rounded shadow-lg hover:-translate-y-0.5" /> </Link>
 
   } else if (purpose === "Filter") {
     return <Link to={toPage} >
-      <FaTasks className="text-3xl lg:text-4xl text-fuchsia-500 bg-white rounded shadow-lg border-2 border-fuchsia-700 p-1 lg:p-1.5" /> </Link>
+      <FaTasks className="text-3xl lg:text-4xl text-fuchsia-500 bg-white rounded shadow-lg border-2 border-fuchsia-700 p-1 lg:p-1.5 hover:-translate-y-0.5" /> </Link>
 
   } else if (purpose === "FeesPaid") {
     return <Link to={toPage} >
-      <FaCheck className="text-3xl lg:text-4xl bg-white text-yellow-700 border-2 border-yellow-700 rounded shadow-lg p-1 lg:p-1.5" /> </Link>
+      <FaCheck className="text-3xl lg:text-4xl bg-white text-yellow-700 border-2 border-yellow-700 rounded shadow-lg p-1 lg:p-1.5 hover:-translate-y-0.5" /> </Link>
 
   } else if (purpose === "RemoveStudents") {
     return <Link to={toPage} >
-      <FaTrashAlt className="text-3xl lg:text-4xl bg-white text-red-500 border-2 border-red-500 rounded shadow-lg p-1 lg:p-1.5" /> </Link>
+      <FaTrashAlt className="text-3xl lg:text-4xl bg-white text-red-500 border-2 border-red-500 rounded shadow-lg p-1 lg:p-1.5 hover:-translate-y-0.5" /> </Link>
 
   } else if (purpose === "Promote") {
     return <Link to={toPage} >
-      <FaUserCheck className="text-3xl lg:text-4xl bg-white text-purple-500 border-2 border-purple-500 rounded shadow-lg p-1 lg:p-1.5" /> </Link>
+      <FaUserCheck className="text-3xl lg:text-4xl bg-white text-purple-500 border-2 border-purple-500 rounded shadow-lg p-1 lg:p-1.5 hover:-translate-y-0.5" /> </Link>
 
   } else if (purpose === "Search") {
     return <Link to={toPage} >
-      <FaSearch className="text-3xl text-cyan-700 rounded p-1" /> </Link>
+      <FaSearch className="text-3xl text-cyan-700 rounded p-1 hover:-translate-y-0.5" /> </Link>
   }
 }
 
@@ -345,19 +345,19 @@ export function showConfirmationSwalAlert(title, message, icon) {
 export function getButtonStyle(buttonType) {
 
   if (buttonType === 'View') {
-    return "px-1.5 py-1 m-1 bg-teal-600 text-base text-teal-100 rounded-md shadow-md shadow-teal-200";
+    return "px-1.5 py-1 m-1 bg-teal-600 text-base text-teal-100 rounded-md shadow-md shadow-teal-200 hover:-translate-y-0.5";
 
   } else if (buttonType === 'Edit') {
-    return "px-1.5 py-1 m-1 bg-blue-600 text-base text-blue-100 rounded-md shadow-md shadow-blue-200";
+    return "px-1.5 py-1 m-1 bg-blue-600 text-base text-blue-100 rounded-md shadow-md shadow-blue-200 hover:-translate-y-0.5";
 
   } else if (buttonType === 'Delete') {
-    return "px-1.5 py-1 m-1 bg-red-600 text-base text-red-100 rounded-md shadow-md shadow-red-200";
+    return "px-1.5 py-1 m-1 bg-red-600 text-base text-red-100 rounded-md shadow-md shadow-red-200 hover:-translate-y-0.5";
 
   } else if (buttonType === 'Promote') {
-    return "px-1.5 py-1 m-1 bg-purple-500 text-base text-purple-100 rounded-md shadow-md shadow-purple-200";
+    return "px-1.5 py-1 m-1 bg-purple-500 text-base text-purple-100 rounded-md shadow-md shadow-purple-200 hover:-translate-y-0.5";
 
   } else if (buttonType === 'Transfer') {
-    return "px-1.5 py-1 m-1 bg-yellow-700 text-base text-yellow-100 rounded-md shadow-md shadow-yellow-200";
+    return "px-1.5 py-1 m-1 bg-yellow-700 text-base text-yellow-100 rounded-md shadow-md shadow-yellow-200 hover:-translate-y-0.5";
 
   }
 }

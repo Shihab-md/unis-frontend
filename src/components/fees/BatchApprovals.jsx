@@ -242,14 +242,14 @@ export default function BatchApprovals() {
                 <button
                   disabled={processing}
                   onClick={doApprove}
-                  className="flex-1 bg-green-600 text-white p-2 rounded hover:bg-green-700 disabled:opacity-60"
+                  className="flex-1 bg-green-600 text-white p-2 rounded hover:bg-green-700 disabled:opacity-60 hover:-translate-y-0.5"
                 >
                   {processing ? "Working..." : "Approve"}
                 </button>
                 <button
                   disabled={processing}
                   onClick={doReject}
-                  className="flex-1 bg-red-600 text-white p-2 rounded hover:bg-red-700 disabled:opacity-60"
+                  className="flex-1 bg-red-600 text-white p-2 rounded hover:bg-red-700 disabled:opacity-60 hover:-translate-y-0.5"
                 >
                   Reject
                 </button>

@@ -127,7 +127,7 @@ const Login = () => {
       >
 
         <div className="flex flex-col items-center justify-center min-h-screen space-y-6 h-75 bg-[url(/bg-img.jpg)] bg-fixed bg-cover bg-center bg-repeat">
-          <img width={140} className="rounded-md shadow-lg w-34 border" src="/Logo - UNIS.PNG" />
+          <img width={140} className="rounded-md shadow-lg w-34 border hover:-translate-y-0.5" src="/Logo - UNIS.PNG" />
           <p className="p-5 font-bold text-shadow-lg text-indigo-900 text-4xl">UNIS ACADEMY</p>
 
           <div className="border p-6 w-80 bg-white shadow-lg rounded-lg bg-[url(/bg-img.jpg)]">
@@ -170,7 +170,7 @@ const Login = () => {
               <div className="mb-3">
                 <button
                   type="submit"
-                  className="flex w-full bg-teal-600 text-white py-2 items-center justify-center rounded-lg shadow-xl hover:bg-teal-700"
+                  className="flex w-full bg-teal-600 text-white py-2 items-center justify-center rounded-lg shadow-xl hover:bg-teal-700 hover:-translate-y-0.5"
                 >
                   بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيْم
                 </button>
