@@ -170,7 +170,8 @@ const Login = () => {
               <div className="mb-3">
                 <button
                   type="submit"
-                  className="flex w-full bg-teal-600 text-white py-2 items-center justify-center rounded-lg shadow-xl hover:bg-teal-700 hover:-translate-y-0.5"
+                  dir="rtl"
+                  className='flex w-full bg-teal-600 text-white py-2 items-center justify-center rounded-lg shadow-xl hover:bg-teal-700 hover:-translate-y-0.5 font-["Noto_Naskh_Arabic"] text-xl'
                 >
                   بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيْم
                 </button>

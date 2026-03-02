@@ -87,7 +87,7 @@ const StatCard = ({ title, value, loading, colorClass, icon }) => {
 
     return (
         <div
-            className={`relative overflow-hidden rounded-2xl border bg-white/80 backdrop-blur p-5 shadow-sm ${colorClass}`}
+            className={`relative overflow-hidden rounded-lg border bg-white/80 backdrop-blur p-5 shadow-sm ${colorClass}`}
         >
             {/* Decorative blob */}
             <div className="pointer-events-none absolute -right-10 -top-10 h-28 w-28 rounded-full bg-white/35 blur-xl" />
@@ -97,7 +97,7 @@ const StatCard = ({ title, value, loading, colorClass, icon }) => {
                     <div className="text-xs font-bold uppercase tracking-wide text-white/90">
                         {title}
                     </div>
-                    <div className="mt-2 text-4xl font-extrabold text-white drop-shadow">
+                    <div className="mt-2 md:text-4xl text-2xl font-extrabold text-white drop-shadow">
                         {loading ? "0" : animated}
                     </div>
                 </div>
@@ -126,8 +126,8 @@ const TogglePill = ({ active, onClick, children }) => (
         type="button"
         onClick={onClick}
         className={`rounded-full px-3 py-1 text-xs font-bold transition ${active
-                ? "bg-teal-600 text-white shadow"
-                : "bg-white/70 backdrop-blur text-slate-800 hover:bg-white/90 border"
+            ? "bg-teal-600 text-white shadow"
+            : "bg-white/70 backdrop-blur text-slate-800 hover:bg-white/90 border"
             }`}
     >
         {children}
@@ -382,8 +382,8 @@ const PhotoCarousel = ({ images = [], autoMs = 3500 }) => {
                                     key={i}
                                     onClick={() => setIdx(i)}
                                     className={`h-2.5 w-2.5 rounded-full ${i === idx
-                                            ? "bg-teal-600"
-                                            : "bg-slate-300 hover:bg-slate-400"
+                                        ? "bg-teal-600"
+                                        : "bg-slate-300 hover:bg-slate-400"
                                         }`}
                                     aria-label={`Go to photo ${i + 1}`}
                                 />

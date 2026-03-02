@@ -53,7 +53,7 @@ const AdminSummary = () => {
   //p-6
   return (
     <div className="p-7 pt-3 items-center justify-center rounded-lg h-9/10">
-      <h5 className="p-1 text-center font-semibold lg:text-xl text-gray-600 mt-1 lg:mt-10 drop-shadow-lg">إيمان : تقوى : حياء : أخلاق : دعاء : دعوة</h5>
+      <h3 className='p-1 text-center font-semibold text-lg lg:text-2xl text-gray-600 mt-1 lg:mt-10 drop-shadow-lg font-["Noto_Naskh_Arabic"]'>إيمان : تقوى : حياء : أخلاق : دعاء : دعوة</h3>
       <h5 className="p-1 mt-1 lg:mt-3 text-center text-gray-600 drop-shadow-lg">Welcome, {user.name}</h5>
       {/*<h5 className="text-2xl mt-1 lg:mt-3 mb-3 font-bold capitalize text-center text-gray-500 text-shadow-lg">{user.role} Dashboard</h5>*/}
 
