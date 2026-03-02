@@ -318,10 +318,10 @@ const List = () => {
   const { user } = useAuth();
 
   return (
-    <div className="mt-3 p-5 lg:mt-7">
+    <div className="mt-1 p-5 lg:mt-5">
       <div className="text-center">
-        <h3 className="text-2xl font-bold px-5 py-0 text-shadow-lg text-gray-600">Manage Supervisors
-          <p className='flex md:grid text-sm md:text-base justify-center text-rose-700'>
+        <h3 className="text-base lg:text-2xl font-bold px-5 py-0 text-shadow-lg text-gray-600">Manage Supervisors
+          <p className='flex md:grid text-xs md:text-base justify-center text-rose-700'>
             (Records Count : {filteredSupervisor ? filteredSupervisor.length : 0}) </p>
         </h3>
       </div>

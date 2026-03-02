@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import SummaryCard from "./SummaryCard";
+import CommonHeader from "./CommonHeader";
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext'
 import { getBaseUrl, handleRightClickAndFullScreen, getSpinner, LinkIcon, showSwalAlert } from '../../utils/CommonHelper'
@@ -47,10 +48,7 @@ const Masters = () => {
   //p-6
   return (
     <div className="p-7 pt-3 items-center justify-center rounded-lg h-9/10">
-      <h5 className="p-1 text-center font-semibold lg:text-xl text-gray-600 mt-12">إيمان : تقوى : حياء : أخلاق : دعاء : دعوة</h5>
-      <h5 className="p-1 mt-1 text-center text-gray-600">Welcome, {user.name}</h5>
-      <h5 className="text-xl mt-2 mb-3 font-bold capitalize text-center text-green-600 text-shadow-lg">Masters</h5>
-
+      <CommonHeader userName={user?.name || ""} title="Masters" />
       <div className="content-center rounded-lg grid grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-10 mt-16 flex rounded-lg">
 
         {user.role === "superadmin" || user.role === "hquser" || user.role === "guest" ?

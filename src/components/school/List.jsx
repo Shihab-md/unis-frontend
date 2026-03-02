@@ -48,7 +48,7 @@ const List = () => {
     };
     getDistrictStatesMap();
   }, []);
-
+{/*
   const ExpandedComponent = ({ data }) => {
     return (
       data.nameArabic || data.nameNative || data.address ?
@@ -63,7 +63,7 @@ const List = () => {
           </p>
         </div>
         : null);
-  }
+  }*/}
 
   const { user } = useAuth();
 
@@ -416,7 +416,7 @@ const List = () => {
       {filtering ?
         getFilterGif() :
         <div className='mt-3 lg:mt-7 rounded-lg shadow-lg bg-blue-50'>
-          <DataTable columns={columns} data={filteredSchool} highlightOnHover striped responsive conditionalRowStyles={conditionalRowStyles} expandableRows expandableRowsComponent={ExpandedComponent} />
+          <DataTable columns={columns} data={filteredSchool} highlightOnHover striped responsive conditionalRowStyles={conditionalRowStyles} />
         </div>}
     </div>
   )

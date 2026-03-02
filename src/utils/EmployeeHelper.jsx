@@ -16,9 +16,14 @@ export const columns = [
   },
   {
     name: "Name",
-    selector: (row) => row.empId + " : " + row.name,
+    selector: (row) => <div className="mt-2 mb-2">
+      <p className="mb-1">
+        <span className="text-blue-700 mr-1">Emp Id:</span> {row.empId}
+      </p>
+      <p>{row.name}</p>
+    </div>,
     sortable: true,
-    width: "320px",
+    width: "300px",
   },
   {
     name: "Role",
@@ -28,14 +33,24 @@ export const columns = [
   },
   {
     name: "Contact",
-    selector: (row) => <div><p>{row.contactNumber}</p><p>{row.email}</p></div>,
-    width: "230px",
+    selector: (row) => <div className="mt-2 mb-2">
+      <p className="mb-1">
+        <span className="text-blue-700 mr-0.5">M:</span> {row.contactNumber}
+      </p>
+      <p><span className="text-blue-700 mr-1.5">E:</span> {row.email}</p>
+    </div>,
+    width: "250px",
   },
   {
     name: "Niswan",
-    selector: (row) => row.schoolCode + " : " + row.schoolName,
+    selector: (row) => <div className="mt-2 mb-2">
+      <p className="mb-1">
+        <span className="text-blue-700 mr-1">Code:</span> {row.schoolCode}
+      </p>
+      <p>{row.schoolName}</p>
+    </div>,
     sortable: true,
-    width: "450px",
+    width: "460px",
   },
   {
     name: "Status",

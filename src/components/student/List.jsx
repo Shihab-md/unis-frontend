@@ -344,6 +344,8 @@ const List = () => {
           name: student.userId?.name,
           schoolName: student.schoolId?.nameEnglish,
           rollNumber: student.rollNumber,
+          doa: student.doa,
+          dob: student.dob,
           address: student.address,
           city: student.city,
           district: student.districtStateId ? student.districtStateId?.district + ", " + student.districtStateId?.state : "",
@@ -351,7 +353,7 @@ const List = () => {
           feesPaid: student.feesPaid,
           remarks: student.remarks,
           about: student.about,
-          course: student.courses && student.courses?.length > 0 ? student.courses.map(course => course.name ? course.name + ", " : "") : "",
+          course: student.courses && student.courses?.length > 0 ? student.courses.map(course => course.name ? course.name + "(" + course.years + ")" + ", " : "") : "",
           courses: student.courses && student.courses?.length > 0 ? student.courses : null,
           fatherName: student.fatherName ? student.fatherName : student.motherName ? student.motherName : student.guardianName ? student.guardianName : "",
           // action: (<StudentButtons Id={student._id} onStudentDelete={onStudentDelete} />),
@@ -783,6 +785,8 @@ const List = () => {
         name: student.userId?.name,
         schoolName: student.schoolId?.nameEnglish,
         rollNumber: student.rollNumber,
+        doa: student.doa,
+        dob: student.dob,
         address: student.address,
         city: student.city,
         district: student.districtStateId ? student.districtStateId?.district + ", " + student.districtStateId?.state : "",
@@ -790,7 +794,7 @@ const List = () => {
         feesPaid: student.feesPaid,
         remarks: student.remarks,
         about: student.about,
-        course: student.courses && student.courses?.length > 0 ? student.courses.map(course => course.name ? course.name + ", " : "") : "",
+        course: student.courses && student.courses?.length > 0 ? student.courses.map(course => course.name ? course.name + "(" + course.years + ")" + ", " : "") : "",
         courses: student.courses && student.courses?.length > 0 ? student.courses : null,
         fatherName: student.fatherName ? student.fatherName : student.motherName ? student.motherName : student.guardianName ? student.guardianName : "",
         action: (<StudentButtons Id={student._id} onStudentDelete={onStudentDelete} />),
@@ -876,6 +880,8 @@ const List = () => {
               name: student.userId?.name,
               schoolName: student.schoolId?.nameEnglish,
               rollNumber: student.rollNumber,
+              doa: student.doa,
+              dob: student.dob,
               address: student.address,
               city: student.city,
               district: student.districtStateId ? student.districtStateId?.district + ", " + student.districtStateId?.state : "",
@@ -883,7 +889,7 @@ const List = () => {
               feesPaid: student.feesPaid,
               remarks: student.remarks,
               about: student.about,
-              course: student.courses && student.courses?.length > 0 ? student.courses.map(course => course.name ? course.name + ", " : "") : "",
+              course: student.courses && student.courses?.length > 0 ? student.courses.map(course => course.name ? course.name + "(" + course.years + ")" + ", " : "") : "",
               courses: student.courses && student.courses?.length > 0 ? student.courses : null,
               fatherName: student.fatherName ? student.fatherName : student.motherName ? student.motherName : student.guardianName ? student.guardianName : "",
               action: (<StudentButtons Id={student._id} onStudentDelete={onStudentDelete} />),
@@ -937,7 +943,7 @@ const List = () => {
           <p className='flex md:grid text-sm md:text-base justify-center text-rose-700'>
             (Records Count : {filteredStudent ? filteredStudent.length : 0}) </p>
         </h3>
-        
+
       </div>
       <div className="flex justify-between items-center mt-5 relative">
         {LinkIcon("/dashboard", "Back")}

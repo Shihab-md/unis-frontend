@@ -9,37 +9,32 @@ import {
 } from "react-icons/fa";
 
 export const columns = [
-  /*{
+  {
     name: "S.No",
     selector: (row) => row.sno,
     width: "60px",
-  },*/
-  {
-    name: "Code",
-    /*  name: (
-        <div>
-          Title
-          <input
-            type="text"
-            placeholder="Code"
-            value={row.code}
-            onChange={(e) => onChange(e)}
-            style={{ width: "80%" }}
-          />
-        </div>
-      ),*/
-    selector: (row) => row.code,
-    //  sortable: true,
-    width: "120px",
   },
   {
-    name: "Name",
-    selector: (row) => row.name,
-    //  sortable: true,
-    width: "370px",
+    name: "Niswan details",
+    selector: (row) => <div className="mt-2 mb-2">
+      <p className="mb-1">
+        <span className="text-blue-700 mr-2">Code:</span> {row.code}
+      </p>
+      <p className="mb-1">
+        <span className="text-blue-700"></span> {row.name}
+      </p>
+      <p className='mb-1 font-["Noto_Naskh_Arabic"]'>
+        <span className='text-blue-700'></span> {row.nameArabic}
+      </p>
+      <p>
+        <span className="text-blue-700"></span> {row.nameNative}
+      </p>
+    </div>,
+    sortable: true,
+    width: "460px",
   },
   {
-    name: "No. of Students",
+    name: "Students #",
     //selector: (row) => row.studentCount,
     wrap: true,
     selector: row => (
@@ -62,10 +57,16 @@ export const columns = [
     width: "120px",
   },
   {
-    name: "District & State",
-    selector: (row) => row.districtState,
+    name: "Address",
+    selector: (row) => <div className="mt-2 mb-2">
+      <p className="mb-1">{row.address}</p>
+      <p className="mb-1">{row.city}</p>
+      <p className='mb-1'>{row.landmark}</p>
+      <p>{row.districtState}</p>
+    </div>,
     //  sortable: true,
-    width: "210px",
+    wrap: true,
+    width: "230px",
   },
   {
     name: "Status",
@@ -75,7 +76,12 @@ export const columns = [
   },
   {
     name: "Supervisor",
-    selector: (row) => row.supervisorId + " : " + row.supervisorName,
+    selector: (row) => <div className="mt-2 mb-2">
+      <p className="mb-1">
+        <span className="text-blue-700 mr-1">Id:</span> {row.supervisorId}
+      </p>
+      <p>{row.supervisorName}</p>
+    </div>,
     //  sortable: true,
     width: "320px",
   },

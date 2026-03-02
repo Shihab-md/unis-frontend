@@ -73,22 +73,42 @@ export const columnsSelectForAcademic = [
 ];
 
 export const columns = [
-//  {
+  //  {
   //  name: "S No",
-   // selector: (row) => row.sno,
+  // selector: (row) => row.sno,
   //  width: "60px",
   //},
   {
-    name: "Roll Number",
+    name: "Student details",
     selector: (row) => row.rollNumber,
+    selector: (row) => <div className="mt-2 mb-2">
+      <p className="mb-1">
+        <span className="text-blue-700 mr-1">Roll No:</span> {row.rollNumber}
+      </p>
+      <p className="mb-1">
+        <span className="text-blue-700 mr-1">Name:</span> {row.name}</p>
+      <p>
+        <span className="text-blue-700 mr-1">Parent / Guardian:</span> {row.fatherName}
+      </p>
+    </div>,
     //  sortable: true,
-    width: "160px",
+    width: "340px",
   },
   {
-    name: "Student Name",
-    selector: (row) => row.name,
+    name: "Address",
+    selector: (row) => <div className="mt-2 mb-2">
+      <p className="mb-1">{row.address}</p>
+      <p className="mb-1">{row.city}</p>
+      <p>{row.district}</p>
+    </div>,
+    wrap: true,
+    width: "230px",
+  },
+  {
+    name: "DOB",
+    selector: (row) => row?.dob ? new Date(row.dob).toLocaleDateString("en-GB") : "-",
     //  sortable: true,
-    width: "280px",
+    width: "100px",
   },
   {
     name: "Course",
@@ -105,16 +125,10 @@ export const columns = [
     ),
   },
   {
-    name: "Father / Mother / Guardian Name",
-    selector: (row) => row.fatherName,
+    name: "DOA",
+    selector: (row) => row?.doa ? new Date(row.doa).toLocaleDateString("en-GB") : "-",
     //  sortable: true,
-    width: "250px",
-  },
-  {
-    name: "District",
-    selector: (row) => row.district,
-    //  sortable: true,
-    width: "190px",
+    width: "100px",
   },
   {
     name: "Status",
