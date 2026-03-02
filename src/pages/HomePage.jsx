@@ -1005,7 +1005,7 @@ export default function HomePage() {
                                     </div>
                                 </div>
 
-                                <div className="mt-0.5 text-xs font-semibold text-emerald-700">
+                                <div className='mt-0.5 text-xs font-semibold text-emerald-700 font-["Noto_Naskh_Arabic"]'>
                                     إيمان : تقوى : حياء : أخلاق : دعاء : دعوة
                                 </div>
                             </div>
