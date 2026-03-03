@@ -1001,7 +1001,7 @@ export default function HomePage() {
                             <div className="leading-tight">
                                 <div className="flex items-center justify-center gap-2">
                                     <div className="text-lg font-bold tracking-wide text-slate-900">
-                                        <span className="text-blue-700">UNIS ACADEMY</span>
+                                        <span className="text-blue-700 drop-shadow">UNIS ACADEMY</span>
                                     </div>
                                 </div>
 
@@ -1031,7 +1031,7 @@ export default function HomePage() {
             {/* Hero */}
             <section className="mx-auto max-w-6xl px-3 sm:px-4 py-8 sm:py-10">
                 <div className="grid grid-cols-1 gap-6 rounded-2xl border bg-white/70 backdrop-blur p-5 sm:p-6 shadow-sm md:grid-cols-2 md:p-10">
-                    <div>
+                    <div className="drop-shadow">
                         <h1 className="text-3xl font-bold text-slate-900 md:text-4xl">
                             Empowering students through knowledge & values
                         </h1>
@@ -1043,26 +1043,26 @@ export default function HomePage() {
                         <div className="mt-6 flex flex-wrap gap-3">
                             <a
                                 href="#stats"
-                                className="rounded-lg border bg-white/60 backdrop-blur px-4 py-2 text-sm font-semibold text-slate-800 hover:bg-white/80"
+                                className="rounded-lg border bg-white/60 backdrop-blur px-4 py-2 text-sm font-semibold text-slate-800 hover:bg-white/80 border-1 border-blue-300 shadow-2xl hover:-translate-y-0.5"
                             >
                                 Live Stats
                             </a>
                             <a
                                 href="#gallery"
-                                className="rounded-lg border bg-white/60 backdrop-blur px-4 py-2 text-sm font-semibold text-slate-800 hover:bg-white/80"
+                                className="rounded-lg border bg-white/60 backdrop-blur px-4 py-2 text-sm font-semibold text-slate-800 hover:bg-white/80 border-1 border-blue-300 shadow-2xl hover:-translate-y-0.5"
                             >
                                 Gallery
                             </a>
                             <a
                                 href="#contact"
-                                className="rounded-lg border bg-white/60 backdrop-blur px-4 py-2 text-sm font-semibold text-slate-800 hover:bg-white/80"
+                                className="rounded-lg border bg-white/60 backdrop-blur px-4 py-2 text-sm font-semibold text-slate-800 hover:bg-white/80 border-1 border-blue-300 shadow-2xl hover:-translate-y-0.5"
                             >
                                 Contact
                             </a>
                         </div>
                     </div>
 
-                    <div className="rounded-2xl bg-[url(/bg-img.jpg)] bg-cover bg-center p-5 sm:p-6">
+                    <div className="rounded-2xl bg-[url(/bg-img.jpg)] bg-cover bg-center p-5 sm:p-6 border border-white/80 shadow-2xl hover:-translate-y-0.5">
                         <div className="rounded-xl bg-white/85 backdrop-blur p-5">
                             <div className="text-sm font-bold text-slate-900">Mission</div>
                             <p className="mt-2 text-slate-700">
