@@ -50,7 +50,7 @@ export default function ReportsFiltersDrawer({ meta, value, onApply, loading }) 
             <div className="flex items-start justify-between">
               <div>
                 <h3 className="text-lg font-semibold text-slate-800">Filters</h3>
-                <p className="text-sm text-slate-500">School / Course / Year / Status</p>
+                <p className="text-sm text-slate-500">Niswan / Course / Year / Status</p>
               </div>
               <button
                 className="px-2 py-1 rounded border hover:bg-slate-50"
@@ -61,7 +61,7 @@ export default function ReportsFiltersDrawer({ meta, value, onApply, loading }) 
             </div>
 
             <div className="mt-4 space-y-3">
-              <Field label="School">
+              <Field label="Niswan">
                 <select
                   className="w-full border rounded p-2"
                   value={draft.schoolId}

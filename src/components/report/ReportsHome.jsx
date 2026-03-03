@@ -287,7 +287,7 @@ export default function ReportsHome() {
           rows={latestUnpaid}
           columns={[
             { key: "name", label: "Name" },
-            { key: "school", label: "School" },
+            { key: "school", label: "Niswan" },
             { key: "course", label: "Course" },
             { key: "year", label: "Year" },
           ]}
@@ -297,7 +297,7 @@ export default function ReportsHome() {
           rows={latestAdmissions}
           columns={[
             { key: "name", label: "Name" },
-            { key: "school", label: "School" },
+            { key: "school", label: "Niswan" },
             { key: "course", label: "Course" },
             { key: "date", label: "Date" },
           ]}
@@ -307,7 +307,7 @@ export default function ReportsHome() {
       {/* Niswan report */}
       <div className="mt-6">
         <div className="flex items-center justify-between flex-wrap gap-2">
-          <h2 className="text-lg font-semibold text-slate-800">Niswan Report (Schools)</h2>
+          <h2 className="text-lg font-semibold text-slate-800">Niswan Report (Niswans)</h2>
           <div className="flex gap-2">
             <button
               className="px-3 py-2 rounded-md border bg-white hover:bg-slate-50 text-sm"

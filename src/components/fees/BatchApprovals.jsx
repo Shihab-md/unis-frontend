@@ -177,21 +177,6 @@ export default function BatchApprovals() {
                       >
                         View
                       </a>
-
-                      {/*{download ? (
-                        <>
-                          {" / "}
-                          <a
-                            className="text-emerald-700 underline font-bold"
-                            href={download}
-                            target="_blank"
-                            rel="noreferrer"
-                          >
-                            Download
-                          </a>
-                        </>
-                      ) : null}*/}
-
                       {name ? <span className="text-[11px] text-gray-500"> ({name})</span> : null}
                     </>
                   );
@@ -205,32 +190,68 @@ export default function BatchApprovals() {
                   : "-"}
               </div>
 
+              <div className="mb-2"><b>Items :</b> {details?.items?.length}</div>
+
               {Array.isArray(details?.items) && details.items.length > 0 && (
-                <div className="mt-3 max-h-64 overflow-auto border rounded">
-                  {/* Header */}
-                  <div className="grid grid-cols-12 p-2 font-bold bg-gray-50 text-xs sticky top-0">
-                    <div className="col-span-5">Student Name</div>
+                <div className="mt-3 border rounded overflow-hidden">
+                  {/* ✅ Desktop header */}
+                  <div className="hidden md:grid grid-cols-12 p-2 font-bold bg-gray-50 text-xs sticky top-0">
+                    <div className="col-span-2">Roll Number</div>
+                    <div className="col-span-4">Student Name</div>
                     <div className="col-span-3">Course</div>
                     <div className="col-span-2">Fees Type</div>
-                    <div className="col-span-2 text-right">Amount</div>
+                    <div className="col-span-1 text-right">Amount</div>
                   </div>
 
-                  {/* Rows */}
-                  {details.items.map((it, idx) => {
-                    const studentName = it?.studentId?.userId?.name || "-";
-                    const courseName = it?.invoiceId?.courseId?.name || "-";
-                    const feesType = it?.invoiceId?.source || "-";
-                    const amount = Number(it?.amount || 0);
+                  <div className="max-h-64 overflow-auto">
+                    {details.items.map((it, idx) => {
+                      const rollNumber = it?.studentId?.rollNumber || "-";
+                      const studentName = it?.studentId?.userId?.name || "-";
+                      const courseName = it?.invoiceId?.courseId?.name || "-";
+                      const feesType = it?.invoiceId?.source || "-";
+                      const amount = Number(it?.amount || 0);
 
-                    return (
-                      <div key={it?._id || idx} className="grid grid-cols-12 p-2 border-t text-xs">
-                        <div className="col-span-5 text-slate-800">{studentName}</div>
-                        <div className="col-span-3 text-slate-700">{courseName}</div>
-                        <div className="col-span-2 text-slate-700">{feesType}</div>
-                        <div className="col-span-2 text-right text-slate-900">{amount}</div>
-                      </div>
-                    );
-                  })}
+                      return (
+                        <div key={it?._id || idx} className="border-t">
+                          {/* ✅ Mobile / Tablet card */}
+                          <div className="md:hidden p-3 text-xs">
+                            <div className="flex items-start justify-between gap-2">
+                              <div className="font-bold text-slate-800">{studentName}</div>
+                              <div className="font-bold text-slate-900">
+                                ₹ {amount.toLocaleString("en-IN")}
+                              </div>
+                            </div>
+
+                            <div className="mt-2 grid grid-cols-1 gap-1 text-[11px] text-slate-700">
+                              <div>
+                                <span className="font-semibold text-slate-500">Roll No: </span>
+                                {rollNumber}
+                              </div>
+                              <div>
+                                <span className="font-semibold text-slate-500">Course: </span>
+                                {courseName}
+                              </div>
+                              <div>
+                                <span className="font-semibold text-slate-500">Fees Type: </span>
+                                {feesType}
+                              </div>
+                            </div>
+                          </div>
+
+                          {/* ✅ Desktop row */}
+                          <div className="hidden md:grid grid-cols-12 p-2 text-xs">
+                            <div className="col-span-2 text-slate-800">{rollNumber}</div>
+                            <div className="col-span-4 text-slate-800">{studentName}</div>
+                            <div className="col-span-3 text-slate-700">{courseName}</div>
+                            <div className="col-span-2 text-slate-700">{feesType}</div>
+                            <div className="col-span-1 text-right text-slate-900">
+                              ₹ {amount.toLocaleString("en-IN")}
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
                 </div>
               )}
 

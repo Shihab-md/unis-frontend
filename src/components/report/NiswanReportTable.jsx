@@ -9,7 +9,7 @@ export default function NiswanReportTable({ rows }) {
         <thead className="bg-slate-50">
           <tr>
             <Th>Code</Th>
-            <Th>School</Th>
+            <Th>Niswan</Th>
             <Th className="text-right">Total</Th>
             <Th className="text-right">Paid</Th>
             <Th className="text-right">Unpaid</Th>
