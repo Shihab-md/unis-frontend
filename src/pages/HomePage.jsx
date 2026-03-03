@@ -102,7 +102,7 @@ const StatCard = ({ title, value, loading, colorClass, icon }) => {
                     </div>
                 </div>
 
-                <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-white/25 text-2xl text-white shadow-sm">
+                <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-white/25 text-2xl text-white shadow-lg">
                     {icon}
                 </div>
             </div>
@@ -1015,7 +1015,7 @@ export default function HomePage() {
                         <div className="flex items-center gap-2 sm:gap-3">
                             <button
                                 onClick={() => navigate("/login")}
-                                className="group relative overflow-hidden rounded-lg bg-gradient-to-r from-teal-600 to-emerald-600 px-3 py-2 text-sm font-semibold text-white shadow-lg transition hover:brightness-110 active:scale-[0.98] hover:-translate-y-0.5"
+                                className="group relative overflow-hidden rounded-lg bg-gradient-to-r from-teal-600 to-emerald-600 px-3 py-2 text-sm font-semibold text-white shadow-lg transition border border-white/80 hover:brightness-110 active:scale-[0.98] hover:-translate-y-0.5"
                             >
                                 <span className="absolute inset-0 opacity-0 transition group-hover:opacity-100 bg-white/10" />
                                 <span className="relative flex items-center gap-2">
