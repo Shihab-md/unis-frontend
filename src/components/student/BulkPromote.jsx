@@ -46,7 +46,9 @@ export default function BulkPromote() {
         const yearsList = Array.isArray(a) ? a : a?.academicYears || [];
         //console.log(yearsList);
         setCourses(Array.isArray(coursesList) ? coursesList : []);
-        setAcademicYears(Array.isArray(yearsList) ? yearsList : []);
+        //setAcademicYears(Array.isArray(yearsList) ? yearsList : []);
+        const list = Array.isArray(yearsList) ? yearsList : [];
+        setAcademicYears(list.filter((y) => String(y?.active) === "Next"));
 
         const next = (yearsList || []).find((x) => String(x.active) === "Next");
 

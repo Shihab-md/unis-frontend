@@ -211,7 +211,7 @@ export default function PendingInvoicesNotSentHQ() {
     );
   }
 
-  if (loading) return getPrcessing();
+  //if (loading) return getPrcessing();
 
   return (
     // ✅ SAME background container as Received Batches page
@@ -298,22 +298,26 @@ export default function PendingInvoicesNotSentHQ() {
       </div>
 
       {/* Table */}
-      <div className="border rounded bg-white mt-5 hover:-translate-y-0.5">
-        <div className="p-2 font-bold text-xs bg-gray-100 flex items-center justify-between">
-          <span>Invoices (Not Received at HQ)</span>
-          <span className="text-[11px] font-bold text-gray-600">{invoices?.length || 0} record(s)</span>
-        </div>
+      {!loading ?
+        <div className="border rounded bg-white mt-5 hover:-translate-y-0.5">
+          <div className="p-2 font-bold text-xs bg-gray-100 flex items-center justify-between">
+            <span>Invoices (Not Received at HQ)</span>
+            <span className="text-[11px] font-bold text-gray-600">{invoices?.length || 0} record(s)</span>
+          </div>
 
-        <DataTable
-          columns={columns}
-          data={invoices}
-          pagination
-          highlightOnHover
-          dense
-          customStyles={customStyles}
-          noDataComponent={<div className="p-3 text-xs text-gray-600">No pending invoices found</div>}
-        />
-      </div>
+          <DataTable
+            columns={columns}
+            data={invoices}
+            pagination
+            highlightOnHover
+            dense
+            customStyles={customStyles}
+            noDataComponent={<div className="p-3 text-xs text-gray-600">No pending invoices found</div>}
+          />
+        </div>
+        : <div className='flex items-center justify-center rounded-lg shadow-xl border'>
+          <img width={250} className='flex items-center justify-center' src="/spinner1.gif" />
+        </div>}
     </div>
   );
 }

@@ -289,7 +289,7 @@ export default function PaymentBatchesList() {
     URL.revokeObjectURL(url);
   };
 
-  if (loading) return getPrcessing();
+  //if (loading) return getPrcessing();
 
   // ✅ helper: show proof links (Drive first, fallback proofUrl)
   const renderProof = (b) => {
@@ -432,164 +432,168 @@ export default function PaymentBatchesList() {
       </div>
 
       {/* List */}
-      <div className="border rounded">
-        {/* ✅ Desktop header */}
-        <div className="hidden md:grid grid-cols-12 p-2 font-bold text-xs bg-gradient-to-r from-slate-100 via-white to-slate-100 place-items-center text-center">
-          <div className="col-span-3">Batch</div>
-          <div className="col-span-2">Paid Date</div>
-          <div className="col-span-2">Total</div>
-          <div className="col-span-2">Mode</div>
-          <div className="col-span-3">Status</div>
-        </div>
+      {!loading ?
+        <div className="border rounded">
+          {/* ✅ Desktop header */}
+          <div className="hidden md:grid grid-cols-12 p-2 font-bold text-xs bg-gradient-to-r from-slate-100 via-white to-slate-100 place-items-center text-center">
+            <div className="col-span-3">Batch</div>
+            <div className="col-span-2">Paid Date</div>
+            <div className="col-span-2">Total</div>
+            <div className="col-span-2">Mode</div>
+            <div className="col-span-3">Status</div>
+          </div>
 
-        {batches.map((b) => {
-          const open = String(openId) === String(b._id);
+          {batches.map((b) => {
+            const open = String(openId) === String(b._id);
 
-          const paidDate = b.paidDate ? new Date(b.paidDate).toLocaleDateString() : "-";
-          const totalAmount = `₹ ${Number(b.totalAmount || 0).toLocaleString("en-IN")}`;
+            const paidDate = b.paidDate ? new Date(b.paidDate).toLocaleDateString() : "-";
+            const totalAmount = `₹ ${Number(b.totalAmount || 0).toLocaleString("en-IN")}`;
 
-          return (
-            <div key={b._id} className="border-t">
-              {/* ✅ Mobile / Tablet row (card-like) */}
-              <button
-                className="md:hidden w-full p-3 text-xs text-left hover:bg-teal-50/60 transition"
-                onClick={() => setOpenId(open ? null : b._id)}
-                type="button"
-              >
-                <div className="flex items-start justify-between gap-2">
-                  <div>
-                    <div className="font-bold text-slate-800">
-                      {b.batchNo}{" "}
-                      {b.receiptNumber ? (
-                        <span className="text-[10px] text-green-700">({b.receiptNumber})</span>
-                      ) : null}
+            return (
+              <div key={b._id} className="border-t">
+                {/* ✅ Mobile / Tablet row (card-like) */}
+                <button
+                  className="md:hidden w-full p-3 text-xs text-left hover:bg-teal-50/60 transition"
+                  onClick={() => setOpenId(open ? null : b._id)}
+                  type="button"
+                >
+                  <div className="flex items-start justify-between gap-2">
+                    <div>
+                      <div className="font-bold text-slate-800">
+                        {b.batchNo}{" "}
+                        {b.receiptNumber ? (
+                          <span className="text-[10px] text-green-700">({b.receiptNumber})</span>
+                        ) : null}
+                      </div>
+                      <div className="text-[11px] text-slate-600 mt-1">
+                        <span className="font-semibold text-slate-500">Paid: </span>
+                        {paidDate}
+                        {"  •  "}
+                        <span className="font-semibold text-slate-500">Mode: </span>
+                        {b.mode || "-"}
+                      </div>
                     </div>
-                    <div className="text-[11px] text-slate-600 mt-1">
-                      <span className="font-semibold text-slate-500">Paid: </span>
-                      {paidDate}
-                      {"  •  "}
-                      <span className="font-semibold text-slate-500">Mode: </span>
-                      {b.mode || "-"}
+
+                    <div className="text-right">
+                      <div className="font-extrabold text-slate-900">{totalAmount}</div>
+                      <div className="mt-1 flex items-center justify-end gap-2">
+                        {statusBadge(b.status)}
+                        <span className="text-[10px] text-gray-500">Items: {b.itemCount || 0}</span>
+                      </div>
                     </div>
                   </div>
+                </button>
 
-                  <div className="text-right">
-                    <div className="font-extrabold text-slate-900">{totalAmount}</div>
-                    <div className="mt-1 flex items-center justify-end gap-2">
-                      {statusBadge(b.status)}
-                      <span className="text-[10px] text-gray-500">Items: {b.itemCount || 0}</span>
-                    </div>
-                  </div>
-                </div>
-              </button>
-
-              {/* ✅ Desktop row */}
-              <button
-                className="hidden md:grid w-full grid-cols-12 p-2 text-xs items-center hover:bg-teal-50/60 transition"
-                onClick={() => setOpenId(open ? null : b._id)}
-                type="button"
-              >
-                <div className="col-span-3 font-bold text-slate-800">
-                  {b.batchNo}{" "}
-                  {b.receiptNumber ? (
-                    <span className="text-[10px] text-green-700">({b.receiptNumber})</span>
-                  ) : null}
-                </div>
-
-                <div className="col-span-2">{paidDate}</div>
-
-                <div className="col-span-2 font-semibold text-right mr-4">{totalAmount}</div>
-
-                <div className="col-span-2">{b.mode || "-"}</div>
-
-                <div className="col-span-3 flex items-center gap-2">
-                  {statusBadge(b.status)}
-                  <span className="text-[10px] text-gray-500">Items: {b.itemCount || 0}</span>
-                </div>
-              </button>
-
-              {/* ✅ Expanded details (same for all sizes) */}
-              {open && (
-                <div className="p-2 bg-white">
-                  <div className="text-xs text-gray-600 mb-2">
-                    Ref: <b>{b.referenceNo || "-"}</b> &nbsp; | &nbsp; Proof: {renderProof(b)}
+                {/* ✅ Desktop row */}
+                <button
+                  className="hidden md:grid w-full grid-cols-12 p-2 text-xs items-center hover:bg-teal-50/60 transition"
+                  onClick={() => setOpenId(open ? null : b._id)}
+                  type="button"
+                >
+                  <div className="col-span-3 font-bold text-slate-800">
+                    {b.batchNo}{" "}
+                    {b.receiptNumber ? (
+                      <span className="text-[10px] text-green-700">({b.receiptNumber})</span>
+                    ) : null}
                   </div>
 
-                  {/* ✅ Make items list responsive too */}
-                  <div className="border rounded overflow-hidden">
-                    {/* Desktop items header */}
-                    <div className="hidden md:grid grid-cols-12 p-2 font-bold text-[11px] bg-gray-50">
-                      <div className="col-span-5">Student</div>
-                      <div className="col-span-4">Course</div>
-                      <div className="col-span-2">Amount</div>
-                      <div className="col-span-1">Item</div>
+                  <div className="col-span-2">{paidDate}</div>
+
+                  <div className="col-span-2 font-semibold text-right mr-4">{totalAmount}</div>
+
+                  <div className="col-span-2">{b.mode || "-"}</div>
+
+                  <div className="col-span-3 flex items-center gap-2">
+                    {statusBadge(b.status)}
+                    <span className="text-[10px] text-gray-500">Items: {b.itemCount || 0}</span>
+                  </div>
+                </button>
+
+                {/* ✅ Expanded details (same for all sizes) */}
+                {open && (
+                  <div className="p-2 bg-white">
+                    <div className="text-xs text-gray-600 mb-2">
+                      Ref: <b>{b.referenceNo || "-"}</b> &nbsp; | &nbsp; Proof: {renderProof(b)}
                     </div>
 
-                    {(b.items || []).map((it) => {
-                      const studentName = it.studentId?.userId?.name || "-";
-                      const roll = it.studentId?.rollNumber || "-";
-                      const courseName = it.invoiceId?.courseId?.name || "-";
-                      const source = it.invoiceId?.source || "-";
-                      const amount = `₹ ${Number(it.amount || 0).toLocaleString("en-IN")}`;
-                      const badge = it.status === "PENDING_APPROVAL" ? "P" : it.status === "APPLIED" ? "A" : "F";
+                    {/* ✅ Make items list responsive too */}
+                    <div className="border rounded overflow-hidden">
+                      {/* Desktop items header */}
+                      <div className="hidden md:grid grid-cols-12 p-2 font-bold text-[11px] bg-gray-50">
+                        <div className="col-span-5">Student</div>
+                        <div className="col-span-4">Course</div>
+                        <div className="col-span-2">Amount</div>
+                        <div className="col-span-1">Item</div>
+                      </div>
 
-                      return (
-                        <div key={it._id} className="border-t">
-                          {/* Mobile item card */}
-                          <div className="md:hidden p-3 text-[11px]">
-                            <div className="flex items-start justify-between gap-2">
-                              <div className="font-bold text-slate-800">
+                      {(b.items || []).map((it) => {
+                        const studentName = it.studentId?.userId?.name || "-";
+                        const roll = it.studentId?.rollNumber || "-";
+                        const courseName = it.invoiceId?.courseId?.name || "-";
+                        const source = it.invoiceId?.source || "-";
+                        const amount = `₹ ${Number(it.amount || 0).toLocaleString("en-IN")}`;
+                        const badge = it.status === "PENDING_APPROVAL" ? "P" : it.status === "APPLIED" ? "A" : "F";
+
+                        return (
+                          <div key={it._id} className="border-t">
+                            {/* Mobile item card */}
+                            <div className="md:hidden p-3 text-[11px]">
+                              <div className="flex items-start justify-between gap-2">
+                                <div className="font-bold text-slate-800">
+                                  {studentName}{" "}
+                                  <span className="text-[10px] text-gray-500">({roll})</span>
+                                </div>
+                                <div className="font-bold text-slate-900">{amount}</div>
+                              </div>
+
+                              <div className="mt-1 text-[10px] text-slate-600">
+                                <span className="font-semibold text-slate-500">Course: </span>
+                                {courseName}{" "}
+                                <span className="text-gray-500">{source ? `(${source})` : ""}</span>
+                              </div>
+
+                              <div className="mt-1 text-[10px] text-slate-600">
+                                <span className="font-semibold text-slate-500">Item: </span>
+                                <span className="font-bold">{badge}</span>
+                              </div>
+                            </div>
+
+                            {/* Desktop row */}
+                            <div className="hidden md:grid grid-cols-12 p-2 text-[11px]">
+                              <div className="col-span-5">
                                 {studentName}{" "}
                                 <span className="text-[10px] text-gray-500">({roll})</span>
                               </div>
-                              <div className="font-bold text-slate-900">{amount}</div>
-                            </div>
-
-                            <div className="mt-1 text-[10px] text-slate-600">
-                              <span className="font-semibold text-slate-500">Course: </span>
-                              {courseName}{" "}
-                              <span className="text-gray-500">{source ? `(${source})` : ""}</span>
-                            </div>
-
-                            <div className="mt-1 text-[10px] text-slate-600">
-                              <span className="font-semibold text-slate-500">Item: </span>
-                              <span className="font-bold">{badge}</span>
+                              <div className="col-span-4">
+                                {courseName}{" "}
+                                <span className="text-[10px] text-gray-500">
+                                  {source ? `(${source})` : ""}
+                                </span>
+                              </div>
+                              <div className="col-span-2 font-semibold">{amount}</div>
+                              <div className="col-span-1 text-[10px]">{badge}</div>
                             </div>
                           </div>
+                        );
+                      })}
 
-                          {/* Desktop row */}
-                          <div className="hidden md:grid grid-cols-12 p-2 text-[11px]">
-                            <div className="col-span-5">
-                              {studentName}{" "}
-                              <span className="text-[10px] text-gray-500">({roll})</span>
-                            </div>
-                            <div className="col-span-4">
-                              {courseName}{" "}
-                              <span className="text-[10px] text-gray-500">
-                                {source ? `(${source})` : ""}
-                              </span>
-                            </div>
-                            <div className="col-span-2 font-semibold">{amount}</div>
-                            <div className="col-span-1 text-[10px]">{badge}</div>
-                          </div>
-                        </div>
-                      );
-                    })}
-
-                    {(!b.items || b.items.length === 0) && (
-                      <div className="p-3 text-xs text-gray-600">No items</div>
-                    )}
+                      {(!b.items || b.items.length === 0) && (
+                        <div className="p-3 text-xs text-gray-600">No items</div>
+                      )}
+                    </div>
                   </div>
-                </div>
-              )}
-            </div>
-          );
-        })}
+                )}
+              </div>
+            );
+          })}
 
-        {batches.length === 0 && (
-          <div className="p-4 text-sm text-gray-600">No batches found.</div>
-        )}
-      </div>
+          {batches.length === 0 && (
+            <div className="p-4 text-sm text-gray-600">No batches found.</div>
+          )}
+        </div>
+        : <div className='flex items-center justify-center rounded-lg shadow-xl border'>
+          <img width={250} className='flex items-center justify-center' src="/spinner1.gif" />
+        </div>}
     </div>
   );
 }

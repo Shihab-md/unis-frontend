@@ -161,7 +161,7 @@ export default function BulkPaymentCreate() {
     }
   };
 
-  if (processing) return getPrcessing();
+  //if (processing) return getPrcessing();
 
   return (
     <div className="p-4 max-w-6xl mx-auto">
@@ -291,11 +291,53 @@ export default function BulkPaymentCreate() {
         </span>
       </div>
 
-      <div className="border rounded">
-        {/* ✅ Mobile Select-All Bar */}
-        <div className="md:hidden p-3 bg-gradient-to-r from-slate-50 via-white to-slate-50 border-b">
-          <div className="flex items-center justify-between gap-3">
-            <label className="flex items-center gap-2 text-xs font-semibold text-slate-700">
+      {!processing ?
+        <div className="border rounded">
+          {/* ✅ Mobile Select-All Bar */}
+          <div className="md:hidden p-3 bg-gradient-to-r from-slate-50 via-white to-slate-50 border-b">
+            <div className="flex items-center justify-between gap-3">
+              <label className="flex items-center gap-2 text-xs font-semibold text-slate-700">
+                <input
+                  ref={selectAllRef}
+                  type="checkbox"
+                  checked={allChecked}
+                  onChange={toggleSelectAll}
+                  disabled={!invoices.length}
+                  title="Select all"
+                  className="h-4 w-4"
+                />
+                Select All
+              </label>
+
+              <div className="text-[11px] text-slate-600">
+                Selected{" "}
+                <span className="font-bold text-slate-900">
+                  {selectedCount}/{invoiceCount}
+                </span>
+              </div>
+            </div>
+
+            <div className="mt-2 flex items-center justify-between text-[11px]">
+              <div className="text-slate-600">
+                {isIndeterminate ? (
+                  <span className="font-semibold text-amber-700">Partial selection</span>
+                ) : allChecked ? (
+                  <span className="font-semibold text-emerald-700">All selected</span>
+                ) : (
+                  <span className="font-semibold text-slate-500">None selected</span>
+                )}
+              </div>
+
+              {/* If you have total selected amount as `total` */}
+              <div className="font-bold text-slate-900">
+                Total: ₹ {Number(total || 0).toLocaleString("en-IN")}
+              </div>
+            </div>
+          </div>
+
+          {/* ✅ Desktop header */}
+          <div className="hidden md:grid grid-cols-12 p-2 font-bold text-xs bg-gray-100">
+            <div className="grid col-span-1 place-items-center">
               <input
                 ref={selectAllRef}
                 type="checkbox"
@@ -303,142 +345,104 @@ export default function BulkPaymentCreate() {
                 onChange={toggleSelectAll}
                 disabled={!invoices.length}
                 title="Select all"
-                className="h-4 w-4"
               />
-              Select All
-            </label>
-
-            <div className="text-[11px] text-slate-600">
-              Selected{" "}
-              <span className="font-bold text-slate-900">
-                {selectedCount}/{invoiceCount}
-              </span>
             </div>
+            <div className="col-span-1">Invoice #</div>
+            <div className="col-span-2">Roll Number</div>
+            <div className="col-span-3">Student Name</div>
+            <div className="col-span-2">Course</div>
+            <div className="col-span-1">Fees Type</div>
+            <div className="col-span-1">Balance</div>
+            <div className="col-span-1">Pay</div>
           </div>
 
-          <div className="mt-2 flex items-center justify-between text-[11px]">
-            <div className="text-slate-600">
-              {isIndeterminate ? (
-                <span className="font-semibold text-amber-700">Partial selection</span>
-              ) : allChecked ? (
-                <span className="font-semibold text-emerald-700">All selected</span>
-              ) : (
-                <span className="font-semibold text-slate-500">None selected</span>
-              )}
-            </div>
+          {invoices.map((inv) => {
+            const checked = selected[inv._id] !== undefined;
 
-            {/* If you have total selected amount as `total` */}
-            <div className="font-bold text-slate-900">
-              Total: ₹ {Number(total || 0).toLocaleString("en-IN")}
-            </div>
-          </div>
-        </div>
+            return (
+              <div key={inv._id} className="border-t">
+                {/* ✅ Mobile / Tablet (card layout) */}
+                <div className="md:hidden p-3 text-xs">
+                  <div className="flex items-start justify-between gap-2">
+                    <div className="flex items-center gap-2">
+                      <input type="checkbox" checked={checked} onChange={() => toggle(inv)} />
+                      <div className="font-bold text-slate-800">{inv.invoiceNo}</div>
+                    </div>
 
-        {/* ✅ Desktop header */}
-        <div className="hidden md:grid grid-cols-12 p-2 font-bold text-xs bg-gray-100">
-          <div className="grid col-span-1 place-items-center">
-            <input
-              ref={selectAllRef}
-              type="checkbox"
-              checked={allChecked}
-              onChange={toggleSelectAll}
-              disabled={!invoices.length}
-              title="Select all"
-            />
-          </div>
-          <div className="col-span-1">Invoice #</div>
-          <div className="col-span-2">Roll Number</div>
-          <div className="col-span-3">Student Name</div>
-          <div className="col-span-2">Course</div>
-          <div className="col-span-1">Fees Type</div>
-          <div className="col-span-1">Balance</div>
-          <div className="col-span-1">Pay</div>
-        </div>
-
-        {invoices.map((inv) => {
-          const checked = selected[inv._id] !== undefined;
-
-          return (
-            <div key={inv._id} className="border-t">
-              {/* ✅ Mobile / Tablet (card layout) */}
-              <div className="md:hidden p-3 text-xs">
-                <div className="flex items-start justify-between gap-2">
-                  <div className="flex items-center gap-2">
-                    <input type="checkbox" checked={checked} onChange={() => toggle(inv)} />
-                    <div className="font-bold text-slate-800">{inv.invoiceNo}</div>
+                    <div className="font-bold text-slate-900">
+                      ₹ {Number(inv.balance || 0).toLocaleString("en-IN")}
+                    </div>
                   </div>
 
-                  <div className="font-bold text-slate-900">
+                  <div className="mt-2 grid grid-cols-1 gap-1 text-[11px] text-slate-700">
+                    <div>
+                      <span className="font-semibold text-slate-500">Roll Number : </span>
+                      {String(inv.studentId?.rollNumber || "-")}
+                    </div>
+                    <div>
+                      <span className="font-semibold text-slate-500">Student Name : </span>
+                      {String(inv.userId?.name || "-")}
+                    </div>
+                    <div>
+                      <span className="font-semibold text-slate-500">Course : </span>
+                      {String(inv.courseId?.name || "-")}
+                    </div>
+                    <div>
+                      <span className="font-semibold text-slate-500">Fees Type : </span>
+                      {String(inv.source || "-")}
+                    </div>
+                  </div>
+
+                  <div className="mt-3">
+                    <label className="block text-[11px] font-semibold text-slate-600 mb-1">
+                      Pay Amount
+                    </label>
+                    <input
+                      disabled={!checked}
+                      type="number"
+                      min="0"
+                      className="border p-2 rounded w-full text-sm"
+                      value={checked ? selected[inv._id] : ""}
+                      onChange={(e) => changeAmount(inv._id, e.target.value, inv.balance)}
+                    />
+                  </div>
+                </div>
+
+                {/* ✅ Desktop (table layout) */}
+                <div className="hidden md:grid grid-cols-12 p-2 text-xs items-center">
+                  <div className="grid col-span-1 place-items-center">
+                    <input type="checkbox" checked={checked} onChange={() => toggle(inv)} />
+                  </div>
+                  <div className="col-span-1">{inv.invoiceNo}</div>
+                  <div className="col-span-2">{String(inv.studentId?.rollNumber || "-")}</div>
+                  <div className="col-span-3">{String(inv.userId?.name || "-")}</div>
+                  <div className="col-span-2">{String(inv.courseId?.name || "-")}</div>
+                  <div className="col-span-1">{String(inv.source || "-")}</div>
+                  <div className="col-span-1 text-right mr-4">
                     ₹ {Number(inv.balance || 0).toLocaleString("en-IN")}
                   </div>
-                </div>
-
-                <div className="mt-2 grid grid-cols-1 gap-1 text-[11px] text-slate-700">
-                  <div>
-                    <span className="font-semibold text-slate-500">Roll Number : </span>
-                    {String(inv.studentId?.rollNumber || "-")}
+                  <div className="col-span-1">
+                    <input
+                      disabled={!checked}
+                      type="number"
+                      min="0"
+                      className="border p-1 rounded w-full"
+                      value={checked ? selected[inv._id] : ""}
+                      onChange={(e) => changeAmount(inv._id, e.target.value, inv.balance)}
+                    />
                   </div>
-                  <div>
-                    <span className="font-semibold text-slate-500">Student Name : </span>
-                    {String(inv.userId?.name || "-")}
-                  </div>
-                  <div>
-                    <span className="font-semibold text-slate-500">Course : </span>
-                    {String(inv.courseId?.name || "-")}
-                  </div>
-                  <div>
-                    <span className="font-semibold text-slate-500">Fees Type : </span>
-                    {String(inv.source || "-")}
-                  </div>
-                </div>
-
-                <div className="mt-3">
-                  <label className="block text-[11px] font-semibold text-slate-600 mb-1">
-                    Pay Amount
-                  </label>
-                  <input
-                    disabled={!checked}
-                    type="number"
-                    min="0"
-                    className="border p-2 rounded w-full text-sm"
-                    value={checked ? selected[inv._id] : ""}
-                    onChange={(e) => changeAmount(inv._id, e.target.value, inv.balance)}
-                  />
                 </div>
               </div>
+            );
+          })}
 
-              {/* ✅ Desktop (table layout) */}
-              <div className="hidden md:grid grid-cols-12 p-2 text-xs items-center">
-                <div className="grid col-span-1 place-items-center">
-                  <input type="checkbox" checked={checked} onChange={() => toggle(inv)} />
-                </div>
-                <div className="col-span-1">{inv.invoiceNo}</div>
-                <div className="col-span-2">{String(inv.studentId?.rollNumber || "-")}</div>
-                <div className="col-span-3">{String(inv.userId?.name || "-")}</div>
-                <div className="col-span-2">{String(inv.courseId?.name || "-")}</div>
-                <div className="col-span-1">{String(inv.source || "-")}</div>
-                <div className="col-span-1 text-right mr-4">
-                  ₹ {Number(inv.balance || 0).toLocaleString("en-IN")}
-                </div>
-                <div className="col-span-1">
-                  <input
-                    disabled={!checked}
-                    type="number"
-                    min="0"
-                    className="border p-1 rounded w-full"
-                    value={checked ? selected[inv._id] : ""}
-                    onChange={(e) => changeAmount(inv._id, e.target.value, inv.balance)}
-                  />
-                </div>
-              </div>
-            </div>
-          );
-        })}
-
-        {(!invoices || invoices.length === 0) && (
-          <div className="p-3 text-xs text-gray-600">No invoices</div>
-        )}
-      </div>
+          {(!invoices || invoices.length === 0) && (
+            <div className="p-3 text-xs text-gray-600">No invoices</div>
+          )}
+        </div>
+        : <div className='flex items-center justify-center rounded-lg shadow-xl border'>
+          <img width={250} className='flex items-center justify-center' src="/spinner1.gif" />
+        </div>}
 
       <button
         disabled={processing || uploadingProof || !proofAttached}
