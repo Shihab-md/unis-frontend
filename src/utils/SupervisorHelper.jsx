@@ -30,7 +30,7 @@ export const columns = [
       <p className="mb-1"><span className="text-blue-700 mr-2 drop-shadow-xl">@ :</span> {row.email}</p>
       <p className="mb-1"><span className="text-blue-700">🎂:</span> {row.dob ? new Date(row.dob).toLocaleDateString("en-GB") : "-"}</p>
       <p className="mb-1"><span className="text-blue-700">🗓️:</span> {row.doj ? new Date(row.doj).toLocaleDateString("en-GB") : "-"}</p>
-      <p><span className="text-blue-700 mr-1">🗺️:</span> {row.routeName}</p>
+      <p><span className="text-blue-700 mr-1">🗺️:</span> {row.routeName ? row.routeName !== "Nil" ? row.routeName : "-" : "-"}</p>
     </div>,
     width: "320px",
   },
@@ -69,7 +69,7 @@ export const columns = [
       {row.active === "Active" ?
         <p className="mb-1"><span className="text-blue-700 mr-1">✅:</span> {row.active}</p>
         : <p className="mb-1"><span className="text-blue-700 mr-1">❎:</span> {row.active}</p>}
-      <p><span className="text-blue-700 mr-1">Job Type:</span> {row.jobType}</p>
+      <p><span className="text-blue-700 mr-1">💼:</span> {row.jobType}</p>
     </div>,
     width: "160px",
   },
