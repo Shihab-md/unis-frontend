@@ -353,6 +353,9 @@ const List = () => {
           feesPaid: student.feesPaid,
           remarks: student.remarks,
           about: student.about,
+          gender: student.gender,
+          maritalStatus: student.maritalStatus,
+          hostel: student.hostel,
           course: student.courses && student.courses?.length > 0 ? student.courses.map(course => course.name ? course.name + "(" + course.years + ")" + ", " : "") : "",
           courses: student.courses && student.courses?.length > 0 ? student.courses : null,
           fatherName: student.fatherName ? student.fatherName : student.motherName ? student.motherName : student.guardianName ? student.guardianName : "",
@@ -794,6 +797,9 @@ const List = () => {
         feesPaid: student.feesPaid,
         remarks: student.remarks,
         about: student.about,
+        gender: student.gender,
+        maritalStatus: student.maritalStatus,
+        hostel: student.hostel,
         course: student.courses && student.courses?.length > 0 ? student.courses.map(course => course.name ? course.name + "(" + course.years + ")" + ", " : "") : "",
         courses: student.courses && student.courses?.length > 0 ? student.courses : null,
         fatherName: student.fatherName ? student.fatherName : student.motherName ? student.motherName : student.guardianName ? student.guardianName : "",
@@ -889,8 +895,12 @@ const List = () => {
               feesPaid: student.feesPaid,
               remarks: student.remarks,
               about: student.about,
+              gender: student.gender,
+              maritalStatus: student.maritalStatus,
+              hostel: student.hostel,
               course: student.courses && student.courses?.length > 0 ? student.courses.map(course => course.name ? course.name + "(" + course.years + ")" + ", " : "") : "",
               courses: student.courses && student.courses?.length > 0 ? student.courses : null,
+              contactNumber: student.fatherNumber ? student.fatherNumber : student.motherNumber ? student.motherNumber : student.guardianNumber ? student.guardianNumber : "-",
               fatherName: student.fatherName ? student.fatherName : student.motherName ? student.motherName : student.guardianName ? student.guardianName : "",
               action: (<StudentButtons Id={student._id} onStudentDelete={onStudentDelete} />),
             }));
@@ -939,8 +949,10 @@ const List = () => {
   return (
     <div className="lg:mt-3 p-5">
       <div className="text-center">
-        <h3 className="text-xl lg:text-2xl font-bold px-5 py-0 text-gray-600">Manage Students
-          <p className='flex md:grid text-sm md:text-base justify-center text-rose-700'>
+        <h3 className="text-lg lg:text-2xl font-bold px-5 py-0 text-gray-600">Manage Students
+          {user.role === "superadmin" || user.role === "hquser" ?
+            <div className="text-xs md:text-base font-semibold text-slate-500">{localStorage.getItem("schoolName") || "-"}</div> : null}
+          <p className='flex md:grid text-xs md:text-base justify-center text-rose-700'>
             (Records Count : {filteredStudent ? filteredStudent.length : 0}) </p>
         </h3>
 
@@ -1036,7 +1048,8 @@ const List = () => {
       {filtering ?
         getFilterGif() :
         <div className='mt-3 lg:mt-5 rounded-lg shadow-lg'>
-          <DataTable columns={columns} data={filteredStudent} showGridlines highlightOnHover striped responsive conditionalRowStyles={conditionalRowStyles} expandableRows expandableRowsComponent={ExpandedComponent} />
+          {/*<DataTable columns={columns} data={filteredStudent} showGridlines highlightOnHover striped responsive conditionalRowStyles={conditionalRowStyles} expandableRows expandableRowsComponent={ExpandedComponent} />*/}
+          <DataTable columns={columns} data={filteredStudent} showGridlines highlightOnHover striped responsive conditionalRowStyles={conditionalRowStyles} />
         </div>}
     </div>
   )

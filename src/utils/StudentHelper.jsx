@@ -73,26 +73,22 @@ export const columnsSelectForAcademic = [
 ];
 
 export const columns = [
-  //  {
-  //  name: "S No",
-  // selector: (row) => row.sno,
-  //  width: "60px",
-  //},
+  {
+    name: "S No",
+    selector: (row) => row.sno,
+    width: "60px",
+  },
   {
     name: "Student details",
     selector: (row) => row.rollNumber,
     selector: (row) => <div className="mt-2 mb-2">
-      <p className="mb-1">
-        <span className="text-blue-700 mr-1">Roll No:</span> {row.rollNumber}
-      </p>
-      <p className="mb-1">
-        <span className="text-blue-700 mr-1">Name:</span> {row.name}</p>
-      <p>
-        <span className="text-blue-700 mr-1">Parent / Guardian:</span> {row.fatherName}
-      </p>
+      <p className="mb-1"><span className="text-blue-700 mr-1">Roll No:</span> {row.rollNumber}</p>
+      <p className="mb-1"><span className="text-blue-700 mr-1">Name:</span> {row.name}</p>
+      <p className="mb-1"><span className="text-blue-700 mr-1">Parent / Guardian:</span> {row.fatherName}</p>
+      <p><span className="text-blue-700 mr-1">Ref:</span> {row.about}</p>
     </div>,
     //  sortable: true,
-    width: "340px",
+    width: "360px",
   },
   {
     name: "Address",
@@ -102,19 +98,24 @@ export const columns = [
       <p>{row.district}</p>
     </div>,
     wrap: true,
-    width: "230px",
+    width: "250px",
   },
   {
-    name: "DOB",
-    selector: (row) => row?.dob ? new Date(row.dob).toLocaleDateString("en-GB") : "-",
+    name: "Details",
+    selector: (row) => <div className="mt-2 mb-2">
+      <p className="mb-1"><span className="text-blue-700">📱:</span> {row.contactNumber}</p>
+      <p className="mb-1"><span className="text-blue-700">🎀:</span> {row.gender}</p>
+      <p className="mb-1"><span className="text-blue-700">🎂:</span> {row.dob ? new Date(row.dob).toLocaleDateString("en-GB") : "-"}</p>
+      <p><span className="text-blue-700">📅:</span> {row.doa ? new Date(row.doa).toLocaleDateString("en-GB") : "-"}</p>
+    </div>,
     //  sortable: true,
-    width: "100px",
+    width: "140px",
   },
   {
     name: "Course",
     // selector: (row) => row.course,
     //  sortable: true,
-    width: "250px",
+    width: "280px",
     wrap: true,
     selector: row => (
       <div className="mt-2 mb-2">
@@ -125,16 +126,15 @@ export const columns = [
     ),
   },
   {
-    name: "DOA",
-    selector: (row) => row?.doa ? new Date(row.doa).toLocaleDateString("en-GB") : "-",
-    //  sortable: true,
-    width: "100px",
-  },
-  {
     name: "Status",
-    selector: (row) => row.active,
+    //selector: (row) => row.active,
+    selector: (row) => <div className="mt-2 mb-2">
+      <p className="mb-1"><span className="text-blue-700 mr-1">Status:</span> {row.active}</p>
+      <p className="mb-1"><span className="text-blue-700 mr-1">Married:</span> {row.maritalStatus}</p>
+      <p><span className="text-blue-700 mr-1">Hosteler:</span> {row.hostel}</p>
+    </div>,
     //  sortable: true,
-    width: "130px",
+    width: "160px",
   },
   {
     name: "Action",

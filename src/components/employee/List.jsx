@@ -177,6 +177,8 @@ const List = () => {
           schoolName: sup.schoolId?.nameEnglish,
           designation: sup.designation,
           active: sup.active,
+          doj: sup.doj,
+          dob: sup.dob,
           action: (<EmployeeButtons Id={sup._id} />),
         }));
         setEmployees(data);
@@ -355,6 +357,8 @@ const List = () => {
           schoolName: sup.schoolId?.nameEnglish,
           designation: sup.designation,
           active: sup.active,
+          doj: sup.doj,
+          dob: sup.dob,
           action: (<EmployeeButtons Id={sup._id} onEmployeeDelete={onEmployeeDelete} />),
         }));
       setEmployees(data1);
@@ -391,6 +395,8 @@ const List = () => {
               schoolName: sup.schoolId?.nameEnglish,
               designation: sup.designation,
               active: sup.active,
+              doj: sup.doj,
+              dob: sup.dob,
               //dob: new Date(sup.dob).toLocaleDateString(),
               //  profileImage: <img width={40} className='rounded-full' src={`https://unis-server.vercel.app/${sup.userId.profileImage}`} />,
               action: (<EmployeeButtons Id={sup._id} onEmployeeDelete={onEmployeeDelete} />),

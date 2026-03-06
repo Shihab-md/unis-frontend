@@ -30,15 +30,11 @@ export const columns = [
   {
     name: "Contact",
     selector: (row) => <div className="mt-2 mb-2">
-      <p className="mb-1">
-        <span className="text-blue-700 mr-2">Mobile:</span> {row.contactNumber}
-      </p>
-      <p className="mb-1">
-        <span className="text-blue-700 mr-2">Email:</span> {row.email}
-      </p>
-      <p>
-        <span className="text-blue-700 mr-1">Route:</span> {row.routeName}
-      </p>
+      <p className="mb-1"><span className="text-blue-700 mr-2">📱:</span> {row.contactNumber}</p>
+      <p className="mb-1"><span className="text-blue-700 mr-2">@ :</span> {row.email}</p>
+      <p className="mb-1"><span className="text-blue-700">🎂:</span> {row.dob ? new Date(row.dob).toLocaleDateString("en-GB") : "-"}</p>
+      <p className="mb-1"><span className="text-blue-700">📅:</span> {row.doj ? new Date(row.doj).toLocaleDateString("en-GB") : "-"}</p>
+      <p><span className="text-blue-700 mr-1">🗺️:</span> {row.routeName}</p>
     </div>,
     width: "320px",
   },
