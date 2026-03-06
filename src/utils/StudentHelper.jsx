@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { getBaseUrl, showSwalAlert, showConfirmationSwalAlert, getButtonStyle } from '../utils/CommonHelper';
-import { FaEye, FaUserCheck, FaEdit, FaTrashAlt, FaExchangeAlt } from "react-icons/fa";
+import { FaEye, FaEdit, FaTrashAlt, FaExchangeAlt } from "react-icons/fa";
 import { useAuth } from '../context/AuthContext'
 
 export const columnsSelect = [
@@ -106,7 +106,7 @@ export const columns = [
       <p className="mb-1"><span className="text-blue-700">📱:</span> {row.contactNumber}</p>
       <p className="mb-1"><span className="text-blue-700">🎀:</span> {row.gender}</p>
       <p className="mb-1"><span className="text-blue-700">🎂:</span> {row.dob ? new Date(row.dob).toLocaleDateString("en-GB") : "-"}</p>
-      <p><span className="text-blue-700">📆:</span> {row.doa ? new Date(row.doa).toLocaleDateString("en-GB") : "-"}</p>
+      <p><span className="text-blue-700">🗓️:</span> {row.doa ? new Date(row.doa).toLocaleDateString("en-GB") : "-"}</p>
     </div>,
     //  sortable: true,
     width: "140px",
