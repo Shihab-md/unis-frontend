@@ -17,17 +17,19 @@ export const columns = [
   {
     name: "Name",
     selector: (row) => <div className="mt-2 mb-2">
-      <p className="mb-1">
-        <span className="text-blue-700 mr-1">Emp Id:</span> {row.empId}
-      </p>
-      <p>{row.name}</p>
+      <p className="mb-1"><span className="text-blue-700 mr-1">🆔:</span> {row.empId}</p>
+      <p><span className="text-blue-700 mr-1">👤:</span> {row.name}</p>
     </div>,
     sortable: true,
     width: "300px",
   },
   {
     name: "Role",
-    selector: (row) => row.role,
+    selector: (row) => {
+      const r = String(row?.role || "").trim();
+      if (!r) return "-";
+      return r.charAt(0).toUpperCase() + r.slice(1).toLowerCase();
+    },
     sortable: true,
     width: "110px",
   },
@@ -54,7 +56,11 @@ export const columns = [
   },
   {
     name: "Status",
-    selector: (row) => row.active,
+    selector: (row) => <div className="mt-2 mb-2">
+      {row.active === "Active" ?
+        <p><span className="text-blue-700 mr-0.5">✅:</span> {row.active}</p>
+        : <p><span className="text-blue-700 mr-0.5">❎:</span> {row.active}</p>}
+    </div>,
     width: "110px",
   },
   {

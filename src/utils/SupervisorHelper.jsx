@@ -17,12 +17,8 @@ export const columns = [
   {
     name: "Supervisor details",
     selector: (row) => <div className="mt-2 mb-2">
-      <p className="mb-1">
-        <span className="text-blue-700 mr-1">User Id:</span> {row.supId}
-      </p>
-      <p>
-        <span className="text-blue-700 mr-2.5">Name:</span> {row.name}
-      </p>
+      <p className="mb-1"><span className="text-blue-700 mr-1">🆔:</span> {row.supId}</p>
+      <p><span className="text-blue-700 mr-1">👤:</span> {row.name}</p>
     </div>,
     sortable: true,
     width: "430px",
@@ -70,12 +66,10 @@ export const columns = [
   {
     name: "Status",
     selector: (row) => <div className="mt-2 mb-2">
-      <p className="mb-1">
-        <span className="text-blue-700 mr-2">Status:</span> {row.active}
-      </p>
-      <p>
-        <span className="text-blue-700 mr-1">Job Type:</span> {row.jobType}
-      </p>
+      {row.active === "Active" ?
+        <p className="mb-1"><span className="text-blue-700 mr-1">✅:</span> {row.active}</p>
+        : <p className="mb-1"><span className="text-blue-700 mr-1">❎:</span> {row.active}</p>}
+      <p><span className="text-blue-700 mr-1">Job Type:</span> {row.jobType}</p>
     </div>,
     width: "160px",
   },

@@ -48,7 +48,7 @@ const List = () => {
     };
     getDistrictStatesMap();
   }, []);
-{/*
+  {/*
   const ExpandedComponent = ({ data }) => {
     return (
       data.nameArabic || data.nameNative || data.address ?
@@ -194,6 +194,8 @@ const List = () => {
           landmark: sch.landmark,
           districtState: sch.districtStateId ? sch.districtStateId?.district + ", " + sch.districtStateId?.state : "",
           active: sch.active,
+          incharge1: sch.incharge1,
+          incharge1Number: sch.incharge1Number,
           supervisorId: sch.supervisorId?.supervisorId,
           supervisorName: sch.supervisorId?.userId?.name,
           studentCount: sch.studentCount ? sch.studentCount : 0,
@@ -277,6 +279,8 @@ const List = () => {
         landmark: sch.landmark,
         districtState: sch.districtStateId ? sch.districtStateId?.district + ", " + sch.districtStateId?.state : "",
         active: sch.active,
+        incharge1: sch.incharge1,
+        incharge1Number: sch.incharge1Number,
         supervisorId: sch.supervisorId?.supervisorId,
         supervisorName: sch.supervisorId?.userId?.name,
         studentCount: sch.studentCount ? sch.studentCount : 0,
@@ -315,6 +319,8 @@ const List = () => {
             landmark: sch.landmark,
             districtState: sch.districtStateId ? sch.districtStateId?.district + ", " + sch.districtStateId?.state : "",
             active: sch.active,
+            incharge1: sch.incharge1,
+            incharge1Number: sch.incharge1Number,
             supervisorId: sch.supervisorId?.supervisorId,
             supervisorName: sch.supervisorId?.userId?.name,
             studentCount: sch.studentCount ? sch.studentCount : 0,

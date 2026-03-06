@@ -17,21 +17,13 @@ export const columns = [
   {
     name: "Niswan details",
     selector: (row) => <div className="mt-2 mb-2">
-      <p className="mb-1">
-        <span className="text-blue-700 mr-2">Code:</span> {row.code}
-      </p>
-      <p className="mb-1">
-        <span className="text-blue-700"></span> {row.name}
-      </p>
-      <p className='mb-1 font-["Noto_Naskh_Arabic"]'>
-        <span className='text-blue-700'></span> {row.nameArabic}
-      </p>
-      <p>
-        <span className="text-blue-700"></span> {row.nameNative}
-      </p>
+      <p className="mb-1"><span className="text-blue-700 mr-2">Code:</span> {row.code}</p>
+      <p className="mb-1"><span className="text-blue-700"></span> {row.name}</p>
+      <p className='mb-1 font-["Noto_Naskh_Arabic"]'><span className='text-blue-700'></span> {row.nameArabic}</p>
+      <p><span className="text-blue-700"></span> {row.nameNative}</p>
     </div>,
     sortable: true,
-    width: "460px",
+    width: "400px",
   },
   {
     name: "Students #",
@@ -39,9 +31,7 @@ export const columns = [
     wrap: true,
     selector: row => (
       <div className="mt-2 mb-2">
-        <p>
-          <span className="font-semibold text-blue-700 mr-1">Total:</span> {row.studentCount}
-        </p>
+        <p><span className="font-semibold text-blue-700 mr-1">Total:</span> {row.studentCount}</p>
         <div className="mt-1 mb-1"></div>
         {row.studentCountsByCourse?.map((course, i) => (
           <div key={i}>
@@ -66,24 +56,28 @@ export const columns = [
     </div>,
     //  sortable: true,
     wrap: true,
-    width: "230px",
+    width: "210px",
   },
   {
-    name: "Status",
-    selector: (row) => row.active,
+    name: "Details",
+    selector: (row) => <div className="mt-2 mb-2">
+      {row.active === "Active" ?
+        <p className="mb-1"><span className="text-blue-700 mr-1">✅:</span> {row.active}</p>
+        : <p className="mb-1"><span className="text-blue-700 mr-1">❎:</span> {row.active}</p>}
+      <p className="mb-1"><span className="text-blue-700 mr-1">👤:</span> {row.incharge1}</p>
+      <p><span className="text-blue-700 mr-1">📱:</span> {row.incharge1Number}</p>
+    </div>,
     //  sortable: true,
-    width: "100px",
+    width: "230px",
   },
   {
     name: "Supervisor",
     selector: (row) => <div className="mt-2 mb-2">
-      <p className="mb-1">
-        <span className="text-blue-700 mr-1">Id:</span> {row.supervisorId}
-      </p>
+      <p className="mb-1"><span className="text-blue-700 mr-1">🆔:</span> {row.supervisorId}</p>
       <p>{row.supervisorName}</p>
     </div>,
     //  sortable: true,
-    width: "320px",
+    width: "280px",
   },
   {
     name: "Action",
