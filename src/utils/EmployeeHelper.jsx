@@ -35,9 +35,9 @@ export const columns = [
     name: "Contact",
     selector: (row) => <div className="mt-2 mb-2">
       <p className="mb-1"><span className="text-blue-700">📱:</span> {row.contactNumber}</p>
-      <p className="mb-1"><span className="text-blue-700 mr-0.5">@ :</span> {row.email}</p>
+      <p className="mb-1"><span className="text-blue-700 mr-0.5 drop-shadow-xl">@ :</span> {row.email}</p>
       <p className="mb-1"><span className="text-blue-700">🎂:</span> {row.dob ? new Date(row.dob).toLocaleDateString("en-GB") : "-"}</p>
-      <p><span className="text-blue-700">📅:</span> {row.doj ? new Date(row.doj).toLocaleDateString("en-GB") : "-"}</p>
+      <p><span className="text-blue-700">🗓️:</span> {row.doj ? new Date(row.doj).toLocaleDateString("en-GB") : "-"}</p>
     </div>,
     width: "270px",
   },
@@ -50,7 +50,7 @@ export const columns = [
       <p>{row.schoolName}</p>
     </div>,
     sortable: true,
-    width: "460px",
+    width: "430px",
   },
   {
     name: "Status",

@@ -2,7 +2,7 @@
 import { Link } from 'react-router-dom';
 import { useEffect, useRef, useCallback } from "react";
 import {
-  FaPlusSquare, FaArrowAltCircleLeft, FaRegCaretSquareDown, FaUserCheck, FaTrashAlt, FaSearch, FaTasks, FaCheck
+  FaPlusSquare, FaArrowAltCircleLeft, FaRegCaretSquareDown, FaUserCheck, FaTrashAlt, FaSearch, FaTasks, FaCheck, FaUpload
 } from "react-icons/fa";
 import Swal from 'sweetalert2';
 
@@ -279,7 +279,7 @@ export function LinkIcon(toPage, purpose) {
 
   } else if (purpose === "Import") {
     return <Link to={toPage} >
-      <FaRegCaretSquareDown className="text-3xl lg:text-4xl bg-indigo-700 text-white rounded shadow-lg hover:-translate-y-0.5" /> </Link>
+      <FaUpload className="p-1 text-3xl lg:text-4xl bg- bg-white text-blue-500 border-2 border-blue-500 rotate-180 rounded shadow-2xl hover:-translate-y-0.5" /> </Link>
 
   } else if (purpose === "Filter") {
     return <Link to={toPage} >
