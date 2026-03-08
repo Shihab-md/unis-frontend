@@ -24,14 +24,27 @@ export const promoteBulk = async ({
   policy = "PROMOTE",
   requireFeesPaid = true,
   chunkSize = 10,
+  certificateFee = 0,
+  gradesByStudentId = {},
 }) => {
   const base = await getBaseUrl();
   const url = new URL("student/promote/bulk", base).toString();
 
   const res = await axios.post(
     url,
-    { schoolId, targetAcYear, courseId, studentIds, policy, requireFeesPaid, chunkSize },
+    {
+      schoolId,
+      targetAcYear,
+      courseId,
+      studentIds,
+      policy,
+      requireFeesPaid,
+      chunkSize,
+      certificateFee,
+      gradesByStudentId,
+    },
     { headers: authHeaders() }
   );
+
   return res.data;
 };

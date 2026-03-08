@@ -22,7 +22,7 @@ const AccountsPage = () => {
   return (
     <div className="p-7 pt-3 items-center justify-center rounded-lg h-9/10">
       <CommonHeader userName={user?.name || ""} title="Accounts" />
-      <div className="content-center rounded-lg grid grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-10 mt-16 flex rounded-lg">
+      <div className="content-center rounded-lg grid grid-cols-1 md:grid-cols-4 lg:grid-cols-4 gap-10 mt-16 flex rounded-lg">
 
         {user.role === "admin" ?
           <Link to="/dashboard/fees" >

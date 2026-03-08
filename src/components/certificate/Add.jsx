@@ -8,6 +8,8 @@ import { getTemplatesFromCache } from '../../utils/TemplateHelper'
 import DataTable from 'react-data-table-component'
 import Select from 'react-select';
 import { FaRegTimesCircle } from "react-icons/fa";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 const Create = () => {
 
@@ -21,7 +23,7 @@ const Create = () => {
   const [students, setStudents] = useState([]);
   const [tempId, setTempId] = useState([]);
   const [schoolId, setSchoolId] = useState([]);
-
+  const [selectedIssueDate, setSelectedIssueDate] = useState(null);
   const [studentsLoading, setStudentsLoading] = useState(false)
   const [createdAll, setCreatedAll] = useState(null)
 
@@ -97,72 +99,71 @@ const Create = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (selectedRows && selectedRows.length > 0) {
+    if (!(selectedRows && selectedRows.length > 0)) {
+      showSwalAlert("Error!", "Please Select Students!", "warning");
+      return;
+    }
 
-      const formDataObj = new FormData();
-      Object.keys(formData).forEach((key) => {
-        formDataObj.append(key, formData[key])
-      })
+    try {
+      const headers = {
+        "Content-Type": "multipart/form-data",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        "Access-Control-Allow-Origin": "*",
+        Accept: "application/json",
+      };
 
-      try {
-        const headers = {
-          'Content-Type': 'multipart/form-data',
-          'Authorization': `Bearer ${localStorage.getItem("token")}`,
-          'Access-Control-Allow-Origin': '*',
-          'Accept': 'application/json'
-        }
+      const formDataNew = new FormData();
+      formDataNew.set("templateId", tempId);
+      formDataNew.set("schoolId", schoolId);
+      formDataNew.set("issueDate", selectedIssueDate.toISOString());
 
-        const formDataNew = new FormData();
-        formDataNew.set("templateId", tempId);
-        formDataNew.set("schoolId", schoolId);
+      let downloaded = false;
+      setCreatedAll(true);
 
-        let downloaded = false;
-        setCreatedAll(true);
+      for (const selectedRow of selectedRows) {
+        formDataNew.delete("studentId");
+        formDataNew.set("studentId", selectedRow._id);
 
-        for (const selectedRow of selectedRows) {
-          formDataNew.delete("studentId");
-          formDataNew.set("studentId", selectedRow._id);
+        const url = (await getBaseUrl()).toString() + "certificate/add";
+        const response = await axios.post(url, formDataNew, { headers });
 
-          const url = (await getBaseUrl()).toString() + "certificate/add";
-          const response = await axios.post(url, formDataNew, { headers: headers });
+        if (response?.data?.success) {
+          const resData = response.data;
+          const link = document.createElement("a");
 
-          if (response.data.success) {
-            let resData = response.data;
-            if (resData.image && resData.image != "") {
-              const link = document.createElement('a');
-
-              if (resData.type === 'base64') {
-                link.href = "data:image/jpeg;base64," + resData.image;
-              } else {
-                // ✅ prefer downloadUrl when provided (Drive)
-                link.href = resData.downloadUrl || resData.image;
-              }
-
-              link.download = resData.fileName || 'downloaded_image.png';
-              document.body.appendChild(link);
-              link.click();
-              document.body.removeChild(link);
-              downloaded = true;
-            }
+          if (resData.type === "base64pdf" && resData.file) {
+            link.href = "data:application/pdf;base64," + resData.file;
+            link.download = resData.fileName || "certificate.pdf";
+          } else if (resData.type === "url" && (resData.downloadUrl || resData.file)) {
+            link.href = resData.downloadUrl || resData.file;
+            link.download = resData.fileName || "certificate.pdf";
+          } else {
+            continue;
           }
-        }
 
-        if (downloaded) {
-          setCreatedAll(false);
-          showSwalAlert("Success!", "Successfully Created!", "success");
-          navigate("/dashboard/certificates");
-        } else {
-          setCreatedAll(false);
-          showSwalAlert("Error!", 'Certificates NOT created.....', "error");
-        }
-      } catch (error) {
-        if (error.response && !error.response.data.success) {
-          showSwalAlert("Error!", error.response.data.error, "error");
-          setCreatedAll(false);
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+          downloaded = true;
         }
       }
-    } else {
-      showSwalAlert("Error!", 'Please Select Students!', "warning");
+
+      setCreatedAll(false);
+
+      if (downloaded) {
+        showSwalAlert("Success!", "Successfully Created!", "success");
+        navigate("/dashboard/certificates");
+      } else {
+        showSwalAlert("Error!", "Certificates NOT created.....", "error");
+      }
+    } catch (error) {
+      setCreatedAll(false);
+
+      if (error.response && !error.response.data.success) {
+        showSwalAlert("Error!", error.response.data.error, "error");
+      } else {
+        showSwalAlert("Error!", "Certificate creation failed.", "error");
+      }
     }
   };
 
@@ -226,14 +227,35 @@ const Create = () => {
                 />
               </div>
 
+              {/* Issue Date */}
+              <div className="grid grid-cols-1 md:col-span-1">
+                <label className="block mt-3 text-sm font-medium text-slate-500">
+                  Certificate Issue Date <span className="text-red-700">*</span>
+                </label>
+                <DatePicker
+                  name="issueDate"
+                  selected={selectedIssueDate}
+                  onChange={(date) => setSelectedIssueDate(date)}
+                  dateFormat="dd/MM/yyyy"
+                  className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                  required
+                  showMonthDropdown
+                  showYearDropdown
+                  dropdownMode="select"
+                  isClearable
+                />
+              </div>
+
+              <div className="md:col-span-2" />
+
               {/* Students List */}
               <div className=''>
-                <label className="block mt-3 text-sm font-medium text-slate-500">
+                <label className="block md:col-span-2 mt-2 text-sm font-medium text-slate-500">
                   Select Students <span className="text-red-700">*</span>
                 </label>
               </div>
               <div className="flex space-x-1" />
-              <div className='md:col-span-3 mb-5 border rounded-md shadow-lg'>
+              <div className='md:col-span-2 mb-5 border rounded-md shadow-lg'>
                 {!studentsLoading ?
                   <DataTable columns={columnsSelect} data={students} reloadData={handleReload} selectableRows onSelectedRowsChange={handleRowChange} clearSelectedRows={toggledClearRows} highlightOnHover striped />
                   : <div className='flex items-center justify-center rounded-lg shadow-xl border'>

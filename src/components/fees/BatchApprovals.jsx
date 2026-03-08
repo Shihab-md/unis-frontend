@@ -48,7 +48,7 @@ export default function BatchApprovals() {
         setProcessing(false);
         showSwalAlert(
           "Success!",
-          `Approved. Applied: ${resp.result?.applied}, Failed: ${resp.result?.failed}`,
+          `Approved. Approved: ${resp.result?.applied}, Failed: ${resp.result?.failed}`,
           "success"
         );
         setSelectedBatch(null);
@@ -125,21 +125,6 @@ export default function BatchApprovals() {
 
                 <div className="text-gray-600 flex items-center justify-between gap-2">
                   <span>{new Date(b.paidDate).toLocaleString()}</span>
-
-                  {/* ✅ NEW: clickable proof link in left list 
-                  {view ? (
-                    <a
-                      href={view}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="text-blue-700 underline font-bold"
-                      onClick={(e) => e.stopPropagation()} // do not trigger openBatch
-                    >
-                      View Proof
-                    </a>
-                  ) : (
-                    <span className="text-gray-400 font-bold">No Proof</span>
-                  )}*/}
                 </div>
               </button>
             );

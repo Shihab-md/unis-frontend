@@ -10,8 +10,6 @@ export default function BulkPromote() {
   const schoolId = mySchoolId;
 
   const [targetAcYear, setTargetAcYear] = useState("");
-
-  // separate dropdowns
   const [courseType, setCourseType] = useState("");
   const [courseId, setCourseId] = useState("");
 
@@ -20,11 +18,11 @@ export default function BulkPromote() {
 
   const [candidates, setCandidates] = useState([]);
   const [selected, setSelected] = useState({});
+  const [gradesByStudentId, setGradesByStudentId] = useState({});
   const [loading, setLoading] = useState(false);
 
   const selectAllRef = useRef(null);
 
-  // REQUIRED ORDER
   const EDUCATION_TYPE_ORDER = [
     "Deeniyath Education",
     "Islamic Home Science",
@@ -33,7 +31,6 @@ export default function BulkPromote() {
     "Vocational Courses",
   ];
 
-  // ✅ certificate print fee (you can change)
   const CERTIFICATE_PRINT_FEE = 50;
 
   useEffect(() => {
@@ -44,15 +41,14 @@ export default function BulkPromote() {
 
         const coursesList = Array.isArray(c) ? c : c?.courses || [];
         const yearsList = Array.isArray(a) ? a : a?.academicYears || [];
-        //console.log(yearsList);
+
         setCourses(Array.isArray(coursesList) ? coursesList : []);
-        //setAcademicYears(Array.isArray(yearsList) ? yearsList : []);
+
         const list = Array.isArray(yearsList) ? yearsList : [];
         setAcademicYears(list.filter((y) => String(y?.active) === "Next"));
 
         const next = (yearsList || []).find((x) => String(x.active) === "Next");
-
-        setTargetAcYear(next._id);
+        setTargetAcYear(next?._id || "");
       } catch (e) {
         console.log("BulkPromote cache load error:", e);
         setCourses([]);
@@ -62,7 +58,6 @@ export default function BulkPromote() {
     load();
   }, []);
 
-  // Type options in required order + unknown appended
   const typeOptions = useMemo(() => {
     const set = new Set();
     for (const c of courses) {
@@ -78,7 +73,6 @@ export default function BulkPromote() {
     return [...known, ...unknown];
   }, [courses]);
 
-  // Courses filtered by selected type
   const filteredCourses = useMemo(() => {
     const t = String(courseType || "").trim();
     if (!t) return [];
@@ -87,14 +81,15 @@ export default function BulkPromote() {
       .sort((a, b) => String(a?.name || "").localeCompare(String(b?.name || "")));
   }, [courses, courseType]);
 
-  // reset courseId when type changes
   useEffect(() => {
     setCourseId("");
     setCandidates([]);
     setSelected({});
+    setGradesByStudentId({});
   }, [courseType]);
 
-  const selectedCount = useMemo(() => Object.keys(selected).length, [selected]);
+  const selectedIds = useMemo(() => Object.keys(selected), [selected]);
+  const selectedCount = selectedIds.length;
 
   useEffect(() => {
     if (selectAllRef.current) {
@@ -121,8 +116,10 @@ export default function BulkPromote() {
       if (!res?.success) {
         showSwalAlert("Error", res?.error || "Failed to load candidates", "error");
       } else {
-        setCandidates(res.students || []);
+        const rows = res.students || [];
+        setCandidates(rows);
         setSelected({});
+        setGradesByStudentId({});
       }
     } catch {
       showSwalAlert("Error", "Failed to load candidates", "error");
@@ -133,10 +130,22 @@ export default function BulkPromote() {
 
   const toggleOne = (sid) => {
     setSelected((prev) => {
-      const c = { ...prev };
-      if (c[sid]) delete c[sid];
-      else c[sid] = true;
-      return c;
+      const next = { ...prev };
+
+      if (next[sid]) {
+        delete next[sid];
+
+        // ✅ auto-clear grade when unchecked
+        setGradesByStudentId((prevGrades) => {
+          const nextGrades = { ...prevGrades };
+          delete nextGrades[sid];
+          return nextGrades;
+        });
+      } else {
+        next[sid] = true;
+      }
+
+      return next;
     });
   };
 
@@ -144,26 +153,66 @@ export default function BulkPromote() {
     if (!candidates.length) return;
 
     const allSelected = selectedCount === candidates.length;
+
     if (allSelected) {
       setSelected({});
+      // ✅ clear all grades too
+      setGradesByStudentId({});
       return;
     }
 
-    const next = {};
-    for (const s of candidates) next[String(s.studentId)] = true;
-    setSelected(next);
+    const nextSelected = {};
+    const nextGrades = {};
+
+    for (const s of candidates) {
+      const sid = String(s.studentId);
+      nextSelected[sid] = true;
+      nextGrades[sid] = gradesByStudentId[sid] || "";
+    }
+
+    setSelected(nextSelected);
+    setGradesByStudentId(nextGrades);
+  };
+
+  const handleGradeChange = (studentId, value) => {
+    setGradesByStudentId((prev) => ({
+      ...prev,
+      [String(studentId)]: value,
+    }));
+  };
+
+  const validateGradesForAction = (action, studentIds) => {
+    if (action !== "PROMOTE" && action !== "COMPLETE") return true;
+
+    const missing = studentIds.filter((sid) => !String(gradesByStudentId[sid] || "").trim());
+
+    if (missing.length > 0) {
+      showSwalAlert(
+        "Info",
+        `Please enter grade for all selected students. Missing: ${missing.length}`,
+        "info"
+      );
+      return false;
+    }
+
+    return true;
   };
 
   const confirmAndSubmit = async (action) => {
-    const studentIds = Object.keys(selected);
+    const studentIds = selectedIds;
+
     if (studentIds.length === 0) {
       showSwalAlert("Info", "Select at least one student", "info");
       return;
     }
 
-    const courseName = filteredCourses.find((c) => String(c._id) === String(courseId))?.name || "Course";
-    //console.log(targetAcYear)
-    const acYearLabel = String(targetAcYear)?.acYear || "Selected Year";
+    if (!validateGradesForAction(action, studentIds)) return;
+
+    const courseName =
+      filteredCourses.find((c) => String(c._id) === String(courseId))?.name || "Course";
+
+    const acYearLabel =
+      academicYears.find((a) => String(a._id) === String(targetAcYear))?.acYear || "Selected Year";
 
     let title = "Confirm Action";
     let html = "";
@@ -193,10 +242,15 @@ export default function BulkPromote() {
 
     if (!result.isConfirmed) return;
 
+    const gradesPayload = {};
+    if (action === "PROMOTE" || action === "COMPLETE") {
+      for (const sid of studentIds) {
+        gradesPayload[sid] = String(gradesByStudentId[sid] || "").trim();
+      }
+    }
+
     setLoading(true);
     try {
-      // ✅ backend should handle these policies:
-      // PROMOTE / NOT_PROMOTE / COMPLETE
       const resp = await promoteBulk({
         schoolId,
         targetAcYear,
@@ -205,18 +259,17 @@ export default function BulkPromote() {
         policy: action,
         requireFeesPaid: true,
         chunkSize: 10,
-
-        // ✅ for COMPLETE we send certificate fee so backend can create invoice
         certificateFee: action === "COMPLETE" ? CERTIFICATE_PRINT_FEE : 0,
+        gradesByStudentId: gradesPayload,
       });
 
       if (!resp?.success) {
         showSwalAlert("Error", resp?.error || "Action failed", "error");
       } else {
-        const s = resp.summary;
+        const s = resp.summary || {};
         showSwalAlert(
           "Success",
-          `Done. Promoted: ${s.promoted}, Skipped: ${s.skipped}, Errors: ${s.errors?.length || 0}`,
+          `Done. Promoted: ${s.promoted || 0}, Skipped: ${s.skipped || 0}, Errors: ${s.errors?.length || 0}`,
           "success"
         );
         loadCandidates();
@@ -229,14 +282,13 @@ export default function BulkPromote() {
   };
 
   return (
-    <div className="p-4 max-w-6xl mx-auto pb-28">
+    <div className="p-4 max-w-7xl mx-auto pb-28">
       <div className="flex items-center gap-3 mb-3">
         <div>{LinkIcon("/dashboard/students", "Back")}</div>
         <h2 className="pl-2 text-lg font-semibold text-left">Bulk Promote</h2>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-12 gap-3 mb-4 mt-4">
-        {/* Academic Year */}
         <div className="md:col-span-3">
           <label className="block text-xs font-semibold text-slate-700 mb-1">
             Academic Year
@@ -255,7 +307,6 @@ export default function BulkPromote() {
           </select>
         </div>
 
-        {/* Course Type */}
         <div className="md:col-span-4">
           <label className="block text-xs font-semibold text-slate-700 mb-1">
             Course Type
@@ -274,7 +325,6 @@ export default function BulkPromote() {
           </select>
         </div>
 
-        {/* Course */}
         <div className="md:col-span-3">
           <label className="block text-xs font-semibold text-slate-700 mb-1">
             Course
@@ -294,7 +344,6 @@ export default function BulkPromote() {
           </select>
         </div>
 
-        {/* Load Button */}
         <div className="md:col-span-2 flex items-end">
           <button
             onClick={loadCandidates}
@@ -306,8 +355,8 @@ export default function BulkPromote() {
         </div>
       </div>
 
-      <div className="border rounded">
-        <div className="grid grid-cols-12 p-2 font-bold text-xs bg-gray-100">
+      <div className="border rounded overflow-x-auto">
+        <div className="grid grid-cols-12 p-2 font-bold text-xs bg-gray-100 min-w-[900px]">
           <div className="col-span-1 grid place-items-center">
             <input
               ref={selectAllRef}
@@ -318,23 +367,40 @@ export default function BulkPromote() {
               title="Select all"
             />
           </div>
-          <div className="col-span-3">Roll</div>
-          <div className="col-span-4">Student</div>
+          <div className="col-span-2">Roll</div>
+          <div className="col-span-3">Student</div>
           <div className="col-span-2">From Year</div>
           <div className="col-span-2">Status</div>
+          <div className="col-span-2">Grade</div>
         </div>
 
         {candidates.map((s) => {
-          const checked = !!selected[String(s.studentId)];
+          const sid = String(s.studentId);
+          const checked = !!selected[sid];
+
           return (
-            <div key={s.studentId} className="grid grid-cols-12 p-2 border-t text-xs items-center">
+            <div
+              key={s.studentId}
+              className="grid grid-cols-12 p-2 border-t text-xs items-center min-w-[900px]"
+            >
               <div className="col-span-1 grid place-items-center">
-                <input type="checkbox" checked={checked} onChange={() => toggleOne(String(s.studentId))} />
+                <input type="checkbox" checked={checked} onChange={() => toggleOne(sid)} />
               </div>
-              <div className="col-span-3">{s.rollNumber || "-"}</div>
-              <div className="col-span-4 font-semibold text-slate-800">{s.name || "-"}</div>
+              <div className="col-span-2">{s.rollNumber || "-"}</div>
+              <div className="col-span-3 font-semibold text-slate-800">{s.name || "-"}</div>
               <div className="col-span-2">{s.fromYear || "-"}</div>
               <div className="col-span-2">{s.fromStatus || "-"}</div>
+              <div className="col-span-2">
+                <input
+                  type="text"
+                  value={gradesByStudentId[sid] || ""}
+                  onChange={(e) => handleGradeChange(sid, e.target.value)}
+                  placeholder="Enter grade"
+                  className="w-full border p-2 rounded text-xs"
+                  maxLength={20}
+                  disabled={!checked}
+                />
+              </div>
             </div>
           );
         })}
@@ -342,9 +408,8 @@ export default function BulkPromote() {
         {!candidates.length && <div className="p-4 text-sm text-gray-600">No students loaded.</div>}
       </div>
 
-      {/* ✅ Bottom bar with 3 actions */}
       <div className="fixed bottom-0 left-0 right-0 z-20 border-t bg-white/95 backdrop-blur">
-        <div className="mx-auto max-w-6xl px-4 py-3 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+        <div className="mx-auto max-w-7xl px-4 py-3 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
           <div className="text-sm font-semibold text-slate-700">
             Selected Students : <span className="font-semibold text-slate-900">{selectedCount}</span>
           </div>
@@ -355,7 +420,7 @@ export default function BulkPromote() {
               disabled={loading || selectedCount === 0}
               className="flex-1 sm:flex-none rounded-lg bg-teal-600 px-4 py-2 text-sm font-semibold text-white hover:bg-teal-700 disabled:opacity-60 hover:-translate-y-0.5"
             >
-              {loading ? "Working..." : `Promote`}
+              {loading ? "Working..." : "Promote"}
             </button>
 
             <button
@@ -363,7 +428,7 @@ export default function BulkPromote() {
               disabled={loading || selectedCount === 0}
               className="flex-1 sm:flex-none rounded-lg bg-amber-500 px-4 py-2 text-sm font-semibold text-white hover:bg-amber-600 disabled:opacity-60 hover:-translate-y-0.5"
             >
-              {loading ? "Working..." : `Not Promote`}
+              {loading ? "Working..." : "Not Promote"}
             </button>
 
             <button
@@ -371,7 +436,7 @@ export default function BulkPromote() {
               disabled={loading || selectedCount === 0}
               className="flex-1 sm:flex-none rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-700 disabled:opacity-60 hover:-translate-y-0.5"
             >
-              {loading ? "Working..." : `Complete`}
+              {loading ? "Working..." : "Complete"}
             </button>
           </div>
         </div>
