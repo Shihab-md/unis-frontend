@@ -23,6 +23,7 @@ export const columns = [
       <p><span className="text-blue-700"></span> {row.nameNative}</p>
     </div>,
     sortable: true,
+    wrap: true,
     width: "400px",
   },
   {
@@ -68,6 +69,7 @@ export const columns = [
       <p><span className="text-blue-700 mr-1">📱:</span> {row.incharge1Number}</p>
     </div>,
     //  sortable: true,
+    wrap: true,
     width: "230px",
   },
   {
@@ -77,6 +79,7 @@ export const columns = [
       <p>{row.supervisorName}</p>
     </div>,
     //  sortable: true,
+    wrap: true,
     width: "280px",
   },
   {
