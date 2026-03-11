@@ -22,7 +22,7 @@ export default function BulkPromote() {
   const [loading, setLoading] = useState(false);
 
   const selectAllRef = useRef(null);
-
+  const GRADE_OPTIONS = ["A+", "A", "B+", "B", "C", "D"];
   const EDUCATION_TYPE_ORDER = [
     "Deeniyath Education",
     "Islamic Home Science",
@@ -434,15 +434,19 @@ export default function BulkPromote() {
               </div>
 
               <div className="col-span-2">
-                <input
-                  type="text"
+                <select
                   value={gradesByStudentId[sid] || ""}
                   onChange={(e) => handleGradeChange(sid, e.target.value)}
-                  placeholder="Enter grade"
-                  className="w-full border p-2 rounded text-xs"
-                  maxLength={20}
+                  className="w-full border p-2 rounded text-xs bg-white"
                   disabled={!checked}
-                />
+                >
+                  <option value="">Select grade</option>
+                  {GRADE_OPTIONS.map((grade) => (
+                    <option key={grade} value={grade}>
+                      {grade}
+                    </option>
+                  ))}
+                </select>
               </div>
             </div>
           );
