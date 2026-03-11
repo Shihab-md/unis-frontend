@@ -42,6 +42,7 @@ export const columns = [
       <p className="mb-1">{row.niswanCode}</p>
       <p className="mb-1">{row.niswanName}</p>
     </div>),
+    wrap: true,
     width: "520px",
   },
   {

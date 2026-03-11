@@ -80,7 +80,6 @@ export const columns = [
   },
   {
     name: "Student details",
-    selector: (row) => row.rollNumber,
     selector: (row) => <div className="mt-2 mb-2">
       <p className="mb-1"><span className="text-blue-700 mr-1">Roll No:</span> {row.rollNumber}</p>
       <p className="mb-1"><span className="text-blue-700 mr-1">Name:</span> {row.name}</p>

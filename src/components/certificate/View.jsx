@@ -76,12 +76,12 @@ const View = () => {
   }, []);
 
   const fatherName = certificate?.studentId?.fatherName
-      ? certificate?.studentId?.fatherName
-      : certificate?.studentId?.motherName
-        ? certificate?.studentId?.motherName
-        : certificate?.studentId?.guardianName
-          ? certificate?.studentId?.guardianName
-          : "";
+    ? certificate?.studentId?.fatherName
+    : certificate?.studentId?.motherName
+      ? certificate?.studentId?.motherName
+      : certificate?.studentId?.guardianName
+        ? certificate?.studentId?.guardianName
+        : "";
   const fileId = certificate?.certificateDriveFileId;
   const imgSrc = fileId
     ? `https://drive.google.com/thumbnail?id=${fileId}&sz=w1200`
@@ -100,31 +100,37 @@ const View = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-1 gap-6">
             <div className="py-2 px-4 border mt-5 mb-1 items-center justify-center rounded-lg shadow-lg bg-white">
-
-              {show ?
-                <div className="bg-white rounded-lg" title="Click to Close">
-                  <dialog
-                    className="dialog rounded-lg"
-                    style={{ position: 'absolute' }}
-                    open
-                    onClick={handleHideDialog}
-                  >
-                    <img
-                      className="p-2 size-100 border items-center justify-center shadow-lg hover:-translate-y-0.5"
-                      onClick={handleHideDialog}
-                      src={imgSrc ? `${imgSrc}` : "/certificate.jpg"}
-                    />
-                  </dialog>
+              {show ? (
+                <div
+                  className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/70 p-3"
+                  title="Click to Close"
+                  onClick={handleHideDialog}
+                >
+                  <img
+                    className="max-h-[90vh] max-w-[95vw] rounded-lg border bg-white p-1 shadow-2xl object-contain"
+                    onClick={(e) => e.stopPropagation()}
+                    src={imgSrc ? `${imgSrc}` : "/certificate.jpg"}
+                    alt="Certificate Preview"
+                  />
                 </div>
-                : <div></div>}
+              ) : null}
 
-              <div className="flex mt-2 space-x-10 mb-3 items-center justify-center" title="Click to ZOOM">
+              <div
+                className="mt-2 mb-3 flex items-center justify-center space-x-6"
+                title="Click to ZOOM"
+              >
                 <img
-                  className='size-40 mt-3 border items-center justify-center rounded-lg shadow-lg hover:-translate-y-0.5'
+                  className="mt-3 p-0.5 h-40 w-40 cursor-zoom-in rounded-lg border object-cover shadow-lg hover:-translate-y-0.5"
                   onClick={handleShowDialog}
                   src={imgSrc ? `${imgSrc}` : "/certificate.jpg"}
+                  alt="Certificate Thumbnail"
                 />
-                <FaDownload onClick={handleDownload} className="text-3xl text-green-700 bg-gray-200 border rounded shadow-xl items-bottom justify-end hover:-translate-y-0.5" />
+
+                <FaDownload
+                  onClick={handleDownload}
+                  className="cursor-pointer rounded border bg-gray-200 text-3xl text-green-700 shadow-xl hover:-translate-y-0.5"
+                  title="Download"
+                />
               </div>
 
               <div className="flex mt-1 space-x-3 mb-5" />
