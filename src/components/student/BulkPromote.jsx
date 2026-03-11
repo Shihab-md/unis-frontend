@@ -91,6 +91,18 @@ export default function BulkPromote() {
   const selectedIds = useMemo(() => Object.keys(selected), [selected]);
   const selectedCount = selectedIds.length;
 
+  const selectedCandidates = useMemo(() => {
+    return candidates.filter((row) => selected[String(row.studentId)]);
+  }, [candidates, selected]);
+
+  const hasFinalYearSelected = useMemo(() => {
+    return selectedCandidates.some((row) => row.isFinalYear);
+  }, [selectedCandidates]);
+
+  const hasNonFinalYearSelected = useMemo(() => {
+    return selectedCandidates.some((row) => !row.isFinalYear);
+  }, [selectedCandidates]);
+
   useEffect(() => {
     if (selectAllRef.current) {
       const total = candidates.length;
@@ -135,7 +147,6 @@ export default function BulkPromote() {
       if (next[sid]) {
         delete next[sid];
 
-        // ✅ auto-clear grade when unchecked
         setGradesByStudentId((prevGrades) => {
           const nextGrades = { ...prevGrades };
           delete nextGrades[sid];
@@ -156,7 +167,6 @@ export default function BulkPromote() {
 
     if (allSelected) {
       setSelected({});
-      // ✅ clear all grades too
       setGradesByStudentId({});
       return;
     }
@@ -203,6 +213,24 @@ export default function BulkPromote() {
 
     if (studentIds.length === 0) {
       showSwalAlert("Info", "Select at least one student", "info");
+      return;
+    }
+
+    if (action === "PROMOTE" && hasFinalYearSelected) {
+      showSwalAlert(
+        "Info",
+        "Final year students cannot be promoted. Please unselect them or use Complete / Not Promote.",
+        "info"
+      );
+      return;
+    }
+
+    if (action === "COMPLETE" && hasNonFinalYearSelected) {
+      showSwalAlert(
+        "Info",
+        "Only final year students can be marked as Complete. Please unselect non-final-year students.",
+        "info"
+      );
       return;
     }
 
@@ -381,15 +409,30 @@ export default function BulkPromote() {
           return (
             <div
               key={s.studentId}
-              className="grid grid-cols-12 p-2 border-t text-xs items-center min-w-[900px]"
+              className={`grid grid-cols-12 p-2 border-t text-xs items-center min-w-[900px] ${s.isFinalYear ? "bg-rose-50" : ""
+                }`}
             >
               <div className="col-span-1 grid place-items-center">
                 <input type="checkbox" checked={checked} onChange={() => toggleOne(sid)} />
               </div>
+
               <div className="col-span-2">{s.rollNumber || "-"}</div>
-              <div className="col-span-3 font-semibold text-slate-800">{s.name || "-"}</div>
+
+              <div className="col-span-3 font-semibold text-slate-800">
+                <div>{s.name || "-"}</div>
+                {s.isFinalYear ? (
+                  <div className="mt-1 text-[11px] font-medium text-red-600">
+                    Final year student
+                  </div>
+                ) : null}
+              </div>
+
               <div className="col-span-2">{s.fromYear || "-"}</div>
-              <div className="col-span-2">{s.fromStatus || "-"}</div>
+
+              <div className="col-span-2">
+                <div>{s.fromStatus || "-"}</div>
+              </div>
+
               <div className="col-span-2">
                 <input
                   type="text"
@@ -412,13 +455,19 @@ export default function BulkPromote() {
         <div className="mx-auto max-w-7xl px-4 py-3 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
           <div className="text-sm font-semibold text-slate-700">
             Selected Students : <span className="font-semibold text-slate-900">{selectedCount}</span>
+            {hasFinalYearSelected ? (
+              <span className="ml-3 text-red-600">
+                Final year selected - Promote disabled
+              </span>
+            ) : null}
           </div>
 
-          <div className="flex flex-wrap gap-5 w-full sm:w-auto">
+          <div className="flex w-full flex-wrap gap-5 sm:w-auto">
             <button
               onClick={() => confirmAndSubmit("PROMOTE")}
-              disabled={loading || selectedCount === 0}
-              className="flex-1 sm:flex-none rounded-lg bg-teal-600 px-4 py-2 text-sm font-semibold text-white hover:bg-teal-700 disabled:opacity-60 hover:-translate-y-0.5"
+              disabled={loading || selectedCount === 0 || hasFinalYearSelected}
+              className="flex-1 rounded-lg bg-teal-600 px-4 py-2 text-sm font-semibold text-white hover:bg-teal-700 hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-60 sm:flex-none"
+              title={hasFinalYearSelected ? "Final year students cannot be promoted" : ""}
             >
               {loading ? "Working..." : "Promote"}
             </button>
@@ -426,15 +475,16 @@ export default function BulkPromote() {
             <button
               onClick={() => confirmAndSubmit("NOT_PROMOTE")}
               disabled={loading || selectedCount === 0}
-              className="flex-1 sm:flex-none rounded-lg bg-amber-500 px-4 py-2 text-sm font-semibold text-white hover:bg-amber-600 disabled:opacity-60 hover:-translate-y-0.5"
+              className="flex-1 rounded-lg bg-amber-500 px-4 py-2 text-sm font-semibold text-white hover:bg-amber-600 hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-60 sm:flex-none"
             >
               {loading ? "Working..." : "Not Promote"}
             </button>
 
             <button
               onClick={() => confirmAndSubmit("COMPLETE")}
-              disabled={loading || selectedCount === 0}
-              className="flex-1 sm:flex-none rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-700 disabled:opacity-60 hover:-translate-y-0.5"
+              disabled={loading || selectedCount === 0 || hasNonFinalYearSelected}
+              className="flex-1 rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-700 hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-60 sm:flex-none"
+              title={hasNonFinalYearSelected ? "Only final year students can be completed" : ""}
             >
               {loading ? "Working..." : "Complete"}
             </button>
