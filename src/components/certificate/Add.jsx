@@ -257,7 +257,17 @@ const Create = () => {
               <div className="flex space-x-1" />
               <div className='md:col-span-2 mb-5 border rounded-md shadow-lg'>
                 {!studentsLoading ?
-                  <DataTable columns={columnsSelect} data={students} reloadData={handleReload} selectableRows onSelectedRowsChange={handleRowChange} clearSelectedRows={toggledClearRows} highlightOnHover striped />
+                  <DataTable
+                    columns={columnsSelect}
+                    data={students}
+                    reloadData={handleReload}
+                    selectableRows
+                    selectableRowDisabled={(row) => !row.canSelectCertificate}
+                    onSelectedRowsChange={handleRowChange}
+                    clearSelectedRows={toggledClearRows}
+                    highlightOnHover
+                    striped
+                  />
                   : <div className='flex items-center justify-center rounded-lg shadow-xl border'>
                     <img width={250} className='flex items-center justify-center' src="/spinner1.gif" />
                   </div>}

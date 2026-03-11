@@ -6,9 +6,38 @@ import { useAuth } from '../context/AuthContext'
 
 export const columnsSelect = [
   {
-    name: "Students",
-    selector: (row) => row.rollNumber + " : " + row.userId.name,
-    width: "410px",
+    name: "Roll Number",
+    selector: (row) => `${row.rollNumber || "-"}`,
+    width: "200px",
+    cell: (row) => (
+      <div className="py-2">
+        <div className="font-semibold text-slate-800">
+          {row.rollNumber || "-"}
+        </div>
+
+        {!row.canSelectCertificate ? (
+          <div className="mt-1 text-xs font-medium text-red-600">
+            {row.certificateBlockReason || "Certificate fee pending"}
+          </div>
+        ) : (
+          <div className="mt-1 text-xs font-medium text-green-700">
+           
+          </div>
+        )}
+      </div>
+    ),
+  },
+  {
+    name: "Name",
+    selector: (row) => `${row.userId?.name || "-"}`,
+    width: "250px",
+    cell: (row) => (
+      <div className="py-2">
+        <div className="font-semibold text-slate-800">
+          {row.userId?.name || "-"}
+        </div>
+      </div>
+    ),
   },
 ];
 
