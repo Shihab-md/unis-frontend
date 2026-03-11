@@ -62,11 +62,11 @@ const EmployeeProfilePrint = ({ employee }) => {
             <tr>
               <td className="w-[18%] align-middle">
                 <img
-                  src="/school-logo.png"
+                  src="/Logo - UNIS.PNG"
                   alt="School Logo"
                   className="w-20 h-20 object-contain"
                   onError={(e) => {
-                    e.currentTarget.src = "/school-logo.png";
+                    e.currentTarget.src = "/Logo - UNIS.PNG";
                   }}
                 />
               </td>

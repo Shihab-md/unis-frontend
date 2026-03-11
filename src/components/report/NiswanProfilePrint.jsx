@@ -100,11 +100,11 @@ const NiswanProfilePrint = ({ school }) => {
                         <tr>
                             <td className="w-[18%] align-middle">
                                 <img
-                                    src={school?.logo || "/school-logo.png"}
+                                    src={school?.logo || "/Logo - UNIS.PNG"}
                                     alt="School Logo"
                                     className="w-20 h-20 object-contain"
                                     onError={(e) => {
-                                        e.currentTarget.src = "/school-logo.png";
+                                        e.currentTarget.src = "/Logo - UNIS.PNG";
                                     }}
                                 />
                             </td>
@@ -123,11 +123,11 @@ const NiswanProfilePrint = ({ school }) => {
 
                             <td className="w-[25%] align-middle text-right">
                                 <img
-                                    src={school?.logo || "/school-logo.png"}
+                                    src={school?.logo || "/Logo - UNIS.PNG"}
                                     alt="Niswan"
                                     className="w-24 h-28 object-contain border border-gray-400 inline-block p-1"
                                     onError={(e) => {
-                                        e.currentTarget.src = "/school-logo.png";
+                                        e.currentTarget.src = "/Logo - UNIS.PNG";
                                     }}
                                 />
                             </td>

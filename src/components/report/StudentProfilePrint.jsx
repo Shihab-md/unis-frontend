@@ -43,7 +43,7 @@ const StudentProfilePrint = ({ student }) => {
 
   const SectionTable = ({ title, rows }) => (
     <div className="mt-4">
-      <div className="bg-gray-200 border border-gray-500 px-2 py-1 font-bold uppercase">
+      <div className="bg-gray-200 border border-gray-500 px-2 py-1 font-bold uppercase bg-slate-200">
         {title}
       </div>
 
@@ -129,11 +129,11 @@ const StudentProfilePrint = ({ student }) => {
             <tr>
               <td className="w-[18%] align-middle">
                 <img
-                  src={student?.schoolId?.logo || "/school-logo.png"}
+                  src={student?.schoolId?.logo || "/Logo - UNIS.PNG"}
                   alt="School Logo"
                   className="w-20 h-20 object-contain"
                   onError={(e) => {
-                    e.currentTarget.src = "/school-logo.png";
+                    e.currentTarget.src = "/Logo - UNIS.PNG";
                   }}
                 />
               </td>
