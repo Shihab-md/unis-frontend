@@ -54,7 +54,7 @@ const SupervisorProfilePrint = ({ supervisor }) => {
               <td className="w-[18%] align-middle">
                 <img
                   src="/Logo - UNIS.PNG"
-                  alt="School Logo"
+                  alt="Niswan Logo"
                   className="w-20 h-20 object-contain"
                   onError={(e) => {
                     e.currentTarget.src = "/Logo - UNIS.PNG";

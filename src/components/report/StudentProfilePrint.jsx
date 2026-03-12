@@ -130,7 +130,7 @@ const StudentProfilePrint = ({ student }) => {
               <td className="w-[18%] align-middle">
                 <img
                   src={student?.schoolId?.logo || "/Logo - UNIS.PNG"}
-                  alt="School Logo"
+                  alt="Niswan Logo"
                   className="w-20 h-20 object-contain"
                   onError={(e) => {
                     e.currentTarget.src = "/Logo - UNIS.PNG";
@@ -144,7 +144,7 @@ const StudentProfilePrint = ({ student }) => {
                 </h1>
                 <p className="text-[11px] mt-1">
                   {student?.schoolId?.code
-                    ? `School Code: ${student.schoolId.code}`
+                    ? `Niswan Code: ${student.schoolId.code}`
                     : ""}
                 </p>
                 <p className="text-[16px] font-semibold mt-2 uppercase">
