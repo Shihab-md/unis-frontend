@@ -103,6 +103,10 @@ export default function BulkPromote() {
     return selectedCandidates.some((row) => !row.isFinalYear);
   }, [selectedCandidates]);
 
+  const hasPendingFeesSelected = useMemo(() => {
+    return selectedCandidates.some((row) => row.hasPendingFees);
+  }, [selectedCandidates]);
+
   useEffect(() => {
     if (selectAllRef.current) {
       const total = candidates.length;
@@ -213,6 +217,15 @@ export default function BulkPromote() {
 
     if (studentIds.length === 0) {
       showSwalAlert("Info", "Select at least one student", "info");
+      return;
+    }
+
+    if (hasPendingFeesSelected) {
+      showSwalAlert(
+        "Info",
+        "Students with pending fee invoices cannot be promoted, not promoted, or completed.",
+        "info"
+      );
       return;
     }
 
@@ -409,8 +422,9 @@ export default function BulkPromote() {
           return (
             <div
               key={s.studentId}
-              className={`grid grid-cols-12 p-2 border-t text-xs items-center min-w-[900px] ${s.isFinalYear ? "bg-rose-50" : ""
-                }`}
+              className={`grid grid-cols-12 p-2 border-t text-xs items-center min-w-[900px] ${
+                s.hasPendingFees ? "bg-amber-50" : s.isFinalYear ? "bg-rose-50" : ""
+              }`}
             >
               <div className="col-span-1 grid place-items-center">
                 <input type="checkbox" checked={checked} onChange={() => toggleOne(sid)} />
@@ -420,7 +434,12 @@ export default function BulkPromote() {
 
               <div className="col-span-3 font-semibold text-slate-800">
                 <div>{s.name || "-"}</div>
-                {s.isFinalYear ? (
+
+                {s.hasPendingFees ? (
+                  <div className="mt-1 text-[11px] font-medium text-amber-700">
+                    {s.feeBlockReason || "Pending fee invoice exists"}
+                  </div>
+                ) : s.isFinalYear ? (
                   <div className="mt-1 text-[11px] font-medium text-red-600">
                     Final year student
                   </div>
@@ -459,9 +478,18 @@ export default function BulkPromote() {
         <div className="mx-auto max-w-7xl px-4 py-3 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
           <div className="text-sm font-semibold text-slate-700">
             Selected Students : <span className="font-semibold text-slate-900">{selectedCount}</span>
-            {hasFinalYearSelected ? (
+
+            {hasPendingFeesSelected ? (
+              <span className="ml-3 text-amber-700">
+                Pending fees selected - All actions disabled
+              </span>
+            ) : hasFinalYearSelected ? (
               <span className="ml-3 text-red-600">
                 Final year selected - Promote disabled
+              </span>
+            ) : hasNonFinalYearSelected ? (
+              <span className="ml-3 text-indigo-600">
+                Non-final year selected - Complete disabled
               </span>
             ) : null}
           </div>
@@ -469,26 +497,39 @@ export default function BulkPromote() {
           <div className="flex w-full flex-wrap gap-5 sm:w-auto">
             <button
               onClick={() => confirmAndSubmit("PROMOTE")}
-              disabled={loading || selectedCount === 0 || hasFinalYearSelected}
+              disabled={loading || selectedCount === 0 || hasFinalYearSelected || hasPendingFeesSelected}
               className="flex-1 rounded-lg bg-teal-600 px-4 py-2 text-sm font-semibold text-white hover:bg-teal-700 hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-60 sm:flex-none"
-              title={hasFinalYearSelected ? "Final year students cannot be promoted" : ""}
+              title={
+                hasPendingFeesSelected
+                  ? "Students with pending fees cannot be promoted"
+                  : hasFinalYearSelected
+                  ? "Final year students cannot be promoted"
+                  : ""
+              }
             >
               {loading ? "Working..." : "Promote"}
             </button>
 
             <button
               onClick={() => confirmAndSubmit("NOT_PROMOTE")}
-              disabled={loading || selectedCount === 0}
+              disabled={loading || selectedCount === 0 || hasPendingFeesSelected}
               className="flex-1 rounded-lg bg-amber-500 px-4 py-2 text-sm font-semibold text-white hover:bg-amber-600 hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-60 sm:flex-none"
+              title={hasPendingFeesSelected ? "Students with pending fees cannot be marked as Not Promote" : ""}
             >
               {loading ? "Working..." : "Not Promote"}
             </button>
 
             <button
               onClick={() => confirmAndSubmit("COMPLETE")}
-              disabled={loading || selectedCount === 0 || hasNonFinalYearSelected}
+              disabled={loading || selectedCount === 0 || hasNonFinalYearSelected || hasPendingFeesSelected}
               className="flex-1 rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-700 hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-60 sm:flex-none"
-              title={hasNonFinalYearSelected ? "Only final year students can be completed" : ""}
+              title={
+                hasPendingFeesSelected
+                  ? "Students with pending fees cannot be completed"
+                  : hasNonFinalYearSelected
+                  ? "Only final year students can be completed"
+                  : ""
+              }
             >
               {loading ? "Working..." : "Complete"}
             </button>
