@@ -22,6 +22,17 @@ export default function BulkPaymentCreate() {
   const [processing, setProcessing] = useState(false);
   const [uploadingProof, setUploadingProof] = useState(false);
 
+  // ✅ Filter popup
+  const [showFilterPopup, setShowFilterPopup] = useState(false);
+
+  // ✅ Filters
+  const [filterInvoiceNo, setFilterInvoiceNo] = useState("");
+  const [filterAcademicYear, setFilterAcademicYear] = useState("");
+  const [filterStudentName, setFilterStudentName] = useState("");
+  const [filterCourse, setFilterCourse] = useState("");
+  const [filterFeesType, setFilterFeesType] = useState("");
+  const [filterRollNumber, setFilterRollNumber] = useState("");
+
   // ✅ Select-all checkbox ref (for indeterminate UI)
   const selectAllRef = useRef(null);
 
@@ -45,20 +56,77 @@ export default function BulkPaymentCreate() {
     return () => (alive = false);
   }, [schoolId, acYear]);
 
+  // ✅ Filtered invoices
+  const filteredInvoices = useMemo(() => {
+    const invoiceNo = filterInvoiceNo.trim().toLowerCase();
+    const academicYear = filterAcademicYear.trim().toLowerCase();
+    const studentName = filterStudentName.trim().toLowerCase();
+    const course = filterCourse.trim().toLowerCase();
+    const feesType = filterFeesType.trim().toLowerCase();
+    const rollNumber = filterRollNumber.trim().toLowerCase();
+
+    return (invoices || []).filter((inv) => {
+      const rowInvoiceNo = String(inv.invoiceNo || "").toLowerCase();
+      const rowAcademicYear = String(inv.acYear?.acYear || inv.acYearLabel || inv.acYear || "").toLowerCase();
+      const rowStudentName = String(inv.userId?.name || inv.studentId?.userId?.name || "").toLowerCase();
+      const rowCourse = String(inv.courseId?.name || "").toLowerCase();
+      const rowFeesType = String(inv.source || "").toLowerCase();
+      const rowRollNumber = String(inv.studentId?.rollNumber || "").toLowerCase();
+
+      return (
+        (!invoiceNo || rowInvoiceNo.includes(invoiceNo)) &&
+        (!academicYear || rowAcademicYear.includes(academicYear)) &&
+        (!studentName || rowStudentName.includes(studentName)) &&
+        (!course || rowCourse.includes(course)) &&
+        (!feesType || rowFeesType.includes(feesType)) &&
+        (!rollNumber || rowRollNumber.includes(rollNumber))
+      );
+    });
+  }, [
+    invoices,
+    filterInvoiceNo,
+    filterAcademicYear,
+    filterStudentName,
+    filterCourse,
+    filterFeesType,
+    filterRollNumber,
+  ]);
+
   const total = useMemo(
     () => Object.values(selected).reduce((s, v) => s + Number(v || 0), 0),
     [selected]
   );
 
   // ✅ Total invoice count (only those displayed)
-  const invoiceCount = invoices.length;
+  const invoiceCount = filteredInvoices.length;
 
-  // ✅ Selected count only for currently loaded invoices
+  // ✅ Selected count only for currently displayed invoices
   const selectedCount = useMemo(() => {
     if (!invoiceCount) return 0;
     const selectedIds = new Set(Object.keys(selected));
-    return invoices.reduce((cnt, inv) => (selectedIds.has(String(inv._id)) ? cnt + 1 : cnt), 0);
-  }, [invoices, selected, invoiceCount]);
+    return filteredInvoices.reduce(
+      (cnt, inv) => (selectedIds.has(String(inv._id)) ? cnt + 1 : cnt),
+      0
+    );
+  }, [filteredInvoices, selected, invoiceCount]);
+
+  const hasActiveFilters = useMemo(() => {
+    return [
+      filterInvoiceNo,
+      filterAcademicYear,
+      filterStudentName,
+      filterCourse,
+      filterFeesType,
+      filterRollNumber,
+    ].some((v) => String(v || "").trim() !== "");
+  }, [
+    filterInvoiceNo,
+    filterAcademicYear,
+    filterStudentName,
+    filterCourse,
+    filterFeesType,
+    filterRollNumber,
+  ]);
 
   // ✅ Select-all states
   const allChecked = invoiceCount > 0 && selectedCount === invoiceCount;
@@ -81,15 +149,21 @@ export default function BulkPaymentCreate() {
     });
   };
 
-  // ✅ Select All toggle
+  // ✅ Select All toggle (only visible filtered invoices)
   const toggleSelectAll = () => {
-    if (!invoices.length) return;
+    if (!filteredInvoices.length) return;
 
     setSelected((prev) => {
-      if (allChecked) return {};
+      if (allChecked) {
+        const next = { ...prev };
+        for (const inv of filteredInvoices) {
+          delete next[String(inv._id)];
+        }
+        return next;
+      }
 
       const next = { ...prev };
-      for (const inv of invoices) {
+      for (const inv of filteredInvoices) {
         next[String(inv._id)] = Number(inv.balance || 0);
       }
       return next;
@@ -105,6 +179,15 @@ export default function BulkPaymentCreate() {
   };
 
   const proofAttached = !!(proofDrive?.viewUrl || proofUrl);
+
+  const clearFilters = () => {
+    setFilterInvoiceNo("");
+    setFilterAcademicYear("");
+    setFilterStudentName("");
+    setFilterCourse("");
+    setFilterFeesType("");
+    setFilterRollNumber("");
+  };
 
   const submit = async () => {
     const items = Object.keys(selected)
@@ -284,11 +367,33 @@ export default function BulkPaymentCreate() {
         </div>
       </div>
 
-      <div className="mb-3 font-semibold">
-        Total: ₹ {Number(total || 0).toLocaleString("en-IN")}
-        <span className="ml-5 text-xs font-normal text-gray-500">
-          (Selected {selectedCount}/{invoiceCount})
-        </span>
+      <div className="mb-3 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <div className="font-semibold">
+          Total: ₹ {Number(total || 0).toLocaleString("en-IN")}
+          <span className="ml-5 text-xs font-normal text-gray-500">
+            (Selected {selectedCount}/{invoiceCount})
+          </span>
+          <span className="ml-3 text-xs font-normal text-gray-500">
+            Showing {filteredInvoices.length}/{invoices.length}
+          </span>
+        </div>
+
+        <div className="flex items-center gap-2">
+          {hasActiveFilters ? (
+            <span className="rounded-full bg-blue-100 px-2 py-1 text-[11px] font-semibold text-blue-700">
+              Filters Applied
+            </span>
+          ) : null}
+
+          <button
+            type="button"
+            onClick={() => setShowFilterPopup(true)}
+            className="rounded-lg border bg-white px-3 py-2 text-sm font-semibold text-slate-700 shadow hover:bg-slate-50 hover:-translate-y-0.5"
+            title="Open Filters"
+          >
+            Filter
+          </button>
+        </div>
       </div>
 
       {!processing ?
@@ -302,7 +407,7 @@ export default function BulkPaymentCreate() {
                   type="checkbox"
                   checked={allChecked}
                   onChange={toggleSelectAll}
-                  disabled={!invoices.length}
+                  disabled={!filteredInvoices.length}
                   title="Select all"
                   className="h-4 w-4"
                 />
@@ -328,7 +433,6 @@ export default function BulkPaymentCreate() {
                 )}
               </div>
 
-              {/* If you have total selected amount as `total` */}
               <div className="font-bold text-slate-900">
                 Total: ₹ {Number(total || 0).toLocaleString("en-IN")}
               </div>
@@ -343,12 +447,12 @@ export default function BulkPaymentCreate() {
                 type="checkbox"
                 checked={allChecked}
                 onChange={toggleSelectAll}
-                disabled={!invoices.length}
+                disabled={!filteredInvoices.length}
                 title="Select all"
               />
             </div>
             <div className="col-span-1">Invoice #</div>
-            <div className="col-span-1">Date</div>
+            <div className="col-span-1">Ac Year</div>
             <div className="col-span-2">Roll Number</div>
             <div className="col-span-2">Student Name</div>
             <div className="col-span-2">Course</div>
@@ -357,7 +461,7 @@ export default function BulkPaymentCreate() {
             <div className="col-span-1">Pay</div>
           </div>
 
-          {invoices.map((inv) => {
+          {filteredInvoices.map((inv) => {
             const checked = selected[inv._id] !== undefined;
 
             return (
@@ -394,6 +498,10 @@ export default function BulkPaymentCreate() {
                       <span className="font-semibold text-slate-500">Fees Type : </span>
                       {String(inv.source || "-")}
                     </div>
+                    <div>
+                      <span className="font-semibold text-slate-500">Academic Year : </span>
+                      {String(inv.acYear?.acYear || "-")}
+                    </div>
                   </div>
 
                   <div className="mt-3">
@@ -417,7 +525,8 @@ export default function BulkPaymentCreate() {
                     <input type="checkbox" checked={checked} onChange={() => toggle(inv)} />
                   </div>
                   <div className="col-span-1">{inv.invoiceNo}</div>
-                  <div className="col-span-1">{getFormattedDate(inv.createdAt)}</div>
+                  <div className="col-span-1">{String(inv.acYear?.acYear || "-")}</div>
+                  {/*<div className="col-span-1">{getFormattedDate(inv.createdAt)}</div>*/}
                   <div className="col-span-2">{String(inv.studentId?.rollNumber || "-")}</div>
                   <div className="col-span-2">{String(inv.userId?.name || "-")}</div>
                   <div className="col-span-2">{String(inv.courseId?.name || "-")}</div>
@@ -440,7 +549,7 @@ export default function BulkPaymentCreate() {
             );
           })}
 
-          {(!invoices || invoices.length === 0) && (
+          {(!filteredInvoices || filteredInvoices.length === 0) && (
             <div className="p-3 text-xs text-gray-600">No invoices</div>
           )}
         </div>
@@ -459,6 +568,98 @@ export default function BulkPaymentCreate() {
       >
         {uploadingProof ? "Uploading Proof..." : processing ? "Submitting..." : "Submit Batch to HQ"}
       </button>
+
+      {/* ✅ Filter Popup */}
+      {showFilterPopup ? (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-3"
+          onClick={() => setShowFilterPopup(false)}
+        >
+          <div
+            className="w-full max-w-5xl rounded-xl bg-white p-4 shadow-2xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="mb-3 flex items-center justify-between">
+              <h3 className="text-lg font-semibold text-slate-800">Filter Invoices</h3>
+              <button
+                type="button"
+                onClick={() => setShowFilterPopup(false)}
+                className="rounded px-2 py-1 text-sm font-semibold text-slate-500 hover:bg-slate-100"
+              >
+                ✕
+              </button>
+            </div>
+
+            <div className="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">
+              <input
+                type="text"
+                className="w-full rounded border p-2 text-sm"
+                placeholder="Invoice No"
+                value={filterInvoiceNo}
+                onChange={(e) => setFilterInvoiceNo(e.target.value)}
+              />
+
+              <input
+                type="text"
+                className="w-full rounded border p-2 text-sm"
+                placeholder="Academic Year"
+                value={filterAcademicYear}
+                onChange={(e) => setFilterAcademicYear(e.target.value)}
+              />
+
+              <input
+                type="text"
+                className="w-full rounded border p-2 text-sm"
+                placeholder="Student Name"
+                value={filterStudentName}
+                onChange={(e) => setFilterStudentName(e.target.value)}
+              />
+
+              <input
+                type="text"
+                className="w-full rounded border p-2 text-sm"
+                placeholder="Course"
+                value={filterCourse}
+                onChange={(e) => setFilterCourse(e.target.value)}
+              />
+
+              <input
+                type="text"
+                className="w-full rounded border p-2 text-sm"
+                placeholder="Fees Type"
+                value={filterFeesType}
+                onChange={(e) => setFilterFeesType(e.target.value)}
+              />
+
+              <input
+                type="text"
+                className="w-full rounded border p-2 text-sm"
+                placeholder="Roll Number"
+                value={filterRollNumber}
+                onChange={(e) => setFilterRollNumber(e.target.value)}
+              />
+            </div>
+
+            <div className="mt-4 flex justify-end gap-2">
+              <button
+                type="button"
+                onClick={clearFilters}
+                className="rounded bg-gray-200 px-4 py-2 text-sm font-semibold text-gray-700 hover:bg-gray-300"
+              >
+                Clear
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setShowFilterPopup(false)}
+                className="rounded bg-blue-600 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-700"
+              >
+                Apply
+              </button>
+            </div>
+          </div>
+        </div>
+      ) : null}
     </div>
   );
 }
