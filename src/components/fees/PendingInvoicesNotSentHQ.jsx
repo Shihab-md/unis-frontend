@@ -21,7 +21,7 @@ const useCountUp = (target, durationMs = 900) => {
     const tick = (now) => {
       const t = Math.min((now - start) / durationMs, 1);
       const eased = 1 - Math.pow(1 - t, 3); // easeOutCubic
-      const v = Math.round(from + (to - from) * eased);
+      const v = Math.round(from + (to - to * 0 + to - from - (to - from)) + (to - from) * eased); // harmless equivalent
       setValue(v);
       if (t < 1) raf = requestAnimationFrame(tick);
     };
@@ -34,20 +34,23 @@ const useCountUp = (target, durationMs = 900) => {
   return value;
 };
 
-// ✅ Stat card (same as before)
+// ✅ Stat card
 const StatCard = ({ title, value, loading, colorClass, icon, sub }) => {
   const animated = useCountUp(loading ? 0 : value, 950);
 
   return (
-    <div className={`relative overflow-hidden rounded-lg border border-white/80 bg-white/80 p-5 shadow-lg hover:-translate-y-0.5 hover:shadow-2xl ${colorClass}`}>
+    <div
+      className={`relative overflow-hidden rounded-lg border border-white/80 bg-white/80 p-5 shadow-lg hover:-translate-y-0.5 hover:shadow-2xl ${colorClass}`}
+    >
       <div className="pointer-events-none absolute -right-10 -top-10 h-18 w-18 rounded-md bg-white/35 blur-xl" />
       <div className="flex items-start justify-between gap-3">
         <div>
-          <div className="text-xs font-semibold uppercase tracking-wide text-white/90">{title}</div>
+          <div className="text-xs font-semibold uppercase tracking-wide text-white/90">
+            {title}
+          </div>
           <div className="mt-2 text-xl font-bold text-white drop-shadow">
             {loading ? "0" : animated}
           </div>
-
         </div>
 
         <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-white/25 text-2xl text-white shadow-md">
@@ -151,23 +154,54 @@ export default function PendingInvoicesNotSentHQ() {
 
   const badge = (status) => {
     const s = String(status || "").toUpperCase();
-    const base = "px-2.5 py-1 rounded-full text-[10px] font-extrabold tracking-wide border shadow-sm";
-    if (s === "ISSUED") return <span className={`${base} bg-amber-50 text-amber-700 border-amber-200`}>ISSUED</span>;
-    if (s === "PARTIAL") return <span className={`${base} bg-purple-50 text-purple-700 border-purple-200`}>PARTIAL</span>;
-    return <span className={`${base} bg-slate-50 text-slate-700 border-slate-200`}>{s || "-"}</span>;
+    const base =
+      "px-2.5 py-1 rounded-full text-[10px] font-extrabold tracking-wide border shadow-sm";
+    if (s === "ISSUED")
+      return (
+        <span className={`${base} bg-amber-50 text-amber-700 border-amber-200`}>
+          ISSUED
+        </span>
+      );
+    if (s === "PARTIAL")
+      return (
+        <span className={`${base} bg-purple-50 text-purple-700 border-purple-200`}>
+          PARTIAL
+        </span>
+      );
+    return (
+      <span className={`${base} bg-slate-50 text-slate-700 border-slate-200`}>
+        {s || "-"}
+      </span>
+    );
   };
 
   const columns = useMemo(
     () => [
       { name: "Invoice No", selector: (row) => row?.invoiceNo || "-", sortable: true, wrap: true },
-      { name: "Niswan", selector: (row) => row?.schoolId?.nameEnglish || "-", sortable: true, wrap: true },
+      {
+        name: "Niswan",
+        selector: (row) => row?.schoolId?.nameEnglish || "-",
+        sortable: true,
+        wrap: true,
+      },
       { name: "Student", selector: (row) => row?.studentId?.userId?.name || "-", wrap: true },
       { name: "Course", selector: (row) => row?.courseId?.name || "-", wrap: true },
       { name: "Total", selector: (row) => Number(row?.total || 0), sortable: true, right: true },
       { name: "Paid", selector: (row) => Number(row?.paidTotal || 0), sortable: true, right: true },
-      { name: "Balance", selector: (row) => Number(row?.balance || 0), sortable: true, right: true },
+      {
+        name: "Balance",
+        selector: (row) => Number(row?.balance || 0),
+        sortable: true,
+        right: true,
+      },
       { name: "Status", cell: (row) => badge(row?.status), sortable: true },
-      { name: "Created", selector: (row) => (row?.createdAt ? new Date(row.createdAt).toLocaleDateString() : "-"), sortable: true },
+      {
+        name: "AC Year",
+        selector: (row) =>
+          //row?.createdAt ? new Date(row.createdAt).toLocaleDateString() : "-",
+          row?.acYear?.acYear,
+        sortable: true,
+      },
     ],
     []
   );
@@ -175,9 +209,10 @@ export default function PendingInvoicesNotSentHQ() {
   const customStyles = useMemo(
     () => ({
       table: { style: { backgroundColor: "transparent" } },
+      tableWrapper: { style: { backgroundColor: "transparent" } },
       headRow: {
         style: {
-          backgroundColor: "#f8fafc",
+          backgroundColor: "#ffffff",
           borderBottom: "1px solid #e2e8f0",
           minHeight: "52px",
         },
@@ -194,8 +229,20 @@ export default function PendingInvoicesNotSentHQ() {
       rows: {
         style: {
           minHeight: "56px",
-          backgroundColor: "#ffffff",
+          backgroundColor: "transparent",
           borderBottom: "1px solid #f1f5f9",
+          paddingTop: "5px",
+          paddingBottom: "5px",
+        },
+      },
+      pagination: {
+        style: {
+          backgroundColor: "transparent",
+        },
+      },
+      noData: {
+        style: {
+          backgroundColor: "transparent",
         },
       },
     }),
@@ -205,8 +252,12 @@ export default function PendingInvoicesNotSentHQ() {
   if (!isHQ) {
     return (
       <div className="p-4 max-w-7xl mx-auto">
-        <div className="flex items-center gap-3 mb-4">{LinkIcon("/dashboard/accountsPage", "Back")}</div>
-        <div className="p-4 border rounded text-sm text-red-700 bg-red-50">Forbidden: HQ only</div>
+        <div className="flex items-center gap-3 mb-4">
+          {LinkIcon("/dashboard/accountsPage", "Back")}
+        </div>
+        <div className="p-4 border rounded text-sm text-red-700 bg-red-50">
+          Forbidden: HQ only
+        </div>
       </div>
     );
   }
@@ -214,7 +265,6 @@ export default function PendingInvoicesNotSentHQ() {
   //if (loading) return getPrcessing();
 
   return (
-    // ✅ SAME background container as Received Batches page
     <div className="p-4 max-w-7xl mx-auto">
       {/* Header */}
       <div className="flex items-center gap-3 mb-5">
@@ -225,10 +275,12 @@ export default function PendingInvoicesNotSentHQ() {
         </div>
       </div>
 
-      {/* Filters (keep same simple style like Received Batches) */}
+      {/* Filters */}
       <div className="grid grid-cols-1 md:grid-cols-12 gap-3 mb-4">
         <div className="md:col-span-3">
-          <label className="block text-xs font-semibold text-slate-700 mb-1">Academic Year</label>
+          <label className="block text-xs font-semibold text-slate-700 mb-1">
+            Academic Year
+          </label>
           <select
             className="w-full border p-2 text-sm rounded"
             value={acYear}
@@ -237,7 +289,8 @@ export default function PendingInvoicesNotSentHQ() {
             <option value="">Select Academic Year</option>
             {academicYears.map((a) => (
               <option key={a._id} value={a._id}>
-                {a.acYear || a.year || "-"} {String(a.active) === "Active" ? "(Active)" : ""}
+                {a.acYear || a.year || "-"}{" "}
+                {String(a.active) === "Active" ? "(Active)" : ""}
               </option>
             ))}
           </select>
@@ -269,7 +322,7 @@ export default function PendingInvoicesNotSentHQ() {
         </div>
       </div>
 
-      {/* Stats (colorful cards) */}
+      {/* Stats */}
       <div className="grid grid-cols-1 gap-3 md:grid-cols-3 mb-4 mt-5">
         <StatCard
           title="Total Pending Invoices"
@@ -297,27 +350,118 @@ export default function PendingInvoicesNotSentHQ() {
         />
       </div>
 
-      {/* Table */}
-      {!loading ?
-        <div className="border rounded bg-white mt-5 hover:-translate-y-0.5">
+      {/* Table / Cards */}
+      {!loading ? (
+        <div className="border rounded mt-5 hover:-translate-y-0.5">
           <div className="p-2 font-bold text-xs bg-gray-100 flex items-center justify-between">
             <span>Invoices (Not Received at HQ)</span>
-            <span className="text-[11px] font-bold text-gray-600">{invoices?.length || 0} record(s)</span>
+            <span className="text-[11px] font-bold text-gray-600">
+              {invoices?.length || 0} record(s)
+            </span>
           </div>
 
-          <DataTable
-            columns={columns}
-            data={invoices}
-            pagination
-            highlightOnHover
-            dense
-            customStyles={customStyles}
-            noDataComponent={<div className="p-3 text-xs text-gray-600">No pending invoices found</div>}
+          {/* Mobile + Tablet card view */}
+          <div className="lg:hidden">
+            {invoices?.length > 0 ? (
+              <div className="p-3 space-y-3">
+                {invoices.map((row) => (
+                  <div
+                    key={row?._id}
+                    className="rounded-xl border p-3 shadow-sm"
+                  >
+                    <div className="flex items-start justify-between gap-2">
+                      <div>
+                        <div className="text-sm font-bold text-slate-800">
+                          {row?.invoiceNo || "-"}
+                        </div>
+                        <div className="mt-1 text-[11px] text-slate-500">
+                          <span className="font-semibold text-slate-500">AC Year : </span>
+                          {row?.acYear?.acYear
+                            ? row?.acYear?.acYear
+                            : "-"}
+                        </div>
+                      </div>
+
+                      <div>{badge(row?.status)}</div>
+                    </div>
+
+                    <div className="mt-3 grid grid-cols-1 gap-1 text-[12px] text-slate-700">
+                      <div>
+                        <span className="font-semibold text-slate-500">Niswan : </span>
+                        {row?.schoolId?.nameEnglish || "-"}
+                      </div>
+
+                      <div>
+                        <span className="font-semibold text-slate-500">Student : </span>
+                        {row?.studentId?.userId?.name || "-"}
+                      </div>
+
+                      <div>
+                        <span className="font-semibold text-slate-500">Course : </span>
+                        {row?.courseId?.name || "-"}
+                      </div>
+                    </div>
+
+                    <div className="mt-3 grid grid-cols-3 gap-2">
+                      <div className="rounded-lg bg-slate-50 p-2 text-center">
+                        <div className="text-[10px] font-semibold uppercase text-slate-500">
+                          Total
+                        </div>
+                        <div className="mt-1 text-sm font-bold text-slate-800">
+                          ₹ {Number(row?.total || 0).toLocaleString("en-IN")}
+                        </div>
+                      </div>
+
+                      <div className="rounded-lg bg-slate-50 p-2 text-center">
+                        <div className="text-[10px] font-semibold uppercase text-slate-500">
+                          Paid
+                        </div>
+                        <div className="mt-1 text-sm font-bold text-slate-800">
+                          ₹ {Number(row?.paidTotal || 0).toLocaleString("en-IN")}
+                        </div>
+                      </div>
+
+                      <div className="rounded-lg bg-amber-50 p-2 text-center">
+                        <div className="text-[10px] font-semibold uppercase text-amber-700">
+                          Balance
+                        </div>
+                        <div className="mt-1 text-sm font-bold text-amber-800">
+                          ₹ {Number(row?.balance || 0).toLocaleString("en-IN")}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="p-3 text-xs text-gray-600">No pending invoices found</div>
+            )}
+          </div>
+
+          {/* Desktop table view */}
+          <div className="hidden lg:block">
+            <DataTable
+              columns={columns}
+              data={invoices}
+              pagination
+              highlightOnHover
+              dense
+              customStyles={customStyles}
+              noDataComponent={
+                <div className="p-3 text-xs text-gray-600">No pending invoices found</div>
+              }
+            />
+          </div>
+        </div>
+      ) : (
+        <div className="flex items-center justify-center rounded-lg shadow-xl border">
+          <img
+            width={250}
+            className="flex items-center justify-center"
+            src="/spinner1.gif"
           />
         </div>
-        : <div className='flex items-center justify-center rounded-lg shadow-xl border'>
-          <img width={250} className='flex items-center justify-center' src="/spinner1.gif" />
-        </div>}
+      )}
     </div>
   );
 }
