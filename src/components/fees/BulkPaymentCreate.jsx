@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { fetchDueInvoices, createPaymentBatch } from "../../api/feesApi.js";
 import { uploadPaymentProofToDrive } from "../../api/integrationsApi.js";
-import { showSwalAlert, LinkIcon, getPrcessing } from "../../utils/CommonHelper";
+import { showSwalAlert, LinkIcon, getPrcessing, getFormattedDate } from "../../utils/CommonHelper";
 
 export default function BulkPaymentCreate() {
   const schoolId = localStorage.getItem("schoolId");
@@ -348,8 +348,9 @@ export default function BulkPaymentCreate() {
               />
             </div>
             <div className="col-span-1">Invoice #</div>
+            <div className="col-span-1">Date</div>
             <div className="col-span-2">Roll Number</div>
-            <div className="col-span-3">Student Name</div>
+            <div className="col-span-2">Student Name</div>
             <div className="col-span-2">Course</div>
             <div className="col-span-1">Fees Type</div>
             <div className="col-span-1">Balance</div>
@@ -368,7 +369,10 @@ export default function BulkPaymentCreate() {
                       <input type="checkbox" checked={checked} onChange={() => toggle(inv)} />
                       <div className="font-bold text-slate-800">{inv.invoiceNo}</div>
                     </div>
-
+                    <div className="flex items-center gap-2">
+                      <input type="checkbox" checked={checked} onChange={() => toggle(inv)} />
+                      <div className="font-bold text-slate-800">{inv.createdAt}</div>
+                    </div>
                     <div className="font-bold text-slate-900">
                       ₹ {Number(inv.balance || 0).toLocaleString("en-IN")}
                     </div>
@@ -414,8 +418,9 @@ export default function BulkPaymentCreate() {
                     <input type="checkbox" checked={checked} onChange={() => toggle(inv)} />
                   </div>
                   <div className="col-span-1">{inv.invoiceNo}</div>
+                  <div className="col-span-1">{getFormattedDate(inv.createdAt)}</div>
                   <div className="col-span-2">{String(inv.studentId?.rollNumber || "-")}</div>
-                  <div className="col-span-3">{String(inv.userId?.name || "-")}</div>
+                  <div className="col-span-2">{String(inv.userId?.name || "-")}</div>
                   <div className="col-span-2">{String(inv.courseId?.name || "-")}</div>
                   <div className="col-span-1">{String(inv.source || "-")}</div>
                   <div className="col-span-1 text-right mr-4">
