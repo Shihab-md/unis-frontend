@@ -370,8 +370,7 @@ export default function BulkPaymentCreate() {
                       <div className="font-bold text-slate-800">{inv.invoiceNo}</div>
                     </div>
                     <div className="flex items-center gap-2">
-                      <input type="checkbox" checked={checked} onChange={() => toggle(inv)} />
-                      <div className="font-bold text-slate-800">{inv.createdAt}</div>
+                      <div className="font-bold text-slate-800">{getFormattedDate(inv.createdAt)}</div>
                     </div>
                     <div className="font-bold text-slate-900">
                       ₹ {Number(inv.balance || 0).toLocaleString("en-IN")}
