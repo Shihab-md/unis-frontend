@@ -52,6 +52,7 @@ export const columns = [
       <p>{row.schoolName}</p>
     </div>,
     sortable: true,
+    wrap: true,
     width: "430px",
   },
   {
