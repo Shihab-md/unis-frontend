@@ -20,8 +20,8 @@ const useCountUp = (target, durationMs = 900) => {
 
     const tick = (now) => {
       const t = Math.min((now - start) / durationMs, 1);
-      const eased = 1 - Math.pow(1 - t, 3); // easeOutCubic
-      const v = Math.round(from + (to - to * 0 + to - from - (to - from)) + (to - from) * eased); // harmless equivalent
+      const eased = 1 - Math.pow(1 - t, 3);
+      const v = Math.round(from + (to - from) * eased);
       setValue(v);
       if (t < 1) raf = requestAnimationFrame(tick);
     };
@@ -35,7 +35,7 @@ const useCountUp = (target, durationMs = 900) => {
 };
 
 // ✅ Stat card
-const StatCard = ({ title, value, loading, colorClass, icon, sub }) => {
+const StatCard = ({ title, value, loading, colorClass, icon, sub, isCurrency = false }) => {
   const animated = useCountUp(loading ? 0 : value, 950);
 
   return (
@@ -49,7 +49,11 @@ const StatCard = ({ title, value, loading, colorClass, icon, sub }) => {
             {title}
           </div>
           <div className="mt-2 text-xl font-bold text-white drop-shadow">
-            {loading ? "0" : animated}
+            {loading
+              ? "0"
+              : isCurrency
+                ? `₹ ${Number(animated || 0).toLocaleString("en-IN")}`
+                : Number(animated || 0).toLocaleString("en-IN")}
           </div>
         </div>
 
@@ -107,10 +111,6 @@ export default function PendingInvoicesNotSentHQ() {
     load();
   }, [isHQ]);
 
-  const schoolOptions = useMemo(() => {
-    return (schools || []).sort((a, b) => String(a.code || "").localeCompare(String(b.code || "")));
-  }, [schools]);
-
   const runSearch = async () => {
     const missing = [];
     if (!acYear) missing.push("Academic Year");
@@ -145,10 +145,62 @@ export default function PendingInvoicesNotSentHQ() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [acYear, schoolId]);
 
+  // ✅ Safe school key extractor
+  const getSchoolKey = (row) => {
+    if (!row?.schoolId) return "";
+    if (typeof row.schoolId === "string") return row.schoolId;
+    if (row.schoolId?._id) return String(row.schoolId._id);
+    return "";
+  };
+
+  // ✅ Pending-only Niswan dropdown list from current result
+  const pendingSchoolOptions = useMemo(() => {
+    const map = new Map();
+
+    for (const row of invoices || []) {
+      const key = getSchoolKey(row);
+      const school = row?.schoolId;
+
+      if (!key || !school || typeof school === "string") continue;
+
+      if (!map.has(key)) {
+        map.set(key, {
+          _id: key,
+          code: school?.code || "",
+          nameEnglish: school?.nameEnglish || "-",
+        });
+      }
+    }
+
+    return Array.from(map.values()).sort((a, b) =>
+      String(a.code || "").localeCompare(String(b.code || ""))
+    );
+  }, [invoices]);
+
+  // ✅ Keep selected school valid when pending list changes
+  useEffect(() => {
+    if (!isHQ) return;
+    if (schoolId === "ALL") return;
+
+    const exists = pendingSchoolOptions.some((s) => String(s._id) === String(schoolId));
+    if (!exists) {
+      setSchoolId("ALL");
+    }
+  }, [pendingSchoolOptions, schoolId, isHQ]);
+
   const summary = useMemo(() => {
     const total = invoices?.length || 0;
     const totalBalance = (invoices || []).reduce((s, r) => s + Number(r?.balance || 0), 0);
-    const uniqSchools = new Set((invoices || []).map((r) => r?.schoolId?._id || r?.schoolId)).size;
+    //const totalBalance = "₹ " + totalBalanceNum.toLocaleString("en-IN");
+
+    const schoolKeys = new Set(
+      (invoices || [])
+        .map((r) => getSchoolKey(r))
+        .filter(Boolean)
+    );
+
+    const uniqSchools = schoolKeys.size;
+
     return { total, totalBalance, uniqSchools };
   }, [invoices]);
 
@@ -177,30 +229,34 @@ export default function PendingInvoicesNotSentHQ() {
 
   const columns = useMemo(
     () => [
-      { name: "Invoice No", selector: (row) => row?.invoiceNo || "-", sortable: true, wrap: true },
+      { name: "Invoice No", selector: (row) => row?.invoiceNo || "-", sortable: true, wrap: true, width: "140px", },
       {
-        name: "Niswan",
-        selector: (row) => row?.schoolId?.nameEnglish || "-",
+        name: "Details",
+        selector: (row) => <div className="mt-2 mb-2">
+          <p className="mb-1"><span className="text-blue-700 mr-2">Student:</span> {row?.studentId?.userId?.name || "-"}</p>
+          <p className="mb-1"><span className="text-blue-700 mr-2">Niswan:</span> {row?.schoolId?.nameEnglish || "-"}</p>
+          <p><span className="text-blue-700 mr-2">Course:</span> {row?.courseId?.name || "-"}</p>
+        </div>,
         sortable: true,
         wrap: true,
+        width: "460px",
       },
-      { name: "Student", selector: (row) => row?.studentId?.userId?.name || "-", wrap: true },
-      { name: "Course", selector: (row) => row?.courseId?.name || "-", wrap: true },
-      { name: "Total", selector: (row) => Number(row?.total || 0), sortable: true, right: true },
-      { name: "Paid", selector: (row) => Number(row?.paidTotal || 0), sortable: true, right: true },
       {
-        name: "Balance",
-        selector: (row) => Number(row?.balance || 0),
+        name: "Amount",
+        selector: (row) => <div className="mt-2 mb-2">
+          <p className="mb-1"><span className="text-blue-700 mr-2">Total: ₹ </span>{Number(row?.total || 0).toLocaleString("en-IN")}</p>
+          <p className="mb-3"><span className="text-blue-700 mr-2">Paid: ₹ </span>{Number(row?.paidTotal || 0).toLocaleString("en-IN")}</p>
+          <p><span className="text-blue-700 mr-2">Balance: ₹ </span> {Number(row?.balance || 0).toLocaleString("en-IN")}</p>
+        </div>,
         sortable: true,
-        right: true,
+        width: "250px",
       },
-      { name: "Status", cell: (row) => badge(row?.status), sortable: true },
+      { name: "Status", cell: (row) => badge(row?.status), sortable: true, width: "160px", },
       {
         name: "AC Year",
-        selector: (row) =>
-          //row?.createdAt ? new Date(row.createdAt).toLocaleDateString() : "-",
-          row?.acYear?.acYear,
+        selector: (row) => row?.acYear?.acYear || "-",
         sortable: true,
+        width: "160px",
       },
     ],
     []
@@ -219,7 +275,7 @@ export default function PendingInvoicesNotSentHQ() {
       },
       headCells: {
         style: {
-          fontWeight: 900,
+          fontWeight: 700,
           fontSize: "10px",
           color: "#0f172a",
           textTransform: "uppercase",
@@ -303,8 +359,8 @@ export default function PendingInvoicesNotSentHQ() {
             value={schoolId}
             onChange={(e) => setSchoolId(e.target.value)}
           >
-            <option value="ALL">All Niswans</option>
-            {schoolOptions.map((s) => (
+            <option value="ALL">All Pending Niswans</option>
+            {pendingSchoolOptions.map((s) => (
               <option key={s._id} value={s._id}>
                 {(s.code ? `${s.code} : ` : "") + (s.nameEnglish || "-")}
               </option>
@@ -339,9 +395,10 @@ export default function PendingInvoicesNotSentHQ() {
           icon="💰"
           colorClass="bg-gradient-to-br from-rose-500 to-orange-400 border-white/20"
           sub="Sum of balances"
+          isCurrency={true}
         />
         <StatCard
-          title="Niswans"
+          title="Total Niswans"
           value={summary.uniqSchools}
           loading={loading}
           icon="🏫"
@@ -376,9 +433,7 @@ export default function PendingInvoicesNotSentHQ() {
                         </div>
                         <div className="mt-1 text-[11px] text-slate-500">
                           <span className="font-semibold text-slate-500">AC Year : </span>
-                          {row?.acYear?.acYear
-                            ? row?.acYear?.acYear
-                            : "-"}
+                          {row?.acYear?.acYear || "-"}
                         </div>
                       </div>
 
