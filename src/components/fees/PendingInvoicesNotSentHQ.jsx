@@ -76,6 +76,7 @@ export default function PendingInvoicesNotSentHQ() {
 
   const [acYear, setAcYear] = useState("");
   const [schoolId, setSchoolId] = useState(isHQ ? "ALL" : fixedSchoolId);
+  const [searchText, setSearchText] = useState("");
 
   const [loading, setLoading] = useState(false);
   const [invoices, setInvoices] = useState([]);
@@ -188,10 +189,30 @@ export default function PendingInvoicesNotSentHQ() {
     }
   }, [pendingSchoolOptions, schoolId, isHQ]);
 
+  const filteredInvoices = useMemo(() => {
+    const q = String(searchText || "").trim().toLowerCase();
+    if (!q) return invoices || [];
+
+    return (invoices || []).filter((row) => {
+      const haystack = [
+        row?.invoiceNo,
+        row?.studentId?.userId?.name,
+        row?.schoolId?.nameEnglish,
+        row?.schoolId?.code,
+        row?.courseId?.name,
+        row?.acYear?.acYear,
+        row?.status,
+      ]
+        .map((v) => String(v || "").toLowerCase())
+        .join(" ");
+
+      return haystack.includes(q);
+    });
+  }, [invoices, searchText]);
+
   const summary = useMemo(() => {
     const total = invoices?.length || 0;
     const totalBalance = (invoices || []).reduce((s, r) => s + Number(r?.balance || 0), 0);
-    //const totalBalance = "₹ " + totalBalanceNum.toLocaleString("en-IN");
 
     const schoolKeys = new Set(
       (invoices || [])
@@ -242,14 +263,19 @@ export default function PendingInvoicesNotSentHQ() {
         width: "460px",
       },
       {
-        name: "Amount",
+        name: "Total & Paid",
         selector: (row) => <div className="mt-2 mb-2">
           <p className="mb-1"><span className="text-blue-700 mr-2">Total: ₹ </span>{Number(row?.total || 0).toLocaleString("en-IN")}</p>
-          <p className="mb-3"><span className="text-blue-700 mr-2">Paid: ₹ </span>{Number(row?.paidTotal || 0).toLocaleString("en-IN")}</p>
-          <p><span className="text-blue-700 mr-2">Balance: ₹ </span> {Number(row?.balance || 0).toLocaleString("en-IN")}</p>
+          <p><span className="text-blue-700 mr-2">Paid: ₹ </span>{Number(row?.paidTotal || 0).toLocaleString("en-IN")}</p>
         </div>,
         sortable: true,
-        width: "250px",
+        width: "190px",
+      },
+      {
+        name: "Balance",
+        selector: (row) => `₹ ${Number(row?.balance || 0).toLocaleString("en-IN")}`,
+        sortable: true,
+        width: "160px",
       },
       { name: "Status", cell: (row) => badge(row?.status), sortable: true, width: "160px", },
       {
@@ -407,21 +433,34 @@ export default function PendingInvoicesNotSentHQ() {
         />
       </div>
 
+      <div className="md:col-span-12">
+        <label className="block text-xs font-semibold text-slate-700 mb-1">
+          Search
+        </label>
+        <input
+          type="text"
+          className="w-full border p-2 text-sm rounded"
+          placeholder="Search invoice no, student, niswan, course, AC year, status..."
+          value={searchText}
+          onChange={(e) => setSearchText(e.target.value)}
+        />
+      </div>
+
       {/* Table / Cards */}
       {!loading ? (
         <div className="border rounded mt-5 hover:-translate-y-0.5">
           <div className="p-2 font-bold text-xs bg-gray-100 flex items-center justify-between">
             <span>Invoices (Not Received at HQ)</span>
-            <span className="text-[11px] font-bold text-gray-600">
-              {invoices?.length || 0} record(s)
+            <span className="text-[12px] font-bold text-red-600">
+              {filteredInvoices?.length || 0} / {invoices?.length || 0} record(s)
             </span>
           </div>
 
           {/* Mobile + Tablet card view */}
           <div className="lg:hidden">
-            {invoices?.length > 0 ? (
+            {filteredInvoices?.length > 0 ? (
               <div className="p-3 space-y-3">
-                {invoices.map((row) => (
+                {filteredInvoices.map((row) => (
                   <div
                     key={row?._id}
                     className="rounded-xl border p-3 shadow-sm"
@@ -497,7 +536,7 @@ export default function PendingInvoicesNotSentHQ() {
           <div className="hidden lg:block">
             <DataTable
               columns={columns}
-              data={invoices}
+              data={filteredInvoices}
               pagination
               highlightOnHover
               dense
