@@ -576,7 +576,7 @@ export default function BulkPaymentCreate() {
           onClick={() => setShowFilterPopup(false)}
         >
           <div
-            className="w-full max-w-5xl rounded-xl bg-white p-4 shadow-2xl"
+            className="w-full max-w-4xl rounded-xl bg-[url(/bg_card.png)] bg-cover bg-center p-4 shadow-2xl bacdrop-blur"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="mb-3 flex items-center justify-between">

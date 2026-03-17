@@ -250,7 +250,14 @@ export default function PendingInvoicesNotSentHQ() {
 
   const columns = useMemo(
     () => [
-      { name: "Invoice No", selector: (row) => row?.invoiceNo || "-", sortable: true, wrap: true, width: "140px", },
+      {
+        name: "Invoice",
+        selector: (row) => <div className="mt-2 mb-2">
+          <p className="mb-3"><span className="text-blue-700 mr-2">No:</span> {row?.invoiceNo || "-"}</p>
+          <p><span className="text-blue-700 mr-2">AC Year:</span> {row?.acYear?.acYear || "-"}</p>
+        </div>,
+        sortable: true, wrap: true, width: "230px",
+      },
       {
         name: "Details",
         selector: (row) => <div className="mt-2 mb-2">
@@ -278,12 +285,6 @@ export default function PendingInvoicesNotSentHQ() {
         width: "160px",
       },
       { name: "Status", cell: (row) => badge(row?.status), sortable: true, width: "160px", },
-      {
-        name: "AC Year",
-        selector: (row) => row?.acYear?.acYear || "-",
-        sortable: true,
-        width: "160px",
-      },
     ],
     []
   );
