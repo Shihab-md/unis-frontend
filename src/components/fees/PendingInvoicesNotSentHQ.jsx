@@ -256,7 +256,7 @@ export default function PendingInvoicesNotSentHQ() {
           <p className="mb-3"><span className="text-blue-700 mr-2">No:</span> {row?.invoiceNo || "-"}</p>
           <p><span className="text-blue-700 mr-2">AC Year:</span> {row?.acYear?.acYear || "-"}</p>
         </div>,
-        sortable: true, wrap: true, width: "230px",
+        sortable: true, wrap: true, width: "190px",
       },
       {
         name: "Details",
@@ -267,8 +267,9 @@ export default function PendingInvoicesNotSentHQ() {
         </div>,
         sortable: true,
         wrap: true,
-        width: "460px",
+        width: "450px",
       },
+      { name: "Fees Type", cell: (row) => row?.source || "-", sortable: true, width: "160px", },
       {
         name: "Total & Paid",
         selector: (row) => <div className="mt-2 mb-2">
@@ -276,13 +277,13 @@ export default function PendingInvoicesNotSentHQ() {
           <p><span className="text-blue-700 mr-2">Paid: ₹ </span>{Number(row?.paidTotal || 0).toLocaleString("en-IN")}</p>
         </div>,
         sortable: true,
-        width: "190px",
+        width: "170px",
       },
       {
         name: "Balance",
         selector: (row) => `₹ ${Number(row?.balance || 0).toLocaleString("en-IN")}`,
         sortable: true,
-        width: "160px",
+        width: "140px",
       },
       { name: "Status", cell: (row) => badge(row?.status), sortable: true, width: "160px", },
     ],
