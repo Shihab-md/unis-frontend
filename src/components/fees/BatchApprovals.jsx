@@ -224,7 +224,6 @@ export default function BatchApprovals() {
             {selectedBatch && (
               <div className="p-3 text-xs">
                 <div className="mb-2"><b>Batch :</b> {batchInfo?.batchNo || "-"}</div>
-                <div className="mb-2"><b>AC Year :</b> {batchInfo?.acYear?.acYear || batchInfo?.acYear || "-"}</div>
                 <div className="mb-2"><b>Total :</b> ₹ {Number(batchInfo?.totalAmount || 0).toLocaleString("en-IN")}</div>
                 <div className="mb-2"><b>Mode :</b> {batchInfo?.mode || "-"}</div>
                 <div className="mb-2"><b>Ref # :</b> {batchInfo?.referenceNo || "-"}</div>
@@ -265,11 +264,10 @@ export default function BatchApprovals() {
                   <div className="mt-3 border rounded overflow-hidden">
                     {/* ✅ Desktop header */}
                     <div className="hidden md:grid grid-cols-12 p-2 font-bold bg-gray-50 text-xs sticky top-0">
-                      <div className="col-span-2">Roll Number</div>
-                      <div className="col-span-4">Student Name</div>
-                      <div className="col-span-3">Course</div>
+                      <div className="col-span-6">Details</div>
+                      <div className="col-span-2">AC Year</div>
                       <div className="col-span-2">Fees Type</div>
-                      <div className="col-span-1 text-right">Amount</div>
+                      <div className="col-span-2">Amount</div>
                     </div>
 
                     <div className="max-h-64 overflow-auto">
@@ -277,6 +275,7 @@ export default function BatchApprovals() {
                         const rollNumber = it?.studentId?.rollNumber || "-";
                         const studentName = it?.studentId?.userId?.name || "-";
                         const courseName = it?.invoiceId?.courseId?.name || "-";
+                        const acYear = it?.invoiceId?.acYear?.acYear || "-";
                         const feesType = it?.invoiceId?.source || "-";
                         const amount = Number(it?.amount || 0);
 
@@ -304,16 +303,23 @@ export default function BatchApprovals() {
                                   <span className="font-semibold text-slate-500">Fees Type: </span>
                                   {feesType}
                                 </div>
+                                <div>
+                                  <span className="font-semibold text-slate-500">AC Year: </span>
+                                  {acYear}
+                                </div>
                               </div>
                             </div>
 
                             {/* ✅ Desktop row */}
                             <div className="hidden md:grid grid-cols-12 p-2 text-xs">
-                              <div className="col-span-2 text-slate-800">{rollNumber}</div>
-                              <div className="col-span-4 text-slate-800">{studentName}</div>
-                              <div className="col-span-3 text-slate-700">{courseName}</div>
+                              <div className="mt-1 mb-1 col-span-6">
+                                <p className="mb-1"><span className="text-blue-700 mr-1">Roll No:</span> {rollNumber}</p>
+                                <p className="mb-1"><span className="text-blue-700 mr-3">Name:</span> {studentName}</p>
+                                <p><span className="text-blue-700 mr-2">Course:</span> {courseName}</p>
+                              </div>
+                              <div className="col-span-2 text-slate-700">{acYear}</div>
                               <div className="col-span-2 text-slate-700">{feesType}</div>
-                              <div className="col-span-1 text-right text-slate-900">
+                              <div className="col-span-2 text-right text-slate-900 mr-3">
                                 ₹ {amount.toLocaleString("en-IN")}
                               </div>
                             </div>
