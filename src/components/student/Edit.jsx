@@ -326,17 +326,49 @@ const Edit = () => {
     fetchStudent();
   }, []);
 
-  const handleChange = (e) => {
+  const COURSE_FEE_FIELD_MAP = {
+    courseId1: "fees1",
+    courseId2: "fees2",
+    courseId3: "fees3",
+    courseId4: "fees4",
+    courseId5: "fees5",
+  };
 
+  const getCourseFeeValue = (courseId) => {
+    if (!courseId) return "";
+
+    const selectedCourse = courses.find(
+      (course) => String(course._id) === String(courseId)
+    );
+
+    return selectedCourse?.fees ?? "";
+  };
+
+  const handleChange = (e) => {
     const { name, value, files } = e.target;
 
     if (name === "file") {
       setStudent((prevData) => ({ ...prevData, [name]: files[0] }));
-    } else {
-      setStudent((prevData) => ({
-        ...prevData, [name]: value
-      }))
+      return;
     }
+
+    // ✅ when course changes, auto-fill corresponding fees from course master
+    if (COURSE_FEE_FIELD_MAP[name]) {
+      const feesField = COURSE_FEE_FIELD_MAP[name];
+      const autoFee = getCourseFeeValue(value);
+
+      setStudent((prevData) => ({
+        ...prevData,
+        [name]: value,
+        [feesField]: autoFee,
+      }));
+      return;
+    }
+
+    setStudent((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
   };
 
   const handleSubmit = async (e) => {
@@ -1135,16 +1167,13 @@ const Edit = () => {
                       name="fees1"
                       value={student?.fees1 || ""}
                       min="0"
-                      //   value={fees1Val}
-                      //  disabled={student.fees1 ? true : false}
                       onChange={handleChange}
                       onPaste={preventPasteNegative}
                       onKeyPress={preventMinus}
                       onKeyDown={handleKeyDown}
-                      className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                      //    required
-                      // disabled={!(user.role === "superadmin" || user.role === "hquser")}
-                      disabled={isLocked("fees1")}
+                      className="mt-2 p-2 block w-full border border-gray-300 rounded-md bg-slate-100 cursor-not-allowed"
+                      disabled
+                      readOnly
                     />
                   </div>
                 </div>
@@ -1332,12 +1361,9 @@ const Edit = () => {
                         onPaste={preventPasteNegative}
                         onKeyPress={preventMinus}
                         onKeyDown={handleKeyDown}
-                        //  value={fees4Val}
-                        //  disabled={student.fees4 ? true : false}
-                        onChange={handleChange}
-                        className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                        //    required
-                        disabled={isLocked("fees4")}
+                        className="mt-2 p-2 block w-full border border-gray-300 rounded-md bg-slate-100 cursor-not-allowed"
+                        disabled
+                        readOnly
                       />
                     </div>
                   </div>
@@ -1422,15 +1448,12 @@ const Edit = () => {
                         name="fees2"
                         value={student?.fees2 || ""}
                         min="0"
-                        //   value={fees2Val}
-                        //    disabled={student.fees2 ? true : false}
-                        onChange={handleChange}
                         onPaste={preventPasteNegative}
                         onKeyPress={preventMinus}
                         onKeyDown={handleKeyDown}
-                        className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                        //    required
-                        disabled={isLocked("fees2")}
+                        className="mt-2 p-2 block w-full border border-gray-300 rounded-md bg-slate-100 cursor-not-allowed"
+                        disabled
+                        readOnly
                       />
                     </div>
                   </div>
@@ -1535,17 +1558,14 @@ const Edit = () => {
                         <input
                           type="number"
                           name="fees3"
-                          value={student.fees3}
+                          value={student?.fees3 || ""}
                           min="0"
-                          //  value={fees3Val}
-                          //   disabled={student.fees3 ? true : false}
-                          onChange={handleChange}
                           onPaste={preventPasteNegative}
                           onKeyPress={preventMinus}
                           onKeyDown={handleKeyDown}
-                          className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                          //    required
-                          disabled={isLocked("fees3")}
+                          className="mt-2 p-2 block w-full border border-gray-300 rounded-md bg-slate-100 cursor-not-allowed"
+                          disabled
+                          readOnly
                         />
                       </div>
                     </div>
@@ -1631,15 +1651,12 @@ const Edit = () => {
                         name="fees5"
                         value={student?.fees5 || ""}
                         min="0"
-                        //  value={fees5Val}
-                        //  disabled={student.fees5 ? true : false}
-                        onChange={handleChange}
                         onPaste={preventPasteNegative}
                         onKeyPress={preventMinus}
                         onKeyDown={handleKeyDown}
-                        className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                        //    required
-                        disabled={isLocked("fees5")}
+                        className="mt-2 p-2 block w-full border border-gray-300 rounded-md bg-slate-100 cursor-not-allowed"
+                        disabled
+                        readOnly
                       />
                     </div>
                   </div>
