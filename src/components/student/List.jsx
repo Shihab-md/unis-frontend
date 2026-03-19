@@ -181,7 +181,7 @@ const List = () => {
               placeholder=''
             />
 
-            <Select className='text-sm text-start mb-2'
+            {/*<Select className='text-sm text-start mb-2'
               options={academicYears.map(option => ({
                 value: option._id, label: option.acYear
               }))}
@@ -191,6 +191,24 @@ const List = () => {
               }}
               maxMenuHeight={210}
               placeholder=''
+            />*/}
+
+            <Select
+              className="text-sm text-start mb-2"
+              options={academicYears.map((option) => ({
+                value: option._id,
+                label: option.acYear,
+              }))}
+              defaultValue={
+                academicYears
+                  .filter((x) => x.active === "Active")
+                  .map((x) => ({ value: x._id, label: x.acYear }))[0] || null
+              }
+              onChange={(selectedOption) => {
+                selectedACYear = selectedOption?.value || null;
+              }}
+              maxMenuHeight={210}
+              placeholder=""
             />
 
           </div>

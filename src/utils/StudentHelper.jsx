@@ -147,9 +147,18 @@ export const columns = [
     wrap: true,
     selector: row => (
       <div className="mt-2 mb-2">
-        {row.courses?.map((course, i) => (
-          <div key={i}>{course.name + " (" + course.years + " yr)"}</div>
-        ))}
+        <div className="mt-2 mb-2">
+          {row.courses?.length ? (
+            row.courses.map((course, i) => (
+              <div className="mb-2" key={course._id || i}>
+                {course.name}
+                {Number(course.years) > 0 ? ` (${course.years} yr)` : ""}
+              </div>
+            ))
+          ) : (
+            <div>-</div>
+          )}
+        </div>
       </div>
     ),
   },
