@@ -1,12 +1,14 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { fetchDueInvoices, createPaymentBatch } from "../../api/feesApi.js";
 import { uploadPaymentProofToDrive } from "../../api/integrationsApi.js";
-import { showSwalAlert, LinkIcon, getPrcessing, getFormattedDate } from "../../utils/CommonHelper";
+import { getAcademicYearsFromCache } from "../../utils/AcademicYearHelper";
+import { showSwalAlert, LinkIcon, getFormattedDate } from "../../utils/CommonHelper";
 
 export default function BulkPaymentCreate() {
   const schoolId = localStorage.getItem("schoolId");
-  const acYear = "680485d9361ed06368c57f7c"; //2024-2025 //localStorage.getItem("acYearId");
-  // acYear will be replaced in controller.
+
+  const [academicYears, setAcademicYears] = useState([]);
+  const [selectedAcYear, setSelectedAcYear] = useState("");
 
   const [invoices, setInvoices] = useState([]);
   const [selected, setSelected] = useState({});
@@ -36,25 +38,71 @@ export default function BulkPaymentCreate() {
   // ✅ Select-all checkbox ref (for indeterminate UI)
   const selectAllRef = useRef(null);
 
+  // ----------------------------------------------------
+  // Load academic years and preselect active one
+  // ----------------------------------------------------
   useEffect(() => {
     let alive = true;
+
+    const loadAcademicYears = async () => {
+      try {
+        const years = await getAcademicYearsFromCache();
+        if (!alive) return;
+
+        const list = Array.isArray(years) ? years : [];
+        setAcademicYears(list);
+
+        const activeYear = list.find((y) => y.active === "Active");
+        if (activeYear?._id) {
+          setSelectedAcYear(activeYear._id);
+        } else if (list[0]?._id) {
+          setSelectedAcYear(list[0]._id);
+        }
+      } catch (e) {
+        console.log(e);
+        if (!alive) return;
+        setAcademicYears([]);
+      }
+    };
+
+    loadAcademicYears();
+
+    return () => {
+      alive = false;
+    };
+  }, []);
+
+  // ----------------------------------------------------
+  // Load due invoices by school + selected academic year
+  // ----------------------------------------------------
+  useEffect(() => {
+    let alive = true;
+
     const run = async () => {
       try {
         setProcessing(true);
-        const data = await fetchDueInvoices({ schoolId, acYear });
+        const data = await fetchDueInvoices({ schoolId, acYear: selectedAcYear });
         if (!alive) return;
         setInvoices(Array.isArray(data) ? data : []);
-      } catch {
+      } catch (e) {
+        console.log(e);
         if (!alive) return;
         setInvoices([]);
         showSwalAlert("Error!", "Failed to load invoices", "error");
+      } finally {
+        if (alive) setProcessing(false);
       }
-      setProcessing(false);
     };
 
-    if (schoolId && acYear) run();
-    return () => (alive = false);
-  }, [schoolId, acYear]);
+    if (schoolId && selectedAcYear) {
+      setSelected({});
+      run();
+    }
+
+    return () => {
+      alive = false;
+    };
+  }, [schoolId, selectedAcYear]);
 
   // ✅ Filtered invoices
   const filteredInvoices = useMemo(() => {
@@ -96,7 +144,7 @@ export default function BulkPaymentCreate() {
     () => Object.values(selected).reduce((s, v) => s + Number(v || 0), 0),
     [selected]
   );
- 
+
   // ✅ Total invoice count (only those displayed)
   const invoiceCount = filteredInvoices.length;
 
@@ -190,6 +238,11 @@ export default function BulkPaymentCreate() {
   };
 
   const submit = async () => {
+    if (!selectedAcYear) {
+      showSwalAlert("Info", "Please select academic year", "info");
+      return;
+    }
+
     const items = Object.keys(selected)
       .map((invoiceId) => {
         const inv = invoices.find((x) => String(x._id) === String(invoiceId));
@@ -207,7 +260,6 @@ export default function BulkPaymentCreate() {
       return;
     }
 
-    // ✅ Proof required validation
     if (!proofAttached) {
       showSwalAlert("Info", "Please attach proof (image/pdf) before submit", "info");
       return;
@@ -217,10 +269,10 @@ export default function BulkPaymentCreate() {
     try {
       const payload = {
         schoolId,
-        acYear,
+        acYear: selectedAcYear,
         mode,
         referenceNo,
-        proofUrl, // legacy
+        proofUrl,
 
         // ✅ NEW: send drive proof fields
         proofDriveFileId: proofDrive?.fileId || "",
@@ -232,20 +284,29 @@ export default function BulkPaymentCreate() {
       };
 
       const resp = await createPaymentBatch(payload);
-      if (!resp?.success) showSwalAlert("Error!", resp?.error || "Failed", "error");
-      else {
-        setProcessing(false);
-        showSwalAlert("Success!", `Batch created: ${resp.batchNo}`, "success");
+
+      if (!resp?.success) {
+        showSwalAlert("Error!", resp?.error || "Failed", "error");
+      } else {
+        const submittedIds = new Set(items.map((x) => String(x.invoiceId)));
+
+        setInvoices((prev) =>
+          (prev || []).filter((inv) => !submittedIds.has(String(inv._id)))
+        );
         setSelected({});
-        window.location.reload();
+        setReferenceNo("");
+        setProofUrl("");
+        setProofDrive(null);
+
+        showSwalAlert("Success!", `Batch created: ${resp.batchNo}`, "success");
       }
-    } catch {
-      setProcessing(false);
+    } catch (e) {
+      console.log(e);
       showSwalAlert("Error!", "Failed to create batch", "error");
+    } finally {
+      setProcessing(false);
     }
   };
-
-  //if (processing) return getPrcessing();
 
   return (
     <div className="p-4 max-w-6xl mx-auto">
@@ -256,7 +317,7 @@ export default function BulkPaymentCreate() {
 
       <div className="grid grid-cols-1 md:grid-cols-12 gap-5 mb-4">
         {/* Mode card */}
-        <div className="col-span-4 relative overflow-hidden rounded-md border border-white/80 bg-gradient-to-br from-indigo-500 to-sky-500 p-4 text-white shadow-lg hover:shadow-2xl transition hover:-translate-y-0.5">
+        <div className="col-span-12 md:col-span-4 relative overflow-hidden rounded-md border border-white/80 bg-gradient-to-br from-indigo-500 to-sky-500 p-4 text-white shadow-lg hover:shadow-2xl transition hover:-translate-y-0.5">
           <div className="pointer-events-none absolute -right-10 -top-10 h-28 w-28 rounded-full bg-white/25 blur-2xl" />
           <label className="block text-[11px] font-semibold text-white/90 mb-2">
             Payment Mode
@@ -273,7 +334,7 @@ export default function BulkPaymentCreate() {
         </div>
 
         {/* Reference card */}
-        <div className="col-span-4 relative overflow-hidden rounded-md border border-white/80 bg-gradient-to-br from-violet-500 to-fuchsia-500 p-4 text-white shadow-lg hover:shadow-2xl transition hover:-translate-y-0.5">
+        <div className="col-span-12 md:col-span-4 relative overflow-hidden rounded-md border border-white/80 bg-gradient-to-br from-violet-500 to-fuchsia-500 p-4 text-white shadow-lg hover:shadow-2xl transition hover:-translate-y-0.5">
           <div className="pointer-events-none absolute -right-10 -top-10 h-18 md:h-28 w-28 rounded-full bg-white/25 blur-2xl" />
           <label className="block text-[11px] font-semibold text-white/90 mb-2">
             Reference / Details
@@ -288,7 +349,7 @@ export default function BulkPaymentCreate() {
         </div>
 
         {/* Proof upload card */}
-        <div className="col-span-4 relative overflow-hidden rounded-md border border-white/80 bg-gradient-to-br from-emerald-500 to-teal-500 p-4 text-white shadow-lg hover:shadow-2xl transition hover:-translate-y-0.5">
+        <div className="col-span-12 md:col-span-4 relative overflow-hidden rounded-md border border-white/80 bg-gradient-to-br from-emerald-500 to-teal-500 p-4 text-white shadow-lg hover:shadow-2xl transition hover:-translate-y-0.5">
           <div className="pointer-events-none absolute -right-10 -top-10 h-28 w-28 rounded-full bg-white/25 blur-2xl" />
 
           <div className="flex items-center justify-between mb-2">
@@ -397,7 +458,7 @@ export default function BulkPaymentCreate() {
         </div>
       </div>
 
-      {!processing ?
+      {!processing ? (
         <div className="border rounded">
           {/* ✅ Mobile Select-All Bar */}
           <div className="md:hidden p-3 bg-gradient-to-r from-slate-50 via-white to-slate-50 border-b">
@@ -527,7 +588,6 @@ export default function BulkPaymentCreate() {
                   </div>
                   <div className="col-span-1">{inv.invoiceNo}</div>
                   <div className="col-span-1">{String(inv.acYear?.acYear || "-")}</div>
-                  {/*<div className="col-span-1">{getFormattedDate(inv.createdAt)}</div>*/}
                   <div className="col-span-2">{String(inv.studentId?.rollNumber || "-")}</div>
                   <div className="col-span-2">{String(inv.userId?.name || "-")}</div>
                   <div className="col-span-2">{String(inv.courseId?.name || "-")}</div>
@@ -554,18 +614,27 @@ export default function BulkPaymentCreate() {
             <div className="p-3 text-xs text-gray-600">No invoices</div>
           )}
         </div>
-        : <div className='flex items-center justify-center rounded-lg shadow-xl border'>
-          <img width={250} className='flex items-center justify-center' src="/spinner1.gif" />
-        </div>}
+      ) : (
+        <div className="flex items-center justify-center rounded-lg shadow-xl border">
+          <img width={250} className="flex items-center justify-center" src="/spinner1.gif" />
+        </div>
+      )}
 
       <button
-        disabled={processing || uploadingProof || !proofAttached}
+        disabled={processing || uploadingProof || !proofAttached || !selectedAcYear}
         onClick={submit}
-        className={`mt-4 w-full text-white p-2 rounded hover:-translate-y-0.5 ${processing || uploadingProof || !proofAttached
-          ? "bg-gray-400 cursor-not-allowed"
-          : "bg-teal-600 hover:bg-teal-700"
-          }`}
-        title={!proofAttached ? "Attach proof to submit" : ""}
+        className={`mt-4 w-full text-white p-2 rounded hover:-translate-y-0.5 ${
+          processing || uploadingProof || !proofAttached || !selectedAcYear
+            ? "bg-gray-400 cursor-not-allowed"
+            : "bg-teal-600 hover:bg-teal-700"
+        }`}
+        title={
+          !selectedAcYear
+            ? "Select academic year"
+            : !proofAttached
+            ? "Attach proof to submit"
+            : ""
+        }
       >
         {uploadingProof ? "Uploading Proof..." : processing ? "Submitting..." : "Submit Batch to HQ"}
       </button>

@@ -200,7 +200,7 @@ export default function BatchApprovals() {
                 className="w-full text-left p-2 border-t hover:bg-gray-50"
               >
                 <div className="font-semibold">
-                  {b.batchNo} - {"Amount : " + b.totalAmount}
+                  {b.batchNo} - {"Amount : ₹ " + Number(b.totalAmount || 0).toLocaleString("en-IN")}
                 </div>
 
                 <div className="text-gray-600 flex items-center justify-between gap-2">
