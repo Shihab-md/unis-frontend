@@ -520,8 +520,9 @@ export default function PaymentBatchesList() {
                     <div className="border rounded overflow-hidden">
                       {/* Desktop items header */}
                       <div className="hidden md:grid grid-cols-12 p-2 font-bold text-[11px] bg-gray-50">
-                        <div className="col-span-5">Student</div>
-                        <div className="col-span-4">Course</div>
+                        <div className="col-span-4">Student</div>
+                        <div className="col-span-3">Course</div>
+                        <div className="col-span-2">AC Year</div>
                         <div className="col-span-2">Amount</div>
                         <div className="col-span-1">Item</div>
                       </div>
@@ -531,6 +532,7 @@ export default function PaymentBatchesList() {
                         const roll = it.studentId?.rollNumber || "-";
                         const courseName = it.invoiceId?.courseId?.name || "-";
                         const source = it.invoiceId?.source || "-";
+                        const acYear = it.invoiceId?.acYear?.acYear || "-";
                         const amount = `₹ ${Number(it.amount || 0).toLocaleString("en-IN")}`;
                         const badge = it.status === "PENDING_APPROVAL" ? "P" : it.status === "APPLIED" ? "A" : "F";
 
@@ -553,6 +555,11 @@ export default function PaymentBatchesList() {
                               </div>
 
                               <div className="mt-1 text-[10px] text-slate-600">
+                                <span className="font-semibold text-slate-500">Ac Year: </span>
+                                <span className="font-bold">{acYear}</span>
+                              </div>
+
+                              <div className="mt-1 text-[10px] text-slate-600">
                                 <span className="font-semibold text-slate-500">Item: </span>
                                 <span className="font-bold">{badge}</span>
                               </div>
@@ -560,16 +567,17 @@ export default function PaymentBatchesList() {
 
                             {/* Desktop row */}
                             <div className="hidden md:grid grid-cols-12 p-2 text-[11px]">
-                              <div className="col-span-5">
+                              <div className="col-span-4">
                                 {studentName}{" "}
                                 <span className="text-[10px] text-gray-500">({roll})</span>
                               </div>
-                              <div className="col-span-4">
+                              <div className="col-span-3">
                                 {courseName}{" "}
                                 <span className="text-[10px] text-gray-500">
                                   {source ? `(${source})` : ""}
                                 </span>
                               </div>
+                              <div className="col-span-2 font-semibold">{acYear}</div>
                               <div className="col-span-2 font-semibold">{amount}</div>
                               <div className="col-span-1 text-[10px]">{badge}</div>
                             </div>
