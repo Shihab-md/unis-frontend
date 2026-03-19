@@ -5,7 +5,7 @@ import { showSwalAlert, LinkIcon, getPrcessing, getFormattedDate } from "../../u
 
 export default function BulkPaymentCreate() {
   const schoolId = localStorage.getItem("schoolId");
-  //const acYear = "680485d9361ed06368c57f7c"; //2024-2025 //localStorage.getItem("acYearId");
+  const acYear = "680485d9361ed06368c57f7c"; //2024-2025 //localStorage.getItem("acYearId");
   // acYear will be replaced in controller.
 
   const [invoices, setInvoices] = useState([]);
