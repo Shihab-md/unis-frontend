@@ -961,11 +961,11 @@ const List = () => {
         {LinkIcon("/dashboard", "Back")}
 
         <div className="w-3/4 lg:w-1/2 rounded flex lg:border lg:shadow-lg rounded-md justify-between items-center relative lg:bg-[url(/bg-img.jpg)]">
-          <div className={`w-full text-md flex justify-center items-center pl-2 rounded-l-md`}>
+          <div className={`w-full text-md flex justify-center items-center pl-1 rounded-l-md`}>
             <input
               type="text"
               placeholder="Search"
-              class="w-full px-3 py-0.5 border rounded shadow-md justify-center ml-1 lg:ml-0 mr-3 lg:mr-0"
+              class="w-full px-3 py-0.5 border rounded shadow-md justify-center mr-1 lg:mr-0"
               onChange={handleSearch}
             />
           </div>
@@ -974,23 +974,21 @@ const List = () => {
           </div>
         </div>
 
-        {/*  <img src="/filter.jpg" className="rounded border border-green-500 w-8 p-1 mr-3 shadow-lg bg-white"/>*/}
-
-        <div className="mr-3" onClick={openFilterPopup}>{LinkIcon("#", "Filter")}</div>
+        <div className="mr-1" onClick={openFilterPopup}>{LinkIcon("#", "Filter")}</div>
 
         {LinkIcon("/dashboard/add-student", "Add")}
 
-        {/*{user.role === "superadmin" || user.role === "hquser" ?
+        {/*// hidden lg:block {user.role === "superadmin" || user.role === "hquser" ?
           <div className="hidden lg:block" onClick={handleFeesPaid}>{LinkIcon("#", "FeesPaid")}</div> : null}*/}
 
         {user.role === "superadmin" || user.role === "hquser" || user.role === "admin" ?
-          <div className="ml-3" onClick={() => navigate(`/dashboard/students/bulkpromote`)}>{LinkIcon("#", "Promote")}</div> : null}
+          <div className="ml-1" onClick={() => navigate(`/dashboard/students/bulkpromote`)}>{LinkIcon("#", "Promote")}</div> : null}
 
         {user.role === "superadmin" || user.role === "hquser" ?
-          <div className="hidden lg:block" onClick={handleRemoveStudents}>{LinkIcon("#", "RemoveStudents")}</div> : null}
+          <div className="block ml-1 mr-1" onClick={handleRemoveStudents}>{LinkIcon("#", "RemoveStudents")}</div> : null}
 
         {user.role === "superadmin" || user.role === "hquser" ?
-          <div className="hidden lg:block" onClick={handleImport}>{LinkIcon("#", "Import")}</div> : null}
+          <div className="block" onClick={handleImport}>{LinkIcon("#", "Import")}</div> : null}
       </div>
 
       {(localStorage.getItem('courseId') != null && localStorage.getItem('courseId') != 'null')

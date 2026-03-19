@@ -223,9 +223,10 @@ export default function BatchApprovals() {
 
             {selectedBatch && (
               <div className="p-3 text-xs">
-                <div className="mb-2"><b>Batch :</b> {batchInfo?.batchNo || "-"}</div>
+                <div className="mb-2"><b>Batch No :</b> {batchInfo?.batchNo || "-"}</div>
                 <div className="mb-2"><b>Total :</b> ₹ {Number(batchInfo?.totalAmount || 0).toLocaleString("en-IN")}</div>
                 <div className="mb-2"><b>Mode :</b> {batchInfo?.mode || "-"}</div>
+                <div className="mb-2"><b>Items :</b> {details?.items?.length}</div>
                 <div className="mb-2"><b>Ref # :</b> {batchInfo?.referenceNo || "-"}</div>
 
                 {/* ✅ NEW: Proof view/download in details */}
@@ -257,8 +258,6 @@ export default function BatchApprovals() {
                     ? `${batchInfo.schoolId.nameEnglish || "-"}, ${batchInfo.schoolId?.districtStateId?.district || "-"}, ${batchInfo.schoolId?.districtStateId?.state || "-"}`
                     : "-"}
                 </div>
-
-                <div className="mb-2"><b>Items :</b> {details?.items?.length}</div>
 
                 {Array.isArray(details?.items) && details.items.length > 0 && (
                   <div className="mt-3 border rounded overflow-hidden">

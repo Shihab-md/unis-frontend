@@ -21,7 +21,7 @@ export const columnsSelect = [
           </div>
         ) : (
           <div className="mt-1 text-xs font-medium text-green-700">
-           
+
           </div>
         )}
       </div>
@@ -148,7 +148,7 @@ export const columns = [
     selector: row => (
       <div className="mt-2 mb-2">
         {row.courses?.map((course, i) => (
-          <div key={i}>{course.name + ","}</div>
+          <div key={i}>{course.name + " (" + course.years + " yr)"}</div>
         ))}
       </div>
     ),

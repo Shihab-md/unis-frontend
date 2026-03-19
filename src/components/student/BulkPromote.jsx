@@ -410,7 +410,7 @@ export default function BulkPromote() {
           </div>
           <div className="col-span-2">Roll</div>
           <div className="col-span-3">Student</div>
-          <div className="col-span-2">From Year</div>
+          <div className="col-span-2">Current Year</div>
           <div className="col-span-2">Status</div>
           <div className="col-span-2">Grade</div>
         </div>

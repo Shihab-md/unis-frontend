@@ -96,7 +96,7 @@ export default function BulkPaymentCreate() {
     () => Object.values(selected).reduce((s, v) => s + Number(v || 0), 0),
     [selected]
   );
-
+ 
   // ✅ Total invoice count (only those displayed)
   const invoiceCount = filteredInvoices.length;
 
@@ -197,6 +197,7 @@ export default function BulkPaymentCreate() {
           invoiceId,
           studentId: inv?.studentId,
           amount: Number(selected[invoiceId]),
+          acYear: inv?.acYear,
         };
       })
       .filter((x) => x.studentId && x.amount > 0);
