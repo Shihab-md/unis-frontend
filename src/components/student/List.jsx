@@ -3,7 +3,16 @@ import { useNavigate } from 'react-router-dom'
 import { columns, StudentButtons, conditionalRowStyles } from '../../utils/StudentHelper'
 import DataTable from 'react-data-table-component'
 import axios from 'axios'
-import { getBaseUrl, handleRightClickAndFullScreen, getSpinner, getPrcessing, checkAuth, LinkIcon, showSwalAlert, getFilterGif } from '../../utils/CommonHelper';
+import {
+  getBaseUrl,
+  handleRightClickAndFullScreen,
+  getSpinner,
+  getPrcessing,
+  checkAuth,
+  LinkIcon,
+  showSwalAlert,
+  getFilterGif
+} from '../../utils/CommonHelper';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import Select from 'react-select';
@@ -16,6 +25,7 @@ import 'animate.css';
 import * as XLSX from 'xlsx';
 
 const List = () => {
+  const IMPORT_CHUNK_SIZE = 20;
 
   // To prevent right-click AND For FULL screen view.
   useEffect(() => {
@@ -24,30 +34,29 @@ const List = () => {
 
   const [schools, setSchools] = useState([]);
   const [inputOptions, setInputOptions] = useState([]);
-  const [students, setStudents] = useState([])
-  const [prevStudents, setPrevStudents] = useState([])
-  const [supLoading, setSupLoading] = useState(false)
-  const [filtering, setFiltering] = useState(false)
+  const [students, setStudents] = useState([]);
+  const [prevStudents, setPrevStudents] = useState([]);
+  const [supLoading, setSupLoading] = useState(false);
+  const [filtering, setFiltering] = useState(false);
   const [showFilter, setShowFilter] = useState(null);
-  const [filteredStudent, setFilteredStudents] = useState(null)
+  const [filteredStudent, setFilteredStudents] = useState(null);
   const [courses, setCourses] = useState([]);
   const [academicYears, setAcademicYears] = useState([]);
   const [institutes, setInstitutes] = useState([]);
 
-  const navigate = useNavigate()
-  const { user } = useAuth()
+  const navigate = useNavigate();
+  const { user } = useAuth();
 
   let schoolId;
   let schoolName;
 
   const [excelData, setExcelData] = useState([]);
   const [studentsDataList, setStudentsDataList] = useState("");
-  const [processing, setProcessing] = useState(null)
+  const [processing, setProcessing] = useState(null);
 
   const [selectedOptions, setSelectedOptions] = useState([]);
   const [schId, setSchId] = useState('');
 
-  // ✅ import lock
   const [importingStudents, setImportingStudents] = useState(false);
   const importLockRef = useRef(false);
 
@@ -56,12 +65,14 @@ const List = () => {
     return (
       data?.about ?
         <div className='ml-12 p-2 bg-blue-50'>
-          <p className='pl-2 text-xs'>{"More details : "}
+          <p className='pl-2 text-xs'>
+            {"More details : "}
             {data.about ? data.about : ""}
           </p>
         </div>
-        : null);
-  }
+        : null
+    );
+  };
 
   const MySwal = withReactContent(Swal);
 
@@ -86,38 +97,55 @@ const List = () => {
     window.URL.revokeObjectURL(url);
   };
 
+  const chunkArray = (items = [], size = 20) => {
+    const chunks = [];
+    for (let i = 0; i < items.length; i += size) {
+      chunks.push(items.slice(i, i + size));
+    }
+    return chunks;
+  };
+
+  const shiftResultRowNumbers = (text = "", offset = 0) => {
+    return String(text || "").replace(/Row\s*:\s*(\d+)/g, (_, n) => {
+      return `Row : ${Number(n) + offset}`;
+    });
+  };
+
   useEffect(() => {
-    const getCoursesMap = async (id) => {
-      const courses = await getCoursesFromCache(id);
+    const getCoursesMap = async () => {
+      const courses = await getCoursesFromCache();
       setCourses(courses);
     };
     getCoursesMap();
   }, []);
 
   useEffect(() => {
-    const getInstitutesMap = async (id) => {
-      const institutes = await getInstitutesFromCache(id);
+    const getInstitutesMap = async () => {
+      const institutes = await getInstitutesFromCache();
       setInstitutes(institutes);
     };
     getInstitutesMap();
   }, []);
 
   useEffect(() => {
-    const getAcademicYearsMap = async (id) => {
-      const academicYears = await getAcademicYearsFromCache(id);
+    const getAcademicYearsMap = async () => {
+      const academicYears = await getAcademicYearsFromCache();
       setAcademicYears(academicYears);
     };
     getAcademicYearsMap();
   }, []);
 
   function NiswanSelect({ options, onChange, selectedValues }) {
-    return <Select options={
-      options.filter(option => option.active === 'Active').map((option) => ({
-        value: option._id, label: option.code + " : " + option.nameEnglish
-      }
-      ))
-    }
-      selectedValues={selectedOptions} />;
+    return (
+      <Select
+        options={
+          options.filter(option => option.active === 'Active').map((option) => ({
+            value: option._id, label: option.code + " : " + option.nameEnglish
+          }))
+        }
+        selectedValues={selectedOptions}
+      />
+    );
   }
 
   const handleSelectChange = (option) => {
@@ -133,21 +161,23 @@ const List = () => {
     let selectedMaritalStatus;
     let selectedHosteller;
     let selectedInstitute;
+
     const { value: formValues } = await MySwal.fire({
       background: "url(/bg_card.png)",
       html: (
         <div className="mb-2 h-80 w-full">
           <div className='text-xl font-bold md:mb-1 text-green-600 text-center'>Filter</div>
+
           <div className='grid grid-cols-4 md:grid-cols-6 gap-x-3 lg:gap-x-5'>
             <span className='col-span-2 md:col-span-3 text-sm mb-1 text-start text-blue-500'>Course</span>
             <span className='text-sm mb-1 text-start text-blue-500'>Year</span>
             <span className='md:col-span-2 text-sm mb-1 text-start text-blue-500'>Course Status</span>
 
-            <Select className='col-span-2 md:col-span-3 text-sm text-start mb-3'
+            <Select
+              className='col-span-2 md:col-span-3 text-sm text-start mb-3'
               options={courses.map(option => ({
                 value: option._id, label: option.name
               }))}
-
               onChange={(selectedOption) => {
                 selectedCourse = selectedOption.value;
               }}
@@ -155,12 +185,13 @@ const List = () => {
               placeholder=''
             />
 
-            <Select className='text-sm text-start mb-3'
-              options={
-                [{ value: '1', label: '1' },
+            <Select
+              className='text-sm text-start mb-3'
+              options={[
+                { value: '1', label: '1' },
                 { value: '2', label: '2' },
-                { value: '3', label: '3' }]
-              }
+                { value: '3', label: '3' }
+              ]}
               onChange={(selectedOption) => {
                 selectedYear = selectedOption.value;
               }}
@@ -168,13 +199,14 @@ const List = () => {
               placeholder=''
             />
 
-            <Select className='md:col-span-2 text-sm text-start mb-3'
-              options={
-                [{ value: 'Admission', label: 'Admission' },
+            <Select
+              className='md:col-span-2 text-sm text-start mb-3'
+              options={[
+                { value: 'Admission', label: 'Admission' },
                 { value: 'Promoted', label: 'Promoted' },
                 { value: 'Completed', label: 'Completed' },
-                { value: 'Not-Promoted', label: 'Not-Promoted' }]
-              }
+                { value: 'Not-Promoted', label: 'Not-Promoted' }
+              ]}
               onChange={(selectedOption) => {
                 selectedCourseStatus = selectedOption.value;
               }}
@@ -187,7 +219,8 @@ const List = () => {
             <span className='col-span-2 text-sm mb-1 text-start text-blue-500'>Institute</span>
             <span className='text-sm mb-1 text-start text-blue-500'>AC year</span>
 
-            <Select className='col-span-2 text-sm text-start mb-3'
+            <Select
+              className='col-span-2 text-sm text-start mb-3'
               options={institutes.map(option => ({
                 value: option._id, label: option.name
               }))}
@@ -215,7 +248,6 @@ const List = () => {
               maxMenuHeight={210}
               placeholder=""
             />
-
           </div>
 
           <div className='grid grid-cols-3 gap-x-2 lg:gap-x-5'>
@@ -223,14 +255,15 @@ const List = () => {
             <span className='text-sm mb-1 text-start text-blue-500'>Marital Status</span>
             <span className='text-sm mb-1 text-start text-blue-500'>Hosteller</span>
 
-            <Select className='text-sm text-start mb-3'
-              options={
-                [{ value: 'Active', label: 'Active' },
+            <Select
+              className='text-sm text-start mb-3'
+              options={[
+                { value: 'Active', label: 'Active' },
                 { value: 'In-Active', label: 'In-Active' },
                 { value: 'Transferred', label: 'Transferred' },
                 { value: 'Graduated', label: 'Graduated' },
-                { value: 'Discontinued', label: 'Discontinued' }]
-              }
+                { value: 'Discontinued', label: 'Discontinued' }
+              ]}
               onChange={(selectedOption) => {
                 selectedStatus = selectedOption.value;
               }}
@@ -238,11 +271,12 @@ const List = () => {
               placeholder=''
             />
 
-            <Select className='text-sm text-start mb-3'
-              options={
-                [{ value: 'Married', label: 'Married' },
-                { value: 'Single', label: 'Single' }]
-              }
+            <Select
+              className='text-sm text-start mb-3'
+              options={[
+                { value: 'Married', label: 'Married' },
+                { value: 'Single', label: 'Single' }
+              ]}
               onChange={(selectedOption) => {
                 selectedMaritalStatus = selectedOption.value;
               }}
@@ -250,18 +284,18 @@ const List = () => {
               placeholder=''
             />
 
-            <Select className='text-sm text-start mb-3'
-              options={
-                [{ value: 'Yes', label: 'Yes' },
-                { value: 'No', label: 'No' }]
-              }
+            <Select
+              className='text-sm text-start mb-3'
+              options={[
+                { value: 'Yes', label: 'Yes' },
+                { value: 'No', label: 'No' }
+              ]}
               onChange={(selectedOption) => {
                 selectedHosteller = selectedOption.value;
               }}
               maxMenuHeight={160}
               placeholder=''
             />
-
           </div>
         </div>
       ),
@@ -282,10 +316,12 @@ const List = () => {
     });
 
     if (formValues) {
-      if (formValues[0] || formValues[1] || formValues[2] || formValues[3]
-        || formValues[4] || formValues[5] || formValues[6] || formValues[7]) {
-
+      if (
+        formValues[0] || formValues[1] || formValues[2] || formValues[3]
+        || formValues[4] || formValues[5] || formValues[6] || formValues[7]
+      ) {
         console.log('Selected values:', formValues);
+
         const courseId = formValues[0] ? formValues[0] : null;
         const status = formValues[1] ? formValues[1] : null;
         const acYear = formValues[2] ? formValues[2] : null;
@@ -295,10 +331,12 @@ const List = () => {
         const instituteId = formValues[6] ? formValues[6] : null;
         const courseStatus = formValues[7] ? formValues[7] : null;
 
-        console.log('Selected Values : ' + 'courseId:', formValues[0] + ', '
+        console.log(
+          'Selected Values : ' + 'courseId:', formValues[0] + ', '
           + 'status:', formValues[1] + ', ' + 'acYear:', formValues[2] + ', '
           + 'maritalStatus:', formValues[3] + ', ' + 'hosteller:', formValues[4] + ', '
-          + 'year:', formValues[5] + ', ' + 'instituteId:', formValues[6] + ', ' + 'courseStatus:', formValues[7])
+          + 'year:', formValues[5] + ', ' + 'instituteId:', formValues[6] + ', ' + 'courseStatus:', formValues[7]
+        );
 
         localStorage.setItem('courseId', courseId);
         localStorage.setItem('status', status);
@@ -310,9 +348,7 @@ const List = () => {
         localStorage.setItem('courseStatus', courseStatus);
 
         getFilteredStudents();
-
       } else {
-
         localStorage.removeItem('students');
         localStorage.removeItem('courseId');
         localStorage.removeItem('status');
@@ -329,7 +365,7 @@ const List = () => {
   };
 
   const getFilteredStudents = async () => {
-    setFiltering(true)
+    setFiltering(true);
     try {
       const responnse = await axios.get(
         (await getBaseUrl()).toString() + "student/byFilter/"
@@ -348,6 +384,7 @@ const List = () => {
           },
         }
       );
+
       if (responnse.data.success) {
         let sno = 1;
         const data = responnse.data.students.map((student) => ({
@@ -368,28 +405,29 @@ const List = () => {
           gender: student.gender,
           maritalStatus: student.maritalStatus,
           hostel: student.hostel,
-          course: student.courses && student.courses?.length > 0 ? student.courses.map(course => course.name ? course.name + "(" + course.years + ")" + ", " : "") : "",
+          course: student.courses && student.courses?.length > 0
+            ? student.courses.map(course => course.name ? course.name + "(" + course.years + ")" + ", " : "")
+            : "",
           courses: student.courses && student.courses?.length > 0 ? student.courses : null,
           fatherName: student.fatherName ? student.fatherName : student.motherName ? student.motherName : student.guardianName ? student.guardianName : "",
           action: (<StudentButtons Id={student._id} />),
         }));
+
         setStudents(data);
         setFilteredStudents(data);
         localStorage.removeItem('students');
         localStorage.setItem('students', JSON.stringify(responnse.data));
       }
-
     } catch (error) {
-      console.log(error.message)
+      console.log(error.message);
       if (error.response && !error.response.data.success) {
         showSwalAlert("Error!", error.response.data.error, "error");
       }
     } finally {
-      setFiltering(false)
+      setFiltering(false);
     }
-  }
+  };
 
-  // ✅ Updated import with UI lock
   const handleImport = async (e) => {
     e?.preventDefault?.();
     e?.stopPropagation?.();
@@ -400,6 +438,15 @@ const List = () => {
 
     importLockRef.current = true;
     setImportingStudents(true);
+
+    let combinedLogs = [];
+    let totalImported = 0;
+    let totalDuplicates = 0;
+    let totalInvalid = 0;
+    let totalFailed = 0;
+    let totalRows = 0;
+    let completedChunks = 0;
+    let totalChunks = 0;
 
     try {
       const { value: file } = await Swal.fire({
@@ -442,82 +489,145 @@ const List = () => {
         return;
       }
 
-      const baseUrl = (await getBaseUrl()).toString();
+      const chunks = chunkArray(rawRows, IMPORT_CHUNK_SIZE);
+      totalRows = rawRows.length;
+      totalChunks = chunks.length;
 
-      const response = await fetch(baseUrl + "student/import", {
-        method: 'POST',
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(rawRows),
+      const baseUrl = (await getBaseUrl()).toString();
+      const importSessionId = `UI-IMP-${Date.now()}`;
+
+      Swal.fire({
+        title: "Importing Students...",
+        html: `<b>Preparing ${totalRows} rows in ${totalChunks} chunks...</b>`,
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+        showConfirmButton: false,
+        background: "url(/bg_card.png)",
+        didOpen: () => {
+          Swal.showLoading();
+        }
       });
 
-      const resData = await response.json().catch(() => ({}));
+      for (let i = 0; i < chunks.length; i++) {
+        const chunkRows = chunks[i];
+        const startRow = i * IMPORT_CHUNK_SIZE + 1;
+        const endRow = Math.min((i + 1) * IMPORT_CHUNK_SIZE, totalRows);
 
+        if (Swal.isVisible()) {
+          Swal.update({
+            title: "Importing Students...",
+            html: `
+              <div style="font-weight:bold;">Chunk ${i + 1} / ${totalChunks}</div>
+              <div style="margin-top:8px;">Rows ${startRow} - ${endRow}</div>
+              <div style="margin-top:8px; font-size:12px; color:#666;">Please do not close or refresh the page.</div>
+            `,
+          });
+        }
+
+        const response = await fetch(baseUrl + "student/import", {
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            'Content-Type': 'application/json',
+            'X-Import-Session-Id': importSessionId,
+            'X-Import-Chunk-Number': String(i + 1),
+            'X-Import-Chunk-Count': String(totalChunks),
+          },
+          body: JSON.stringify(chunkRows),
+        });
+
+        const resData = await response.json().catch(() => ({}));
+
+        if (!response.ok || !resData?.success) {
+          throw new Error(
+            `Chunk ${i + 1}/${totalChunks} failed. ${resData?.error || resData?.message || "Unknown error"}`
+          );
+        }
+
+        completedChunks++;
+
+        totalImported += Number(resData.importedCount || 0);
+        totalDuplicates += Number(resData.duplicateCount || 0);
+        totalInvalid += Number(resData.invalidCount || 0);
+        totalFailed += Number(resData.failedCount || 0);
+
+        const fixedChunkLog = shiftResultRowNumbers(
+          resData.finalResultData || "",
+          startRow - 1
+        );
+
+        combinedLogs.push(
+          `===== Chunk ${i + 1}/${totalChunks} | Rows ${startRow}-${endRow} | RequestId: ${resData.requestId || "-"} =====`
+        );
+
+        if (fixedChunkLog) {
+          combinedLogs.push(fixedChunkLog.trimEnd());
+        } else {
+          combinedLogs.push("No detailed chunk result.");
+        }
+      }
+
+      Swal.close();
       setProcessing(false);
 
-      if (response.ok && resData?.success) {
-        const fileName = "Import_Result_" + new Date().getTime() + ".txt";
+      const fileName = `Import_Result_${Date.now()}.txt`;
 
-        const txtContent = [
-          `RequestId: ${resData.requestId || "-"}`,
-          `Summary: ${resData.message || "-"}`,
-          `Imported: ${resData.importedCount ?? "-"}`,
-          `Duplicates: ${resData.duplicateCount ?? "-"}`,
-          `Invalid: ${resData.invalidCount ?? "-"}`,
-          `Failed: ${resData.failedCount ?? "-"}`,
-          `Total: ${resData.totalCount ?? "-"}`,
-          `TotalStudentsBefore: ${resData.totalStudentsBefore ?? "-"}`,
-          `TotalStudentsAfter: ${resData.totalStudentsAfter ?? "-"}`,
-          `ExistingStudentsMatchedBefore: ${resData.existingStudentsMatchedBefore ?? "-"}`,
-          `MatchedAfterImport: ${resData.matchedAfterImport ?? "-"}`,
-          "",
-          "Details:",
-          resData.finalResultData || "No detailed result."
-        ].join("\r\n");
+      const finalText = [
+        `Import Session Id: ${importSessionId}`,
+        `Summary: Imported: ${totalImported}, Duplicates: ${totalDuplicates}, Invalid: ${totalInvalid}, Failed: ${totalFailed}, Total: ${totalRows}`,
+        `Chunk Size: ${IMPORT_CHUNK_SIZE}`,
+        `Chunks Completed: ${completedChunks}/${totalChunks}`,
+        "",
+        ...combinedLogs,
+        ""
+      ].join("\r\n");
 
-        downloadTextFile(txtContent, fileName);
+      downloadTextFile(finalText, fileName);
 
-        await Swal.fire({
-          title: "Success!",
-          html: "<b>" + (resData.message || "Import completed.") + "</br> Please check the result in downloaded text file : </br>" + fileName + "</b>",
-          icon: "success",
-          showConfirmButton: true,
-          background: "url(/bg_card.png)",
-        });
+      await Swal.fire({
+        title: "Success!",
+        html: `<b>Imported: ${totalImported}, Duplicates: ${totalDuplicates}, Invalid: ${totalInvalid}, Failed: ${totalFailed}, Total: ${totalRows}</b><br/><br/>Please check the downloaded file:<br/>${fileName}`,
+        icon: "success",
+        showConfirmButton: true,
+        background: "url(/bg_card.png)",
+      });
 
-        localStorage.removeItem('students');
+      localStorage.removeItem('students');
 
-        if (
-          localStorage.getItem('courseId') ||
-          localStorage.getItem('status') ||
-          localStorage.getItem('acYear') ||
-          localStorage.getItem('maritalStatus') ||
-          localStorage.getItem('hosteller') ||
-          localStorage.getItem('year') ||
-          localStorage.getItem('instituteId') ||
-          localStorage.getItem('courseStatus')
-        ) {
-          await getFilteredStudents();
-        } else {
-          await getStudents();
-        }
+      if (
+        localStorage.getItem('courseId') ||
+        localStorage.getItem('status') ||
+        localStorage.getItem('acYear') ||
+        localStorage.getItem('maritalStatus') ||
+        localStorage.getItem('hosteller') ||
+        localStorage.getItem('year') ||
+        localStorage.getItem('instituteId') ||
+        localStorage.getItem('courseStatus')
+      ) {
+        await getFilteredStudents();
       } else {
-        await Swal.fire({
-          title: "Error!",
-          html: "<b>" + "Data NOT Imported. Error : </br>" + (resData?.error || resData?.message || "Unknown error") + "</b>",
-          icon: "error",
-          showConfirmButton: true,
-          background: "url(/bg_card.png)",
-        });
-        console.error('Failed to send data.');
+        await getStudents();
       }
     } catch (error) {
+      Swal.close();
       setProcessing(false);
+
+      const partialFileName = `Import_Result_Partial_${Date.now()}.txt`;
+      const partialText = [
+        `Summary before failure: Imported: ${totalImported}, Duplicates: ${totalDuplicates}, Invalid: ${totalInvalid}, Failed: ${totalFailed}, Total Processed Chunks: ${completedChunks}/${totalChunks || "-"}`,
+        "",
+        ...combinedLogs,
+        "",
+        `ERROR: ${error?.message || error}`
+      ].join("\r\n");
+
+      if (combinedLogs.length > 0) {
+        downloadTextFile(partialText, partialFileName);
+      }
+
       await Swal.fire({
         title: "Error!",
-        html: "<b>" + "Data NOT Imported. Exception : </br>" + (error?.message || error) + "</b>",
+        html: `<b>Chunk import stopped.</b><br/><br/>${error?.message || error}${combinedLogs.length > 0 ? `<br/><br/>Partial result file downloaded:<br/>${partialFileName}` : ""}`,
         icon: "error",
         showConfirmButton: true,
         background: "url(/bg_card.png)",
@@ -526,7 +636,7 @@ const List = () => {
       importLockRef.current = false;
       setImportingStudents(false);
     }
-  }
+  };
 
   // ✅ 1) Build members list from students (studentId) where feesPaid == 0 (UNPAID)
   const buildUnpaidMembersFromStudents = (students) => {
@@ -775,8 +885,6 @@ const List = () => {
   };
 
   useEffect(() => {
-
-    // Authenticate the User.
     if (checkAuth("studentsList") === "NO") {
       showSwalAlert("Error!", "User Authorization Failed!", "error");
       navigate("/login");
@@ -784,58 +892,70 @@ const List = () => {
 
     const fetchStudents = async () => {
       const data = localStorage.getItem('students');
-      console.log("Course Id : " + localStorage.getItem('courseId')
+      console.log(
+        "Course Id : " + localStorage.getItem('courseId')
         + ", Status : " + localStorage.getItem('status')
         + ", AC Year : " + localStorage.getItem('acYear')
         + ", maritalStatus : " + localStorage.getItem('maritalStatus')
         + ", hosteller : " + localStorage.getItem('hosteller')
         + ", year : " + localStorage.getItem('year')
         + ", instituteId : " + localStorage.getItem('instituteId')
-        + ", courseStatus : " + localStorage.getItem('courseStatus'))
+        + ", courseStatus : " + localStorage.getItem('courseStatus')
+      );
 
-      if (data && (localStorage.getItem('courseId')
+      if (
+        data &&
+        (
+          localStorage.getItem('courseId')
+          || localStorage.getItem('status')
+          || localStorage.getItem('acYear')
+          || localStorage.getItem('maritalStatus')
+          || localStorage.getItem('hosteller')
+          || localStorage.getItem('year')
+          || localStorage.getItem('instituteId')
+          || localStorage.getItem('courseStatus')
+        )
+      ) {
+        console.log("111");
+        getFilteredStudents();
+      } else {
+        console.log("222");
+        getStudents();
+      }
+    };
+
+    fetchStudents();
+  }, []);
+
+  const getStudents = async () => {
+    const onStudentDelete = () => {
+      const data = localStorage.getItem('students');
+      if (data) {
+        console.log("333");
+        getFilteredStudents();
+      } else {
+        console.log("444");
+        getStudents();
+      }
+    };
+
+    const data = localStorage.getItem('students');
+    const parsedLocalData = safeParseJSON(data, null);
+    console.log("Existing Data - ", parsedLocalData);
+
+    if (
+      parsedLocalData &&
+      (
+        localStorage.getItem('courseId')
         || localStorage.getItem('status')
         || localStorage.getItem('acYear')
         || localStorage.getItem('maritalStatus')
         || localStorage.getItem('hosteller')
         || localStorage.getItem('year')
         || localStorage.getItem('instituteId')
-        || localStorage.getItem('courseStatus'))) {
-        console.log("111")
-        getFilteredStudents();
-      } else {
-        console.log("222")
-        getStudents();
-      }
-    }
-    fetchStudents();
-  }, []);
-
-  const getStudents = async () => {
-
-    const onStudentDelete = () => {
-      const data = localStorage.getItem('students');
-      if (data) {
-        console.log("333")
-        getFilteredStudents();
-      } else {
-        console.log("444")
-        getStudents();
-      }
-    }
-
-    const data = localStorage.getItem('students');
-    const parsedLocalData = safeParseJSON(data, null);
-    console.log("Existing Data - ", parsedLocalData);
-
-    if (parsedLocalData && (localStorage.getItem('courseId')
-      || localStorage.getItem('status')
-      || localStorage.getItem('acYear')
-      || localStorage.getItem('maritalStatus')
-      || localStorage.getItem('hosteller')
-      || localStorage.getItem('year')
-      || localStorage.getItem('instituteId')
-      || localStorage.getItem('courseStatus'))) {
+        || localStorage.getItem('courseStatus')
+      )
+    ) {
       let sno = 1;
       const data1 = parsedLocalData.students.map((student) => ({
         _id: student._id,
@@ -855,21 +975,23 @@ const List = () => {
         gender: student.gender,
         maritalStatus: student.maritalStatus,
         hostel: student.hostel,
-        course: student.courses && student.courses?.length > 0 ? student.courses.map(course => course.name ? course.name + "(" + course.years + ")" + ", " : "") : "",
+        course: student.courses && student.courses?.length > 0
+          ? student.courses.map(course => course.name ? course.name + "(" + course.years + ")" + ", " : "")
+          : "",
         courses: student.courses && student.courses?.length > 0 ? student.courses : null,
         fatherName: student.fatherName ? student.fatherName : student.motherName ? student.motherName : student.guardianName ? student.guardianName : "",
         action: (<StudentButtons Id={student._id} onStudentDelete={onStudentDelete} />),
       }));
+
       setStudents(data1);
       setFilteredStudents(data1);
-      console.log("Data from local storage")
-
+      console.log("Data from local storage");
     } else {
+      console.log("schoolId : " + localStorage.getItem('schoolId'));
 
-      console.log("schoolId : " + localStorage.getItem('schoolId'))
       if (!localStorage.getItem('schoolId')) {
         const schools = await getSchoolsFromCache();
-        setSchools(schools)
+        setSchools(schools);
 
         let selectedOptionInSwal;
         const { value: schId } = await MySwal.fire({
@@ -877,7 +999,8 @@ const List = () => {
           html: (
             <div className="mb-2 h-80 w-full">
               <div className='text-2xl lg:text-3xl mb-3 text-blue-600'>Select the Niswan</div>
-              <Select className='text-sm text-start'
+              <Select
+                className='text-sm text-start'
                 options={schools.filter((school) => school.code !== 'UN-00-00001' && school.active === 'Active')
                   .map(option => ({
                     value: option._id, label: option.code + " : " + option.nameEnglish
@@ -897,23 +1020,26 @@ const List = () => {
             return selectedOptionInSwal ? selectedOptionInSwal.value : null;
           },
         });
-        console.log("schId : " + schId)
+
+        console.log("schId : " + schId);
         if (schId) {
           setSchId(schId);
           schoolId = schId;
           localStorage.setItem('schoolId', schoolId);
-          console.log(schoolId)
+          console.log(schoolId);
 
           schoolName = schools.filter(school => school._id === schoolId)
-            .map((sch) => { return sch.code + " : " + sch.nameEnglish + ", " + sch.districtStateId.district + ", " + sch.districtStateId.state });
+            .map((sch) => {
+              return sch.code + " : " + sch.nameEnglish + ", " + sch.districtStateId.district + ", " + sch.districtStateId.state
+            });
           localStorage.setItem('schoolName', schoolName);
           console.log(schoolName);
         }
       } else {
-        schoolId = localStorage.getItem('schoolId')
+        schoolId = localStorage.getItem('schoolId');
       }
 
-      setSupLoading(true)
+      setSupLoading(true);
       if (schoolId) {
         setFilteredStudents(null);
         try {
@@ -925,6 +1051,7 @@ const List = () => {
               },
             }
           );
+
           if (responnse.data.success) {
             let sno = 1;
             const data = responnse.data.students.map((student) => ({
@@ -945,33 +1072,35 @@ const List = () => {
               gender: student.gender,
               maritalStatus: student.maritalStatus,
               hostel: student.hostel,
-              course: student.courses && student.courses?.length > 0 ? student.courses.map(course => course.name ? course.name + "(" + course.years + ")" + ", " : "") : "",
+              course: student.courses && student.courses?.length > 0
+                ? student.courses.map(course => course.name ? course.name + "(" + course.years + ")" + ", " : "")
+                : "",
               courses: student.courses && student.courses?.length > 0 ? student.courses : null,
               contactNumber: student.fatherNumber ? student.fatherNumber : student.motherNumber ? student.motherNumber : student.guardianNumber ? student.guardianNumber : "-",
               fatherName: student.fatherName ? student.fatherName : student.motherName ? student.motherName : student.guardianName ? student.guardianName : "",
               action: (<StudentButtons Id={student._id} onStudentDelete={onStudentDelete} />),
             }));
+
             setStudents(data);
             setFilteredStudents(data);
             localStorage.removeItem('students');
             localStorage.setItem('students', JSON.stringify(responnse.data));
           }
-
         } catch (error) {
-          console.log(error.message)
+          console.log(error.message);
           if (error.response && !error.response.data.success) {
             showSwalAlert("Error!", error.response.data.error, "error");
             navigate("/dashboard");
           }
         } finally {
-          setSupLoading(false)
+          setSupLoading(false);
         }
       } else {
         showSwalAlert("Info!", 'Niswan NOT selected.', "info");
         navigate("/dashboard");
       }
-    };
-  }
+    }
+  };
 
   const handleSearch = (e) => {
     const records = students.filter((student) => (
@@ -981,9 +1110,9 @@ const List = () => {
       || student.active?.toLowerCase().includes(e.target.value.toLowerCase())
       || student.fatherName?.toLowerCase().includes(e.target.value.toLowerCase())
       || student.district?.toLowerCase().includes(e.target.value.toLowerCase())
-    ))
-    setFilteredStudents(records)
-  }
+    ));
+    setFilteredStudents(records);
+  };
 
   if (!filteredStudent) {
     return getSpinner();
@@ -996,14 +1125,19 @@ const List = () => {
   return (
     <div className="lg:mt-3 p-5">
       <div className="text-center">
-        <h3 className="text-lg lg:text-2xl font-bold px-5 py-0 text-gray-600">Manage Students
-          {user.role === "superadmin" || user.role === "hquser" ?
-            <div className="text-xs md:text-base font-semibold text-slate-500">{localStorage.getItem("schoolName") || "-"}</div> : null}
+        <h3 className="text-lg lg:text-2xl font-bold px-5 py-0 text-gray-600">
+          Manage Students
+          {user.role === "superadmin" || user.role === "hquser" ? (
+            <div className="text-xs md:text-base font-semibold text-slate-500">
+              {localStorage.getItem("schoolName") || "-"}
+            </div>
+          ) : null}
           <p className='flex md:grid text-xs md:text-base justify-center text-rose-700'>
-            (Records Count : {filteredStudent ? filteredStudent.length : 0}) </p>
+            (Records Count : {filteredStudent ? filteredStudent.length : 0})
+          </p>
         </h3>
-
       </div>
+
       <div className="flex justify-between items-center mt-5 relative">
         {LinkIcon("/dashboard", "Back")}
 
@@ -1021,18 +1155,23 @@ const List = () => {
           </div>
         </div>
 
-        <div className="mr-1" onClick={openFilterPopup}>{LinkIcon("#", "Filter")}</div>
+        <div className="mr-1" onClick={openFilterPopup}>
+          {LinkIcon("#", "Filter")}
+        </div>
 
         {LinkIcon("/dashboard/add-student", "Add")}
 
-        {/*// hidden lg:block {user.role === "superadmin" || user.role === "hquser" ?
-          <div className="hidden lg:block" onClick={handleFeesPaid}>{LinkIcon("#", "FeesPaid")}</div> : null}*/}
+        {user.role === "superadmin" || user.role === "hquser" || user.role === "admin" ? (
+          <div className="ml-1" onClick={() => navigate(`/dashboard/students/bulkpromote`)}>
+            {LinkIcon("#", "Promote")}
+          </div>
+        ) : null}
 
-        {user.role === "superadmin" || user.role === "hquser" || user.role === "admin" ?
-          <div className="ml-1" onClick={() => navigate(`/dashboard/students/bulkpromote`)}>{LinkIcon("#", "Promote")}</div> : null}
-
-        {user.role === "superadmin" || user.role === "hquser" ?
-          <div className="block ml-1 mr-1" onClick={handleRemoveStudents}>{LinkIcon("#", "RemoveStudents")}</div> : null}
+        {user.role === "superadmin" || user.role === "hquser" ? (
+          <div className="block ml-1 mr-1" onClick={handleRemoveStudents}>
+            {LinkIcon("#", "RemoveStudents")}
+          </div>
+        ) : null}
 
         {user.role === "superadmin" || user.role === "hquser" ? (
           <div
@@ -1044,65 +1183,111 @@ const List = () => {
         ) : null}
       </div>
 
-      {(localStorage.getItem('courseId') != null && localStorage.getItem('courseId') != 'null')
-        || (localStorage.getItem('year') != null && localStorage.getItem('year') != 'null')
-        || (localStorage.getItem('courseStatus') != null && localStorage.getItem('courseStatus') != 'null')
-        || (localStorage.getItem('instituteId') != null && localStorage.getItem('instituteId') != 'null')
-        || (localStorage.getItem('acYear') != null && localStorage.getItem('acYear') != 'null')
-        || (localStorage.getItem('status') != null && localStorage.getItem('status') != 'null')
-        || (localStorage.getItem('maritalStatus') != null && localStorage.getItem('maritalStatus') != 'null')
-        || (localStorage.getItem('hosteller') != null && localStorage.getItem('hosteller') != 'null') ?
+      {(localStorage.getItem('courseId') != null && localStorage.getItem('courseId') !== 'null')
+        || (localStorage.getItem('year') != null && localStorage.getItem('year') !== 'null')
+        || (localStorage.getItem('courseStatus') != null && localStorage.getItem('courseStatus') !== 'null')
+        || (localStorage.getItem('instituteId') != null && localStorage.getItem('instituteId') !== 'null')
+        || (localStorage.getItem('acYear') != null && localStorage.getItem('acYear') !== 'null')
+        || (localStorage.getItem('status') != null && localStorage.getItem('status') !== 'null')
+        || (localStorage.getItem('maritalStatus') != null && localStorage.getItem('maritalStatus') !== 'null')
+        || (localStorage.getItem('hosteller') != null && localStorage.getItem('hosteller') !== 'null') ? (
 
         <div className='grid lg:flex mt-3 lg:mt-7 text-xs text-lime-600 items-center justify-center'>
           <p className='lg:mr-3 justify-center text-center'>Filter Applied: </p>
 
-          <p>{localStorage.getItem('courseId') != null && localStorage.getItem('courseId') != 'null' ?
-            <span className='text-blue-500'>Course: <span className='text-gray-500'>
-              {courses.filter(course => course._id === localStorage.getItem('courseId')).map(course => course.name) + ", "}
-            </span></span> : null}</p>
+          <p>
+            {localStorage.getItem('courseId') != null && localStorage.getItem('courseId') !== 'null' ? (
+              <span className='text-blue-500'>
+                Course: <span className='text-gray-500'>
+                  {courses.filter(course => course._id === localStorage.getItem('courseId')).map(course => course.name) + ", "}
+                </span>
+              </span>
+            ) : null}
+          </p>
 
           <div className='grid grid-cols-1 md:flex'>
+            <p className='lg:ml-3'>
+              {localStorage.getItem('year') != null && localStorage.getItem('year') !== 'null' ? (
+                <span className='text-blue-500'>
+                  Year: <span className='text-gray-500'>{localStorage.getItem('year') + ", "}</span>
+                </span>
+              ) : null}
+            </p>
 
-            <p className='lg:ml-3'>{localStorage.getItem('year') != null && localStorage.getItem('year') != 'null' ?
-              <span className='text-blue-500'>Year: <span className='text-gray-500'>
-                {localStorage.getItem('year') + ", "}</span></span> : null}</p>
+            <p className='lg:ml-3'>
+              {localStorage.getItem('courseStatus') != null && localStorage.getItem('courseStatus') !== 'null' ? (
+                <span className='text-blue-500'>
+                  Course's Status: <span className='text-gray-500'>{localStorage.getItem('courseStatus') + ", "}</span>
+                </span>
+              ) : null}
+            </p>
 
-            <p className='lg:ml-3'>{localStorage.getItem('courseStatus') != null && localStorage.getItem('courseStatus') != 'null' ?
-              <span className='text-blue-500'>Course's Status: <span className='text-gray-500'>
-                {localStorage.getItem('courseStatus') + ", "}</span></span> : null}</p>
+            <p className='lg:ml-3'>
+              {localStorage.getItem('instituteId') != null && localStorage.getItem('instituteId') !== 'null' ? (
+                <span className='text-blue-500'>
+                  Institute: <span className='text-gray-500'>
+                    {institutes.filter(institute => institute._id === localStorage.getItem('instituteId')).map(institute => institute.name) + ", "}
+                  </span>
+                </span>
+              ) : null}
+            </p>
 
-            <p className='lg:ml-3'>{localStorage.getItem('instituteId') != null && localStorage.getItem('instituteId') != 'null' ?
-              <span className='text-blue-500'>Institute: <span className='text-gray-500'>
-                {institutes.filter(institute => institute._id === localStorage.getItem('instituteId')).map(institute => institute.name) + ", "}
-              </span></span> : null}</p>
+            <p className='lg:ml-3'>
+              {localStorage.getItem('acYear') != null && localStorage.getItem('acYear') !== 'null' ? (
+                <span className='text-blue-500'>
+                  AC Year: <span className='text-gray-500'>
+                    {academicYears.filter(acYear => acYear._id === localStorage.getItem('acYear')).map(acYear => acYear.acYear) + ", "}
+                  </span>
+                </span>
+              ) : null}
+            </p>
 
-            <p className='lg:ml-3'>{localStorage.getItem('acYear') != null && localStorage.getItem('acYear') != 'null' ?
-              <span className='text-blue-500'>AC Year: <span className='text-gray-500'>
-                {academicYears.filter(acYear => acYear._id === localStorage.getItem('acYear')).map(acYear => acYear.acYear) + ", "}
-              </span></span> : null}</p>
+            <p className='lg:ml-3'>
+              {localStorage.getItem('status') != null && localStorage.getItem('status') !== 'null' ? (
+                <span className='text-blue-500'>
+                  Student's Status: <span className='text-gray-500'>{localStorage.getItem('status') + ", "}</span>
+                </span>
+              ) : null}
+            </p>
 
-            <p className='lg:ml-3'>{localStorage.getItem('status') != null && localStorage.getItem('status') != 'null' ?
-              <span className='text-blue-500'>Student's Status: <span className='text-gray-500'>
-                {localStorage.getItem('status') + ", "}</span></span> : null}</p>
+            <p className='lg:ml-3'>
+              {localStorage.getItem('maritalStatus') != null && localStorage.getItem('maritalStatus') !== 'null' ? (
+                <span className='text-blue-500'>
+                  Marital Status: <span className='text-gray-500'>{localStorage.getItem('maritalStatus') + ", "}</span>
+                </span>
+              ) : null}
+            </p>
 
-            <p className='lg:ml-3'>{localStorage.getItem('maritalStatus') != null && localStorage.getItem('maritalStatus') != 'null' ?
-              <span className='text-blue-500'>Marital Status: <span className='text-gray-500'>
-                {localStorage.getItem('maritalStatus') + ", "}</span></span> : null}</p>
+            <p className='lg:ml-3'>
+              {localStorage.getItem('hosteller') != null && localStorage.getItem('hosteller') !== 'null' ? (
+                <span className='text-blue-500'>
+                  Hostel: <span className='text-gray-500'>{localStorage.getItem('hosteller')}</span>
+                </span>
+              ) : null}
+            </p>
+          </div>
+        </div>
+      ) : (
+        <div className='flex mt-3 lg:mt-7'></div>
+      )}
 
-            <p className='lg:ml-3'>{localStorage.getItem('hosteller') != null && localStorage.getItem('hosteller') != 'null' ?
-              <span className='text-blue-500'>Hostel: <span className='text-gray-500'>
-                {localStorage.getItem('hosteller')}</span></span> : null}</p>
-
-          </div></div>
-        : <div className='flex mt-3 lg:mt-7'></div>}
-
-      {filtering ?
-        getFilterGif() :
+      {filtering ? (
+        getFilterGif()
+      ) : (
         <div className='mt-3 lg:mt-5 rounded-lg shadow-lg'>
-          <DataTable columns={columns} data={filteredStudent} showGridlines highlightOnHover striped responsive conditionalRowStyles={conditionalRowStyles} />
-        </div>}
+          <DataTable
+            columns={columns}
+            data={filteredStudent}
+            showGridlines
+            highlightOnHover
+            striped
+            responsive
+            conditionalRowStyles={conditionalRowStyles}
+          />
+        </div>
+      )}
     </div>
-  )
-}
+  );
+};
 
-export default List
+export default List;
