@@ -31,7 +31,7 @@ export default function BulkPromote() {
     "Vocational Courses",
   ];
 
-  const CERTIFICATE_PRINT_FEE = 50;
+  const CERTIFICATE_PRINT_FEE = 75;
 
   useEffect(() => {
     const load = async () => {

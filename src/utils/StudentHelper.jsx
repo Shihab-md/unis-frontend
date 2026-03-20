@@ -144,17 +144,11 @@ function getDetails(
           </span>
         ) : null}
 
-        {`${feeLabel} : ${displayFees}`}
+        {`${feeLabel} : ₹ ${displayFees.toLocaleString("en-IN")}`}
         <span className="text-gray-300 font-bold ml-5 mr-5">|</span>
 
-        {"Status : " + status}
+        {"Status : "}<span className="text-blue-500 ml-1">{status}</span>
       </p>
-
-      {/*{isCompleted && certificateFee > 0 ? (
-        <p className="mt-1 text-xs text-emerald-600 font-semibold">
-          Certificate Invoice: {certInfo?.invoiceNo || "-"} | Balance: {Number(certInfo?.balance || 0)}
-        </p>
-      ) : null}*/}
     </div>
   );
 }
