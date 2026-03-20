@@ -437,7 +437,7 @@ export default function PaymentBatchesList() {
           {/* ✅ Desktop header */}
           <div className="hidden md:grid grid-cols-12 p-2 font-bold text-xs bg-gradient-to-r from-slate-100 via-white to-slate-100 place-items-center text-center">
             <div className="col-span-3">Batch</div>
-            <div className="col-span-2">Paid Date</div>
+            <div className="col-span-2">Date</div>
             <div className="col-span-2">Total</div>
             <div className="col-span-2">Mode</div>
             <div className="col-span-3">Status</div>
@@ -466,7 +466,7 @@ export default function PaymentBatchesList() {
                         ) : null}
                       </div>
                       <div className="text-[11px] text-slate-600 mt-1">
-                        <span className="font-semibold text-slate-500">Paid: </span>
+                        <span className="font-semibold text-slate-500">Date: </span>
                         {paidDate}
                         {"  •  "}
                         <span className="font-semibold text-slate-500">Mode: </span>
@@ -520,14 +520,16 @@ export default function PaymentBatchesList() {
                     <div className="border rounded overflow-hidden">
                       {/* Desktop items header */}
                       <div className="hidden md:grid grid-cols-12 p-2 font-bold text-[11px] bg-gray-50">
-                        <div className="col-span-4">Student</div>
-                        <div className="col-span-3">Course</div>
+                        <div className="col-span-2">Invoice #</div>
+                        <div className="col-span-3">Student</div>
+                        <div className="col-span-2">Course</div>
                         <div className="col-span-2">AC Year</div>
                         <div className="col-span-2">Amount</div>
-                        <div className="col-span-1">Item</div>
+                        <div className="col-span-1">Status</div>
                       </div>
 
                       {(b.items || []).map((it) => {
+                        const invoiceNo = it.invoiceId?.invoiceNo || "-";
                         const studentName = it.studentId?.userId?.name || "-";
                         const roll = it.studentId?.rollNumber || "-";
                         const courseName = it.invoiceId?.courseId?.name || "-";
@@ -540,6 +542,10 @@ export default function PaymentBatchesList() {
                           <div key={it._id} className="border-t">
                             {/* Mobile item card */}
                             <div className="md:hidden p-3 text-[11px]">
+                              <div className="mt-1 text-[10px] text-slate-600">
+                                <span className="font-semibold text-slate-500">Invoice No: </span>
+                                <span className="font-semibold">{invoiceNo}</span>
+                              </div>
                               <div className="flex items-start justify-between gap-2">
                                 <div className="font-bold text-slate-800">
                                   {studentName}{" "}
@@ -567,11 +573,12 @@ export default function PaymentBatchesList() {
 
                             {/* Desktop row */}
                             <div className="hidden md:grid grid-cols-12 p-2 text-[11px]">
-                              <div className="col-span-4">
+                              <div className="col-span-2 font-semibold">{invoiceNo}</div>
+                              <div className="col-span-3">
                                 {studentName}{" "}
                                 <span className="text-[10px] text-gray-500">({roll})</span>
                               </div>
-                              <div className="col-span-3">
+                              <div className="col-span-2">
                                 {courseName}{" "}
                                 <span className="text-[10px] text-gray-500">
                                   {source ? `(${source})` : ""}
