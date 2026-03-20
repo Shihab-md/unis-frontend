@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { columns, StudentButtons, conditionalRowStyles } from '../../utils/StudentHelper'
 import DataTable from 'react-data-table-component'
@@ -20,7 +20,7 @@ const List = () => {
   // To prevent right-click AND For FULL screen view.
   useEffect(() => {
     handleRightClickAndFullScreen();
-  }, []);;
+  }, []);
 
   const [schools, setSchools] = useState([]);
   const [inputOptions, setInputOptions] = useState([]);
@@ -45,8 +45,11 @@ const List = () => {
   const [processing, setProcessing] = useState(null)
 
   const [selectedOptions, setSelectedOptions] = useState([]);
-
   const [schId, setSchId] = useState('');
+
+  // ✅ import lock
+  const [importingStudents, setImportingStudents] = useState(false);
+  const importLockRef = useRef(false);
 
   const ExpandedComponent = ({ data }) => {
     console.log("About : " + data.about)
@@ -62,10 +65,30 @@ const List = () => {
 
   const MySwal = withReactContent(Swal);
 
+  const safeParseJSON = (value, fallback = null) => {
+    try {
+      if (!value) return fallback;
+      return JSON.parse(value);
+    } catch (_) {
+      return fallback;
+    }
+  };
+
+  const downloadTextFile = (content, fileName) => {
+    const blob = new Blob([content], { type: "text/plain;charset=utf-8" });
+    const url = window.URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.setAttribute("download", fileName);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    window.URL.revokeObjectURL(url);
+  };
+
   useEffect(() => {
     const getCoursesMap = async (id) => {
       const courses = await getCoursesFromCache(id);
-      // console.log(courses);
       setCourses(courses);
     };
     getCoursesMap();
@@ -74,7 +97,6 @@ const List = () => {
   useEffect(() => {
     const getInstitutesMap = async (id) => {
       const institutes = await getInstitutesFromCache(id);
-      // alert(institutes)
       setInstitutes(institutes);
     };
     getInstitutesMap();
@@ -95,7 +117,6 @@ const List = () => {
       }
       ))
     }
-      //onChange={handleSelectChange}
       selectedValues={selectedOptions} />;
   }
 
@@ -113,7 +134,6 @@ const List = () => {
     let selectedHosteller;
     let selectedInstitute;
     const { value: formValues } = await MySwal.fire({
-      //  title: 'Filters',
       background: "url(/bg_card.png)",
       html: (
         <div className="mb-2 h-80 w-full">
@@ -141,7 +161,6 @@ const List = () => {
                 { value: '2', label: '2' },
                 { value: '3', label: '3' }]
               }
-              // defaultValue={selectedStatus}
               onChange={(selectedOption) => {
                 selectedYear = selectedOption.value;
               }}
@@ -156,7 +175,6 @@ const List = () => {
                 { value: 'Completed', label: 'Completed' },
                 { value: 'Not-Promoted', label: 'Not-Promoted' }]
               }
-              // defaultValue={selectedStatus}
               onChange={(selectedOption) => {
                 selectedCourseStatus = selectedOption.value;
               }}
@@ -173,25 +191,12 @@ const List = () => {
               options={institutes.map(option => ({
                 value: option._id, label: option.name
               }))}
-              // defaultValue={selectedStatus}
               onChange={(selectedOption) => {
                 selectedInstitute = selectedOption.value;
               }}
               maxMenuHeight={140}
               placeholder=''
             />
-
-            {/*<Select className='text-sm text-start mb-2'
-              options={academicYears.map(option => ({
-                value: option._id, label: option.acYear
-              }))}
-
-              onChange={(selectedOption) => {
-                selectedACYear = selectedOption.value;
-              }}
-              maxMenuHeight={210}
-              placeholder=''
-            />*/}
 
             <Select
               className="text-sm text-start mb-2"
@@ -226,7 +231,6 @@ const List = () => {
                 { value: 'Graduated', label: 'Graduated' },
                 { value: 'Discontinued', label: 'Discontinued' }]
               }
-              // defaultValue={selectedStatus}
               onChange={(selectedOption) => {
                 selectedStatus = selectedOption.value;
               }}
@@ -239,7 +243,6 @@ const List = () => {
                 [{ value: 'Married', label: 'Married' },
                 { value: 'Single', label: 'Single' }]
               }
-              // defaultValue={selectedStatus}
               onChange={(selectedOption) => {
                 selectedMaritalStatus = selectedOption.value;
               }}
@@ -252,7 +255,6 @@ const List = () => {
                 [{ value: 'Yes', label: 'Yes' },
                 { value: 'No', label: 'No' }]
               }
-              // defaultValue={selectedStatus}
               onChange={(selectedOption) => {
                 selectedHosteller = selectedOption.value;
               }}
@@ -265,13 +267,6 @@ const List = () => {
       ),
       focusConfirm: false,
       showCancelButton: true,
-      //  width: 700,
-      //  scrollbarPadding: false,
-      //  heightAuto: false,
-      //  grow: true,
-      // padding: '0px', // top, right, bottom, left
-      //  cancelButtonText: "Reset",
-      // cancelButtonAriaLabel: "Clear",
       preConfirm: () => {
         const select1 = selectedCourse ? selectedCourse : null;
         const select2 = selectedStatus ? selectedStatus : null;
@@ -302,8 +297,8 @@ const List = () => {
 
         console.log('Selected Values : ' + 'courseId:', formValues[0] + ', '
           + 'status:', formValues[1] + ', ' + 'acYear:', formValues[2] + ', '
-        + 'maritalStatus:', formValues[3] + ', ' + 'hosteller:', formValues[4] + ', '
-        + 'year:', formValues[5] + ', ' + 'instituteId:', formValues[6] + ', ' + 'courseStatus:', formValues[7])
+          + 'maritalStatus:', formValues[3] + ', ' + 'hosteller:', formValues[4] + ', '
+          + 'year:', formValues[5] + ', ' + 'instituteId:', formValues[6] + ', ' + 'courseStatus:', formValues[7])
 
         localStorage.setItem('courseId', courseId);
         localStorage.setItem('status', status);
@@ -329,7 +324,6 @@ const List = () => {
         localStorage.removeItem('courseStatus');
 
         getStudents();
-        // setFilteredStudents(students)
       }
     }
   };
@@ -356,7 +350,7 @@ const List = () => {
       );
       if (responnse.data.success) {
         let sno = 1;
-        const data = await responnse.data.students.map((student) => ({
+        const data = responnse.data.students.map((student) => ({
           _id: student._id,
           sno: sno++,
           name: student.userId?.name,
@@ -377,7 +371,6 @@ const List = () => {
           course: student.courses && student.courses?.length > 0 ? student.courses.map(course => course.name ? course.name + "(" + course.years + ")" + ", " : "") : "",
           courses: student.courses && student.courses?.length > 0 ? student.courses : null,
           fatherName: student.fatherName ? student.fatherName : student.motherName ? student.motherName : student.guardianName ? student.guardianName : "",
-          // action: (<StudentButtons Id={student._id} onStudentDelete={onStudentDelete} />),
           action: (<StudentButtons Id={student._id} />),
         }));
         setStudents(data);
@@ -390,105 +383,148 @@ const List = () => {
       console.log(error.message)
       if (error.response && !error.response.data.success) {
         showSwalAlert("Error!", error.response.data.error, "error");
-        //  navigate("/dashboard");
       }
     } finally {
       setFiltering(false)
     }
   }
 
-  const handleImport = async () => {
-    const { value: file } = await Swal.fire({
-      title: "<h3 style='color:blue; font-size: 25px;'>Import Student Data</h3>",
-      input: "file",
-      background: "url(/bg_card.png)",
-      inputAttributes: {
-        'Content-Type': 'multipart/form-data',
-        'Authorization': `Bearer ${localStorage.getItem("token")}`,
-        'Access-Control-Allow-Origin': '*',
-        "accept": ".xlsx, .xls",
-        "aria-label": "Upload School Student Data."
-      },
-      showClass: { popup: `animate__animated animate__fadeInUp animate__faster` },
-      hideClass: { popup: `animate__animated animate__fadeOutDown animate__faster` }
-    });
+  // ✅ Updated import with UI lock
+  const handleImport = async (e) => {
+    e?.preventDefault?.();
+    e?.stopPropagation?.();
 
-    if (file) {
-      try {
-        setProcessing(true);
+    if (importLockRef.current || importingStudents || processing) {
+      return;
+    }
 
-        const buffer = await file.arrayBuffer();
-        const wb = XLSX.read(buffer, { type: "array" });
-        const ws = wb.Sheets[wb.SheetNames[0]];
-        const rawRows = XLSX.utils.sheet_to_json(ws, {
-          defval: "",     // keep blanks
-          raw: true       // keep numbers (needed for Excel serial dates)
+    importLockRef.current = true;
+    setImportingStudents(true);
+
+    try {
+      const { value: file } = await Swal.fire({
+        title: "<h3 style='color:blue; font-size: 25px;'>Import Student Data</h3>",
+        input: "file",
+        background: "url(/bg_card.png)",
+        inputAttributes: {
+          accept: ".xlsx, .xls",
+          "aria-label": "Upload School Student Data."
+        },
+        confirmButtonText: "Upload",
+        showCancelButton: true,
+        showClass: { popup: `animate__animated animate__fadeInUp animate__faster` },
+        hideClass: { popup: `animate__animated animate__fadeOutDown animate__faster` }
+      });
+
+      if (!file) {
+        return;
+      }
+
+      setProcessing(true);
+
+      const buffer = await file.arrayBuffer();
+      const wb = XLSX.read(buffer, { type: "array" });
+      const ws = wb.Sheets[wb.SheetNames[0]];
+      const rawRows = XLSX.utils.sheet_to_json(ws, {
+        defval: "",
+        raw: true
+      });
+
+      if (!Array.isArray(rawRows) || rawRows.length === 0) {
+        setProcessing(false);
+        await Swal.fire({
+          title: "Info!",
+          html: "<b>No rows found in selected Excel file.</b>",
+          icon: "info",
+          showConfirmButton: true,
+          background: "url(/bg_card.png)",
+        });
+        return;
+      }
+
+      const baseUrl = (await getBaseUrl()).toString();
+
+      const response = await fetch(baseUrl + "student/import", {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(rawRows),
+      });
+
+      const resData = await response.json().catch(() => ({}));
+
+      setProcessing(false);
+
+      if (response.ok && resData?.success) {
+        const fileName = "Import_Result_" + new Date().getTime() + ".txt";
+
+        const txtContent = [
+          `RequestId: ${resData.requestId || "-"}`,
+          `Summary: ${resData.message || "-"}`,
+          `Imported: ${resData.importedCount ?? "-"}`,
+          `Duplicates: ${resData.duplicateCount ?? "-"}`,
+          `Invalid: ${resData.invalidCount ?? "-"}`,
+          `Failed: ${resData.failedCount ?? "-"}`,
+          `Total: ${resData.totalCount ?? "-"}`,
+          `TotalStudentsBefore: ${resData.totalStudentsBefore ?? "-"}`,
+          `TotalStudentsAfter: ${resData.totalStudentsAfter ?? "-"}`,
+          `ExistingStudentsMatchedBefore: ${resData.existingStudentsMatchedBefore ?? "-"}`,
+          `MatchedAfterImport: ${resData.matchedAfterImport ?? "-"}`,
+          "",
+          "Details:",
+          resData.finalResultData || "No detailed result."
+        ].join("\r\n");
+
+        downloadTextFile(txtContent, fileName);
+
+        await Swal.fire({
+          title: "Success!",
+          html: "<b>" + (resData.message || "Import completed.") + "</br> Please check the result in downloaded text file : </br>" + fileName + "</b>",
+          icon: "success",
+          showConfirmButton: true,
+          background: "url(/bg_card.png)",
         });
 
-        const studentsDataList = JSON.stringify(rawRows);
-        // alert(studentsDataList)
-        if (studentsDataList) {
-          const response = await fetch((await getBaseUrl()).toString() + "student/import", {
-            method: 'POST',
-            headers: { 'Authorization': `Bearer ${localStorage.getItem("token")}`, 'Content-Type': 'application/json' },
-            body: studentsDataList,
-          });
+        localStorage.removeItem('students');
 
-          if (response.ok) {
-            setProcessing(false);
-
-            const text = await response.text();
-            // If the server returns escaped newlines like "\\n"
-            const fixed = text.replace(/\\n/g, "\r\n");
-            const blob = new Blob([fixed], { type: "text/plain;charset=utf-8" });
-
-            //const blob = await response.blob();
-            const url = window.URL.createObjectURL(blob);
-            const link = document.createElement('a');
-            link.href = url;
-            const fileName = "Import_Result_" + new Date().getTime() + ".txt"
-            link.setAttribute('download', fileName);
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-            window.URL.revokeObjectURL(url);
-
-            Swal.fire({
-              title: "Success!",
-              html: "<b>" + "Successfully Imported! </br> Please check the result in downloaded text file : </br>" + fileName + "</b>",
-              icon: "success",
-              showConfirmButton: true,
-              background: "url(/bg_card.png)",
-            });
-
-            navigate("/dashboard/students");
-            window.location.reload();
-          } else {
-            const resData = JSON.parse(JSON.stringify(await response.json()));
-            setProcessing(false);
-            Swal.fire({
-              title: "Error!",
-              html: "<b>" + "Data NOT Imported. Error : \n" + resData.error + "</b>",
-              icon: "error",
-              showConfirmButton: true,
-              background: "url(/bg_card.png)",
-            });
-            console.error('Failed to send data.');
-          }
+        if (
+          localStorage.getItem('courseId') ||
+          localStorage.getItem('status') ||
+          localStorage.getItem('acYear') ||
+          localStorage.getItem('maritalStatus') ||
+          localStorage.getItem('hosteller') ||
+          localStorage.getItem('year') ||
+          localStorage.getItem('instituteId') ||
+          localStorage.getItem('courseStatus')
+        ) {
+          await getFilteredStudents();
+        } else {
+          await getStudents();
         }
-      } catch (error) {
-        setProcessing(false);
-        Swal.fire({
+      } else {
+        await Swal.fire({
           title: "Error!",
-          html: "<b>" + "Data NOT Imported. Exception : \n" + error + "</b>",
+          html: "<b>" + "Data NOT Imported. Error : </br>" + (resData?.error || resData?.message || "Unknown error") + "</b>",
           icon: "error",
           showConfirmButton: true,
           background: "url(/bg_card.png)",
         });
+        console.error('Failed to send data.');
       }
-
-    } else {
-      //  Swal.fire("Please select correct file and try again!");
+    } catch (error) {
+      setProcessing(false);
+      await Swal.fire({
+        title: "Error!",
+        html: "<b>" + "Data NOT Imported. Exception : </br>" + (error?.message || error) + "</b>",
+        icon: "error",
+        showConfirmButton: true,
+        background: "url(/bg_card.png)",
+      });
+    } finally {
+      importLockRef.current = false;
+      setImportingStudents(false);
     }
   }
 
@@ -546,7 +582,7 @@ const List = () => {
           Swal.showValidationMessage("Please select at least one student.");
           return;
         }
-        return ids; // ✅ array of studentIds
+        return ids;
       },
     });
 
@@ -554,12 +590,11 @@ const List = () => {
   };
 
   const openStudentPickerForRemove = async (students = []) => {
-    const members = students;//buildUnpaidMembersFromStudents(students);
+    const members = students;
 
     if (members.length === 0) {
       await Swal.fire({
         title: "No students to remove",
-        //text: "All students already paid the fees (or no students found).",
         icon: "info",
         background: "url(/bg_card.png)",
       });
@@ -594,7 +629,7 @@ const List = () => {
           Swal.showValidationMessage("Please select at least one student.");
           return;
         }
-        return ids; // ✅ array of studentIds
+        return ids;
       },
     });
 
@@ -613,7 +648,7 @@ const List = () => {
         "Content-Type": "application/json",
         Accept: "application/json",
       },
-      body: JSON.stringify({ studentIds: selectedStudentIds }), // ✅ key = studentIds
+      body: JSON.stringify({ studentIds: selectedStudentIds }),
     });
 
     const data = await resp.json().catch(() => ({}));
@@ -636,7 +671,7 @@ const List = () => {
         "Content-Type": "application/json",
         Accept: "application/json",
       },
-      body: JSON.stringify({ studentIds: selectedStudentIds }), // ✅ key = studentIds
+      body: JSON.stringify({ studentIds: selectedStudentIds }),
     });
 
     const data = await resp.json().catch(() => ({}));
@@ -662,7 +697,7 @@ const List = () => {
       }
 
       const selectedStudentIds = await openStudentPicker(students);
-      if (!selectedStudentIds.length) return; // cancelled
+      if (!selectedStudentIds.length) return;
 
       Swal.fire({
         title: "Updating...",
@@ -707,7 +742,7 @@ const List = () => {
       }
 
       const selectedStudentIds = await openStudentPickerForRemove(students);
-      if (!selectedStudentIds.length) return; // cancelled
+      if (!selectedStudentIds.length) return;
 
       Swal.fire({
         title: "Updating...",
@@ -790,8 +825,10 @@ const List = () => {
     }
 
     const data = localStorage.getItem('students');
-    console.log("Existing Data - " + JSON.parse(data))
-    if (data && (localStorage.getItem('courseId')
+    const parsedLocalData = safeParseJSON(data, null);
+    console.log("Existing Data - ", parsedLocalData);
+
+    if (parsedLocalData && (localStorage.getItem('courseId')
       || localStorage.getItem('status')
       || localStorage.getItem('acYear')
       || localStorage.getItem('maritalStatus')
@@ -800,7 +837,7 @@ const List = () => {
       || localStorage.getItem('instituteId')
       || localStorage.getItem('courseStatus'))) {
       let sno = 1;
-      const data1 = JSON.parse(data).students.map((student) => ({
+      const data1 = parsedLocalData.students.map((student) => ({
         _id: student._id,
         sno: sno++,
         name: student.userId?.name,
@@ -833,17 +870,9 @@ const List = () => {
       if (!localStorage.getItem('schoolId')) {
         const schools = await getSchoolsFromCache();
         setSchools(schools)
-        //console.log("inside - " + schools)
-        //  let inputArray = [];
-        //  schools.map((school) => (
-        //    inputOptions[school._id] = school.code.substring(3) + " : " + school.nameEnglish + ", " + school.district + ", " + school.state
-        //  ))
-        //  setInputOptions(inputOptions);
 
         let selectedOptionInSwal;
         const { value: schId } = await MySwal.fire({
-          //title: "<h3 style='color:blue; font-size: 25px;'>Select the Niswan</h3>",
-          //html: "<div className='text-2xl font-bold text-blue-700'>Select the Niswan</div>",
           background: "url(/bg_card.png)",
           html: (
             <div className="mb-2 h-80 w-full">
@@ -898,7 +927,7 @@ const List = () => {
           );
           if (responnse.data.success) {
             let sno = 1;
-            const data = await responnse.data.students.map((student) => ({
+            const data = responnse.data.students.map((student) => ({
               _id: student._id,
               sno: sno++,
               name: student.userId?.name,
@@ -983,7 +1012,7 @@ const List = () => {
             <input
               type="text"
               placeholder="Search"
-              class="w-full px-3 py-0.5 border rounded shadow-md justify-center mr-1 lg:mr-0"
+              className="w-full px-3 py-0.5 border rounded shadow-md justify-center mr-1 lg:mr-0"
               onChange={handleSearch}
             />
           </div>
@@ -1005,8 +1034,14 @@ const List = () => {
         {user.role === "superadmin" || user.role === "hquser" ?
           <div className="block ml-1 mr-1" onClick={handleRemoveStudents}>{LinkIcon("#", "RemoveStudents")}</div> : null}
 
-        {user.role === "superadmin" || user.role === "hquser" ?
-          <div className="block" onClick={handleImport}>{LinkIcon("#", "Import")}</div> : null}
+        {user.role === "superadmin" || user.role === "hquser" ? (
+          <div
+            className={`block ${importingStudents || processing ? "pointer-events-none opacity-50" : ""}`}
+            onClick={handleImport}
+          >
+            {LinkIcon("#", importingStudents || processing ? "Importing..." : "Import")}
+          </div>
+        ) : null}
       </div>
 
       {(localStorage.getItem('courseId') != null && localStorage.getItem('courseId') != 'null')
@@ -1064,7 +1099,6 @@ const List = () => {
       {filtering ?
         getFilterGif() :
         <div className='mt-3 lg:mt-5 rounded-lg shadow-lg'>
-          {/*<DataTable columns={columns} data={filteredStudent} showGridlines highlightOnHover striped responsive conditionalRowStyles={conditionalRowStyles} expandableRows expandableRowsComponent={ExpandedComponent} />*/}
           <DataTable columns={columns} data={filteredStudent} showGridlines highlightOnHover striped responsive conditionalRowStyles={conditionalRowStyles} />
         </div>}
     </div>
