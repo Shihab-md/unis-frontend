@@ -14,6 +14,9 @@ import SupervisorList from "./components/supervisor/List";
 import SupervisorAdd from "./components/supervisor/Add";
 import SupervisorView from "./components/supervisor/View";
 import SupervisorEdit from "./components/supervisor/Edit";
+import InspectionReportList from "./components/supervisor/InspectionReportList";
+import InspectionReportAdd from "./components/supervisor/InspectionReportAdd";
+import InspectionReportView from "./components/supervisor/InspectionReportView";
 
 import SchoolList from "./components/school/List";
 import SchoolAdd from "./components/school/Add";
@@ -97,6 +100,9 @@ function App() {
           <Route path="/dashboard/add-supervisor" element={<SupervisorAdd />}></Route>
           <Route path="/dashboard/supervisors/:id" element={<SupervisorView />}></Route>
           <Route path="/dashboard/supervisors/edit/:id" element={<SupervisorEdit />}></Route>
+          <Route path="/dashboard/inspection-reports" element={<InspectionReportList />} />
+          <Route path="/dashboard/add-inspection-report" element={<InspectionReportAdd />} />
+          <Route path="/dashboard/inspection-report/:id" element={<InspectionReportView />} />
 
           <Route path="/dashboard/schools" element={<SchoolList />}></Route>
           <Route path="/dashboard/add-school" element={<SchoolAdd />}></Route>
