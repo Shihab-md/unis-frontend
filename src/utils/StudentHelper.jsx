@@ -151,7 +151,7 @@ export const columns = [
           {row.courses?.length ? (
             row.courses.map((course, i) => (
               <div className="mb-2" key={course._id || i}>
-                {course.name}
+                <span className="text-blue-700">{`${i + 1}.`}</span> {`${course.name}`}
                 {Number(course.years) > 0 ? ` (${course.years} yr)` : ""}
               </div>
             ))
