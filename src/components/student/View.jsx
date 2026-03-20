@@ -232,7 +232,10 @@ const View = () => {
                     <DataTable
                       className="p-0"
                       columns={columnsSelectForAcademic}
-                      data={student?._academics || []}
+                      data={(student?._academics || []).map((row) => ({
+                        ...row,
+                        _certificateFeeMap: student?._certificateFeeMap || {},
+                      }))}
                       highlightOnHover
                       striped
                     />
