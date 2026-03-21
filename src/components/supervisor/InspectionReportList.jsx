@@ -1,10 +1,19 @@
 import React, { useEffect, useMemo, useState } from "react";
 import DataTable from "react-data-table-component";
-import { Link, useNavigate } from "react-router-dom";
-import { FaEye, FaFilter, FaPlus, FaSearch } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
+import { FaEye } from "react-icons/fa";
 import { fetchInspectionReports } from "../../api/inspectionReportApi";
+import {
+  handleRightClickAndFullScreen,
+  getSpinner,
+  checkAuth,
+  LinkIcon,
+  showSwalAlert,
+  getFilterGif, getButtonStyle,
+} from "../../utils/CommonHelper";
+import { useAuth } from "../../context/AuthContext";
 
-const getUser = () => {
+const getUserFromLocal = () => {
   try {
     return JSON.parse(localStorage.getItem("user") || "{}");
   } catch {
@@ -16,93 +25,191 @@ const formatDate = (value) => {
   if (!value) return "-";
   const d = new Date(value);
   if (Number.isNaN(d.getTime())) return "-";
-  return d.toLocaleDateString();
+  return d.toLocaleDateString("en-GB");
+};
+
+const customStyles = {
+  headCells: {
+    style: {
+      fontWeight: "500",
+      fontSize: "13px",
+      color: "#475569",
+      backgroundColor: "#f8fafc",
+    },
+  },
+  rows: {
+    style: {
+      minHeight: "56px",
+      fontSize: "13px",
+      backgroundColor: "#ffffff",
+    },
+    stripedStyle: {
+      backgroundColor: "#f8fafc",
+    },
+    highlightOnHoverStyle: {
+      backgroundColor: "#eff6ff",
+      transitionDuration: "0.15s",
+      transitionProperty: "background-color",
+      outlineStyle: "solid",
+      outlineWidth: "0px",
+    },
+  },
+  cells: {
+    style: {
+      color: "#334155",
+    },
+  },
 };
 
 export default function InspectionReportList() {
   const navigate = useNavigate();
-  const user = getUser();
+  const { user } = useAuth();
+  const localUser = getUserFromLocal();
 
   const [rows, setRows] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [filtering, setFiltering] = useState(false);
   const [showFilterPopup, setShowFilterPopup] = useState(false);
 
   const [filters, setFilters] = useState({
     q: "",
-    acYear: "",
     fromDate: "",
     toDate: "",
   });
 
+  useEffect(() => {
+    handleRightClickAndFullScreen();
+  }, []);
+
+  useEffect(() => {
+    if (checkAuth("inspectionReportList") === "NO") {
+      showSwalAlert("Error!", "User Authorization Failed!", "error");
+      navigate("/login");
+      return;
+    }
+    loadInspectionReports();
+  }, []);
+
   const loadInspectionReports = async () => {
     try {
       setLoading(true);
+      setFiltering(true);
       const res = await fetchInspectionReports(filters);
       setRows(res?.data || []);
     } catch (error) {
-      alert(
+      showSwalAlert(
+        "Error!",
         error?.response?.data?.message ||
-          error.message ||
-          "Failed to load inspection reports."
+        error.message ||
+        "Failed to load inspection reports.",
+        "error"
       );
     } finally {
       setLoading(false);
+      setFiltering(false);
     }
   };
 
-  useEffect(() => {
-    loadInspectionReports();
-  }, []);
+  const handleSearch = (e) => {
+    const searchValue = e.target.value;
+    setFilters((prev) => ({ ...prev, q: searchValue }));
+
+    const lowered = searchValue.toLowerCase();
+    const filtered = (rows || []).filter((row) =>
+      row.title?.toLowerCase().includes(lowered) ||
+      row.supervisorName?.toLowerCase().includes(lowered) ||
+      row.supervisorId?.toLowerCase().includes(lowered) ||
+      row.schoolCode?.toLowerCase().includes(lowered) ||
+      row.schoolName?.toLowerCase().includes(lowered)
+    );
+
+    if (!searchValue.trim()) {
+      loadInspectionReports();
+    } else {
+      setRows(filtered);
+    }
+  };
+
+  const applyFilters = async () => {
+    setShowFilterPopup(false);
+    await loadInspectionReports();
+  };
+
+  const resetFilters = async () => {
+    const emptyFilters = {
+      q: "",
+      fromDate: "",
+      toDate: "",
+    };
+    setFilters(emptyFilters);
+    setShowFilterPopup(false);
+
+    try {
+      setLoading(true);
+      setFiltering(true);
+      const res = await fetchInspectionReports(emptyFilters);
+      setRows(res?.data || []);
+    } catch (error) {
+      showSwalAlert(
+        "Error!",
+        error?.response?.data?.message ||
+        error.message ||
+        "Failed to load inspection reports.",
+        "error"
+      );
+    } finally {
+      setLoading(false);
+      setFiltering(false);
+    }
+  };
 
   const columns = useMemo(
     () => [
       {
         name: "S.No",
-        width: "80px",
+        width: "70px",
         cell: (_, index) => <span>{index + 1}</span>,
       },
       {
         name: "Title",
-        grow: 2,
+        wrap: true,
+        width: "340px",
         cell: (row) => (
           <div className="py-2">
-            <p className="font-semibold text-slate-800">{row.title}</p>
+            <p className="text-slate-800">{row.title}</p>
           </div>
         ),
       },
       {
+        name: "Niswan",
+        width: "370px",
+        wrap: true,
+        selector: (row) =>
+          <div>
+            <p className="text-blue-500">{row.schoolCode}</p>
+            <p>{row.schoolName}</p>
+          </div>,
+      },
+      {
         name: "Report Date",
-        width: "130px",
+        width: "140px",
         selector: (row) => formatDate(row.reportDate),
       },
       {
-        name: "Academic Year",
-        width: "140px",
-        selector: (row) => row.acYear || "-",
-      },
-      {
-        name: "Supervisor Name",
-        grow: 1.4,
-        selector: (row) => row.supervisorName || "-",
-      },
-      {
-        name: "Niswan",
-        width: "120px",
-        selector: (row) => row.niswan || row.schoolName || "-",
-      },
-      {
-        name: "Attachments",
-        width: "120px",
-        cell: (row) => <span>{row.attachments?.length || 0}</span>,
+        name: "Supervisor",
+        wrap: true,
+        selector: (row) => <div>
+          <p className="text-blue-500">{row.supervisorId}</p>
+          <p>{row.supervisorName}</p>
+        </div>,
       },
       {
         name: "Action",
         width: "110px",
         cell: (row) => (
           <button
-            type="button"
             onClick={() => navigate(`/dashboard/inspection-report/${row._id}`)}
-            className="rounded-lg bg-blue-50 px-3 py-2 text-blue-700 hover:bg-blue-100"
+            className={getButtonStyle('View')}
           >
             <FaEye />
           </button>
@@ -112,119 +219,86 @@ export default function InspectionReportList() {
     [navigate]
   );
 
+  if (loading && !rows.length) {
+    return getSpinner();
+  }
+
   return (
-    <div className="min-h-screen bg-slate-50 p-3 md:p-5">
-      <div className="mx-auto max-w-7xl space-y-4">
-        <div className="rounded-2xl border bg-white p-4 shadow-sm">
-          <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
-            <div>
-              <h2 className="text-xl font-bold text-slate-800">Inspection Reports</h2>
-              <p className="text-sm text-slate-500">
-                {String(user?.role || "").toLowerCase() === "supervisor"
-                  ? "Your submitted inspection reports"
-                  : "All submitted inspection reports"}
-              </p>
-            </div>
+    <div className="mt-1 p-5 lg:mt-5">
+      <div className="text-center">
+        <h3 className="text-base lg:text-2xl font-bold px-5 py-0 text-shadow-lg text-gray-600">
+          Inspection Reports
+          <p className="flex md:grid text-xs md:text-base justify-center text-rose-700">
+            (Records Count : {rows ? rows.length : 0})
+          </p>
+        </h3>
+      </div>
 
-            <div className="flex flex-wrap gap-2">
-              <button
-                type="button"
-                onClick={() => setShowFilterPopup(true)}
-                className="inline-flex items-center gap-2 rounded-xl border bg-white px-4 py-2 text-sm font-semibold text-slate-700"
-              >
-                <FaFilter />
-                Filter
-              </button>
+      <div className="flex justify-between items-center mt-5">
+        {LinkIcon("/dashboard", "Back")}
 
-              {String(user?.role || "").toLowerCase() === "supervisor" && (
-                <Link
-                  to="/dashboard/add-inspection-report"
-                  className="inline-flex items-center gap-2 rounded-xl bg-teal-600 px-4 py-2 text-sm font-semibold text-white"
-                >
-                  <FaPlus />
-                  Add Inspection Report
-                </Link>
-              )}
-            </div>
-          </div>
-        </div>
-
-        <div className="rounded-2xl border bg-white p-4 shadow-sm">
-          <div className="mb-4 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
-            <div className="flex w-full max-w-xl items-center gap-2 rounded-xl border bg-slate-50 px-3 py-3">
-              <FaSearch className="text-slate-400" />
-              <input
-                value={filters.q}
-                onChange={(e) => setFilters((prev) => ({ ...prev, q: e.target.value }))}
-                placeholder="Search title / supervisor / niswan / academic year"
-                className="w-full bg-transparent text-sm outline-none"
-              />
-            </div>
-
-            <button
-              type="button"
-              onClick={loadInspectionReports}
-              className="rounded-xl bg-blue-600 px-4 py-3 text-sm font-semibold text-white"
-            >
-              Search
-            </button>
-          </div>
-
-          <div className="mb-3 text-sm font-semibold text-slate-600">
-            Total Inspection Reports: <span className="text-slate-900">{rows.length}</span>
-          </div>
-
-          <div className="hidden lg:block">
-            <DataTable
-              columns={columns}
-              data={rows}
-              progressPending={loading}
-              striped
-              highlightOnHover
-              persistTableHead
+        <div className="w-3/4 lg:w-1/2 rounded flex lg:border lg:shadow-lg rounded-md justify-between items-center relative lg:bg-[url(/bg-img.jpg)]">
+          <div className="w-full text-md flex justify-center items-center pl-2 rounded-l-md">
+            <input
+              type="text"
+              placeholder="Search"
+              className="w-full px-3 py-0.5 border rounded shadow-md justify-center ml-1 lg:ml-0 mr-3 lg:mr-0"
+              onChange={handleSearch}
             />
           </div>
-
-          <div className="space-y-3 lg:hidden">
-            {loading ? (
-              <div className="rounded-xl border bg-slate-50 p-4 text-center text-sm text-slate-500">
-                Loading...
-              </div>
-            ) : rows.length === 0 ? (
-              <div className="rounded-xl border bg-slate-50 p-4 text-center text-sm text-slate-500">
-                No inspection reports found.
-              </div>
-            ) : (
-              rows.map((row, index) => (
-                <div key={row._id} className="rounded-2xl border bg-white p-4 shadow-sm">
-                  <div className="mb-3 flex items-start justify-between gap-3">
-                    <div>
-                      <p className="text-xs font-semibold text-slate-400">S.No</p>
-                      <p className="font-semibold text-slate-800">{index + 1}</p>
-                    </div>
-                    <button
-                      type="button"
-                      onClick={() => navigate(`/dashboard/inspection-report/${row._id}`)}
-                      className="rounded-lg bg-blue-50 px-3 py-2 text-blue-700"
-                    >
-                      View
-                    </button>
-                  </div>
-
-                  <div className="grid grid-cols-2 gap-3 text-sm">
-                    <Info label="Title" value={row.title} />
-                    <Info label="Report Date" value={formatDate(row.reportDate)} />
-                    <Info label="Academic Year" value={row.acYear || "-"} />
-                    <Info label="Supervisor" value={row.supervisorName || "-"} />
-                    <Info label="Niswan" value={row.niswan || row.schoolName || "-"} />
-                    <Info label="Attachments" value={String(row.attachments?.length || 0)} />
-                  </div>
-                </div>
-              ))
-            )}
+          <div className="hidden lg:block p-1 mt-0.5 rounded-md items-center justify-center">
+            {LinkIcon("#", "Search")}
           </div>
         </div>
+
+        <div className="mr-3" onClick={() => setShowFilterPopup(true)}>
+          {LinkIcon("#", "Filter")}
+        </div>
+
+        {String(user?.role || localUser?.role || "").toLowerCase() === "supervisor"
+          ? LinkIcon("/dashboard/add-inspection-report", "Add")
+          : null}
       </div>
+
+      {(filters.fromDate || filters.toDate) ? (
+        <div className="grid lg:flex mt-3 lg:mt-7 text-xs text-lime-600 items-center justify-center">
+          <p className="lg:mr-3 justify-center text-center">Filter Applied: </p>
+
+          {filters.fromDate ? (
+            <p className="lg:ml-3">
+              <span className="text-blue-500">
+                From Date: <span className="text-gray-500">{filters.fromDate}</span>
+              </span>
+            </p>
+          ) : null}
+
+          {filters.toDate ? (
+            <p className="lg:ml-3">
+              <span className="text-blue-500">
+                To Date: <span className="text-gray-500">{filters.toDate}</span>
+              </span>
+            </p>
+          ) : null}
+        </div>
+      ) : (
+        <div className="flex mt-3 lg:mt-7"></div>
+      )}
+
+      {filtering ? (
+        getFilterGif()
+      ) : (
+        <div className="mt-3 lg:mt-5 rounded-lg shadow-lg">
+          <DataTable
+            columns={columns}
+            data={rows}
+            highlightOnHover
+            striped
+            responsive
+            persistTableHead
+            customStyles={customStyles}
+          />
+        </div>
+      )}
 
       {showFilterPopup ? (
         <div
@@ -232,11 +306,11 @@ export default function InspectionReportList() {
           onClick={() => setShowFilterPopup(false)}
         >
           <div
-            className="w-full max-w-2xl rounded-xl bg-white p-4 shadow-2xl"
+            className="w-full max-w-2xl rounded-xl bg-white p-4 shadow-2xl bg-[url(/bg_card.png)]"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="mb-3 flex items-center justify-between">
-              <h3 className="text-lg font-semibold text-slate-800">Filter Inspection Reports</h3>
+              <h3 className="text-lg font-semibold text-green-800">Filter Inspection Reports</h3>
               <button
                 type="button"
                 onClick={() => setShowFilterPopup(false)}
@@ -247,17 +321,6 @@ export default function InspectionReportList() {
             </div>
 
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-              <Field label="Academic Year">
-                <input
-                  value={filters.acYear}
-                  onChange={(e) => setFilters((prev) => ({ ...prev, acYear: e.target.value }))}
-                  placeholder="2025-2026"
-                  className="w-full rounded-xl border bg-slate-50 px-3 py-3 text-sm outline-none"
-                />
-              </Field>
-
-              <div />
-
               <Field label="From Date">
                 <input
                   type="date"
@@ -280,24 +343,14 @@ export default function InspectionReportList() {
             <div className="mt-4 flex justify-end gap-2">
               <button
                 type="button"
-                onClick={() => {
-                  setFilters({
-                    q: "",
-                    acYear: "",
-                    fromDate: "",
-                    toDate: "",
-                  });
-                }}
+                onClick={resetFilters}
                 className="rounded-xl border px-4 py-2 text-sm font-semibold text-slate-700"
               >
                 Reset
               </button>
               <button
                 type="button"
-                onClick={() => {
-                  setShowFilterPopup(false);
-                  loadInspectionReports();
-                }}
+                onClick={applyFilters}
                 className="rounded-xl bg-blue-600 px-4 py-2 text-sm font-semibold text-white"
               >
                 Apply
@@ -316,14 +369,5 @@ function Field({ label, children }) {
       <span className="mb-1 block text-sm font-semibold text-slate-700">{label}</span>
       {children}
     </label>
-  );
-}
-
-function Info({ label, value }) {
-  return (
-    <div>
-      <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">{label}</p>
-      <p className="mt-1 break-words text-sm font-medium text-slate-700">{value}</p>
-    </div>
   );
 }

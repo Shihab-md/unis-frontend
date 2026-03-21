@@ -2,7 +2,7 @@
 import { Link } from 'react-router-dom';
 import { useEffect, useRef, useCallback } from "react";
 import {
-  FaPlusSquare, FaArrowAltCircleLeft, FaRegCaretSquareDown, FaUserCheck, FaTrashAlt, FaSearch, FaTasks, FaCheck, FaUpload
+  FaPlusSquare, FaArrowAltCircleLeft, FaFileSignature, FaUserCheck, FaTrashAlt, FaSearch, FaTasks, FaCheck, FaUpload
 } from "react-icons/fa";
 import Swal from 'sweetalert2';
 
@@ -37,6 +37,7 @@ const authorizedScreensFor_SUP_Role = [
   "supervisorsList",
   "schoolsList", "schoolView",
   "employeesList", "employeeView", "employeeAdd", "employeeEdit",
+  "inspectionReportList", "inspectionReportAdd", "inspectionReportView",
   "settings", "profile"
 ];
 
@@ -292,6 +293,10 @@ export function LinkIcon(toPage, purpose) {
   } else if (purpose === "Promote") {
     return <Link to={toPage} >
       <FaUserCheck className="text-3xl lg:text-4xl bg-white text-purple-500 border-2 border-purple-500 rounded shadow-lg p-1 lg:p-1.5 hover:-translate-y-0.5" /> </Link>
+
+  } else if (purpose === "Inspection") {
+    return <Link to={toPage} >
+      <FaFileSignature className="text-3xl lg:text-4xl bg-white text-blue-600 border-2 border-blue-600 rounded shadow-lg p-1 lg:p-1.5 hover:-translate-y-0.5" /> </Link>
 
   } else if (purpose === "Search") {
     return <Link to={toPage} >

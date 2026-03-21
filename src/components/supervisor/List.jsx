@@ -353,6 +353,10 @@ const List = () => {
           : null}
 
         {user.role === "superadmin" || user.role === "hquser" ?
+          <div className="mr-3">{LinkIcon("/dashboard/inspection-reports", "Inspection")}</div>
+          : null}
+
+        {user.role === "superadmin" || user.role === "hquser" ?
           LinkIcon("/dashboard/add-supervisor", "Add") : null}
       </div>
 

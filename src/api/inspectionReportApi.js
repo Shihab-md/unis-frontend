@@ -1,13 +1,13 @@
 import axios from "axios";
 import { getBaseUrl } from "../utils/CommonHelper";
 
-const getAuthHeaders = () => {
-  const token = localStorage.getItem("token") || localStorage.getItem("accessToken");
-  return token ? { Authorization: `Bearer ${token}` } : {};
-};
+const getAuthHeaders = () => ({
+  Authorization: `Bearer ${localStorage.getItem("token")}`,
+});
 
 export const fetchInspectionReports = async (params = {}) => {
-  const res = await axios.get(`${getBaseUrl()}/inspection-report`, {
+  const base = await getBaseUrl();
+  const res = await axios.get(`${base}inspection-report`, {
     params,
     headers: getAuthHeaders(),
   });
@@ -15,21 +15,24 @@ export const fetchInspectionReports = async (params = {}) => {
 };
 
 export const fetchMyInspectionReports = async () => {
-  const res = await axios.get(`${getBaseUrl()}/inspection-report/my`, {
+  const base = await getBaseUrl();
+  const res = await axios.get(`${base}inspection-report/my`, {
     headers: getAuthHeaders(),
   });
   return res.data;
 };
 
 export const fetchInspectionReportById = async (id) => {
-  const res = await axios.get(`${getBaseUrl()}/inspection-report/${id}`, {
+  const base = await getBaseUrl();
+  const res = await axios.get(`${base}inspection-report/${id}`, {
     headers: getAuthHeaders(),
   });
   return res.data;
 };
 
 export const addInspectionReport = async (formData) => {
-  const res = await axios.post(`${getBaseUrl()}/inspection-report/add`, formData, {
+  const base = (await getBaseUrl()).toString();
+  const res = await axios.post(`${base}inspection-report/add`, formData, {
     headers: {
       ...getAuthHeaders(),
       "Content-Type": "multipart/form-data",

@@ -7,7 +7,7 @@ import { getBaseUrl, handleRightClickAndFullScreen, getSpinner, showSwalAlert, r
 import {
   FaMosque, FaUserFriends, FaCoins, FaGraduationCap,
   FaUsers, FaHouseUser, FaClipboardList, FaTasks, FaCalendarAlt,
-  FaRupeeSign, FaMedal, FaFileContract, FaCogs,
+  FaRupeeSign, FaMedal, FaFileContract, FaCogs, FaFileSignature,
 } from "react-icons/fa";
 import axios from 'axios'
 import { useNavigate } from "react-router-dom";
@@ -83,7 +83,7 @@ const AdminSummary = () => {
               icon={<FaHouseUser />}
               text="Employees"
               number={summary.totalEmployees}
-              color="bg-cyan-600"
+              color={user.role === "supervisor" ? "bg-slate-500" : "bg-cyan-600"}
             />
           </Link> : null}
 
@@ -165,7 +165,17 @@ const AdminSummary = () => {
               icon={<FaFileContract />}
               text="Reports"
               number="*"
-              color="bg-pink-500"
+              color={user.role === "supervisor" ? "bg-purple-500" : "bg-pink-500"}
+            />
+          </Link> : null}
+
+        {user.role === "supervisor" || user.role === "guest" ?
+          <Link to="/dashboard/inspection-reports" >
+            <SummaryCard
+              icon={<FaFileSignature />}
+              text="Inspection Report"
+              number="*"
+              color="bg-blue-500"
             />
           </Link> : null}
 
