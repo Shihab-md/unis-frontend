@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { getBaseUrl, showSwalAlert, showConfirmationSwalAlert, getButtonStyle } from '../utils/CommonHelper';
+import { getBaseUrl, showSwalAlert, showConfirmationSwalAlert, getButtonStyle, getYearLabel } from '../utils/CommonHelper';
 import { FaEye, FaEdit, FaTrashAlt, FaExchangeAlt } from "react-icons/fa";
 import { useAuth } from '../context/AuthContext'
 
@@ -284,8 +284,6 @@ export const columns = [
   },
   {
     name: "Course",
-    // selector: (row) => row.course,
-    //  sortable: true,
     width: "280px",
     wrap: true,
     selector: row => (
@@ -295,7 +293,7 @@ export const columns = [
             row.courses.map((course, i) => (
               <div className="mb-2" key={course._id || i}>
                 <span className="text-blue-700">{`${i + 1}.`}</span> {`${course.name}`}
-                {Number(course.years) > 0 ? ` (${course.years} yr)` : ""}
+                {Number(course.years) > 0 ? ` (${getYearLabel(course.years)})` : ""}
               </div>
             ))
           ) : (

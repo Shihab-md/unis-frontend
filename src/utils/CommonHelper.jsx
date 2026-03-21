@@ -85,6 +85,21 @@ export const getBaseUrl = async () => {
   //return "http://localhost:5001/api/";
 };
 
+export const getYearLabel = (value) => {
+  const year = Number(value);
+  if (!Number.isFinite(year) || year <= 0) return "";
+
+  const mod10 = year % 10;
+  const mod100 = year % 100;
+
+  let suffix = "th";
+  if (mod10 === 1 && mod100 !== 11) suffix = "st";
+  else if (mod10 === 2 && mod100 !== 12) suffix = "nd";
+  else if (mod10 === 3 && mod100 !== 13) suffix = "rd";
+
+  return `${year}${suffix} Year`;
+};
+
 /**
  * Locks fields that already had value at initial load.
  * Pass your object (student) and field names to snapshot.
@@ -111,11 +126,6 @@ export function useInitialLockMap(obj, fieldNames = []) {
   return { isLocked };
 }
 
-{/*
-export function toCamelCase(inputString) {
-  return inputString ? inputString.toLowerCase().replace(/(^\w{1})|(\s{1}\w{1})/g, match => match.toUpperCase()) : null;
-}
-*/}
 export function toCamelCase(inputString) {
   if (inputString === undefined || inputString === null) return null;
 
@@ -203,20 +213,6 @@ export function handleRightClickAndFullScreen() {
     document.body.addEventListener("click", enterFs, { once: true });
   }
 }
-
-{/*
-export function handleRightClickAndFullScreen() {
-
-  const isDisableRightClick = true;
-  const isOpenFullScreen = true;
-
-  if (isDisableRightClick) {
-    document.addEventListener('contextmenu', handleRightClick);
-  }
-  if (isOpenFullScreen) {
-    document.body.addEventListener('click', () => document.documentElement.requestFullscreen(), { once: true });
-  }
-} */}
 
 export function handleRightClick(event) {
   event.preventDefault();
