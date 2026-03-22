@@ -88,7 +88,7 @@ const View = () => {
           <div className="flex items-center gap-3 text-xs lg:text-lg">
             <button
               onClick={handlePrint}
-              className="flex items-center gap-2 px-3 py-1 rounded-lg shadow-md bg-emerald-600 hover:bg-emerald-700"
+              className="flex items-center gap-2 px-3 py-1 rounded-lg shadow-md bg-emerald-600 hover:bg-emerald-700 text-sm"
             >
               <FaPrint />
               Print / Save PDF
@@ -109,11 +109,23 @@ const View = () => {
               <ViewCard type="title" text="Report Date" />
               <ViewCard type="data" text={getFormattedDate(inspectionReport?.reportDate) || "-"} />
 
-              <ViewCard type="title" text="Supervisor Name" />
-              <ViewCard type="data" text={inspectionReport?.supervisorId + " : " + inspectionReport?.userId?.name || "-"} />
+              <ViewCard type="title" text="Supervisor" />
+              <div className="border p-2 text-sm">
+                <p className="mb-1">{inspectionReport?.supervisorId || "-"}</p>
+                <p className="mb-1">{inspectionReport?.userId?.name || "-"}</p>
+                <p className="mb-1">{inspectionReport?.contactNumber || "-"}</p>
+                <p className="mb-1">{"Route : " + inspectionReport?.routeName || "-"}</p>
+              </div>
 
               <ViewCard type="title" text="Niswan" />
-              <ViewCard type="data" text={inspectionReport?.schoolId?.code + " : " + inspectionReport?.schoolId?.nameEnglish || "-"} />
+              <div className="border p-2 text-sm">
+                <p className="mb-1">{inspectionReport?.schoolId?.code || "-"}</p>
+                <p className="mb-1">{inspectionReport?.schoolId?.nameEnglish || "-"}</p>
+                <p className='mb-1 text-lg font-["Noto_Naskh_Arabic"]'>{inspectionReport?.schoolId?.nameArabic || "-"}</p>
+                <p className="mb-1">{inspectionReport?.schoolId?.nameNative || "-"}</p>
+                <p className="mb-1">{inspectionReport?.schoolId?.districtStateId?.district ?
+                  inspectionReport?.schoolId?.districtStateId?.district + ", " + inspectionReport?.schoolId?.districtStateId?.state : "-"}</p>
+              </div>
 
               <div className="mt-4 mb-2">
                 <p className="text-sm font-semibold text-slate-700">Report Content</p>
@@ -199,9 +211,18 @@ const View = () => {
       <div className="print-root hidden p-6">
         <div className="max-w-4xl mx-auto">
           <div className="border rounded-md p-6">
-            <h1 className="text-2xl font-bold text-center mb-6">
-              Inspection Report
-            </h1>
+            <div className="mb-6 grid grid-cols-5 items-center gap-4 text-sm">
+              <div className="col-span-2 flex justify-center">
+                <img
+                  src="/Logo - UNIS.PNG"
+                  alt="UNIS Logo"
+                  className="h-20 w-20 object-contain"
+                />
+              </div>
+              <h3 className="col-span-3 text-center text-xl font-bold">
+                UNIS - Inspection Report
+              </h3>
+            </div>
 
             <div className="grid grid-cols-2 gap-4 mb-6 text-sm">
               <PrintInfo label="Title" value={inspectionReport?.title} />
@@ -210,19 +231,31 @@ const View = () => {
                 value={getFormattedDate(inspectionReport?.reportDate)}
               />
               <PrintInfo
-                label="Supervisor Name"
-                value={inspectionReport?.supervisorName}
+                label="Supervisor"
+                value={<div className="text-sm">
+                  <p className="mb-1">{inspectionReport?.supervisorId || "-"}</p>
+                  <p className="mb-1">{inspectionReport?.userId?.name || "-"}</p>
+                  <p className="mb-1">{inspectionReport?.contactNumber || "-"}</p>
+                  <p className="mb-1">{"Route : " + inspectionReport?.routeName || "-"}</p>
+                </div>}
               />
               <PrintInfo
                 label="Niswan"
-                value={inspectionReport?.niswan || inspectionReport?.schoolName}
+                value={<div className="text-sm">
+                  <p className="mb-1">{inspectionReport?.schoolId?.code || "-"}</p>
+                  <p className="mb-1">{inspectionReport?.schoolId?.nameEnglish || "-"}</p>
+                  <p className='mb-1 text-lg font-["Noto_Naskh_Arabic"]'>{inspectionReport?.schoolId?.nameArabic || "-"}</p>
+                  <p className="mb-1">{inspectionReport?.schoolId?.nameNative || "-"}</p>
+                  <p className="mb-1">{inspectionReport?.schoolId?.districtStateId?.district ?
+                    inspectionReport?.schoolId?.districtStateId?.district + ", " + inspectionReport?.schoolId?.districtStateId?.state : "-"}</p>
+                </div>}
               />
             </div>
 
             <div className="mb-6">
               <p className="font-semibold mb-2">Report Content</p>
               <div
-                className="text-sm"
+                className="border text-sm"
                 dangerouslySetInnerHTML={{ __html: inspectionReport?.contentHtml || "-" }}
               />
             </div>
@@ -251,7 +284,7 @@ const View = () => {
 function PrintInfo({ label, value }) {
   return (
     <div>
-      <p className="font-semibold">{label}</p>
+      <p className="font-bold">{label}</p>
       <p>{value || "-"}</p>
     </div>
   );
