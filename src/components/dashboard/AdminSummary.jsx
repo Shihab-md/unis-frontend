@@ -97,6 +97,16 @@ const AdminSummary = () => {
             />
           </Link> : null}
 
+        {user.role === "superadmin" || user.role === "hquser" || user.role === "supervisor" || user.role === "supervisor" || user.role === "guest" ?
+          <Link to="/dashboard/inspection-reports" >
+            <SummaryCard
+              icon={<FaFileSignature />}
+              text="Inspection Report"
+              number="*"
+              color={user.role === "supervisor" ? "bg-blue-600" : "bg-lime-600"}
+            />
+          </Link> : null}
+
         {user.role === "superadmin" || user.role === "hquser" || user.role === "admin"
           || user.role === "teacher" || user.role === "usthadh" || user.role === "guest" ?
           <Link to="#" >
@@ -166,16 +176,6 @@ const AdminSummary = () => {
               text="Reports"
               number="*"
               color={user.role === "supervisor" ? "bg-purple-500" : "bg-pink-500"}
-            />
-          </Link> : null}
-
-        {user.role === "supervisor" || user.role === "guest" ?
-          <Link to="/dashboard/inspection-reports" >
-            <SummaryCard
-              icon={<FaFileSignature />}
-              text="Inspection Report"
-              number="*"
-              color="bg-blue-500"
             />
           </Link> : null}
 
