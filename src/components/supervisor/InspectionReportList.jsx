@@ -171,6 +171,20 @@ export default function InspectionReportList() {
         cell: (_, index) => <span>{index + 1}</span>,
       },
       {
+        name: "Supervisor",
+        width: "340px",
+        wrap: true,
+        selector: (row) => <div>
+          <p className="text-blue-500">{row.supervisorId}</p>
+          <p>{row.supervisorName}</p>
+        </div>,
+      },
+      {
+        name: "Report Date",
+        width: "140px",
+        selector: (row) => formatDate(row.reportDate),
+      },
+      {
         name: "Title",
         wrap: true,
         width: "340px",
@@ -191,19 +205,6 @@ export default function InspectionReportList() {
           </div>,
       },
       {
-        name: "Report Date",
-        width: "140px",
-        selector: (row) => formatDate(row.reportDate),
-      },
-      {
-        name: "Supervisor",
-        wrap: true,
-        selector: (row) => <div>
-          <p className="text-blue-500">{row.supervisorId}</p>
-          <p>{row.supervisorName}</p>
-        </div>,
-      },
-      {
         name: "Action",
         width: "110px",
         cell: (row) => (
@@ -211,7 +212,7 @@ export default function InspectionReportList() {
             onClick={() => navigate(`/dashboard/inspection-report/${row._id}`)}
             className={getButtonStyle('View')}
           >
-            <FaEye />
+            <FaEye className="text-lg m-0.5"/>
           </button>
         ),
       },

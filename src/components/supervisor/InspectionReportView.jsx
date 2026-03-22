@@ -83,9 +83,9 @@ const View = () => {
       {/* SCREEN VIEW */}
       <div className="no-print max-w-4xl mx-auto mt-2 p-5">
         <div className="flex py-2 px-4 items-center justify-between bg-teal-700 text-white rounded-lg shadow-lg">
-          <h2 className="text-xl font-semibold">Inspection Report Details</h2>
+          <h2 className="text-sm lg:text-xl font-semibold">Inspection Report Details</h2>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 text-xs lg:text-lg">
             <button
               onClick={handlePrint}
               className="flex items-center gap-2 px-3 py-1 rounded-lg shadow-md bg-emerald-600 hover:bg-emerald-700"
@@ -118,10 +118,10 @@ const View = () => {
               <div className="mt-4 mb-2">
                 <p className="text-sm font-semibold text-slate-700">Report Content</p>
               </div>
-              <div className="rounded-lg border bg-slate-50 p-4 shadow-sm min-h-[180px]">
+              <div className="rounded-lg border bg-slate-50 p-4 shadow-sm min-h-[180px] overflow-hidden break-words">
                 {inspectionReport?.contentHtml ? (
                   <div
-                    className="prose prose-sm max-w-none text-slate-700"
+                    className="prose prose-sm max-w-none text-slate-700 whitespace-pre-wrap break-all [&_*]:whitespace-pre-wrap [&_*]:break-all"
                     dangerouslySetInnerHTML={{ __html: inspectionReport.contentHtml }}
                   />
                 ) : (
