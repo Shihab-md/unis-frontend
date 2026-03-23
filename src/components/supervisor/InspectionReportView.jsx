@@ -60,6 +60,9 @@ const View = () => {
     return getSpinner();
   }
 
+  const normalizeInspectionHtml = (html = "") =>
+    String(html).replace(/font-size\s*:\s*[^;"]+;?/gi, "");
+
   return (
     <>
       <style>
@@ -133,7 +136,7 @@ const View = () => {
               <div className="rounded-lg border bg-slate-50 p-4 shadow-sm min-h-[180px] overflow-hidden break-words">
                 {inspectionReport?.contentHtml ? (
                   <div
-                    className="prose prose-sm max-w-none text-slate-700 whitespace-pre-wrap break-all [&_*]:whitespace-pre-wrap [&_*]:break-all"
+                    className="prose prose-sm max-w-none text-sm text-slate-700 whitespace-pre-wrap break-all [&_*]:whitespace-pre-wrap [&_*]:break-all"
                     dangerouslySetInnerHTML={{ __html: inspectionReport.contentHtml }}
                   />
                 ) : (
@@ -255,8 +258,10 @@ const View = () => {
             <div className="mb-6">
               <p className="font-semibold mb-2">Report Content</p>
               <div
-                className="border text-sm"
-                dangerouslySetInnerHTML={{ __html: inspectionReport?.contentHtml || "-" }}
+                className="inspection-report-html text-xs border rounded-md p-3"
+                dangerouslySetInnerHTML={{
+                  __html: normalizeInspectionHtml(inspectionReport?.contentHtml || "-"),
+                }}
               />
             </div>
 

@@ -1,8 +1,17 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import ReactQuill from "react-quill";
+import Select from "react-select";
 import "react-quill/dist/quill.snow.css";
-import { FaPaperPlane, FaUpload, FaRegTimesCircle } from "react-icons/fa";
+import {
+  FaPaperPlane,
+  FaUpload,
+  FaRegTimesCircle,
+  FaMicrophone,
+  FaStop,
+  FaLanguage,
+  FaFileAlt,
+} from "react-icons/fa";
 import { addInspectionReport } from "../../api/inspectionReportApi";
 import { getSchoolsFromCache } from "../../utils/SchoolHelper";
 import {
@@ -11,6 +20,44 @@ import {
   showSwalAlert,
   getPrcessing,
 } from "../../utils/CommonHelper";
+
+const VOICE_LANGUAGE_OPTIONS = [
+  {
+    value: "en-US",
+    label: "English",
+    helper: "Best for English voice dictation.",
+    color: "from-blue-500 to-cyan-500",
+  },
+  {
+    value: "ta-IN",
+    label: "Tamil",
+    helper: "Speak clearly in Tamil. Browser support may vary.",
+    color: "from-cyan-500 to-cyan-700",
+  },
+  {
+    value: "ur-PK",
+    label: "Urdu",
+    helper: "Speak clearly in Urdu. Browser support may vary.",
+    color: "from-emerald-500 to-green-500",
+  },
+  {
+    value: "ml-IN",
+    label: "Malayalam",
+    helper: "Speak clearly in Malayalam. Browser support may vary.",
+    color: "from-violet-500 to-fuchsia-500",
+  },
+  {
+    value: "te-IN",
+    label: "Telugu",
+    helper: "Speak clearly in Telugu. Browser support may vary.",
+    color: "from-pink-500 to-rose-500",
+  },
+];
+
+const getSpeechRecognitionCtor = () => {
+  if (typeof window === "undefined") return null;
+  return window.SpeechRecognition || window.webkitSpeechRecognition || null;
+};
 
 const getPlainTextFromHtml = (html = "") => {
   const div = document.createElement("div");
@@ -26,8 +73,22 @@ const getTodayDate = () => {
   return `${year}-${month}-${day}`;
 };
 
+const sanitizeTranscript = (text = "") =>
+  String(text || "")
+    .replace(/\s+/g, " ")
+    .replace(/\s+([,.!?;:])/g, "$1")
+    .trim();
+
+const getSchoolLabel = (school) =>
+  `${school.code} : ${school.nameEnglish || school.name || school.schoolName || ""}`;
+
 export default function InspectionReportAdd() {
   const navigate = useNavigate();
+  const quillRef = useRef(null);
+  const recognitionRef = useRef(null);
+  const finalTranscriptRef = useRef("");
+  const hadSpeechErrorRef = useRef(false);
+  const manualStopRef = useRef(false);
 
   const [title, setTitle] = useState("");
   const [reportDate] = useState(getTodayDate());
@@ -37,7 +98,14 @@ export default function InspectionReportAdd() {
 
   const [schools, setSchools] = useState([]);
   const [schoolId, setSchoolId] = useState("");
+  const [selectedSchoolOption, setSelectedSchoolOption] = useState(null);
   const [loadingSchools, setLoadingSchools] = useState(false);
+
+  const [voiceLanguage, setVoiceLanguage] = useState("en-US");
+  const [isListening, setIsListening] = useState(false);
+  const [speechSupported, setSpeechSupported] = useState(false);
+  const [lastTranscript, setLastTranscript] = useState("");
+  const [interimTranscript, setInterimTranscript] = useState("");
 
   useEffect(() => {
     handleRightClickAndFullScreen();
@@ -47,6 +115,8 @@ export default function InspectionReportAdd() {
       navigate("/login");
       return;
     }
+
+    setSpeechSupported(!!getSpeechRecognitionCtor());
 
     const loadSchools = async () => {
       try {
@@ -61,20 +131,38 @@ export default function InspectionReportAdd() {
         const mySchoolId = localStorage.getItem("schoolId");
 
         const filtered =
-          role === "supervisor" && Array.isArray(supSchoolIds) && supSchoolIds.length > 0
+          role === "supervisor" &&
+          Array.isArray(supSchoolIds) &&
+          supSchoolIds.length > 0
             ? list.filter((s) => s && supSchoolIds.includes(String(s._id)))
             : list;
 
         setSchools(filtered);
 
         if (filtered.length === 1) {
-          setSchoolId(String(filtered[0]._id));
+          const onlySchool = filtered[0];
+          const option = {
+            value: String(onlySchool._id),
+            label: getSchoolLabel(onlySchool),
+          };
+
+          setSchoolId(option.value);
+          setSelectedSchoolOption(option);
           return;
         }
 
         const found = filtered.find((s) => String(s._id) === String(mySchoolId));
         if (found) {
-          setSchoolId(String(found._id));
+          const option = {
+            value: String(found._id),
+            label: getSchoolLabel(found),
+          };
+
+          setSchoolId(option.value);
+          setSelectedSchoolOption(option);
+        } else {
+          setSchoolId("");
+          setSelectedSchoolOption(null);
         }
       } catch (error) {
         showSwalAlert(
@@ -88,6 +176,20 @@ export default function InspectionReportAdd() {
     };
 
     loadSchools();
+
+    return () => {
+      try {
+        if (recognitionRef.current) {
+          recognitionRef.current.onstart = null;
+          recognitionRef.current.onresult = null;
+          recognitionRef.current.onerror = null;
+          recognitionRef.current.onend = null;
+          recognitionRef.current.abort();
+        }
+      } catch (error) {
+        console.log("Speech cleanup error:", error);
+      }
+    };
   }, [navigate]);
 
   const modules = useMemo(
@@ -113,6 +215,112 @@ export default function InspectionReportAdd() {
     "align",
   ];
 
+  const schoolOptions = useMemo(() => {
+    return schools.map((school) => ({
+      value: String(school._id),
+      label: getSchoolLabel(school),
+    }));
+  }, [schools]);
+
+  const customSelectStyles = useMemo(
+    () => ({
+      control: (provided, state) => ({
+        ...provided,
+        minHeight: "42px",
+        borderRadius: "0.375rem",
+        borderColor: state.isFocused ? "#94a3b8" : "#67e8f9",
+        backgroundColor: state.isDisabled ? "#f1f5f9" : "#ecfeff",
+        boxShadow: state.isFocused ? "0 0 0 1px #22d3ee" : "0 10px 15px -3px rgb(0 0 0 / 0.08)",
+        fontSize: "12px",
+        "&:hover": {
+          borderColor: "#22d3ee",
+        },
+      }),
+      valueContainer: (provided) => ({
+        ...provided,
+        padding: "0 10px",
+      }),
+      input: (provided) => ({
+        ...provided,
+        margin: 0,
+        padding: 0,
+        color: "#0f172a",
+      }),
+      placeholder: (provided) => ({
+        ...provided,
+        color: "#64748b",
+      }),
+      singleValue: (provided) => ({
+        ...provided,
+        color: "#0f172a",
+      }),
+      menu: (provided) => ({
+        ...provided,
+        zIndex: 9999,
+        borderRadius: "0.75rem",
+        overflow: "hidden",
+        boxShadow: "0 10px 25px rgba(0,0,0,0.12)",
+      }),
+      menuList: (provided) => ({
+        ...provided,
+        paddingTop: 4,
+        paddingBottom: 4,
+        fontSize: "12px",
+      }),
+      option: (provided, state) => ({
+        ...provided,
+        backgroundColor: state.isSelected
+          ? "#0891b2"
+          : state.isFocused
+          ? "#ecfeff"
+          : "#ffffff",
+        color: state.isSelected ? "#ffffff" : "#0f172a",
+        cursor: "pointer",
+      }),
+      indicatorSeparator: () => ({
+        display: "none",
+      }),
+      dropdownIndicator: (provided) => ({
+        ...provided,
+        color: "#0891b2",
+      }),
+      clearIndicator: (provided) => ({
+        ...provided,
+        color: "#ef4444",
+      }),
+    }),
+    []
+  );
+
+  const selectedLanguageMeta =
+    VOICE_LANGUAGE_OPTIONS.find((item) => item.value === voiceLanguage) ||
+    VOICE_LANGUAGE_OPTIONS[0];
+
+  const appendTranscriptToEditor = (transcript = "") => {
+    const cleanTranscript = sanitizeTranscript(transcript);
+    if (!cleanTranscript) return;
+
+    const editor = quillRef.current?.getEditor?.();
+
+    if (editor) {
+      editor.focus();
+
+      const range = editor.getSelection(true);
+      const currentLength = editor.getLength();
+      const insertAt = range?.index ?? Math.max(currentLength - 1, 0);
+
+      const textToInsert =
+        insertAt > 0 ? `\n${cleanTranscript}\n` : `${cleanTranscript}\n`;
+
+      editor.insertText(insertAt, textToInsert, "user");
+      setContentHtml(editor.root.innerHTML);
+      return;
+    }
+
+    const paragraph = `<p>${cleanTranscript.replace(/\n/g, "<br/>")}</p>`;
+    setContentHtml((prev) => (prev ? `${prev}${paragraph}` : paragraph));
+  };
+
   const handleFileChange = (e) => {
     const selected = Array.from(e.target.files || []);
     const allowed = selected.filter((file) =>
@@ -124,6 +332,185 @@ export default function InspectionReportAdd() {
     }
 
     setFiles(allowed);
+  };
+
+  const startVoiceInput = () => {
+    if (isListening) return;
+
+    const SpeechRecognitionCtor = getSpeechRecognitionCtor();
+
+    if (!SpeechRecognitionCtor) {
+      showSwalAlert(
+        "Info!",
+        "Voice input is not supported in this browser. Please use latest Chrome or Edge.",
+        "info"
+      );
+      return;
+    }
+
+    try {
+      hadSpeechErrorRef.current = false;
+      manualStopRef.current = false;
+      finalTranscriptRef.current = "";
+      setInterimTranscript("");
+      setLastTranscript("");
+
+      const recognition = new SpeechRecognitionCtor();
+      recognitionRef.current = recognition;
+
+      recognition.lang = voiceLanguage;
+      recognition.continuous = true;
+      recognition.interimResults = true;
+
+      if ("maxAlternatives" in recognition) {
+        recognition.maxAlternatives = 1;
+      }
+
+      recognition.onstart = () => {
+        setIsListening(true);
+      };
+
+      recognition.onresult = (event) => {
+        let finalText = "";
+        let interimText = "";
+
+        for (let i = event.resultIndex; i < event.results.length; i += 1) {
+          const transcript = event.results[i]?.[0]?.transcript || "";
+
+          if (event.results[i].isFinal) {
+            finalText += `${transcript} `;
+          } else {
+            interimText += transcript;
+          }
+        }
+
+        if (finalText.trim()) {
+          finalTranscriptRef.current = sanitizeTranscript(
+            `${finalTranscriptRef.current} ${finalText}`
+          );
+        }
+
+        setInterimTranscript(sanitizeTranscript(interimText));
+        setLastTranscript(
+          sanitizeTranscript(`${finalTranscriptRef.current} ${interimText}`)
+        );
+      };
+
+      recognition.onerror = (event) => {
+        hadSpeechErrorRef.current = true;
+        setIsListening(false);
+        setInterimTranscript("");
+
+        const errorCode = event?.error || "";
+
+        if (errorCode === "not-allowed" || errorCode === "service-not-allowed") {
+          showSwalAlert(
+            "Error!",
+            "Microphone permission denied. Please allow microphone access and try again.",
+            "error"
+          );
+        } else if (errorCode === "no-speech") {
+          showSwalAlert(
+            "Info!",
+            "No speech detected. Please try again more clearly.",
+            "info"
+          );
+        } else if (errorCode === "audio-capture") {
+          showSwalAlert(
+            "Error!",
+            "Microphone not found or unavailable.",
+            "error"
+          );
+        } else if (errorCode === "language-not-supported") {
+          showSwalAlert(
+            "Error!",
+            "Selected voice language is not supported by this browser.",
+            "error"
+          );
+        } else if (errorCode === "network") {
+          showSwalAlert(
+            "Error!",
+            "Voice recognition network issue. Please try again.",
+            "error"
+          );
+        } else if (errorCode === "aborted") {
+          // silent
+        } else {
+          showSwalAlert(
+            "Error!",
+            `Voice input failed${errorCode ? `: ${errorCode}` : "."}`,
+            "error"
+          );
+        }
+      };
+
+      recognition.onend = () => {
+        setIsListening(false);
+        setInterimTranscript("");
+        recognitionRef.current = null;
+
+        const transcript = sanitizeTranscript(finalTranscriptRef.current);
+        finalTranscriptRef.current = "";
+
+        if (hadSpeechErrorRef.current) {
+          hadSpeechErrorRef.current = false;
+          return;
+        }
+
+        if (!manualStopRef.current && !transcript) {
+          return;
+        }
+
+        manualStopRef.current = false;
+
+        if (!transcript) {
+          showSwalAlert(
+            "Info!",
+            "No final transcript was captured. Please try again.",
+            "info"
+          );
+          return;
+        }
+
+        appendTranscriptToEditor(transcript);
+        setLastTranscript(transcript);
+
+        showSwalAlert(
+          "Success!",
+          "Voice text inserted into report content.",
+          "success"
+        );
+      };
+
+      recognition.start();
+    } catch (error) {
+      setIsListening(false);
+      recognitionRef.current = null;
+
+      showSwalAlert(
+        "Error!",
+        error?.message || "Failed to start voice input.",
+        "error"
+      );
+    }
+  };
+
+  const stopVoiceInput = () => {
+    if (!recognitionRef.current) return;
+
+    try {
+      manualStopRef.current = true;
+      recognitionRef.current.stop();
+    } catch (error) {
+      setIsListening(false);
+      recognitionRef.current = null;
+
+      showSwalAlert(
+        "Error!",
+        error?.message || "Failed to stop voice input.",
+        "error"
+      );
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -176,8 +563,8 @@ export default function InspectionReportAdd() {
       showSwalAlert(
         "Error!",
         error?.response?.data?.message ||
-        error.message ||
-        "Failed to submit inspection report.",
+          error.message ||
+          "Failed to submit inspection report.",
         "error"
       );
     } finally {
@@ -190,38 +577,43 @@ export default function InspectionReportAdd() {
   }
 
   return (
-    <div className="mt-1 p-5">
-      <div className="mt-1 rounded-lg border bg-white p-4 shadow-lg md:p-6">
-        <div className="mb-6 flex items-center justify-center rounded-md bg-teal-600 px-4 py-2 text-white shadow">
-          <h3 className="text-lg font-semibold">Add Inspection Report</h3>
+    <div className="mt-1 bg-transparent md:p-5">
+      <div className="mt-1 rounded-xl border border-slate-200 bg-transparent p-3 shadow-xl md:p-6">
+        <div className="mb-5 flex items-center justify-center rounded-md bg-gradient-to-r from-teal-600 via-cyan-600 to-blue-600 px-4 py-2 text-white shadow-lg">
+          <h3 className="text-base font-semibold md:text-lg">Add Inspection Report</h3>
           <Link to="/dashboard/inspection-reports">
-            <FaRegTimesCircle className="ml-7 rounded-xl bg-gray-200 text-2xl text-red-700 shadow-md" />
+            <FaRegTimesCircle className="ml-4 rounded-full bg-white/90 p-1 text-2xl text-red-600 shadow-md md:ml-7" />
           </Link>
         </div>
 
         <form onSubmit={handleSubmit}>
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-12">
-            <Field label="Niswan" className="md:col-span-4">
-              <select
-                value={schoolId}
-                onChange={(e) => setSchoolId(e.target.value)}
-                disabled={loadingSchools || schools.length === 1}
-                className="w-full rounded-md border bg-slate-50 px-3 py-2.5 text-sm outline-none shadow-sm disabled:cursor-not-allowed disabled:bg-slate-100"
-              >
-                <option value="">Select Niswan</option>
-                {schools.map((school) => (
-                  <option key={school._id} value={school._id}>
-                    {school.code} : {school.nameEnglish || school.name || school.schoolName || ""}
-                  </option>
-                ))}
-              </select>
+          <div className="grid grid-cols-1 gap-4 text-sm md:grid-cols-12">
+            <Field label="Niswan" className="text-xs md:col-span-4">
+              <Select
+                options={schoolOptions}
+                value={selectedSchoolOption}
+                onChange={(selected) => {
+                  setSelectedSchoolOption(selected || null);
+                  setSchoolId(selected?.value || "");
+                }}
+                isDisabled={loadingSchools || schools.length === 1}
+                isClearable={schools.length !== 1}
+                isSearchable
+                placeholder="Select Niswan"
+                styles={customSelectStyles}
+                className="text-xs"
+                classNamePrefix="inspection-school-select"
+                noOptionsMessage={() => "No Niswan found"}
+                menuPortalTarget={typeof document !== "undefined" ? document.body : null}
+              />
             </Field>
 
-            <Field label="Report Title" className="md:col-span-4">
+            <Field label="Report Title" className="text-xs md:col-span-4">
               <input
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
-                className="w-full rounded-md border bg-slate-50 px-3 py-2.5 text-sm outline-none shadow-sm"
+                className="w-full rounded-md border border-violet-200 bg-violet-50 px-3 py-2.5 text-xs outline-none shadow-lg transition focus:border-violet-400 focus:bg-white"
+                placeholder="Enter inspection report title"
               />
             </Field>
 
@@ -230,13 +622,13 @@ export default function InspectionReportAdd() {
                 type="date"
                 value={reportDate}
                 disabled
-                className="w-full cursor-not-allowed rounded-md border bg-slate-100 px-3 py-2.5 text-sm outline-none shadow-sm"
+                className="w-full cursor-not-allowed rounded-md border border-amber-200 bg-amber-50 px-3 py-2.5 text-xs outline-none shadow-lg"
               />
             </Field>
 
             <Field label="Attachments (pdf / jpg / png)" className="md:col-span-2">
-              <label className="flex cursor-pointer items-center gap-3 rounded-md border bg-slate-50 px-3 py-2.5 text-sm text-slate-700 shadow-sm hover:bg-slate-100">
-                <FaUpload className="text-teal-600" />
+              <label className="flex cursor-pointer items-center gap-3 rounded-md border border-emerald-200 bg-emerald-50 px-3 py-2.5 text-xs text-slate-700 shadow-lg transition hover:bg-emerald-100">
+                <FaUpload className="text-emerald-600" />
                 <span>Choose files</span>
                 <input
                   type="file"
@@ -250,28 +642,112 @@ export default function InspectionReportAdd() {
           </div>
 
           {files.length > 0 && (
-            <div className="mt-4 rounded-md border bg-slate-50 p-4 shadow-sm">
-              <p className="mb-2 text-sm font-semibold text-slate-700">Selected Files</p>
-              <div className="space-y-2">
+            <div className="mt-4 rounded-lg border border-sky-100 bg-gradient-to-r from-sky-50 to-cyan-50 p-4 shadow-sm">
+              <p className="mb-3 text-sm font-semibold text-slate-700">Selected Files</p>
+              <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
                 {files.map((file, index) => (
                   <div
                     key={`${file.name}-${index}`}
-                    className="flex items-center justify-between rounded-md bg-white px-3 py-2 text-sm shadow-sm"
+                    className="flex items-center justify-between gap-3 rounded-xl border border-white bg-white px-3 py-2 text-sm shadow-sm"
                   >
-                    <span className="truncate">{file.name}</span>
-                    <span className="text-slate-500">{Math.ceil(file.size / 1024)} KB</span>
+                    <div className="flex min-w-0 items-center gap-2">
+                      <FaFileAlt className="shrink-0 text-sky-600" />
+                      <span className="truncate">{file.name}</span>
+                    </div>
+                    <span className="shrink-0 rounded-full bg-slate-100 px-2 py-1 text-xs text-slate-600">
+                      {Math.ceil(file.size / 1024)} KB
+                    </span>
                   </div>
                 ))}
               </div>
             </div>
           )}
 
+          <div className="mt-5 overflow-hidden rounded-lg border border-slate-200 shadow-sm">
+            <div className={`bg-gradient-to-r ${selectedLanguageMeta.color} px-4 py-3 text-white`}>
+              <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
+                <div>
+                  <div className="flex items-center gap-2">
+                    <FaLanguage />
+                    <p className="text-sm font-semibold">Voice Input Assistant</p>
+                  </div>
+                  <p className="mt-1 text-xs text-white/90">
+                    Speak clearly. The captured voice text will be inserted into the report content automatically after stop.
+                  </p>
+                </div>
+
+                <div className="flex flex-wrap items-center gap-2">
+                  <span
+                    className={`rounded-full px-3 py-1 text-xs font-semibold shadow-sm ${
+                      speechSupported ? "bg-white/20 text-white" : "bg-red-100 text-red-700"
+                    }`}
+                  >
+                    {speechSupported ? "Browser Supported" : "Not Supported"}
+                  </span>
+
+                  <span
+                    className={`rounded-full px-3 py-1 text-xs font-semibold shadow-sm ${
+                      isListening ? "bg-yellow-200 text-yellow-900" : "bg-emerald-200 text-emerald-900"
+                    }`}
+                  >
+                    {isListening ? "Listening..." : "Ready"}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 gap-4 bg-slate-50 p-4 lg:grid-cols-12">
+              <div className="lg:col-span-6">
+                <label className="mb-1 block text-sm font-semibold text-slate-700">
+                  Voice Input Language
+                </label>
+                <select
+                  value={voiceLanguage}
+                  onChange={(e) => setVoiceLanguage(e.target.value)}
+                  disabled={isListening}
+                  className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm outline-none shadow-sm transition focus:border-cyan-400 disabled:cursor-not-allowed disabled:bg-slate-100"
+                >
+                  {VOICE_LANGUAGE_OPTIONS.map((item) => (
+                    <option key={item.value} value={item.value}>
+                      {item.label}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="mt-6 md:ml-3 lg:col-span-6">
+                <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+                  <button
+                    type="button"
+                    onClick={startVoiceInput}
+                    disabled={isListening || !speechSupported}
+                    className="inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-emerald-500 to-green-600 px-4 py-2.5 text-sm font-semibold text-white shadow-md transition hover:scale-[1.01] hover:from-emerald-600 hover:to-green-700 disabled:cursor-not-allowed disabled:opacity-60"
+                  >
+                    <FaMicrophone />
+                    {isListening ? "Listening..." : "Start Voice"}
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={stopVoiceInput}
+                    disabled={!isListening}
+                    className="inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-red-500 to-rose-600 px-4 py-2.5 text-sm font-semibold text-white shadow-md transition hover:scale-[1.01] hover:from-red-600 hover:to-rose-700 disabled:cursor-not-allowed disabled:opacity-60"
+                  >
+                    <FaStop />
+                    Stop
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
           <div className="mt-5">
             <label className="mb-2 block text-sm font-semibold text-slate-700">
               Report Content
             </label>
-            <div className="overflow-hidden rounded-md border bg-white shadow-sm">
+            <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
               <ReactQuill
+                ref={quillRef}
                 theme="snow"
                 value={contentHtml}
                 onChange={setContentHtml}
@@ -285,8 +761,8 @@ export default function InspectionReportAdd() {
           <div className="mt-8 flex justify-end">
             <button
               type="submit"
-              disabled={submitting}
-              className="inline-flex items-center gap-2 rounded-md bg-teal-600 px-5 py-2.5 text-sm font-bold text-white shadow hover:bg-teal-700 disabled:opacity-60"
+              disabled={submitting || isListening}
+              className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-teal-600 to-cyan-600 px-5 py-2.5 text-sm font-bold text-white shadow-lg transition hover:scale-[1.01] hover:from-teal-700 hover:to-cyan-700 disabled:opacity-60"
             >
               <FaPaperPlane />
               {submitting ? "Submitting..." : "Submit"}
