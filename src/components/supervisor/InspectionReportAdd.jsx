@@ -9,7 +9,6 @@ import {
   FaRegTimesCircle,
   FaMicrophone,
   FaStop,
-  FaLanguage,
   FaFileAlt,
 } from "react-icons/fa";
 import { addInspectionReport } from "../../api/inspectionReportApi";
@@ -57,6 +56,11 @@ const VOICE_LANGUAGE_OPTIONS = [
 const getSpeechRecognitionCtor = () => {
   if (typeof window === "undefined") return null;
   return window.SpeechRecognition || window.webkitSpeechRecognition || null;
+};
+
+const isMobileSpeechDevice = () => {
+  if (typeof navigator === "undefined") return false;
+  return /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent || "");
 };
 
 const getPlainTextFromHtml = (html = "") => {
@@ -230,7 +234,9 @@ export default function InspectionReportAdd() {
         borderRadius: "0.375rem",
         borderColor: state.isFocused ? "#94a3b8" : "#67e8f9",
         backgroundColor: state.isDisabled ? "#f1f5f9" : "#ecfeff",
-        boxShadow: state.isFocused ? "0 0 0 1px #22d3ee" : "0 10px 15px -3px rgb(0 0 0 / 0.08)",
+        boxShadow: state.isFocused
+          ? "0 0 0 1px #22d3ee"
+          : "0 10px 15px -3px rgb(0 0 0 / 0.08)",
         fontSize: "12px",
         "&:hover": {
           borderColor: "#22d3ee",
@@ -292,10 +298,6 @@ export default function InspectionReportAdd() {
     []
   );
 
-  const selectedLanguageMeta =
-    VOICE_LANGUAGE_OPTIONS.find((item) => item.value === voiceLanguage) ||
-    VOICE_LANGUAGE_OPTIONS[0];
-
   const appendTranscriptToEditor = (transcript = "") => {
     const cleanTranscript = sanitizeTranscript(transcript);
     if (!cleanTranscript) return;
@@ -349,6 +351,8 @@ export default function InspectionReportAdd() {
     }
 
     try {
+      const isMobile = isMobileSpeechDevice();
+
       hadSpeechErrorRef.current = false;
       manualStopRef.current = false;
       finalTranscriptRef.current = "";
@@ -360,7 +364,7 @@ export default function InspectionReportAdd() {
 
       recognition.lang = voiceLanguage;
       recognition.continuous = true;
-      recognition.interimResults = true;
+      recognition.interimResults = !isMobile;
 
       if ("maxAlternatives" in recognition) {
         recognition.maxAlternatives = 1;
@@ -374,26 +378,26 @@ export default function InspectionReportAdd() {
         let finalText = "";
         let interimText = "";
 
-        for (let i = event.resultIndex; i < event.results.length; i += 1) {
-          const transcript = event.results[i]?.[0]?.transcript || "";
+        for (let i = 0; i < event.results.length; i += 1) {
+          const transcript = sanitizeTranscript(
+            event.results[i]?.[0]?.transcript || ""
+          );
+
+          if (!transcript) continue;
 
           if (event.results[i].isFinal) {
             finalText += `${transcript} `;
           } else {
-            interimText += transcript;
+            interimText += `${transcript} `;
           }
         }
 
-        if (finalText.trim()) {
-          finalTranscriptRef.current = sanitizeTranscript(
-            `${finalTranscriptRef.current} ${finalText}`
-          );
-        }
+        finalText = sanitizeTranscript(finalText);
+        interimText = sanitizeTranscript(interimText);
 
-        setInterimTranscript(sanitizeTranscript(interimText));
-        setLastTranscript(
-          sanitizeTranscript(`${finalTranscriptRef.current} ${interimText}`)
-        );
+        finalTranscriptRef.current = finalText;
+        setInterimTranscript(interimText);
+        setLastTranscript(sanitizeTranscript(`${finalText} ${interimText}`));
       };
 
       recognition.onerror = (event) => {
@@ -580,14 +584,16 @@ export default function InspectionReportAdd() {
     <div className="mt-1 bg-transparent md:p-5">
       <div className="mt-1 rounded-xl border border-slate-200 bg-transparent p-3 shadow-xl md:p-6">
         <div className="mb-5 flex items-center justify-center rounded-md bg-gradient-to-r from-teal-600 via-cyan-600 to-blue-600 px-4 py-2 text-white shadow-lg">
-          <h3 className="text-base font-semibold md:text-lg">Add Inspection Report</h3>
+          <h3 className="text-base font-semibold md:text-lg">
+            Add Inspection Report
+          </h3>
           <Link to="/dashboard/inspection-reports">
             <FaRegTimesCircle className="ml-4 rounded-full bg-white/90 p-1 text-2xl text-red-600 shadow-md md:ml-7" />
           </Link>
         </div>
 
         <form onSubmit={handleSubmit}>
-          <div className="grid grid-cols-1 gap-4 text-sm md:grid-cols-12">
+          <div className="grid grid-cols-1 gap-4 text-sm md:grid-cols-12 bg-white p-3 pb-4 rounded-lg shadow-xl">
             <Field label="Niswan" className="text-xs md:col-span-4">
               <Select
                 options={schoolOptions}
@@ -613,7 +619,6 @@ export default function InspectionReportAdd() {
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 className="w-full rounded-md border border-violet-200 bg-violet-50 px-3 py-3 text-xs outline-none shadow-lg transition focus:border-violet-400 focus:bg-white"
-               // placeholder="Enter inspection report title"
               />
             </Field>
 
@@ -643,7 +648,9 @@ export default function InspectionReportAdd() {
 
           {files.length > 0 && (
             <div className="mt-4 rounded-lg border border-sky-100 bg-gradient-to-r from-sky-50 to-cyan-50 p-4 shadow-sm">
-              <p className="mb-3 text-sm font-semibold text-slate-700">Selected Files</p>
+              <p className="mb-3 text-sm font-semibold text-slate-700">
+                Selected Files
+              </p>
               <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
                 {files.map((file, index) => (
                   <div
@@ -745,7 +752,9 @@ export default function InspectionReportAdd() {
 function Field({ label, children, className = "" }) {
   return (
     <label className={`block ${className}`}>
-      <span className="mb-1 block text-sm font-semibold text-slate-700">{label}</span>
+      <span className="mb-1 block text-sm font-semibold text-slate-700">
+        {label}
+      </span>
       {children}
     </label>
   );
