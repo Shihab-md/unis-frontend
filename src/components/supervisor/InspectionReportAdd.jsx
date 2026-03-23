@@ -612,8 +612,8 @@ export default function InspectionReportAdd() {
               <input
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
-                className="w-full rounded-md border border-violet-200 bg-violet-50 px-3 py-2.5 text-xs outline-none shadow-lg transition focus:border-violet-400 focus:bg-white"
-                placeholder="Enter inspection report title"
+                className="w-full rounded-md border border-violet-200 bg-violet-50 px-3 py-3 text-xs outline-none shadow-lg transition focus:border-violet-400 focus:bg-white"
+               // placeholder="Enter inspection report title"
               />
             </Field>
 
