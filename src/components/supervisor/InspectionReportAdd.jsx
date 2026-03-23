@@ -663,39 +663,7 @@ export default function InspectionReportAdd() {
             </div>
           )}
 
-          <div className="mt-5 overflow-hidden rounded-lg border border-slate-200 shadow-sm">
-            <div className={`bg-gradient-to-r ${selectedLanguageMeta.color} px-4 py-3 text-white`}>
-              <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
-                <div>
-                  <div className="flex items-center gap-2">
-                    <FaLanguage />
-                    <p className="text-sm font-semibold">Voice Input Assistant</p>
-                  </div>
-                  <p className="mt-1 text-xs text-white/90">
-                    Speak clearly. The captured voice text will be inserted into the report content automatically after stop.
-                  </p>
-                </div>
-
-                <div className="flex flex-wrap items-center gap-2">
-                  <span
-                    className={`rounded-md px-3 py-1 text-xs font-semibold shadow-xl ${
-                      speechSupported ? "bg-white/20 text-white" : "bg-red-100 text-red-700"
-                    }`}
-                  >
-                    {speechSupported ? "Browser Supported" : "Not Supported"}
-                  </span>
-
-                  <span
-                    className={`rounded-md px-3 py-1 text-xs font-semibold shadow-xl ${
-                      isListening ? "bg-yellow-200 text-yellow-900" : "bg-emerald-200 text-emerald-900"
-                    }`}
-                  >
-                    {isListening ? "Listening..." : "Ready"}
-                  </span>
-                </div>
-              </div>
-            </div>
-
+          <div className="mt-5 overflow-hidden rounded-lg border border-slate-200 shadow-xl">
             <div className="grid grid-cols-1 gap-4 bg-slate-50 p-4 lg:grid-cols-12">
               <div className="lg:col-span-6">
                 <label className="mb-1 block text-sm font-semibold text-slate-700">
@@ -745,7 +713,7 @@ export default function InspectionReportAdd() {
             <label className="mb-2 block text-sm font-semibold text-slate-700">
               Report Content
             </label>
-            <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
+            <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-xl">
               <ReactQuill
                 ref={quillRef}
                 theme="snow"
