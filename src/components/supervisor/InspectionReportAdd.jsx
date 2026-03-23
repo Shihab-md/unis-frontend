@@ -678,7 +678,7 @@ export default function InspectionReportAdd() {
 
                 <div className="flex flex-wrap items-center gap-2">
                   <span
-                    className={`rounded-full px-3 py-1 text-xs font-semibold shadow-sm ${
+                    className={`rounded-md px-3 py-1 text-xs font-semibold shadow-xl ${
                       speechSupported ? "bg-white/20 text-white" : "bg-red-100 text-red-700"
                     }`}
                   >
@@ -686,7 +686,7 @@ export default function InspectionReportAdd() {
                   </span>
 
                   <span
-                    className={`rounded-full px-3 py-1 text-xs font-semibold shadow-sm ${
+                    className={`rounded-md px-3 py-1 text-xs font-semibold shadow-xl ${
                       isListening ? "bg-yellow-200 text-yellow-900" : "bg-emerald-200 text-emerald-900"
                     }`}
                   >
@@ -721,7 +721,7 @@ export default function InspectionReportAdd() {
                     type="button"
                     onClick={startVoiceInput}
                     disabled={isListening || !speechSupported}
-                    className="inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-emerald-500 to-green-600 px-4 py-2.5 text-sm font-semibold text-white shadow-md transition hover:scale-[1.01] hover:from-emerald-600 hover:to-green-700 disabled:cursor-not-allowed disabled:opacity-60"
+                    className="inline-flex items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-emerald-500 to-green-600 px-4 py-2.5 text-sm font-semibold text-white shadow-xl transition hover:scale-[1.01] hover:from-emerald-600 hover:to-green-700 disabled:cursor-not-allowed disabled:opacity-60"
                   >
                     <FaMicrophone />
                     {isListening ? "Listening..." : "Start Voice"}
@@ -731,7 +731,7 @@ export default function InspectionReportAdd() {
                     type="button"
                     onClick={stopVoiceInput}
                     disabled={!isListening}
-                    className="inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-red-500 to-rose-600 px-4 py-2.5 text-sm font-semibold text-white shadow-md transition hover:scale-[1.01] hover:from-red-600 hover:to-rose-700 disabled:cursor-not-allowed disabled:opacity-60"
+                    className="inline-flex items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-red-500 to-rose-600 px-4 py-2.5 text-sm font-semibold text-white shadow-xl transition hover:scale-[1.01] hover:from-red-600 hover:to-rose-700 disabled:cursor-not-allowed disabled:opacity-60"
                   >
                     <FaStop />
                     Stop
