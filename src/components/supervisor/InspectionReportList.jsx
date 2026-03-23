@@ -200,10 +200,10 @@ export default function InspectionReportList() {
         wrap: true,
         selector: (row) =>
           <div>
-            <p className="text-blue-500 mt-1">{row.schoolCode}</p>
+            <p className="text-blue-500 mt-1 mb-1">{row.schoolCode}</p>
             <p className="mb-1">{row.schoolName}</p>
-            <p className='mb-1 text-lg font-["Noto_Naskh_Arabic"]'>{row.schoolNameArabic}</p>
-            <p className="mb-1">{row.schoolNameNative}</p>
+            {/*<p className='mb-1 text-lg font-["Noto_Naskh_Arabic"]'>{row.schoolNameArabic}</p>
+            <p className="mb-1">{row.schoolNameNative}</p>*/}
             <p className="mb-2">{row.districtState}</p>
           </div>,
       },

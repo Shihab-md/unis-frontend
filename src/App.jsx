@@ -78,12 +78,12 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        {/* <Route path="/" element={<Navigate to="/dashboard" />}></Route>*/}
+        {/* <Route path="/" element={<Navigate to="/dashboard" />}></Route>
         <Route path="/" element={<HomePage />}></Route>
-        <Route path="/login" element={<Login />}></Route>
-
-        {/* <Route path="/" element={<Navigate to="/login" />}></Route>
         <Route path="/login" element={<Login />}></Route>*/}
+
+        <Route path="/" element={<Navigate to="/login" />}></Route>
+        <Route path="/login" element={<Login />}></Route>
 
         <Route path="/dashboard"
           element={

@@ -1029,7 +1029,7 @@ export default function HomePage() {
             </header>
 
             {/* Hero */}
-            <section className="mx-auto max-w-6xl px-3 sm:px-4 py-8 sm:py-10">
+             {/*<section className="mx-auto max-w-6xl px-3 sm:px-4 py-8 sm:py-10">
                 <div className="grid grid-cols-1 gap-6 rounded-2xl border bg-white/70 backdrop-blur p-5 sm:p-6 shadow-sm md:grid-cols-2 md:p-10">
                     <div className="drop-shadow">
                         <h1 className="text-3xl font-bold text-slate-900 md:text-4xl">
@@ -1077,7 +1077,7 @@ export default function HomePage() {
                         </div>
                     </div>
                 </div>
-            </section>
+            </section>*/}
 
             {/* Stats */}
             <section id="stats" className="mx-auto max-w-6xl px-3 sm:px-4 pb-10">
