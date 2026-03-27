@@ -1,20 +1,19 @@
 import React, { useEffect, useState, useRef } from "react";
+import Swal from "sweetalert2";
 import { getSchoolsFromCache } from '../../utils/SchoolHelper';
 import { getAcademicYearsFromCache } from '../../utils/AcademicYearHelper';
 import { getInstitutesFromCache } from '../../utils/InstituteHelper';
 import { getCoursesFromCache } from '../../utils/CourseHelper';
 import { getDistrictStatesFromCache } from '../../utils/DistrictStateHelper';
 import axios from "axios";
-import { useAuth } from '../../context/AuthContext'
+import { useAuth } from '../../context/AuthContext';
 import { useNavigate, useParams, Link } from "react-router-dom";
 import {
   getBaseUrl, handleRightClickAndFullScreen, getSpinner, checkAuth,
   getPrcessing, showSwalAlert
 } from '../../utils/CommonHelper';
 import ViewCard from "../dashboard/ViewCard";
-import {
-  FaRegTimesCircle
-} from "react-icons/fa";
+import { FaRegTimesCircle } from "react-icons/fa";
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
@@ -65,13 +64,11 @@ const getMakthabYearOptions = (courseName = "") => {
 };
 
 const Edit = () => {
-
-  // To prevent right-click AND For FULL screen view.
   useEffect(() => {
     handleRightClickAndFullScreen();
   }, []);
 
-  const [processing, setProcessing] = useState(null)
+  const [processing, setProcessing] = useState(null);
   const [selectedDOBDate, setSelectedDOBDate] = useState(null);
   const [selectedDOADate, setSelectedDOADate] = useState(null);
 
@@ -85,7 +82,6 @@ const Edit = () => {
     maritalStatus: "",
   });
 
-  // ✅ lock based on initial loaded values ONLY
   const [fieldLocks, setFieldLocks] = useState({});
   const didInitLocks = useRef(false);
 
@@ -95,8 +91,11 @@ const Edit = () => {
     return s !== "" && s !== "null" && s !== "undefined";
   };
 
-  const buildLocksFromLoadedStudent = (s) => ({
+  const hasSectionData = (values = []) => {
+    return values.some((value) => hasValue(value));
+  };
 
+  const buildLocksFromLoadedStudent = (s) => ({
     about: hasValue(s.about),
 
     instituteId1: hasValue(s.instituteId1),
@@ -137,6 +136,11 @@ const Edit = () => {
 
   const isLocked = (name) => !UNLOCKED_FIELDS.has(user?.role) && fieldLocks?.[name] === true;
 
+  const canModifySection = (fields = []) => {
+    if (UNLOCKED_FIELDS.has(user?.role)) return true;
+    return !fields.some((field) => fieldLocks?.[field] === true);
+  };
+
   const { id } = useParams();
   const [schools, setSchools] = useState([]);
   const [academicYears, setAcademicYears] = useState([]);
@@ -145,88 +149,243 @@ const Edit = () => {
   const [districtStates, setDistrictStates] = useState([]);
   const [acYear, setAcYear] = useState(null);
 
-  const [showIslamicStudies, setShowIslamicStudies] = useState(null)
-  const [showSchool, setShowSchool] = useState(null)
-  const [showCollege, setShowCollege] = useState(null)
-  const [showVocational, setShowVocational] = useState(null)
+  const [showIslamicStudies, setShowIslamicStudies] = useState(false);
+  const [showSchool, setShowSchool] = useState(false);
+  const [showCollege, setShowCollege] = useState(false);
+  const [showVocational, setShowVocational] = useState(false);
 
   useEffect(() => {
-
-    // Authenticate the User.
     if (checkAuth("studentEdit") === "NO") {
       showSwalAlert("Error!", "User Authorization Failed!", "error");
       navigate("/login");
+      return;
     }
 
-    const getSchoolsMap = async (id) => {
-      const schools = await getSchoolsFromCache(id);
+    const getSchoolsMap = async () => {
+      const schools = await getSchoolsFromCache();
       setSchools(schools);
     };
     getSchoolsMap();
-  }, []);
+  }, [navigate]);
 
   useEffect(() => {
-    const getAcademicYearsMap = async (id) => {
-      const academicYears = await getAcademicYearsFromCache(id);
+    const getAcademicYearsMap = async () => {
+      const academicYears = await getAcademicYearsFromCache();
       setAcademicYears(academicYears);
     };
     getAcademicYearsMap();
   }, []);
 
   useEffect(() => {
-    const getAcYearMap = async (id) => {
+    const getAcYearMap = async () => {
       let accYear = (new Date().getFullYear() - 1) + "-" + new Date().getFullYear();
       if (new Date().getMonth() + 1 >= 4) {
         accYear = new Date().getFullYear() + "-" + (new Date().getFullYear() + 1);
       }
-      const academicYears = await getAcademicYearsFromCache(id);
-      const acYear = academicYears?.filter(acYear => acYear.acYear === accYear).map(acYear => acYear._id);
+      const academicYears = await getAcademicYearsFromCache();
+      const acYear = academicYears?.filter((item) => item.acYear === accYear).map((item) => item._id);
       setAcYear(acYear);
     };
     getAcYearMap();
   }, []);
 
   useEffect(() => {
-    const getInstitutesMap = async (id) => {
-      const institutes = await getInstitutesFromCache(id);
+    const getInstitutesMap = async () => {
+      const institutes = await getInstitutesFromCache();
       setInstitutes(institutes);
     };
     getInstitutesMap();
   }, []);
 
   useEffect(() => {
-    const getCoursesMap = async (id) => {
-      const courses = await getCoursesFromCache(id);
+    const getCoursesMap = async () => {
+      const courses = await getCoursesFromCache();
       setCourses(courses);
     };
     getCoursesMap();
   }, []);
 
   useEffect(() => {
-    const getDistrictStatesMap = async (id) => {
-      const districtStates = await getDistrictStatesFromCache(id);
+    const getDistrictStatesMap = async () => {
+      const districtStates = await getDistrictStatesFromCache();
       setDistrictStates(districtStates);
     };
     getDistrictStatesMap();
   }, []);
 
-  const handleIslamicCheckBox = (event) => {
-    setShowIslamicStudies(event.target.checked);
+  const confirmClearSection = async (sectionName, values = []) => {
+    if (!hasSectionData(values)) return true;
+
+    const result = await Swal.fire({
+      title: "Are you sure?",
+      text: `Remove ${sectionName} details? All entered values in this section will be cleared.`,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Yes, clear",
+      cancelButtonText: "No",
+      reverseButtons: true,
+      focusCancel: true,
+    });
+
+    return result.isConfirmed;
   };
-  const handleSchoolCheckBox = (event) => {
-    setShowSchool(event.target.checked);
+
+  const clearIslamicStudiesFields = () => {
+    setStudent((prev) => ({
+      ...prev,
+      instituteId4: "",
+      courseId4: "",
+      refNumber4: "",
+      year4: "",
+      status4: "",
+      fees4: "",
+      discount4: "",
+    }));
   };
-  const handleCollegeCheckBox = (event) => {
-    setShowCollege(event.target.checked);
+
+  const clearSchoolFields = () => {
+    setStudent((prev) => ({
+      ...prev,
+      instituteId2: "",
+      courseId2: "",
+      refNumber2: "",
+      year2: "",
+      status2: "",
+      fees2: "",
+      discount2: "",
+    }));
   };
-  const handleVocationalCheckBox = (event) => {
-    setShowVocational(event.target.checked);
+
+  const clearCollegeFields = () => {
+    setStudent((prev) => ({
+      ...prev,
+      instituteId3: "",
+      courseId3: "",
+      refNumber3: "",
+      year3: "",
+      status3: "",
+      fees3: "",
+      discount3: "",
+    }));
+  };
+
+  const clearVocationalFields = () => {
+    setStudent((prev) => ({
+      ...prev,
+      instituteId5: "",
+      courseId5: "",
+      refNumber5: "",
+      year5: "",
+      status5: "",
+      fees5: "",
+      discount5: "",
+    }));
+  };
+
+  const handleIslamicCheckBox = async (event) => {
+    const checked = event.target.checked;
+    const sectionFields = ["instituteId4", "courseId4", "refNumber4", "year4", "fees4"];
+
+    if (!checked) {
+      if (!canModifySection(sectionFields)) {
+        showSwalAlert("Info!", "You are not allowed to remove existing Islamic Home Science details.", "info");
+        return;
+      }
+
+      const ok = await confirmClearSection("Islamic Home Science", [
+        student.instituteId4,
+        student.courseId4,
+        student.refNumber4,
+        student.year4,
+        student.fees4,
+      ]);
+
+      if (!ok) return;
+      clearIslamicStudiesFields();
+    }
+
+    setShowIslamicStudies(checked);
+  };
+
+  const handleSchoolCheckBox = async (event) => {
+    const checked = event.target.checked;
+    const sectionFields = ["instituteId2", "courseId2", "refNumber2", "year2", "fees2"];
+
+    if (!checked) {
+      if (!canModifySection(sectionFields)) {
+        showSwalAlert("Info!", "You are not allowed to remove existing School Education details.", "info");
+        return;
+      }
+
+      const ok = await confirmClearSection("School Education", [
+        student.instituteId2,
+        student.courseId2,
+        student.refNumber2,
+        student.year2,
+        student.fees2,
+      ]);
+
+      if (!ok) return;
+      clearSchoolFields();
+    }
+
+    setShowSchool(checked);
+  };
+
+  const handleCollegeCheckBox = async (event) => {
+    const checked = event.target.checked;
+    const sectionFields = ["instituteId3", "courseId3", "refNumber3", "year3", "fees3"];
+
+    if (!checked) {
+      if (!canModifySection(sectionFields)) {
+        showSwalAlert("Info!", "You are not allowed to remove existing College Education details.", "info");
+        return;
+      }
+
+      const ok = await confirmClearSection("College Education", [
+        student.instituteId3,
+        student.courseId3,
+        student.refNumber3,
+        student.year3,
+        student.fees3,
+      ]);
+
+      if (!ok) return;
+      clearCollegeFields();
+    }
+
+    setShowCollege(checked);
+  };
+
+  const handleVocationalCheckBox = async (event) => {
+    const checked = event.target.checked;
+    const sectionFields = ["instituteId5", "courseId5", "refNumber5", "year5", "fees5"];
+
+    if (!checked) {
+      if (!canModifySection(sectionFields)) {
+        showSwalAlert("Info!", "You are not allowed to remove existing Vocational Course details.", "info");
+        return;
+      }
+
+      const ok = await confirmClearSection("Vocational Course", [
+        student.instituteId5,
+        student.courseId5,
+        student.refNumber5,
+        student.year5,
+        student.fees5,
+      ]);
+
+      if (!ok) return;
+      clearVocationalFields();
+    }
+
+    setShowVocational(checked);
   };
 
   useEffect(() => {
     const fetchStudent = async () => {
       try {
-        const responnse = await axios.get(
+        const response = await axios.get(
           (await getBaseUrl()).toString() + `student/edit/${id}`,
           {
             headers: {
@@ -235,110 +394,101 @@ const Edit = () => {
           }
         );
 
-        if (responnse.data.success) {
-          const student = responnse.data.student;
-          const academics = student._academics;
+        if (response.data.success) {
+          const studentData = response.data.student;
+          const academics = studentData._academics;
 
-          console.log(academics)
-          setSelectedDOBDate(student.dob);
-          setSelectedDOADate(student.doa);
+          setSelectedDOBDate(studentData.dob ? new Date(studentData.dob) : null);
+          setSelectedDOADate(studentData.doa ? new Date(studentData.doa) : null);
 
           try {
-            if (academics && academics[0] && academics[0].instituteId2 && academics[0].instituteId2._id) {
-              setShowSchool(true);
-            }
-            if (academics && academics[0] && academics[0].instituteId3 && academics[0]?.instituteId3._id) {
-              setShowCollege(true);
-            }
-            if (academics && academics[0] && academics[0].instituteId4 && academics[0]?.instituteId4._id) {
-              setShowIslamicStudies(true);
-            }
-            if (academics && academics[0] && academics[0].instituteId5 && academics[0]?.instituteId5._id) {
-              setShowVocational(true);
-            }
+            if (academics?.[0]?.instituteId2?._id) setShowSchool(true);
+            if (academics?.[0]?.instituteId3?._id) setShowCollege(true);
+            if (academics?.[0]?.instituteId4?._id) setShowIslamicStudies(true);
+            if (academics?.[0]?.instituteId5?._id) setShowVocational(true);
           } catch (error) {
-            console.log(error)
+            console.log(error);
           }
 
           const loaded = {
-            name: student.userId?.name || "",
-            schoolId: student.schoolId?._id || "",
-            rollNumber: student.rollNumber,
+            name: studentData.userId?.name || "",
+            schoolId: studentData.schoolId?._id || "",
+            rollNumber: studentData.rollNumber || "",
 
-            gender: student.gender,
-            maritalStatus: student.maritalStatus,
-            motherTongue: student.motherTongue,
-            bloodGroup: student.bloodGroup,
-            idMark1: student.idMark1,
-            idMark2: student.idMark2,
-            about: student.about,
+            gender: studentData.gender || "",
+            maritalStatus: studentData.maritalStatus || "",
+            motherTongue: studentData.motherTongue || "",
+            bloodGroup: studentData.bloodGroup || "",
+            idMark1: studentData.idMark1 || "",
+            idMark2: studentData.idMark2 || "",
+            about: studentData.about || "",
 
-            fatherName: student.fatherName,
-            fatherNumber: student.fatherNumber,
-            fatherOccupation: student.fatherOccupation,
-            motherName: student.motherName,
-            motherNumber: student.motherNumber,
-            motherOccupation: student.motherOccupation,
-            guardianName: student.guardianName,
-            guardianNumber: student.guardianNumber,
-            guardianOccupation: student.guardianOccupation,
-            guardianRelation: student.guardianRelation,
+            fatherName: studentData.fatherName || "",
+            fatherNumber: studentData.fatherNumber || "",
+            fatherOccupation: studentData.fatherOccupation || "",
+            motherName: studentData.motherName || "",
+            motherNumber: studentData.motherNumber || "",
+            motherOccupation: studentData.motherOccupation || "",
+            guardianName: studentData.guardianName || "",
+            guardianNumber: studentData.guardianNumber || "",
+            guardianOccupation: studentData.guardianOccupation || "",
+            guardianRelation: studentData.guardianRelation || "",
 
-            address: student.address,
-            city: student.city,
-            pincode: student.pincode,
-            landmark: student.landmark,
-            districtStateId: student.districtStateId?._id || null,
+            address: studentData.address || "",
+            city: studentData.city || "",
+            pincode: studentData.pincode || "",
+            landmark: studentData.landmark || "",
+            districtStateId: studentData.districtStateId?._id || "",
 
-            active: student.active,
-            remarks: student.remarks,
+            active: studentData.active || "",
+            remarks: studentData.remarks || "",
 
-            hostel: student.hostel,
-            hostelRefNumber: student.hostelRefNumber,
-            hostelFees: student.hostelFees,
-            hostelDiscount: student.hostelDiscount,
+            hostel: studentData.hostel || "",
+            hostelRefNumber: studentData.hostelRefNumber || "",
+            hostelFees: studentData.hostelFees || "",
+            hostelDiscount: studentData.hostelDiscount || "",
 
             acYear: academics?.[0]?.acYear?._id ? academics[0].acYear._id : acYear,
 
-            instituteId1: academics?.[0]?.instituteId1?._id || null,
-            courseId1: academics?.[0]?.courseId1?._id || null,
-            refNumber1: academics?.[0]?.refNumber1,
+            instituteId1: academics?.[0]?.instituteId1?._id || "",
+            courseId1: academics?.[0]?.courseId1?._id || "",
+            refNumber1: academics?.[0]?.refNumber1 || "",
             year1: academics?.[0]?.year1 ? String(academics[0].year1) : "",
-            status1: academics?.[0]?.status1,
-            fees1: academics?.[0]?.fees1,
-            discount1: academics?.[0]?.discount1,
+            status1: academics?.[0]?.status1 || "",
+            fees1: academics?.[0]?.fees1 || "",
+            discount1: academics?.[0]?.discount1 || "",
 
-            instituteId2: academics?.[0]?.instituteId2?._id || null,
-            courseId2: academics?.[0]?.courseId2?._id || null,
-            refNumber2: academics?.[0]?.refNumber2,
-            year2: academics?.[0]?.year2,
-            status2: academics?.[0]?.status2,
-            fees2: academics?.[0]?.fees2,
-            discount2: academics?.[0]?.discount2,
+            instituteId2: academics?.[0]?.instituteId2?._id || "",
+            courseId2: academics?.[0]?.courseId2?._id || "",
+            refNumber2: academics?.[0]?.refNumber2 || "",
+            year2: academics?.[0]?.year2 || "",
+            status2: academics?.[0]?.status2 || "",
+            fees2: academics?.[0]?.fees2 || "",
+            discount2: academics?.[0]?.discount2 || "",
 
-            instituteId3: academics?.[0]?.instituteId3?._id || null,
-            courseId3: academics?.[0]?.courseId3?._id || null,
-            refNumber3: academics?.[0]?.refNumber3,
-            year3: academics?.[0]?.year3,
-            status3: academics?.[0]?.status3,
-            fees3: academics?.[0]?.fees3,
-            discount3: academics?.[0]?.discount3,
+            instituteId3: academics?.[0]?.instituteId3?._id || "",
+            courseId3: academics?.[0]?.courseId3?._id || "",
+            refNumber3: academics?.[0]?.refNumber3 || "",
+            year3: academics?.[0]?.year3 || "",
+            status3: academics?.[0]?.status3 || "",
+            fees3: academics?.[0]?.fees3 || "",
+            discount3: academics?.[0]?.discount3 || "",
 
-            instituteId4: academics?.[0]?.instituteId4?._id || null,
-            courseId4: academics?.[0]?.courseId4?._id || null,
-            refNumber4: academics?.[0]?.refNumber4,
-            year4: academics?.[0]?.year4,
-            status4: academics?.[0]?.status4,
-            fees4: academics?.[0]?.fees4,
-            discount4: academics?.[0]?.discount4,
+            instituteId4: academics?.[0]?.instituteId4?._id || "",
+            courseId4: academics?.[0]?.courseId4?._id || "",
+            refNumber4: academics?.[0]?.refNumber4 || "",
+            year4: academics?.[0]?.year4 || "",
+            status4: academics?.[0]?.status4 || "",
+            fees4: academics?.[0]?.fees4 || "",
+            discount4: academics?.[0]?.discount4 || "",
 
-            instituteId5: academics?.[0]?.instituteId5?._id || null,
-            courseId5: academics?.[0]?.courseId5?._id || null,
-            refNumber5: academics?.[0]?.refNumber5,
-            year5: academics?.[0]?.year5,
-            status5: academics?.[0]?.status5,
-            fees5: academics?.[0]?.fees5,
-            discount5: academics?.[0]?.discount5,
+            instituteId5: academics?.[0]?.instituteId5?._id || "",
+            courseId5: academics?.[0]?.courseId5?._id || "",
+            refNumber5: academics?.[0]?.refNumber5 || "",
+            year5: academics?.[0]?.year5 || "",
+            status5: academics?.[0]?.status5 || "",
+            fees5: academics?.[0]?.fees5 || "",
+            discount5: academics?.[0]?.discount5 || "",
           };
 
           setStudent((prev) => ({ ...prev, ...loaded }));
@@ -357,7 +507,7 @@ const Edit = () => {
     };
 
     fetchStudent();
-  }, []);
+  }, [id, navigate, acYear]);
 
   const COURSE_FEE_FIELD_MAP = {
     courseId1: "fees1",
@@ -438,34 +588,146 @@ const Edit = () => {
     }
   }, [student?.courseId1, courses.length]);
 
+  const validateOptionalCourses = (payload) => {
+    const validations = [
+      {
+        enabled: !!showIslamicStudies,
+        section: "Islamic Home Science",
+        fields: [
+          { label: "Institute", value: payload.instituteId4 },
+          { label: "Course", value: payload.courseId4 },
+          { label: "Fees", value: payload.fees4 },
+        ],
+      },
+      {
+        enabled: !!showSchool,
+        section: "School Education",
+        fields: [
+          { label: "Institute", value: payload.instituteId2 },
+          { label: "Course", value: payload.courseId2 },
+          { label: "Fees", value: payload.fees2 },
+        ],
+      },
+      {
+        enabled: !!showCollege,
+        section: "College Education",
+        fields: [
+          { label: "Institute", value: payload.instituteId3 },
+          { label: "Course", value: payload.courseId3 },
+          { label: "Year", value: payload.year3 },
+          { label: "Fees", value: payload.fees3 },
+        ],
+      },
+      {
+        enabled: !!showVocational,
+        section: "Vocational Course",
+        fields: [
+          { label: "Institute", value: payload.instituteId5 },
+          { label: "Course", value: payload.courseId5 },
+          { label: "Fees", value: payload.fees5 },
+        ],
+      },
+    ];
+
+    for (const item of validations) {
+      if (!item.enabled) continue;
+
+      for (const field of item.fields) {
+        if (!hasValue(field.value)) {
+          showSwalAlert("Info!", `${item.section} - ${field.label} is required.`, "info");
+          return false;
+        }
+      }
+    }
+
+    return true;
+  };
+
+  const normalizeEmptyOptionalCourseFields = (payload) => {
+    const toNull = (value) => (value === "" ? null : value);
+
+    return {
+      ...payload,
+
+      instituteId2: toNull(payload.instituteId2),
+      courseId2: toNull(payload.courseId2),
+      refNumber2: toNull(payload.refNumber2),
+      year2: toNull(payload.year2),
+      fees2: toNull(payload.fees2),
+      discount2: toNull(payload.discount2),
+      status2: toNull(payload.status2),
+
+      instituteId3: toNull(payload.instituteId3),
+      courseId3: toNull(payload.courseId3),
+      refNumber3: toNull(payload.refNumber3),
+      year3: toNull(payload.year3),
+      fees3: toNull(payload.fees3),
+      discount3: toNull(payload.discount3),
+      status3: toNull(payload.status3),
+
+      instituteId4: toNull(payload.instituteId4),
+      courseId4: toNull(payload.courseId4),
+      refNumber4: toNull(payload.refNumber4),
+      year4: toNull(payload.year4),
+      fees4: toNull(payload.fees4),
+      discount4: toNull(payload.discount4),
+      status4: toNull(payload.status4),
+
+      instituteId5: toNull(payload.instituteId5),
+      courseId5: toNull(payload.courseId5),
+      refNumber5: toNull(payload.refNumber5),
+      year5: toNull(payload.year5),
+      fees5: toNull(payload.fees5),
+      discount5: toNull(payload.discount5),
+      status5: toNull(payload.status5),
+    };
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setProcessing(true);
+
     try {
-      if (selectedDOBDate) {
-        student.dob = selectedDOBDate;
-      } else {
-        student.dob = "";
+      if (!selectedDOADate) {
+        setProcessing(false);
+        showSwalAlert("Info!", "Admission Date is required.", "info");
+        return;
       }
-      if (selectedDOADate) {
-        student.doa = selectedDOADate;
-      } else {
-        student.doa = "";
+
+      if (!selectedDOBDate) {
+        setProcessing(false);
+        showSwalAlert("Info!", "Date of Birth is required.", "info");
+        return;
       }
+
+      let payload = {
+        ...student,
+        dob: selectedDOBDate || "",
+        doa: selectedDOADate || "",
+      };
+
+      if (!validateOptionalCourses(payload)) {
+        setProcessing(false);
+        return;
+      }
+
+      payload = normalizeEmptyOptionalCourseFields(payload);
 
       const headers = {
         'Content-Type': 'multipart/form-data',
         'Authorization': `Bearer ${localStorage.getItem("token")}`,
         'Access-Control-Allow-Origin': '*',
         'Accept': 'application/json'
-      }
+      };
+
       const response = await axios.put(
         (await getBaseUrl()).toString() + `student/${id}`,
-        student,
+        payload,
         {
           headers: headers
         }
       );
+
       if (response.data.success) {
         setProcessing(false);
         showSwalAlert("Success!", "Successfully Updated!", "success");
@@ -540,7 +802,7 @@ const Edit = () => {
                   </select>
                 </div>
 
-                {/* Roll Number (Email) */}
+                {/* Roll Number */}
                 <div>
                   <label className="block mt-2 text-sm font-medium text-slate-500">
                     Roll Number <span className="text-red-700">*</span>
@@ -1026,6 +1288,7 @@ const Edit = () => {
                 <div className="flex space-x-3 mb-5" />
                 <div className="hidden lg:block flex space-x-3 mb-5" />
                 <div className="hidden lg:block flex space-x-3 mb-5" />
+
                 {/* Hostel */}
                 <div>
                   <label className="block text-sm font-medium text-slate-500">
@@ -1109,7 +1372,7 @@ const Edit = () => {
               </div>
 
               <div className="grid mt-5 grid-cols-1 md:grid-cols-2 gap-5">
-                {/* Institute 1 --------------------------------------------- */}
+                {/* Institute 1 */}
                 <div>
                   <label className="block mt-2 text-sm font-medium text-slate-500">
                     Select Institute <span className="text-red-700">*</span>
@@ -1233,15 +1496,16 @@ const Edit = () => {
               <div className="grid grid-cols-1 md:grid-cols-1 mt-14 mb-4 p-2 lg:p-5 gap-5 pt-5 lg:ml-16 lg:mr-20 border-2 border-green-500 rounded-md shadow-lg">
                 <div className="flex justify-center">
                   <label className='flex text-sm lg:text-md text-pink-600 ml-2 lg:ml-1 mr-2 lg:mr-1'>
-                    If the student is studying / planning to study below courses also with our Niswan, Please check the relevant checkboxes and fill the details.</label>
+                    If the student is studying / planning to study below courses also with our Niswan, Please check the relevant checkboxes and fill the details.
+                  </label>
                 </div>
 
-                {/* For Mobile display*/}
+                {/* Mobile */}
                 <div className='block lg:hidden'>
                   <div className="ml-14 justify-center items-center mb-3">
                     <input
                       type="checkbox"
-                      checked={showIslamicStudies}
+                      checked={!!showIslamicStudies}
                       onChange={handleIslamicCheckBox}
                       style={{ transform: "scale(1.25)" }}
                     />
@@ -1250,7 +1514,7 @@ const Edit = () => {
                   <div className="ml-14 justify-center items-center mb-3">
                     <input
                       type="checkbox"
-                      checked={showSchool}
+                      checked={!!showSchool}
                       onChange={handleSchoolCheckBox}
                       style={{ transform: "scale(1.25)" }}
                     />
@@ -1259,7 +1523,7 @@ const Edit = () => {
                   <div className="ml-14 justify-center items-center mb-3">
                     <input
                       type="checkbox"
-                      checked={showCollege}
+                      checked={!!showCollege}
                       onChange={handleCollegeCheckBox}
                       style={{ transform: "scale(1.25)" }}
                     />
@@ -1268,7 +1532,7 @@ const Edit = () => {
                   <div className="ml-14 justify-center items-center mb-3">
                     <input
                       type="checkbox"
-                      checked={showVocational}
+                      checked={!!showVocational}
                       onChange={handleVocationalCheckBox}
                       style={{ transform: "scale(1.25)" }}
                     />
@@ -1276,13 +1540,14 @@ const Edit = () => {
                   </div>
                 </div>
 
-                {/* For Screen display*/}
+                {/* Desktop */}
                 <div className="hidden lg:block">
                   <div className="flex justify-center">
                     <div>
-                      <input className="ml-5"
+                      <input
+                        className="ml-5"
                         type="checkbox"
-                        checked={showIslamicStudies}
+                        checked={!!showIslamicStudies}
                         onChange={handleIslamicCheckBox}
                         style={{ transform: "scale(1.25)" }}
                       />
@@ -1292,9 +1557,10 @@ const Edit = () => {
                     </div>
 
                     <div>
-                      <input className="ml-5"
+                      <input
+                        className="ml-5"
                         type="checkbox"
-                        checked={showSchool}
+                        checked={!!showSchool}
                         onChange={handleSchoolCheckBox}
                         style={{ transform: "scale(1.25)" }}
                       />
@@ -1304,9 +1570,10 @@ const Edit = () => {
                     </div>
 
                     <div>
-                      <input className="ml-5"
+                      <input
+                        className="ml-5"
                         type="checkbox"
-                        checked={showCollege}
+                        checked={!!showCollege}
                         onChange={handleCollegeCheckBox}
                         style={{ transform: "scale(1.25)" }}
                       />
@@ -1316,9 +1583,10 @@ const Edit = () => {
                     </div>
 
                     <div>
-                      <input className="ml-5"
+                      <input
+                        className="ml-5"
                         type="checkbox"
-                        checked={showVocational}
+                        checked={!!showVocational}
                         onChange={handleVocationalCheckBox}
                         style={{ transform: "scale(1.25)" }}
                       />

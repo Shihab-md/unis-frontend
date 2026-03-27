@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useAuth } from '../../context/AuthContext'
+import Swal from "sweetalert2";
 import { useNavigate, Link } from "react-router-dom";
 import { getSchoolsFromCache } from '../../utils/SchoolHelper';
 import { getAcademicYearsFromCache } from '../../utils/AcademicYearHelper';
@@ -9,9 +9,7 @@ import { getCoursesFromCache } from '../../utils/CourseHelper';
 import { getDistrictStatesFromCache } from '../../utils/DistrictStateHelper';
 import { getBaseUrl, handleRightClickAndFullScreen, checkAuth, getPrcessing, showSwalAlert } from '../../utils/CommonHelper';
 import ViewCard from "../dashboard/ViewCard";
-import {
-  FaRegTimesCircle
-} from "react-icons/fa";
+import { FaRegTimesCircle } from "react-icons/fa";
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
@@ -62,14 +60,12 @@ const getMakthabYearOptions = (courseName = "") => {
 };
 
 const Add = () => {
-
-  // To prevent right-click AND For FULL screen view.
   useEffect(() => {
     handleRightClickAndFullScreen();
-  }, []);;
+  }, []);
 
   const [formData, setFormData] = useState({});
-  const [processing, setProcessing] = useState(null)
+  const [processing, setProcessing] = useState(null);
   const [selectedDOBDate, setSelectedDOBDate] = useState(null);
   const [selectedDOADate, setSelectedDOADate] = useState(null);
 
@@ -88,88 +84,236 @@ const Add = () => {
 
   const [acYear, setAcYear] = useState(null);
 
-  const [showIslamicStudies, setShowIslamicStudies] = useState(null)
-  const [showSchool, setShowSchool] = useState(null)
-  const [showCollege, setShowCollege] = useState(null)
-  const [showVocational, setShowVocational] = useState(null)
+  const [showIslamicStudies, setShowIslamicStudies] = useState(false);
+  const [showSchool, setShowSchool] = useState(false);
+  const [showCollege, setShowCollege] = useState(false);
+  const [showVocational, setShowVocational] = useState(false);
 
-  const navigate = useNavigate()
-  const { user } = useAuth();
+  const navigate = useNavigate();
 
   useEffect(() => {
-    // Authenticate the User.
     if (checkAuth("studentAdd") === "NO") {
       showSwalAlert("Error!", "User Authorization Failed!", "error");
       navigate("/login");
     }
-  });
+  }, [navigate]);
 
   useEffect(() => {
-    const getSchoolsMap = async (id) => {
-      const schools = await getSchoolsFromCache(id);
+    const getSchoolsMap = async () => {
+      const schools = await getSchoolsFromCache();
       setSchools(schools);
     };
     getSchoolsMap();
   }, []);
 
   useEffect(() => {
-    const getAcademicYearsMap = async (id) => {
-      const academicYears = await getAcademicYearsFromCache(id);
+    const getAcademicYearsMap = async () => {
+      const academicYears = await getAcademicYearsFromCache();
       setAcademicYears(academicYears);
     };
     getAcademicYearsMap();
   }, []);
 
   useEffect(() => {
-    const getDistrictStatesMap = async (id) => {
-      const districtStates = await getDistrictStatesFromCache(id);
+    const getDistrictStatesMap = async () => {
+      const districtStates = await getDistrictStatesFromCache();
       setDistrictStates(districtStates);
     };
     getDistrictStatesMap();
   }, []);
 
   useEffect(() => {
-    const getAcYearMap = async (id) => {
+    const getAcYearMap = async () => {
       let accYear = (new Date().getFullYear() - 1) + "-" + new Date().getFullYear();
       if (new Date().getMonth() + 1 >= 4) {
         accYear = new Date().getFullYear() + "-" + (new Date().getFullYear() + 1);
       }
-      const academicYears = await getAcademicYearsFromCache(id);
-      const acYear = academicYears?.filter(acYear => acYear.acYear === accYear).map(acYear => acYear._id);
-      // console.log("AC Year : " + acYear)
+
+      const academicYears = await getAcademicYearsFromCache();
+      const acYear = academicYears
+        ?.filter((item) => item.acYear === accYear)
+        .map((item) => item._id);
+
       setAcYear(acYear);
     };
     getAcYearMap();
   }, []);
 
   useEffect(() => {
-    const getInstitutesMap = async (id) => {
-      const institutes = await getInstitutesFromCache(id);
-      // alert(institutes)
+    const getInstitutesMap = async () => {
+      const institutes = await getInstitutesFromCache();
       setInstitutes(institutes);
     };
     getInstitutesMap();
   }, []);
 
   useEffect(() => {
-    const getCoursesMap = async (id) => {
-      const courses = await getCoursesFromCache(id);
+    const getCoursesMap = async () => {
+      const courses = await getCoursesFromCache();
       setCourses(courses);
     };
     getCoursesMap();
   }, []);
 
-  const handleIslamicCheckBox = (event) => {
-    setShowIslamicStudies(event.target.checked);
+  const hasRequiredValue = (value) => {
+    return value !== undefined && value !== null && String(value).trim() !== "";
   };
-  const handleSchoolCheckBox = (event) => {
-    setShowSchool(event.target.checked);
+
+  const hasSectionData = (values = []) => {
+    return values.some((value) => hasRequiredValue(value));
   };
-  const handleCollegeCheckBox = (event) => {
-    setShowCollege(event.target.checked);
+
+  const confirmClearSection = async (sectionName, values = []) => {
+    if (!hasSectionData(values)) return true;
+
+    const result = await Swal.fire({
+      title: "Are you sure?",
+      text: `Remove ${sectionName} details? All entered values in this section will be cleared.`,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Yes, clear",
+      cancelButtonText: "No",
+      reverseButtons: true,
+      focusCancel: true,
+    });
+
+    return result.isConfirmed;
   };
-  const handleVocationalCheckBox = (event) => {
-    setShowVocational(event.target.checked);
+
+  const clearIslamicStudiesFields = () => {
+    setFormData((prev) => ({
+      ...prev,
+      instituteId4: "",
+      courseId4: "",
+      refNumber4: "",
+      year4: "",
+      fees4: "",
+      discount4: "",
+      status4: "",
+    }));
+    setFees4Val("");
+  };
+
+  const clearSchoolFields = () => {
+    setFormData((prev) => ({
+      ...prev,
+      instituteId2: "",
+      courseId2: "",
+      refNumber2: "",
+      year2: "",
+      fees2: "",
+      discount2: "",
+      status2: "",
+    }));
+    setFees2Val("");
+  };
+
+  const clearCollegeFields = () => {
+    setFormData((prev) => ({
+      ...prev,
+      instituteId3: "",
+      courseId3: "",
+      refNumber3: "",
+      year3: "",
+      fees3: "",
+      discount3: "",
+      status3: "",
+    }));
+    setFees3Val("");
+  };
+
+  const clearVocationalFields = () => {
+    setFormData((prev) => ({
+      ...prev,
+      instituteId5: "",
+      courseId5: "",
+      refNumber5: "",
+      year5: "",
+      fees5: "",
+      discount5: "",
+      status5: "",
+    }));
+    setFees5Val("");
+  };
+
+  const handleIslamicCheckBox = async (event) => {
+    const checked = event.target.checked;
+
+    if (!checked) {
+      const ok = await confirmClearSection("Islamic Home Science", [
+        formData.instituteId4,
+        formData.courseId4,
+        formData.refNumber4,
+        formData.year4,
+        formData.fees4,
+        fees4Val,
+      ]);
+
+      if (!ok) return;
+      clearIslamicStudiesFields();
+    }
+
+    setShowIslamicStudies(checked);
+  };
+
+  const handleSchoolCheckBox = async (event) => {
+    const checked = event.target.checked;
+
+    if (!checked) {
+      const ok = await confirmClearSection("School Education", [
+        formData.instituteId2,
+        formData.courseId2,
+        formData.refNumber2,
+        formData.year2,
+        formData.fees2,
+        fees2Val,
+      ]);
+
+      if (!ok) return;
+      clearSchoolFields();
+    }
+
+    setShowSchool(checked);
+  };
+
+  const handleCollegeCheckBox = async (event) => {
+    const checked = event.target.checked;
+
+    if (!checked) {
+      const ok = await confirmClearSection("College Education", [
+        formData.instituteId3,
+        formData.courseId3,
+        formData.refNumber3,
+        formData.year3,
+        formData.fees3,
+        fees3Val,
+      ]);
+
+      if (!ok) return;
+      clearCollegeFields();
+    }
+
+    setShowCollege(checked);
+  };
+
+  const handleVocationalCheckBox = async (event) => {
+    const checked = event.target.checked;
+
+    if (!checked) {
+      const ok = await confirmClearSection("Vocational Course", [
+        formData.instituteId5,
+        formData.courseId5,
+        formData.refNumber5,
+        formData.year5,
+        formData.fees5,
+        fees5Val,
+      ]);
+
+      if (!ok) return;
+      clearVocationalFields();
+    }
+
+    setShowVocational(checked);
   };
 
   const handleChange = (e) => {
@@ -189,7 +333,6 @@ const Add = () => {
       [name]: value,
     };
 
-    // set Fees after selection of course
     if (name === "courseId1") {
       const selectedCourse = getCourseById(courses, value);
       const nextFees1 = selectedCourse?.fees || "";
@@ -200,36 +343,30 @@ const Add = () => {
       if (makthabOptions.length > 0) {
         nextFormData.year1 = String(makthabOptions[0].value);
       }
-
     } else if (name === "courseId2") {
       const selectedCourse = getCourseById(courses, value);
       const nextFees2 = selectedCourse?.fees || "";
       setFees2Val(nextFees2);
       nextFormData.fees2 = nextFees2;
-
     } else if (name === "courseId3") {
       const selectedCourse = getCourseById(courses, value);
       const nextFees3 = selectedCourse?.fees || "";
       setFees3Val(nextFees3);
       nextFormData.fees3 = nextFees3;
-
     } else if (name === "courseId4") {
       const selectedCourse = getCourseById(courses, value);
       const nextFees4 = selectedCourse?.fees || "";
       setFees4Val(nextFees4);
       nextFormData.fees4 = nextFees4;
-
     } else if (name === "courseId5") {
       const selectedCourse = getCourseById(courses, value);
       const nextFees5 = selectedCourse?.fees || "";
       setFees5Val(nextFees5);
       nextFormData.fees5 = nextFees5;
-
     } else if (name === "hostelFees") {
       setFees6Val(value);
     }
 
-    // to set fees value
     if (name === "fees1") {
       setFees1Val(value);
       nextFormData.fees1 = value;
@@ -250,25 +387,98 @@ const Add = () => {
     setFormData(nextFormData);
   };
 
+  const validateOptionalCourses = () => {
+    const validations = [
+      {
+        enabled: !!showIslamicStudies,
+        section: "Islamic Home Science",
+        fields: [
+          { label: "Institute", value: formData.instituteId4 },
+          { label: "Course", value: formData.courseId4 },
+          { label: "Fees", value: hasRequiredValue(formData.fees4) ? formData.fees4 : fees4Val },
+        ],
+      },
+      {
+        enabled: !!showSchool,
+        section: "School Education",
+        fields: [
+          { label: "Institute", value: formData.instituteId2 },
+          { label: "Course", value: formData.courseId2 },
+          { label: "Fees", value: hasRequiredValue(formData.fees2) ? formData.fees2 : fees2Val },
+        ],
+      },
+      {
+        enabled: !!showCollege,
+        section: "College Education",
+        fields: [
+          { label: "Institute", value: formData.instituteId3 },
+          { label: "Course", value: formData.courseId3 },
+          { label: "Year", value: formData.year3 },
+          { label: "Fees", value: hasRequiredValue(formData.fees3) ? formData.fees3 : fees3Val },
+        ],
+      },
+      {
+        enabled: !!showVocational,
+        section: "Vocational Course",
+        fields: [
+          { label: "Institute", value: formData.instituteId5 },
+          { label: "Course", value: formData.courseId5 },
+          { label: "Fees", value: hasRequiredValue(formData.fees5) ? formData.fees5 : fees5Val },
+        ],
+      },
+    ];
+
+    for (const item of validations) {
+      if (!item.enabled) continue;
+
+      for (const field of item.fields) {
+        if (!hasRequiredValue(field.value)) {
+          showSwalAlert("Info!", `${item.section} - ${field.label} is required.`, "info");
+          return false;
+        }
+      }
+    }
+
+    return true;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setProcessing(true);
 
-    const formDataObj = new FormData()
+    if (!selectedDOADate) {
+      setProcessing(false);
+      showSwalAlert("Info!", "Admission Date is required.", "info");
+      return;
+    }
+
+    if (!selectedDOBDate) {
+      setProcessing(false);
+      showSwalAlert("Info!", "Date of Birth is required.", "info");
+      return;
+    }
+
+    if (!validateOptionalCourses()) {
+      setProcessing(false);
+      return;
+    }
+
+    const formDataObj = new FormData();
+
     Object.keys(formData).forEach((key) => {
-      formDataObj.append(key, formData[key])
-    })
+      const value = formData[key];
+      if (value !== "" && value !== null && value !== undefined) {
+        formDataObj.append(key, value);
+      }
+    });
 
     try {
-      if (selectedDOBDate) {
-        formDataObj.append('dob', selectedDOBDate)
-      }
-      if (selectedDOADate) {
-        formDataObj.append('doa', selectedDOADate)
-      }
+      formDataObj.append('dob', selectedDOBDate);
+      formDataObj.append('doa', selectedDOADate);
+
       if (acYear) {
-        formDataObj.delete('acYear')
-        formDataObj.append('acYear', acYear)
+        formDataObj.delete('acYear');
+        formDataObj.append('acYear', acYear);
       }
 
       formDataObj.append('schoolId', localStorage.getItem('schoolId'));
@@ -278,7 +488,7 @@ const Add = () => {
         'Authorization': `Bearer ${localStorage.getItem("token")}`,
         'Access-Control-Allow-Origin': '*',
         'Accept': 'application/json'
-      }
+      };
 
       const response = await axios.post(
         (await getBaseUrl()).toString() + "student/add",
@@ -287,6 +497,7 @@ const Add = () => {
           headers: headers
         }
       );
+
       if (response.data.success) {
         setProcessing(false);
         showSwalAlert("Success!", "Successfully Added!", "success");
@@ -320,7 +531,6 @@ const Add = () => {
   };
 
   const handleKeyDown = (e) => {
-    // Prevent 'e', 'E', '+', and '-' from being entered
     if (['e', 'E', '+', '-'].includes(e.key)) {
       e.preventDefault();
     }
@@ -367,19 +577,6 @@ const Add = () => {
               </div>
             </div>
             <div className="flex space-x-3 mb-5" />
-            {/* Roll Number (Email) 
-              <div>
-                <label className="block mt-2 text-sm font-medium text-slate-500">
-                  Roll Number <span className="text-red-700">*</span>
-                </label>
-                <input
-                  type="text"
-                  name="rollNumber"
-                  onChange={handleChange}
-                  className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                  required
-                />
-              </div>*/}
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
               {/* Name */}
@@ -412,8 +609,6 @@ const Add = () => {
                     showYearDropdown
                     dropdownMode="select"
                     isClearable
-                  //showIcon
-                  //toggleCalendarOnIconClick
                   />
                 </div>
                 {/* Date of Birth */}
@@ -432,8 +627,6 @@ const Add = () => {
                     showYearDropdown
                     dropdownMode="select"
                     isClearable
-                  //showIcon
-                  //toggleCalendarOnIconClick
                   />
                 </div>
               </div>
@@ -507,7 +700,6 @@ const Add = () => {
                   name="bloodGroup"
                   onChange={handleChange}
                   className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                //    required
                 />
               </div>
             </div>
@@ -537,7 +729,6 @@ const Add = () => {
                   name="idMark2"
                   onChange={handleChange}
                   className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                //    required
                 />
               </div>
 
@@ -556,7 +747,6 @@ const Add = () => {
                   name="about"
                   onChange={handleChange}
                   className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                //  required
                 />
               </div>
             </div>
@@ -576,7 +766,6 @@ const Add = () => {
                   name="fatherName"
                   onChange={handleChange}
                   className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                //  required
                 />
               </div>
 
@@ -591,7 +780,6 @@ const Add = () => {
                   onChange={handleChange}
                   min="0"
                   className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                //  required
                 />
               </div>
 
@@ -605,7 +793,6 @@ const Add = () => {
                   name="fatherOccupation"
                   onChange={handleChange}
                   className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                //  required
                 />
               </div>
 
@@ -619,7 +806,6 @@ const Add = () => {
                   name="motherName"
                   onChange={handleChange}
                   className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                //    required
                 />
               </div>
 
@@ -634,7 +820,6 @@ const Add = () => {
                   onChange={handleChange}
                   min="0"
                   className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                //    required
                 />
               </div>
 
@@ -648,7 +833,6 @@ const Add = () => {
                   name="motherOccupation"
                   onChange={handleChange}
                   className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                //  required
                 />
               </div>
             </div>
@@ -664,7 +848,6 @@ const Add = () => {
                   name="guardianName"
                   onChange={handleChange}
                   className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                //    required
                 />
               </div>
 
@@ -679,7 +862,6 @@ const Add = () => {
                   onChange={handleChange}
                   min="0"
                   className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                //    required
                 />
               </div>
 
@@ -693,7 +875,6 @@ const Add = () => {
                   name="guardianOccupation"
                   onChange={handleChange}
                   className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                //  required
                 />
               </div>
 
@@ -707,7 +888,6 @@ const Add = () => {
                   name="guardianRelation"
                   onChange={handleChange}
                   className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                //    required
                 />
               </div>
             </div>
@@ -757,7 +937,6 @@ const Add = () => {
                   name="landmark"
                   onChange={handleChange}
                   className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                //  required
                 />
               </div>
 
@@ -831,9 +1010,7 @@ const Add = () => {
                   type="text"
                   name="hostelRefNumber"
                   onChange={handleChange}
-                  //    placeholder="Qualification"
                   className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                //    required
                 />
               </div>
 
@@ -852,7 +1029,6 @@ const Add = () => {
                   onKeyPress={preventMinus}
                   onKeyDown={handleKeyDown}
                   className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                //    required
                 />
               </div>
             </div>
@@ -872,7 +1048,6 @@ const Add = () => {
                   name="acYear"
                   onChange={handleChange}
                   value={acYear}
-                  //  disabled={acYear ? true : false}
                   className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                   required
                 >
@@ -942,9 +1117,7 @@ const Add = () => {
                   type="text"
                   name="refNumber1"
                   onChange={handleChange}
-                  //    placeholder="Qualification"
                   className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                //required
                 />
               </div>
 
@@ -1002,7 +1175,6 @@ const Add = () => {
                     onKeyPress={preventMinus}
                     onKeyDown={handleKeyDown}
                     className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                  //    required
                   />
                 </div>
               </div>
@@ -1011,7 +1183,8 @@ const Add = () => {
             <div className="grid grid-cols-1 md:grid-cols-1 mt-14 mb-4 p-2 lg:p-5 gap-5 pt-5 lg:ml-16 lg:mr-20 border-2 border-green-500 rounded-md shadow-lg">
               <div className="flex justify-center">
                 <label className='flex text-sm lg:text-md text-pink-600 ml-2 lg:ml-1 mr-2 lg:mr-1'>
-                  If the student is studying / planning to study below courses also with our Niswan, Please check the relevant checkboxes and fill the details.</label>
+                  If the student is studying / planning to study below courses also with our Niswan, Please check the relevant checkboxes and fill the details.
+                </label>
               </div>
 
               {/* For Mobile display*/}
@@ -1019,7 +1192,7 @@ const Add = () => {
                 <div className="ml-14 justify-center items-center mb-3">
                   <input
                     type="checkbox"
-                    checked={showIslamicStudies}
+                    checked={!!showIslamicStudies}
                     onChange={handleIslamicCheckBox}
                     style={{ transform: "scale(1.25)" }}
                   />
@@ -1028,7 +1201,7 @@ const Add = () => {
                 <div className="ml-14 justify-center items-center mb-3">
                   <input
                     type="checkbox"
-                    checked={showSchool}
+                    checked={!!showSchool}
                     onChange={handleSchoolCheckBox}
                     style={{ transform: "scale(1.25)" }}
                   />
@@ -1037,7 +1210,7 @@ const Add = () => {
                 <div className="ml-14 justify-center items-center mb-3">
                   <input
                     type="checkbox"
-                    checked={showCollege}
+                    checked={!!showCollege}
                     onChange={handleCollegeCheckBox}
                     style={{ transform: "scale(1.25)" }}
                   />
@@ -1046,7 +1219,7 @@ const Add = () => {
                 <div className="ml-14 justify-center items-center mb-3">
                   <input
                     type="checkbox"
-                    checked={showVocational}
+                    checked={!!showVocational}
                     onChange={handleVocationalCheckBox}
                     style={{ transform: "scale(1.25)" }}
                   />
@@ -1060,7 +1233,7 @@ const Add = () => {
                   <div>
                     <input className="ml-5"
                       type="checkbox"
-                      checked={showIslamicStudies}
+                      checked={!!showIslamicStudies}
                       onChange={handleIslamicCheckBox}
                       style={{ transform: "scale(1.25)" }}
                     />
@@ -1072,7 +1245,7 @@ const Add = () => {
                   <div>
                     <input className="ml-5"
                       type="checkbox"
-                      checked={showSchool}
+                      checked={!!showSchool}
                       onChange={handleSchoolCheckBox}
                       style={{ transform: "scale(1.25)" }}
                     />
@@ -1084,7 +1257,7 @@ const Add = () => {
                   <div>
                     <input className="ml-5"
                       type="checkbox"
-                      checked={showCollege}
+                      checked={!!showCollege}
                       onChange={handleCollegeCheckBox}
                       style={{ transform: "scale(1.25)" }}
                     />
@@ -1096,7 +1269,7 @@ const Add = () => {
                   <div>
                     <input className="ml-5"
                       type="checkbox"
-                      checked={showVocational}
+                      checked={!!showVocational}
                       onChange={handleVocationalCheckBox}
                       style={{ transform: "scale(1.25)" }}
                     />
@@ -1115,7 +1288,6 @@ const Add = () => {
                 </div>
 
                 <div className="grid mt-5 grid-cols-1 md:grid-cols-10 gap-5 mt-2">
-                  {/* Institute 4 --------------------------------------------- */}
                   <div className='md:col-span-3'>
                     <label className="block mt-2 text-sm font-medium text-slate-500">
                       Select Institute
@@ -1124,7 +1296,6 @@ const Add = () => {
                       name="instituteId4"
                       onChange={handleChange}
                       className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                    //    required
                     >
                       <option value=""></option>
                       {institutes.filter(institute => institute.type === "Islamic Home Science").map((institute) => (
@@ -1135,7 +1306,6 @@ const Add = () => {
                     </select>
                   </div>
 
-                  {/* Course 4 */}
                   <div className='md:col-span-4'>
                     <label className="block md:mt-2 text-sm font-medium text-slate-500">
                       Select Course
@@ -1144,7 +1314,6 @@ const Add = () => {
                       name="courseId4"
                       onChange={handleChange}
                       className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                    //    required
                     >
                       <option value=""></option>
                       {courses.filter(course => course.type === "Islamic Home Science").map((course) => (
@@ -1155,7 +1324,6 @@ const Add = () => {
                     </select>
                   </div>
 
-                  {/* Reference Number-4 */}
                   <div className='md:col-span-2'>
                     <label className="block md:mt-2 text-sm font-medium text-slate-500">
                       Reference Number
@@ -1164,13 +1332,10 @@ const Add = () => {
                       type="text"
                       name="refNumber4"
                       onChange={handleChange}
-                      //    placeholder="Qualification"
                       className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                    //    required
                     />
                   </div>
 
-                  {/* Fees 4 */}
                   <div className='md:col-span-1'>
                     <label className="block md:mt-2 text-sm font-medium text-slate-500">
                       Fees
@@ -1186,7 +1351,6 @@ const Add = () => {
                       onKeyPress={preventMinus}
                       onKeyDown={handleKeyDown}
                       className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                    //    required
                     />
                   </div>
                 </div>
@@ -1199,7 +1363,6 @@ const Add = () => {
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-10 gap-5 mt-2">
-                  {/* Institute 2 --------------------------------------------- */}
                   <div className='md:col-span-4'>
                     <label className="block mt-2 text-sm font-medium text-slate-500">
                       Select Institute
@@ -1208,7 +1371,7 @@ const Add = () => {
                       name="instituteId2"
                       onChange={handleChange}
                       className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                    //    required
+                      required={!!showSchool}
                     >
                       <option value=""></option>
                       {institutes.filter(institute => institute.type === "School Education").map((institute) => (
@@ -1219,7 +1382,6 @@ const Add = () => {
                     </select>
                   </div>
 
-                  {/* Course 2 */}
                   <div className='md:col-span-3'>
                     <label className="block md:mt-2 text-sm font-medium text-slate-500">
                       Select Course
@@ -1228,7 +1390,7 @@ const Add = () => {
                       name="courseId2"
                       onChange={handleChange}
                       className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                    //    required
+                      required={!!showSchool}
                     >
                       <option value=""></option>
                       {courses.filter(course => course.type === "School Education").map((course) => (
@@ -1239,7 +1401,6 @@ const Add = () => {
                     </select>
                   </div>
 
-                  {/* Reference Number-2 */}
                   <div className='md:col-span-2'>
                     <label className="block md:mt-2 text-sm font-medium text-slate-500">
                       Reference Number
@@ -1248,13 +1409,10 @@ const Add = () => {
                       type="text"
                       name="refNumber2"
                       onChange={handleChange}
-                      //    placeholder="Qualification"
                       className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                    //    required
                     />
                   </div>
 
-                  {/* Fees 2 */}
                   <div className='md:col-span-1'>
                     <label className="block md:mt-2 text-sm font-medium text-slate-500">
                       Fees
@@ -1270,7 +1428,7 @@ const Add = () => {
                       onKeyPress={preventMinus}
                       onKeyDown={handleKeyDown}
                       className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                    //    required
+                      required={!!showSchool}
                     />
                   </div>
                 </div>
@@ -1283,7 +1441,6 @@ const Add = () => {
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mt-5">
-                  {/* Institute 3 --------------------------------------------- */}
                   <div>
                     <label className="block mt-2 text-sm font-medium text-slate-500">
                       Select Institute
@@ -1292,7 +1449,6 @@ const Add = () => {
                       name="instituteId3"
                       onChange={handleChange}
                       className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                    //    required
                     >
                       <option value=""></option>
                       {institutes.filter(institute => institute.type === "College Education").map((institute) => (
@@ -1303,7 +1459,6 @@ const Add = () => {
                     </select>
                   </div>
 
-                  {/* Course 3 */}
                   <div>
                     <label className="block mt-2 text-sm font-medium text-slate-500">
                       Select Course
@@ -1312,7 +1467,6 @@ const Add = () => {
                       name="courseId3"
                       onChange={handleChange}
                       className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                    //    required
                     >
                       <option value=""></option>
                       {courses.filter(course => course.type === "College Education").map((course) => (
@@ -1323,7 +1477,6 @@ const Add = () => {
                     </select>
                   </div>
 
-                  {/* Reference Number-3 */}
                   <div>
                     <label className="block text-sm font-medium text-slate-500">
                       Reference Number
@@ -1332,14 +1485,11 @@ const Add = () => {
                       type="text"
                       name="refNumber3"
                       onChange={handleChange}
-                      //    placeholder="Qualification"
                       className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                    //    required
                     />
                   </div>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                    {/* Year3 */}
                     <div>
                       <label className="block text-sm font-medium text-slate-500">
                         Year
@@ -1353,11 +1503,9 @@ const Add = () => {
                         onKeyPress={preventMinus}
                         onKeyDown={handleKeyDown}
                         className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                      //  required
                       />
                     </div>
 
-                    {/* Fees 3 */}
                     <div>
                       <label className="block text-sm font-medium text-slate-500">
                         Fees
@@ -1373,7 +1521,6 @@ const Add = () => {
                         onKeyDown={handleKeyDown}
                         onChange={handleChange}
                         className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                      //    required
                       />
                     </div>
                   </div>
@@ -1387,7 +1534,6 @@ const Add = () => {
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-10 gap-5 mt-2">
-                  {/* Institute 5 --------------------------------------------- */}
                   <div className='md:col-span-3'>
                     <label className="block mt-2 text-sm font-medium text-slate-500">
                       Select Institute
@@ -1396,7 +1542,6 @@ const Add = () => {
                       name="instituteId5"
                       onChange={handleChange}
                       className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                    //    required
                     >
                       <option value=""></option>
                       {institutes.filter(institute => institute.type === "Vocational Courses").map((institute) => (
@@ -1407,7 +1552,6 @@ const Add = () => {
                     </select>
                   </div>
 
-                  {/* Course 5 */}
                   <div className='md:col-span-4'>
                     <label className="block mt-2 text-sm font-medium text-slate-500">
                       Select Course
@@ -1416,7 +1560,6 @@ const Add = () => {
                       name="courseId5"
                       onChange={handleChange}
                       className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                    //    required
                     >
                       <option value=""></option>
                       {courses.filter(course => course.type === "Vocational Courses").map((course) => (
@@ -1427,7 +1570,6 @@ const Add = () => {
                     </select>
                   </div>
 
-                  {/* Reference Number-5 */}
                   <div className='md:col-span-2'>
                     <label className="block md:mt-2 text-sm font-medium text-slate-500">
                       Reference Number
@@ -1436,13 +1578,10 @@ const Add = () => {
                       type="text"
                       name="refNumber5"
                       onChange={handleChange}
-                      //    placeholder="Qualification"
                       className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                    //    required
                     />
                   </div>
 
-                  {/* Fees 5 */}
                   <div className='md:col-span-1'>
                     <label className="block md:mt-2 text-sm font-medium text-slate-500">
                       Fees
@@ -1458,7 +1597,6 @@ const Add = () => {
                       onKeyPress={preventMinus}
                       onKeyDown={handleKeyDown}
                       className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                    //    required
                     />
                   </div>
                 </div>
@@ -1466,21 +1604,6 @@ const Add = () => {
 
             <div className="flex space-x-3 mb-5" />
             <div className="hidden lg:block flex space-x-3 mb-5" />
-
-            {/* Image Upload 
-            <div>
-              <label className="block text-sm font-medium text-slate-500">
-                Upload Image
-              </label>
-              <input
-                type="file"
-                name="file"
-                onChange={handleChange}
-                placeholder="Upload Image"
-                accept="image/*"
-                className="mt-2 mb-5 p-2 block w-full border border-gray-300 rounded-md"
-              />
-            </div>*/}
           </div>
 
           <button
@@ -1489,8 +1612,8 @@ const Add = () => {
           >
             Add Student
           </button>
-        </form >
-      </div >
+        </form>
+      </div>
     </>
   );
 };
