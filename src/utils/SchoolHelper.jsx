@@ -45,7 +45,7 @@ export const columns = [
       </div>
     ),
     //  sortable: true,
-    width: "120px",
+    width: "180px",
   },
   {
     name: "Address",
