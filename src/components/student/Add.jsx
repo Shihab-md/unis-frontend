@@ -22,7 +22,7 @@ const getCourseById = (courses, courseId) => {
 const getMakthabYearOptions = (courseName = "") => {
   const name = String(courseName || "").trim();
 
-  if (name.includes("Makthab_level1")) {
+  if (name.includes("Makthab_Level1")) {
     return [
       { value: "1", label: "1" },
       { value: "2", label: "2" },
@@ -30,7 +30,7 @@ const getMakthabYearOptions = (courseName = "") => {
     ];
   }
 
-  if (name.includes("Makthab_level2")) {
+  if (name.includes("Makthab_Level2")) {
     return [
       { value: "4", label: "4" },
       { value: "5", label: "5" },
@@ -38,7 +38,7 @@ const getMakthabYearOptions = (courseName = "") => {
     ];
   }
 
-  if (name.includes("Makthab_level3")) {
+  if (name.includes("Makthab_Level3")) {
     return [
       { value: "7", label: "7" },
       { value: "8", label: "8" },
@@ -46,7 +46,7 @@ const getMakthabYearOptions = (courseName = "") => {
     ];
   }
 
-  if (name.includes("Makthab_level4")) {
+  if (name.includes("Makthab_Level4")) {
     return [
       { value: "10", label: "10" },
       { value: "11", label: "11" },
