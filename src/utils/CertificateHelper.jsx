@@ -14,12 +14,12 @@ export const columns = [
     name: "Sanadh No",
     selector: (row) => row.sanadhNo,
     sortable: true,
-    width: "110px",
+    width: "160px",
   },
   {
     name: "Sanadh Name",
     selector: (row) => row.sanadhName,
-    width: "210px",
+    width: "200px",
   },
   {
     name: "Student Details",
@@ -34,7 +34,7 @@ export const columns = [
         <span className="text-blue-700 mr-3">Parent / Guardian name:</span> {row.fatherName}
       </p>
     </div>),
-    width: "480px",
+    width: "430px",
   },
   {
     name: "Niswan",
@@ -43,7 +43,7 @@ export const columns = [
       <p className="mb-1">{row.niswanName}</p>
     </div>),
     wrap: true,
-    width: "520px",
+    width: "500px",
   },
   {
     name: "Action",
