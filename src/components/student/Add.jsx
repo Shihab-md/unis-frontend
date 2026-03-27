@@ -15,6 +15,52 @@ import {
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
+const getCourseById = (courses, courseId) => {
+  return courses.find((course) => String(course._id) === String(courseId));
+};
+
+const getMakthabYearOptions = (courseName = "") => {
+  const name = String(courseName || "").trim();
+
+  if (name.includes("Makthab_level1")) {
+    return [
+      { value: "1", label: "1" },
+      { value: "2", label: "2" },
+      { value: "3", label: "3" },
+    ];
+  }
+
+  if (name.includes("Makthab_level2")) {
+    return [
+      { value: "4", label: "4" },
+      { value: "5", label: "5" },
+      { value: "6", label: "6" },
+    ];
+  }
+
+  if (name.includes("Makthab_level3")) {
+    return [
+      { value: "7", label: "7" },
+      { value: "8", label: "8" },
+      { value: "9", label: "9" },
+    ];
+  }
+
+  if (name.includes("Makthab_level4")) {
+    return [
+      { value: "10", label: "10" },
+      { value: "11", label: "11" },
+      { value: "12", label: "12" },
+    ];
+  }
+
+  return [
+    { value: "1", label: "1" },
+    { value: "2", label: "2" },
+    { value: "3", label: "3" },
+  ];
+};
+
 const Add = () => {
 
   // To prevent right-click AND For FULL screen view.
@@ -129,63 +175,79 @@ const Add = () => {
   const handleChange = (e) => {
     const { name, value, files } = e.target;
 
-    // set Fees after seletion of course
-    if (name === "courseId1") {
-      let fees1 = courses.filter(course => course._id === value).map(course => course.fees);
-      setFees1Val(fees1);
-
-    } else if (name === "courseId2") {
-      let fees2 = courses.filter(course => course._id === value).map(course => course.fees);
-      setFees2Val(fees2);
-
-    } else if (name === "courseId3") {
-      let fees3 = courses.filter(course => course._id === value).map(course => course.fees);
-      setFees3Val(fees3);
-
-    } else if (name === "courseId4") {
-      let fees4 = courses.filter(course => course._id === value).map(course => course.fees);
-      setFees4Val(fees4);
-
-    } else if (name === "courseId5") {
-      let fees5 = courses.filter(course => course._id === value).map(course => course.fees);
-      setFees5Val(fees5);
-
-    } else if (name === "hostelFees") {
-      setFees6Val(value);
-
-    }
-
-    // to set fees value
-    if (name === "fees1") {
-      setFees1Val(value);
-    } else if (name === "fees2") {
-      setFees2Val(value);
-    } else if (name === "fees3") {
-      setFees3Val(value);
-    } else if (name === "fees4") {
-      setFees4Val(value);
-    } else if (name === "fees5") {
-      setFees5Val(value);
+    if (name === "file") {
+      setFormData((prevData) => ({ ...prevData, [name]: files[0] }));
+      return;
     }
 
     if (name === "acYear") {
       setAcYear(value);
     }
 
-    if (name === "file") {
-      setFormData((prevData) => ({ ...prevData, [name]: files[0] }));
-    } else {
-      setFormData((prevData) => ({
-        ...prevData,
-        [name]: value,
+    let nextFormData = {
+      ...formData,
+      [name]: value,
+    };
 
-        fees1: fees1Val,
-        fees2: fees2Val,
-        fees3: fees3Val,
-        fees4: fees4Val,
-        fees5: fees5Val,
-      }));
+    // set Fees after selection of course
+    if (name === "courseId1") {
+      const selectedCourse = getCourseById(courses, value);
+      const nextFees1 = selectedCourse?.fees || "";
+      setFees1Val(nextFees1);
+      nextFormData.fees1 = nextFees1;
+
+      const makthabOptions = getMakthabYearOptions(selectedCourse?.name);
+      if (makthabOptions.length > 0) {
+        nextFormData.year1 = String(makthabOptions[0].value);
+      }
+
+    } else if (name === "courseId2") {
+      const selectedCourse = getCourseById(courses, value);
+      const nextFees2 = selectedCourse?.fees || "";
+      setFees2Val(nextFees2);
+      nextFormData.fees2 = nextFees2;
+
+    } else if (name === "courseId3") {
+      const selectedCourse = getCourseById(courses, value);
+      const nextFees3 = selectedCourse?.fees || "";
+      setFees3Val(nextFees3);
+      nextFormData.fees3 = nextFees3;
+
+    } else if (name === "courseId4") {
+      const selectedCourse = getCourseById(courses, value);
+      const nextFees4 = selectedCourse?.fees || "";
+      setFees4Val(nextFees4);
+      nextFormData.fees4 = nextFees4;
+
+    } else if (name === "courseId5") {
+      const selectedCourse = getCourseById(courses, value);
+      const nextFees5 = selectedCourse?.fees || "";
+      setFees5Val(nextFees5);
+      nextFormData.fees5 = nextFees5;
+
+    } else if (name === "hostelFees") {
+      setFees6Val(value);
     }
+
+    // to set fees value
+    if (name === "fees1") {
+      setFees1Val(value);
+      nextFormData.fees1 = value;
+    } else if (name === "fees2") {
+      setFees2Val(value);
+      nextFormData.fees2 = value;
+    } else if (name === "fees3") {
+      setFees3Val(value);
+      nextFormData.fees3 = value;
+    } else if (name === "fees4") {
+      setFees4Val(value);
+      nextFormData.fees4 = value;
+    } else if (name === "fees5") {
+      setFees5Val(value);
+      nextFormData.fees5 = value;
+    }
+
+    setFormData(nextFormData);
   };
 
   const handleSubmit = async (e) => {
@@ -263,6 +325,10 @@ const Add = () => {
       e.preventDefault();
     }
   };
+
+  const selectedCourse1 = getCourseById(courses, formData.courseId1);
+  const makthabYearOptions = getMakthabYearOptions(selectedCourse1?.name);
+  const isMakthabLevelCourse = makthabYearOptions.length > 0;
 
   return (
     <>
@@ -853,6 +919,7 @@ const Add = () => {
                 </label>
                 <select
                   name="courseId1"
+                  value={formData.courseId1 || ""}
                   onChange={handleChange}
                   className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                   required
@@ -877,7 +944,7 @@ const Add = () => {
                   onChange={handleChange}
                   //    placeholder="Qualification"
                   className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                  //required
+                //required
                 />
               </div>
 
@@ -885,19 +952,38 @@ const Add = () => {
                 {/* Year1 */}
                 <div>
                   <label className="block text-sm font-medium text-slate-500">
-                    Year / Std. <span className="text-red-700">*</span>
+                    Year / Grade <span className="text-red-700">*</span>
                   </label>
-                  <input
-                    type="number"
-                    name="year1"
-                    onChange={handleChange}
-                    min="1"
-                    onPaste={preventPasteNegative}
-                    onKeyPress={preventMinus}
-                    onKeyDown={handleKeyDown}
-                    className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                    required
-                  />
+
+                  {isMakthabLevelCourse ? (
+                    <select
+                      name="year1"
+                      value={formData.year1 || ""}
+                      onChange={handleChange}
+                      className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
+                      required
+                    >
+                      <option value=""></option>
+                      {makthabYearOptions.map((item) => (
+                        <option key={item.value} value={item.value}>
+                          {item.label}
+                        </option>
+                      ))}
+                    </select>
+                  ) : (
+                    <input
+                      type="number"
+                      name="year1"
+                      value={formData.year1 || ""}
+                      onChange={handleChange}
+                      min="1"
+                      onPaste={preventPasteNegative}
+                      onKeyPress={preventMinus}
+                      onKeyDown={handleKeyDown}
+                      className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
+                      required
+                    />
+                  )}
                 </div>
 
                 {/* Fees1 */}

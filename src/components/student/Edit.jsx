@@ -8,7 +8,7 @@ import axios from "axios";
 import { useAuth } from '../../context/AuthContext'
 import { useNavigate, useParams, Link } from "react-router-dom";
 import {
-  getBaseUrl, handleRightClickAndFullScreen, getSpinner, checkAuth, useInitialLockMap,
+  getBaseUrl, handleRightClickAndFullScreen, getSpinner, checkAuth,
   getPrcessing, showSwalAlert
 } from '../../utils/CommonHelper';
 import ViewCard from "../dashboard/ViewCard";
@@ -17,6 +17,52 @@ import {
 } from "react-icons/fa";
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+
+const getCourseById = (courses, courseId) => {
+  return courses.find((course) => String(course._id) === String(courseId));
+};
+
+const getMakthabYearOptions = (courseName = "") => {
+  const name = String(courseName || "").trim();
+
+  if (name.includes("Makthab_level1")) {
+    return [
+      { value: "1", label: "1" },
+      { value: "2", label: "2" },
+      { value: "3", label: "3" },
+    ];
+  }
+
+  if (name.includes("Makthab_level2")) {
+    return [
+      { value: "4", label: "4" },
+      { value: "5", label: "5" },
+      { value: "6", label: "6" },
+    ];
+  }
+
+  if (name.includes("Makthab_level3")) {
+    return [
+      { value: "7", label: "7" },
+      { value: "8", label: "8" },
+      { value: "9", label: "9" },
+    ];
+  }
+
+  if (name.includes("Makthab_level4")) {
+    return [
+      { value: "10", label: "10" },
+      { value: "11", label: "11" },
+      { value: "12", label: "12" },
+    ];
+  }
+
+  return [
+    { value: "1", label: "1" },
+    { value: "2", label: "2" },
+    { value: "3", label: "3" },
+  ];
+};
 
 const Edit = () => {
 
@@ -86,10 +132,10 @@ const Edit = () => {
 
   const UNLOCKED_FIELDS = new Set(["superadmin", "hquser"]);
 
-  const isLocked = (name) => !UNLOCKED_FIELDS.has(user?.role) && fieldLocks?.[name] === true;
-
   const navigate = useNavigate();
   const { user } = useAuth();
+
+  const isLocked = (name) => !UNLOCKED_FIELDS.has(user?.role) && fieldLocks?.[name] === true;
 
   const { id } = useParams();
   const [schools, setSchools] = useState([]);
@@ -135,7 +181,6 @@ const Edit = () => {
       }
       const academicYears = await getAcademicYearsFromCache(id);
       const acYear = academicYears?.filter(acYear => acYear.acYear === accYear).map(acYear => acYear._id);
-      // console.log("AC Year : " + acYear)
       setAcYear(acYear);
     };
     getAcYearMap();
@@ -195,16 +240,6 @@ const Edit = () => {
           const academics = student._academics;
 
           console.log(academics)
-          //  const academicResponse = await axios.get(
-          //    (await getBaseUrl()).toString() + `student/${student._id}/${'777'}`,
-          //    {
-          //      headers: {
-          //        Authorization: `Bearer ${localStorage.getItem("token")}`,
-          //      },
-          //    }
-          //  );
-
-          // const academic = academicResponse.data.academic;
           setSelectedDOBDate(student.dob);
           setSelectedDOADate(student.doa);
 
@@ -225,7 +260,6 @@ const Edit = () => {
             console.log(error)
           }
 
-          // ✅ Build a single object representing what will be set in state
           const loaded = {
             name: student.userId?.name || "",
             schoolId: student.schoolId?._id || "",
@@ -269,7 +303,7 @@ const Edit = () => {
             instituteId1: academics?.[0]?.instituteId1?._id || null,
             courseId1: academics?.[0]?.courseId1?._id || null,
             refNumber1: academics?.[0]?.refNumber1,
-            year1: academics?.[0]?.year1,
+            year1: academics?.[0]?.year1 ? String(academics[0].year1) : "",
             status1: academics?.[0]?.status1,
             fees1: academics?.[0]?.fees1,
             discount1: academics?.[0]?.discount1,
@@ -309,7 +343,6 @@ const Edit = () => {
 
           setStudent((prev) => ({ ...prev, ...loaded }));
 
-          // ✅ Initialize locks only once, based on loaded data
           if (!didInitLocks.current) {
             setFieldLocks(buildLocksFromLoadedStudent(loaded));
             didInitLocks.current = true;
@@ -352,10 +385,25 @@ const Edit = () => {
       return;
     }
 
-    // ✅ when course changes, auto-fill corresponding fees from course master
     if (COURSE_FEE_FIELD_MAP[name]) {
       const feesField = COURSE_FEE_FIELD_MAP[name];
       const autoFee = getCourseFeeValue(value);
+
+      if (name === "courseId1") {
+        const selectedCourse = getCourseById(courses, value);
+        const makthabOptions = getMakthabYearOptions(selectedCourse?.name);
+
+        setStudent((prevData) => ({
+          ...prevData,
+          [name]: value,
+          [feesField]: autoFee,
+          year1:
+            makthabOptions.length > 0
+              ? String(makthabOptions[0].value)
+              : prevData.year1,
+        }));
+        return;
+      }
 
       setStudent((prevData) => ({
         ...prevData,
@@ -371,6 +419,25 @@ const Edit = () => {
     }));
   };
 
+  const selectedCourse1 = getCourseById(courses, student?.courseId1);
+  const makthabYearOptions = getMakthabYearOptions(selectedCourse1?.name);
+  const isMakthabLevelCourse = makthabYearOptions.length > 0;
+
+  useEffect(() => {
+    if (!isMakthabLevelCourse) return;
+    if (isLocked("year1")) return;
+
+    const allowedValues = makthabYearOptions.map((item) => String(item.value));
+    const currentValue = String(student?.year1 || "");
+
+    if (!allowedValues.includes(currentValue)) {
+      setStudent((prev) => ({
+        ...prev,
+        year1: String(makthabYearOptions[0]?.value || ""),
+      }));
+    }
+  }, [student?.courseId1, courses.length]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setProcessing(true);
@@ -385,9 +452,6 @@ const Edit = () => {
       } else {
         student.doa = "";
       }
-      //  if (!student.acYear) {
-      //    student.acYear = acYear;
-      //  }
 
       const headers = {
         'Content-Type': 'multipart/form-data',
@@ -435,7 +499,6 @@ const Edit = () => {
   };
 
   const handleKeyDown = (e) => {
-    // Prevent 'e', 'E', '+', and '-' from being entered
     if (['e', 'E', '+', '-'].includes(e.key)) {
       e.preventDefault();
     }
@@ -527,8 +590,6 @@ const Edit = () => {
                       showYearDropdown
                       dropdownMode="select"
                       isClearable
-                    //showIcon
-                    //toggleCalendarOnIconClick
                     />
                   </div>
 
@@ -548,8 +609,6 @@ const Edit = () => {
                       showYearDropdown
                       dropdownMode="select"
                       isClearable
-                    //showIcon
-                    //toggleCalendarOnIconClick
                     />
                   </div>
                 </div>
@@ -591,7 +650,6 @@ const Edit = () => {
                     value={student.remarks}
                     onChange={handleChange}
                     className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                  //   required
                   />
                 </div>
               </div>
@@ -671,7 +729,6 @@ const Edit = () => {
                     value={student.bloodGroup}
                     onChange={handleChange}
                     className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                  //    required
                   />
                 </div>
               </div>
@@ -703,7 +760,6 @@ const Edit = () => {
                     value={student.idMark2}
                     onChange={handleChange}
                     className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                  //    required
                   />
                 </div>
               </div>
@@ -720,7 +776,6 @@ const Edit = () => {
                     value={student.about}
                     onChange={handleChange}
                     className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                    //  required
                     disabled={isLocked("about")}
                   />
                 </div>
@@ -740,7 +795,6 @@ const Edit = () => {
                     value={student.fatherName}
                     onChange={handleChange}
                     className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                  //  required
                   />
                 </div>
 
@@ -756,7 +810,6 @@ const Edit = () => {
                     onChange={handleChange}
                     min="0"
                     className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                  //  required
                   />
                 </div>
 
@@ -771,7 +824,6 @@ const Edit = () => {
                     value={student.fatherOccupation}
                     onChange={handleChange}
                     className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                  //  required
                   />
                 </div>
 
@@ -786,7 +838,6 @@ const Edit = () => {
                     value={student.motherName}
                     onChange={handleChange}
                     className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                  //    required
                   />
                 </div>
 
@@ -802,7 +853,6 @@ const Edit = () => {
                     onChange={handleChange}
                     min="0"
                     className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                  //    required
                   />
                 </div>
 
@@ -817,7 +867,6 @@ const Edit = () => {
                     value={student.motherOccupation}
                     onChange={handleChange}
                     className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                  //  required
                   />
                 </div>
               </div>
@@ -834,7 +883,6 @@ const Edit = () => {
                     value={student.guardianName}
                     onChange={handleChange}
                     className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                  //    required
                   />
                 </div>
 
@@ -850,7 +898,6 @@ const Edit = () => {
                     onChange={handleChange}
                     min="0"
                     className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                  //    required
                   />
                 </div>
 
@@ -865,7 +912,6 @@ const Edit = () => {
                     value={student.guardianOccupation}
                     onChange={handleChange}
                     className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                  //  required
                   />
                 </div>
 
@@ -880,7 +926,6 @@ const Edit = () => {
                     value={student.guardianRelation}
                     onChange={handleChange}
                     className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                  //    required
                   />
                 </div>
               </div>
@@ -933,7 +978,6 @@ const Edit = () => {
                     value={student.landmark}
                     onChange={handleChange}
                     className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                  //  required
                   />
                 </div>
 
@@ -1010,9 +1054,7 @@ const Edit = () => {
                     name="hostelRefNumber"
                     onChange={handleChange}
                     value={student.hostelRefNumber}
-                    //    placeholder="Qualification"
                     className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                  //    required
                   />
                 </div>
 
@@ -1024,12 +1066,10 @@ const Edit = () => {
                   <input
                     type="number"
                     name="hostelFees"
-                    //  disabled={student.hostelFees ? true : false}
                     value={student.hostelFees}
                     min="0"
                     onChange={handleChange}
                     className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                  //    required
                   />
                 </div>
               </div>
@@ -1080,7 +1120,6 @@ const Edit = () => {
                     onChange={handleChange}
                     className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                     required
-                    // disabled={!(user.role === "superadmin" || user.role === "hquser")}
                     disabled={isLocked("instituteId1")}
                   >
                     <option value=""></option>
@@ -1101,10 +1140,8 @@ const Edit = () => {
                     name="courseId1"
                     value={student?.courseId1 || ""}
                     onChange={handleChange}
-                    //    disabled={true}
                     className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                     required
-                    // disabled={!(user.role === "superadmin" || user.role === "hquser")}
                     disabled={isLocked("courseId1")}
                   >
                     <option value=""></option>
@@ -1126,9 +1163,7 @@ const Edit = () => {
                     name="refNumber1"
                     value={student.refNumber1}
                     onChange={handleChange}
-                    //    placeholder="Qualification"
                     className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                    //required
                     disabled={isLocked("refNumber1")}
                   />
                 </div>
@@ -1137,24 +1172,40 @@ const Edit = () => {
                   {/* Year1 */}
                   <div>
                     <label className="block text-sm font-medium text-slate-500">
-                      Year / Std.<span className="text-red-700">*</span>
+                      Year / Grade<span className="text-red-700">*</span>
                     </label>
-                    <input
-                      type="number"
-                      name="year1"
-                      value={student?.year1}
-                      min="0"
-                      // min={student?.course === "Makthab" ? 0 : 1}
-                      //    disabled={student.year ? true : false}
-                      onChange={handleChange}
-                      onPaste={preventPasteNegative}
-                      onKeyPress={preventMinus}
-                      onKeyDown={handleKeyDown}
-                      className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                      required
-                      // disabled={!(user.role === "superadmin" || user.role === "hquser")}
-                      disabled={isLocked("year1")}
-                    />
+
+                    {isMakthabLevelCourse ? (
+                      <select
+                        name="year1"
+                        value={student?.year1 || ""}
+                        onChange={handleChange}
+                        className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
+                        required
+                        disabled={isLocked("year1")}
+                      >
+                        <option value=""></option>
+                        {makthabYearOptions.map((item) => (
+                          <option key={item.value} value={item.value}>
+                            {item.label}
+                          </option>
+                        ))}
+                      </select>
+                    ) : (
+                      <input
+                        type="number"
+                        name="year1"
+                        value={student?.year1 || ""}
+                        min="0"
+                        onChange={handleChange}
+                        onPaste={preventPasteNegative}
+                        onKeyPress={preventMinus}
+                        onKeyDown={handleKeyDown}
+                        className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
+                        required
+                        disabled={isLocked("year1")}
+                      />
+                    )}
                   </div>
 
                   {/* Fees1 */}
@@ -1286,7 +1337,6 @@ const Edit = () => {
                   </div>
 
                   <div className="grid mt-5 grid-cols-1 md:grid-cols-10 gap-5 mt-2">
-                    {/* Institute 4 --------------------------------------------- */}
                     <div className='md:col-span-3'>
                       <label className="block mt-2 text-sm font-medium text-slate-500">
                         Select Institute
@@ -1296,7 +1346,6 @@ const Edit = () => {
                         value={student?.instituteId4 || ""}
                         onChange={handleChange}
                         className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                        //    required
                         disabled={isLocked("instituteId4")}
                       >
                         <option value=""></option>
@@ -1308,7 +1357,6 @@ const Edit = () => {
                       </select>
                     </div>
 
-                    {/* Course 4 */}
                     <div className='md:col-span-4'>
                       <label className="block mt-2 text-sm font-medium text-slate-500">
                         Select Course
@@ -1317,9 +1365,7 @@ const Edit = () => {
                         name="courseId4"
                         value={student?.courseId4 || ""}
                         onChange={handleChange}
-                        //   disabled={student.courseId4 ? true : false}
                         className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                        //    required
                         disabled={isLocked("courseId4")}
                       >
                         <option value=""></option>
@@ -1331,7 +1377,6 @@ const Edit = () => {
                       </select>
                     </div>
 
-                    {/* Reference Number-4 */}
                     <div className='md:col-span-2'>
                       <label className="block md:mt-2 text-sm font-medium text-slate-500">
                         Reference Number
@@ -1341,14 +1386,11 @@ const Edit = () => {
                         name="refNumber4"
                         value={student.refNumber4}
                         onChange={handleChange}
-                        //    placeholder="Qualification"
                         className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                        //    required
                         disabled={isLocked("refNumber4")}
                       />
                     </div>
 
-                    {/* Fees 4 */}
                     <div className='md:col-span-1'>
                       <label className="block md:mt-2 text-sm font-medium text-slate-500">
                         Fees
@@ -1376,7 +1418,6 @@ const Edit = () => {
                   </div>
 
                   <div className="grid grid-cols-1 md:grid-cols-10 gap-5 mt-2">
-                    {/* Institute 2 --------------------------------------------- */}
                     <div className='md:col-span-4'>
                       <label className="block mt-2 text-sm font-medium text-slate-500">
                         Select Institute
@@ -1386,7 +1427,6 @@ const Edit = () => {
                         value={student?.instituteId2 || ""}
                         onChange={handleChange}
                         className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                        //    required
                         disabled={isLocked("instituteId2")}
                       >
                         <option value=""></option>
@@ -1398,7 +1438,6 @@ const Edit = () => {
                       </select>
                     </div>
 
-                    {/* Course 2 */}
                     <div className='md:col-span-3'>
                       <label className="block mt-2 text-sm font-medium text-slate-500">
                         Select Course
@@ -1407,9 +1446,7 @@ const Edit = () => {
                         name="courseId2"
                         value={student?.courseId2 || ""}
                         onChange={handleChange}
-                        //    disabled={student.courseId2 ? true : false}
                         className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                        //    required
                         disabled={isLocked("courseId2")}
                       >
                         <option value=""></option>
@@ -1421,7 +1458,6 @@ const Edit = () => {
                       </select>
                     </div>
 
-                    {/* Reference Number-2 */}
                     <div className='md:col-span-2'>
                       <label className="block md:mt-2 text-sm font-medium text-slate-500">
                         Reference Number
@@ -1431,14 +1467,11 @@ const Edit = () => {
                         name="refNumber2"
                         value={student.refNumber2}
                         onChange={handleChange}
-                        //    placeholder="Qualification"
                         className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                        //   required
                         disabled={isLocked("refNumber2")}
                       />
                     </div>
 
-                    {/* Fees 2 */}
                     <div className='md:col-span-1'>
                       <label className="block md:mt-2 text-sm font-medium text-slate-500">
                         Fees
@@ -1466,7 +1499,6 @@ const Edit = () => {
                   </div>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mt-5">
-                    {/* Institute 3 --------------------------------------------- */}
                     <div>
                       <label className="block mt-2 text-sm font-medium text-slate-500">
                         Select Institute
@@ -1476,7 +1508,6 @@ const Edit = () => {
                         value={student?.instituteId3 || ""}
                         onChange={handleChange}
                         className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                        //    required
                         disabled={isLocked("instituteId3")}
                       >
                         <option value=""></option>
@@ -1488,7 +1519,6 @@ const Edit = () => {
                       </select>
                     </div>
 
-                    {/* Course 3 */}
                     <div>
                       <label className="block mt-2 text-sm font-medium text-slate-500">
                         Select Course
@@ -1497,9 +1527,7 @@ const Edit = () => {
                         name="courseId3"
                         value={student?.courseId3 || ""}
                         onChange={handleChange}
-                        //   disabled={student.courseId3 ? true : false}
                         className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                        //    required
                         disabled={isLocked("courseId3")}
                       >
                         <option value=""></option>
@@ -1511,7 +1539,6 @@ const Edit = () => {
                       </select>
                     </div>
 
-                    {/* Reference Number-3 */}
                     <div>
                       <label className="block text-sm font-medium text-slate-500">
                         Reference Number
@@ -1521,15 +1548,12 @@ const Edit = () => {
                         name="refNumber3"
                         value={student.refNumber3}
                         onChange={handleChange}
-                        //    placeholder="Qualification"
                         className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                        //   required
                         disabled={isLocked("refNumber3")}
                       />
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                      {/* Year3 */}
                       <div>
                         <label className="block text-sm font-medium text-slate-500">
                           Year
@@ -1539,18 +1563,15 @@ const Edit = () => {
                           name="year3"
                           value={student?.year3 || ""}
                           min="1"
-                          //    disabled={student.year ? true : false}
                           onChange={handleChange}
                           onPaste={preventPasteNegative}
                           onKeyPress={preventMinus}
                           onKeyDown={handleKeyDown}
                           className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                          //  required
                           disabled={isLocked("year3")}
                         />
                       </div>
 
-                      {/* Fees 3 */}
                       <div>
                         <label className="block text-sm font-medium text-slate-500">
                           Fees
@@ -1579,7 +1600,6 @@ const Edit = () => {
                   </div>
 
                   <div className="grid grid-cols-1 md:grid-cols-10 gap-5 mt-2">
-                    {/* Institute 5 --------------------------------------------- */}
                     <div className='md:col-span-3'>
                       <label className="block mt-2 text-sm font-medium text-slate-500">
                         Select Institute
@@ -1589,7 +1609,6 @@ const Edit = () => {
                         value={student?.instituteId5 || ""}
                         onChange={handleChange}
                         className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                        //    required
                         disabled={isLocked("instituteId5")}
                       >
                         <option value=""></option>
@@ -1601,7 +1620,6 @@ const Edit = () => {
                       </select>
                     </div>
 
-                    {/* Course 5 */}
                     <div className='md:col-span-4'>
                       <label className="block mt-2 text-sm font-medium text-slate-500">
                         Select Course
@@ -1610,9 +1628,7 @@ const Edit = () => {
                         name="courseId5"
                         value={student?.courseId5 || ""}
                         onChange={handleChange}
-                        //  disabled={student.courseId5 ? true : false}
                         className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                        //   required
                         disabled={isLocked("courseId5")}
                       >
                         <option value=""></option>
@@ -1624,7 +1640,6 @@ const Edit = () => {
                       </select>
                     </div>
 
-                    {/* Reference Number-5 */}
                     <div className='md:col-span-2'>
                       <label className="block md:mt-2 text-sm font-medium text-slate-500">
                         Reference Number
@@ -1634,14 +1649,11 @@ const Edit = () => {
                         name="refNumber5"
                         value={student.refNumber5}
                         onChange={handleChange}
-                        //    placeholder="Qualification"
                         className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                        //    required
                         disabled={isLocked("refNumber5")}
                       />
                     </div>
 
-                    {/* Fees 5 */}
                     <div className='md:col-span-1'>
                       <label className="block md:mt-2 text-sm font-medium text-slate-500">
                         Fees
@@ -1664,21 +1676,6 @@ const Edit = () => {
 
               <div className="flex space-x-3 mb-5" />
               <div className="hidden lg:block flex space-x-3 mb-5" />
-
-              {/* Image Upload 
-              <div>
-                <label className="block text-sm font-medium text-slate-500">
-                  Update Image
-                </label>
-                <input
-                  type="file"
-                  name="file"
-                  onChange={handleChange}
-                  placeholder="Upload Image"
-                  accept="image/*"
-                  className="mt-1 p-2 mb-5 block w-full border border-gray-300 rounded-md"
-                />
-              </div>*/}
             </div>
 
             <button
