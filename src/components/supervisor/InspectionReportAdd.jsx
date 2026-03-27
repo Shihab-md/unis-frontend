@@ -593,7 +593,7 @@ export default function InspectionReportAdd() {
         </div>
 
         <form onSubmit={handleSubmit}>
-          <div className="grid grid-cols-1 gap-4 text-sm md:grid-cols-12 bg-white p-3 pb-4 rounded-lg shadow-xl">
+          <div className="grid grid-cols-1 gap-4 text-sm md:grid-cols-12 bg-slate-50 p-5 rounded-lg shadow-xl">
             <Field label="Niswan" className="text-xs md:col-span-4">
               <Select
                 options={schoolOptions}

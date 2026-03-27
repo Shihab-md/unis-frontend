@@ -17,7 +17,7 @@ export const columns = [
   {
     name: "Supervisor details",
     selector: (row) => <div className="mt-2 mb-2">
-      <p className="mb-1"><span className="text-blue-700 mr-1">🆔:</span> {row.supId}</p>
+      <p className="mb-2"><span className="text-blue-700 mr-1">🆔:</span> {row.supId}</p>
       <p><span className="text-blue-700 mr-1">👤:</span> {row.name}</p>
     </div>,
     sortable: true,
@@ -26,10 +26,10 @@ export const columns = [
   {
     name: "Contact",
     selector: (row) => <div className="mt-2 mb-2">
-      <p className="mb-1"><span className="text-blue-700 mr-1">📱:</span> {row.contactNumber}</p>
-      <p className="mb-1"><span className="text-blue-700 mr-1 drop-shadow-xl">@ :</span> {row.email}</p>
-      <p className="mb-1"><span className="text-blue-700 mr-1">🎂:</span> {row.dob ? new Date(row.dob).toLocaleDateString("en-GB") : "-"}</p>
-      <p className="mb-1"><span className="text-blue-700 mr-1">🗓️:</span> {row.doj ? new Date(row.doj).toLocaleDateString("en-GB") : "-"}</p>
+      <p className="mb-1.5"><span className="text-blue-700 mr-1">📱:</span> {row.contactNumber}</p>
+      <p className="mb-1.5"><span className="text-blue-700 mr-1 drop-shadow-xl">@ :</span> {row.email}</p>
+      <p className="mb-1.5"><span className="text-blue-700 mr-1">🎂:</span> {row.dob ? new Date(row.dob).toLocaleDateString("en-GB") : "-"}</p>
+      <p className="mb-1.5"><span className="text-blue-700 mr-1">🗓️:</span> {row.doj ? new Date(row.doj).toLocaleDateString("en-GB") : "-"}</p>
       <p><span className="text-blue-700 mr-1">🗺️:</span> {row.routeName ? row.routeName !== "Nil" ? row.routeName : "-" : "-"}</p>
     </div>,
     width: "320px",
@@ -49,11 +49,11 @@ export const columns = [
         <p>
           <span className="font-semibold text-blue-700 mr-1">Total:</span> {row.studentCount}
         </p>
-        <div className="mt-1 mb-1"></div>
+        <div className="mt-1 mb-2"></div>
         {row.studentCountsByCourse?.map((course, i) => (
           <div key={i}>
-            <p className="mr-1">
-              <span className="text-blue-700">{course.courseName}{" : "}</span>
+            <p className="mr-1 mb-1">
+              <span className="text-pink-700">{course.courseName}{" : "}</span>
               <span>{course.count}</span>
             </p>
           </div>
@@ -67,8 +67,8 @@ export const columns = [
     name: "Status",
     selector: (row) => <div className="mt-2 mb-2">
       {row.active === "Active" ?
-        <p className="mb-1"><span className="text-blue-700 mr-1">✅:</span> {row.active}</p>
-        : <p className="mb-1"><span className="text-blue-700 mr-1">❎:</span> {row.active}</p>}
+        <p className="mb-2"><span className="text-blue-700 mr-1">✅:</span> {row.active}</p>
+        : <p className="mb-2"><span className="text-blue-700 mr-1">❎:</span> {row.active}</p>}
       <p><span className="text-blue-700 mr-1">💼:</span> {row.jobType}</p>
     </div>,
     width: "160px",
