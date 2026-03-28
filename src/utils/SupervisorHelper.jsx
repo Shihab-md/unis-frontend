@@ -107,7 +107,7 @@ export const SupervisorCard = ({ row }) => {
       : "bg-amber-50 text-amber-700 border-amber-200";
 
   return (
-    <div className="rounded-md border border-blue-100 bg-slate-50 shadow-xl p-3 space-y-2 hover:-translate-y-0.5 bg-[url(/c-2.jpg)] bg-contain bg-center bg-no-repeat"
+    <div className="rounded-md border border-blue-100 bg-slate-50 shadow-xl p-3 pb-2 space-y-2 hover:-translate-y-0.5 bg-[url(/c-2.jpg)] bg-contain bg-center bg-no-repeat"
       style={{ backgroundSize: "100% 100%" }}>
       <div className="flex items-start justify-between gap-2">
         <div className="min-w-0 space-y-1">
