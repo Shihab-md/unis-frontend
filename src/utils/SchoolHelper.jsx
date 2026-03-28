@@ -19,7 +19,7 @@ export const columns = [
     selector: (row) => <div className="mt-2 mb-2">
       <p className="mb-1"><span className="text-blue-700 mr-2">Code:</span> {row.code}</p>
       <p className="mb-1"><span className="text-blue-700"></span> {row.name}</p>
-      <p className='mb-1 font-["Noto_Naskh_Arabic"]'><span className='text-blue-700'></span> {row.nameArabic}</p>
+      <p className='mb-1 text-lg font-["Noto_Naskh_Arabic"]'><span className='text-blue-700'></span> {row.nameArabic}</p>
       <p><span className="text-blue-700"></span> {row.nameNative}</p>
     </div>,
     sortable: true,

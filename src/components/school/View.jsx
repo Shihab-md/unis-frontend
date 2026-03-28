@@ -105,7 +105,7 @@ const View = () => {
                   <ViewCard type="data" text={school?.nameEnglish} />
 
                   <ViewCard type="title" text="Name in Arabic" />
-                  <ViewCard type="data" text={school?.nameArabic} />
+                  <ViewCard type="dataArabic" text={school?.nameArabic} />
 
                   <ViewCard type="title" text="Name in Native" />
                   <ViewCard type="data" text={school?.nameNative} />

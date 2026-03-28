@@ -8,6 +8,9 @@ const ViewCard = ({ type, text }) => {
   } else if (type === "data") {
     return (<div className="border p-2 text-sm">{text ? text : "-"}</div>)
 
+  } else if (type === "dataArabic") {
+    return (<div className='border p-2 font-["Noto_Naskh_Arabic"] text-lg'>{text ? text : '-'}</div>)
+
   } else if (type === "header") {
     return (<div className="flex space-x-3 mb-1 justify-center font-medium border border-blue-300
       shadow-lg p-2 text-blue-600 text-shadow-lg bg-blue-100 rounded-md">{text}</div>)
