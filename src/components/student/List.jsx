@@ -369,7 +369,7 @@ const List = () => {
       }
     }
   };
-
+ 
   const getFilteredStudents = async () => {
     setFiltering(true);
     try {

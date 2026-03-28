@@ -29,7 +29,7 @@ export const columns = [
       </p>
       <p className="mb-1">
         <span className="text-blue-700 mr-2">Student Name:</span> {row.studentName}
-      </p> 
+      </p>
       <p>
         <span className="text-blue-700 mr-3">Parent / Guardian name:</span> {row.fatherName}
       </p>
@@ -51,6 +51,66 @@ export const columns = [
     center: "true",
   },
 ];
+
+export const CertificateCard = ({ row, onCertificateDelete }) => {
+  return (
+    <div
+      className="relative overflow-hidden rounded-md border border-sky-100 shadow-lg p-3 pt-1 pb-2 mt-1 space-y-2 transition-all 
+      duration-200 hover:-translate-y-0.5 hover:shadow-xl bg-[url('/c-5.jpg')] bg-center bg-no-repeat"
+      style={{ backgroundSize: "100% 100%" }}
+    >
+      {/* overlay for readability */}
+      <div className="absolute inset-0 bg-white/90" />
+
+      <div className="relative">
+        <div className="flex items-start justify-between gap-2">
+          <div className="min-w-0">
+            <h3 className="text-sm font-semibold text-pink-700 break-words leading-5">
+              {row.sanadhNo || "-"}
+            </h3>
+          </div>
+        </div>
+
+        <div className="mt-2 grid grid-cols-1 gap-y-1 text-xs">
+          <div>
+            <span className="text-slate-500">Roll Number:</span>{" "}
+            <span className="font-medium text-slate-800">
+              {row.rollNumber || "-"}
+            </span>
+          </div>
+
+          <div>
+            <span className="text-slate-500">Student Name:</span>{" "}
+            <span className="font-medium text-slate-800">
+              {row.studentName || "-"}
+            </span>
+          </div>
+
+          <div>
+            <span className="text-slate-500">Parent / Guardian:</span>{" "}
+            <span className="font-medium text-slate-800">
+              {row.fatherName || "-"}
+            </span>
+          </div>
+
+          <div className="pt-1 border-t border-slate-200/70">
+            <p className="text-[12px] font-medium text-slate-800">Niswan</p>
+            <p className="text-xs font-small text-slate-500">
+              {row.niswanCode || "-"}
+            </p>
+            <p className="text-xs font-sm text-slate-500 break-words">
+              {row.niswanName || "-"}
+            </p>
+          </div>
+        </div>
+
+        <div className="flex pt-2 items-center justify-center">
+          <CertificateButtons Id={row._id} onCertificateDelete={onCertificateDelete} />
+        </div>
+      </div>
+    </div>
+  );
+};
 
 // certificates for salary form
 export const getCertificates = async (id) => {

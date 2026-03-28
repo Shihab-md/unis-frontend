@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { columns, CertificateButtons } from '../../utils/CertificateHelper'
+import { columns, CertificateButtons, CertificateCard } from '../../utils/CertificateHelper'
 import { getBaseUrl, handleRightClickAndFullScreen, getSpinner, checkAuth, LinkIcon, showSwalAlert, getFilterGif } from '../../utils/CommonHelper';
 import DataTable from 'react-data-table-component'
 import axios from 'axios'
@@ -357,7 +357,7 @@ const List = () => {
         || (localStorage.getItem('certCourseId') != null && localStorage.getItem('certCourseId') != 'null')
         || (localStorage.getItem('certACYearId') != null && localStorage.getItem('certACYearId') != 'null') ?
 
-        <div className='grid lg:flex mt-3 lg:mt-7 text-xs text-lime-600 items-center justify-center'>
+        <div className='grid lg:flex mt-3 mb-3 lg:mt-7 text-xs text-lime-600 items-center justify-center'>
           <p className='lg:mr-3 justify-center text-center'>Filter Applied: </p>
 
           <p>{localStorage.getItem('certSchoolId') != null && localStorage.getItem('certSchoolId') != 'null' ?
@@ -380,9 +380,20 @@ const List = () => {
 
       {filtering ?
         getFilterGif() :
-        <div className='mt-3 lg:mt-7 rounded-lg shadow-lg'>
-          <DataTable columns={columns} data={filteredCertificate} pagination highlightOnHover striped responsive />
-        </div>}
+        (
+          <>
+            {/* Mobile / Tablet */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 lg:hidden">
+              {filteredCertificate.map((row) => (
+                <CertificateCard key={row._id} row={row} />
+              ))}
+            </div>
+
+            {/* Desktop */}
+            <div className="hidden lg:block">
+              <DataTable columns={columns} data={filteredCertificate} pagination highlightOnHover striped responsive />
+            </div>
+          </>)}
     </div>
   )
 }
