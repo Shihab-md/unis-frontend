@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { columns, EmployeeButtons, conditionalRowStyles } from '../../utils/EmployeeHelper'
+import { columns, EmployeeButtons, EmployeeCard, conditionalRowStyles } from '../../utils/EmployeeHelper'
 import DataTable from 'react-data-table-component'
 import axios from 'axios'
 import { getSchoolsFromCache } from '../../utils/SchoolHelper';
@@ -440,7 +440,7 @@ const List = () => {
   }
 
   return (
-    <div className="mt-3 p-5">
+    <div className="p-3 lg:p-5 bg-repeat mt-1 lg:mt-5">
       <div className="text-center">
         <h3 className="text-2xl font-bold px-5 py-0 text-gray-600">Manage Employees
           <p className='flex md:grid text-sm md:text-base justify-center text-rose-700'>
@@ -498,10 +498,20 @@ const List = () => {
         : <div className='flex mt-3 lg:mt-7'></div>}
 
       {filtering ?
-        getFilterGif() :
-        <div className='mt-3 lg:mt-7 rounded-lg shadow-lg'>
-          <DataTable columns={columns} data={filteredEmployee} highlightOnHover striped responsive conditionalRowStyles={conditionalRowStyles} />
-        </div>}
+        getFilterGif() : (
+          <>
+            {/* Mobile / Tablet */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 lg:hidden">
+              {filteredEmployee.map((row) => (
+                <EmployeeCard key={row._id} row={row} />
+              ))}
+            </div>
+
+            {/* Desktop */}
+            <div className="hidden lg:block">
+              <DataTable columns={columns} data={filteredEmployee} highlightOnHover striped responsive conditionalRowStyles={conditionalRowStyles} />
+            </div>
+          </>)}
     </div>
   )
 }

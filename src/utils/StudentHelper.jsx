@@ -40,67 +40,7 @@ export const columnsSelect = [
     ),
   },
 ];
-{/*
-function getDetails(title, courseName, instituteName, refNumber, year, fees, status) {
-  return <div className="mt-3 mb-5">
-    <p className='text-md font-bold text-pink-500 mb-2'>{title}</p>
-    <p className='mb-1'>{courseName}<span className='text-gray-300 font-bold ml-5 mr-5'>|</span>{instituteName}</p>
-    <p>{"Ref. No. : " + refNumber}<span className='text-gray-300 font-bold ml-5 mr-5'>|</span>
-      {year || year === 0 ? <span><span>Year : {year}</span><span className='text-gray-300 font-bold ml-5 mr-5'>|</span></span> : null}
-      {"Fees : " + fees}<span className='text-gray-300 font-bold ml-5 mr-5'>|</span>
-      {"Status : " + status}</p>
-  </div>
-}
 
-export const columnsSelectForAcademic = [
-  {
-    name: <div className='text-sm font-bold text-lime-600'>AC Year</div>,
-    selector: (row) => row.acYear.acYear,
-    width: "95px",
-  },
-  {
-    name: <div className='text-sm font-bold text-lime-600'>Course Details</div>,
-    selector: (row) => (<div>
-      {row.courseId1 ?
-        getDetails(
-          'Deeniyath Education', row.courseId1?.name, row.instituteId1?.name,
-          row.refNumber1 ? row.refNumber1 : '-', row.year1,
-          row.fees1 ? row.fees1 : 0, row.status1 ? row.status1 : ''
-        ) : null}
-
-      {row.courseId4 ?
-        getDetails(
-          'Islamic Home Science', row.courseId4?.name, row.instituteId4?.name,
-          row.refNumber4 ? row.refNumber4 : '-', null,
-          row.fees4 ? row.fees4 : 0, row.status4 ? row.status4 : ''
-        ) : null}
-
-      {row.courseId2 ?
-        getDetails(
-          'School Education', row.courseId2?.name, row.instituteId2?.name,
-          row.refNumber2 ? row.refNumber2 : '-', null,
-          row.fees2 ? row.fees2 : 0, row.status2 ? row.status2 : ''
-        ) : null}
-
-      {row.courseId3 ?
-        getDetails(
-          'College Education', row.courseId3?.name, row.instituteId3?.name,
-          row.refNumber3 ? row.refNumber3 : '-', row.year3,
-          row.fees3 ? row.fees3 : 0, row.status3 ? row.status3 : ''
-        ) : null}
-
-      {row.courseId5 ?
-        getDetails(
-          'Vocational Course', row.courseId5?.name, row.instituteId5?.name,
-          row.refNumber5 ? row.refNumber5 : '-', null,
-          row.fees5 ? row.fees5 : 0, row.status5 ? row.status5 : ''
-        ) : null}
-    </div>),
-    width: "700px",
-    wrap: true,
-  },
-];
-*/}
 function getDetails(
   title,
   courseId,
@@ -334,6 +274,130 @@ export const conditionalRowStyles = [
     }),
   }
 ];
+
+export const StudentCard = ({ row, onStudentDelete }) => {
+  const statusClass =
+    row.active === "Active"
+      ? "bg-emerald-50 text-emerald-700 border-emerald-200"
+      : row.active === "Transferred"
+        ? "bg-sky-50 text-sky-700 border-sky-200"
+        : "bg-rose-50 text-rose-700 border-rose-200";
+
+  return (
+    <div
+      className="relative overflow-hidden rounded-md border border-sky-100 shadow-lg p-2 mt-1 transition-all duration-200 
+      hover:-translate-y-0.5 hover:shadow-xl bg-[url('/c-12.jpg')] bg-center bg-no-repeat"
+      style={{ backgroundSize: "100% 100%" }}
+    >
+      {/* overlay for readability */}
+      <div className="absolute inset-0 bg-white/60" />
+
+      <div className="relative">
+        <div className="flex items-start justify-between gap-2">
+          <div className="min-w-0">
+            <h3 className="text-sm font-semibold text-slate-800 break-words leading-5">
+              {row.name || "-"}
+            </h3>
+            <p className="mt-0.5 text-[11px] text-slate-500">
+              Roll No: {row.rollNumber || "-"}
+            </p>
+            <p className="mt-0.5 text-[11px] text-slate-500 break-words">
+              Ref: {row.about || "-"}
+            </p>
+          </div>
+
+          <div className="shrink-0">
+            <span
+              className={`inline-flex rounded-md border px-2 py-0.5 text-[10px] font-medium shadow-lg ${statusClass}`}
+            >
+              {row.active || "-"}
+            </span>
+          </div>
+        </div>
+
+        <div className="mt-3 grid grid-cols-2 gap-x-3 gap-y-2 text-xs">
+          <div>
+            <span className="text-slate-500">👤 Parent:</span>{" "}
+            <span className="font-medium text-slate-800">
+              {row.fatherName || "-"}
+            </span>
+          </div>
+
+          <div>
+            <span className="text-slate-500">📱:</span>{" "}
+            <span className="font-medium text-slate-800">
+              {row.contactNumber || "-"}
+            </span>
+          </div>
+
+          <div>
+            <span className="text-slate-500">🎀:</span>{" "}
+            <span className="font-medium text-slate-800">
+              {row.gender || "-"}
+            </span>
+          </div>
+
+          <div>
+            <span className="text-slate-500">💍:</span>{" "}
+            <span className="font-medium text-slate-800">
+              {row.maritalStatus || "-"}
+            </span>
+          </div>
+
+          <div>
+            <span className="text-slate-500">🎂:</span>{" "}
+            <span className="font-medium text-slate-800">
+              {row.dob ? new Date(row.dob).toLocaleDateString("en-GB") : "-"}
+            </span>
+          </div>
+
+          <div>
+            <span className="text-slate-500">🗓️:</span>{" "}
+            <span className="font-medium text-slate-800">
+              {row.doa ? new Date(row.doa).toLocaleDateString("en-GB") : "-"}
+            </span>
+          </div>
+
+          <div>
+            <span className="text-slate-500">🏠 Hosteler:</span>{" "}
+            <span className="font-medium text-slate-800">
+              {row.hostel || "-"}
+            </span>
+          </div>
+
+          <div className="col-span-2">
+            <span className="text-slate-500">📍:</span>{" "}
+            <span className="font-medxsium text-slate-500 break-words">
+              {[row.address, row.city, row.district].filter(Boolean).join(", ") || "-"}
+            </span>
+          </div>
+        </div>
+
+        <div className="mt-3 rounded-md border border-pink-200 bg-white/70 p-2 shadow-lg">
+          <p className="text-xs font-semibold text-slate-700 mb-1">Courses</p>
+
+          {Array.isArray(row.courses) && row.courses.length > 0 ? (
+            <div className="space-y-1">
+              {row.courses.map((course, i) => (
+                <p key={course._id || i} className="text-[11px] text-slate-700 leading-4">
+                  <span className="text-sky-700 font-medium mr-1">{i + 1}.</span>
+                  {course.name || "-"}
+                  {Number(course.years) > 0 ? ` (${getYearLabel(course.years)})` : ""}
+                </p>
+              ))}
+            </div>
+          ) : (
+            <p className="text-[11px] text-slate-500">-</p>
+          )}
+        </div>
+
+        <div className="flex pt-2 items-center justify-center">
+          <StudentButtons Id={row._id} onStudentDelete={onStudentDelete} />
+        </div>
+      </div>
+    </div>
+  );
+};
 
 // students for salary form
 export const getStudents = async (id) => {

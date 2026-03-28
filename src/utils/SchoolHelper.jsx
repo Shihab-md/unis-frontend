@@ -103,6 +103,113 @@ export const conditionalRowStyles = [
   }
 ];
 
+export const SchoolCard = ({ row, onSchoolDelete }) => {
+  const statusClass =
+    row.active === "Active"
+      ? "bg-emerald-50 text-emerald-700 border-emerald-200"
+      : "bg-rose-50 text-rose-700 border-rose-200";
+
+  return (
+    <div
+      className="relative overflow-hidden rounded-md border border-sky-100 shadow-lg p-2 transition-all duration-200 
+      hover:-translate-y-0.5 hover:shadow-xl bg-[url('/c-11.jpg')] bg-center"
+      style={{ backgroundSize: "100% 100%" }}
+    >
+      {/* overlay for readability */}
+      <div className="absolute inset-0 bg-white/75" />
+
+      <div className="relative">
+        <div className="flex items-start justify-between gap-2">
+          <div className="min-w-0">
+
+            <p className="mt-0.5 mb-1 text-[12px] text-slate-500">
+              Code: {row.code || "-"}
+            </p>
+
+            <h3 className="flex text-xs mt-0.5 font-semibold text-slate-800">
+              {row.name || "-"}
+            </h3>
+
+            {row.nameArabic ? (
+              <p className='mt-1 text-base font-["Noto_Naskh_Arabic"] text-slate-800'>
+                {row.nameArabic}
+              </p>
+            ) : null}
+
+            {row.nameNative ? (
+              <p className="mt-0.5 text-[11px] text-slate-600">
+                {row.nameNative}
+              </p>
+            ) : null}
+          </div>
+
+          <div className="shrink-0">
+            <span
+              className={`inline-flex rounded-md border px-2 py-0.5 text-[10px] font-medium shadow-lg ${statusClass}`}
+            >
+              {row.active || "-"}
+            </span>
+          </div>
+        </div>
+
+        <div className="col-span-2 text-xs mt-3">
+          <span className="text-slate-500">📍:</span>{" "}
+          <span className="font-xs text-slate-500 break-words">
+            {[row.address, row.city, row.landmark, row.districtState]
+              .filter(Boolean)
+              .join(", ") || "-"}
+          </span>
+        </div>
+
+        <div className="mt-3 grid gap-x-3 gap-y-2 text-xs">
+          <div>
+            <p className="text-xs text-slate-700 mb-1">Incharge:</p>
+            <span className="text-slate-500">👤:</span>{" "}
+            <span className="font-xs text-slate-500">
+              {row.incharge1 || "-"}
+            </span>
+            <span className="text-slate-500">     📱:</span>{" "}
+            <span className="font-xs text-slate-500">
+              {row.incharge1Number || "-"}
+            </span>
+          </div>
+
+          <div>
+            <p className="text-xs text-slate-700 mb-1">Supervisor:</p>
+            <span className="font-xs text-slate-500">
+              {row.supervisorId + " : " + row.supervisorName || "-"}
+            </span>
+          </div>
+
+        </div>
+
+        <div className="mt-3 rounded-md border border-pink-200 p-2 bg-white/70 shadow-lg">
+          <p className="text-xs font-semibold text-slate-700">
+            Students: <span className="text-sky-700">{row.studentCount ?? 0}</span>
+          </p>
+
+          {Array.isArray(row.studentCountsByCourse) && row.studentCountsByCourse.length > 0 ? (
+            <div className="mt-2 space-y-1">
+              {row.studentCountsByCourse.map((course, i) => (
+                <p key={i} className="text-[11px] text-slate-700 leading-4">
+                  <span className="text-sky-700 font-medium">
+                    {course.courseName}:
+                  </span>{" "}
+                  {course.count}
+                </p>
+              ))}
+            </div>
+          ) : null}
+        </div>
+
+        <div className="flex pt-2 items-center justify-center">
+          <SchoolButtons Id={row._id} onSchoolDelete={onSchoolDelete} />
+        </div>
+      </div>
+    </div>
+  );
+};
+
 export const getSchools = async (id) => {
   let schools;
   try {

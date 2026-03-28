@@ -108,6 +108,93 @@ export const conditionalRowStyles = [
   }
 ];
 
+export const EmployeeCard = ({ row, onEmployeeDelete }) => {
+  const statusClass =
+    row.active === "Active"
+      ? "bg-emerald-50 text-emerald-700 border-emerald-200"
+      : "bg-rose-50 text-rose-700 border-rose-200";
+
+  const roleText = (() => {
+    const r = String(row?.role || "").trim();
+    if (!r) return "-";
+    return r.charAt(0).toUpperCase() + r.slice(1).toLowerCase();
+  })();
+
+  return (
+    <div
+      className="relative overflow-hidden rounded-md border border-sky-100 shadow-lg p-3 pt-1 pb-2 mt-1 space-y-2 transition-all duration-200 
+      hover:-translate-y-0.5 hover:shadow-xl bg-[url('/c-4.jpg')] bg-center bg-no-repeat"
+      style={{ backgroundSize: "100% 100%" }}
+    >
+      {/* overlay for readability */}
+      <div className="absolute inset-0 bg-white/40" />
+
+      <div className="relative">
+        <div className="flex items-start justify-between gap-2">
+          <div className="min-w-0">
+            <h3 className="text-sm font-semibold text-slate-800 break-words leading-5">
+              {row.name || "-"}
+            </h3>
+            <p className="mt-0.5 mt-1 text-[11px] text-slate-500">
+              🆔: {row.empId || "-"}
+            </p>
+          </div>
+
+          <div className="flex flex-col items-end gap-1 shrink-0">
+            <span className="inline-flex rounded-md border border-sky-200 bg-sky-50 px-2 py-0.5 text-[10px] font-medium text-sky-700 shadow-lg">
+              {roleText}
+            </span>
+            <span
+              className={`inline-flex rounded-md border px-2 py-0.5 text-[10px] font-medium shadow-lg ${statusClass}`}
+            >
+              {row.active || "-"}
+            </span>
+          </div>
+        </div>
+
+        <div className="mt-3 grid grid-cols-2 gap-x-3 gap-y-2 text-xs">
+          <div className="col-span-2">
+            <span className="text-slate-500">📱:</span>{" "}
+            <span className="font-xs text-slate-500">
+              {row.contactNumber || "-"}
+            </span>
+            <span className="text-slate-500 ml-3">   @:</span>{" "}
+            <span className="font-xs text-slate-500 break-all">
+              {row.email || "-"}
+            </span>
+          </div>
+
+          <div>
+            <span className="text-slate-500">🎂:</span>{" "}
+            <span className="font-xs text-slate-500">
+              {row.dob ? new Date(row.dob).toLocaleDateString("en-GB") : "-"}
+            </span>
+          </div>
+
+          <div>
+            <span className="text-slate-500">🗓️:</span>{" "}
+            <span className="font-xs text-slate-500">
+              {row.doj ? new Date(row.doj).toLocaleDateString("en-GB") : "-"}
+            </span>
+          </div>
+
+          <div className="col-span-2">
+            <p className="text-slate-800">Niswan:</p>{" "}
+            <span className="font-xs text-slate-500 break-words">
+              {row.schoolCode ? `${row.schoolCode} - ` : ""}
+              {row.schoolName || "-"}
+            </span>
+          </div>
+        </div>
+
+        <div className="flex pt-2 items-center justify-center">
+          <EmployeeButtons Id={row._id} onEmployeeDelete={onEmployeeDelete} />
+        </div>
+      </div>
+    </div>
+  );
+};
+
 export const EmployeeButtons = ({ Id, onEmployeeDelete }) => {
   const navigate = useNavigate();
 

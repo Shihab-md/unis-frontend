@@ -107,76 +107,83 @@ export const SupervisorCard = ({ row }) => {
       : "bg-amber-50 text-amber-700 border-amber-200";
 
   return (
-    <div className="rounded-md border border-blue-100 bg-slate-50 shadow-xl p-3 pb-2 space-y-2 hover:-translate-y-0.5 bg-[url(/c-2.jpg)] bg-contain bg-center bg-no-repeat"
+    <div className="relative overflow-hidden rounded-md border border-blue-100 bg-slate-50 shadow-xl p-3 pb-2 space-y-2 
+    hover:-translate-y-0.5 bg-[url(/c-3.jpg)] bg-center bg-no-repeat"
       style={{ backgroundSize: "100% 100%" }}>
-      <div className="flex items-start justify-between gap-2">
-        <div className="min-w-0 space-y-1">
-          <h3 className="text-xs font-semibold text-slate-800 break-words leading-5">
-            {row.name || "-"}
-          </h3>
-          <p className="text-[11px] text-slate-500 mt-0.5">
-            🆔: {row.supId || "-"}
-          </p>
-          <p className="text-[11px] text-slate-500 mt-0.5">
-            @: {row.email || "-"}
-          </p>
+
+      {/* overlay for readability */}
+      <div className="absolute inset-0 bg-white/50" />
+
+      <div className="relative">
+        <div className="flex items-start justify-between gap-2">
+          <div className="min-w-0 space-y-1">
+            <h3 className="text-xs font-semibold text-slate-800 break-words leading-5">
+              {row.name || "-"}
+            </h3>
+            <p className="text-[11px] text-slate-500 mt-0.5">
+              🆔: {row.supId || "-"}
+            </p>
+            <p className="text-[11px] text-slate-500 mt-0.5">
+              @: {row.email || "-"}
+            </p>
+          </div>
+
+          <div className="flex flex-col gap-1 items-end shrink-0 ">
+            <span
+              className={`inline-flex rounded-md border shadow-lg px-2 py-0.5 text-[10px] font-medium ${statusClass}`}
+            >
+              {row.active || "-"}
+            </span>
+            <span
+              className={`inline-flex rounded-md border shadow-lg px-2 py-0.5 text-[10px] font-medium ${typeClass}`}
+            >
+              {row.jobType || "-"}
+            </span>
+          </div>
         </div>
 
-        <div className="flex flex-col gap-1 items-end shrink-0 ">
-          <span
-            className={`inline-flex rounded-md border shadow-lg px-2 py-0.5 text-[10px] font-medium ${statusClass}`}
-          >
-            {row.active || "-"}
-          </span>
-          <span
-            className={`inline-flex rounded-md border shadow-lg px-2 py-0.5 text-[10px] font-medium ${typeClass}`}
-          >
-            {row.jobType || "-"}
-          </span>
+        <div className="grid grid-cols-2 gap-x-3 gap-y-2 mt-2 text-xs">
+          <div>
+            <span className="text-slate-500">📱:</span>{" "}
+            <span className="font-medium text-slate-800">
+              {row.contactNumber || "-"}
+            </span>
+          </div>
+          <div>
+            <span className="text-slate-500">🗺️:</span>{" "}
+            <span className="font-medium text-slate-800">
+              {row.routeName && row.routeName !== "Nil" ? row.routeName : "-"}
+            </span>
+          </div>
+          <div>
+            <span className="text-slate-500">🎂:</span>{" "}
+            <span className="font-medium text-slate-800">
+              {row.dob ? new Date(row.dob).toLocaleDateString("en-GB") : "-"}
+            </span>
+          </div>
+          <div>
+            <span className="text-slate-500">🗓️:</span>{" "}
+            <span className="font-medium text-slate-800">
+              {row.doj ? new Date(row.doj).toLocaleDateString("en-GB") : "-"}
+            </span>
+          </div>
+          <div>
+            <span className="text-slate-500">Niswans:</span>{" "}
+            <span className="font-medium text-slate-800">
+              {row.schoolsCount ?? 0}
+            </span>
+          </div>
+          <div>
+            <span className="text-slate-500">Students:</span>{" "}
+            <span className="font-medium text-slate-800">
+              {row.studentCount ?? 0}
+            </span>
+          </div>
         </div>
-      </div>
 
-      <div className="grid grid-cols-2 gap-x-3 gap-y-2 text-xs">
-        <div>
-          <span className="text-slate-500">📱:</span>{" "}
-          <span className="font-medium text-slate-800">
-            {row.contactNumber || "-"}
-          </span>
+        <div className="flex pt-2 items-center justify-center">
+          <SupervisorButtons Id={row._id} />
         </div>
-        <div>
-          <span className="text-slate-500">🗺️:</span>{" "}
-          <span className="font-medium text-slate-800">
-            {row.routeName && row.routeName !== "Nil" ? row.routeName : "-"}
-          </span>
-        </div>
-        <div>
-          <span className="text-slate-500">🎂:</span>{" "}
-          <span className="font-medium text-slate-800">
-            {row.dob ? new Date(row.dob).toLocaleDateString("en-GB") : "-"}
-          </span>
-        </div>
-        <div>
-          <span className="text-slate-500">🗓️:</span>{" "}
-          <span className="font-medium text-slate-800">
-            {row.doj ? new Date(row.doj).toLocaleDateString("en-GB") : "-"}
-          </span>
-        </div>
-        <div>
-          <span className="text-slate-500">Niswans:</span>{" "}
-          <span className="font-medium text-slate-800">
-            {row.schoolsCount ?? 0}
-          </span>
-        </div>
-        <div>
-          <span className="text-slate-500">Students:</span>{" "}
-          <span className="font-medium text-slate-800">
-            {row.studentCount ?? 0}
-          </span>
-        </div>
-      </div>
-
-      <div className="flex pt-2 items-center justify-center">
-        <SupervisorButtons Id={row._id} />
       </div>
     </div>
   );

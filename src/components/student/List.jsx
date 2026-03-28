@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { columns, StudentButtons, conditionalRowStyles } from '../../utils/StudentHelper'
+import { columns, StudentButtons, StudentCard, conditionalRowStyles } from '../../utils/StudentHelper'
 import DataTable from 'react-data-table-component'
 import axios from 'axios'
 import {
@@ -339,9 +339,9 @@ const List = () => {
 
         console.log(
           'Selected Values : ' + 'courseId:', formValues[0] + ', '
-          + 'status:', formValues[1] + ', ' + 'acYear:', formValues[2] + ', '
-          + 'maritalStatus:', formValues[3] + ', ' + 'hosteller:', formValues[4] + ', '
-          + 'year:', formValues[5] + ', ' + 'instituteId:', formValues[6] + ', ' + 'courseStatus:', formValues[7]
+        + 'status:', formValues[1] + ', ' + 'acYear:', formValues[2] + ', '
+        + 'maritalStatus:', formValues[3] + ', ' + 'hosteller:', formValues[4] + ', '
+        + 'year:', formValues[5] + ', ' + 'instituteId:', formValues[6] + ', ' + 'courseStatus:', formValues[7]
         );
 
         localStorage.setItem('courseId', courseId);
@@ -1129,7 +1129,7 @@ const List = () => {
   }
 
   return (
-    <div className="lg:mt-3 p-5">
+    <div className="p-3 lg:p-5 bg-repeat mt-3 lg:mt-5">
       <div className="text-center">
         <h3 className="text-lg lg:text-2xl font-bold px-5 py-0 text-gray-600">
           Manage Students
@@ -1280,17 +1280,27 @@ const List = () => {
       {filtering ? (
         getFilterGif()
       ) : (
-        <div className='mt-3 lg:mt-5 rounded-lg shadow-lg'>
-          <DataTable
-            columns={columns}
-            data={filteredStudent}
-            showGridlines
-            highlightOnHover
-            striped
-            responsive
-            conditionalRowStyles={conditionalRowStyles}
-          />
-        </div>
+        <>
+          {/* Mobile / Tablet */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 lg:hidden">
+            {filteredStudent.map((row) => (
+              <StudentCard key={row._id} row={row} />
+            ))}
+          </div>
+
+          {/* Desktop */}
+          <div className="hidden lg:block">
+            <DataTable
+              columns={columns}
+              data={filteredStudent}
+              showGridlines
+              highlightOnHover
+              striped
+              responsive
+              conditionalRowStyles={conditionalRowStyles}
+            />
+          </div>
+        </>
       )}
     </div>
   );

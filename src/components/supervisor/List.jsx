@@ -324,7 +324,7 @@ const List = () => {
   const { user } = useAuth();
 
   return (
-    <div className="mt-1 p-5 lg:mt-5">
+    <div className="mt-1 p-3 lg:mt-5">
       <div className="text-center">
         <h3 className="text-base lg:text-2xl font-bold px-5 py-0 text-shadow-lg text-gray-600">Manage Supervisors
           <p className='flex md:grid text-xs md:text-base justify-center text-rose-700'>
@@ -384,7 +384,7 @@ const List = () => {
       ) : (
         <>
           {/* Mobile / Tablet Cards */}
-          <div className="mt-3 lg:mt-5 grid grid-cols-1 md:grid-cols-2 gap-4 lg:hidden">
+          <div className="mt-2 lg:mt-5 grid grid-cols-1 md:grid-cols-2 gap-4 lg:hidden">
             {filteredSupervisor.map((row) => (
               <SupervisorCard key={row._id} row={row} />
             ))}

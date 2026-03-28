@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { columns, SchoolButtons, conditionalRowStyles } from '../../utils/SchoolHelper'
+import { columns, SchoolButtons, SchoolCard, conditionalRowStyles } from '../../utils/SchoolHelper'
 import DataTable from 'react-data-table-component'
 import axios from 'axios'
 import Swal from 'sweetalert2';
@@ -362,7 +362,7 @@ const List = () => {
   }
 
   return (
-    <div className="p-5 bg-repeat">
+    <div className="p-3 lg:p-5 bg-repeat mt-1 lg:mt-5">
       <div className="text-center">
         <h3 className="text-2xl font-bold px-5 py-0 text-gray-600">Manage Niswans
           <p className='flex md:grid text-sm md:text-base justify-center text-rose-700'>
@@ -378,7 +378,7 @@ const List = () => {
             <input
               type="text"
               placeholder="Search"
-              class="w-full px-3 py-0.5 border rounded shadow-md justify-center ml-1 lg:ml-0 mr-3 lg:mr-0"
+              className="w-full px-3 py-0.5 border rounded shadow-md justify-center ml-1 lg:ml-0 mr-3 lg:mr-0"
               onChange={handleFilter}
             />
           </div>
@@ -421,9 +421,28 @@ const List = () => {
 
       {filtering ?
         getFilterGif() :
-        <div className='mt-3 lg:mt-7 rounded-lg shadow-lg bg-blue-50'>
-          <DataTable columns={columns} data={filteredSchool} highlightOnHover striped responsive conditionalRowStyles={conditionalRowStyles} />
-        </div>}
+        (
+          <>
+            {/* Mobile / Tablet */}
+            <div className="mt-2 grid grid-cols-1 md:grid-cols-2 gap-4 lg:hidden">
+              {filteredSchool.map((row) => (
+                <SchoolCard key={row._id} row={row} />
+              ))}
+            </div>
+
+            {/* Desktop */}
+            <div className="hidden lg:block">
+              <DataTable
+                columns={columns}
+                data={filteredSchool}
+                highlightOnHover
+                striped
+                responsive
+                conditionalRowStyles={conditionalRowStyles}
+              />
+            </div>
+          </>
+        )}
     </div>
   )
 }
