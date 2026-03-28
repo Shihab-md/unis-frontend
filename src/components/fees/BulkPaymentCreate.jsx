@@ -571,10 +571,11 @@ export default function BulkPaymentCreate() {
                       Pay Amount
                     </label>
                     <input
-                      disabled={!checked}
+                      disabled
+                      readOnly
                       type="number"
                       min="0"
-                      className="border p-2 rounded w-full text-sm"
+                      className="border p-2 rounded w-full text-sm  cursor-not-allowed [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                       value={checked ? selected[inv._id] : ""}
                       onChange={(e) => changeAmount(inv._id, e.target.value, inv.balance)}
                     />
@@ -597,7 +598,7 @@ export default function BulkPaymentCreate() {
                   </div>
                   <div className="col-span-1">
                     <input
-                      disabled={!checked}
+                      disabled
                       type="number"
                       min="0"
                       className="border p-1 rounded w-full"

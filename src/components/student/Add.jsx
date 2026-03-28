@@ -107,6 +107,21 @@ const Add = () => {
   }, []);
 
   useEffect(() => {
+    const getAcYearMap = async () => {
+      const academicYears = await getAcademicYearsFromCache();
+      const activeAcYear = academicYears?.find((item) => item.active === "Active");
+
+      if (activeAcYear?._id) {
+        setAcYear(activeAcYear._id);
+      } else {
+        setAcYear("");
+      }
+    };
+
+    getAcYearMap();
+  }, []);
+
+  useEffect(() => {
     const getAcademicYearsMap = async () => {
       const academicYears = await getAcademicYearsFromCache();
       setAcademicYears(academicYears);
@@ -1050,6 +1065,7 @@ const Add = () => {
                   value={acYear}
                   className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                   required
+                  disabled
                 >
                   <option value=""></option>
                   {academicYears.map((acYear) => (

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { columns, SupervisorButtons, conditionalRowStyles } from '../../utils/SupervisorHelper'
+import { columns, SupervisorButtons, SupervisorCard, conditionalRowStyles } from '../../utils/SupervisorHelper'
 import { getBaseUrl, handleRightClickAndFullScreen, getSpinner, checkAuth, LinkIcon, showSwalAlert, getFilterGif } from '../../utils/CommonHelper';
 import DataTable from 'react-data-table-component'
 import { useAuth } from '../../context/AuthContext'
@@ -339,7 +339,7 @@ const List = () => {
             <input
               type="text"
               placeholder="Search"
-              class="w-full px-3 py-0.5 border rounded shadow-md justify-center ml-1 lg:ml-0 mr-3 lg:mr-0"
+              className="w-full px-3 py-0.5 border rounded shadow-md justify-center ml-1 lg:ml-0 mr-3 lg:mr-0"
               onChange={handleFilter}
             />
           </div>
@@ -379,11 +379,30 @@ const List = () => {
         </div>
         : <div className='flex mt-3 lg:mt-7'></div>}
 
-      {filtering ?
-        getFilterGif() :
-        <div className='mt-3 lg:mt-5 rounded-lg shadow-lg'>
-          <DataTable columns={columns} data={filteredSupervisor} highlightOnHover striped responsive conditionalRowStyles={conditionalRowStyles} />
-        </div>}
+      {filtering ? (
+        getFilterGif()
+      ) : (
+        <>
+          {/* Mobile / Tablet Cards */}
+          <div className="mt-3 lg:mt-5 grid grid-cols-1 md:grid-cols-2 gap-4 lg:hidden">
+            {filteredSupervisor.map((row) => (
+              <SupervisorCard key={row._id} row={row} />
+            ))}
+          </div>
+
+          {/* Desktop Table */}
+          <div className='hidden lg:block mt-3 lg:mt-5 rounded-lg shadow-lg'>
+            <DataTable
+              columns={columns}
+              data={filteredSupervisor}
+              highlightOnHover
+              striped
+              responsive
+              conditionalRowStyles={conditionalRowStyles}
+            />
+          </div>
+        </>
+      )}
     </div>
   )
 }
