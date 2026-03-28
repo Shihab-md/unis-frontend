@@ -1,18 +1,22 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { fetchPendingBatches, fetchBatchDetails, approveBatch, rejectBatch } from "../../api/feesApi.js";
-import { showSwalAlert, LinkIcon, getPrcessing } from "../../utils/CommonHelper";
+import {
+  fetchPendingBatches,
+  fetchBatchDetails,
+  approveBatch,
+  rejectBatch,
+} from "../../api/feesApi.js";
+import { showSwalAlert, LinkIcon } from "../../utils/CommonHelper";
 
 export default function BatchApprovals() {
   const [batches, setBatches] = useState([]);
   const [selectedBatch, setSelectedBatch] = useState(null);
   const [details, setDetails] = useState(null);
   const [processing, setProcessing] = useState(false);
-  const [batchLoading, setBatchLoading] = useState(false);
+  const [listLoading, setListLoading] = useState(false);
+  const [detailLoading, setDetailLoading] = useState(false);
 
-  // ✅ Filter popup
   const [showFilterPopup, setShowFilterPopup] = useState(false);
 
-  // ✅ Filters
   const [filterBatchNo, setFilterBatchNo] = useState("");
   const [filterAcademicYear, setFilterAcademicYear] = useState("");
   const [filterNiswan, setFilterNiswan] = useState("");
@@ -21,13 +25,13 @@ export default function BatchApprovals() {
 
   const load = async () => {
     try {
-      setProcessing(true);
+      setListLoading(true);
       const data = await fetchPendingBatches({});
       setBatches(Array.isArray(data) ? data : []);
-      setProcessing(false);
     } catch {
       setBatches([]);
-      setProcessing(false);
+    } finally {
+      setListLoading(false);
     }
   };
 
@@ -38,71 +42,67 @@ export default function BatchApprovals() {
   const openBatch = async (b) => {
     setSelectedBatch(b);
     setDetails(null);
+
     try {
-      setProcessing(true);
+      setDetailLoading(true);
       const d = await fetchBatchDetails(b._id);
       setDetails(d);
-      setProcessing(false);
     } catch {
-      setProcessing(false);
       showSwalAlert("Error!", "Failed to load batch details", "error");
+    } finally {
+      setDetailLoading(false);
     }
   };
 
   const doApprove = async () => {
     if (!selectedBatch) return;
+
     setProcessing(true);
     try {
       const resp = await approveBatch(selectedBatch._id);
       if (resp?.success) {
-        setProcessing(false);
         showSwalAlert(
           "Success!",
-          `Approved. Approved: ${resp.result?.applied}, Failed: ${resp.result?.failed}`,
+          `Approved. Approved: ${resp.result?.applied || 0}, Failed: ${resp.result?.failed || 0}`,
           "success"
         );
         setSelectedBatch(null);
         setDetails(null);
-        load();
+        await load();
       } else {
-        setProcessing(false);
         showSwalAlert("Error!", resp?.error || "Approve failed", "error");
       }
     } catch {
-      setProcessing(false);
       showSwalAlert("Error!", "Approve failed", "error");
+    } finally {
+      setProcessing(false);
     }
   };
 
   const doReject = async () => {
     if (!selectedBatch) return;
-    const reason = prompt("Reject reason?");
+
+    const reason = window.prompt("Reject reason?");
     if (!reason) return;
 
     setProcessing(true);
     try {
       const resp = await rejectBatch(selectedBatch._id, reason);
       if (resp?.success) {
-        setProcessing(false);
         showSwalAlert("Rejected", "Batch rejected", "info");
         setSelectedBatch(null);
         setDetails(null);
-        load();
+        await load();
       } else {
-        setProcessing(false);
         showSwalAlert("Error!", resp?.error || "Reject failed", "error");
       }
     } catch {
-      setProcessing(false);
       showSwalAlert("Error!", "Reject failed", "error");
     } finally {
       setProcessing(false);
     }
   };
 
-  //if (processing) return getPrcessing();
-
-  // ✅ helper: pick proof links (Drive first, fallback proofUrl)
   const getProofLinks = (b) => {
     const view = b?.proofDriveViewUrl || b?.proofUrl || "";
     const download = b?.proofDriveDownloadUrl || "";
@@ -126,7 +126,13 @@ export default function BatchApprovals() {
       filterMode,
       filterPaidDate,
     ].some((v) => String(v || "").trim() !== "");
-  }, [filterBatchNo, filterAcademicYear, filterNiswan, filterMode, filterPaidDate]);
+  }, [
+    filterBatchNo,
+    filterAcademicYear,
+    filterNiswan,
+    filterMode,
+    filterPaidDate,
+  ]);
 
   const filteredBatches = useMemo(() => {
     const batchNo = filterBatchNo.trim().toLowerCase();
@@ -157,6 +163,7 @@ export default function BatchApprovals() {
   }, [batches, filterBatchNo, filterAcademicYear, filterNiswan, filterMode, filterPaidDate]);
 
   const batchInfo = details?.batch || selectedBatch;
+  const groupedItems = Array.isArray(details?.items) ? details.items : [];
 
   return (
     <div className="p-4 max-w-6xl mx-auto">
@@ -191,180 +198,217 @@ export default function BatchApprovals() {
             Showing {filteredBatches.length}/{batches.length}
           </div>
 
-          {filteredBatches.map((b) => {
-            const { view } = getProofLinks(b);
-            return (
+          {listLoading ? (
+            <div className="p-4 text-center text-xs text-gray-600">Loading batches...</div>
+          ) : filteredBatches.length === 0 ? (
+            <div className="p-3 text-xs text-gray-600">No pending batches</div>
+          ) : (
+            filteredBatches.map((b) => (
               <button
                 key={b._id}
                 onClick={() => openBatch(b)}
-                className="w-full text-left p-2 border-t hover:bg-gray-50"
+                className={`w-full text-left p-2 border-t hover:bg-gray-50 ${
+                  selectedBatch?._id === b._id ? "bg-blue-50" : ""
+                }`}
               >
                 <div className="font-semibold">
                   {b.batchNo} - {"Amount : ₹ " + Number(b.totalAmount || 0).toLocaleString("en-IN")}
                 </div>
 
                 <div className="text-gray-600 flex items-center justify-between gap-2">
-                  <span>{new Date(b.paidDate).toLocaleString()}</span>
+                  <span>{b?.paidDate ? new Date(b.paidDate).toLocaleString() : "-"}</span>
                 </div>
               </button>
-            );
-          })}
-
-          {filteredBatches.length === 0 && (
-            <div className="p-3 text-xs text-gray-600">No pending batches</div>
+            ))
           )}
         </div>
 
-        {!processing ?
-          <div className="col-span-3 border rounded">
-            <div className="p-2 font-bold text-xs bg-gray-100">Batch Details</div>
+        <div className="col-span-3 border rounded min-h-[320px]">
+          <div className="p-2 font-bold text-xs bg-gray-100">Batch Details</div>
 
-            {!selectedBatch && <div className="p-3 text-xs text-gray-600">Select a batch</div>}
+          {!selectedBatch && !detailLoading && (
+            <div className="p-3 text-xs text-gray-600">Select a batch</div>
+          )}
 
-            {selectedBatch && (
-              <div className="p-3 text-xs">
-                <div className="mb-2"><b>Batch No :</b> {batchInfo?.batchNo || "-"}</div>
-                <div className="mb-2"><b>Total :</b> ₹ {Number(batchInfo?.totalAmount || 0).toLocaleString("en-IN")}</div>
-                <div className="mb-2"><b>Mode :</b> {batchInfo?.mode || "-"}</div>
-                <div className="mb-2"><b>Items :</b> {details?.items?.length}</div>
-                <div className="mb-2"><b>Ref # :</b> {batchInfo?.referenceNo || "-"}</div>
+          {detailLoading ? (
+            <div className="flex items-center justify-center h-[260px] rounded-lg">
+              <img width={220} className="flex items-center justify-center" src="/spinner1.gif" alt="Loading" />
+            </div>
+          ) : null}
 
-                {/* ✅ NEW: Proof view/download in details */}
-                <div className="mb-2">
-                  <b>Proof :</b>{" "}
-                  {(() => {
-                    const { view, download, name } = getProofLinks(batchInfo);
-                    if (!view) return <span className="text-gray-400 font-bold">-</span>;
+          {selectedBatch && !detailLoading && (
+            <div className="p-3 text-xs">
+              <div className="mb-2"><b>Batch No :</b> {batchInfo?.batchNo || "-"}</div>
+              <div className="mb-2"><b>Total :</b> ₹ {Number(batchInfo?.totalAmount || 0).toLocaleString("en-IN")}</div>
+              <div className="mb-2"><b>Mode :</b> {batchInfo?.mode || "-"}</div>
+              <div className="mb-2">
+                <b>Student Rows :</b> {groupedItems.length}{" "}
+                <span className="text-gray-500">
+                  {batchInfo?.itemCount ? `(Invoice Items: ${batchInfo.itemCount})` : ""}
+                </span>
+              </div>
+              <div className="mb-2"><b>Ref # :</b> {batchInfo?.referenceNo || "-"}</div>
 
-                    return (
-                      <>
-                        <a
-                          className="text-blue-700 underline font-bold"
-                          href={view}
-                          target="_blank"
-                          rel="noreferrer"
-                        >
-                          View
-                        </a>
-                        {name ? <span className="text-[11px] text-gray-500"> ({name})</span> : null}
-                      </>
-                    );
-                  })()}
-                </div>
+              <div className="mb-2">
+                <b>Proof :</b>{" "}
+                {(() => {
+                  const { view, name } = getProofLinks(batchInfo);
+                  if (!view) return <span className="text-gray-400 font-bold">-</span>;
 
-                <div className="mb-2">
-                  <b>Niswan :</b>{" "}
-                  {batchInfo?.schoolId
-                    ? `${batchInfo.schoolId.nameEnglish || "-"}, ${batchInfo.schoolId?.districtStateId?.district || "-"}, ${batchInfo.schoolId?.districtStateId?.state || "-"}`
-                    : "-"}
-                </div>
+                  return (
+                    <>
+                      <a
+                        className="text-blue-700 underline font-bold"
+                        href={view}
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        View
+                      </a>
+                      {name ? <span className="text-[11px] text-gray-500"> ({name})</span> : null}
+                    </>
+                  );
+                })()}
+              </div>
 
-                {Array.isArray(details?.items) && details.items.length > 0 && (
-                  <div className="mt-3 border rounded overflow-hidden">
-                    {/* ✅ Desktop header */}
-                    <div className="hidden md:grid grid-cols-12 p-2 font-bold bg-gray-50 text-xs sticky top-0">
-                      <div className="col-span-6">Details</div>
-                      <div className="col-span-2">AC Year</div>
-                      <div className="col-span-2">Fees Type</div>
-                      <div className="col-span-2">Amount</div>
-                    </div>
+              <div className="mb-2">
+                <b>Niswan :</b>{" "}
+                {batchInfo?.schoolId
+                  ? `${batchInfo.schoolId.nameEnglish || "-"}, ${batchInfo.schoolId?.districtStateId?.district || "-"}, ${batchInfo.schoolId?.districtStateId?.state || "-"}`
+                  : "-"}
+              </div>
 
-                    <div className="max-h-64 overflow-auto">
-                      {details.items.map((it, idx) => {
-                        const rollNumber = it?.studentId?.rollNumber || "-";
-                        const studentName = it?.studentId?.userId?.name || "-";
-                        const courseName = it?.invoiceId?.courseId?.name || "-";
-                        const acYear = it?.invoiceId?.acYear?.acYear || "-";
-                        const feesType = it?.invoiceId?.source || "-";
-                        const amount = Number(it?.amount || 0);
+              {groupedItems.length > 0 && (
+                <div className="mt-3 border rounded overflow-hidden">
+                  <div className="hidden md:grid grid-cols-12 p-2 font-bold bg-gray-50 text-xs sticky top-0">
+                    <div className="col-span-4">Student</div>
+                    <div className="col-span-2">AC Year</div>
+                    <div className="col-span-3">Fees Type</div>
+                    <div className="col-span-2">Invoices</div>
+                    <div className="col-span-1 text-right">Amount</div>
+                  </div>
 
-                        return (
-                          <div key={it?._id || idx} className="border-t">
-                            {/* ✅ Mobile / Tablet card */}
-                            <div className="md:hidden p-3 text-xs">
-                              <div className="flex items-start justify-between gap-2">
-                                <div className="font-bold text-slate-800">{studentName}</div>
-                                <div className="font-bold text-slate-900">
-                                  ₹ {amount.toLocaleString("en-IN")}
-                                </div>
-                              </div>
+                  <div className="max-h-[450px] overflow-auto">
+                    {groupedItems.map((it, idx) => {
+                      const rollNumber = it?.rollNumber || "-";
+                      const studentName = it?.studentName || "-";
+                      const amount = Number(it?.amount || 0);
 
-                              <div className="mt-2 grid grid-cols-1 gap-1 text-[11px] text-slate-700">
-                                <div>
-                                  <span className="font-semibold text-slate-500">Roll No: </span>
-                                  {rollNumber}
-                                </div>
-                                <div>
-                                  <span className="font-semibold text-slate-500">Course: </span>
-                                  {courseName}
-                                </div>
-                                <div>
-                                  <span className="font-semibold text-slate-500">Fees Type: </span>
-                                  {feesType}
-                                </div>
-                                <div>
-                                  <span className="font-semibold text-slate-500">AC Year: </span>
-                                  {acYear}
-                                </div>
-                              </div>
-                            </div>
+                      const invoices = Array.isArray(it?.invoices) ? it.invoices : [];
+                      const feeTypesText =
+                        it?.feeTypesText ||
+                        [...new Set(invoices.map((inv) => String(inv?.feeType || "").trim()).filter(Boolean))].join(", ") ||
+                        "-";
 
-                            {/* ✅ Desktop row */}
-                            <div className="hidden md:grid grid-cols-12 p-2 text-xs">
-                              <div className="mt-1 mb-1 col-span-6">
-                                <p className="mb-1"><span className="text-blue-700 mr-1">Roll No:</span> {rollNumber}</p>
-                                <p className="mb-1"><span className="text-blue-700 mr-3">Name:</span> {studentName}</p>
-                                <p><span className="text-blue-700 mr-2">Course:</span> {courseName}</p>
-                              </div>
-                              <div className="col-span-2 text-slate-700">{acYear}</div>
-                              <div className="col-span-2 text-slate-700">{feesType}</div>
-                              <div className="col-span-2 text-right text-slate-900 mr-3">
+                      const invoiceNosText =
+                        it?.invoiceNosText ||
+                        [...new Set(invoices.map((inv) => String(inv?.invoiceNo || "").trim()).filter(Boolean))].join(", ") ||
+                        "-";
+
+                      const acYearsText =
+                        [...new Set(invoices.map((inv) => String(inv?.acYear || "").trim()).filter(Boolean))].join(", ") || "-";
+
+                      const courseText =
+                        [...new Set(invoices.map((inv) => String(inv?.courseName || "").trim()).filter(Boolean))].join(", ") || "-";
+
+                      return (
+                        <div key={it?.studentId || idx} className="border-t">
+                          {/* Mobile / Tablet */}
+                          <div className="md:hidden p-3 text-xs">
+                            <div className="flex items-start justify-between gap-2">
+                              <div className="font-bold text-slate-800">{studentName}</div>
+                              <div className="font-bold text-slate-900">
                                 ₹ {amount.toLocaleString("en-IN")}
                               </div>
                             </div>
+
+                            <div className="mt-2 grid grid-cols-1 gap-1 text-[11px] text-slate-700">
+                              <div>
+                                <span className="font-semibold text-slate-500">Roll No: </span>
+                                {rollNumber}
+                              </div>
+                              <div>
+                                <span className="font-semibold text-slate-500">Course: </span>
+                                {courseText}
+                              </div>
+                              <div>
+                                <span className="font-semibold text-slate-500">Fees Type: </span>
+                                {feeTypesText}
+                              </div>
+                              <div>
+                                <span className="font-semibold text-slate-500">AC Year: </span>
+                                {acYearsText}
+                              </div>
+                              <div>
+                                <span className="font-semibold text-slate-500">Invoices: </span>
+                                {invoiceNosText}
+                              </div>
+                            </div>
                           </div>
-                        );
-                      })}
-                    </div>
+
+                          {/* Desktop */}
+                          <div className="hidden md:grid grid-cols-12 p-2 text-xs">
+                            <div className="col-span-4">
+                              <p className="mb-1"><span className="text-blue-700 mr-1">Roll No:</span> {rollNumber}</p>
+                              <p className="mb-1"><span className="text-blue-700 mr-3">Name:</span> {studentName}</p>
+                              <p><span className="text-blue-700 mr-2">Course:</span> {courseText}</p>
+                            </div>
+
+                            <div className="col-span-2 text-slate-700 break-words pr-2">
+                              {acYearsText}
+                            </div>
+
+                            <div className="col-span-3 text-slate-700 break-words pr-2">
+                              {feeTypesText}
+                            </div>
+
+                            <div className="col-span-2 text-slate-700 break-words pr-2">
+                              {invoiceNosText}
+                            </div>
+
+                            <div className="col-span-1 text-right text-slate-900 mr-3 font-semibold">
+                              ₹ {amount.toLocaleString("en-IN")}
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    })}
                   </div>
-                )}
-
-                {Array.isArray(details?.items) && details.items.length === 0 && (
-                  <div className="mt-3 text-xs text-gray-600">No items found for this batch.</div>
-                )}
-
-                <div className="mt-4 flex gap-2">
-                  <button
-                    disabled={processing}
-                    onClick={doApprove}
-                    className="flex-1 bg-green-600 text-white p-2 rounded hover:bg-green-700 disabled:opacity-60 hover:-translate-y-0.5"
-                  >
-                    {processing ? "Working..." : "Approve"}
-                  </button>
-                  <button
-                    disabled={processing}
-                    onClick={doReject}
-                    className="flex-1 bg-red-600 text-white p-2 rounded hover:bg-red-700 disabled:opacity-60 hover:-translate-y-0.5"
-                  >
-                    Reject
-                  </button>
                 </div>
+              )}
+
+              {groupedItems.length === 0 && (
+                <div className="mt-3 text-xs text-gray-600">No items found for this batch.</div>
+              )}
+
+              <div className="mt-4 flex gap-2">
+                <button
+                  disabled={processing}
+                  onClick={doApprove}
+                  className="flex-1 bg-green-600 text-white p-2 rounded hover:bg-green-700 disabled:opacity-60 hover:-translate-y-0.5"
+                >
+                  {processing ? "Working..." : "Approve"}
+                </button>
+                <button
+                  disabled={processing}
+                  onClick={doReject}
+                  className="flex-1 bg-red-600 text-white p-2 rounded hover:bg-red-700 disabled:opacity-60 hover:-translate-y-0.5"
+                >
+                  {processing ? "Working..." : "Reject"}
+                </button>
               </div>
-            )}
-          </div>
-          : <div className='flex items-center justify-center rounded-lg shadow-xl border'>
-            <img width={250} className='flex items-center justify-center' src="/spinner1.gif" />
-          </div>}
+            </div>
+          )}
+        </div>
       </div>
 
-      {/* ✅ Filter Popup */}
       {showFilterPopup ? (
         <div
           className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-3"
           onClick={() => setShowFilterPopup(false)}
         >
           <div
-            className="w-full max-w-4xl rounded-xl bg-[url(/bg_card.png)] bg-cover bg-center p-4 shadow-2xl bacdrop-blur"
+            className="w-full max-w-4xl rounded-xl bg-[url(/bg_card.png)] bg-cover bg-center p-4 shadow-2xl backdrop-blur"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="mb-3 flex items-center justify-between">
@@ -393,6 +437,14 @@ export default function BatchApprovals() {
                 placeholder="Academic Year"
                 value={filterAcademicYear}
                 onChange={(e) => setFilterAcademicYear(e.target.value)}
+              />
+
+              <input
+                type="text"
+                className="w-full rounded border p-2 text-sm"
+                placeholder="Niswan"
+                value={filterNiswan}
+                onChange={(e) => setFilterNiswan(e.target.value)}
               />
 
               <input

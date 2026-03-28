@@ -81,11 +81,6 @@ export function checkAuth(screenName) {
   //}
 };
 
-export const getBaseUrl = async () => {
-  return "https://unis-server.vercel.app/api/";
-  //return "http://localhost:5001/api/";
-};
-
 export const getYearLabel = (value) => {
   const year = Number(value);
   if (!Number.isFinite(year) || year <= 0) return "";
@@ -171,6 +166,11 @@ export function toCamelCase(inputString) {
 
   return out.join(" ");
 }
+
+export const getBaseUrl = async () => {
+  return "https://unis-server.vercel.app/api/";
+  //return "http://localhost:5001/api/";
+};
 
 export function handleRightClickAndFullScreen() {
   const isDisableRightClick = true;
@@ -346,19 +346,19 @@ export function showConfirmationSwalAlert(title, message, icon) {
 export function getButtonStyle(buttonType) {
 
   if (buttonType === 'View') {
-    return "px-1.5 py-1 m-1 bg-teal-600 text-base text-teal-100 rounded-md shadow-md shadow-teal-200 hover:-translate-y-0.5";
+    return "px-1 py-0.5 m-1 bg-teal-600 text-xs lg:text-base text-teal-100 rounded-md shadow-md shadow-teal-200 hover:-translate-y-0.5";
 
   } else if (buttonType === 'Edit') {
-    return "px-1.5 py-1 m-1 bg-blue-600 text-base text-blue-100 rounded-md shadow-md shadow-blue-200 hover:-translate-y-0.5";
+    return "px-1.5 py-1 m-1 bg-blue-600 text-xs lg:text-base text-blue-100 rounded-md shadow-md shadow-blue-200 hover:-translate-y-0.5";
 
   } else if (buttonType === 'Delete') {
-    return "px-1.5 py-1 m-1 bg-red-600 text-base text-red-100 rounded-md shadow-md shadow-red-200 hover:-translate-y-0.5";
+    return "px-1.5 py-1 m-1 bg-red-600 text-xs lg:text-base text-red-100 rounded-md shadow-md shadow-red-200 hover:-translate-y-0.5";
 
   } else if (buttonType === 'Promote') {
-    return "px-1.5 py-1 m-1 bg-purple-500 text-base text-purple-100 rounded-md shadow-md shadow-purple-200 hover:-translate-y-0.5";
+    return "px-1.5 py-1 m-1 bg-purple-500 text-xs lg:text-base text-purple-100 rounded-md shadow-md shadow-purple-200 hover:-translate-y-0.5";
 
   } else if (buttonType === 'Transfer') {
-    return "px-1.5 py-1 m-1 bg-yellow-700 text-base text-yellow-100 rounded-md shadow-md shadow-yellow-200 hover:-translate-y-0.5";
+    return "px-1.5 py-1 m-1 bg-yellow-700 text-xs lg:text-base text-yellow-100 rounded-md shadow-md shadow-yellow-200 hover:-translate-y-0.5";
 
   }
 }
