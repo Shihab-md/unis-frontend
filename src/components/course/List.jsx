@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { columns, CourseButtons } from '../../utils/CourseHelper'
+import { columns, CourseButtons, CourseCard } from '../../utils/CourseHelper'
 import DataTable from 'react-data-table-component'
 import { getBaseUrl, handleRightClickAndFullScreen, getSpinner, checkAuth, LinkIcon, showSwalAlert } from '../../utils/CommonHelper';
 import axios from 'axios'
@@ -84,9 +84,9 @@ const List = () => {
   }
 
   return (
-    <div className="mt-3 p-5">
+    <div className="p-3 lg:p-5 bg-repeat mt-1 lg:mt-5">
       <div className="text-center">
-        <h3 className="text-2xl font-bold px-5 py-0 text-gray-600">Manage Courses
+        <h3 className="text-base lg:text-2xl font-bold px-5 py-0 text-gray-600">Manage Courses
           <p className='flex md:grid text-sm md:text-base justify-center text-rose-700'>
             (Records Count : {filteredCourse ? filteredCourse.length : 0}) </p>
         </h3>
@@ -110,9 +110,20 @@ const List = () => {
 
         {LinkIcon("/dashboard/add-course", "Add")}
       </div>
-      <div className='mt-6 rounded-lg shadow-lg'>
-        <DataTable columns={columns} data={filteredCourse} highlightOnHover striped responsive />
-      </div>
+
+      <>
+        {/* Mobile / Tablet */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 lg:hidden">
+          {filteredCourse.map((row) => (
+            <CourseCard key={row._id} row={row} />
+          ))}
+        </div>
+
+        {/* Desktop */}
+        <div className="hidden lg:block">
+          <DataTable columns={columns} data={filteredCourse} highlightOnHover striped responsive />
+        </div>
+      </>
     </div>
   )
 }

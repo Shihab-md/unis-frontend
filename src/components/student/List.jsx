@@ -1131,7 +1131,7 @@ const List = () => {
   return (
     <div className="p-3 lg:p-5 bg-repeat mt-3 lg:mt-5">
       <div className="text-center">
-        <h3 className="text-lg lg:text-2xl font-bold px-5 py-0 text-gray-600">
+        <h3 className="text-base lg:text-2xl font-bold px-5 py-0 text-gray-600">
           Manage Students
           {user.role === "superadmin" || user.role === "hquser" ? (
             <div className="text-xs md:text-base font-semibold text-slate-500">
