@@ -69,6 +69,7 @@ export const CertificateCard = ({ row, onCertificateDelete }) => {
               {row.sanadhNo || "-"}
             </h3>
           </div>
+          <CertificateButtons Id={row._id} onCertificateDelete={onCertificateDelete} />
         </div>
 
         <div className="mt-2 grid grid-cols-1 gap-y-1 text-xs">
@@ -102,10 +103,6 @@ export const CertificateCard = ({ row, onCertificateDelete }) => {
               {row.niswanName || "-"}
             </p>
           </div>
-        </div>
-
-        <div className="flex pt-2 items-center justify-center">
-          <CertificateButtons Id={row._id} onCertificateDelete={onCertificateDelete} />
         </div>
       </div>
     </div>
