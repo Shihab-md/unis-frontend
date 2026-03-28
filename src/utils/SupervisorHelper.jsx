@@ -94,6 +94,7 @@ export const conditionalRowStyles = [
   }
 ];
 
+
 export const SupervisorCard = ({ row }) => {
   const statusClass =
     row.active === "Active"
@@ -106,9 +107,10 @@ export const SupervisorCard = ({ row }) => {
       : "bg-amber-50 text-amber-700 border-amber-200";
 
   return (
-    <div className="rounded-md border border-blue-100 bg-slate-50 shadow-xl p-3 space-y-2 hover:-translate-y-0.5">
+    <div className="rounded-md border border-blue-100 bg-slate-50 shadow-xl p-3 space-y-2 hover:-translate-y-0.5 bg-[url(/c-2.jpg)] bg-contain bg-center bg-no-repeat"
+      style={{ backgroundSize: "100% 100%" }}>
       <div className="flex items-start justify-between gap-2">
-        <div className="min-w-0">
+        <div className="min-w-0 space-y-1">
           <h3 className="text-xs font-semibold text-slate-800 break-words leading-5">
             {row.name || "-"}
           </h3>
@@ -120,7 +122,7 @@ export const SupervisorCard = ({ row }) => {
           </p>
         </div>
 
-        <div className="flex flex-col gap-1 items-end shrink-0">
+        <div className="flex flex-col gap-1 items-end shrink-0 ">
           <span
             className={`inline-flex rounded-md border shadow-lg px-2 py-0.5 text-[10px] font-medium ${statusClass}`}
           >
@@ -134,7 +136,7 @@ export const SupervisorCard = ({ row }) => {
         </div>
       </div>
 
-      <div className="grid grid-cols-2 gap-x-3 gap-y-1 text-xs">
+      <div className="grid grid-cols-2 gap-x-3 gap-y-2 text-xs">
         <div>
           <span className="text-slate-500">📱:</span>{" "}
           <span className="font-medium text-slate-800">
@@ -173,7 +175,7 @@ export const SupervisorCard = ({ row }) => {
         </div>
       </div>
 
-      <div className="pt-1 items-right">
+      <div className="flex pt-2 items-center justify-center">
         <SupervisorButtons Id={row._id} />
       </div>
     </div>
