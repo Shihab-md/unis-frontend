@@ -113,7 +113,7 @@ const List = () => {
 
       <>
         {/* Mobile / Tablet */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 lg:hidden">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-3 lg:hidden">
           {filteredCourse.map((row) => (
             <CourseCard key={row._id} row={row} />
           ))}
