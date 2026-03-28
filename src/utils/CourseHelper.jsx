@@ -103,7 +103,7 @@ export const CourseCard = ({ row, onCourseDelete }) => {
       style={{ backgroundSize: "100% 100%" }}
     >
       {/* overlay for readability */}
-      <div className="absolute inset-0 bg-white/40" />
+      <div className="absolute inset-0 bg-white/60" />
 
       <div className="relative">
         <div className="flex items-start justify-between gap-2">
