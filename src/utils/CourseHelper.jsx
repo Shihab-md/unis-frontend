@@ -41,7 +41,7 @@ export const columns = [
   },
   {
     name: "Fees",
-    selector: (row) => row.fees,
+    selector: (row) => `₹ ${Number(row?.fees || 0).toLocaleString("en-IN")}`,
     width: "100px",
   },
   {
@@ -99,11 +99,11 @@ export const CourseCard = ({ row, onCourseDelete }) => {
   return (
     <div
       className="relative overflow-hidden rounded-md border border-sky-100 shadow-lg p-3 pt-1 pb-2 mt-1 space-y-2 transition-all 
-      duration-200 hover:-translate-y-0.5 hover:shadow-xl bg-[url('/c-15.jpg')] bg-center bg-no-repeat"
+      duration-200 hover:-translate-y-0.5 hover:shadow-xl bg-[url('/c-1.jpg')] bg-center bg-no-repeat"
       style={{ backgroundSize: "100% 100%" }}
     >
       {/* overlay for readability */}
-      <div className="absolute inset-0 bg-white/80" />
+      <div className="absolute inset-0 bg-white/40" />
 
       <div className="relative">
         <div className="flex items-start justify-between gap-2">
@@ -118,7 +118,7 @@ export const CourseCard = ({ row, onCourseDelete }) => {
 
           <div className="shrink-0">
             <span
-              className={`inline-flex rounded-md border px-2 py-0.5 text-[10px] font-medium shadow-xl ${typeClass}`}
+              className={`inline-flex rounded-md border px-2 py-1 text-[10px] font-medium shadow-xl ${typeClass}`}
             >
               {row.type || "-"}
             </span>

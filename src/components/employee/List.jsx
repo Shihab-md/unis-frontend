@@ -31,7 +31,6 @@ const List = () => {
   const [processing, setProcessing] = useState(null)
 
   const navigate = useNavigate()
-
   const { user } = useAuth();
 
   const MySwal = withReactContent(Swal);

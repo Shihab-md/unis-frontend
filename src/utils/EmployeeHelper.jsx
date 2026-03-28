@@ -141,11 +141,11 @@ export const EmployeeCard = ({ row, onEmployeeDelete }) => {
           </div>
 
           <div className="flex flex-col items-end gap-1 shrink-0">
-            <span className="inline-flex rounded-md border border-sky-200 bg-sky-50 px-2 py-0.5 text-[10px] font-medium text-sky-700 shadow-lg">
+            <span className="inline-flex rounded-md border border-sky-200 bg-sky-50 px-2 py-1 text-[10px] font-medium text-sky-700 shadow-lg">
               {roleText}
             </span>
             <span
-              className={`inline-flex rounded-md border px-2 py-0.5 text-[10px] font-medium shadow-lg ${statusClass}`}
+              className={`inline-flex rounded-md border px-2 py-1 text-[10px] font-medium shadow-lg ${statusClass}`}
             >
               {row.active || "-"}
             </span>

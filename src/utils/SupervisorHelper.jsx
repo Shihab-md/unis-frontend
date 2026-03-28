@@ -130,12 +130,12 @@ export const SupervisorCard = ({ row }) => {
 
           <div className="flex flex-col gap-1 items-end shrink-0 ">
             <span
-              className={`inline-flex rounded-md border shadow-lg px-2 py-0.5 text-[10px] font-medium ${statusClass}`}
+              className={`inline-flex rounded-md border shadow-lg px-2 py-1 text-[10px] font-medium ${statusClass}`}
             >
               {row.active || "-"}
             </span>
             <span
-              className={`inline-flex rounded-md border shadow-lg px-2 py-0.5 text-[10px] font-medium ${typeClass}`}
+              className={`inline-flex rounded-md border shadow-lg px-2 py-1 text-[10px] font-medium ${typeClass}`}
             >
               {row.jobType || "-"}
             </span>

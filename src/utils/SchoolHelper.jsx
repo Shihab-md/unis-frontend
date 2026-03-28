@@ -145,7 +145,7 @@ export const SchoolCard = ({ row, onSchoolDelete }) => {
 
           <div className="shrink-0">
             <span
-              className={`inline-flex rounded-md border px-2 py-0.5 text-[10px] font-medium shadow-lg ${statusClass}`}
+              className={`inline-flex rounded-md border px-2 py-1 text-[10px] font-medium shadow-lg ${statusClass}`}
             >
               {row.active || "-"}
             </span>
