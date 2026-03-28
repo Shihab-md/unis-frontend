@@ -97,11 +97,11 @@ const AdminSummary = () => {
             />
           </Link> : null}
 
-        {user.role === "superadmin" || user.role === "hquser" || user.role === "supervisor" || user.role === "supervisor" || user.role === "guest" ?
+        {user.role === "superadmin" || user.role === "hquser" || user.role === "supervisor" || user.role === "guest" ?
           <Link to="/dashboard/inspection-reports" >
             <SummaryCard
               icon={<FaFileSignature />}
-              text="Inspection Report"
+              text="Inspection"
               number="*"
               color={user.role === "supervisor" ? "bg-blue-600" : "bg-lime-600"}
             />
