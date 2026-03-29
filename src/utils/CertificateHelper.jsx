@@ -69,7 +69,9 @@ export const CertificateCard = ({ row, onCertificateDelete }) => {
               {row.sanadhNo || "-"}
             </h3>
           </div>
-          <CertificateButtons Id={row._id} onCertificateDelete={onCertificateDelete} />
+          <span className="shrink-0 inline-flex">
+            <CertificateButtons Id={row._id} onCertificateDelete={onCertificateDelete} />
+          </span>
         </div>
 
         <div className="mt-2 grid grid-cols-1 gap-y-1 text-xs">

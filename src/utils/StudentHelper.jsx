@@ -295,7 +295,7 @@ export const StudentCard = ({ row, onStudentDelete }) => {
       <div className="relative">
         <div className="flex items-start justify-between gap-2">
           <div className="min-w-0">
-            <h3 className="text-sm font-semibold text-slate-800 break-words leading-5">
+            <h3 className="text-sm font-semibold text-pink-800 break-words leading-5 mb-1">
               {row.name || "-"}
             </h3>
             <p className="mt-0.5 text-[11px] text-slate-500">
@@ -316,15 +316,12 @@ export const StudentCard = ({ row, onStudentDelete }) => {
         </div>
 
         <div className="mt-3 grid grid-cols-2 gap-x-3 gap-y-2 text-xs">
-          <div>
+          <div className="col-span-2">
             <span className="text-slate-500">👤 Parent:</span>{" "}
             <span className="font-medium text-slate-800">
               {row.fatherName || "-"}
             </span>
-          </div>
-
-          <div>
-            <span className="text-slate-500">📱:</span>{" "}
+            <span className="text-slate-500 ml-3">📱:</span>{" "}
             <span className="font-medium text-slate-800">
               {row.contactNumber || "-"}
             </span>

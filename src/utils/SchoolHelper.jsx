@@ -122,9 +122,9 @@ export const SchoolCard = ({ row, onSchoolDelete }) => {
         <div className="flex items-start justify-between gap-2">
           <div className="min-w-0">
 
-            <p className="mt-0.5 mb-1 text-[12px] text-slate-500">
-              Code: {row.code || "-"}
-            </p>
+            <h3 className="text-sm font-semibold text-blue-700 break-words leading-5">
+              {row.code || "-"}
+            </h3>
 
             <h3 className="flex text-xs mt-0.5 font-semibold text-slate-800">
               {row.name || "-"}
@@ -163,7 +163,7 @@ export const SchoolCard = ({ row, onSchoolDelete }) => {
 
         <div className="mt-3 grid gap-x-3 gap-y-2 text-xs">
           <div>
-            <p className="text-xs text-slate-700 mb-1">Incharge:</p>
+            <p className="text-medium font-semibold text-slate-600 mb-1">Incharge:</p>
             <span className="text-slate-500">👤:</span>{" "}
             <span className="font-xs text-slate-500">
               {row.incharge1 || "-"}
@@ -175,7 +175,7 @@ export const SchoolCard = ({ row, onSchoolDelete }) => {
           </div>
 
           <div>
-            <p className="text-xs text-slate-700 mb-1">Supervisor:</p>
+            <p className="text-medium font-semibold text-slate-600 mb-1">Supervisor:</p>
             <span className="font-xs text-slate-500">
               {row.supervisorId + " : " + row.supervisorName || "-"}
             </span>
@@ -183,7 +183,7 @@ export const SchoolCard = ({ row, onSchoolDelete }) => {
 
         </div>
 
-        <div className="mt-3 rounded-md border border-pink-200 p-2 bg-white/70 shadow-lg">
+        <div className="mt-3 rounded-md border border-pink-200 p-2 ml-10 mr-10 bg-white/70 shadow-lg">
           <p className="text-xs font-semibold text-slate-700">
             Students: <span className="text-sky-700">{row.studentCount ?? 0}</span>
           </p>
