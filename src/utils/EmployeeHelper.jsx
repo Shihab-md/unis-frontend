@@ -132,7 +132,7 @@ export const EmployeeCard = ({ row, onEmployeeDelete }) => {
       <div className="relative">
         <div className="flex items-start justify-between gap-2">
           <div className="min-w-0">
-            <h3 className="text-sm font-semibold text-slate-800 break-words leading-5">
+            <h3 className="text-sm font-semibold text-violet-700 break-words leading-5">
               {row.name || "-"}
             </h3>
             <p className="mt-0.5 mt-1 text-[11px] text-slate-500">
