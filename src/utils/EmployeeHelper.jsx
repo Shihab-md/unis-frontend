@@ -127,7 +127,7 @@ export const EmployeeCard = ({ row, onEmployeeDelete }) => {
       style={{ backgroundSize: "100% 100%" }}
     >
       {/* overlay for readability */}
-      <div className="absolute inset-0 bg-white/40" />
+      <div className="absolute inset-0 bg-white/50" />
 
       <div className="relative">
         <div className="flex items-start justify-between gap-2">
