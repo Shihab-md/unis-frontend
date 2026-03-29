@@ -591,7 +591,7 @@ export default function BulkPaymentCreate() {
                   <div className="col-span-1">{String(inv.acYear?.acYear || "-")}</div>
                   <div className="col-span-2">{String(inv.studentId?.rollNumber || "-")}</div>
                   <div className="col-span-2">{String(inv.userId?.name || "-")}</div>
-                  <div className="col-span-2">{String(inv.courseNamesText || "-")}</div>
+                  <div className="col-span-2 mr-2">{String(inv.courseNamesText || "-")}</div>
                   <div className="col-span-1">{String(inv.source || "-")}</div>
                   <div className="col-span-1 text-right mr-4">
                     ₹ {Number(inv.balance || 0).toLocaleString("en-IN")}
