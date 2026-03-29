@@ -83,7 +83,7 @@ const View = () => {
         `}
       </style>
 
-      {/* SCREEN VIEW */}
+      {/* SCREEN VIEW */} 
       <div className="no-print max-w-4xl mx-auto mt-2 p-5">
         <div className="flex py-2 px-4 items-center justify-between bg-teal-700 text-white rounded-lg shadow-lg">
           <h2 className="text-sm lg:text-xl font-semibold">Inspection Report Details</h2>
