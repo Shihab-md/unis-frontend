@@ -532,7 +532,7 @@ export default function PaymentBatchesList() {
                         const invoiceNo = it.invoiceId?.invoiceNo || "-";
                         const studentName = it.studentId?.userId?.name || "-";
                         const roll = it.studentId?.rollNumber || "-";
-                        const courseName = it.invoiceId?.courseId?.name || "-";
+                        const courseName = it.invoiceId?.courseNamesText || "-";
                         const source = it.invoiceId?.source || "-";
                         const acYear = it.invoiceId?.acYear?.acYear || "-";
                         const amount = `₹ ${Number(it.amount || 0).toLocaleString("en-IN")}`;

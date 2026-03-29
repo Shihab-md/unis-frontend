@@ -117,7 +117,7 @@ export default function BulkPaymentCreate() {
       const rowInvoiceNo = String(inv.invoiceNo || "").toLowerCase();
       const rowAcademicYear = String(inv.acYear?.acYear || inv.acYearLabel || inv.acYear || "").toLowerCase();
       const rowStudentName = String(inv.userId?.name || inv.studentId?.userId?.name || "").toLowerCase();
-      const rowCourse = String(inv.courseId?.name || "").toLowerCase();
+      const rowCourse = String(inv.courseNamesText || "").toLowerCase();
       const rowFeesType = String(inv.source || "").toLowerCase();
       const rowRollNumber = String(inv.studentId?.rollNumber || "").toLowerCase();
 
@@ -554,7 +554,7 @@ export default function BulkPaymentCreate() {
                     </div>
                     <div>
                       <span className="font-semibold text-slate-500">Course : </span>
-                      {String(inv.courseId?.name || "-")}
+                      {String(inv.courseNamesText || "-")}
                     </div>
                     <div>
                       <span className="font-semibold text-slate-500">Fees Type : </span>
@@ -591,7 +591,7 @@ export default function BulkPaymentCreate() {
                   <div className="col-span-1">{String(inv.acYear?.acYear || "-")}</div>
                   <div className="col-span-2">{String(inv.studentId?.rollNumber || "-")}</div>
                   <div className="col-span-2">{String(inv.userId?.name || "-")}</div>
-                  <div className="col-span-2">{String(inv.courseId?.name || "-")}</div>
+                  <div className="col-span-2">{String(inv.courseNamesText || "-")}</div>
                   <div className="col-span-1">{String(inv.source || "-")}</div>
                   <div className="col-span-1 text-right mr-4">
                     ₹ {Number(inv.balance || 0).toLocaleString("en-IN")}
@@ -624,17 +624,16 @@ export default function BulkPaymentCreate() {
       <button
         disabled={processing || uploadingProof || !proofAttached || !selectedAcYear}
         onClick={submit}
-        className={`mt-4 w-full text-white p-2 rounded hover:-translate-y-0.5 ${
-          processing || uploadingProof || !proofAttached || !selectedAcYear
+        className={`mt-4 w-full text-white p-2 rounded hover:-translate-y-0.5 ${processing || uploadingProof || !proofAttached || !selectedAcYear
             ? "bg-gray-400 cursor-not-allowed"
             : "bg-teal-600 hover:bg-teal-700"
-        }`}
+          }`}
         title={
           !selectedAcYear
             ? "Select academic year"
             : !proofAttached
-            ? "Attach proof to submit"
-            : ""
+              ? "Attach proof to submit"
+              : ""
         }
       >
         {uploadingProof ? "Uploading Proof..." : processing ? "Submitting..." : "Submit Batch to HQ"}

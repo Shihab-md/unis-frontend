@@ -199,7 +199,7 @@ export default function PendingInvoicesNotSentHQ() {
         row?.studentId?.userId?.name,
         row?.schoolId?.nameEnglish,
         row?.schoolId?.code,
-        row?.courseId?.name,
+        row?.courseNamesText,
         row?.acYear?.acYear,
         row?.status,
       ]
@@ -263,7 +263,7 @@ export default function PendingInvoicesNotSentHQ() {
         selector: (row) => <div className="mt-2 mb-2">
           <p className="mb-1"><span className="text-blue-700 mr-2">Student:</span> {row?.studentId?.userId?.name || "-"}</p>
           <p className="mb-1"><span className="text-blue-700 mr-2">Niswan:</span> {row?.schoolId?.nameEnglish || "-"}</p>
-          <p><span className="text-blue-700 mr-2">Course:</span> {row?.courseId?.name || "-"}</p>
+          <p><span className="text-blue-700 mr-2">Course:</span> {row?.courseNamesText || "-"}</p>
         </div>,
         sortable: true,
         wrap: true,
@@ -494,7 +494,7 @@ export default function PendingInvoicesNotSentHQ() {
 
                       <div>
                         <span className="font-semibold text-slate-500">Course : </span>
-                        {row?.courseId?.name || "-"}
+                        {row?.courseNamesText || "-"}
                       </div>
                       <div>
                         <span className="font-semibold text-slate-500">Fees Type : </span>
