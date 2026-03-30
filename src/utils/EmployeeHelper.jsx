@@ -21,6 +21,7 @@ export const columns = [
       <p><span className="text-blue-700 mr-1">👤:</span> {row.name}</p>
     </div>,
     sortable: true,
+    wrap:true,
     width: "300px",
   },
   {
