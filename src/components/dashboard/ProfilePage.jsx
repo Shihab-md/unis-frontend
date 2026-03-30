@@ -79,7 +79,7 @@ const Field = ({ label, value, icon: Icon, accent = "teal" }) => {
             <div className="relative min-w-0">
                 <div className="flex items-center gap-2 min-w-0">
                     <div
-                        className={`shrink-0 inline-flex items-center justify-center h-9 w-9 rounded-xl bg-gradient-to-r ${badge} text-white shadow`}
+                        className={`shrink-0 inline-flex items-center justify-center h-9 w-9 rounded-xl bg-gradient-to-r ${badge} text-white shadow-lg`}
                     >
                         {Icon ? <Icon className="text-sm" /> : null}
                     </div>
