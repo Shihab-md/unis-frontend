@@ -61,6 +61,56 @@ const customStyles = {
   },
 };
 
+function InspectionReportCard({ row, index, navigate, user }) {
+  return (
+    <div
+      className="relative overflow-hidden rounded-md border border-sky-100 shadow-lg p-2 space-y-1 transition-all 
+      duration-200 hover:-translate-y-0.5 hover:shadow-xl bg-[url('/c-16.jpg')] bg-center bg-no-repeat"
+      style={{ backgroundSize: "100% 100%" }}
+    >
+      <div className="absolute inset-0 bg-white/85" />
+
+      <div className="relative">
+        <div className="flex items-start justify-between gap-2">
+          <div className="min-w-0">
+            <h3 className="text-sm font-semibold text-slate-800 break-words leading-5">
+              {row.title || "-"}
+            </h3>
+            <p className="mt-1 text-[11px] text-slate-500">
+              Report Date: {formatDate(row.reportDate)}
+            </p>
+          </div>
+
+          <div className="shrink-0">
+            <button
+              onClick={() => navigate(`/dashboard/inspection-report/${row._id}`)}
+              className={getButtonStyle("View")}
+            >
+              <FaEye className="text-base m-0.5" />
+            </button>
+          </div>
+        </div>
+
+        <div className="mt-3 grid grid-cols-1 gap-y-2 text-xs">
+          {user.role != 'supervisor' ?
+            <div>
+              <p className="text-[11px] text-slate-500">Supervisor</p>
+              <p className="font-medium text-slate-800">{row.supervisorName || "-"}</p>
+              <p className="text-[11px] text-sky-600">{row.supervisorId || "-"}</p>
+            </div>
+            : null}
+          <div className="border-t border-slate-200/70 pt-2">
+            <p className="text-[11px] text-slate-500">Niswan</p>
+            <p className="font-medium text-slate-800">{row.schoolName || "-"}</p>
+            <p className="text-[11px] text-sky-600">{row.schoolCode || "-"}</p>
+            <p className="text-[11px] text-slate-600">{row.districtState || "-"}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function InspectionReportList() {
   const navigate = useNavigate();
   const { user } = useAuth();
@@ -228,7 +278,7 @@ export default function InspectionReportList() {
   }
 
   return (
-    <div className="mt-1 p-5 lg:mt-5">
+    <div className="mt-1 p-3 lg:mt-5">
       <div className="text-center">
         <h3 className="text-base lg:text-2xl font-bold px-5 py-0 text-shadow-lg text-gray-600">
           Inspection Reports
@@ -291,17 +341,33 @@ export default function InspectionReportList() {
       {filtering ? (
         getFilterGif()
       ) : (
-        <div className="mt-3 lg:mt-5 rounded-lg shadow-lg">
-          <DataTable
-            columns={columns}
-            data={rows}
-            highlightOnHover
-            striped
-            responsive
-            persistTableHead
-            customStyles={customStyles}
-          />
-        </div>
+        <>
+          {/* Mobile / Tablet */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-3 lg:hidden">
+            {rows.map((row, index) => (
+              <InspectionReportCard
+                key={row._id}
+                row={row}
+                index={index}
+                navigate={navigate}
+                user={user}
+              />
+            ))}
+          </div>
+
+          {/* Desktop */}
+          <div className="hidden lg:block mt-3 lg:mt-5 rounded-lg shadow-lg">
+            <DataTable
+              columns={columns}
+              data={rows}
+              highlightOnHover
+              striped
+              responsive
+              persistTableHead
+              customStyles={customStyles}
+            />
+          </div>
+        </>
       )}
 
       {showFilterPopup ? (

@@ -84,9 +84,9 @@ const View = () => {
       </style>
 
       {/* SCREEN VIEW */} 
-      <div className="no-print max-w-4xl mx-auto mt-2 p-5">
+      <div className="no-print max-w-4xl mx-auto mt-2 p-3">
         <div className="flex py-2 px-4 items-center justify-between bg-teal-700 text-white rounded-lg shadow-lg">
-          <h2 className="text-sm lg:text-xl font-semibold">Inspection Report Details</h2>
+          <h2 className="text-sm lg:text-xl font-semibold">Inspection Details</h2>
 
           <div className="flex items-center gap-3 text-xs lg:text-lg">
             <button
