@@ -24,7 +24,7 @@ export const columns = [
     </div>,
     sortable: true,
     wrap: true,
-    width: "400px",
+    width: "370px",
   },
   {
     name: "Students #",
@@ -45,7 +45,7 @@ export const columns = [
       </div>
     ),
     //  sortable: true,
-    width: "180px",
+    width: "170px",
   },
   {
     name: "Address",
@@ -80,7 +80,7 @@ export const columns = [
     </div>,
     //  sortable: true,
     wrap: true,
-    width: "280px",
+    width: "250px",
   },
   {
     name: "Action",

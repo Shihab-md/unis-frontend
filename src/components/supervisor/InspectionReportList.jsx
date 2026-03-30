@@ -278,7 +278,7 @@ export default function InspectionReportList() {
   }
 
   return (
-    <div className="mt-1 p-3 lg:mt-5">
+    <div className="mt-1 p-3 lg:p-5 lg:mt-5">
       <div className="text-center">
         <h3 className="text-base lg:text-2xl font-bold px-5 py-0 text-shadow-lg text-gray-600">
           Inspection Reports
@@ -305,7 +305,7 @@ export default function InspectionReportList() {
           </div>
         </div>
 
-        <div className="mr-3" onClick={() => setShowFilterPopup(true)}>
+        <div className="" onClick={() => setShowFilterPopup(true)}>
           {LinkIcon("#", "Filter")}
         </div>
 
