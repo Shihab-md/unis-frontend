@@ -382,23 +382,17 @@ const List = () => {
         getFilterGif() :
         (
           <>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            {/* Mobile / Tablet */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 lg:hidden">
               {filteredCertificate.map((row) => (
                 <CertificateCard key={row._id} row={row} />
               ))}
             </div>
 
-            {/* Mobile / Tablet 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 lg:hidden">
-              {filteredCertificate.map((row) => (
-                <CertificateCard key={row._id} row={row} />
-              ))}
-            </div>*/}
-
-            {/* Desktop 
+            {/* Desktop */}
             <div className="hidden lg:block">
               <DataTable columns={columns} data={filteredCertificate} pagination highlightOnHover striped responsive />
-            </div>*/}
+            </div>
           </>)}
     </div>
   )
