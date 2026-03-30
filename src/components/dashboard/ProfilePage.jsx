@@ -72,7 +72,7 @@ const Field = ({ label, value, icon: Icon, accent = "teal" }) => {
                     : "from-teal-500 to-emerald-500";
 
     return (
-        <div className="w-full group relative overflow-hidden rounded-2xl border border-white/40 bg-white/60 backdrop-blur-xl p-4 shadow-sm transition-all sm:hover:-translate-y-0.5 sm:hover:shadow-lg">
+        <div className="w-full group relative overflow-hidden rounded-lg border border-white/40 bg-white/60 backdrop-blur-xl p-4 shadow-lg transition-all sm:hover:-translate-y-0.5 sm:hover:shadow-lg">
             {/* glow */}
             <div className="pointer-events-none absolute -inset-24 opacity-0 blur-3xl transition-opacity duration-300 group-hover:opacity-60 bg-gradient-to-r from-teal-300/30 via-indigo-300/30 to-rose-300/30" />
 
@@ -86,7 +86,7 @@ const Field = ({ label, value, icon: Icon, accent = "teal" }) => {
                     <div className="text-xs font-bold text-slate-700 truncate">{label}</div>
                 </div>
 
-                <div className="mt-3 text-base sm:text-md font-xl text-slate-900 break-words">
+                <div className="mt-3 text-sm lg:text-md font-xl text-slate-900 break-words">
                     {value ?? "-"}
                 </div>
 
@@ -225,7 +225,7 @@ export default function ProfilePage() {
 
                                 <div className="flex w-full sm:w-auto gap-2">
                                     <button
-                                        className={`flex-1 sm:flex-none justify-center flex items-center gap-2 rounded-xl px-4 py-2 text-sm font-bold transition-all ${tab === "profile"
+                                        className={`flex-1 sm:flex-none justify-center flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-bold transition-all ${tab === "profile"
                                             ? "bg-gradient-to-r from-teal-600 to-emerald-600 text-white shadow-lg ring-2 ring-teal-300/60"
                                             : "bg-white/70 border text-slate-800 hover:bg-white/90"
                                             }`}
@@ -257,7 +257,7 @@ export default function ProfilePage() {
                                     <div className="mt-6 grid grid-cols-1 gap-5 lg:grid-cols-3">
                                         {/* Left profile card */}
                                         <div className="w-full">
-                                            <div className="relative overflow-hidden rounded-3xl border border-white/40 bg-white/60 backdrop-blur-xl p-6 shadow-sm">
+                                            <div className="relative overflow-hidden rounded-lg border border-white/40 bg-white/60 backdrop-blur-xl p-6 shadow-lg">
                                                 <div className="pointer-events-none absolute -top-24 -right-24 h-56 w-56 rounded-full bg-teal-400/20 blur-3xl" />
                                                 <div className="pointer-events-none absolute -bottom-24 -left-24 h-56 w-56 rounded-full bg-indigo-400/20 blur-3xl" />
 
