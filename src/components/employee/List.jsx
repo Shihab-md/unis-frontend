@@ -477,7 +477,7 @@ const List = () => {
         || (localStorage.getItem('empRole') != null && localStorage.getItem('empRole') != 'null')
         || (localStorage.getItem('empStatus') != null && localStorage.getItem('empStatus') != 'null') ?
 
-        <div className='grid lg:flex mt-3 lg:mt-7 text-xs text-lime-600 items-center justify-center'>
+        <div className='grid lg:flex mt-3 lg:mt-5 text-xs text-lime-600 items-center justify-center'>
           <p className='lg:mr-3 justify-center text-center'>Filter Applied: </p>
 
           <p>{localStorage.getItem('empSchoolId') != null && localStorage.getItem('empSchoolId') != 'null' ?
@@ -507,7 +507,7 @@ const List = () => {
             </div>
 
             {/* Desktop */}
-            <div className="hidden lg:block">
+            <div className="hidden lg:block mt-3">
               <DataTable columns={columns} data={filteredEmployee} highlightOnHover striped responsive conditionalRowStyles={conditionalRowStyles} />
             </div>
           </>)}
