@@ -21,7 +21,8 @@ export const columns = [
       <p><span className="text-blue-700 mr-1">👤:</span> {row.name}</p>
     </div>,
     sortable: true,
-    width: "430px",
+    width: "370px",
+    wrap: true,
   },
   {
     name: "Contact",
@@ -38,7 +39,7 @@ export const columns = [
     name: "Niswans #",
     selector: (row) => row.schoolsCount,
     sortable: true,
-    width: "120px",
+    width: "130px",
   },
   {
     name: "Students #",
@@ -61,7 +62,7 @@ export const columns = [
       </div>
     ),
     //  sortable: true,
-    width: "160px",
+    width: "210px",
   },
   {
     name: "Status",
@@ -93,7 +94,6 @@ export const conditionalRowStyles = [
     }),
   }
 ];
-
 
 export const SupervisorCard = ({ row }) => {
   const statusClass =
@@ -179,6 +179,21 @@ export const SupervisorCard = ({ row }) => {
               {row.studentCount ?? 0}
             </span>
           </div>
+        </div>
+
+        <div className="mt-3 rounded-md border border-pink-200 p-2 ml-10 mr-10 bg-white/70 shadow-lg">
+          {Array.isArray(row.studentCountsByCourse) && row.studentCountsByCourse.length > 0 ? (
+            <div className="space-y-1">
+              {row.studentCountsByCourse.map((course, i) => (
+                <p key={i} className="text-[11px] text-slate-700 leading-4">
+                  <span className="text-sky-700 font-medium">
+                    {course.courseName}:
+                  </span>{" "}
+                  {course.count}
+                </p>
+              ))}
+            </div>
+          ) : null}
         </div>
 
         <div className="flex pt-2 items-center justify-center">
