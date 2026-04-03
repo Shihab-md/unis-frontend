@@ -379,7 +379,7 @@ export const StudentCard = ({ row, onStudentDelete }) => {
                 <p key={course._id || i} className="text-[11px] text-slate-700 leading-4">
                   <span className="text-sky-700 font-medium mr-1">{i + 1}.</span>
                   {course.name || "-"}
-                  {Number(course.years) > 0 ? ` (${getYearLabel(course.years)})` : ""}
+                  {Number(course.years) >= 0 ? ` (${getYearLabel(course.years)})` : ""}
                 </p>
               ))}
             </div>
