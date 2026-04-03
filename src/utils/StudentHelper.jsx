@@ -233,7 +233,7 @@ export const columns = [
             row.courses.map((course, i) => (
               <div className="mb-2" key={course._id || i}>
                 <span className="text-blue-700">{`${i + 1}.`}</span> {`${course.name}`}
-                {Number(course.years) > 0 ? ` (${getYearLabel(course.years)})` : ""}
+                {Number(course.years) >= 0 ? ` (${getYearLabel(course.years)})` : ""}
               </div>
             ))
           ) : (
