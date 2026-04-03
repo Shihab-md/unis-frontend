@@ -233,7 +233,8 @@ export const columns = [
             row.courses.map((course, i) => (
               <div className="mb-2" key={course._id || i}>
                 <span className="text-blue-700">{`${i + 1}.`}</span> {`${course.name}`}
-                {Number(course.years) >= 0 ? ` (${getYearLabel(course.years)})` : ""}
+                {!["School Education", "Islamic Home Science", "Vocational Courses"].includes(course?.type)
+                  && Number(course.years) >= 0 ? ` (${getYearLabel(course.years)})` : ""}
               </div>
             ))
           ) : (
@@ -383,7 +384,7 @@ export const StudentCard = ({ row, onStudentDelete }) => {
                 </p>
               ))}
             </div>
-          ) : ( 
+          ) : (
             <p className="text-[11px] text-slate-500">-</p>
           )}
         </div>

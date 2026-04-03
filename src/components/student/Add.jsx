@@ -107,20 +107,13 @@ const Add = () => {
     getSchoolsMap();
   }, []);
 
+  const activeAcademicYear = Array.isArray(academicYears)
+    ? academicYears.find((item) => item.active === "Active")
+    : null;
+
   useEffect(() => {
-    const getAcYearMap = async () => {
-      const academicYears = await getAcademicYearsFromCache();
-      const activeAcYear = academicYears?.find((item) => item.active === "Active");
-
-      if (activeAcYear?._id) {
-        setAcYear(activeAcYear._id);
-      } else {
-        setAcYear("");
-      }
-    };
-
-    getAcYearMap();
-  }, []);
+    setAcYear(activeAcademicYear?._id || "");
+  }, [activeAcademicYear?._id]);
 
   useEffect(() => {
     const getAcademicYearsMap = async () => {
@@ -1058,22 +1051,19 @@ const Add = () => {
               {/* Academic Year */}
               <div>
                 <label className="block mt-2 text-sm font-medium text-slate-500">
-                  Select Academic Year <span className="text-red-700">*</span>
+                  Academic Year <span className="text-red-700">*</span>
                 </label>
+
+                <input type="hidden" name="acYear" value={acYear} />
+
                 <select
-                  name="acYear"
-                  onChange={handleChange}
                   value={acYear}
-                  className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
-                  required
                   disabled
+                  className="mt-2 p-2 block w-full border border-gray-300 rounded-md bg-slate-100 text-slate-700"
                 >
-                  <option value=""></option>
-                  {academicYears.map((acYear) => (
-                    <option key={acYear._id} value={acYear._id}>
-                      {acYear.acYear}
-                    </option>
-                  ))}
+                  <option value={activeAcademicYear?._id || ""}>
+                    {activeAcademicYear?.acYear || ""}
+                  </option>
                 </select>
               </div>
               <div className="hidden lg:block flex space-x-3 mb-5" />
