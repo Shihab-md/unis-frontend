@@ -172,8 +172,8 @@ export function toCamelCase(inputString) {
 }
 
 export const getBaseUrl = async () => {
-  return "https://unis-server.vercel.app/api/";
-  //return "http://localhost:5001/api/";
+  //return "https://unis-server.vercel.app/api/";
+  return "http://localhost:5001/api/";
 };
 
 export function handleRightClickAndFullScreen() {

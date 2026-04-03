@@ -58,6 +58,8 @@ import TemplateEdit from "./components/template/Edit";
 import CertificateList from "./components/certificate/List";
 import CertificateAdd from "./components/certificate/Add";
 import CertificateView from "./components/certificate/View";
+import ReprintCertificate from "./components/certificate/ReprintCertificate";
+import DuplicatePrintCertificate from "./components/certificate/DuplicatePrintCertificate";
 
 import DistrictStateList from "./components/districtstate/List";
 import DistrictStateAdd from "./components/districtstate/Add";
@@ -139,6 +141,8 @@ function App() {
           <Route path="/dashboard/certificates" element={<CertificateList />}></Route>
           <Route path="/dashboard/add-certificate" element={<CertificateAdd />}></Route>
           <Route path="/dashboard/certificates/:id" element={<CertificateView />}></Route>
+          <Route path="/dashboard/certificates/reprint/:id" element={<ReprintCertificate />} />
+          <Route path="/dashboard/certificates/duplicate-print/:id" element={<DuplicatePrintCertificate />} />
 
           <Route path="/dashboard/academicYears" element={<AcademicYearList />}></Route>
           <Route path="/dashboard/add-academicYear" element={<AcademicYearAdd />}></Route>

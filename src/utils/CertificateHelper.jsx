@@ -11,15 +11,17 @@ export const columns = [
     width: "70px",
   },
   {
-    name: "Sanadh No",
-    selector: (row) => row.sanadhNo,
+    name: "Sanadh Detail",
+    selector: (row) => (<div className="mt-2 mb-2">
+      <p className="mb-2">
+        <span className="text-blue-700"></span> {row.sanadhName}
+      </p>
+      <p>
+        <span className="text-blue-700"></span> {row.sanadhNo}
+      </p>
+    </div>),
     sortable: true,
-    width: "160px",
-  },
-  {
-    name: "Sanadh Name",
-    selector: (row) => row.sanadhName,
-    width: "200px",
+    width: "190px",
   },
   {
     name: "Student Details",
@@ -170,6 +172,18 @@ export const CertificateButtons = ({ Id, onCertificateDelete }) => {
         onClick={() => navigate(`/dashboard/certificates/${Id}`)}
       >
         <FaEye className="m-1" />
+      </button>
+      <button
+        className="px-5 py-1 m-1 bg-violet-600 text-xs text-teal-100 rounded-md shadow-md shadow-teal-200 hover:-translate-y-0.5"
+        onClick={() => navigate(`/dashboard/certificates/reprint/${Id}`)}
+      >
+        Re-Print
+      </button>
+      <button
+        className="px-5 py-1 m-1 bg-yellow-600 text-xs text-teal-100 rounded-md shadow-md shadow-teal-200 hover:-translate-y-0.5"
+        onClick={() => navigate(`/dashboard/certificates/duplicate-print/${Id}`)}
+      >
+        Duplicate
       </button>
     </div>
   );
