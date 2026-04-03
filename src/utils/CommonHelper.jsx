@@ -1,6 +1,6 @@
 
-import { Link } from 'react-router-dom';
-import { useEffect, useRef, useCallback } from "react";
+import { Link, useNavigate } from 'react-router-dom';
+import React, { useEffect, useRef, useState, useCallback } from "react";
 import {
   FaPlusSquare, FaArrowAltCircleLeft, FaFileSignature, FaUserCheck, FaTrashAlt, FaSearch, FaTasks, FaCheck, FaUpload
 } from "react-icons/fa";
@@ -82,8 +82,12 @@ export function checkAuth(screenName) {
 };
 
 export const getYearLabel = (value) => {
+  if (value === "" || value === null || value === undefined) return "";
+
   const year = Number(value);
-  if (!Number.isFinite(year) || year <= 0) return "";
+  if (!Number.isFinite(year) || year < 0) return "";
+
+  if (year === 0) return "Year 0";
 
   const mod10 = year % 10;
   const mod100 = year % 100;
@@ -319,6 +323,31 @@ export function getFormattedDate(dateString) {
 }
 
 export function showSwalAlert(title, message, icon) {
+  const msg = String(message || "");
+  const isExpiredMessage = msg.toLowerCase().includes("Login failed");
+  const isShortTimerTitle = title === "Success!" || title === "Uploaded";
+
+  return Swal.fire({
+    title: title,
+    html: "<b>" + msg + "</b>",
+    icon: icon,
+    timer: isShortTimerTitle ? 1600 : 5200,
+    timerProgressBar: true,
+    showConfirmButton: false,
+    background: "url(/bg_card.png)",
+    didClose: () => {
+      if (isExpiredMessage) {
+        localStorage.removeItem("token");
+        localStorage.removeItem("user");
+        sessionStorage.clear();
+        window.location.replace("/login");
+      }
+    },
+  });
+}
+
+{/*
+export function showSwalAlert(title, message, icon) {
   return Swal.fire({
     title: title,
     html: "<b>" + message + "</b>",
@@ -328,7 +357,7 @@ export function showSwalAlert(title, message, icon) {
     showConfirmButton: false,
     background: "url(/bg_card.png)",
   });
-}
+}*/}
 
 export function showConfirmationSwalAlert(title, message, icon) {
   return Swal.fire({
