@@ -370,7 +370,7 @@ export const StudentCard = ({ row, onStudentDelete }) => {
           </div>
         </div>
 
-        <div className="mt-3 rounded-md border border-pink-200 bg-white/70 p-2 shadow-lg">
+        <div className="mt-3 rounded-md border border-pink-200 bg-white/70 p-2 ml-10 mr-10 shadow-lg">
           <p className="text-xs font-semibold text-slate-700 mb-1">Courses</p>
 
           {Array.isArray(row.courses) && row.courses.length > 0 ? (
@@ -383,7 +383,7 @@ export const StudentCard = ({ row, onStudentDelete }) => {
                 </p>
               ))}
             </div>
-          ) : (
+          ) : ( 
             <p className="text-[11px] text-slate-500">-</p>
           )}
         </div>

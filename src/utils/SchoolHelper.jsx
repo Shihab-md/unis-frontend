@@ -168,7 +168,7 @@ export const SchoolCard = ({ row, onSchoolDelete }) => {
             <span className="font-xs text-slate-500">
               {row.incharge1 || "-"}
             </span>
-            <span className="text-slate-500">     📱:</span>{" "}
+            <span className="text-slate-500 ml-3">📱:</span>{" "}
             <span className="font-xs text-slate-500">
               {row.incharge1Number || "-"}
             </span>
