@@ -180,13 +180,6 @@ export function handleRightClickAndFullScreen() {
   const isDisableRightClick = true;
   const isOpenFullScreen = true;
 
-  // ✅ Detect mobile only (Android/iOS + small screens)
-  const isMobile =
-    /Android|iPhone|iPad|iPod/i.test(navigator.userAgent || "") ||
-    window.matchMedia?.("(max-width: 768px)")?.matches;
-
-  if (!isMobile) return; // ✅ Do nothing for web/desktop
-
   // -------- Right click disable (mostly desktop feature; keep only if you want) --------
   const handleRightClick = (e) => e.preventDefault();
 
@@ -194,6 +187,13 @@ export function handleRightClickAndFullScreen() {
     document.removeEventListener("contextmenu", handleRightClick); // prevent duplicates
     document.addEventListener("contextmenu", handleRightClick);
   }
+
+  // ✅ Detect mobile only (Android/iOS + small screens)
+  const isMobile =
+    /Android|iPhone|iPad|iPod/i.test(navigator.userAgent || "") ||
+    window.matchMedia?.("(max-width: 768px)")?.matches;
+
+  if (!isMobile) return; // ✅ Do nothing for web/desktop
 
   // -------- Fullscreen (must be triggered by user gesture) --------
   if (isOpenFullScreen) {
