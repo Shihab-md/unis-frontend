@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { getBaseUrl, showSwalAlert, showConfirmationSwalAlert, getButtonStyle } from '../utils/CommonHelper';
-import { FaEye, } from "react-icons/fa";
+import { FaEye, FaRedo, FaRegCopy } from "react-icons/fa";
 import { useAuth } from '../context/AuthContext'
 
 export const columns = [
@@ -174,16 +174,18 @@ export const CertificateButtons = ({ Id, onCertificateDelete }) => {
         <FaEye className="m-1" />
       </button>
       <button
-        className="px-5 py-1 m-1 bg-violet-600 text-xs text-teal-100 rounded-md shadow-md shadow-teal-200 hover:-translate-y-0.5"
+        className={getButtonStyle('Reprint')}
+        //className="px-5 py-1 m-1 bg-violet-600 text-xs text-teal-100 rounded-md shadow-md shadow-teal-200 hover:-translate-y-0.5"
         onClick={() => navigate(`/dashboard/certificates/reprint/${Id}`)}
       >
-        Re-Print
+        <FaRedo className="m-1" />
       </button>
       <button
-        className="px-5 py-1 m-1 bg-yellow-600 text-xs text-teal-100 rounded-md shadow-md shadow-teal-200 hover:-translate-y-0.5"
+        className={getButtonStyle('DuplicatePrint')}
+        //className="px-5 py-1 m-1 bg-yellow-600 text-xs text-teal-100 rounded-md shadow-md shadow-teal-200 hover:-translate-y-0.5"
         onClick={() => navigate(`/dashboard/certificates/duplicate-print/${Id}`)}
       >
-        Duplicate
+        <FaRegCopy className="m-1" />
       </button>
     </div>
   );
