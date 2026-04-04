@@ -49,7 +49,7 @@ const Masters = () => {
   return (
     <div className="p-7 pt-3 items-center justify-center rounded-lg h-9/10">
       <CommonHeader userName={user?.name || ""} title="Masters" />
-      <div className="content-center rounded-lg grid grid-cols-1 md:grid-cols-4 lg:grid-cols-4 gap-7 lg:gap-14 mt-7 lg:mt-16 flex rounded-lg">
+      <div className="content-center rounded-lg grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-7 lg:gap-14 mt-7 lg:mt-16 flex rounded-lg">
 
         {user.role === "superadmin" || user.role === "hquser" || user.role === "guest" ?
           <Link to="/dashboard/institutes" >
