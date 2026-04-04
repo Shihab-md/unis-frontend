@@ -84,7 +84,7 @@ const Edit = () => {
             salary: supervisor.salary,
             jobType: supervisor.jobType,
             remarks: supervisor.remarks,
-            active: supervisor.active 
+            active: supervisor.active
           }));
         }
       } catch (error) {
@@ -110,6 +110,69 @@ const Edit = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setProcessing(true);
+
+    try {
+      const formData = new FormData();
+
+      formData.append("name", supervisor.name || "");
+      formData.append("email", supervisor.email || "");
+      formData.append("supervisorId", supervisor.supervisorId || "");
+      formData.append("contactNumber", supervisor.contactNumber || "");
+      formData.append("address", supervisor.address || "");
+      formData.append("routeName", supervisor.routeName || "");
+      formData.append("qualification", supervisor.qualification || "");
+      formData.append("gender", supervisor.gender || "");
+      formData.append("maritalStatus", supervisor.maritalStatus || "");
+      formData.append("designation", supervisor.designation || "");
+      formData.append("salary", supervisor.salary || "");
+      formData.append("jobType", supervisor.jobType || "");
+      formData.append("remarks", supervisor.remarks || "");
+      formData.append("active", supervisor.active || "");
+
+      formData.append(
+        "dob",
+        selectedDOBDate ? new Date(selectedDOBDate).toISOString() : ""
+      );
+
+      formData.append(
+        "doj",
+        selectedDOJDate ? new Date(selectedDOJDate).toISOString() : ""
+      );
+
+      if (supervisor.file) {
+        formData.append("file", supervisor.file);
+      }
+
+      const response = await axios.put(
+        (await getBaseUrl()).toString() + `supervisor/${id}`,
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+
+      if (response.data.success) {
+        setProcessing(false);
+        showSwalAlert("Success!", "Successfully Updated!", "success");
+        navigate("/dashboard/supervisors");
+      }
+    } catch (error) {
+      setProcessing(false);
+      console.log(error);
+      if (error.response && !error.response.data.success) {
+        showSwalAlert("Error!", error.response.data.error, "error");
+      } else {
+        showSwalAlert("Error!", "Image upload failed.", "error");
+      }
+    }
+  };
+
+  {/*
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setProcessing(true);
     try {
       if (selectedDOBDate) {
         supervisor.dob = selectedDOBDate;
@@ -128,7 +191,7 @@ const Edit = () => {
         'Access-Control-Allow-Origin': '*',
         'Accept': 'application/json'
       }
-
+ 
       const response = await axios.put(
         (await getBaseUrl()).toString() + `supervisor/${id}`,
         supervisor,
@@ -148,6 +211,7 @@ const Edit = () => {
       }
     }
   };
+*/}
 
   if (processing) {
     return getPrcessing();
