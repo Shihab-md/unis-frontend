@@ -119,12 +119,9 @@ export default function ConnectDriveHidden() {
   return (
     <div className="p-4 max-w-5xl mx-auto">
       <div className="flex items-center gap-3 mb-5">
-        <div>{LinkIcon("/dashboard/accountsPage", "Back")}</div>
+        <div>{LinkIcon("/dashboard/masters", "Back")}</div>
         <div className="flex flex-col leading-tight">
-          <h2 className="text-lg font-bold">Hidden: Google Drive Connection</h2>
-          <div className="text-xs text-gray-600 mt-1">
-            URL: /dashboard/admin/connect-drive (keep hidden from menu)
-          </div>
+          <h2 className="text-lg font-bold">Google Drive Connection</h2>
         </div>
       </div>
 
