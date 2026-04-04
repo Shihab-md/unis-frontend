@@ -513,7 +513,7 @@ export default function PaymentBatchesList() {
                     </div>
 
                     {b.status === "REJECTED" && (
-                      <div className="ml-1 mt-1 text-[10px] font-semibold text-red-500">
+                      <div className="ml-1 mt-1 text-[12px] font-semibold text-left text-red-500">
                         Reason: {b.rejectedReason || "-"}
                       </div>
                     )}
