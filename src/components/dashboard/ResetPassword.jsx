@@ -151,7 +151,7 @@ const ResetPassword = () => {
   return (
     <div className="p-3 sm:p-4">
       <div
-        className="mx-auto max-w-3xl mt-5 rounded-md border border-slate-200 bg-white shadow-lg transition-all duration-200 bg-[url('/c-6.jpg')] bg-center bg-no-repeat hover:-translate-y-0.5 hover:shadow-xl"
+        className="mx-auto max-w-lg mt-5 rounded-md border border-slate-200 bg-white shadow-lg transition-all duration-200 bg-[url('/c-6.jpg')] bg-center bg-no-repeat hover:-translate-y-0.5 hover:shadow-xl"
         style={{
           backgroundImage:
             "linear-gradient(rgba(255, 254, 254, 0.80), rgba(255, 255, 255, 0.90)), url('/c-6.jpg')",
@@ -193,28 +193,23 @@ const ResetPassword = () => {
           </form>
 
           {matchedUser && (
-            <div className="rounded-lg border border-slate-200 bg-slate-50 p-4">
-              <h2 className="text-sm font-semibold text-slate-700 mb-3">Matched User</h2>
+            <div className="rounded-md border border-slate-200 bg-slate-50 p-4 shadow-lg">
+              <h2 className="text-xs font-semibold text-slate-700 mb-3">Matched User</h2>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
+              <div className="grid grid-cols-1 gap-3 text-xs">
                 <div>
                   <span className="text-slate-500">Name:</span>
-                  <div className="font-medium text-slate-800">{matchedUser.name || "-"}</div>
+                  <div className="font-xs text-slate-800">{matchedUser.name || "-"}</div>
                 </div>
 
                 <div>
                   <span className="text-slate-500">Role:</span>
-                  <div className="font-medium text-slate-800">{matchedUser.role || "-"}</div>
-                </div>
-
-                <div>
-                  <span className="text-slate-500">User ID:</span>
-                  <div className="font-medium text-slate-800">{matchedUser.loginId || "-"}</div>
+                  <div className="font-xs text-slate-800">{matchedUser.role || "-"}</div>
                 </div>
 
                 <div>
                   <span className="text-slate-500">Login Email:</span>
-                  <div className="font-medium text-slate-800">{matchedUser.email || "-"}</div>
+                  <div className="font-xs text-slate-800">{matchedUser.email || "-"}</div>
                 </div>
               </div>
             </div>
