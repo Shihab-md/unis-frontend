@@ -480,6 +480,9 @@ export default function PaymentBatchesList() {
                         {statusBadge(b.status)}
                         <span className="text-[10px] text-gray-500">Items: {b.itemCount || 0}</span>
                       </div>
+                      <div className="mt-1 flex items-center justify-end gap-2">
+                        <span className="text-[10px] text-gray-500">Reason: {b.rejectedReason || "-"}</span>
+                      </div>
                     </div>
                   </div>
                 </button>
@@ -503,9 +506,17 @@ export default function PaymentBatchesList() {
 
                   <div className="col-span-2">{b.mode || "-"}</div>
 
-                  <div className="col-span-3 flex items-center gap-2">
-                    {statusBadge(b.status)}
-                    <span className="text-[10px] text-gray-500">Items: {b.itemCount || 0}</span>
+                  <div className="col-span-3">
+                    <div className="flex items-center gap-2">
+                      {statusBadge(b.status)}
+                      <span className="text-[10px] text-gray-500">Items: {b.itemCount || 0}</span>
+                    </div>
+
+                    {b.status === "REJECTED" && (
+                      <div className="ml-1 mt-1 text-[10px] font-semibold text-red-500">
+                        Reason: {b.rejectedReason || "-"}
+                      </div>
+                    )}
                   </div>
                 </button>
 
