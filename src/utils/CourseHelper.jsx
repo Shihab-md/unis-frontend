@@ -34,8 +34,8 @@ export const columns = [
     width: "230px",
   },
   {
-    name: "Remarks",
-    selector: (row) => row.remarks,
+    name: "Promotion Order",
+    selector: (row) => row.promotionOrder || "-",
     width: "250px",
     wrap: true,
   },

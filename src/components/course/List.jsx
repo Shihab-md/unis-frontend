@@ -52,6 +52,7 @@ const List = () => {
           remarks: sup.remarks,
           fees: sup.fees,
           years: sup.years,
+          promotionOrder: sup.promotionOrder,
           subjectsCount: sup._subjectsCount ? sup._subjectsCount : 0,
           action: (
             <CourseButtons
