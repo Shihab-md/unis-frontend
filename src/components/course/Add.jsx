@@ -48,6 +48,7 @@ const Add = () => {
     subject10: "",
     subject10MaxMark: "",
     subject10PassMark: "",
+    promotionOrder: "",
   });
 
   const navigate = useNavigate()
@@ -92,7 +93,7 @@ const Add = () => {
   }
 
   return (
-    <div className="max-w-4xl mx-auto mt-2 p-5 shadow-lg border">
+    <div className="max-w-4xl mx-auto mt-2 p-3 lg:p-5 shadow-lg border">
       <div className="flex py-2 px-4 items-center justify-center bg-teal-700 text-white rounded-lg shadow-lg">
         <h2 className="text-sm lg:text-xl font-semibold items-center justify-center">Enter Course Details</h2>
         <Link to="/dashboard/courses" >
@@ -101,11 +102,11 @@ const Add = () => {
       </div>
 
       <form onSubmit={handleSubmit} autoComplete="off">
-        <div className="py-2 px-4 border mt-5 mb-3 items-center justify-center rounded-lg shadow-lg bg-white">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 gap-y-7">
+        <div className="py-2 lg:py-5 px-4 lg:px-7 border mt-5 mb-3 items-center justify-center rounded-lg shadow-lg bg-white">
+          <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 gap-y-7">
 
             {/* Type */}
-            <div>
+            <div className="lg:col-span-2">
               <label className="block mt-5 text-sm font-medium text-slate-500">
                 Education Type <span className="text-red-700">*</span>
               </label>
@@ -125,10 +126,10 @@ const Add = () => {
               </select>
             </div>
 
-            <div className="hidden lg:block flex space-x-3 mb-5" />
+            <div className="hidden lg:block lg:col-span-2 space-x-3 mb-5" />
 
             {/* Code */}
-            <div>
+            <div className="lg:col-span-1">
               <label className="block mt-2 text-sm font-medium text-slate-500">
                 Code <span className="text-red-700">*</span>
               </label>
@@ -142,7 +143,7 @@ const Add = () => {
             </div>
 
             {/* Name */}
-            <div>
+            <div className="lg:col-span-2">
               <label className="block mt-2 text-sm font-medium text-slate-500">
                 Name <span className="text-red-700">*</span>
               </label>
@@ -155,8 +156,23 @@ const Add = () => {
               />
             </div>
 
+            {/* Fees */}
+            <div className="lg:col-span-1">
+              <label className="block mt-2 text-sm font-medium text-slate-500">
+                Fees <span className="text-red-700">*</span>
+              </label>
+              <input
+                type="number"
+                name="fees"
+                onChange={handleChange}
+                min="0"
+                className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                required
+              />
+            </div>
+
             {/* Remarks */}
-            <div>
+            <div className="lg:col-span-2">
               <label className="block text-sm font-medium text-slate-500">
                 Remarks <span className="text-red-700">*</span>
               </label>
@@ -169,24 +185,9 @@ const Add = () => {
               />
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 gap-y-7">
-              {/* Fees */}
-              <div>
-                <label className="block text-sm font-medium text-slate-500">
-                  Fees <span className="text-red-700">*</span>
-                </label>
-                <input
-                  type="number"
-                  name="fees"
-                  onChange={handleChange}
-                  min="0"
-                  className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-                  required
-                />
-              </div>
-
+            <div className="col-span-1 lg:col-span-2 grid grid-cols-2 gap-3">
               {/* Years */}
-              <div>
+              <div className="lg:col-span-1">
                 <label className="block text-sm font-medium text-slate-500">
                   Years <span className="text-red-700">*</span>
                 </label>
@@ -199,13 +200,27 @@ const Add = () => {
                   required
                 />
               </div>
+
+              {/* PromotionOrder */}
+              <div className="lg:col-span-1">
+                <label className="block text-sm font-medium text-slate-500">
+                  Promotion Order <span className="text-red-700">*</span>
+                </label>
+                <input
+                  type="number"
+                  name="promotionOrder"
+                  onChange={handleChange}
+                  min="0"
+                  className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                  required
+                />
+              </div>
             </div>
 
-            <div className="flex space-x-3 mb-5" />
-            <div className="hidden lg:block flex space-x-3 mb-5" />
+            <div className="lg:col-span-4 mb-3" />
 
             {/* Subject-1 */}
-            <div>
+            <div className="lg:col-span-2">
               <label className="block text-sm font-medium text-slate-500">
                 Subject-1 <span className="text-red-700">*</span>
               </label>
@@ -217,7 +232,8 @@ const Add = () => {
                 required
               />
             </div>
-            <div className="grid grid-cols-2 gap-7 justify-between">
+
+            <div className="col-span-1 lg:col-span-2 grid grid-cols-2 gap-3">
               {/* Subject-1 Max Mark */}
               <div>
                 <label className="block text-sm font-medium text-slate-500">
@@ -250,7 +266,7 @@ const Add = () => {
             </div>
 
             {/* Subject-2 */}
-            <div>
+            <div className="lg:col-span-2">
               <label className="block text-sm font-medium text-slate-500">
                 Subject-2
               </label>
@@ -263,8 +279,7 @@ const Add = () => {
               />
             </div>
 
-            <div className="grid grid-cols-2 gap-7 justify-between">
-              {/* Subject-2 Max Mark */}
+            <div className="col-span-1 lg:col-span-2 grid grid-cols-2 gap-3">
               <div>
                 <label className="block text-sm font-medium text-slate-500">
                   Max Mark
@@ -275,11 +290,9 @@ const Add = () => {
                   onChange={handleChange}
                   min="0"
                   className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-                //    required
                 />
               </div>
 
-              {/* Subject-2 Pass Mark */}
               <div>
                 <label className="block text-sm font-medium text-slate-500">
                   Pass Mark
@@ -290,13 +303,12 @@ const Add = () => {
                   onChange={handleChange}
                   min="0"
                   className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-                //    required
                 />
               </div>
             </div>
 
             {/* Subject-3 */}
-            <div>
+            <div className="lg:col-span-2">
               <label className="block text-sm font-medium text-slate-500">
                 Subject-3
               </label>
@@ -309,9 +321,9 @@ const Add = () => {
               />
             </div>
 
-            <div className="grid grid-cols-2 gap-7 justify-between">
+            <div className="col-span-1 lg:col-span-2 grid grid-cols-2 gap-3">
               {/* Subject-3 Max Mark */}
-              <div>
+              <div className="lg:col-span-1">
                 <label className="block text-sm font-medium text-slate-500">
                   Max Mark
                 </label>
@@ -326,7 +338,7 @@ const Add = () => {
               </div>
 
               {/* Subject-3 Pass Mark */}
-              <div>
+              <div className="lg:col-span-1">
                 <label className="block text-sm font-medium text-slate-500">
                   Pass Mark
                 </label>
@@ -342,7 +354,7 @@ const Add = () => {
             </div>
 
             {/* Subject-4 */}
-            <div>
+            <div className="lg:col-span-2">
               <label className="block text-sm font-medium text-slate-500">
                 Subject-4
               </label>
@@ -355,9 +367,9 @@ const Add = () => {
               />
             </div>
 
-            <div className="grid grid-cols-2 gap-7 justify-between">
+            <div className="col-span-1 lg:col-span-2 grid grid-cols-2 gap-3">
               {/* Subject-4 Max Mark */}
-              <div>
+              <div className="lg:col-span-1">
                 <label className="block text-sm font-medium text-slate-500">
                   Max Mark
                 </label>
@@ -372,7 +384,7 @@ const Add = () => {
               </div>
 
               {/* Subject-4 Pass Mark */}
-              <div>
+              <div className="lg:col-span-1">
                 <label className="block text-sm font-medium text-slate-500">
                   Pass Mark
                 </label>
@@ -388,7 +400,7 @@ const Add = () => {
             </div>
 
             {/* Subject-5 */}
-            <div>
+            <div className="lg:col-span-2">
               <label className="block text-sm font-medium text-slate-500">
                 Subject-5
               </label>
@@ -401,9 +413,9 @@ const Add = () => {
               />
             </div>
 
-            <div className="grid grid-cols-2 gap-7 justify-between">
+            <div className="col-span-1 lg:col-span-2 grid grid-cols-2 gap-3">
               {/* Subject-5 Max Mark */}
-              <div>
+              <div className="lg:col-span-1">
                 <label className="block text-sm font-medium text-slate-500">
                   Max Mark
                 </label>
@@ -418,7 +430,7 @@ const Add = () => {
               </div>
 
               {/* Subject-5 Pass Mark */}
-              <div>
+              <div className="lg:col-span-1">
                 <label className="block text-sm font-medium text-slate-500">
                   Pass Mark
                 </label>
@@ -434,7 +446,7 @@ const Add = () => {
             </div>
 
             {/* Subject-6 */}
-            <div>
+            <div className="lg:col-span-2">
               <label className="block text-sm font-medium text-slate-500">
                 Subject-6
               </label>
@@ -447,9 +459,9 @@ const Add = () => {
               />
             </div>
 
-            <div className="grid grid-cols-2 gap-7 justify-between">
+            <div className="col-span-1 lg:col-span-2 grid grid-cols-2 gap-3">
               {/* Subject-6 Max Mark */}
-              <div>
+              <div className="lg:col-span-1">
                 <label className="block text-sm font-medium text-slate-500">
                   Max Mark
                 </label>
@@ -464,7 +476,7 @@ const Add = () => {
               </div>
 
               {/* Subject-6 Pass Mark */}
-              <div>
+              <div className="lg:col-span-1">
                 <label className="block text-sm font-medium text-slate-500">
                   Pass Mark
                 </label>
@@ -480,7 +492,7 @@ const Add = () => {
             </div>
 
             {/* Subject-7 */}
-            <div>
+            <div className="lg:col-span-2">
               <label className="block text-sm font-medium text-slate-500">
                 Subject-7
               </label>
@@ -493,9 +505,9 @@ const Add = () => {
               />
             </div>
 
-            <div className="grid grid-cols-2 gap-7 justify-between">
+            <div className="col-span-1 lg:col-span-2 grid grid-cols-2 gap-3">
               {/* Subject-7 Max Mark */}
-              <div>
+              <div className="lg:col-span-1">
                 <label className="block text-sm font-medium text-slate-500">
                   Max Mark
                 </label>
@@ -510,7 +522,7 @@ const Add = () => {
               </div>
 
               {/* Subject-7 Pass Mark */}
-              <div>
+              <div className="lg:col-span-1">
                 <label className="block text-sm font-medium text-slate-500">
                   Pass Mark
                 </label>
@@ -526,7 +538,7 @@ const Add = () => {
             </div>
 
             {/* Subject-8 */}
-            <div>
+            <div className="lg:col-span-2">
               <label className="block text-sm font-medium text-slate-500">
                 Subject-8
               </label>
@@ -539,9 +551,9 @@ const Add = () => {
               />
             </div>
 
-            <div className="grid grid-cols-2 gap-7 justify-between">
+            <div className="col-span-1 lg:col-span-2 grid grid-cols-2 gap-3">
               {/* Subject-8 Max Mark */}
-              <div>
+              <div className="lg:col-span-1">
                 <label className="block text-sm font-medium text-slate-500">
                   Max Mark
                 </label>
@@ -556,7 +568,7 @@ const Add = () => {
               </div>
 
               {/* Subject-8 Pass Mark */}
-              <div>
+              <div className="lg:col-span-1">
                 <label className="block text-sm font-medium text-slate-500">
                   Pass Mark
                 </label>
@@ -572,7 +584,7 @@ const Add = () => {
             </div>
 
             {/* Subject-9 */}
-            <div>
+            <div className="lg:col-span-2">
               <label className="block text-sm font-medium text-slate-500">
                 Subject-9
               </label>
@@ -585,9 +597,9 @@ const Add = () => {
               />
             </div>
 
-            <div className="grid grid-cols-2 gap-7 justify-between">
+            <div className="col-span-1 lg:col-span-2 grid grid-cols-2 gap-3">
               {/* Subject-9 Max Mark */}
-              <div>
+              <div className="lg:col-span-1">
                 <label className="block text-sm font-medium text-slate-500">
                   Max Mark
                 </label>
@@ -602,7 +614,7 @@ const Add = () => {
               </div>
 
               {/* Subject-9 Pass Mark */}
-              <div>
+              <div className="lg:col-span-1">
                 <label className="block text-sm font-medium text-slate-500">
                   Pass Mark
                 </label>
@@ -618,7 +630,7 @@ const Add = () => {
             </div>
 
             {/* Subject-10 */}
-            <div>
+            <div className="lg:col-span-2">
               <label className="block text-sm font-medium text-slate-500">
                 Subject-10
               </label>
@@ -631,9 +643,9 @@ const Add = () => {
               />
             </div>
 
-            <div className="grid grid-cols-2 gap-7 justify-between">
+            <div className="col-span-1 lg:col-span-2 grid grid-cols-2 gap-3">
               {/* Subject-10 Max Mark */}
-              <div>
+              <div className="lg:col-span-1">
                 <label className="block text-sm font-medium text-slate-500">
                   Max Mark
                 </label>
@@ -648,7 +660,7 @@ const Add = () => {
               </div>
 
               {/* Subject-10 Pass Mark */}
-              <div>
+              <div className="lg:col-span-1">
                 <label className="block text-sm font-medium text-slate-500">
                   Pass Mark
                 </label>

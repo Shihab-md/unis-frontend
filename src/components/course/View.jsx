@@ -75,6 +75,8 @@ const View = () => {
               <ViewCard type="data" text={course.fees} />
               <ViewCard type="title" text="Years" />
               <ViewCard type="data" text={course.years} />
+              <ViewCard type="title" text="Promotion Order" />
+              <ViewCard type="data" text={course.promotionOrder} />
 
               <div className="flex space-x-3 mb-5" />
 

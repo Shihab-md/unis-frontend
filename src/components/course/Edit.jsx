@@ -47,6 +47,7 @@ const Edit = () => {
     subject10: "",
     subject10MaxMark: "",
     subject10PassMark: "",
+    promotionOrder: "",
   });
 
   const navigate = useNavigate();
@@ -80,6 +81,7 @@ const Edit = () => {
             remarks: course.remarks,
             fees: course.fees,
             years: course.years,
+            promotionOrder: course.promotionOrder || 0,
 
             subject1: course.subject1,
             subject1MaxMark: course.subject1MaxMark,
@@ -162,7 +164,7 @@ const Edit = () => {
   return (
     <>
       {course ? (
-        <div className="max-w-4xl mx-auto mt-2 p-5 shadow-lg border">
+        <div className="max-w-4xl mx-auto mt-2 p-3 lg:p-5 shadow-lg border">
           <div className="flex py-2 px-4 items-center justify-center bg-teal-700 text-white rounded-lg shadow-lg">
             <h2 className="text-sm lg:text-xl font-semibold items-center justify-center">Update Course Details</h2>
             <Link to="/dashboard/courses" >
@@ -170,7 +172,7 @@ const Edit = () => {
             </Link>
           </div>
           <form onSubmit={handleSubmit} autoComplete="off">
-            <div className="py-2 px-4 border mt-5 mb-3 items-center justify-center rounded-lg shadow-lg bg-white">
+            <div className="py-2 lg:py-5 px-4 lg:px-7 border mt-5 mb-3 items-center justify-center rounded-lg shadow-lg bg-white">
               <div className="grid mt-3 grid-cols-1 md:grid-cols-2 gap-4 gap-y-7">
 
                 {/* Type */}
@@ -244,7 +246,7 @@ const Edit = () => {
                   />
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 gap-y-7">
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 gap-y-7">
                   {/* Fees */}
                   <div>
                     <label className="block text-sm font-medium text-slate-500">
@@ -270,6 +272,22 @@ const Edit = () => {
                       type="number"
                       name="years"
                       value={course.years}
+                      onChange={handleChange}
+                      min="0"
+                      className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                      required
+                    />
+                  </div>
+
+                  {/* Promotion Order */}
+                  <div>
+                    <label className="block text-sm font-medium text-slate-500">
+                      Promotion Order <span className="text-red-700">*</span>
+                    </label>
+                    <input
+                      type="number"
+                      name="promotionOrder"
+                      value={course.promotionOrder || 0}
                       onChange={handleChange}
                       min="0"
                       className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
