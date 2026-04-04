@@ -390,10 +390,10 @@ export function getButtonStyle(buttonType) {
     return "px-1.5 py-1 m-1 bg-yellow-700 text-xs lg:text-base text-yellow-100 rounded-md shadow-md shadow-yellow-200 hover:-translate-y-0.5";
 
   } else if (buttonType === 'Reprint') {
-    return "px-1.5 py-1 m-1 bg-violet-700 text-xs lg:text-base text-violet-100 rounded-md shadow-md shadow-yellow-200 hover:-translate-y-0.5";
+    return "px-1.5 py-1 m-1 bg-violet-700 text-xs lg:text-base text-violet-100 rounded-md shadow-md shadow-violet-300 hover:-translate-y-0.5";
 
   } else if (buttonType === 'DuplicatePrint') {
-    return "px-1.5 py-1 m-1 bg-pink-700 text-xs lg:text-base text-pink-100 rounded-md shadow-md shadow-yellow-200 hover:-translate-y-0.5";
+    return "px-1.5 py-1 m-1 bg-pink-700 text-xs lg:text-base text-pink-100 rounded-md shadow-md shadow-pink-300 hover:-translate-y-0.5";
 
   }
 }
