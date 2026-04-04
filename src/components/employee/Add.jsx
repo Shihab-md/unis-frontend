@@ -45,58 +45,6 @@ const Add = () => {
     }
   }, [navigate]);
 
-  {/*
-  useEffect(() => {
-  const getSchoolsMap = async () => {
-    const res = await getSchoolsFromCache();
-
-    // ✅ supports both array response and { schools: [...] }
-    const list = Array.isArray(res) ? res : (Array.isArray(res?.schools) ? res.schools : []);
-
-    // login user role from localStorage (or your state if you have)
-    const userStr = localStorage.getItem("user");
-    const loginUser = userStr ? JSON.parse(userStr) : null;
-    const role = String(loginUser?.role || "").toLowerCase();
-
-    // ✅ supervisor allowed schoolIds stored in localStorage
-    const supSchoolIds = (() => {
-      try {
-        return JSON.parse(localStorage.getItem("schoolIds") || "[]");
-      } catch {
-        return [];
-      }
-    })();
-
-    // ✅ if supervisor -> only allowed schools; else keep all
-    const filtered =
-      role === "supervisor" && Array.isArray(supSchoolIds) && supSchoolIds.length > 0
-        ? list.filter((s) => s && supSchoolIds.includes(String(s._id)))
-        : [];
-
-    setSchools(filtered);
-
-    const mySchoolId = localStorage.getItem("schoolId");
-
-    // ✅ pick selected school:
-    // 1) if mySchoolId exists and in filtered list -> select it
-    // 2) else if supervisor -> select first allowed school
-    // 3) else -> null
-    const found =
-      (mySchoolId && filtered.find((s) => String(s._id) === String(mySchoolId))) ||
-      (role === "supervisor" ? filtered[0] : null);
-
-    setSchoolId(
-      found ? { value: found._id, label: `${found.code} : ${found.nameEnglish}` } : null
-    );
-
-    // ✅ optional: persist selected schoolId (useful for supervisor)
-    if (found?._id) localStorage.setItem("schoolId", String(found._id));
-  };
-
-  getSchoolsMap();
-}, []);
-*/}
-
   // Load schools once
   useEffect(() => {
     const getSchoolsMap = async () => {
@@ -128,26 +76,6 @@ const Add = () => {
 
     getSchoolsMap();
   }, []);
-
-  {/*
-  const roleOptions = useMemo(
-    () => [
-      { value: "superadmin", label: "SuperAdmin", superadminOnly: true },
-      { value: "hquser", label: "HQUser", superadminOnly: true },
-      { value: "admin", label: "Admin", superadminOnly: true },
-      { value: "teacher", label: "Teacher", superadminOnly: true },
-      { value: "usthadh", label: "Usthadh" },
-      { value: "warden", label: "Warden" },
-    ],
-    []
-  );
-
-  const sortedRoleOptions = useMemo(() => {
-    return roleOptions
-      .filter((o) => user.role === "superadmin" || !o.superadminOnly)
-      .sort((a, b) => a.label.localeCompare(b.label, undefined, { sensitivity: "base" }));
-  }, [roleOptions, user.role]);
-*/}
 
   const roleOptions = useMemo(
     () => [
@@ -184,11 +112,24 @@ const Add = () => {
     const { name, value, files } = e.target;
 
     if (name === "file") {
-      setFormData((prev) => ({ ...prev, [name]: files?.[0] }));
-      return;
-    }
+      const file = files?.[0];
 
-    setFormData((prev) => ({ ...prev, [name]: value }));
+      if (!file) {
+        setFormData((prevData) => ({ ...prevData, file: null }));
+        return;
+      }
+
+      const maxSize = 2 * 1024 * 1024; // 2 MB
+
+      if (file.size > maxSize) {
+        showSwalAlert("Error!", "Image size must be less than 2 MB.", "error");
+        e.target.value = "";
+        return;
+      }
+      setFormData((prevData) => ({ ...prevData, [name]: file }));
+    } else {
+      setFormData((prevData) => ({ ...prevData, [name]: value }));
+    }
 
     if (name === "password") {
       setPasswordError(validatePassword(value));

@@ -148,7 +148,21 @@ const Edit = () => {
   const handleChange = (e) => {
     const { name, value, files } = e.target;
     if (name === "file") {
-      setEmployee((prevData) => ({ ...prevData, [name]: files[0] }));
+      const file = files?.[0];
+
+      if (!file) {
+        setEmployee((prevData) => ({ ...prevData, file: null }));
+        return;
+      }
+
+      const maxSize = 2 * 1024 * 1024; // 2 MB
+
+      if (file.size > maxSize) {
+        showSwalAlert("Error!", "Image size must be less than 2 MB.", "error");
+        e.target.value = "";
+        return;
+      }
+      setEmployee((prevData) => ({ ...prevData, [name]: file }));
     } else {
       setEmployee((prevData) => ({ ...prevData, [name]: value }));
     }
