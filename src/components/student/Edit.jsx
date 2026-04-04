@@ -1307,10 +1307,10 @@ const Edit = () => {
                   </select>
                 </div>
 
-                {/* Hostel Reference Number */}
+                {/* Hostel Reference */}
                 <div>
                   <label className="block text-sm font-medium text-slate-500">
-                    Reference Number
+                    Reference
                   </label>
                   <input
                     type="text"
@@ -1324,7 +1324,7 @@ const Edit = () => {
                 {/* Hostel Fees */}
                 <div>
                   <label className="block text-sm font-medium text-slate-500">
-                    Fees
+                    Monthly Fees
                   </label>
                   <input
                     type="number"

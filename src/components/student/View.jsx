@@ -219,9 +219,9 @@ const View = () => {
                   <div className="border-2">
                     <ViewCard type="title" text="Hostel Admission" />
                     <ViewCard type="data" text={student?.hostel} />
-                    <ViewCard type="title" text="Hostel Reference Number" />
+                    <ViewCard type="title" text="Hostel Reference" />
                     <ViewCard type="data" text={student?.hostelRefNumber} />
-                    <ViewCard type="title" text="Hostel Fees" />
+                    <ViewCard type="title" text="Hostel Monthly Fees" />
                     <ViewCard type="data" text={student?.hostelFees} />
                   </div>
 
