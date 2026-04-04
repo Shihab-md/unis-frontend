@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext'
 import { getBaseUrl, handleRightClickAndFullScreen, getSpinner, LinkIcon, showSwalAlert } from '../../utils/CommonHelper'
 import {
-  FaUniversity, FaWpforms, FaClipboardList, FaCalendarAlt, FaUserCog, FaMapMarkerAlt, FaGoogleDrive
+  FaUniversity, FaWpforms, FaClipboardList, FaCalendarAlt, FaUserCog, FaMapMarkerAlt, FaGoogleDrive, FaRedo
 } from "react-icons/fa";
 import axios from 'axios'
 import { useNavigate } from "react-router-dom";
@@ -108,6 +108,16 @@ const Masters = () => {
               text="Re-Connect Google Drive"
               number="*"
               color="bg-blue-600"
+            />
+          </Link> : null}
+
+        {user.role === "superadmin" ?
+          <Link to="/dashboard/reset-password" >
+            <SummaryCard
+              icon={<FaRedo />}
+              text="Reset Password"
+              number="*"
+              color="bg-rose-600"
             />
           </Link> : null}
 
