@@ -54,6 +54,7 @@ const getMakthabYearOptions = (courseName = "") => {
   }
 
   return [
+    { value: "0", label: "0" },
     { value: "1", label: "1" },
     { value: "2", label: "2" },
     { value: "3", label: "3" },
@@ -1054,10 +1055,10 @@ const Add = () => {
                   Academic Year <span className="text-red-700">*</span>
                 </label>
 
-                <input type="hidden" name="acYear" value={acYear} />
+                <input type="hidden" name="acYear" value={activeAcademicYear} />
 
                 <select
-                  value={acYear}
+                  value={activeAcademicYear}
                   disabled
                   className="mt-2 p-2 block w-full border border-gray-300 rounded-md bg-slate-100 text-slate-700"
                 >
