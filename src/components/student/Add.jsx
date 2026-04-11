@@ -133,23 +133,6 @@ const Add = () => {
   }, []);
 
   useEffect(() => {
-    const getAcYearMap = async () => {
-      let accYear = (new Date().getFullYear() - 1) + "-" + new Date().getFullYear();
-      if (new Date().getMonth() + 1 >= 4) {
-        accYear = new Date().getFullYear() + "-" + (new Date().getFullYear() + 1);
-      }
-
-      const academicYears = await getAcademicYearsFromCache();
-      const acYear = academicYears
-        ?.filter((item) => item.acYear === accYear)
-        .map((item) => item._id);
-
-      setAcYear(acYear);
-    };
-    getAcYearMap();
-  }, []);
-
-  useEffect(() => {
     const getInstitutesMap = async () => {
       const institutes = await getInstitutesFromCache();
       setInstitutes(institutes);
@@ -1055,10 +1038,10 @@ const Add = () => {
                   Academic Year <span className="text-red-700">*</span>
                 </label>
 
-                <input type="hidden" name="acYear" value={activeAcademicYear} />
+                <input type="hidden" name="acYear" value={acYear} />
 
                 <select
-                  value={activeAcademicYear}
+                  value={acYear}
                   disabled
                   className="mt-2 p-2 block w-full border border-gray-300 rounded-md bg-slate-100 text-slate-700"
                 >
