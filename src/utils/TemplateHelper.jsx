@@ -18,7 +18,7 @@ export const columns = [
     name: "Course",
     selector: (row) => row.code + " : " + row.name,
     sortable: true,
-    width: "340px",
+    width: "520px",
   },
   {
     name: "Details",
