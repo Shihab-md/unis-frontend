@@ -152,7 +152,7 @@ const List = () => {
     setSelectedOptions(option);
   };
 
-  const openFilterPopup = async () => {
+  {/*const openFilterPopup = async () => {
     let selectedCourse;
     let selectedYear;
     let selectedCourseStatus;
@@ -369,8 +369,230 @@ const List = () => {
         getStudents();
       }
     }
+  };*/}
+
+  const openFilterPopup = async () => {
+    let selectedCourse = null;
+    let selectedYear = null;
+    let selectedCourseStatus = null;
+    let selectedStatus = null;
+    let selectedMaritalStatus = null;
+    let selectedHosteller = null;
+    let selectedInstitute = null;
+
+    const activeACYearOption =
+      academicYears
+        .filter((x) => x.active === "Active")
+        .map((x) => ({ value: x._id, label: x.acYear }))[0] || null;
+
+    // very important: set default selected value here also
+    let selectedACYear = activeACYearOption?.value || null;
+
+    const { value: formValues } = await MySwal.fire({
+      background: "url(/bg_card.png)",
+      html: (
+        <div className="mb-2 h-80 w-full">
+          <div className='text-xl font-bold md:mb-1 text-green-600 text-center'>Filter</div>
+
+          <div className='grid grid-cols-4 md:grid-cols-6 gap-x-3 lg:gap-x-3'>
+            <span className='col-span-2 md:col-span-3 text-sm mb-1 text-start text-blue-500'>Course</span>
+            <span className='text-sm mb-1 text-start text-blue-500'>Year</span>
+            <span className='md:col-span-2 text-sm mb-1 text-start text-blue-500'>Course Status</span>
+
+            <Select
+              className='col-span-2 md:col-span-3 text-sm text-start mb-3'
+              options={courses.map(option => ({
+                value: option._id, label: option.name
+              }))}
+              onChange={(selectedOption) => {
+                selectedCourse = selectedOption?.value || null;
+              }}
+              maxMenuHeight={210}
+              placeholder=''
+            />
+
+            <Select
+              className='text-sm text-start mb-3'
+              options={[
+                { value: '0', label: '0' },
+                { value: '1', label: '1' },
+                { value: '2', label: '2' },
+                { value: '3', label: '3' },
+                { value: '4', label: '4' },
+                { value: '5', label: '5' },
+                { value: '6', label: '6' },
+                { value: '7', label: '7' },
+                { value: '8', label: '8' },
+                { value: '9', label: '9' }
+              ]}
+              onChange={(selectedOption) => {
+                selectedYear = selectedOption?.value || null;
+              }}
+              maxMenuHeight={140}
+              placeholder=''
+            />
+
+            <Select
+              className='md:col-span-2 text-sm text-start mb-3'
+              options={[
+                { value: 'Admission', label: 'Admission' },
+                { value: 'Promoted', label: 'Promoted' },
+                { value: 'Completed', label: 'Completed' },
+                { value: 'Not-Promoted', label: 'Not-Promoted' }
+              ]}
+              onChange={(selectedOption) => {
+                selectedCourseStatus = selectedOption?.value || null;
+              }}
+              maxMenuHeight={160}
+              placeholder=''
+            />
+          </div>
+
+          <div className='grid grid-cols-3 gap-x-3 lg:gap-x-5'>
+            <span className='col-span-2 text-sm mb-1 text-start text-blue-500'>Institute</span>
+            <span className='text-sm mb-1 text-start text-blue-500'>AC year</span>
+
+            <Select
+              className='col-span-2 text-sm text-start mb-3'
+              options={institutes.map(option => ({
+                value: option._id, label: option.name
+              }))}
+              onChange={(selectedOption) => {
+                selectedInstitute = selectedOption?.value || null;
+              }}
+              maxMenuHeight={140}
+              placeholder=''
+            />
+
+            <Select
+              className="text-sm text-start mb-2"
+              options={academicYears.map((option) => ({
+                value: option._id,
+                label: option.acYear,
+              }))}
+              defaultValue={activeACYearOption}
+              onChange={(selectedOption) => {
+                selectedACYear = selectedOption?.value || null;
+              }}
+              maxMenuHeight={210}
+              placeholder=""
+            />
+          </div>
+
+          <div className='grid grid-cols-3 gap-x-2 lg:gap-x-5'>
+            <span className='text-sm mb-1 text-start text-blue-500'>Status</span>
+            <span className='text-sm mb-1 text-start text-blue-500'>Marital Status</span>
+            <span className='text-sm mb-1 text-start text-blue-500'>Hosteller</span>
+
+            <Select
+              className='text-sm text-start mb-3'
+              options={[
+                { value: 'Active', label: 'Active' },
+                { value: 'In-Active', label: 'In-Active' },
+                { value: 'Transferred', label: 'Transferred' },
+                { value: 'Graduated', label: 'Graduated' },
+                { value: 'Discontinued', label: 'Discontinued' }
+              ]}
+              onChange={(selectedOption) => {
+                selectedStatus = selectedOption?.value || null;
+              }}
+              maxMenuHeight={160}
+              placeholder=''
+            />
+
+            <Select
+              className='text-sm text-start mb-3'
+              options={[
+                { value: 'Married', label: 'Married' },
+                { value: 'Single', label: 'Single' }
+              ]}
+              onChange={(selectedOption) => {
+                selectedMaritalStatus = selectedOption?.value || null;
+              }}
+              maxMenuHeight={160}
+              placeholder=''
+            />
+
+            <Select
+              className='text-sm text-start mb-3'
+              options={[
+                { value: 'Yes', label: 'Yes' },
+                { value: 'No', label: 'No' }
+              ]}
+              onChange={(selectedOption) => {
+                selectedHosteller = selectedOption?.value || null;
+              }}
+              maxMenuHeight={160}
+              placeholder=''
+            />
+          </div>
+        </div>
+      ),
+      focusConfirm: false,
+      showCancelButton: true,
+      preConfirm: () => {
+        const select1 = selectedCourse || null;
+        const select2 = selectedStatus || null;
+        const select3 = selectedACYear || null;
+        const select4 = selectedMaritalStatus || null;
+        const select5 = selectedHosteller || null;
+        const select6 = selectedYear || null;
+        const select7 = selectedInstitute || null;
+        const select8 = selectedCourseStatus || null;
+
+        return [select1, select2, select3, select4, select5, select6, select7, select8];
+      }
+    });
+
+    if (formValues) {
+      if (
+        formValues[0] || formValues[1] || formValues[2] || formValues[3]
+        || formValues[4] || formValues[5] || formValues[6] || formValues[7]
+      ) {
+        console.log('Selected values:', formValues);
+
+        const courseId = formValues[0] ? formValues[0] : null;
+        const status = formValues[1] ? formValues[1] : null;
+        const acYear = formValues[2] ? formValues[2] : null;
+        const maritalStatus = formValues[3] ? formValues[3] : null;
+        const hosteller = formValues[4] ? formValues[4] : null;
+        const year = formValues[5] ? formValues[5] : null;
+        const instituteId = formValues[6] ? formValues[6] : null;
+        const courseStatus = formValues[7] ? formValues[7] : null;
+
+        console.log(
+          'Selected Values : ' + 'courseId:', formValues[0] + ', '
+        + 'status:', formValues[1] + ', ' + 'acYear:', formValues[2] + ', '
+        + 'maritalStatus:', formValues[3] + ', ' + 'hosteller:', formValues[4] + ', '
+        + 'year:', formValues[5] + ', ' + 'instituteId:', formValues[6] + ', ' + 'courseStatus:', formValues[7]
+        );
+
+        localStorage.setItem('courseId', courseId);
+        localStorage.setItem('status', status);
+        localStorage.setItem('acYear', acYear);
+        localStorage.setItem('maritalStatus', maritalStatus);
+        localStorage.setItem('hosteller', hosteller);
+        localStorage.setItem('year', year);
+        localStorage.setItem('instituteId', instituteId);
+        localStorage.setItem('courseStatus', courseStatus);
+
+        getFilteredStudents();
+      } else {
+        localStorage.removeItem('students');
+        localStorage.removeItem('courseId');
+        localStorage.removeItem('status');
+        localStorage.removeItem('acYear');
+        localStorage.removeItem('maritalStatus');
+        localStorage.removeItem('hosteller');
+        localStorage.removeItem('year');
+        localStorage.removeItem('instituteId');
+        localStorage.removeItem('courseStatus');
+
+        getStudents();
+      }
+    }
   };
- 
+
   const getFilteredStudents = async () => {
     setFiltering(true);
     try {
@@ -1199,7 +1421,7 @@ const List = () => {
         || (localStorage.getItem('maritalStatus') != null && localStorage.getItem('maritalStatus') !== 'null')
         || (localStorage.getItem('hosteller') != null && localStorage.getItem('hosteller') !== 'null') ? (
 
-        <div className='grid lg:flex mt-3 lg:mt-7 text-xs text-lime-600 items-center justify-center'>
+        <div className='grid lg:flex mb-2 lg:mt-5 text-xs text-lime-600 items-center justify-center'>
           <p className='lg:mr-3 justify-center text-center'>Filter Applied: </p>
 
           <p>
@@ -1275,7 +1497,7 @@ const List = () => {
           </div>
         </div>
       ) : (
-        <div className='flex mt-3 lg:mt-7'></div>
+        <div className='flex mt-3 lg:mt-5 mb-2'></div>
       )}
 
       {filtering ? (
