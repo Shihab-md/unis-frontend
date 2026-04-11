@@ -26,6 +26,7 @@ const getMakthabYearOptions = (courseName = "") => {
 
   if (name.includes("Makthab_Level1")) {
     return [
+      { value: "0", label: "0" },
       { value: "1", label: "1" },
       { value: "2", label: "2" },
       { value: "3", label: "3" },
@@ -57,6 +58,7 @@ const getMakthabYearOptions = (courseName = "") => {
   }
 
   return [
+    { value: "0", label: "0" },
     { value: "1", label: "1" },
     { value: "2", label: "2" },
     { value: "3", label: "3" },
@@ -174,19 +176,6 @@ const Edit = () => {
       setAcademicYears(academicYears);
     };
     getAcademicYearsMap();
-  }, []);
-
-  useEffect(() => {
-    const getAcYearMap = async () => {
-      let accYear = (new Date().getFullYear() - 1) + "-" + new Date().getFullYear();
-      if (new Date().getMonth() + 1 >= 4) {
-        accYear = new Date().getFullYear() + "-" + (new Date().getFullYear() + 1);
-      }
-      const academicYears = await getAcademicYearsFromCache();
-      const acYear = academicYears?.filter((item) => item.acYear === accYear).map((item) => item._id);
-      setAcYear(acYear);
-    };
-    getAcYearMap();
   }, []);
 
   useEffect(() => {
