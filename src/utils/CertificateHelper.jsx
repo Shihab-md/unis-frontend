@@ -166,7 +166,7 @@ export const CertificateButtons = ({ Id, onCertificateDelete }) => {
   const { user } = useAuth();
 
   return (
-    <div className="flex space-x-3 rounded-sm shadow-lg">
+    <div className="flex space-x-3 rounded-sm">
       <button
         className={getButtonStyle('View')}
         onClick={() => navigate(`/dashboard/certificates/${Id}`)}
