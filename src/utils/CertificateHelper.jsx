@@ -21,7 +21,8 @@ export const columns = [
       </p>
     </div>),
     sortable: true,
-    width: "190px",
+    wrap: true,
+    width: "230px",
   },
   {
     name: "Student Details",
@@ -45,7 +46,7 @@ export const columns = [
       <p className="mb-1">{row.niswanName}</p>
     </div>),
     wrap: true,
-    width: "500px",
+    width: "460px",
   },
   {
     name: "Action",
