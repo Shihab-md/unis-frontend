@@ -126,11 +126,11 @@ export const EmployeeCard = ({ row, onEmployeeDelete }) => {
   return (
     <div
       className="relative overflow-hidden rounded-md border border-sky-100 shadow-lg p-3 pt-1 pb-2 mt-1 space-y-2 transition-all duration-200 
-      hover:-translate-y-0.5 hover:shadow-xl bg-[url('/c-4.jpg')] bg-center bg-no-repeat"
+      hover:-translate-y-0.5 hover:shadow-xl bg-[url('/c-15.jpg')] bg-center bg-no-repeat"
       style={{ backgroundSize: "100% 100%" }}
     >
       {/* overlay for readability */}
-      <div className="absolute inset-0 bg-white/50" />
+      <div className="absolute inset-0 bg-white/90" />
 
       <div className="relative">
         <div className="flex items-start justify-between gap-2">
