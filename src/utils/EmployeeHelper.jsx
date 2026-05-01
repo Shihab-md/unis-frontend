@@ -21,7 +21,7 @@ export const columns = [
       <p><span className="text-blue-700 mr-1">👤:</span> {row.name}</p>
     </div>,
     sortable: true,
-    wrap:true,
+    wrap: true,
     width: "300px",
   },
   {
@@ -51,6 +51,8 @@ export const columns = [
         <span className="text-blue-700 mr-1">Code:</span> {row.schoolCode}
       </p>
       <p>{row.schoolName}</p>
+      <p>{row.address}</p>
+      <p>{row.distrcitState}</p>
     </div>,
     sortable: true,
     wrap: true,
@@ -185,6 +187,12 @@ export const EmployeeCard = ({ row, onEmployeeDelete }) => {
               {row.schoolCode ? `${row.schoolCode} - ` : ""}
               {row.schoolName || "-"}
             </span>
+            <p className="font-xs text-slate-500 break-words">
+              {row.address}
+            </p>
+            <p className="font-xs text-slate-500 break-words">
+              {row.distrcitState}
+            </p>
           </div>
         </div>
 
