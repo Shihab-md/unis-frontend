@@ -200,6 +200,8 @@ const List = () => {
           supervisorName: sch.supervisorId?.userId?.name,
           studentCount: sch.studentCount ? sch.studentCount : 0,
           studentCountsByCourse: sch.studentCountsByCourse && sch.studentCountsByCourse?.length > 0 ? sch.studentCountsByCourse : null,
+          employeeCount: sch.employeeCount ? sch.employeeCount : 0,
+          employeeCountsByRole: sch.employeeCountsByRole && sch.employeeCountsByRole?.length > 0 ? sch.employeeCountsByRole : null,
           action: (<SchoolButtons Id={sch._id} />),
         }));
         setSchools(data);
@@ -285,6 +287,8 @@ const List = () => {
         supervisorName: sch.supervisorId?.userId?.name,
         studentCount: sch.studentCount ? sch.studentCount : 0,
         studentCountsByCourse: sch.studentCountsByCourse && sch.studentCountsByCourse?.length > 0 ? sch.studentCountsByCourse : null,
+        employeeCount: sch.employeeCount ? sch.employeeCount : 0,
+        employeeCountsByRole: sch.employeeCountsByRole && sch.employeeCountsByRole?.length > 0 ? sch.employeeCountsByRole : null,
         action: (<SchoolButtons Id={sch._id} onSchoolDelete={onSchoolDelete} />),
       }));
       setSchools(data1);
@@ -325,6 +329,8 @@ const List = () => {
             supervisorName: sch.supervisorId?.userId?.name,
             studentCount: sch.studentCount ? sch.studentCount : 0,
             studentCountsByCourse: sch.studentCountsByCourse && sch.studentCountsByCourse?.length > 0 ? sch.studentCountsByCourse : null,
+            employeeCount: sch.employeeCount ? sch.employeeCount : 0,
+            employeeCountsByRole: sch.employeeCountsByRole && sch.employeeCountsByRole?.length > 0 ? sch.employeeCountsByRole : null,
             action: (<SchoolButtons Id={sch._id} onSchoolDelete={onSchoolDelete} />),
           }));
           setSchools(data);
@@ -399,7 +405,7 @@ const List = () => {
       {(localStorage.getItem('supervisorId') != null && localStorage.getItem('supervisorId') != 'null')
         || (localStorage.getItem('districtStateId') != null && localStorage.getItem('districtStateId') != 'null')
         || (localStorage.getItem('schStatus') != null && localStorage.getItem('schStatus') != 'null') ?
-        <div className='grid lg:flex mt-3 lg:mt-7 text-xs text-lime-600 items-center justify-center'>
+        <div className='grid lg:flex mt-3 lg:mt-3 mb-2 text-xs text-lime-600 items-center justify-center'>
           <p className='lg:mr-3 justify-center text-center'>Filter Applied: </p>
 
           <p>{localStorage.getItem('supervisorId') != null && localStorage.getItem('supervisorId') != 'null' ?

@@ -21,7 +21,7 @@ export const columns = [
       <p><span className="text-blue-700 mr-1">👤:</span> {row.name}</p>
     </div>,
     sortable: true,
-    width: "370px",
+    width: "320px",
     wrap: true,
   },
   {
@@ -33,13 +33,36 @@ export const columns = [
       <p className="mb-1.5"><span className="text-blue-700 mr-1">🗓️:</span> {row.doj ? new Date(row.doj).toLocaleDateString("en-GB") : "-"}</p>
       <p><span className="text-blue-700 mr-1">🗺️:</span> {row.routeName ? row.routeName !== "Nil" ? row.routeName : "-" : "-"}</p>
     </div>,
-    width: "320px",
+    width: "300px",
   },
   {
     name: "Niswans #",
     selector: (row) => row.schoolsCount,
     sortable: true,
-    width: "130px",
+    width: "120px",
+  },
+  {
+    name: "Employees #",
+    //selector: (row) => row.studentCount,
+    wrap: true,
+    selector: row => (
+      <div className="mt-2 mb-2">
+        <p>
+          <span className="font-semibold text-blue-700 mr-1">Total:</span> {row.employeeCount}
+        </p>
+        <div className="mt-1 mb-2"></div>
+        {row.employeeCountsByRole?.map((role, i) => (
+          <div key={i}>
+            <p className="mr-1 mb-1">
+              <span className="text-pink-700">{role.role}{" : "}</span>
+              <span>{role.count}</span>
+            </p>
+          </div>
+        ))}
+      </div>
+    ),
+    //  sortable: true,
+    width: "190px",
   },
   {
     name: "Students #",
@@ -62,7 +85,7 @@ export const columns = [
       </div>
     ),
     //  sortable: true,
-    width: "210px",
+    width: "200px",
   },
   {
     name: "Status",
@@ -72,7 +95,7 @@ export const columns = [
         : <p className="mb-2"><span className="text-blue-700 mr-1">❎:</span> {row.active}</p>}
       <p><span className="text-blue-700 mr-1">💼:</span> {row.jobType}</p>
     </div>,
-    width: "160px",
+    width: "120px",
   },
   {
     name: "Action",
@@ -167,25 +190,28 @@ export const SupervisorCard = ({ row }) => {
               {row.doj ? new Date(row.doj).toLocaleDateString("en-GB") : "-"}
             </span>
           </div>
-          <div>
-            <span className="text-slate-500">Niswans:</span>{" "}
-            <span className="font-medium text-slate-800">
+        </div>
+
+        <div className="mt-4 rounded-md border border-pink-200 p-1 ml-10 mr-10 bg-white/70 shadow-lg">
+          <div className="text-[13px] font-medium text-center">
+            <span className="text-pink-500">Niswans:</span>{" "}
+            <span className="font-medium text-pink-500">
               {row.schoolsCount ?? 0}
-            </span>
-          </div>
-          <div>
-            <span className="text-slate-500">Students:</span>{" "}
-            <span className="font-medium text-slate-800">
-              {row.studentCount ?? 0}
             </span>
           </div>
         </div>
 
-        <div className="mt-3 rounded-md border border-pink-200 p-2 ml-10 mr-10 bg-white/70 shadow-lg">
+        <div className="mt-3 rounded-md border border-pink-200 p-1 ml-10 mr-10 bg-white/70 shadow-lg">
+          <div className="text-[13px] font-medium text-center">
+            <span className="text-pink-500">Students:</span>{" "}
+            <span className="font-medium text-pink-500">
+              {row.studentCount ?? 0}
+            </span>
+          </div>
           {Array.isArray(row.studentCountsByCourse) && row.studentCountsByCourse.length > 0 ? (
-            <div className="space-y-1">
+            <div className="space-y-1 p-1">
               {row.studentCountsByCourse.map((course, i) => (
-                <p key={i} className="text-[11px] text-slate-700 leading-4">
+                <p key={i} className="text-[11px] text-slate-700 leading-4 mt-2">
                   <span className="text-sky-700 font-medium">
                     {course.courseName}:
                   </span>{" "}
@@ -196,11 +222,33 @@ export const SupervisorCard = ({ row }) => {
           ) : null}
         </div>
 
+        <div className="mt-3 rounded-md border border-pink-200 p-1 ml-10 mr-10 bg-white/70 shadow-lg">
+          <div className="text-[13px] font-medium text-center">
+            <span className="text-pink-500">Employees:</span>{" "}
+            <span className="font-medium text-pink-500">
+              {row.employeeCount ?? 0}
+            </span>
+          </div>
+
+          {Array.isArray(row.employeeCountsByRole) && row.employeeCountsByRole.length > 0 ? (
+            <div className="space-y-1 p-1">
+              {row.employeeCountsByRole.map((role, i) => (
+                <p key={i} className="text-[11px] text-slate-700 leading-4 mt-2">
+                  <span className="text-sky-700 font-medium">
+                    {role.role || "-"}:
+                  </span>{" "}
+                  {role.count ?? 0}
+                </p>
+              ))}
+            </div>
+          ) : null}
+        </div>
+
         <div className="flex pt-2 items-center justify-center">
           <SupervisorButtons Id={row._id} />
         </div>
       </div>
-    </div>
+    </div >
   );
 };
 

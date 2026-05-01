@@ -15,7 +15,7 @@ const List = () => {
   // To prevent right-click AND For FULL screen view.
   useEffect(() => {
     handleRightClickAndFullScreen();
-  }, []);;
+  }, []);
 
   const navigate = useNavigate()
   const [supervisors, setSupervisors] = useState([])
@@ -166,6 +166,8 @@ const List = () => {
           studentCount: sup.studentCount ? sup.studentCount : 0,
           studentCountsByCourse: sup.studentCountsByCourse && sup.studentCountsByCourse?.length > 0 ? sup.studentCountsByCourse : null,
           //  profileImage: <img width={40} className='rounded-full' src={(getBaseUrl()).toString() + `${sup.userId.profileImage}`} />,
+          employeeCount: sup.employeeCount ? sup.employeeCount : 0,
+          employeeCountsByRole: sup.employeeCountsByRole && sup.employeeCountsByRole?.length > 0 ? sup.employeeCountsByRole : null,
           action: (<SupervisorButtons Id={sup._id} />),
         }));
         setSupervisors(data);
@@ -248,6 +250,8 @@ const List = () => {
         studentCount: sup.studentCount ? sup.studentCount : 0,
         studentCountsByCourse: sup.studentCountsByCourse && sup.studentCountsByCourse?.length > 0 ? sup.studentCountsByCourse : null,
         //  profileImage: <img width={40} className='rounded-full' src={(getBaseUrl()).toString() + `${sup.userId.profileImage}`} />,
+        employeeCount: sup.employeeCount ? sup.employeeCount : 0,
+        employeeCountsByRole: sup.employeeCountsByRole && sup.employeeCountsByRole?.length > 0 ? sup.employeeCountsByRole : null,
         action: (<SupervisorButtons Id={sup._id} onSupervisorDelete={onSupervisorDelete} />),
       }));
       setSupervisors(data1);
@@ -286,6 +290,8 @@ const List = () => {
             studentCount: sup.studentCount ? sup.studentCount : 0,
             studentCountsByCourse: sup.studentCountsByCourse && sup.studentCountsByCourse?.length > 0 ? sup.studentCountsByCourse : null,
             //  profileImage: <img width={40} className='rounded-full' src={(getBaseUrl()).toString() + `${sup.userId.profileImage}`} />,
+            employeeCount: sup.employeeCount ? sup.employeeCount : 0,
+            employeeCountsByRole: sup.employeeCountsByRole && sup.employeeCountsByRole?.length > 0 ? sup.employeeCountsByRole : null,
             action: (<SupervisorButtons Id={sup._id} onSupervisorDelete={onSupervisorDelete} />),
           }));
           setSupervisors(data);
@@ -324,7 +330,7 @@ const List = () => {
   const { user } = useAuth();
 
   return (
-    <div className="p-3 lg:p-5 bg-repeat mt-3 lg:mt-5">
+    <div className="p-3 lg:p-5 bg-repeat mt-1 lg:mt-5">
       <div className="text-center">
         <h3 className="text-base lg:text-2xl font-bold px-5 py-0 text-shadow-lg text-gray-600">Manage Supervisors
           <p className='flex md:grid text-xs md:text-base justify-center text-rose-700'>
@@ -360,7 +366,7 @@ const List = () => {
         || (localStorage.getItem('supStatus') != null && localStorage.getItem('supStatus') != 'null')
         || (localStorage.getItem('supType') != null && localStorage.getItem('supType') != 'null') ?
 
-        <div className='grid lg:flex mt-3 lg:mt-7 text-xs text-lime-600 items-center justify-center'>
+        <div className='grid lg:flex mt-3 lg:mt-3 mb-2 text-xs text-lime-600 items-center justify-center'>
           <p className='lg:mr-3 justify-center text-center'>Filter Applied: </p>
 
           <p>{localStorage.getItem('supSchoolId') != null && localStorage.getItem('supSchoolId') != 'null' ?
@@ -377,7 +383,7 @@ const List = () => {
               {localStorage.getItem('supType')}</span></span> : null}</p>
 
         </div>
-        : <div className='flex mt-3 lg:mt-7'></div>}
+        : <div className='flex mt-3 lg:mt-3'></div>}
 
       {filtering ? (
         getFilterGif()

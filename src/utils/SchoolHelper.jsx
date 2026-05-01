@@ -24,28 +24,7 @@ export const columns = [
     </div>,
     sortable: true,
     wrap: true,
-    width: "370px",
-  },
-  {
-    name: "Students #",
-    //selector: (row) => row.studentCount,
-    wrap: true,
-    selector: row => (
-      <div className="mt-2 mb-2">
-        <p><span className="font-semibold text-blue-700 mr-1">Total:</span> {row.studentCount}</p>
-        <div className="mt-1 mb-1"></div>
-        {row.studentCountsByCourse?.map((course, i) => (
-          <div key={i}>
-            <p className="mr-1">
-              <span className="text-blue-700">{course.courseName}{" : "}</span>
-              <span>{course.count}</span>
-            </p>
-          </div>
-        ))}
-      </div>
-    ),
-    //  sortable: true,
-    width: "170px",
+    width: "340px",
   },
   {
     name: "Address",
@@ -57,7 +36,7 @@ export const columns = [
     </div>,
     //  sortable: true,
     wrap: true,
-    width: "210px",
+    width: "190px",
   },
   {
     name: "Details",
@@ -70,7 +49,49 @@ export const columns = [
     </div>,
     //  sortable: true,
     wrap: true,
-    width: "230px",
+    width: "210px",
+  },
+  {
+    name: "Students #",
+    //selector: (row) => row.studentCount,
+    wrap: true,
+    selector: row => (
+      <div className="mt-2 mb-2">
+        <p><span className="font-semibold text-blue-700 mr-1">Total:</span> {row.studentCount}</p>
+        <div className="mt-1 mb-1"></div>
+        {row.studentCountsByCourse?.map((course, i) => (
+          <div key={i}>
+            <p className="mr-1">
+              <span className="text-pink-700">{course.courseName}{" : "}</span>
+              <span>{course.count}</span>
+            </p>
+          </div>
+        ))}
+      </div>
+    ),
+    //  sortable: true,
+    width: "160px",
+  },
+  {
+    name: "Employees #",
+    //selector: (row) => row.studentCount,
+    wrap: true,
+    selector: row => (
+      <div className="mt-2 mb-2">
+        <p><span className="font-semibold text-blue-700 mr-1">Total:</span> {row.employeeCount}</p>
+        <div className="mt-1 mb-1"></div>
+        {row.employeeCountsByRole?.map((role, i) => (
+          <div key={i}>
+            <p className="mr-1">
+              <span className="text-pink-700">{role.role}{" : "}</span>
+              <span>{role.count}</span>
+            </p>
+          </div>
+        ))}
+      </div>
+    ),
+    //  sortable: true,
+    width: "160px",
   },
   {
     name: "Supervisor",
@@ -80,7 +101,7 @@ export const columns = [
     </div>,
     //  sortable: true,
     wrap: true,
-    width: "250px",
+    width: "170px",
   },
   {
     name: "Action",
@@ -183,19 +204,43 @@ export const SchoolCard = ({ row, onSchoolDelete }) => {
 
         </div>
 
-        <div className="mt-3 rounded-md border border-pink-200 p-2 ml-10 mr-10 bg-white/70 shadow-lg">
-          <p className="text-xs font-semibold text-slate-700">
-            Students: <span className="text-sky-700">{row.studentCount ?? 0}</span>
-          </p>
-
+        <div className="mt-3 rounded-sm border border-slate-400 p-1 ml-10 mr-10 bg-white/70 shadow-lg">
+          <div className="text-[13px] font-medium text-center">
+            <span className="text-pink-500">Students:</span>{" "}
+            <span className="font-medium text-pink-500">
+              {row.studentCount ?? 0}
+            </span>
+          </div>
           {Array.isArray(row.studentCountsByCourse) && row.studentCountsByCourse.length > 0 ? (
-            <div className="mt-2 space-y-1">
+            <div className="space-y-1 p-1">
               {row.studentCountsByCourse.map((course, i) => (
-                <p key={i} className="text-[11px] text-slate-700 leading-4">
+                <p key={i} className="text-[11px] text-slate-700 leading-4 mt-2">
                   <span className="text-sky-700 font-medium">
                     {course.courseName}:
                   </span>{" "}
                   {course.count}
+                </p>
+              ))}
+            </div>
+          ) : null}
+        </div>
+
+        <div className="mt-3 rounded-sm border border-slate-400 p-1 ml-10 mr-10 bg-white/70 shadow-lg">
+          <div className="text-[13px] font-medium text-center">
+            <span className="text-pink-500">Employees:</span>{" "}
+            <span className="font-medium text-pink-500">
+              {row.employeeCount ?? 0}
+            </span>
+          </div>
+
+          {Array.isArray(row.employeeCountsByRole) && row.employeeCountsByRole.length > 0 ? (
+            <div className="space-y-1 p-1">
+              {row.employeeCountsByRole.map((role, i) => (
+                <p key={i} className="text-[11px] text-slate-700 leading-4 mt-2">
+                  <span className="text-sky-700 font-medium">
+                    {role.role || "-"}:
+                  </span>{" "}
+                  {role.count ?? 0}
                 </p>
               ))}
             </div>
