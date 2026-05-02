@@ -51,7 +51,7 @@ export const columns = [
         <span className="text-blue-700 mr-1">Code:</span> {row.schoolCode}
       </p>
       <p className="mb-1">{row.schoolName}</p>
-      <p className="mb-1">{row.address}</p>
+      <p className="mb-1 text-blue-700 font-semibold">{row.address}</p>
       <p>{row.distrcitState}</p>
     </div>,
     sortable: true,
@@ -187,7 +187,7 @@ export const EmployeeCard = ({ row, onEmployeeDelete }) => {
               {row.schoolCode ? `${row.schoolCode} - ` : ""}
               {row.schoolName || "-"}
             </span>
-            <p className="font-xs text-slate-500 break-words mt-1 mb-1">
+            <p className="font-xs break-words mt-1 mb-1 text-blue-700 font-semibold">
               {row.address}
             </p>
             <p className="font-xs text-slate-500 break-words">
