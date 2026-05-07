@@ -45,32 +45,60 @@ const Add = () => {
     }
   }, [navigate]);
 
+  {/*
   // Load schools once
   useEffect(() => {
     const getSchoolsMap = async () => {
       const res = await getSchoolsFromCache();
 
       const list = Array.isArray(res) ? res : (res?.schools || []);
-      //console.log("list : " + list)
       const supSchoolIds = JSON.parse(localStorage.getItem("schoolIds"));
-      //console.log("supSchoolIds : " + supSchoolIds)
       const role = localStorage.getItem("role");
-      //console.log("role : " + role)
-      //console.log(Array.isArray(supSchoolIds))
+
       const filtered =
         role === "supervisor" && Array.isArray(supSchoolIds) && supSchoolIds.length > 0
           ? list.filter((s) => s && supSchoolIds.includes(String(s._id)))
           : list;
 
       setSchools(filtered);
-      //setSchools(list);
 
       const mySchoolId = localStorage.getItem("schoolId");
       const found = list.find((s) => s._id === mySchoolId);
-      //const found = filtered.find((s) => s._id === mySchoolId);
 
       setSchoolId(
         found ? { value: found._id, label: `${found.code} : ${found.nameEnglish}` } : null
+      );
+    };
+
+    getSchoolsMap();
+  }, []);
+  */}
+
+  // Load schools once
+  useEffect(() => {
+    const getSchoolsMap = async () => {
+      const res = await getSchoolsFromCache();
+
+      const list = Array.isArray(res) ? res : (res?.schools || []);
+      const activeList = list.filter((s) => s?.active === "Active");
+
+      const supSchoolIds = JSON.parse(localStorage.getItem("schoolIds"));
+      const role = localStorage.getItem("role");
+
+      const filtered =
+        role === "supervisor" && Array.isArray(supSchoolIds) && supSchoolIds.length > 0
+          ? activeList.filter((s) => s && supSchoolIds.includes(String(s._id)))
+          : activeList;
+
+      setSchools(filtered);
+
+      const mySchoolId = localStorage.getItem("schoolId");
+      const found = filtered.find((s) => String(s._id) === String(mySchoolId));
+
+      setSchoolId(
+        found
+          ? { value: found._id, label: `${found.code} : ${found.nameEnglish}` }
+          : null
       );
     };
 
