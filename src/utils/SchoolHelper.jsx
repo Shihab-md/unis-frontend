@@ -29,7 +29,7 @@ export const columns = [
   {
     name: "Address",
     selector: (row) => <div className="mt-2 mb-2">
-      <p className="mb-1 text-blue-700 font-semibold">{row.address}</p>
+      <p className="mb-1 text-fuchsia-500 font-semibold">{row.address}</p>
       <p className="mb-1">{row.city}</p>
       <p className='mb-1'>{row.landmark}</p>
       <p>{row.districtState}</p>
@@ -177,7 +177,7 @@ export const SchoolCard = ({ row, onSchoolDelete }) => {
           <span className="text-slate-500">📍:</span>{" "}
           <span className="font-xs text-slate-500 break-words">
             {row.address ? (
-              <span className="font-semibold text-blue-700">{row.address}</span>
+              <span className="font-semibold text-fuchsia-500">{row.address}</span>
             ) : (
               "-"
             )}
