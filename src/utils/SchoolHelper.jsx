@@ -29,7 +29,7 @@ export const columns = [
   {
     name: "Address",
     selector: (row) => <div className="mt-2 mb-2">
-      <p className="mb-1">{row.address}</p>
+      <p className="mb-1 font-semibold">{row.address}</p>
       <p className="mb-1">{row.city}</p>
       <p className='mb-1'>{row.landmark}</p>
       <p>{row.districtState}</p>
@@ -175,7 +175,7 @@ export const SchoolCard = ({ row, onSchoolDelete }) => {
 
         <div className="col-span-2 text-xs mt-3">
           <span className="text-slate-500">📍:</span>{" "}
-          <span className="font-xs text-slate-500 break-words">
+          <span className="font-xs text-slate-500 break-words font-semibold">
             {[row.address, row.city, row.landmark, row.districtState]
               .filter(Boolean)
               .join(", ") || "-"}
