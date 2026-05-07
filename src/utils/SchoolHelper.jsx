@@ -177,7 +177,7 @@ export const SchoolCard = ({ row, onSchoolDelete }) => {
           <span className="text-slate-500">📍:</span>{" "}
           <span className="font-xs text-slate-500 break-words">
             {row.address ? (
-              <span className="font-semibold text-fuchsia-500">{row.address}</span>
+              <span className="font-semibold text-blue-700">{row.address}</span>
             ) : (
               "-"
             )}
