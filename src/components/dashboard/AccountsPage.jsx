@@ -4,7 +4,7 @@ import CommonHeader from "./CommonHeader";
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext'
 import { getBaseUrl, handleRightClickAndFullScreen, getSpinner, LinkIcon, showSwalAlert } from '../../utils/CommonHelper'
-import { FaCalculator, FaRegMoneyBillAlt, FaCheck, FaRegClock, FaRegListAlt } from "react-icons/fa";
+import { FaCalculator, FaRegMoneyBillAlt, FaCheck, FaRegClock, FaRegListAlt, FaPlayCircle } from "react-icons/fa";
 import axios from 'axios'
 import { useNavigate } from "react-router-dom";
 
@@ -71,6 +71,16 @@ const AccountsPage = () => {
               text="Payroll"
               number="*"
               color="bg-cyan-500"
+            />
+          </Link> : null}
+
+        {user.role === "superadmin" || user.role === "hquser" ?
+          <Link to="/dashboard/hq/fees/migration" >
+            <SummaryCard
+              icon={<FaPlayCircle />}
+              text="Migration Paid"
+              number="*"
+              color="bg-emerald-500"
             />
           </Link> : null}
 

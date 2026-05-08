@@ -5,6 +5,16 @@ const authHeaders = () => ({
   headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
 });
 
+export const createMigrationBatchesFromInvoicesAll = async (payload) => {
+  const base = await getBaseUrl();
+  const res = await axios.post(
+    `${base}hq/fees/payment-batches/migration/from-invoices/all`,
+    payload,
+    authHeaders()
+  );
+  return res.data;
+};
+
 export const fetchDueInvoices = async ({ schoolId, acYear }) => {
   const url = (await getBaseUrl()).toString() + "fees/invoices/" + schoolId.toString() + "/" + acYear.toString();
   console.log(url)

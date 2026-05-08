@@ -77,6 +77,8 @@ import PendingInvoicesNotSentHQ from "./components/fees/PendingInvoicesNotSentHQ
 
 import ConnectDriveHidden from "./components/admin/ConnectDriveHidden";
 
+import MigrationBatchesFromInvoicesAll from "./components/fees/MigrationBatchesFromInvoicesAll";
+
 function App() {
   return (
     <BrowserRouter>
@@ -167,6 +169,7 @@ function App() {
           <Route path="/dashboard/fees" element={<BulkPaymentCreate />}></Route>
           <Route path="/dashboard/fees/sent-to-hq" element={<PaymentBatchesList />}></Route>
           <Route path="/dashboard/hq/pending-invoices" element={<PendingInvoicesNotSentHQ />}></Route>
+          <Route path="/dashboard/hq/fees/migration" element={<MigrationBatchesFromInvoicesAll />}></Route>
 
           <Route path="/dashboard/admin/connect-drive" element={<ConnectDriveHidden />} />
 
