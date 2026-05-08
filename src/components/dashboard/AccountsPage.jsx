@@ -73,7 +73,7 @@ const AccountsPage = () => {
               color="bg-cyan-500"
             />
           </Link> : null}
-
+        {/*
         {user.role === "superadmin" || user.role === "hquser" ?
           <Link to="/dashboard/hq/fees/migration" >
             <SummaryCard
@@ -83,7 +83,7 @@ const AccountsPage = () => {
               color="bg-emerald-500"
             />
           </Link> : null}
-
+*/}
       </div>
     </div>
   );
