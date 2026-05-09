@@ -1230,7 +1230,8 @@ const List = () => {
               <div className='text-2xl lg:text-3xl mb-3 text-blue-600'>Select the Niswan</div>
               <Select
                 className='text-sm text-start'
-                options={schools.filter((school) => school.code !== 'UN-00-00001' && school.active === 'Active')
+                //options={schools.filter((school) => school.code !== 'UN-00-00001' && school.active === 'Active')
+                options={schools.filter((school) => school.active === 'Active')
                   .map(option => ({
                     value: option._id, label: option.code + " : " + option.nameEnglish
                   }))}
