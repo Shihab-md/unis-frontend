@@ -57,7 +57,7 @@ export const columns = [
     wrap: true,
     selector: row => (
       <div className="mt-2 mb-2">
-        <p><span className="font-semibold text-blue-700 mr-1">Total:</span> {row.studentCount}</p>
+        <p className="font-semibold"><span className="text-blue-700 mr-1">Total:</span> {row.studentCount}</p>
         <div className="mt-1 mb-1"></div>
         {row.studentCountsByCourse?.map((course, i) => (
           <div key={i}>
@@ -78,7 +78,7 @@ export const columns = [
     wrap: true,
     selector: row => (
       <div className="mt-2 mb-2">
-        <p><span className="font-semibold text-blue-700 mr-1">Total:</span> {row.employeeCount}</p>
+        <p className="font-semibold"><span className="text-blue-700 mr-1">Total:</span> {row.employeeCount}</p>
         <div className="mt-1 mb-1"></div>
         {row.employeeCountsByRole?.map((role, i) => (
           <div key={i}>
