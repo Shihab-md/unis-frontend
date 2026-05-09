@@ -281,7 +281,7 @@ const BulkIhsExcel = () => {
           <h1 className="text-base font-semibold text-white">
             Bulk IHS Certificate Import
           </h1>
-          <Link to="/dashboard/certificates">
+          <Link to="/dashboard/masters">
             <FaRegTimesCircle className="ml-4 rounded-full bg-white/90 p-1 text-2xl text-red-600 shadow-md md:ml-7" />
           </Link>
         </div>
