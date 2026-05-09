@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext'
 import { getBaseUrl, handleRightClickAndFullScreen, getSpinner, LinkIcon, showSwalAlert } from '../../utils/CommonHelper'
 import {
-  FaUniversity, FaWpforms, FaClipboardList, FaCalendarAlt, FaUserCog, FaMapMarkerAlt, FaGoogleDrive, FaRedo
+  FaUniversity, FaWpforms, FaClipboardList, FaCalendarAlt, FaUserCog, FaMapMarkerAlt, FaGoogleDrive, FaRedo, FaCentos
 } from "react-icons/fa";
 import axios from 'axios'
 import { useNavigate } from "react-router-dom";
@@ -124,10 +124,10 @@ const Masters = () => {
           {user.role === "superadmin" ?
           <Link to="/dashboard/certificate-bulk-ihs" >
             <SummaryCard
-              icon={<FaRedo />}
-              text="IHS Old Certificates"
+              icon={<FaCentos />}
+              text="Create IHS Old Certificates"
               number="*"
-              color="bg-rose-600"
+              color="bg-lime-500"
             />
           </Link> : null}
 
