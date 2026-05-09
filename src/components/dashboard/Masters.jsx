@@ -121,6 +121,16 @@ const Masters = () => {
             />
           </Link> : null}
 
+          {user.role === "superadmin" ?
+          <Link to="/dashboard/certificate-bulk-ihs" >
+            <SummaryCard
+              icon={<FaRedo />}
+              text="IHS Old Certificates"
+              number="*"
+              color="bg-rose-600"
+            />
+          </Link> : null}
+
       </div>
     </div>
   );

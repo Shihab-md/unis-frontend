@@ -79,6 +79,8 @@ import ConnectDriveHidden from "./components/admin/ConnectDriveHidden";
 
 import MigrationBatchesFromInvoicesAll from "./components/fees/MigrationBatchesFromInvoicesAll";
 
+import BulkIhsExcel from "./components/certificate/BulkIhsExcel";
+
 function App() {
   return (
     <BrowserRouter>
@@ -146,6 +148,8 @@ function App() {
           <Route path="/dashboard/certificates/:id" element={<CertificateView />}></Route>
           <Route path="/dashboard/certificates/reprint/:id" element={<ReprintCertificate />} />
           <Route path="/dashboard/certificates/duplicate-print/:id" element={<DuplicatePrintCertificate />} />
+
+          <Route path="/dashboard/certificate-bulk-ihs" element={<BulkIhsExcel />}></Route>
 
           <Route path="/dashboard/academicYears" element={<AcademicYearList />}></Route>
           <Route path="/dashboard/add-academicYear" element={<AcademicYearAdd />}></Route>
