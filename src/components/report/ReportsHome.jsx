@@ -80,7 +80,7 @@ export default function ReportsHome() {
     courses: [],
     academicYears: [],
     years: [],
-    statuses: ["Active", "In-Active", "Transferred", "Graduated", "Discontinued"],
+    statuses: ["Active", "Alumni", "In-Active", "Transferred", "Graduated", "Discontinued"],
     feeStatuses: ["Paid", "Unpaid"],
     hostels: ["Yes", "No"],
   });
