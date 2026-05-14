@@ -73,7 +73,7 @@ const View = () => {
       {student ? (
         <>
           {/* SCREEN VIEW */}
-          <div className="no-print max-w-4xl mx-auto mt-2 p-5 shadow-lg border">
+          <div className="no-print max-w-4xl mx-auto mt-2 p-3 md:p-5 shadow-lg border">
             <div className="flex py-2 px-4 items-center justify-between bg-teal-700 text-white rounded-lg shadow-lg">
               <h2 className="text-sm lg:text-xl font-semibold">Student Details</h2>
 
@@ -106,7 +106,7 @@ const View = () => {
                   />
                 </div>
 
-                <div className="p-2">
+                <div className="md:p-2">
                   <div className="flex space-x-3 mb-5" />
 
                   <div className="border-2">
@@ -228,19 +228,6 @@ const View = () => {
                   <div className="flex space-x-3 mb-7" />
 
                   <ViewCard type="header" text="Academic Details" />
-                  {/* <div className="mb-3 border rounded-md p-0">
-                    <DataTable
-                      className="p-0"
-                      columns={columnsSelectForAcademic}
-                      data={(student?._academics || []).map((row) => ({
-                        ...row,
-                        _certificateFeeMap: student?._certificateFeeMap || {},
-                      }))}
-                      highlightOnHover
-                      striped
-                    />
-                  </div> */}
-
                   <div className="mb-3 border rounded-md p-0">
                     <DataTable
                       className="p-0"
