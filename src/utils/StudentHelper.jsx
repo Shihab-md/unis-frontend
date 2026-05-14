@@ -41,6 +41,99 @@ export const columnsSelect = [
   },
 ];
 
+// const getCourseFeeStatusLabel = (invoiceSource, academicStatus) => {
+//   const src = String(invoiceSource || "").trim();
+
+//   if (src === "ADMISSION") return "Admission";
+//   if (src === "PROMOTE") return "Promoted";
+//   if (src === "COURSE_CHANGE") return "Course Change";
+
+//   const st = String(academicStatus || "").trim();
+//   if (st === "Promoted") return "Promoted";
+//   if (st === "Not Promoted") return "Not Promoted";
+
+//   return "Admission";
+// };
+
+// const getInvoiceInfoByCourseAndYear = (
+//   acYearId,
+//   courseId,
+//   invoices = [],
+//   certificateFeeMap = {}
+// ) => {
+//   const matchedInvoices = (Array.isArray(invoices) ? invoices : []).filter(
+//     (inv) =>
+//       String(inv?.acYear?._id || "") === String(acYearId || "") &&
+//       String(inv?.courseId?._id || "") === String(courseId || "")
+//   );
+
+//   const courseFeeInvoice =
+//     matchedInvoices.find((inv) =>
+//       ["ADMISSION", "PROMOTE", "COURSE_CHANGE"].includes(String(inv?.source || ""))
+//     ) || null;
+
+//   const certificateInvoice =
+//     matchedInvoices.find((inv) => String(inv?.source || "") === "CERTIFICATE") || null;
+
+//   const certKey =
+//     acYearId && courseId ? `${String(acYearId)}__${String(courseId)}` : "";
+
+//   const certificateFeeFromMap = certKey ? certificateFeeMap?.[certKey] : null;
+
+//   return {
+//     courseFeeInvoice,
+//     certificateInvoice,
+//     certificateFeeFromMap,
+//   };
+// };
+
+const getCourseFeeStatusLabel = (invoiceSource, academicStatus) => {
+  const src = String(invoiceSource || "").trim();
+
+  if (src === "ADMISSION") return "Admission";
+  if (src === "PROMOTE") return "Promoted";
+  if (src === "COURSE_CHANGE") return "Course Change";
+
+  const st = String(academicStatus || "").trim();
+  if (st === "Promoted") return "Promoted";
+  if (st === "Not Promoted") return "Not Promoted";
+  if (st === "Completed") return "Completed";
+
+  return "Admission";
+};
+
+const getInvoiceInfoByCourseAndYear = (
+  acYearId,
+  courseId,
+  invoices = [],
+  certificateFeeMap = {}
+) => {
+  const matchedInvoices = (Array.isArray(invoices) ? invoices : []).filter(
+    (inv) =>
+      String(inv?.acYear?._id || "") === String(acYearId || "") &&
+      String(inv?.courseId?._id || "") === String(courseId || "")
+  );
+
+  const courseFeeInvoice =
+    matchedInvoices.find((inv) =>
+      ["ADMISSION", "PROMOTE", "COURSE_CHANGE"].includes(String(inv?.source || ""))
+    ) || null;
+
+  const certificateInvoice =
+    matchedInvoices.find((inv) => String(inv?.source || "") === "CERTIFICATE") || null;
+
+  const certKey =
+    acYearId && courseId ? `${String(acYearId)}__${String(courseId)}` : "";
+
+  const certificateFeeFromMap = certKey ? certificateFeeMap?.[certKey] : null;
+
+  return {
+    courseFeeInvoice,
+    certificateInvoice,
+    certificateFeeFromMap,
+  };
+};
+
 function getDetails(
   title,
   courseId,
@@ -51,17 +144,47 @@ function getDetails(
   fees,
   status,
   acYearId,
-  certificateFeeMap
+  certificateFeeMap,
+  invoices = []
 ) {
-  const certKey =
-    acYearId && courseId ? `${String(acYearId)}__${String(courseId)}` : "";
-
-  const certInfo = certKey ? certificateFeeMap?.[certKey] : null;
-  const certificateFee = Number(certInfo?.total || 0);
+  const {
+    courseFeeInvoice,
+    certificateInvoice,
+    certificateFeeFromMap,
+  } = getInvoiceInfoByCourseAndYear(
+    acYearId,
+    courseId,
+    invoices,
+    certificateFeeMap
+  );
 
   const isCompleted = String(status || "") === "Completed";
-  const displayFees = isCompleted && certificateFee > 0 ? certificateFee : Number(fees || 0);
-  const feeLabel = isCompleted && certificateFee > 0 ? "Certificate Fees" : "Fees";
+
+  const normalFees = Number(
+    courseFeeInvoice?.total ??
+    fees ??
+    0
+  );
+
+  const normalFeeStatus = getCourseFeeStatusLabel(
+    courseFeeInvoice?.source,
+    status
+  );
+
+  const normalPaymentStatus = String(courseFeeInvoice?.status || "Not Created");
+
+  const certificateFeeValue =
+    certificateInvoice?.total != null
+      ? Number(certificateInvoice.total)
+      : certificateFeeFromMap?.total != null
+        ? Number(certificateFeeFromMap.total)
+        : null;
+
+  const certificatePaymentStatus = String(
+    certificateInvoice?.status ||
+    certificateFeeFromMap?.status ||
+    "Not Created"
+  );
 
   return (
     <div className="mt-3 mb-5">
@@ -80,15 +203,38 @@ function getDetails(
         {year || year === 0 ? (
           <span>
             <span>Year : {year}</span>
-            <span className="text-gray-300 font-bold ml-5 mr-5">|</span>
           </span>
         ) : null}
+      </p>
 
-        {`${feeLabel} : ₹ ${displayFees.toLocaleString("en-IN")}`}
+      <p className="mt-1">
+         {`Fees : ₹ ${normalFees.toLocaleString("en-IN")}`}
         <span className="text-gray-300 font-bold ml-5 mr-5">|</span>
 
-        {"Status : "}<span className="text-blue-500 ml-1">{status}</span>
+        {"Status : "}
+        <span className="text-blue-500 ml-1">{normalFeeStatus}</span>
+        <span className="text-gray-300 font-bold ml-5 mr-5">|</span>
+
+        {"Payment : "}
+        <span className="text-emerald-600 ml-1">{normalPaymentStatus}</span>
       </p>
+
+      {isCompleted ? (
+        <p className="mt-1">
+          {`Certificate Fee : ${certificateFeeValue != null
+              ? `₹ ${certificateFeeValue.toLocaleString("en-IN")}`
+              : "-"
+            }`}
+          <span className="text-gray-300 font-bold ml-5 mr-5">|</span>
+
+          {"Status : "}
+          <span className="text-blue-500 ml-1">Completed</span>
+          <span className="text-gray-300 font-bold ml-5 mr-5">|</span>
+
+          {"Payment : "}
+          <span className="text-emerald-600 ml-1">{certificatePaymentStatus}</span>
+        </p>
+      ) : null}
     </div>
   );
 }
@@ -114,7 +260,8 @@ export const columnsSelectForAcademic = [
             row.fees1,
             row.status1 ? row.status1 : "",
             row.acYear?._id,
-            row._certificateFeeMap
+            row._certificateFeeMap,
+            row._invoices
           )
           : null}
 
@@ -129,7 +276,8 @@ export const columnsSelectForAcademic = [
             row.fees4,
             row.status4 ? row.status4 : "",
             row.acYear?._id,
-            row._certificateFeeMap
+            row._certificateFeeMap,
+            row._invoices
           )
           : null}
 
@@ -144,7 +292,8 @@ export const columnsSelectForAcademic = [
             row.fees2,
             row.status2 ? row.status2 : "",
             row.acYear?._id,
-            row._certificateFeeMap
+            row._certificateFeeMap,
+            row._invoices
           )
           : null}
 
@@ -159,7 +308,8 @@ export const columnsSelectForAcademic = [
             row.fees3,
             row.status3 ? row.status3 : "",
             row.acYear?._id,
-            row._certificateFeeMap
+            row._certificateFeeMap,
+            row._invoices
           )
           : null}
 
@@ -174,7 +324,8 @@ export const columnsSelectForAcademic = [
             row.fees5,
             row.status5 ? row.status5 : "",
             row.acYear?._id,
-            row._certificateFeeMap
+            row._certificateFeeMap,
+            row._invoices
           )
           : null}
       </div>
@@ -183,6 +334,237 @@ export const columnsSelectForAcademic = [
     wrap: true,
   },
 ];
+
+// function getDetails(
+//   title,
+//   courseId,
+//   courseName,
+//   instituteName,
+//   refNumber,
+//   year,
+//   fees,
+//   status,
+//   acYearId,
+//   certificateFeeMap,
+//   invoices = []
+// ) {
+//   const {
+//     courseFeeInvoice,
+//     certificateInvoice,
+//     certificateFeeFromMap,
+//   } = getInvoiceInfoByCourseAndYear(
+//     acYearId,
+//     courseId,
+//     invoices,
+//     certificateFeeMap
+//   );
+
+//   const isCompleted = String(status || "") === "Completed";
+
+//   const normalFees = Number(
+//     courseFeeInvoice?.total ??
+//     fees ??
+//     0
+//   );
+
+//   const normalFeeStatus = getCourseFeeStatusLabel(
+//     courseFeeInvoice?.source,
+//     status
+//   );
+
+//   const certificateFeeValue =
+//     certificateInvoice?.total != null
+//       ? Number(certificateInvoice.total)
+//       : certificateFeeFromMap?.total != null
+//         ? Number(certificateFeeFromMap.total)
+//         : null;
+
+//   return (
+//     <div className="mt-3 mb-5">
+//       <p className="text-md font-bold text-pink-500 mb-2">{title}</p>
+
+//       <p className="mb-1">
+//         {courseName}
+//         <span className="text-gray-300 font-bold ml-5 mr-5">|</span>
+//         {instituteName}
+//       </p>
+
+//       <p>
+//         {"Ref. No. : " + refNumber}
+//         <span className="text-gray-300 font-bold ml-5 mr-5">|</span>
+
+//         {year || year === 0 ? (
+//           <span>
+//             <span>Year : {year}</span>
+//             <span className="text-gray-300 font-bold ml-5 mr-5">|</span>
+//           </span>
+//         ) : null}
+
+//         {`Fees : ₹ ${normalFees.toLocaleString("en-IN")}`}
+//         <span className="text-gray-300 font-bold ml-5 mr-5">|</span>
+
+//         {"Status : "}
+//         <span className="text-blue-500 ml-1">{normalFeeStatus}</span>
+//       </p>
+
+//       {isCompleted ? (
+//         <p className="mt-1">
+//           {`Certificate Fee : ${certificateFeeValue != null
+//               ? `₹ ${certificateFeeValue.toLocaleString("en-IN")}`
+//               : "-"
+//             }`}
+//           <span className="text-gray-300 font-bold ml-5 mr-5">|</span>
+
+//           {"Status : "}
+//           <span className="text-blue-500 ml-1">Completed</span>
+//         </p>
+//       ) : null}
+//     </div>
+//   );
+// }
+
+// function getDetails(
+//   title,
+//   courseId,
+//   courseName,
+//   instituteName,
+//   refNumber,
+//   year,
+//   fees,
+//   status,
+//   acYearId,
+//   certificateFeeMap
+// ) {
+//   const certKey =
+//     acYearId && courseId ? `${String(acYearId)}__${String(courseId)}` : "";
+
+//   const certInfo = certKey ? certificateFeeMap?.[certKey] : null;
+//   const certificateFee = Number(certInfo?.total || 0);
+
+//   const isCompleted = String(status || "") === "Completed";
+//   const displayFees = isCompleted && certificateFee > 0 ? certificateFee : Number(fees || 0);
+//   const feeLabel = isCompleted && certificateFee > 0 ? "Certificate Fees" : "Fees";
+
+//   return (
+//     <div className="mt-3 mb-5">
+//       <p className="text-md font-bold text-pink-500 mb-2">{title}</p>
+
+//       <p className="mb-1">
+//         {courseName}
+//         <span className="text-gray-300 font-bold ml-5 mr-5">|</span>
+//         {instituteName}
+//       </p>
+
+//       <p>
+//         {"Ref. No. : " + refNumber}
+//         <span className="text-gray-300 font-bold ml-5 mr-5">|</span>
+
+//         {year || year === 0 ? (
+//           <span>
+//             <span>Year : {year}</span>
+//             <span className="text-gray-300 font-bold ml-5 mr-5">|</span>
+//           </span>
+//         ) : null}
+
+//         {`${feeLabel} : ₹ ${displayFees.toLocaleString("en-IN")}`}
+//         <span className="text-gray-300 font-bold ml-5 mr-5">|</span>
+
+//         {"Status : "}<span className="text-blue-500 ml-1">{status}</span>
+//       </p>
+//     </div>
+//   );
+// }
+
+// export const columnsSelectForAcademic = [
+//   {
+//     name: <div className="text-sm font-bold text-lime-600">AC Year</div>,
+//     selector: (row) => row.acYear?.acYear,
+//     width: "95px",
+//   },
+//   {
+//     name: <div className="text-sm font-bold text-lime-600">Course Details</div>,
+//     selector: (row) => (
+//       <div>
+//         {row.courseId1
+//           ? getDetails(
+//             "Deeniyath Education",
+//             row.courseId1?._id,
+//             row.courseId1?.name,
+//             row.instituteId1?.name,
+//             row.refNumber1 ? row.refNumber1 : "-",
+//             row.year1,
+//             row.fees1,
+//             row.status1 ? row.status1 : "",
+//             row.acYear?._id,
+//             row._certificateFeeMap
+//           )
+//           : null}
+
+//         {row.courseId4
+//           ? getDetails(
+//             "Islamic Home Science",
+//             row.courseId4?._id,
+//             row.courseId4?.name,
+//             row.instituteId4?.name,
+//             row.refNumber4 ? row.refNumber4 : "-",
+//             null,
+//             row.fees4,
+//             row.status4 ? row.status4 : "",
+//             row.acYear?._id,
+//             row._certificateFeeMap
+//           )
+//           : null}
+
+//         {row.courseId2
+//           ? getDetails(
+//             "School Education",
+//             row.courseId2?._id,
+//             row.courseId2?.name,
+//             row.instituteId2?.name,
+//             row.refNumber2 ? row.refNumber2 : "-",
+//             null,
+//             row.fees2,
+//             row.status2 ? row.status2 : "",
+//             row.acYear?._id,
+//             row._certificateFeeMap
+//           )
+//           : null}
+
+//         {row.courseId3
+//           ? getDetails(
+//             "College Education",
+//             row.courseId3?._id,
+//             row.courseId3?.name,
+//             row.instituteId3?.name,
+//             row.refNumber3 ? row.refNumber3 : "-",
+//             row.year3,
+//             row.fees3,
+//             row.status3 ? row.status3 : "",
+//             row.acYear?._id,
+//             row._certificateFeeMap
+//           )
+//           : null}
+
+//         {row.courseId5
+//           ? getDetails(
+//             "Vocational Course",
+//             row.courseId5?._id,
+//             row.courseId5?.name,
+//             row.instituteId5?.name,
+//             row.refNumber5 ? row.refNumber5 : "-",
+//             null,
+//             row.fees5,
+//             row.status5 ? row.status5 : "",
+//             row.acYear?._id,
+//             row._certificateFeeMap
+//           )
+//           : null}
+//       </div>
+//     ),
+//     width: "700px",
+//     wrap: true,
+//   },
+// ];
 
 export const columns = [
   {

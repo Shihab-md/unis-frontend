@@ -228,6 +228,19 @@ const View = () => {
                   <div className="flex space-x-3 mb-7" />
 
                   <ViewCard type="header" text="Academic Details" />
+                  {/* <div className="mb-3 border rounded-md p-0">
+                    <DataTable
+                      className="p-0"
+                      columns={columnsSelectForAcademic}
+                      data={(student?._academics || []).map((row) => ({
+                        ...row,
+                        _certificateFeeMap: student?._certificateFeeMap || {},
+                      }))}
+                      highlightOnHover
+                      striped
+                    />
+                  </div> */}
+
                   <div className="mb-3 border rounded-md p-0">
                     <DataTable
                       className="p-0"
@@ -235,6 +248,7 @@ const View = () => {
                       data={(student?._academics || []).map((row) => ({
                         ...row,
                         _certificateFeeMap: student?._certificateFeeMap || {},
+                        _invoices: student?._invoices || [],
                       }))}
                       highlightOnHover
                       striped
