@@ -187,8 +187,8 @@ function getDetails(
       {isCompleted ? (
         <p className="mt-1">
           {`Certificate Fee : ${certificateFeeValue != null
-              ? `₹ ${certificateFeeValue.toLocaleString("en-IN")}`
-              : "-"
+            ? `₹ ${certificateFeeValue.toLocaleString("en-IN")}`
+            : "-"
             }`}
           <span className="text-gray-300 font-bold ml-5 mr-5">|</span>
 
@@ -207,6 +207,275 @@ function getDetails(
     </div>
   );
 }
+
+const formatAcademicFee = (value) => {
+  if (value === null || value === undefined || value === "") return "-";
+
+  const numericValue = Number(value);
+
+  if (Number.isNaN(numericValue)) return "-";
+
+  return `₹ ${numericValue.toLocaleString("en-IN")}`;
+};
+
+const AcademicValue = ({ label, value, valueClassName = "" }) => (
+  <div className="rounded-md border border-slate-100 bg-white/80 p-2 shadow-sm">
+    <p className="text-[10px] font-semibold uppercase tracking-wide text-slate-400">
+      {label}
+    </p>
+    <p
+      className={`mt-0.5 text-xs font-semibold text-slate-700 break-words ${valueClassName}`}
+    >
+      {value === null || value === undefined || value === "" ? "-" : value}
+    </p>
+  </div>
+);
+
+const AcademicCourseCard = ({
+  title,
+  courseId,
+  courseName,
+  instituteName,
+  refNumber,
+  year,
+  fees,
+  status,
+  acYearId,
+  certificateFeeMap,
+  invoices = [],
+}) => {
+  const {
+    courseFeeInvoice,
+    certificateInvoice,
+    certificateFeeFromMap,
+  } = getInvoiceInfoByCourseAndYear(
+    acYearId,
+    courseId,
+    invoices,
+    certificateFeeMap
+  );
+
+  const isCompleted = String(status || "") === "Completed";
+
+  const normalFees = Number(
+    courseFeeInvoice?.total ??
+    fees ??
+    0
+  );
+
+  const normalFeeStatus = getCourseFeeStatusLabel(
+    courseFeeInvoice?.source,
+    status
+  );
+
+  const normalInvoiceNo = String(courseFeeInvoice?.invoiceNo || "-");
+  const normalPaymentStatus = String(courseFeeInvoice?.status || "Not Created");
+
+  const certificateFeeValue =
+    certificateInvoice?.total != null
+      ? Number(certificateInvoice.total)
+      : certificateFeeFromMap?.total != null
+        ? Number(certificateFeeFromMap.total)
+        : null;
+
+  const certificateInvoiceNo = String(
+    certificateInvoice?.invoiceNo ||
+    certificateFeeFromMap?.invoiceNo ||
+    "-"
+  );
+
+  const certificatePaymentStatus = String(
+    certificateInvoice?.status ||
+    certificateFeeFromMap?.status ||
+    "Not Created"
+  );
+
+  return (
+    <div className="relative overflow-hidden mb-2 rounded-md border border-blue-100 bg-white/80 p-3 shadow-xl 
+    bg-[url('/bg_card.png')]" style={{ backgroundSize: "100% 100%" }}>
+
+      {/* overlay for readability */}
+      <div className="absolute inset-0 bg-white/40" />
+      {/* content */}
+      <div className="relative z-10 mb-2">
+        <div className="flex items-start justify-between gap-2">
+          <div className="min-w-0">
+            <p className="text-xs font-bold text-pink-700">{title}</p>
+            <h4 className="mt-1 text-sm font-semibold text-slate-800 break-words">
+              {courseName || "-"}
+            </h4>
+            <p className="mt-0.5 text-[11px] text-slate-500 break-words">
+              {instituteName || "-"}
+            </p>
+          </div>
+        </div>
+
+
+        <div className="mt-3 grid grid-cols-2 gap-2">
+          <AcademicValue label="Ref. No." value={refNumber || "-"} />
+
+          {year || year === 0 ? (
+            <AcademicValue label="Year" value={year} />
+          ) : null}
+
+          <AcademicValue label="Fees" value={formatAcademicFee(normalFees)} />
+          <AcademicValue label="Status" value={normalFeeStatus} />
+
+          <AcademicValue
+            label="Invoice #"
+            value={normalInvoiceNo}
+            valueClassName="text-emerald-700"
+          />
+
+          <AcademicValue
+            label="Payment"
+            value={normalPaymentStatus}
+            valueClassName="text-emerald-700"
+          />
+        </div>
+
+        {isCompleted ? (
+          <div className="mt-3 rounded-md border border-emerald-100 bg-emerald-50/80 p-2">
+            <p className="text-xs font-bold text-emerald-700 mb-2">
+              Certificate Fee
+            </p>
+
+            <div className="grid grid-cols-2 gap-2">
+              <AcademicValue
+                label="Fee"
+                value={
+                  certificateFeeValue != null
+                    ? formatAcademicFee(certificateFeeValue)
+                    : "-"
+                }
+              />
+
+              <AcademicValue
+                label="Status"
+                value="Completed"
+                valueClassName="text-blue-700"
+              />
+
+              <AcademicValue
+                label="Invoice #"
+                value={certificateInvoiceNo}
+                valueClassName="text-emerald-700"
+              />
+
+              <AcademicValue
+                label="Payment"
+                value={certificatePaymentStatus}
+                valueClassName="text-emerald-700"
+              />
+            </div>
+          </div>
+        ) : null}
+      </div>
+    </div>
+  );
+};
+
+export const AcademicDetailsCard = ({ row }) => {
+  const academicCourseSlots = [
+    {
+      title: "Deeniyath Education",
+      courseId: row.courseId1?._id,
+      courseName: row.courseId1?.name,
+      instituteName: row.instituteId1?.name,
+      refNumber: row.refNumber1 ? row.refNumber1 : "-",
+      year: row.year1,
+      fees: row.fees1,
+      status: row.status1 ? row.status1 : "",
+    },
+    {
+      title: "Islamic Home Science",
+      courseId: row.courseId4?._id,
+      courseName: row.courseId4?.name,
+      instituteName: row.instituteId4?.name,
+      refNumber: row.refNumber4 ? row.refNumber4 : "-",
+      year: null,
+      fees: row.fees4,
+      status: row.status4 ? row.status4 : "",
+    },
+    {
+      title: "School Education",
+      courseId: row.courseId2?._id,
+      courseName: row.courseId2?.name,
+      instituteName: row.instituteId2?.name,
+      refNumber: row.refNumber2 ? row.refNumber2 : "-",
+      year: null,
+      fees: row.fees2,
+      status: row.status2 ? row.status2 : "",
+    },
+    {
+      title: "College Education",
+      courseId: row.courseId3?._id,
+      courseName: row.courseId3?.name,
+      instituteName: row.instituteId3?.name,
+      refNumber: row.refNumber3 ? row.refNumber3 : "-",
+      year: row.year3,
+      fees: row.fees3,
+      status: row.status3 ? row.status3 : "",
+    },
+    {
+      title: "Vocational Course",
+      courseId: row.courseId5?._id,
+      courseName: row.courseId5?.name,
+      instituteName: row.instituteId5?.name,
+      refNumber: row.refNumber5 ? row.refNumber5 : "-",
+      year: null,
+      fees: row.fees5,
+      status: row.status5 ? row.status5 : "",
+    },
+  ];
+
+  const activeCourses = academicCourseSlots.filter((course) => course.courseId);
+
+  return (
+    <div
+      className="relative overflow-hidden rounded-md border border-sky-200 shadow-lg p-2 mt-1 transition-all duration-200 
+      hover:-translate-y-0.5 hover:shadow-2xl bg-[url('/c-4.jpg')] bg-center bg-no-repeat"
+      style={{ backgroundSize: "100% 100%" }}
+    >
+      <div className="absolute inset-0 bg-white/70" />
+
+      <div className="relative mb-2">
+        <div className="flex items-center justify-between gap-2 mb-3">
+          <div>
+            <p className="text-[11px] font-semibold text-slate-500">
+              Academic Year
+            </p>
+            <h3 className="text-sm font-bold text-pink-800">
+              {row.acYear?.acYear || "-"}
+            </h3>
+          </div>
+
+          <span className="rounded-md border border-lime-200 bg-lime-50 px-2 py-1 text-[10px] font-semibold text-lime-700 shadow-sm">
+            {activeCourses.length} Course{activeCourses.length === 1 ? "" : "s"}
+          </span>
+        </div>
+
+        {activeCourses.length > 0 ? (
+          <div className="space-y-3">
+            {activeCourses.map((course) => (
+              <AcademicCourseCard
+                key={`${row.acYear?._id || row._id || "academic"}-${course.title}`}
+                {...course}
+                acYearId={row.acYear?._id}
+                certificateFeeMap={row._certificateFeeMap}
+                invoices={row._invoices}
+              />
+            ))}
+          </div>
+        ) : (
+          <div className="rounded-md border border-slate-100 bg-white/80 p-3 text-xs text-slate-500 shadow-sm">
+            No course details found.
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
 
 export const columnsSelectForAcademic = [
   {

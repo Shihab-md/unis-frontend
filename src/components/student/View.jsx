@@ -10,7 +10,7 @@ import {
   showSwalAlert,
 } from "../../utils/CommonHelper";
 import ViewCard from "../dashboard/ViewCard";
-import { columnsSelectForAcademic } from "../../utils/StudentHelper";
+import { AcademicDetailsCard, columnsSelectForAcademic } from "../../utils/StudentHelper";
 import DataTable from "react-data-table-component";
 import { FaRegTimesCircle, FaPrint } from "react-icons/fa";
 import StudentProfilePrint from "../../components/report/StudentProfilePrint";
@@ -67,6 +67,12 @@ const View = () => {
   const handlePrint = () => {
     window.print();
   };
+
+  const academicRows = (student?._academics || []).map((row) => ({
+    ...row,
+    _certificateFeeMap: student?._certificateFeeMap || {},
+    _invoices: student?._invoices || [],
+  }));
 
   return (
     <>
@@ -228,15 +234,29 @@ const View = () => {
                   <div className="flex space-x-3 mb-7" />
 
                   <ViewCard type="header" text="Academic Details" />
-                  <div className="mb-3 border rounded-md p-0">
+
+                  {/* Mobile / Tablet */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 lg:hidden mt-3 mb-3">
+                    {academicRows.length > 0 ? (
+                      academicRows.map((row, index) => (
+                        <AcademicDetailsCard
+                          key={row?._id || row?.acYear?._id || index}
+                          row={row}
+                        />
+                      ))
+                    ) : (
+                      <div className="rounded-md border border-slate-100 bg-white p-3 text-xs text-slate-500 shadow-sm">
+                        No academic details found.
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Desktop */}
+                  <div className="hidden lg:block mb-3 border rounded-md p-0">
                     <DataTable
                       className="p-0"
                       columns={columnsSelectForAcademic}
-                      data={(student?._academics || []).map((row) => ({
-                        ...row,
-                        _certificateFeeMap: student?._certificateFeeMap || {},
-                        _invoices: student?._invoices || [],
-                      }))}
+                      data={academicRows}
                       highlightOnHover
                       striped
                     />
