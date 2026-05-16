@@ -138,7 +138,7 @@ export const columns = [
     ),
     sortable: true,
     wrap: true,
-    width: "300px",
+    width: "320px",
   },
   {
     name: "Address",
@@ -173,14 +173,17 @@ export const columns = [
         <p>
           <span className="text-blue-700 mr-1">📱:</span> {row.incharge1Number}
         </p>
-        <p className="mt-3 mb-1">
-          <span className="text-blue-700 mr-1">Supervisor 🆔:</span> {row.supervisorId}
+        <p className="mt-5 mb-1">
+          <span className="text-blue-700 mr-1">Supervisor</span>
+        </p>
+        <p>
+          <span className="text-blue-700 mr-1">🆔:</span> {row.supervisorId}
         </p>
         <p>{row.supervisorName}</p>
       </div>
     ),
     wrap: true,
-    width: "250px",
+    width: "270px",
   },
   {
     name: "Employees",
@@ -190,7 +193,7 @@ export const columns = [
       </div>
     ),
     wrap: true,
-    width: "230px",
+    width: "210px",
   },
   {
     name: "Students",
@@ -200,7 +203,7 @@ export const columns = [
       </div>
     ),
     wrap: true,
-    width: "250px",
+    width: "240px",
   },
   {
     name: "Action",
