@@ -199,9 +199,9 @@ const List = () => {
           supervisorId: sch.supervisorId?.supervisorId,
           supervisorName: sch.supervisorId?.userId?.name,
           studentCount: sch.studentCount ? sch.studentCount : 0,
-          studentCountsByCourse: sch.studentCountsByCourse && sch.studentCountsByCourse?.length > 0 ? sch.studentCountsByCourse : null,
+          studentCountsByCourse: sch.studentCountsByCourse && sch.studentCountsByCourse?.length > 0 ? sch.studentCountsByCourse : [],
           employeeCount: sch.employeeCount ? sch.employeeCount : 0,
-          employeeCountsByRole: sch.employeeCountsByRole && sch.employeeCountsByRole?.length > 0 ? sch.employeeCountsByRole : null,
+          employeeCountsByRole: sch.employeeCountsByRole && sch.employeeCountsByRole?.length > 0 ? sch.employeeCountsByRole : [],
           action: (<SchoolButtons Id={sch._id} />),
         }));
         setSchools(data);
@@ -286,9 +286,9 @@ const List = () => {
         supervisorId: sch.supervisorId?.supervisorId,
         supervisorName: sch.supervisorId?.userId?.name,
         studentCount: sch.studentCount ? sch.studentCount : 0,
-        studentCountsByCourse: sch.studentCountsByCourse && sch.studentCountsByCourse?.length > 0 ? sch.studentCountsByCourse : null,
+        studentCountsByCourse: sch.studentCountsByCourse && sch.studentCountsByCourse?.length > 0 ? sch.studentCountsByCourse : [],
         employeeCount: sch.employeeCount ? sch.employeeCount : 0,
-        employeeCountsByRole: sch.employeeCountsByRole && sch.employeeCountsByRole?.length > 0 ? sch.employeeCountsByRole : null,
+        employeeCountsByRole: sch.employeeCountsByRole && sch.employeeCountsByRole?.length > 0 ? sch.employeeCountsByRole : [],
         action: (<SchoolButtons Id={sch._id} onSchoolDelete={onSchoolDelete} />),
       }));
       setSchools(data1);
@@ -328,9 +328,9 @@ const List = () => {
             supervisorId: sch.supervisorId?.supervisorId,
             supervisorName: sch.supervisorId?.userId?.name,
             studentCount: sch.studentCount ? sch.studentCount : 0,
-            studentCountsByCourse: sch.studentCountsByCourse && sch.studentCountsByCourse?.length > 0 ? sch.studentCountsByCourse : null,
+            studentCountsByCourse: sch.studentCountsByCourse && sch.studentCountsByCourse?.length > 0 ? sch.studentCountsByCourse : [],
             employeeCount: sch.employeeCount ? sch.employeeCount : 0,
-            employeeCountsByRole: sch.employeeCountsByRole && sch.employeeCountsByRole?.length > 0 ? sch.employeeCountsByRole : null,
+            employeeCountsByRole: sch.employeeCountsByRole && sch.employeeCountsByRole?.length > 0 ? sch.employeeCountsByRole : [],
             action: (<SchoolButtons Id={sch._id} onSchoolDelete={onSchoolDelete} />),
           }));
           setSchools(data);
@@ -441,6 +441,7 @@ const List = () => {
               <DataTable
                 columns={columns}
                 data={filteredSchool}
+                showGridlines
                 highlightOnHover
                 striped
                 responsive

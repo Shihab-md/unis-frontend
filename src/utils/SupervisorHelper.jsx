@@ -1,12 +1,163 @@
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { getBaseUrl, showSwalAlert, showConfirmationSwalAlert, getButtonStyle } from '../utils/CommonHelper';
-import { useAuth } from '../context/AuthContext'
+import {
+  getBaseUrl,
+  showSwalAlert,
+  showConfirmationSwalAlert,
+  getButtonStyle,
+} from '../utils/CommonHelper';
+import { useAuth } from '../context/AuthContext';
 import {
   FaEye,
   FaEdit,
   FaTrashAlt,
 } from "react-icons/fa";
+
+const toNumber = (value) => {
+  const numberValue = Number(value);
+  return Number.isFinite(numberValue) ? numberValue : 0;
+};
+
+export const NiswanCountTable = ({ row }) => {
+  const totalCount = toNumber(row.schoolsCount ?? row._schoolsCount ?? row.schoolCount);
+
+  return (
+    <div className="mt-3 rounded-md border border-pink-200 bg-white/75 p-1 shadow-lg mr-5 ml-5 md:mr-0 md:ml-0">
+      <div className="text-center text-[13px] font-semibold text-blue-600">
+        Niswans
+      </div>
+
+      <div className="overflow-hidden rounded-md border border-slate-200 bg-white/80 ml-2 mr-2 mt-1 mb-1">
+        <table className="w-full text-left text-[11px]">
+          <tbody className="divide-y divide-slate-100">
+            <tr className="bg-gray-100">
+              <td className="px-2 py-1.5 font-semibold text-pink-700">
+                Total
+              </td>
+              <td className="w-16 px-3 py-1.5 text-right font-semibold text-pink-700">
+                {totalCount}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+};
+
+export const EmployeeCountTable = ({ row }) => {
+  const roles = Array.isArray(row.employeeCountsByRole)
+    ? row.employeeCountsByRole
+    : [];
+
+  const totalCount =
+    toNumber(row.employeeCount) ||
+    roles.reduce((total, role) => total + toNumber(role.count), 0);
+
+  return (
+    <div className="mt-3 rounded-md border border-pink-200 bg-white/75 p-1 shadow-lg mr-5 ml-5 md:mr-0 md:ml-0">
+      <div className="text-center text-[13px] font-semibold text-blue-600">
+        Employees: {totalCount}
+      </div>
+
+      {roles.length > 0 ? (
+        <div className="overflow-hidden rounded-md border border-slate-200 bg-white/80 ml-2 mr-2 mt-1 mb-1">
+          <table className="w-full text-left text-[11px]">
+            <thead className="bg-gray-100 text-pink-700">
+              <tr>
+                <th className="px-2 py-1.5 font-semibold">Role</th>
+                <th className="w-16 px-2 py-1.5 text-center font-semibold">
+                  Count
+                </th>
+              </tr>
+            </thead>
+
+            <tbody className="divide-y divide-slate-100">
+              {roles.map((role, i) => (
+                <tr key={i} className="hover:bg-sky-50/60">
+                  <td className="px-2 py-1.5 text-slate-700 break-words">
+                    {role.role || "-"}
+                  </td>
+
+                  <td className="px-3 py-1.5 text-right font-semibold text-sky-700">
+                    {role.count ?? 0}
+                  </td>
+                </tr>
+              ))}
+
+              <tr className="bg-gray-100">
+                <td className="px-2 py-1.5 font-semibold text-pink-700">
+                  Total
+                </td>
+
+                <td className="px-3 py-1.5 text-right font-semibold text-pink-700">
+                  {totalCount}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      ) : null}
+    </div>
+  );
+};
+
+export const StudentCountTable = ({ row }) => {
+  const courses = Array.isArray(row.studentCountsByCourse)
+    ? row.studentCountsByCourse
+    : [];
+
+  const totalCount =
+    toNumber(row.studentCount) ||
+    courses.reduce((total, course) => total + toNumber(course.count), 0);
+
+  return (
+    <div className="mt-3 md:mt-1 rounded-md border border-pink-200 bg-white/75 p-1 shadow-lg mr-5 ml-5 md:mr-0 md:ml-0">
+      <div className="text-center text-[13px] font-semibold text-blue-600">
+        Students: {totalCount}
+      </div>
+
+      {courses.length > 0 ? (
+        <div className="overflow-hidden rounded-md border border-slate-200 bg-white/80 ml-2 mr-2 mt-1 mb-1">
+          <table className="w-full text-left text-[11px]">
+            <thead className="bg-gray-100 text-pink-700">
+              <tr>
+                <th className="px-2 py-1.5 font-semibold">Course</th>
+                <th className="w-16 px-2 py-1.5 text-center font-semibold">
+                  Count
+                </th>
+              </tr>
+            </thead>
+
+            <tbody className="divide-y divide-slate-100">
+              {courses.map((course, i) => (
+                <tr key={i} className="hover:bg-sky-50/60">
+                  <td className="px-2 py-1.5 text-slate-700 break-words">
+                    {course.courseName || "-"}
+                  </td>
+
+                  <td className="px-3 py-1.5 text-right font-semibold text-sky-700">
+                    {course.count ?? 0}
+                  </td>
+                </tr>
+              ))}
+
+              <tr className="bg-gray-100">
+                <td className="px-2 py-1.5 font-semibold text-pink-700">
+                  Total
+                </td>
+
+                <td className="px-3 py-1.5 text-right font-semibold text-pink-700">
+                  {totalCount}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      ) : null}
+    </div>
+  );
+};
 
 export const columns = [
   {
@@ -16,91 +167,104 @@ export const columns = [
   },
   {
     name: "Supervisor details",
-    selector: (row) => <div className="mt-2 mb-2">
-      <p className="mb-2"><span className="text-blue-700 mr-1">🆔:</span> {row.supId}</p>
-      <p><span className="text-blue-700 mr-1">👤:</span> {row.name}</p>
-    </div>,
+    selector: (row) => (
+      <div className="mt-2 mb-2">
+        <p className="mb-2">
+          <span className="text-blue-700 mr-1">🆔:</span> {row.supId}
+        </p>
+        <p>
+          <span className="text-blue-700 mr-1">👤:</span> {row.name}
+        </p>
+      </div>
+    ),
     sortable: true,
-    width: "320px",
+    width: "240px",
     wrap: true,
   },
   {
     name: "Contact",
-    selector: (row) => <div className="mt-2 mb-2">
-      <p className="mb-1.5"><span className="text-blue-700 mr-1">📱:</span> {row.contactNumber}</p>
-      <p className="mb-1.5"><span className="text-blue-700 mr-1 drop-shadow-xl">@ :</span> {row.email}</p>
-      <p className="mb-1.5"><span className="text-blue-700 mr-1">🎂:</span> {row.dob ? new Date(row.dob).toLocaleDateString("en-GB") : "-"}</p>
-      <p className="mb-1.5"><span className="text-blue-700 mr-1">🗓️:</span> {row.doj ? new Date(row.doj).toLocaleDateString("en-GB") : "-"}</p>
-      <p><span className="text-blue-700 mr-1">🗺️:</span> {row.routeName ? row.routeName !== "Nil" ? row.routeName : "-" : "-"}</p>
-    </div>,
-    width: "300px",
+    selector: (row) => (
+      <div className="mt-2 mb-2">
+        <p className="mb-1.5">
+          <span className="text-blue-700 mr-1">📱:</span> {row.contactNumber}
+        </p>
+        <p className="mb-1.5">
+          <span className="text-blue-700 mr-1 drop-shadow-xl">@ :</span> {row.email}
+        </p>
+        <p className="mb-1.5">
+          <span className="text-blue-700 mr-1">🎂:</span>{" "}
+          {row.dob ? new Date(row.dob).toLocaleDateString("en-GB") : "-"}
+        </p>
+        <p className="mb-1.5">
+          <span className="text-blue-700 mr-1">🗓️:</span>{" "}
+          {row.doj ? new Date(row.doj).toLocaleDateString("en-GB") : "-"}
+        </p>
+        <p>
+          <span className="text-blue-700 mr-1">🗺️:</span>{" "}
+          {row.routeName ? row.routeName !== "Nil" ? row.routeName : "-" : "-"}
+        </p>
+      </div>
+    ),
+    width: "210px",
+    wrap: true,
   },
   {
-    name: "Niswans #",
-    selector: (row) => row.schoolsCount,
+    name: "Niswans",
+    selector: (row) => (
+      <div className="w-full py-1">
+        <NiswanCountTable row={row} />
+      </div>
+    ),
     sortable: true,
-    width: "120px",
-  },
-  {
-    name: "Employees #",
-    //selector: (row) => row.studentCount,
-    wrap: true,
-    selector: row => (
-      <div className="mt-2 mb-2">
-        <p className="font-semibold text-blue-700">
-          <span className="mr-1">Total:</span> {row.employeeCount}
-        </p>
-        <div className="mt-1 mb-2"></div>
-        {row.employeeCountsByRole?.map((role, i) => (
-          <div key={i}>
-            <p className="mr-1 mb-1">
-              <span className="text-pink-700">{role.role}{" : "}</span>
-              <span>{role.count}</span>
-            </p>
-          </div>
-        ))}
-      </div>
-    ),
-    //  sortable: true,
     width: "190px",
+    wrap: true,
   },
   {
-    name: "Students #",
-    //selector: (row) => row.studentCount,
-    wrap: true,
-    selector: row => (
-      <div className="mt-2 mb-2">
-        <p className="font-semibold text-blue-700">
-          <span className="mr-1">Total:</span> {row.studentCount}
-        </p>
-        <div className="mt-1 mb-2"></div>
-        {row.studentCountsByCourse?.map((course, i) => (
-          <div key={i}>
-            <p className="mr-1 mb-1">
-              <span className="text-pink-700">{course.courseName}{" : "}</span>
-              <span>{course.count}</span>
-            </p>
-          </div>
-        ))}
+    name: "Employees",
+    selector: (row) => (
+      <div className="w-full py-1">
+        <EmployeeCountTable row={row} />
       </div>
     ),
-    //  sortable: true,
-    width: "200px",
+    width: "230px",
+    wrap: true,
+  },
+  {
+    name: "Students",
+    selector: (row) => (
+      <div className="w-full py-2">
+        <StudentCountTable row={row} />
+      </div>
+    ),
+    width: "250px",
+    wrap: true,
   },
   {
     name: "Status",
-    selector: (row) => <div className="mt-2 mb-2">
-      {row.active === "Active" ?
-        <p className="mb-2"><span className="text-blue-700 mr-1">✅:</span> {row.active}</p>
-        : <p className="mb-2"><span className="text-blue-700 mr-1">❎:</span> {row.active}</p>}
-      <p><span className="text-blue-700 mr-1">💼:</span> {row.jobType}</p>
-    </div>,
+    selector: (row) => (
+      <div className="mt-2 mb-2">
+        {row.active === "Active" ? (
+          <p className="mb-2">
+            <span className="text-blue-700 mr-1">✅:</span> {row.active}
+          </p>
+        ) : (
+          <p className="mb-2">
+            <span className="text-blue-700 mr-1">❎:</span> {row.active}
+          </p>
+        )}
+
+        <p>
+          <span className="text-blue-700 mr-1">💼:</span> {row.jobType}
+        </p>
+      </div>
+    ),
     width: "120px",
   },
   {
     name: "Action",
     selector: (row) => row.action,
     center: "true",
+    width: "200px",
   },
 ];
 
@@ -108,10 +272,8 @@ export const conditionalRowStyles = [
   {
     when: row => row.active,
     style: row => ({
-      //	backgroundColor: 'rgba(63, 195, 128, 0.9)',
       color: row.active == 'In-Active' ? 'red' : 'black',
       '&:hover': {
-        //		cursor: 'pointer',
         color: row.active == 'In-Active' ? 'red' : 'black',
       },
     }),
@@ -130,12 +292,13 @@ export const SupervisorCard = ({ row }) => {
       : "bg-amber-50 text-amber-700 border-amber-200";
 
   return (
-    <div className="relative overflow-hidden rounded-md border border-blue-100 bg-slate-50 shadow-xl p-3 pb-2 space-y-2 
-    hover:-translate-y-0.5 bg-[url(/c-3.jpg)] bg-center bg-no-repeat"
-      style={{ backgroundSize: "100% 100%" }}>
-
+    <div
+      className="relative overflow-hidden rounded-md border border-blue-100 bg-slate-50 shadow-xl p-3 pb-2 space-y-2 
+      hover:-translate-y-0.5 bg-[url(/c-3.jpg)] bg-center bg-no-repeat"
+      style={{ backgroundSize: "100% 100%" }}
+    >
       {/* overlay for readability */}
-      <div className="absolute inset-0 bg-white/50" />
+      <div className="absolute inset-0 bg-white/65" />
 
       <div className="relative">
         <div className="flex items-start justify-between gap-2">
@@ -143,20 +306,23 @@ export const SupervisorCard = ({ row }) => {
             <h3 className="text-xs font-semibold text-slate-800 break-words leading-5">
               {row.name || "-"}
             </h3>
+
             <p className="text-[11px] text-slate-500 mt-0.5">
               🆔: {row.supId || "-"}
             </p>
-            <p className="text-[11px] text-slate-500 mt-0.5">
+
+            <p className="text-[11px] text-slate-500 mt-0.5 break-words">
               @: {row.email || "-"}
             </p>
           </div>
 
-          <div className="flex flex-col gap-1 items-end shrink-0 ">
+          <div className="flex flex-col gap-1 items-end shrink-0">
             <span
               className={`inline-flex rounded-md border shadow-lg px-2 py-1 text-[10px] font-medium ${statusClass}`}
             >
               {row.active || "-"}
             </span>
+
             <span
               className={`inline-flex rounded-md border shadow-lg px-2 py-1 text-[10px] font-medium ${typeClass}`}
             >
@@ -172,18 +338,21 @@ export const SupervisorCard = ({ row }) => {
               {row.contactNumber || "-"}
             </span>
           </div>
+
           <div>
             <span className="text-slate-500">🗺️:</span>{" "}
             <span className="font-medium text-slate-800">
               {row.routeName && row.routeName !== "Nil" ? row.routeName : "-"}
             </span>
           </div>
+
           <div>
             <span className="text-slate-500">🎂:</span>{" "}
             <span className="font-medium text-slate-800">
               {row.dob ? new Date(row.dob).toLocaleDateString("en-GB") : "-"}
             </span>
           </div>
+
           <div>
             <span className="text-slate-500">🗓️:</span>{" "}
             <span className="font-medium text-slate-800">
@@ -192,120 +361,22 @@ export const SupervisorCard = ({ row }) => {
           </div>
         </div>
 
-        <div className="mt-4 rounded-md border border-pink-200 p-1 ml-5 mr-5 bg-white/70 shadow-lg">
-          <div className="text-[13px] font-medium text-center">
-            <span className="text-pink-700">Niswans:</span>{" "}
-            <span className="font-medium text-pink-700">
-              {row.schoolsCount ?? 0}
-            </span>
-          </div>
-        </div>
-
-        <div className="mt-3 rounded-md border border-pink-200 bg-white/75 p-1 ml-5 mr-5 shadow-lg">
-          <div className="text-center text-[13px] font-semibold text-pink-700">
-            Students: {row.studentCount ?? 0}
-          </div>
-
-          {Array.isArray(row.studentCountsByCourse) &&
-            row.studentCountsByCourse.length > 0 ? (
-            <div className="overflow-hidden border border-slate-200 bg-white/80 ml-2 mr-2 mt-1 mb-1">
-              <table className="w-full text-left text-[11px]">
-                <thead className="bg-gray-100 text-pink-700">
-                  <tr>
-                    <th className="px-2 py-1.5 font-semibold">Course</th>
-                    <th className="w-16 px-2 py-1.5 text-center font-semibold">
-                      Count
-                    </th>
-                  </tr>
-                </thead>
-
-                <tbody className="divide-y divide-slate-100">
-                  {row.studentCountsByCourse.map((course, i) => (
-                    <tr key={i} className="hover:bg-sky-50/60">
-                      <td className="px-2 py-1.5 text-slate-700 break-words">
-                        {course.courseName || "-"}
-                      </td>
-
-                      <td className="px-3 py-1.5 text-right font-semibold text-sky-700">
-                        {course.count ?? 0}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          ) : null}
-        </div>
-
-        <div className="mt-3 rounded-md border border-pink-200 bg-white/75 p-1 ml-5 mr-5 shadow-lg">
-          <div className="text-center text-[13px] font-semibold text-pink-700">
-            Employees: {row.employeeCount ?? 0}
-          </div>
-
-          {Array.isArray(row.employeeCountsByRole) &&
-            row.employeeCountsByRole.length > 0 ? (
-            <div className="overflow-hidden border border-slate-200 bg-white/80 ml-2 mr-2 mt-1 mb-1">
-              <table className="w-full text-left text-[11px]">
-                <thead className="bg-gray-100 text-pink-700">
-                  <tr>
-                    <th className="px-2 py-1.5 font-semibold">Role</th>
-                    <th className="w-16 px-2 py-1.5 text-center font-semibold">
-                      Count
-                    </th>
-                  </tr>
-                </thead>
-
-                <tbody className="divide-y divide-slate-100">
-                  {row.employeeCountsByRole.map((role, i) => (
-                    <tr key={i} className="hover:bg-sky-50/60">
-                      <td className="px-2 py-1.5 text-slate-700 break-words">
-                        {role.role || "-"}
-                      </td>
-
-                      <td className="px-3 py-1.5 text-right font-semibold text-sky-700">
-                        {role.count ?? 0}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          ) : null}
-        </div>
-
-        {/* <div className="mt-3 rounded-md border border-pink-200 p-1 ml-10 mr-10 bg-white/70 shadow-lg">
-          <div className="text-[13px] font-medium text-center">
-            <span className="text-pink-500">Employees:</span>{" "}
-            <span className="font-medium text-pink-500">
-              {row.employeeCount ?? 0}
-            </span>
-          </div>
-
-          {Array.isArray(row.employeeCountsByRole) && row.employeeCountsByRole.length > 0 ? (
-            <div className="space-y-1 p-1">
-              {row.employeeCountsByRole.map((role, i) => (
-                <p key={i} className="text-[11px] text-slate-700 leading-4 mt-2">
-                  <span className="text-sky-700 font-medium">
-                    {role.role || "-"}:
-                  </span>{" "}
-                  {role.count ?? 0}
-                </p>
-              ))}
-            </div>
-          ) : null}
-        </div> */}
+        <NiswanCountTable row={row} />
+        <StudentCountTable row={row} />
+        <EmployeeCountTable row={row} />
 
         <div className="flex pt-2 items-center justify-center">
-          <SupervisorButtons Id={row._id} />
+          {row.action || <SupervisorButtons Id={row._id} />}
         </div>
       </div>
-    </div >
+    </div>
   );
 };
 
 // supervisors FromCache
 export const getSupervisorsFromCache = async (id) => {
   let supervisors;
+
   try {
     const responnse = await axios.get(
       (await getBaseUrl()).toString() + `supervisor/fromCache/`,
@@ -315,6 +386,7 @@ export const getSupervisorsFromCache = async (id) => {
         },
       }
     );
+
     if (responnse.data.success) {
       supervisors = responnse.data.supervisors;
     }
@@ -323,12 +395,14 @@ export const getSupervisorsFromCache = async (id) => {
       showSwalAlert("Error!", error.response.data.error, "error");
     }
   }
+
   return supervisors;
 };
 
 // supervisors 
 export const getSupervisors = async (id) => {
   let supervisors;
+
   try {
     const responnse = await axios.get(
       (await getBaseUrl()).toString() + `supervisor/`,
@@ -338,6 +412,7 @@ export const getSupervisors = async (id) => {
         },
       }
     );
+
     if (responnse.data.success) {
       supervisors = responnse.data.supervisors;
     }
@@ -346,6 +421,7 @@ export const getSupervisors = async (id) => {
       showSwalAlert("Error!", error.response.data.error, "error");
     }
   }
+
   return supervisors;
 };
 
@@ -353,8 +429,11 @@ export const SupervisorButtons = ({ Id, onSupervisorDelete }) => {
   const navigate = useNavigate();
 
   const handleDelete = async (id) => {
-
-    const result = await showConfirmationSwalAlert('Are you sure to Delete?', '', 'question');
+    const result = await showConfirmationSwalAlert(
+      'Are you sure to Delete?',
+      '',
+      'question'
+    );
 
     if (result.isConfirmed) {
       try {
@@ -366,26 +445,27 @@ export const SupervisorButtons = ({ Id, onSupervisorDelete }) => {
             },
           }
         );
+
         if (responnse.data.success) {
           showSwalAlert("Success!", "Successfully Deleted!", "success");
-          onSupervisorDelete();
+
+          if (typeof onSupervisorDelete === "function") {
+            onSupervisorDelete();
+          }
         }
       } catch (error) {
         if (error.response && !error.response.data.success) {
           showSwalAlert("Error!", error.response.data.error, "error");
         }
       }
-      //  } else if (result.dismiss === Swal.DismissReason.cancel) {
-      // Swal.fire('Cancelled', 'Your file is safe!', 'error');
-      // Handle cancellation logic (optional)
     }
   };
 
   const { user } = useAuth();
 
   return (
-    <div className="flex space-x-3 rounded-sm ">
-      {user.role === "superadmin" || user.role === "hquser" ?
+    <div className="flex space-x-3 rounded-sm">
+      {user.role === "superadmin" || user.role === "hquser" ? (
         <div className="flex space-x-3 rounded-sm">
           <button
             className={getButtonStyle('View')}
@@ -393,6 +473,7 @@ export const SupervisorButtons = ({ Id, onSupervisorDelete }) => {
           >
             <FaEye className="m-1" />
           </button>
+
           <button
             className={getButtonStyle('Edit')}
             disabled={user?.role === "guest"}
@@ -400,6 +481,7 @@ export const SupervisorButtons = ({ Id, onSupervisorDelete }) => {
           >
             <FaEdit className="m-1" />
           </button>
+
           <button
             className={getButtonStyle('Delete')}
             disabled={user?.role === "guest"}
@@ -407,7 +489,8 @@ export const SupervisorButtons = ({ Id, onSupervisorDelete }) => {
           >
             <FaTrashAlt className="m-1" />
           </button>
-        </div> : null}
+        </div>
+      ) : null}
     </div>
   );
 };
