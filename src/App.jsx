@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import HomePage from "./pages/HomePage";
 import Login from "./pages/Login";
 import AdminDashboard from "./pages/AdminDashboard";
+import GoToTopButton from "./utils/GoToTopButton";
 
 import PrivateRoutes from "./utils/PrivateRoutes";
 import RoleBaseRoutes from "./utils/RoleBaseRoutes";
@@ -198,6 +199,9 @@ function App() {
 
         </Route> */}
       </Routes>
+
+      <GoToTopButton />
+
     </BrowserRouter>
   );
 }
