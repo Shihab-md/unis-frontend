@@ -51,40 +51,59 @@ const getStudentTotals = (row) => {
     ? row.studentCountsByCourse
     : [];
 
-  const activeTotal = courses.reduce(
+  const activeTotalFromRows = courses.reduce(
     (total, course) => total + toNumber(course.activeCount),
     0
   );
 
-  const inactiveTotal = courses.reduce(
+  const inactiveTotalFromRows = courses.reduce(
     (total, course) => total + toNumber(course.inactiveCount),
     0
   );
 
-  const alumniTotal = courses.reduce(
+  const alumniTotalFromRows = courses.reduce(
     (total, course) => total + toNumber(course.alumniCount),
     0
   );
 
-  const total = courses.reduce(
+  const totalFromRows = courses.reduce(
     (totalValue, course) =>
       totalValue + toNumber(course.totalCount ?? course.count),
     0
   );
 
   return {
-    activeTotal: activeTotal || toNumber(row.studentActiveCount),
-    inactiveTotal: inactiveTotal || toNumber(row.studentInactiveCount),
-    alumniTotal: alumniTotal || toNumber(row.studentAlumniCount),
-    total: total || toNumber(row.studentCount),
+    activeTotal:
+      activeTotalFromRows ||
+      toNumber(row.studentCourseActiveCount) ||
+      toNumber(row.studentActiveCount),
+
+    inactiveTotal:
+      inactiveTotalFromRows ||
+      toNumber(row.studentCourseInactiveCount) ||
+      toNumber(row.studentInactiveCount),
+
+    alumniTotal:
+      alumniTotalFromRows ||
+      toNumber(row.studentCourseAlumniCount) ||
+      toNumber(row.studentAlumniCount),
+
+    // Important:
+    // studentCourseCount = all course-wise enrollments
+    // studentCount may be old total / fallback
+    total:
+      toNumber(row.studentCourseCount) ||
+      totalFromRows ||
+      toNumber(row.studentCount),
   };
 };
 
 export const NiswanCountTable = ({ row }) => {
   const activeCount = toNumber(row.niswanActiveCount ?? row.activeSchoolCount);
   const inactiveCount = toNumber(row.niswanInactiveCount ?? row.inactiveSchoolCount);
-  const totalCount = toNumber(row.niswanCount ?? row.schoolCount ?? row._schoolsCount)
-    || activeCount + inactiveCount;
+  const totalCount =
+    toNumber(row.niswanCount ?? row.schoolCount ?? row._schoolsCount) ||
+    activeCount + inactiveCount;
 
   return (
     <div className="mt-3 rounded-md border border-pink-200 bg-white/75 p-1 shadow-md">
@@ -133,8 +152,8 @@ export const EmployeeCountTable = ({ row }) => {
         Employees
       </div>
 
-      <div className="overflow-hidden rounded-md border border-slate-200 bg-white/80 ml-2 mr-2 mt-1 mb-1">
-        <table className="w-full text-left text-[11px]">
+      <div className="overflow-x-auto rounded-md border border-slate-200 bg-white/80 ml-2 mr-2 mt-1 mb-1">
+        <table className="w-full min-w-[330px] text-left text-[11px]">
           <thead className="bg-gray-100 text-pink-700">
             <tr>
               <th className="px-2 py-1.5 font-semibold">Role</th>
@@ -206,6 +225,9 @@ export const EmployeeCountTable = ({ row }) => {
 
 export const StudentCountTable = ({ row }) => {
   const studentTotals = getStudentTotals(row);
+  const courses = Array.isArray(row.studentCountsByCourse)
+    ? row.studentCountsByCourse
+    : [];
 
   return (
     <div className="mt-3 rounded-md border border-pink-200 bg-white/75 p-1 shadow-md">
@@ -213,11 +235,13 @@ export const StudentCountTable = ({ row }) => {
         Students
       </div>
 
-      <div className="overflow-hidden rounded-md border border-slate-200 bg-white/80 ml-2 mr-2 mt-1 mb-1">
-        <table className="w-full text-left text-[11px]">
+      <div className="overflow-x-auto rounded-md border border-slate-200 bg-white/80 ml-2 mr-2 mt-1 mb-1">
+        <table className="w-full min-w-[460px] text-left text-[11px]">
           <thead className="bg-gray-100 text-pink-700">
             <tr>
-              <th className="px-2 py-1.5 font-semibold">Course</th>
+              <th className="min-w-[180px] px-2 py-1.5 font-semibold">
+                Course
+              </th>
               <th className="w-14 px-1 py-1.5 text-right font-semibold">
                 Active
               </th>
@@ -234,39 +258,38 @@ export const StudentCountTable = ({ row }) => {
           </thead>
 
           <tbody className="divide-y divide-slate-100">
-            {Array.isArray(row.studentCountsByCourse) &&
-              row.studentCountsByCourse.map((course, i) => {
-                const activeCount = toNumber(course.activeCount);
-                const inactiveCount = toNumber(course.inactiveCount);
-                const alumniCount = toNumber(course.alumniCount);
-                const totalCount =
-                  toNumber(course.totalCount ?? course.count) ||
-                  activeCount + inactiveCount + alumniCount;
+            {courses.map((course, i) => {
+              const activeCount = toNumber(course.activeCount);
+              const inactiveCount = toNumber(course.inactiveCount);
+              const alumniCount = toNumber(course.alumniCount);
+              const totalCount =
+                toNumber(course.totalCount ?? course.count) ||
+                activeCount + inactiveCount + alumniCount;
 
-                return (
-                  <tr key={i} className="hover:bg-sky-50/60">
-                    <td className="px-2 py-1.5 text-slate-700 break-words">
-                      {course.courseName || "-"}
-                    </td>
+              return (
+                <tr key={course.courseId || i} className="hover:bg-sky-50/60">
+                  <td className="px-2 py-1.5 text-slate-700 break-words">
+                    {course.courseName || "-"}
+                  </td>
 
-                    <td className="px-1 py-1.5 text-right font-semibold text-emerald-700">
-                      {activeCount}
-                    </td>
+                  <td className="px-1 py-1.5 text-right font-semibold text-emerald-700">
+                    {activeCount}
+                  </td>
 
-                    <td className="px-1 py-1.5 text-right font-semibold text-rose-700">
-                      {inactiveCount}
-                    </td>
+                  <td className="px-1 py-1.5 text-right font-semibold text-rose-700">
+                    {inactiveCount}
+                  </td>
 
-                    <td className="px-1 py-1.5 text-right font-semibold text-sky-700">
-                      {alumniCount}
-                    </td>
+                  <td className="px-1 py-1.5 text-right font-semibold text-sky-700">
+                    {alumniCount}
+                  </td>
 
-                    <td className="px-1 py-1.5 text-right font-semibold text-pink-700">
-                      {totalCount}
-                    </td>
-                  </tr>
-                );
-              })}
+                  <td className="px-1 py-1.5 text-right font-semibold text-pink-700">
+                    {totalCount}
+                  </td>
+                </tr>
+              );
+            })}
 
             <tr className="bg-gray-100">
               <td className="px-2 py-1.5 font-semibold text-pink-700">
@@ -382,7 +405,7 @@ export const columns = [
         <StudentCountTable row={row} />
       </div>
     ),
-    width: "420px",
+    width: "520px",
     wrap: true,
   },
   {

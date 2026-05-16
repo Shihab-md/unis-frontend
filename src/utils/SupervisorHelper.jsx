@@ -125,19 +125,77 @@ export const EmployeeCountTable = ({ row }) => {
   );
 };
 
+// export const StudentCountTable = ({ row }) => {
+//   const courses = Array.isArray(row.studentCountsByCourse)
+//     ? row.studentCountsByCourse
+//     : [];
+
+//   const totalCount =
+//     toNumber(row.studentCount) ||
+//     courses.reduce((total, course) => total + toNumber(course.count), 0);
+
+//   return (
+//     <div className="mt-3 md:mt-1 rounded-md border border-pink-200 bg-white/75 p-1 shadow-md mr-5 ml-5 md:mr-0 md:ml-0">
+//       <div className="text-center text-[13px] font-semibold text-blue-600">
+//         Students: {totalCount}
+//       </div>
+
+//       {courses.length > 0 ? (
+//         <div className="overflow-hidden rounded-md border border-slate-200 bg-white/80 ml-2 mr-2 mt-1 mb-1">
+//           <table className="w-full text-left text-[11px]">
+//             <thead className="bg-gray-100 text-pink-700">
+//               <tr>
+//                 <th className="px-2 py-1.5 font-semibold">Course</th>
+//                 <th className="w-16 px-2 py-1.5 text-center font-semibold">
+//                   Count
+//                 </th>
+//               </tr>
+//             </thead>
+
+//             <tbody className="divide-y divide-slate-100">
+//               {courses.map((course, i) => (
+//                 <tr key={i} className="hover:bg-sky-50/60">
+//                   <td className="px-2 py-1.5 text-slate-700 break-words">
+//                     {course.courseName || "-"}
+//                   </td>
+
+//                   <td className="px-3 py-1.5 text-right font-semibold text-sky-700">
+//                     {course.count ?? 0}
+//                   </td>
+//                 </tr>
+//               ))}
+
+//               <tr className="bg-gray-100">
+//                 <td className="px-2 py-1.5 font-semibold text-pink-700">
+//                   Total
+//                 </td>
+
+//                 <td className="px-3 py-1.5 text-right font-semibold text-pink-700">
+//                   {totalCount}
+//                 </td>
+//               </tr>
+//             </tbody>
+//           </table>
+//         </div>
+//       ) : null}
+//     </div>
+//   );
+// };
 export const StudentCountTable = ({ row }) => {
   const courses = Array.isArray(row.studentCountsByCourse)
     ? row.studentCountsByCourse
     : [];
 
-  const totalCount =
-    toNumber(row.studentCount) ||
+  const uniqueStudentCount = toNumber(row.studentCount);
+
+  const courseTotalCount =
+    toNumber(row.studentCourseCount) ||
     courses.reduce((total, course) => total + toNumber(course.count), 0);
 
   return (
-    <div className="mt-3 md:mt-1 rounded-md border border-pink-200 bg-white/75 p-1 shadow-md mr-5 ml-5 md:mr-0 md:ml-0">
+    <div className="mt-3 md:mt-1 rounded-md border border-pink-200 bg-white/75 p-1 shadow-lg mr-5 ml-5 md:mr-0 md:ml-0">
       <div className="text-center text-[13px] font-semibold text-blue-600">
-        Students: {totalCount}
+        Students: {uniqueStudentCount}
       </div>
 
       {courses.length > 0 ? (
@@ -167,11 +225,11 @@ export const StudentCountTable = ({ row }) => {
 
               <tr className="bg-gray-100">
                 <td className="px-2 py-1.5 font-semibold text-pink-700">
-                  Total
+                  Course Total
                 </td>
 
                 <td className="px-3 py-1.5 text-right font-semibold text-pink-700">
-                  {totalCount}
+                  {courseTotalCount}
                 </td>
               </tr>
             </tbody>
