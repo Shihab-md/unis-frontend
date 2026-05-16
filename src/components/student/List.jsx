@@ -85,6 +85,98 @@ const List = () => {
     }
   };
 
+  const getStudentContactNumber = (student) => {
+    return student.fatherNumber
+      ? student.fatherNumber
+      : student.motherNumber
+        ? student.motherNumber
+        : student.guardianNumber
+          ? student.guardianNumber
+          : "-";
+  };
+
+  const getStudentParentOrGuardianName = (student) => {
+    return student.fatherName
+      ? student.fatherName
+      : student.motherName
+        ? student.motherName
+        : student.guardianName
+          ? student.guardianName
+          : "";
+  };
+
+  const getCourseStatusForSearch = (course, student) => {
+    const status = String(course?.status || "").trim();
+
+    if (String(student?.active || "") === "Alumni" && status === "Completed") {
+      return "Completed / Alumni";
+    }
+
+    if (status === "Not Promoted") return "Not-Promoted";
+    if (status) return status;
+
+    return "";
+  };
+
+  const buildCourseSearchText = (courses = [], student = {}) => {
+    if (!Array.isArray(courses) || courses.length === 0) return "";
+
+    return courses
+      .map((course) => {
+        return [
+          course?.name || "",
+          course?.years || course?.years === 0 ? String(course.years) : "",
+          getCourseStatusForSearch(course, student),
+        ]
+          .filter(Boolean)
+          .join(" ");
+      })
+      .join(", ");
+  };
+
+  const mapStudentForList = (student, sno, onStudentDelete) => {
+    const normalizedCourses =
+      student.courses && student.courses?.length > 0 ? student.courses : [];
+
+    return {
+      _id: student._id,
+      sno,
+      name: student.userId?.name,
+      schoolName: student.schoolId?.nameEnglish,
+      rollNumber: student.rollNumber,
+      doa: student.doa,
+      dob: student.dob,
+      address: student.address,
+      city: student.city,
+      district: student.districtStateId
+        ? student.districtStateId?.district + ", " + student.districtStateId?.state
+        : "",
+      active: student.active,
+      feesPaid: student.feesPaid,
+      remarks: student.remarks,
+      about: student.about,
+      gender: student.gender,
+      maritalStatus: student.maritalStatus,
+      hostel: student.hostel,
+
+      // used for search
+      course: buildCourseSearchText(normalizedCourses, student),
+
+      // used for Course / Year / Status table
+      courses: normalizedCourses,
+
+      contactNumber: getStudentContactNumber(student),
+      fatherName: getStudentParentOrGuardianName(student),
+
+      action: (
+        <StudentButtons
+          Id={student._id}
+          onStudentDelete={onStudentDelete}
+        />
+      ),
+    };
+  };
+
   const downloadTextFile = (content, fileName) => {
     const blob = new Blob([content], { type: "text/plain;charset=utf-8" });
     const url = window.URL.createObjectURL(blob);
@@ -397,32 +489,37 @@ const List = () => {
       );
 
       if (responnse.data.success) {
+        // let sno = 1;
+        // const data = responnse.data.students.map((student) => ({
+        //   _id: student._id,
+        //   sno: sno++,
+        //   name: student.userId?.name,
+        //   schoolName: student.schoolId?.nameEnglish,
+        //   rollNumber: student.rollNumber,
+        //   doa: student.doa,
+        //   dob: student.dob,
+        //   address: student.address,
+        //   city: student.city,
+        //   district: student.districtStateId ? student.districtStateId?.district + ", " + student.districtStateId?.state : "",
+        //   active: student.active,
+        //   feesPaid: student.feesPaid,
+        //   remarks: student.remarks,
+        //   about: student.about,
+        //   gender: student.gender,
+        //   maritalStatus: student.maritalStatus,
+        //   hostel: student.hostel,
+        //   course: student.courses && student.courses?.length > 0
+        //     ? student.courses.map(course => course.name ? course.name + "(" + course.years + ")" + ", " : "")
+        //     : "",
+        //   courses: student.courses && student.courses?.length > 0 ? student.courses : null,
+        //   fatherName: student.fatherName ? student.fatherName : student.motherName ? student.motherName : student.guardianName ? student.guardianName : "",
+        //   action: (<StudentButtons Id={student._id} />),
+        // }));
+
         let sno = 1;
-        const data = responnse.data.students.map((student) => ({
-          _id: student._id,
-          sno: sno++,
-          name: student.userId?.name,
-          schoolName: student.schoolId?.nameEnglish,
-          rollNumber: student.rollNumber,
-          doa: student.doa,
-          dob: student.dob,
-          address: student.address,
-          city: student.city,
-          district: student.districtStateId ? student.districtStateId?.district + ", " + student.districtStateId?.state : "",
-          active: student.active,
-          feesPaid: student.feesPaid,
-          remarks: student.remarks,
-          about: student.about,
-          gender: student.gender,
-          maritalStatus: student.maritalStatus,
-          hostel: student.hostel,
-          course: student.courses && student.courses?.length > 0
-            ? student.courses.map(course => course.name ? course.name + "(" + course.years + ")" + ", " : "")
-            : "",
-          courses: student.courses && student.courses?.length > 0 ? student.courses : null,
-          fatherName: student.fatherName ? student.fatherName : student.motherName ? student.motherName : student.guardianName ? student.guardianName : "",
-          action: (<StudentButtons Id={student._id} />),
-        }));
+        const data = responnse.data.students.map((student) =>
+          mapStudentForList(student, sno++, getFilteredStudents)
+        );
 
         setStudents(data);
         setFilteredStudents(data);
@@ -967,32 +1064,37 @@ const List = () => {
         || localStorage.getItem('courseStatus')
       )
     ) {
+      // let sno = 1;
+      // const data1 = parsedLocalData.students.map((student) => ({
+      //   _id: student._id,
+      //   sno: sno++,
+      //   name: student.userId?.name,
+      //   schoolName: student.schoolId?.nameEnglish,
+      //   rollNumber: student.rollNumber,
+      //   doa: student.doa,
+      //   dob: student.dob,
+      //   address: student.address,
+      //   city: student.city,
+      //   district: student.districtStateId ? student.districtStateId?.district + ", " + student.districtStateId?.state : "",
+      //   active: student.active,
+      //   feesPaid: student.feesPaid,
+      //   remarks: student.remarks,
+      //   about: student.about,
+      //   gender: student.gender,
+      //   maritalStatus: student.maritalStatus,
+      //   hostel: student.hostel,
+      //   course: student.courses && student.courses?.length > 0
+      //     ? student.courses.map(course => course.name ? course.name + "(" + course.years + ")" + ", " : "")
+      //     : "",
+      //   courses: student.courses && student.courses?.length > 0 ? student.courses : null,
+      //   fatherName: student.fatherName ? student.fatherName : student.motherName ? student.motherName : student.guardianName ? student.guardianName : "",
+      //   action: (<StudentButtons Id={student._id} onStudentDelete={onStudentDelete} />),
+      // }));
+
       let sno = 1;
-      const data1 = parsedLocalData.students.map((student) => ({
-        _id: student._id,
-        sno: sno++,
-        name: student.userId?.name,
-        schoolName: student.schoolId?.nameEnglish,
-        rollNumber: student.rollNumber,
-        doa: student.doa,
-        dob: student.dob,
-        address: student.address,
-        city: student.city,
-        district: student.districtStateId ? student.districtStateId?.district + ", " + student.districtStateId?.state : "",
-        active: student.active,
-        feesPaid: student.feesPaid,
-        remarks: student.remarks,
-        about: student.about,
-        gender: student.gender,
-        maritalStatus: student.maritalStatus,
-        hostel: student.hostel,
-        course: student.courses && student.courses?.length > 0
-          ? student.courses.map(course => course.name ? course.name + "(" + course.years + ")" + ", " : "")
-          : "",
-        courses: student.courses && student.courses?.length > 0 ? student.courses : null,
-        fatherName: student.fatherName ? student.fatherName : student.motherName ? student.motherName : student.guardianName ? student.guardianName : "",
-        action: (<StudentButtons Id={student._id} onStudentDelete={onStudentDelete} />),
-      }));
+      const data1 = parsedLocalData.students.map((student) =>
+        mapStudentForList(student, sno++, onStudentDelete)
+      );
 
       setStudents(data1);
       setFilteredStudents(data1);
@@ -1065,33 +1167,38 @@ const List = () => {
           );
 
           if (responnse.data.success) {
+            // let sno = 1;
+            // const data = responnse.data.students.map((student) => ({
+            //   _id: student._id,
+            //   sno: sno++,
+            //   name: student.userId?.name,
+            //   schoolName: student.schoolId?.nameEnglish,
+            //   rollNumber: student.rollNumber,
+            //   doa: student.doa,
+            //   dob: student.dob,
+            //   address: student.address,
+            //   city: student.city,
+            //   district: student.districtStateId ? student.districtStateId?.district + ", " + student.districtStateId?.state : "",
+            //   active: student.active,
+            //   feesPaid: student.feesPaid,
+            //   remarks: student.remarks,
+            //   about: student.about,
+            //   gender: student.gender,
+            //   maritalStatus: student.maritalStatus,
+            //   hostel: student.hostel,
+            //   course: student.courses && student.courses?.length > 0
+            //     ? student.courses.map(course => course.name ? course.name + "(" + course.years + ")" + ", " : "")
+            //     : "",
+            //   courses: student.courses && student.courses?.length > 0 ? student.courses : null,
+            //   contactNumber: student.fatherNumber ? student.fatherNumber : student.motherNumber ? student.motherNumber : student.guardianNumber ? student.guardianNumber : "-",
+            //   fatherName: student.fatherName ? student.fatherName : student.motherName ? student.motherName : student.guardianName ? student.guardianName : "",
+            //   action: (<StudentButtons Id={student._id} onStudentDelete={onStudentDelete} />),
+            // }));
+
             let sno = 1;
-            const data = responnse.data.students.map((student) => ({
-              _id: student._id,
-              sno: sno++,
-              name: student.userId?.name,
-              schoolName: student.schoolId?.nameEnglish,
-              rollNumber: student.rollNumber,
-              doa: student.doa,
-              dob: student.dob,
-              address: student.address,
-              city: student.city,
-              district: student.districtStateId ? student.districtStateId?.district + ", " + student.districtStateId?.state : "",
-              active: student.active,
-              feesPaid: student.feesPaid,
-              remarks: student.remarks,
-              about: student.about,
-              gender: student.gender,
-              maritalStatus: student.maritalStatus,
-              hostel: student.hostel,
-              course: student.courses && student.courses?.length > 0
-                ? student.courses.map(course => course.name ? course.name + "(" + course.years + ")" + ", " : "")
-                : "",
-              courses: student.courses && student.courses?.length > 0 ? student.courses : null,
-              contactNumber: student.fatherNumber ? student.fatherNumber : student.motherNumber ? student.motherNumber : student.guardianNumber ? student.guardianNumber : "-",
-              fatherName: student.fatherName ? student.fatherName : student.motherName ? student.motherName : student.guardianName ? student.guardianName : "",
-              action: (<StudentButtons Id={student._id} onStudentDelete={onStudentDelete} />),
-            }));
+            const data = responnse.data.students.map((student) =>
+              mapStudentForList(student, sno++, onStudentDelete)
+            );
 
             setStudents(data);
             setFilteredStudents(data);

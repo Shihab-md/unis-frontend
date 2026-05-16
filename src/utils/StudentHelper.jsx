@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { getBaseUrl, showSwalAlert, showConfirmationSwalAlert, getButtonStyle, getYearLabel } from '../utils/CommonHelper';
+import { getBaseUrl, showSwalAlert, showConfirmationSwalAlert, getButtonStyle } from '../utils/CommonHelper';
 import { FaEye, FaEdit, FaTrashAlt, FaExchangeAlt } from "react-icons/fa";
 import { useAuth } from '../context/AuthContext'
 
@@ -573,6 +573,106 @@ export const columnsSelectForAcademic = [
   },
 ];
 
+const getStudentCourseYear = (course) => {
+  const value = course?.years ?? course?.year;
+  const year = Number(value);
+
+  if (!Number.isFinite(year) || year <= 0) return "-";
+
+  return year;
+};
+
+const getStudentCourseStatus = (course, row) => {
+  const status = String(
+    course?.status ||
+    course?.academicStatus ||
+    course?.courseStatus ||
+    course?.latestStatus ||
+    ""
+  ).trim();
+
+  if (String(row?.active || "") === "Alumni" && status === "Completed") {
+    return "Completed / Alumni";
+  }
+
+  if (status === "Not Promoted") return "Not-Promoted";
+  if (status === "Not-Promoted") return "Not-Promoted";
+  if (status) return status;
+
+  return "-";
+};
+
+const getStudentCourseStatusClass = (status) => {
+  const value = String(status || "").toLowerCase();
+
+  if (value.includes("completed")) return "text-sky-700";
+  if (value.includes("promoted") && !value.includes("not")) return "text-emerald-700";
+  if (value.includes("not")) return "text-rose-700";
+  if (value.includes("admission")) return "text-blue-700";
+
+  return "text-slate-700";
+};
+
+export const StudentCourseTable = ({ row }) => {
+  const courses = Array.isArray(row.courses) ? row.courses : [];
+
+  return (
+    <div className="mt-4 md:mt-1 mb-2 rounded-md border border-pink-200 md:border-none bg-white/75 p-1 shadow-md md:shadow-none mr-5 ml-5 md:mr-0 md:ml-0">
+      <div className="md:hidden text-center text-[13px] font-semibold text-blue-600">
+        Courses
+      </div>
+
+      {courses.length > 0 ? (
+        <div className="overflow-hidden rounded-md border border-slate-200 bg-white/80 ml-2 mr-2 mt-1 mb-1 md:mr-0 md:ml-0">
+          <table className="w-full table-fixed text-left text-[11px]">
+            <thead className="bg-gray-100 text-pink-700">
+              <tr>
+                <th className="px-2 py-1.5 font-semibold">Course</th>
+                <th className="w-12 px-1 py-1.5 text-center font-semibold">
+                  Year
+                </th>
+                <th className="w-24 px-1 py-1.5 text-center font-semibold">
+                  Status
+                </th>
+              </tr>
+            </thead>
+
+            <tbody className="divide-y divide-slate-100">
+              {courses.map((course, i) => {
+                const status = getStudentCourseStatus(course, row);
+
+                return (
+                  <tr key={course._id || i} className="hover:bg-sky-50/60">
+                    <td className="px-2 py-1.5 text-slate-700 break-words">
+                      {course.name || "-"}
+                    </td>
+
+                    <td className="px-1 py-1.5 text-center font-semibold text-sky-700">
+                      {getStudentCourseYear(course)}
+                    </td>
+
+                    <td
+                      className={`px-1 py-1.5 text-center font-semibold break-words ${getStudentCourseStatusClass(status)}`}
+                    >
+                      {status}
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+      ) : (
+        <div className="overflow-hidden rounded-md border border-slate-200 bg-white/80 ml-2 mr-2 mt-1 mb-1">
+          <div className="px-2 py-2 text-center text-[11px] text-slate-500">
+            -
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
 export const columns = [
   {
     name: "S No",
@@ -588,7 +688,7 @@ export const columns = [
       <p><span className="text-blue-700 mr-1">Ref:</span> {row.about}</p>
     </div>,
     //  sortable: true,
-    width: "360px",
+    width: "320px",
   },
   {
     name: "Address",
@@ -598,7 +698,7 @@ export const columns = [
       <p>{row.district}</p>
     </div>,
     wrap: true,
-    width: "250px",
+    width: "210px",
   },
   {
     name: "Details",
@@ -611,25 +711,35 @@ export const columns = [
     //  sortable: true,
     width: "140px",
   },
+  // {
+  //   name: "Course",
+  //   width: "280px",
+  //   wrap: true,
+  //   selector: row => (
+  //     <div className="mt-2 mb-2">
+  //       <div className="mt-2 mb-2">
+  //         {row.courses?.length ? (
+  //           row.courses.map((course, i) => (
+  //             <div className="mb-2" key={course._id || i}>
+  //               <span className="text-blue-700">{`${i + 1}.`}</span> {`${course.name}`}
+  //               {!["School Education", "Islamic Home Science", "Vocational Courses"].includes(course?.type)
+  //                 && Number(course.years) >= 0 ? ` (${getYearLabel(course.years)})` : ""}
+  //             </div>
+  //           ))
+  //         ) : (
+  //           <div>-</div>
+  //         )}
+  //       </div>
+  //     </div>
+  //   ),
+  // },
   {
-    name: "Course",
-    width: "280px",
+    name: "Course details",
+    width: "360px",
     wrap: true,
-    selector: row => (
-      <div className="mt-2 mb-2">
-        <div className="mt-2 mb-2">
-          {row.courses?.length ? (
-            row.courses.map((course, i) => (
-              <div className="mb-2" key={course._id || i}>
-                <span className="text-blue-700">{`${i + 1}.`}</span> {`${course.name}`}
-                {!["School Education", "Islamic Home Science", "Vocational Courses"].includes(course?.type)
-                  && Number(course.years) >= 0 ? ` (${getYearLabel(course.years)})` : ""}
-              </div>
-            ))
-          ) : (
-            <div>-</div>
-          )}
-        </div>
+    selector: (row) => (
+      <div className="w-full py-1">
+        <StudentCourseTable row={row} />
       </div>
     ),
   },
@@ -760,7 +870,9 @@ export const StudentCard = ({ row, onStudentDelete }) => {
           </div>
         </div>
 
-        <div className="mt-4 mb-2 rounded-md border border-pink-200 bg-white/70 p-2 ml-10 mr-10 shadow-lg">
+        <StudentCourseTable row={row} />
+
+        {/* <div className="mt-4 mb-2 rounded-md border border-pink-200 bg-white/70 p-2 ml-10 mr-10 shadow-lg">
           <p className="text-xs font-semibold text-pink-700 mb-1">Courses</p>
 
           {Array.isArray(row.courses) && row.courses.length > 0 ? (
@@ -776,7 +888,7 @@ export const StudentCard = ({ row, onStudentDelete }) => {
           ) : (
             <p className="text-[11px] text-slate-500">-</p>
           )}
-        </div>
+        </div> */}
 
         <div className="flex pt-2 items-center justify-center">
           <StudentButtons Id={row._id} onStudentDelete={onStudentDelete} />
