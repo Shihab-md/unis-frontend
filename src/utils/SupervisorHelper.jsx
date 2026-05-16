@@ -192,37 +192,88 @@ export const SupervisorCard = ({ row }) => {
           </div>
         </div>
 
-        <div className="mt-4 rounded-md border border-pink-200 p-1 ml-10 mr-10 bg-white/70 shadow-lg">
+        <div className="mt-4 rounded-md border border-pink-200 p-1 ml-5 mr-5 bg-white/70 shadow-lg">
           <div className="text-[13px] font-medium text-center">
-            <span className="text-pink-500">Niswans:</span>{" "}
-            <span className="font-medium text-pink-500">
+            <span className="text-pink-700">Niswans:</span>{" "}
+            <span className="font-medium text-pink-700">
               {row.schoolsCount ?? 0}
             </span>
           </div>
         </div>
 
-        <div className="mt-3 rounded-md border border-pink-200 p-1 ml-10 mr-10 bg-white/70 shadow-lg">
-          <div className="text-[13px] font-medium text-center">
-            <span className="text-pink-500">Students:</span>{" "}
-            <span className="font-medium text-pink-500">
-              {row.studentCount ?? 0}
-            </span>
+        <div className="mt-3 rounded-md border border-pink-200 bg-white/75 p-1 ml-5 mr-5 shadow-lg">
+          <div className="text-center text-[13px] font-semibold text-pink-700">
+            Students: {row.studentCount ?? 0}
           </div>
-          {Array.isArray(row.studentCountsByCourse) && row.studentCountsByCourse.length > 0 ? (
-            <div className="space-y-1 p-1">
-              {row.studentCountsByCourse.map((course, i) => (
-                <p key={i} className="text-[11px] text-slate-700 leading-4 mt-2">
-                  <span className="text-sky-700 font-medium">
-                    {course.courseName}:
-                  </span>{" "}
-                  {course.count}
-                </p>
-              ))}
+
+          {Array.isArray(row.studentCountsByCourse) &&
+            row.studentCountsByCourse.length > 0 ? (
+            <div className="overflow-hidden border border-slate-200 bg-white/80 ml-2 mr-2 mt-1 mb-1">
+              <table className="w-full text-left text-[11px]">
+                <thead className="bg-gray-100 text-pink-700">
+                  <tr>
+                    <th className="px-2 py-1.5 font-semibold">Course</th>
+                    <th className="w-16 px-2 py-1.5 text-center font-semibold">
+                      Count
+                    </th>
+                  </tr>
+                </thead>
+
+                <tbody className="divide-y divide-slate-100">
+                  {row.studentCountsByCourse.map((course, i) => (
+                    <tr key={i} className="hover:bg-sky-50/60">
+                      <td className="px-2 py-1.5 text-slate-700 break-words">
+                        {course.courseName || "-"}
+                      </td>
+
+                      <td className="px-3 py-1.5 text-right font-semibold text-sky-700">
+                        {course.count ?? 0}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
           ) : null}
         </div>
 
-        <div className="mt-3 rounded-md border border-pink-200 p-1 ml-10 mr-10 bg-white/70 shadow-lg">
+        <div className="mt-3 rounded-md border border-pink-200 bg-white/75 p-1 ml-5 mr-5 shadow-lg">
+          <div className="text-center text-[13px] font-semibold text-pink-700">
+            Employees: {row.employeeCount ?? 0}
+          </div>
+
+          {Array.isArray(row.employeeCountsByRole) &&
+            row.employeeCountsByRole.length > 0 ? (
+            <div className="overflow-hidden border border-slate-200 bg-white/80 ml-2 mr-2 mt-1 mb-1">
+              <table className="w-full text-left text-[11px]">
+                <thead className="bg-gray-100 text-pink-700">
+                  <tr>
+                    <th className="px-2 py-1.5 font-semibold">Role</th>
+                    <th className="w-16 px-2 py-1.5 text-center font-semibold">
+                      Count
+                    </th>
+                  </tr>
+                </thead>
+
+                <tbody className="divide-y divide-slate-100">
+                  {row.employeeCountsByRole.map((role, i) => (
+                    <tr key={i} className="hover:bg-sky-50/60">
+                      <td className="px-2 py-1.5 text-slate-700 break-words">
+                        {role.role || "-"}
+                      </td>
+
+                      <td className="px-3 py-1.5 text-right font-semibold text-sky-700">
+                        {role.count ?? 0}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          ) : null}
+        </div>
+
+        {/* <div className="mt-3 rounded-md border border-pink-200 p-1 ml-10 mr-10 bg-white/70 shadow-lg">
           <div className="text-[13px] font-medium text-center">
             <span className="text-pink-500">Employees:</span>{" "}
             <span className="font-medium text-pink-500">
@@ -242,7 +293,7 @@ export const SupervisorCard = ({ row }) => {
               ))}
             </div>
           ) : null}
-        </div>
+        </div> */}
 
         <div className="flex pt-2 items-center justify-center">
           <SupervisorButtons Id={row._id} />

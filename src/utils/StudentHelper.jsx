@@ -760,8 +760,8 @@ export const StudentCard = ({ row, onStudentDelete }) => {
           </div>
         </div>
 
-        <div className="mt-3 rounded-md border border-pink-200 bg-white/70 p-2 ml-10 mr-10 shadow-lg">
-          <p className="text-xs font-semibold text-slate-700 mb-1">Courses</p>
+        <div className="mt-4 mb-2 rounded-md border border-pink-200 bg-white/70 p-2 ml-10 mr-10 shadow-lg">
+          <p className="text-xs font-semibold text-pink-700 mb-1">Courses</p>
 
           {Array.isArray(row.courses) && row.courses.length > 0 ? (
             <div className="space-y-1">
