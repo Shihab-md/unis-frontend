@@ -17,7 +17,7 @@ const List = () => {
     handleRightClickAndFullScreen();
   }, []);
 
-  const navigate = useNavigate() 
+  const navigate = useNavigate()
   const [supervisors, setSupervisors] = useState([])
   const [supLoading, setSupLoading] = useState(false)
   const [filteredSupervisor, setFilteredSupervisors] = useState(null)
@@ -162,7 +162,9 @@ const List = () => {
           remarks: sup.remarks,
           doj: sup.doj,
           dob: sup.dob,
-          schoolsCount: sup._schoolsCount ? sup._schoolsCount : 0,
+          schoolsCount: sup._schoolsCount ?? sup.schoolCount ?? 0,
+          schoolActiveCount: sup.schoolActiveCount ?? 0,
+          schoolInactiveCount: sup.schoolInactiveCount ?? 0,
           studentCount: sup.studentCount ? sup.studentCount : 0,
           studentCountsByCourse: sup.studentCountsByCourse && sup.studentCountsByCourse?.length > 0 ? sup.studentCountsByCourse : [],
           //  profileImage: <img width={40} className='rounded-full' src={(getBaseUrl()).toString() + `${sup.userId.profileImage}`} />,
@@ -246,7 +248,9 @@ const List = () => {
         doj: sup.doj,
         dob: sup.dob,
         //  dob: new Date(sup.dob).toLocaleDateString(),
-        schoolsCount: sup._schoolsCount ? sup._schoolsCount : 0,
+        schoolsCount: sup._schoolsCount ?? sup.schoolCount ?? 0,
+        schoolActiveCount: sup.schoolActiveCount ?? 0,
+        schoolInactiveCount: sup.schoolInactiveCount ?? 0,
         studentCount: sup.studentCount ? sup.studentCount : 0,
         studentCountsByCourse: sup.studentCountsByCourse && sup.studentCountsByCourse?.length > 0 ? sup.studentCountsByCourse : [],
         //  profileImage: <img width={40} className='rounded-full' src={(getBaseUrl()).toString() + `${sup.userId.profileImage}`} />,
@@ -286,7 +290,9 @@ const List = () => {
             doj: sup.doj,
             dob: sup.dob,
             //  dob: new Date(sup.dob).toLocaleDateString(),
-            schoolsCount: sup._schoolsCount ? sup._schoolsCount : 0,
+            schoolsCount: sup._schoolsCount ?? sup.schoolCount ?? 0,
+            schoolActiveCount: sup.schoolActiveCount ?? 0,
+            schoolInactiveCount: sup.schoolInactiveCount ?? 0,
             studentCount: sup.studentCount ? sup.studentCount : 0,
             studentCountsByCourse: sup.studentCountsByCourse && sup.studentCountsByCourse?.length > 0 ? sup.studentCountsByCourse : [],
             //  profileImage: <img width={40} className='rounded-full' src={(getBaseUrl()).toString() + `${sup.userId.profileImage}`} />,

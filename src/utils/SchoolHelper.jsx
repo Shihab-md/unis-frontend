@@ -28,7 +28,7 @@ export const StudentCountTable = ({ row }) => {
     courses.reduce((total, course) => total + toNumber(course.count), 0);
 
   return (
-    <div className="mt-3 md:mt-1 mb-1 rounded-md border border-pink-200 bg-white/75 p-1 shadow-lg mr-5 ml-5 md:mr-0 md:ml-0">
+    <div className="mt-3 md:mt-1 mb-1 rounded-md border border-pink-200 bg-white/75 p-1 shadow-md mr-5 ml-5 md:mr-0 md:ml-0">
       <div className="text-center text-[13px] font-semibold text-blue-600">
         Students: {totalCount}
       </div>
@@ -75,7 +75,7 @@ export const EmployeeCountTable = ({ row }) => {
     roles.reduce((total, role) => total + toNumber(role.count), 0);
 
   return (
-    <div className="mt-3 rounded-md border border-pink-200 bg-white/75 p-1 shadow-lg mr-5 ml-5 md:mr-0 md:ml-0">
+    <div className="mt-3 rounded-md border border-pink-200 bg-white/75 p-1 shadow-md mr-5 ml-5 md:mr-0 md:ml-0">
       <div className="text-center text-[13px] font-semibold text-blue-600">
         Employees: {totalCount}
       </div>
@@ -202,19 +202,6 @@ export const columns = [
     wrap: true,
     width: "250px",
   },
-  // {
-  //   name: "Supervisor",
-  //   selector: (row) => (
-  //     <div className="mt-2 mb-2">
-  //       <p className="mb-1">
-  //         <span className="text-blue-700 mr-1">🆔:</span> {row.supervisorId}
-  //       </p>
-  //       <p>{row.supervisorName}</p>
-  //     </div>
-  //   ),
-  //   wrap: true,
-  //   width: "170px",
-  // },
   {
     name: "Action",
     selector: (row) => row.action,

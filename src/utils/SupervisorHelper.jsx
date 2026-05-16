@@ -19,10 +19,15 @@ const toNumber = (value) => {
 };
 
 export const NiswanCountTable = ({ row }) => {
-  const totalCount = toNumber(row.schoolsCount ?? row._schoolsCount ?? row.schoolCount);
+  const activeCount = toNumber(row.schoolActiveCount ?? row.niswanActiveCount);
+  const inactiveCount = toNumber(row.schoolInactiveCount ?? row.niswanInactiveCount);
+
+  const totalCount =
+    toNumber(row.schoolsCount ?? row._schoolsCount ?? row.schoolCount) ||
+    activeCount + inactiveCount;
 
   return (
-    <div className="mt-3 rounded-md border border-pink-200 bg-white/75 p-1 shadow-lg mr-5 ml-5 md:mr-0 md:ml-0">
+    <div className="mt-3 rounded-md border border-pink-200 bg-white/75 p-1 shadow-md mr-5 ml-5 md:mr-0 md:ml-0">
       <div className="text-center text-[13px] font-semibold text-blue-600">
         Niswans
       </div>
@@ -30,6 +35,24 @@ export const NiswanCountTable = ({ row }) => {
       <div className="overflow-hidden rounded-md border border-slate-200 bg-white/80 ml-2 mr-2 mt-1 mb-1">
         <table className="w-full text-left text-[11px]">
           <tbody className="divide-y divide-slate-100">
+            <tr className="hover:bg-sky-50/60">
+              <td className="px-2 py-1.5 text-slate-700">
+                Active
+              </td>
+              <td className="w-16 px-3 py-1.5 text-right font-semibold text-emerald-700">
+                {activeCount}
+              </td>
+            </tr>
+
+            <tr className="hover:bg-sky-50/60">
+              <td className="px-2 py-1.5 text-slate-700">
+                In-Active
+              </td>
+              <td className="w-16 px-3 py-1.5 text-right font-semibold text-rose-700">
+                {inactiveCount}
+              </td>
+            </tr>
+
             <tr className="bg-gray-100">
               <td className="px-2 py-1.5 font-semibold text-pink-700">
                 Total
@@ -55,7 +78,7 @@ export const EmployeeCountTable = ({ row }) => {
     roles.reduce((total, role) => total + toNumber(role.count), 0);
 
   return (
-    <div className="mt-3 rounded-md border border-pink-200 bg-white/75 p-1 shadow-lg mr-5 ml-5 md:mr-0 md:ml-0">
+    <div className="mt-3 rounded-md border border-pink-200 bg-white/75 p-1 shadow-md mr-5 ml-5 md:mr-0 md:ml-0">
       <div className="text-center text-[13px] font-semibold text-blue-600">
         Employees: {totalCount}
       </div>
@@ -112,7 +135,7 @@ export const StudentCountTable = ({ row }) => {
     courses.reduce((total, course) => total + toNumber(course.count), 0);
 
   return (
-    <div className="mt-3 md:mt-1 rounded-md border border-pink-200 bg-white/75 p-1 shadow-lg mr-5 ml-5 md:mr-0 md:ml-0">
+    <div className="mt-3 md:mt-1 rounded-md border border-pink-200 bg-white/75 p-1 shadow-md mr-5 ml-5 md:mr-0 md:ml-0">
       <div className="text-center text-[13px] font-semibold text-blue-600">
         Students: {totalCount}
       </div>
@@ -205,7 +228,7 @@ export const columns = [
         </p>
       </div>
     ),
-    width: "210px",
+    width: "230px",
     wrap: true,
   },
   {
@@ -226,7 +249,7 @@ export const columns = [
         <EmployeeCountTable row={row} />
       </div>
     ),
-    width: "230px",
+    width: "200px",
     wrap: true,
   },
   {
