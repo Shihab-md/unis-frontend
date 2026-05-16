@@ -88,7 +88,7 @@ export const NiswanCountTable = ({ row }) => {
 
   return (
     <div className="mt-3 rounded-md border border-pink-200 bg-white/75 p-1 shadow-lg">
-      <div className="text-center text-[13px] font-semibold text-pink-600">
+      <div className="text-center text-[13px] font-semibold text-blue-600">
         Niswans
       </div>
 
@@ -129,7 +129,7 @@ export const EmployeeCountTable = ({ row }) => {
 
   return (
     <div className="mt-3 rounded-md border border-pink-200 bg-white/75 p-1 shadow-lg">
-      <div className="text-center text-[13px] font-semibold text-pink-600">
+      <div className="text-center text-[13px] font-semibold text-blue-600">
         Employees
       </div>
 
@@ -209,7 +209,7 @@ export const StudentCountTable = ({ row }) => {
 
   return (
     <div className="mt-3 rounded-md border border-pink-200 bg-white/75 p-1 shadow-lg">
-      <div className="text-center text-[13px] font-semibold text-pink-600">
+      <div className="text-center text-[13px] font-semibold text-blue-600">
         Students
       </div>
 
