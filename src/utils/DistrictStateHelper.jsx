@@ -376,7 +376,7 @@ export const columns = [
       </div>
     ),
     sortable: true,
-    width: "220px",
+    width: "160px",
   },
   {
     name: "Niswans",
@@ -385,7 +385,7 @@ export const columns = [
         <NiswanCountTable row={row} />
       </div>
     ),
-    width: "210px",
+    width: "190px",
     wrap: true,
   },
   {
@@ -395,7 +395,7 @@ export const columns = [
         <EmployeeCountTable row={row} />
       </div>
     ),
-    width: "340px",
+    width: "430px",
     wrap: true,
   },
   {
@@ -412,7 +412,7 @@ export const columns = [
     name: "Action",
     selector: (row) => row.action,
     center: "true",
-    width: "170px",
+    width: "100px",
   },
 ];
 
@@ -503,7 +503,7 @@ export const DistrictStateButtons = ({ Id, onDistrictStateDelete }) => {
   const { user } = useAuth();
 
   return (
-    <div className="flex space-x-3">
+    <div className="flex space-x-3 lg:flex-col lg:space-x-0 lg:space-y-3 items-center">
       <button
         className={getButtonStyle('View')}
         onClick={() => navigate(`/dashboard/districtStates/${Id}`)}
