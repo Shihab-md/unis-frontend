@@ -361,6 +361,107 @@ export const conditionalRowStyles = [
   }
 ];
 
+export const SmallNiswanCountTable = ({ row }) => {
+  const activeCount = toNumber(row.schoolActiveCount ?? row.niswanActiveCount);
+  const inactiveCount = toNumber(row.schoolInactiveCount ?? row.niswanInactiveCount);
+
+  const totalCount =
+    toNumber(row.schoolsCount ?? row._schoolsCount ?? row.schoolCount) ||
+    activeCount + inactiveCount;
+
+  return (
+    <div className="mt-2 rounded-md border border-pink-200 bg-white/75 p-1 shadow-md">
+      <div className="text-center text-[12px] font-semibold text-blue-600">
+        Niswans
+      </div>
+
+      <div className="overflow-hidden rounded-md border border-slate-200 bg-white/80 mx-1 mt-1 mb-1">
+        <table className="w-full text-left text-[10px]">
+          <tbody className="divide-y divide-slate-100">
+            <tr className="hover:bg-sky-50/60">
+              <td className="px-2 py-1 text-slate-700">Active</td>
+              <td className="w-10 px-2 py-1 text-right font-semibold text-emerald-700">
+                {activeCount}
+              </td>
+            </tr>
+
+            <tr className="hover:bg-sky-50/60">
+              <td className="px-2 py-1 text-slate-700">In-Active</td>
+              <td className="w-10 px-2 py-1 text-right font-semibold text-rose-700">
+                {inactiveCount}
+              </td>
+            </tr>
+
+            <tr className="bg-gray-100">
+              <td className="px-2 py-1 font-semibold text-pink-700">Total</td>
+              <td className="w-10 px-2 py-1 text-right font-semibold text-pink-700">
+                {totalCount}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+};
+
+export const SmallEmployeeCountTable = ({ row }) => {
+  const roles = Array.isArray(row.employeeCountsByRole)
+    ? row.employeeCountsByRole
+    : [];
+
+  const totalCount =
+    toNumber(row.employeeCount) ||
+    roles.reduce((total, role) => total + toNumber(role.count), 0);
+
+  return (
+    <div className="mt-2 rounded-md border border-pink-200 bg-white/75 p-1 shadow-md mb-1">
+      <div className="text-center text-[12px] font-semibold text-blue-600">
+        Employees
+      </div>
+
+      {roles.length > 0 ? (
+        <div className="overflow-hidden rounded-md border border-slate-200 bg-white/80 mx-1 mt-1 mb-1">
+          <table className="w-full text-left text-[10px]">
+            <thead className="bg-gray-100 text-pink-700">
+              <tr>
+                <th className="px-2 py-1 font-semibold">Role</th>
+                <th className="w-10 px-2 py-1 text-right font-semibold">
+                  Count
+                </th>
+              </tr>
+            </thead>
+
+            <tbody className="divide-y divide-slate-100">
+              {roles.map((role, i) => (
+                <tr key={i} className="hover:bg-sky-50/60">
+                  <td className="px-2 py-1 text-slate-700 break-words">
+                    {role.role || "-"}
+                  </td>
+
+                  <td className="w-10 px-2 py-1 text-right font-semibold text-sky-700">
+                    {role.count ?? 0}
+                  </td>
+                </tr>
+              ))}
+
+              <tr className="bg-gray-100">
+                <td className="px-2 py-1 font-semibold text-pink-700">
+                  Total
+                </td>
+
+                <td className="w-10 px-2 py-1 text-right font-semibold text-pink-700">
+                  {totalCount}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      ) : null}
+    </div>
+  );
+};
+
 export const SupervisorCard = ({ row }) => {
   const statusClass =
     row.active === "Active"
@@ -442,11 +543,17 @@ export const SupervisorCard = ({ row }) => {
           </div>
         </div>
 
-        <NiswanCountTable row={row} />
+        <div className="mt-2 grid grid-cols-2 gap-3 items-start p-0">
+          <div className="min-w-0">
+            <SmallNiswanCountTable row={row} />
+          </div>
+          <div className="min-w-0">
+            <SmallEmployeeCountTable row={row} />
+          </div>
+        </div>
         <StudentCountTable row={row} />
-        <EmployeeCountTable row={row} />
 
-        <div className="flex pt-2 items-center justify-center">
+        <div className="flex mt-1 pt-2 items-center justify-center">
           {row.action || <SupervisorButtons Id={row._id} />}
         </div>
       </div>
