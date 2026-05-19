@@ -375,7 +375,7 @@ export function showConfirmationSwalAlert(title, message, icon) {
 export function getButtonStyle(buttonType) {
 
   if (buttonType === 'View') {
-    return "px-1 py-0.5 m-1 bg-teal-600 text-xs lg:text-base text-teal-100 rounded-md shadow-md shadow-teal-200 hover:-translate-y-0.5";
+    return "px-1.5 py-1 m-1 bg-teal-600 text-xs lg:text-base text-teal-100 rounded-md shadow-md shadow-teal-200 hover:-translate-y-0.5";
 
   } else if (buttonType === 'Edit') {
     return "px-1.5 py-1 m-1 bg-blue-600 text-xs lg:text-base text-blue-100 rounded-md shadow-md shadow-blue-200 hover:-translate-y-0.5";
