@@ -225,7 +225,7 @@ export const StudentCountTable = ({ row }) => {
 
               <tr className="bg-gray-100">
                 <td className="px-2 py-1.5 font-semibold text-pink-700">
-                  Course Total
+                  Course wise Total
                 </td>
 
                 <td className="px-3 py-1.5 text-right font-semibold text-pink-700">
