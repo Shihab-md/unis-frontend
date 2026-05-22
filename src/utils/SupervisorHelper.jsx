@@ -18,228 +18,6 @@ const toNumber = (value) => {
   return Number.isFinite(numberValue) ? numberValue : 0;
 };
 
-export const NiswanCountTable = ({ row }) => {
-  const activeCount = toNumber(row.schoolActiveCount ?? row.niswanActiveCount);
-  const inactiveCount = toNumber(row.schoolInactiveCount ?? row.niswanInactiveCount);
-
-  const totalCount =
-    toNumber(row.schoolsCount ?? row._schoolsCount ?? row.schoolCount) ||
-    activeCount + inactiveCount;
-
-  return (
-    <div className="mt-3 rounded-md border border-pink-200 bg-white/75 p-1 shadow-md mr-5 ml-5 md:mr-0 md:ml-0">
-      <div className="text-center text-[13px] font-semibold text-blue-600">
-        Niswans
-      </div>
-
-      <div className="overflow-hidden rounded-md border border-slate-200 bg-white/80 ml-2 mr-2 mt-1 mb-1">
-        <table className="w-full text-left text-[11px]">
-          <tbody className="divide-y divide-slate-100">
-            <tr className="hover:bg-sky-50/60">
-              <td className="px-2 py-1.5 text-slate-700">
-                Active
-              </td>
-              <td className="w-16 px-3 py-1.5 text-right font-semibold text-emerald-700">
-                {activeCount}
-              </td>
-            </tr>
-
-            <tr className="hover:bg-sky-50/60">
-              <td className="px-2 py-1.5 text-slate-700">
-                In-Active
-              </td>
-              <td className="w-16 px-3 py-1.5 text-right font-semibold text-rose-700">
-                {inactiveCount}
-              </td>
-            </tr>
-
-            <tr className="bg-gray-100">
-              <td className="px-2 py-1.5 font-semibold text-pink-700">
-                Total
-              </td>
-              <td className="w-16 px-3 py-1.5 text-right font-semibold text-pink-700">
-                {totalCount}
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  );
-};
-
-export const EmployeeCountTable = ({ row }) => {
-  const roles = Array.isArray(row.employeeCountsByRole)
-    ? row.employeeCountsByRole
-    : [];
-
-  const totalCount =
-    toNumber(row.employeeCount) ||
-    roles.reduce((total, role) => total + toNumber(role.count), 0);
-
-  return (
-    <div className="mt-3 rounded-md border border-pink-200 bg-white/75 p-1 shadow-md mr-5 ml-5 md:mr-0 md:ml-0">
-      <div className="text-center text-[13px] font-semibold text-blue-600">
-        Employees: {totalCount}
-      </div>
-
-      {roles.length > 0 ? (
-        <div className="overflow-hidden rounded-md border border-slate-200 bg-white/80 ml-2 mr-2 mt-1 mb-1">
-          <table className="w-full text-left text-[11px]">
-            <thead className="bg-gray-100 text-pink-700">
-              <tr>
-                <th className="px-2 py-1.5 font-semibold">Role</th>
-                <th className="w-16 px-2 py-1.5 text-center font-semibold">
-                  Count
-                </th>
-              </tr>
-            </thead>
-
-            <tbody className="divide-y divide-slate-100">
-              {roles.map((role, i) => (
-                <tr key={i} className="hover:bg-sky-50/60">
-                  <td className="px-2 py-1.5 text-slate-700 break-words">
-                    {role.role || "-"}
-                  </td>
-
-                  <td className="px-3 py-1.5 text-right font-semibold text-sky-700">
-                    {role.count ?? 0}
-                  </td>
-                </tr>
-              ))}
-
-              <tr className="bg-gray-100">
-                <td className="px-2 py-1.5 font-semibold text-pink-700">
-                  Total
-                </td>
-
-                <td className="px-3 py-1.5 text-right font-semibold text-pink-700">
-                  {totalCount}
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      ) : null}
-    </div>
-  );
-};
-
-// export const StudentCountTable = ({ row }) => {
-//   const courses = Array.isArray(row.studentCountsByCourse)
-//     ? row.studentCountsByCourse
-//     : [];
-
-//   const totalCount =
-//     toNumber(row.studentCount) ||
-//     courses.reduce((total, course) => total + toNumber(course.count), 0);
-
-//   return (
-//     <div className="mt-3 md:mt-1 rounded-md border border-pink-200 bg-white/75 p-1 shadow-md mr-5 ml-5 md:mr-0 md:ml-0">
-//       <div className="text-center text-[13px] font-semibold text-blue-600">
-//         Students: {totalCount}
-//       </div>
-
-//       {courses.length > 0 ? (
-//         <div className="overflow-hidden rounded-md border border-slate-200 bg-white/80 ml-2 mr-2 mt-1 mb-1">
-//           <table className="w-full text-left text-[11px]">
-//             <thead className="bg-gray-100 text-pink-700">
-//               <tr>
-//                 <th className="px-2 py-1.5 font-semibold">Course</th>
-//                 <th className="w-16 px-2 py-1.5 text-center font-semibold">
-//                   Count
-//                 </th>
-//               </tr>
-//             </thead>
-
-//             <tbody className="divide-y divide-slate-100">
-//               {courses.map((course, i) => (
-//                 <tr key={i} className="hover:bg-sky-50/60">
-//                   <td className="px-2 py-1.5 text-slate-700 break-words">
-//                     {course.courseName || "-"}
-//                   </td>
-
-//                   <td className="px-3 py-1.5 text-right font-semibold text-sky-700">
-//                     {course.count ?? 0}
-//                   </td>
-//                 </tr>
-//               ))}
-
-//               <tr className="bg-gray-100">
-//                 <td className="px-2 py-1.5 font-semibold text-pink-700">
-//                   Total
-//                 </td>
-
-//                 <td className="px-3 py-1.5 text-right font-semibold text-pink-700">
-//                   {totalCount}
-//                 </td>
-//               </tr>
-//             </tbody>
-//           </table>
-//         </div>
-//       ) : null}
-//     </div>
-//   );
-// };
-export const StudentCountTable = ({ row }) => {
-  const courses = Array.isArray(row.studentCountsByCourse)
-    ? row.studentCountsByCourse
-    : [];
-
-  const uniqueStudentCount = toNumber(row.studentCount);
-
-  const courseTotalCount =
-    toNumber(row.studentCourseCount) ||
-    courses.reduce((total, course) => total + toNumber(course.count), 0);
-
-  return (
-    <div className="mt-3 md:mt-1 rounded-md border border-pink-200 bg-white/75 p-1 shadow-lg mr-5 ml-5 md:mr-0 md:ml-0">
-      <div className="text-center text-[13px] font-semibold text-blue-600">
-        Students: {uniqueStudentCount}
-      </div>
-
-      {courses.length > 0 ? (
-        <div className="overflow-hidden rounded-md border border-slate-200 bg-white/80 ml-2 mr-2 mt-1 mb-1">
-          <table className="w-full text-left text-[11px]">
-            <thead className="bg-gray-100 text-pink-700">
-              <tr>
-                <th className="px-2 py-1.5 font-semibold">Course</th>
-                <th className="w-16 px-2 py-1.5 text-center font-semibold">
-                  Count
-                </th>
-              </tr>
-            </thead>
-
-            <tbody className="divide-y divide-slate-100">
-              {courses.map((course, i) => (
-                <tr key={i} className="hover:bg-sky-50/60">
-                  <td className="px-2 py-1.5 text-slate-700 break-words">
-                    {course.courseName || "-"}
-                  </td>
-
-                  <td className="px-3 py-1.5 text-right font-semibold text-sky-700">
-                    {course.count ?? 0}
-                  </td>
-                </tr>
-              ))}
-
-              <tr className="bg-gray-100">
-                <td className="px-2 py-1.5 font-semibold text-pink-700">
-                  Course wise Total
-                </td>
-
-                <td className="px-3 py-1.5 text-right font-semibold text-pink-700">
-                  {courseTotalCount}
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      ) : null}
-    </div>
-  );
-};
-
 export const columns = [
   {
     name: "#",
@@ -253,8 +31,8 @@ export const columns = [
         <p className="mb-2">
           <span className="text-blue-700 mr-1">🆔:</span> {row.supId}
         </p>
-        <p>
-          <span className="text-blue-700 mr-1">👤:</span> {row.name}
+        <p className="mt-4 font-semibold text-purple-600">
+          <span></span> {row.name}
         </p>
       </div>
     ),
@@ -307,7 +85,7 @@ export const columns = [
         <EmployeeCountTable row={row} />
       </div>
     ),
-    width: "200px",
+    width: "230px",
     wrap: true,
   },
   {
@@ -317,7 +95,7 @@ export const columns = [
         <StudentCountTable row={row} />
       </div>
     ),
-    width: "250px",
+    width: "320px",
     wrap: true,
   },
   {
@@ -345,7 +123,7 @@ export const columns = [
     name: "Action",
     selector: (row) => row.action,
     center: "true",
-    width: "200px",
+    width: "100px",
   },
 ];
 
@@ -361,7 +139,7 @@ export const conditionalRowStyles = [
   }
 ];
 
-export const SmallNiswanCountTable = ({ row }) => {
+export const NiswanCountTable = ({ row }) => {
   const activeCount = toNumber(row.schoolActiveCount ?? row.niswanActiveCount);
   const inactiveCount = toNumber(row.schoolInactiveCount ?? row.niswanInactiveCount);
 
@@ -370,13 +148,13 @@ export const SmallNiswanCountTable = ({ row }) => {
     activeCount + inactiveCount;
 
   return (
-    <div className="mt-2 rounded-md border border-pink-200 bg-white/75 p-1 shadow-md">
+    <div className="mt-2 rounded-md bg-white/75 p-1">
       <div className="text-center text-[12px] font-semibold text-blue-600">
         Niswans
       </div>
 
-      <div className="overflow-hidden rounded-md border border-slate-200 bg-white/80 mx-1 mt-1 mb-1">
-        <table className="w-full text-left text-[10px]">
+      <div className="overflow-hidden rounded-sm border border-slate-300 bg-white/80 mx-1 mt-1 mb-1">
+        <table className="w-full text-left text-[12px] md:text-[12px]">
           <tbody className="divide-y divide-slate-100">
             <tr className="hover:bg-sky-50/60">
               <td className="px-2 py-1 text-slate-700">Active</td>
@@ -405,7 +183,7 @@ export const SmallNiswanCountTable = ({ row }) => {
   );
 };
 
-export const SmallEmployeeCountTable = ({ row }) => {
+export const EmployeeCountTable = ({ row }) => {
   const roles = Array.isArray(row.employeeCountsByRole)
     ? row.employeeCountsByRole
     : [];
@@ -415,18 +193,18 @@ export const SmallEmployeeCountTable = ({ row }) => {
     roles.reduce((total, role) => total + toNumber(role.count), 0);
 
   return (
-    <div className="mt-2 rounded-md border border-pink-200 bg-white/75 p-1 shadow-md mb-1">
+    <div className="mt-2 rounded-md bg-white/75 p-1 mb-1">
       <div className="text-center text-[12px] font-semibold text-blue-600">
         Employees
       </div>
 
       {roles.length > 0 ? (
-        <div className="overflow-hidden rounded-md border border-slate-200 bg-white/80 mx-1 mt-1 mb-1">
-          <table className="w-full text-left text-[10px]">
+        <div className="overflow-hidden rounded-sm border border-slate-300 bg-white/80 mx-1 mt-1 mb-1">
+          <table className="w-full text-left text-[12px]">
             <thead className="bg-gray-100 text-pink-700">
               <tr>
                 <th className="px-2 py-1 font-semibold">Role</th>
-                <th className="w-10 px-2 py-1 text-right font-semibold">
+                <th className="w-14 px-2 py-1 text-right font-semibold">
                   Count
                 </th>
               </tr>
@@ -439,7 +217,7 @@ export const SmallEmployeeCountTable = ({ row }) => {
                     {role.role || "-"}
                   </td>
 
-                  <td className="w-10 px-2 py-1 text-right font-semibold text-sky-700">
+                  <td className="w-14 px-2 py-1 text-right font-semibold text-sky-700">
                     {role.count ?? 0}
                   </td>
                 </tr>
@@ -452,6 +230,65 @@ export const SmallEmployeeCountTable = ({ row }) => {
 
                 <td className="w-10 px-2 py-1 text-right font-semibold text-pink-700">
                   {totalCount}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      ) : null}
+    </div>
+  );
+};
+
+export const StudentCountTable = ({ row }) => {
+  const courses = Array.isArray(row.studentCountsByCourse)
+    ? row.studentCountsByCourse
+    : [];
+
+  const uniqueStudentCount = toNumber(row.studentCount);
+
+  const courseTotalCount =
+    toNumber(row.studentCourseCount) ||
+    courses.reduce((total, course) => total + toNumber(course.count), 0);
+
+  return (
+    <div className="mt-3 md:mt-1 rounded-md bg-white/75 p-1 mr-3 ml-3 md:mr-0 md:ml-0">
+      <div className="text-center text-[12px] font-semibold text-blue-600">
+        Students: {uniqueStudentCount}
+      </div>
+
+      {courses.length > 0 ? (
+        <div className="overflow-hidden rounded-sm border border-slate-300 bg-white/80 ml-2 mr-2 mt-1 mb-1">
+          <table className="w-full text-left text-[12px]">
+            <thead className="bg-gray-100 text-pink-700">
+              <tr>
+                <th className="px-2 py-1.5 font-semibold">Course</th>
+                <th className="w-16 px-2 py-1.5 text-center font-semibold">
+                  Count
+                </th>
+              </tr>
+            </thead>
+
+            <tbody className="divide-y divide-slate-100">
+              {courses.map((course, i) => (
+                <tr key={i} className="hover:bg-sky-50/60">
+                  <td className="px-2 py-1.5 text-slate-700 break-words">
+                    {course.courseName || "-"}
+                  </td>
+
+                  <td className="px-3 py-1.5 text-right font-semibold text-sky-700">
+                    {course.count ?? 0}
+                  </td>
+                </tr>
+              ))}
+
+              <tr className="bg-gray-100">
+                <td className="px-2 py-1.5 font-semibold text-pink-700">
+                  Course wise Total
+                </td>
+
+                <td className="px-3 py-1.5 text-right font-semibold text-pink-700">
+                  {courseTotalCount}
                 </td>
               </tr>
             </tbody>
@@ -485,28 +322,28 @@ export const SupervisorCard = ({ row }) => {
       <div className="relative">
         <div className="flex items-start justify-between gap-2">
           <div className="min-w-0 space-y-1">
-            <h3 className="text-xs font-semibold text-slate-800 break-words leading-5">
+            <h3 className="text-[13px] font-semibold text-purple-600 break-words leading-5 mb-3">
               {row.name || "-"}
             </h3>
 
-            <p className="text-[11px] text-slate-500 mt-0.5">
+            <p className="text-[12px] text-slate-500 mt-0.5">
               🆔: {row.supId || "-"}
             </p>
 
-            <p className="text-[11px] text-slate-500 mt-0.5 break-words">
+            <p className="text-[12px] text-slate-500 mt-0.5 break-words">
               @: {row.email || "-"}
             </p>
           </div>
 
           <div className="flex flex-col gap-1 items-end shrink-0">
             <span
-              className={`inline-flex rounded-md border shadow-lg px-2 py-1 text-[10px] font-medium ${statusClass}`}
+              className={`inline-flex rounded-md border shadow-lg px-2 py-1 text-[12px] font-medium ${statusClass}`}
             >
               {row.active || "-"}
             </span>
 
             <span
-              className={`inline-flex rounded-md border shadow-lg px-2 py-1 text-[10px] font-medium ${typeClass}`}
+              className={`inline-flex rounded-md border shadow-lg px-2 py-1 text-[12px] font-medium ${typeClass}`}
             >
               {row.jobType || "-"}
             </span>
@@ -523,21 +360,21 @@ export const SupervisorCard = ({ row }) => {
 
           <div>
             <span className="text-slate-500">🗺️:</span>{" "}
-            <span className="font-medium text-slate-800">
+            <span className="text-slate-800">
               {row.routeName && row.routeName !== "Nil" ? row.routeName : "-"}
             </span>
           </div>
 
           <div>
             <span className="text-slate-500">🎂:</span>{" "}
-            <span className="font-medium text-slate-800">
+            <span className="font-xs text-slate-800">
               {row.dob ? new Date(row.dob).toLocaleDateString("en-GB") : "-"}
             </span>
           </div>
 
           <div>
             <span className="text-slate-500">🗓️:</span>{" "}
-            <span className="font-medium text-slate-800">
+            <span className="font-xs text-slate-800">
               {row.doj ? new Date(row.doj).toLocaleDateString("en-GB") : "-"}
             </span>
           </div>
@@ -545,10 +382,10 @@ export const SupervisorCard = ({ row }) => {
 
         <div className="mt-2 grid grid-cols-2 gap-3 items-start p-0">
           <div className="min-w-0">
-            <SmallNiswanCountTable row={row} />
+            <NiswanCountTable row={row} />
           </div>
           <div className="min-w-0">
-            <SmallEmployeeCountTable row={row} />
+            <EmployeeCountTable row={row} />
           </div>
         </div>
         <StudentCountTable row={row} />
@@ -654,7 +491,7 @@ export const SupervisorButtons = ({ Id, onSupervisorDelete }) => {
   return (
     <div className="flex space-x-3 rounded-sm">
       {user.role === "superadmin" || user.role === "hquser" ? (
-        <div className="flex space-x-3 rounded-sm">
+        <div className="flex space-x-3 lg:flex-col lg:space-x-0 lg:space-y-3 items-center">
           <button
             className={getButtonStyle('View')}
             onClick={() => navigate(`/dashboard/supervisors/${Id}`)}
