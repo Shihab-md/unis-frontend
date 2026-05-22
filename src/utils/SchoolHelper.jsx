@@ -172,61 +172,24 @@ export const columns = [
           <span className="text-slate-500 mr-1">Incharge</span>
         </p>
 
-        <p className="mb-1">
+        <p className="mb-1 text-black">
           <span className="text-blue-700 mr-1">👤:</span> {row.incharge1}
         </p>
-        <p>
-          <span className="text-blue-700 mr-1">📱:</span> {row.incharge1Number}
+        <p className="mb-1 text-black">
+          <span className=" text-black mr-1">📱:</span> {row.incharge1Number}
         </p>
         <p className="mt-5 mb-1">
           <span className="text-slate-500 mr-1">Supervisor</span>
         </p>
-        <p className="mb-2">
-          <span className="text-blue-700 mb-3"></span> {row.supervisorId}
+        <p className="mb-2 text-black">
+          <span className=" text-black-700 mb-3"></span> {row.supervisorId}
         </p>
-        <p className="mb-2">{row.supervisorName}</p>
-
-        {/* <p className="mb-1 text-fuchsia-500 font-semibold">{row.address}</p>
-        <p className="mb-1">{row.city}</p>
-        <p className='mb-1'>{row.landmark}</p>
-        <p>{row.districtState}</p> */}
+        <p className="mb-2 text-black">{row.supervisorName}</p>
       </div>
     ),
     wrap: true,
     width: "370px",
   },
-  // {
-  //   name: "Details",
-  //   selector: (row) => (
-  //     <div className="mt-2 mb-2">
-  //       {row.active === "Active" ? (
-  //         <p className="mb-1">
-  //           <span className="text-blue-700 mr-1">✅:</span> {row.active}
-  //         </p>
-  //       ) : (
-  //         <p className="mb-1">
-  //           <span className="text-blue-700 mr-1">❎:</span> {row.active}
-  //         </p>
-  //       )}
-
-  //       <p className="mb-1">
-  //         <span className="text-blue-700 mr-1">👤:</span> {row.incharge1}
-  //       </p>
-  //       <p>
-  //         <span className="text-blue-700 mr-1">📱:</span> {row.incharge1Number}
-  //       </p>
-  //       <p className="mt-5 mb-1">
-  //         <span className="text-blue-700 mr-1">Supervisor</span>
-  //       </p>
-  //       <p className="mb-2">
-  //         <span className="text-blue-700 mb-3"></span> {row.supervisorId}
-  //       </p>
-  //       <p>{row.supervisorName}</p>
-  //     </div>
-  //   ),
-  //   wrap: true,
-  //   width: "270px",
-  // },
   {
     name: "Employees",
     selector: (row) => (
