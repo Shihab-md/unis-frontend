@@ -121,9 +121,20 @@ export const columns = [
   {
     name: "Niswan details",
     selector: (row) => (
-      <div className="mt-2 mb-2">
-        <p className="mb-1">
+      <div className="mt-2 mb-5">
+        <p className="mb-5">
           <span className="text-blue-700 mr-2">Code:</span> {row.code}
+          {row.active === "Active" ? (
+            <span>
+              <span className="ml-24 mr-1">✅:</span>
+              <span className="mr-1">{row.active}</span>
+            </span>
+          ) : (
+            <span>
+              <span className="ml-24 mr-1">❎:</span>
+              <span className="mr-1">{row.active}</span>
+            </span>
+          )}
         </p>
         <p className="mb-1">
           <span className="text-blue-700"></span> {row.name}
@@ -138,34 +149,28 @@ export const columns = [
     ),
     sortable: true,
     wrap: true,
-    width: "320px",
+    width: "410px",
   },
   {
-    name: "Address",
+    name: "Contact details",
     selector: (row) => (
       <div className="mt-2 mb-2">
-        <p className="mb-1 text-fuchsia-500 font-semibold">{row.address}</p>
-        <p className="mb-1">{row.city}</p>
-        <p className='mb-1'>{row.landmark}</p>
-        <p>{row.districtState}</p>
-      </div>
-    ),
-    wrap: true,
-    width: "190px",
-  },
-  {
-    name: "Details",
-    selector: (row) => (
-      <div className="mt-2 mb-2">
-        {row.active === "Active" ? (
-          <p className="mb-1">
-            <span className="text-blue-700 mr-1">✅:</span> {row.active}
-          </p>
-        ) : (
-          <p className="mb-1">
-            <span className="text-blue-700 mr-1">❎:</span> {row.active}
-          </p>
-        )}
+        <span className="font-xs text-slate-500 break-words">
+          {row.address ? (
+            <span className="font-semibold text-blue-700">{row.address}</span>
+          ) : (
+            "-"
+          )}
+          {[row.city, row.landmark, row.districtState].filter(Boolean).length > 0
+            ? `${row.address ? ", " : ""}${[row.city, row.landmark, row.districtState]
+              .filter(Boolean)
+              .join(", ")}`
+            : ""}
+        </span>
+
+        <p className="mt-5 mb-1">
+          <span className="text-slate-500 mr-1">Incharge</span>
+        </p>
 
         <p className="mb-1">
           <span className="text-blue-700 mr-1">👤:</span> {row.incharge1}
@@ -174,17 +179,54 @@ export const columns = [
           <span className="text-blue-700 mr-1">📱:</span> {row.incharge1Number}
         </p>
         <p className="mt-5 mb-1">
-          <span className="text-blue-700 mr-1">Supervisor</span>
+          <span className="text-slate-500 mr-1">Supervisor</span>
         </p>
-        <p>
-          <span className="text-blue-700 mr-1">🆔:</span> {row.supervisorId}
+        <p className="mb-2">
+          <span className="text-blue-700 mb-3"></span> {row.supervisorId}
         </p>
-        <p>{row.supervisorName}</p>
+        <p className="mb-2">{row.supervisorName}</p>
+
+        {/* <p className="mb-1 text-fuchsia-500 font-semibold">{row.address}</p>
+        <p className="mb-1">{row.city}</p>
+        <p className='mb-1'>{row.landmark}</p>
+        <p>{row.districtState}</p> */}
       </div>
     ),
     wrap: true,
-    width: "270px",
+    width: "370px",
   },
+  // {
+  //   name: "Details",
+  //   selector: (row) => (
+  //     <div className="mt-2 mb-2">
+  //       {row.active === "Active" ? (
+  //         <p className="mb-1">
+  //           <span className="text-blue-700 mr-1">✅:</span> {row.active}
+  //         </p>
+  //       ) : (
+  //         <p className="mb-1">
+  //           <span className="text-blue-700 mr-1">❎:</span> {row.active}
+  //         </p>
+  //       )}
+
+  //       <p className="mb-1">
+  //         <span className="text-blue-700 mr-1">👤:</span> {row.incharge1}
+  //       </p>
+  //       <p>
+  //         <span className="text-blue-700 mr-1">📱:</span> {row.incharge1Number}
+  //       </p>
+  //       <p className="mt-5 mb-1">
+  //         <span className="text-blue-700 mr-1">Supervisor</span>
+  //       </p>
+  //       <p className="mb-2">
+  //         <span className="text-blue-700 mb-3"></span> {row.supervisorId}
+  //       </p>
+  //       <p>{row.supervisorName}</p>
+  //     </div>
+  //   ),
+  //   wrap: true,
+  //   width: "270px",
+  // },
   {
     name: "Employees",
     selector: (row) => (
@@ -203,7 +245,7 @@ export const columns = [
       </div>
     ),
     wrap: true,
-    width: "240px",
+    width: "290px",
   },
   {
     name: "Action",
@@ -238,7 +280,7 @@ export const SchoolCard = ({ row, onSchoolDelete }) => {
       style={{ backgroundSize: "100% 100%" }}
     >
       {/* overlay for readability */}
-      <div className="absolute inset-0 bg-white/85" />
+      <div className="absolute inset-0 bg-white/90" />
 
       <div className="relative">
         <div className="flex items-start justify-between gap-2">
@@ -414,7 +456,7 @@ export const SchoolButtons = ({ Id, onSchoolDelete }) => {
   const { user } = useAuth();
 
   return (
-    <div className="flex space-x-3">
+    <div className="flex space-x-3 lg:flex-col lg:space-x-0 lg:space-y-3 items-center">
       <button
         className={getButtonStyle('View')}
         onClick={() => navigate(`/dashboard/schools/${Id}`)}
