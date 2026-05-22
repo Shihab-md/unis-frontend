@@ -153,17 +153,17 @@ export const EmployeeCountTable = ({ row }) => {
       </div>
 
       <div className="overflow-x-auto rounded-md border border-slate-200 bg-white/80 ml-2 mr-2 mt-1 mb-1">
-        <table className="w-full min-w-[330px] text-left text-[11px]">
+        <table className="w-full md:min-w-[330px] text-left text-[11px]">
           <thead className="bg-gray-100 text-pink-700">
             <tr>
               <th className="px-2 py-1.5 font-semibold">Role</th>
-              <th className="w-14 px-1 py-1.5 text-right font-semibold">
+              <th className="px-1 py-1.5 text-right font-semibold">
                 Active
               </th>
-              <th className="w-16 px-1 py-1.5 text-right font-semibold">
+              <th className="px-1 py-1.5 text-right font-semibold">
                 In-Active
               </th>
-              <th className="w-14 px-1 py-1.5 text-right font-semibold">
+              <th className="px-2 py-1.5 text-right font-semibold">
                 Total
               </th>
             </tr>
@@ -192,7 +192,7 @@ export const EmployeeCountTable = ({ row }) => {
                       {inactiveCount}
                     </td>
 
-                    <td className="px-1 py-1.5 text-right font-semibold text-sky-700">
+                    <td className="px-2 py-1.5 text-right font-semibold text-sky-700">
                       {totalCount}
                     </td>
                   </tr>
@@ -212,7 +212,7 @@ export const EmployeeCountTable = ({ row }) => {
                 {employeeTotals.inactiveTotal}
               </td>
 
-              <td className="px-1 py-1.5 text-right font-semibold text-pink-700">
+              <td className="px-2 py-1.5 text-right font-semibold text-pink-700">
                 {employeeTotals.total}
               </td>
             </tr>
@@ -236,22 +236,22 @@ export const StudentCountTable = ({ row }) => {
       </div>
 
       <div className="overflow-x-auto rounded-md border border-slate-200 bg-white/80 ml-2 mr-2 mt-1 mb-1">
-        <table className="w-full min-w-[460px] text-left text-[11px]">
+        <table className="w-full md:min-w-[460px] text-left text-[11px]">
           <thead className="bg-gray-100 text-pink-700">
             <tr>
-              <th className="min-w-[180px] px-2 py-1.5 font-semibold">
+              <th className="md:min-w-[180px] px-2 py-1.5 font-semibold">
                 Course
               </th>
-              <th className="w-14 px-1 py-1.5 text-right font-semibold">
+              <th className="px-1 py-1.5 text-right font-semibold">
                 Active
               </th>
-              <th className="w-16 px-1 py-1.5 text-right font-semibold">
+              <th className="px-1 py-1.5 text-right font-semibold">
                 In-Active
               </th>
-              <th className="w-14 px-1 py-1.5 text-right font-semibold">
+              <th className="px-1 py-1.5 text-right font-semibold">
                 Alumni
               </th>
-              <th className="w-14 px-1 py-1.5 text-right font-semibold">
+              <th className="px-2 py-1.5 text-right font-semibold">
                 Total
               </th>
             </tr>
@@ -284,7 +284,7 @@ export const StudentCountTable = ({ row }) => {
                     {alumniCount}
                   </td>
 
-                  <td className="px-1 py-1.5 text-right font-semibold text-pink-700">
+                  <td className="px-2 py-1.5 text-right font-semibold text-pink-700">
                     {totalCount}
                   </td>
                 </tr>
@@ -308,7 +308,7 @@ export const StudentCountTable = ({ row }) => {
                 {studentTotals.alumniTotal}
               </td>
 
-              <td className="px-1 py-1.5 text-right font-semibold text-pink-700">
+              <td className="px-2 py-1.5 text-right font-semibold text-pink-700">
                 {studentTotals.total}
               </td>
             </tr>
@@ -323,10 +323,10 @@ export const DistrictStateCard = ({ row }) => {
   return (
     <div
       className="relative overflow-hidden rounded-md border border-sky-100 shadow-lg p-2 mt-1 transition-all duration-200
-      hover:-translate-y-0.5 hover:shadow-xl bg-[url('/c-12.jpg')] bg-center bg-no-repeat"
+      hover:-translate-y-0.5 hover:shadow-xl bg-[url('/bg-img.jpg')] bg-center bg-no-repeat"
       style={{ backgroundSize: "100% 100%" }}
     >
-      <div className="absolute inset-0 bg-white/75" />
+      <div className="absolute inset-0 bg-white/50" />
 
       <div className="relative">
         <div className="flex items-start justify-between gap-2">
