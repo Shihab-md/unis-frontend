@@ -72,7 +72,7 @@ const AdminSummary = () => {
             <SummaryCard
               icon={<FaMosque />}
               text="Niswans"
-              number={summary.totalSchools}
+              number={user.role === "superadmin" || user.role === "hquser" ? summary.totalSchools : "*"}
               color="bg-pink-600"
             />
           </Link> : null}
@@ -82,7 +82,7 @@ const AdminSummary = () => {
             <SummaryCard
               icon={<FaHouseUser />}
               text="Employees"
-              number={summary.totalEmployees}
+              number={user.role === "superadmin" || user.role === "hquser" ? summary.totalEmployees : "*"}
               color={user.role === "supervisor" ? "bg-slate-500" : "bg-cyan-600"}
             />
           </Link> : null}
@@ -92,7 +92,7 @@ const AdminSummary = () => {
             <SummaryCard
               icon={<FaUsers />}
               text="Students"
-              number={summary.totalStudents}
+              number={user.role === "superadmin" || user.role === "hquser" ? summary.totalStudents : "*"}
               color="bg-blue-500"
             />
           </Link> : null}
