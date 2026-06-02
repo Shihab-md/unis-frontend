@@ -51,7 +51,7 @@ const Masters = () => {
       <CommonHeader userName={user?.name || ""} title="Masters" />
       <div className="content-center rounded-lg grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-7 lg:gap-14 mt-7 lg:mt-16 flex rounded-lg">
 
-        {user.role === "superadmin" || user.role === "hquser" || user.role === "guest" ?
+        {user.role === "superadmin" || user.role === "guest" ?
           <Link to="/dashboard/institutes" >
             <SummaryCard
               icon={<FaUniversity />}
@@ -61,7 +61,7 @@ const Masters = () => {
             />
           </Link> : null}
 
-        {user.role === "superadmin" || user.role === "hquser" || user.role === "guest" ?
+        {user.role === "superadmin" || user.role === "guest" ?
           <Link to="/dashboard/courses" >
             <SummaryCard
               icon={<FaClipboardList />}
@@ -71,7 +71,7 @@ const Masters = () => {
             />
           </Link> : null}
 
-        {user.role === "superadmin" || user.role === "hquser" || user.role === "guest" ?
+        {user.role === "superadmin" || user.role === "guest" ?
           <Link to="/dashboard/academicYears" >
             <SummaryCard
               icon={<FaCalendarAlt />}
@@ -81,7 +81,7 @@ const Masters = () => {
             />
           </Link> : null}
 
-        {user.role === "superadmin" || user.role === "hquser" || user.role === "guest" ?
+        {user.role === "superadmin" || user.role === "guest" ?
           <Link to="/dashboard/templates" >
             <SummaryCard
               icon={<FaWpforms />}
@@ -91,7 +91,7 @@ const Masters = () => {
             />
           </Link> : null}
 
-        {user.role === "superadmin" || user.role === "hquser" || user.role === "guest" ?
+        {user.role === "superadmin" || user.role === "guest" ?
           <Link to="/dashboard/districtStates" >
             <SummaryCard
               icon={<FaMapMarkerAlt />}
@@ -121,7 +121,7 @@ const Masters = () => {
             />
           </Link> : null}
 
-          {user.role === "superadmin" ?
+        {user.role === "superadmin" || user.role === "hquser" ?
           <Link to="/dashboard/certificate-bulk-ihs" >
             <SummaryCard
               icon={<FaCentos />}

@@ -159,7 +159,7 @@ const AdminSummary = () => {
             />
           </Link> : null}
 
-        {user.role === "superadmin" || user.role === "guest" ?
+        {user.role === "superadmin" || user.role === "hquser" || user.role === "guest" ?
           <Link to="/dashboard/masters" >
             <SummaryCard
               icon={<FaCoins />}
