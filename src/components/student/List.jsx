@@ -1279,8 +1279,8 @@ const List = () => {
         </div>
 
         {user.role === "superadmin" || user.role === "hquser" ? (
-          <div className="ml-1" onClick={() => navigate(`/dashboard/students/bulkpromote`)}>
-            {LinkIcon("/dashboard/add-student", "Add")}
+          <div className="ml-1" onClick={() => navigate(`/dashboard/add-student`)}>
+            {LinkIcon("#", "Add")}
           </div>
         ) : null}
 
