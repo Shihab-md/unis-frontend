@@ -1278,9 +1278,13 @@ const List = () => {
           {LinkIcon("#", "Filter")}
         </div>
 
-        {LinkIcon("/dashboard/add-student", "Add")}
-
         {user.role === "superadmin" || user.role === "hquser" ? (
+          <div className="ml-1" onClick={() => navigate(`/dashboard/students/bulkpromote`)}>
+            {LinkIcon("/dashboard/add-student", "Add")}
+          </div>
+        ) : null}
+
+        {user.role === "superadmin" || user.role === "hquser" || user.role === "admin" ? (
           <div className="ml-1" onClick={() => navigate(`/dashboard/students/bulkpromote`)}>
             {LinkIcon("#", "Promote")}
           </div>
