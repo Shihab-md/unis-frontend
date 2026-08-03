@@ -12,15 +12,21 @@ import {
 } from "../../utils/CommonHelper";
 import { createBulkIhsCertificates } from "../../api/ihsBulkCertificateApi";
 
-const IMPORT_CHUNK_SIZE = 100;
+const IMPORT_CHUNK_SIZE = 15;
+const CHUNK_DELAY_MS = 750;
 
-const chunkArray = (items = [], size = 100) => {
+const chunkArray = (items = [], size = IMPORT_CHUNK_SIZE) => {
   const out = [];
   for (let i = 0; i < items.length; i += size) {
     out.push(items.slice(i, i + size));
   }
   return out;
 };
+
+const sleep = (ms) =>
+  new Promise((resolve) => {
+    setTimeout(resolve, ms);
+  });
 
 const downloadTextFile = (content, fileName) => {
   const blob = new Blob([content], { type: "text/plain;charset=utf-8" });
@@ -146,7 +152,7 @@ const BulkIhsExcel = () => {
 
       const confirm = await Swal.fire({
         title: "Create IHS Certificates?",
-        html: `<b>Total Rows: ${normalizedRows.length}</b><br/><br/>System will create IHS certificates in chunks.`,
+        html: `<b>Total Rows: ${normalizedRows.length}</b><br/><br/>System will create IHS certificates automatically in chunks of ${IMPORT_CHUNK_SIZE}.`,
         icon: "question",
         showCancelButton: true,
         confirmButtonText: "Yes, Create",
@@ -165,7 +171,7 @@ const BulkIhsExcel = () => {
 
       Swal.fire({
         title: "Creating IHS Certificates...",
-        html: `<b>Preparing ${totalRows} rows in ${totalChunks} chunks...</b>`,
+        html: `<b>Preparing ${totalRows} rows in ${totalChunks} chunks...</b><br/><span style="font-size:12px;color:#666;">Chunk size: ${IMPORT_CHUNK_SIZE}</span>`,
         allowOutsideClick: false,
         allowEscapeKey: false,
         showConfirmButton: false,
@@ -186,12 +192,20 @@ const BulkIhsExcel = () => {
             html: `
               <div style="font-weight:bold;">Chunk ${i + 1} / ${totalChunks}</div>
               <div style="margin-top:8px;">Rows ${startRow} - ${endRow}</div>
+              <div style="margin-top:8px;">Created: ${totalCreated}, Duplicates: ${totalDuplicates}, Invalid: ${totalInvalid}, Failed: ${totalFailed}</div>
               <div style="margin-top:8px; font-size:12px; color:#666;">Please do not close or refresh the page.</div>
             `,
           });
         }
 
-        const resData = await createBulkIhsCertificates({ rows: chunkRows });
+        const resData = await createBulkIhsCertificates(
+          {
+            rows: chunkRows,
+            batchNo: i + 1,
+            totalBatches: totalChunks,
+          },
+          { timeout: 180000 }
+        );
 
         if (!resData?.success) {
           throw new Error(resData?.error || `Chunk ${i + 1}/${totalChunks} failed.`);
@@ -208,6 +222,10 @@ const BulkIhsExcel = () => {
         );
         combinedLogs.push(buildChunkLog(resData?.rows || [], startRow - 1));
         combinedLogs.push("");
+
+        if (i < chunks.length - 1) {
+          await sleep(CHUNK_DELAY_MS);
+        }
       }
 
       Swal.close();
