@@ -81,6 +81,7 @@ import ConnectDriveHidden from "./components/admin/ConnectDriveHidden";
 import MigrationBatchesFromInvoicesAll from "./components/fees/MigrationBatchesFromInvoicesAll";
 
 import BulkIhsExcel from "./components/certificate/BulkIhsExcel";
+import NotificationsPage from "./components/notification/NotificationsPage";
 
 function App() {
   return (
@@ -164,6 +165,7 @@ function App() {
 
           <Route path="/dashboard/masters" element={<Masters />}></Route>
           <Route path="/dashboard/profile" element={<ProfilePage />}></Route>
+          <Route path="/dashboard/notifications" element={<NotificationsPage />}></Route>
           <Route path="/dashboard/changePassword" element={<ChangePassword />}></Route>
           <Route path="/dashboard/reset-password" element={<ResetPassword />} />
 

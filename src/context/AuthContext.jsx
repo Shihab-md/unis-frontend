@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { getBaseUrl, showSwalAlert, showConfirmationSwalAlert, removeLocalStorage } from '../utils/CommonHelper'
+import { disableBrowserPush } from '../utils/browserPush'
 
 const userContext = createContext();
 
@@ -50,6 +51,8 @@ const AuthContext = ({ children }) => {
     if (result.isConfirmed) {
       showSwalAlert("Success!", "Successfully Logged out!", "success");
 
+      // Best-effort privacy cleanup: detach this browser push subscription while the JWT is still available.
+      await disableBrowserPush({ notifyServer: true }).catch(() => null);
       setUser(null);
       removeLocalStorage();
 

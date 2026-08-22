@@ -1,16 +1,15 @@
 import React from 'react'
 import { useAuth } from '../../context/AuthContext'
 import { Link } from 'react-router-dom';
-import {
-  FaHome, FaSignOutAlt, FaPowerOff
-} from "react-icons/fa";
+import { FaHome, FaPowerOff } from "react-icons/fa";
+import NotificationBell from '../notification/NotificationBell';
 
 const Navbar = () => {
   const { user, logout } = useAuth();
   const isHQ = user?.role === "superadmin" || user?.role === "hquser" || user?.role === "supervisor";
   return (
     <div
-      className={`relative flex items-center text-white justify-between bg-teal-600 px-5 text-shadow-lg overflow-hidden 
+      className={`relative flex items-center text-white justify-between bg-teal-600 px-5 text-shadow-lg overflow-visible z-50 
         ${isHQ ? "h-18" : "h-28"}`}
     >
       <div className="relative">
@@ -40,12 +39,15 @@ const Navbar = () => {
         )}
       </div>
 
-      <div className="relative">
-        <div className="absolute -inset-1 rounded-2xl bg-gradient-to-br from-indigo-500 via-teal-400 to-amber-400 blur-md opacity-70" />
-        <FaPowerOff
-          className="relative z-10 text-3xl lg:text-4xl text-red-600 text-shadow-lg cursor-pointer hover:-translate-y-0.5"
-          onClick={logout}
-        />
+      <div className="relative flex items-center gap-3 lg:gap-5">
+        <NotificationBell />
+        <div className="relative">
+          <div className="absolute -inset-1 rounded-2xl bg-gradient-to-br from-indigo-500 via-teal-400 to-amber-400 blur-md opacity-70" />
+          <FaPowerOff
+            className="relative z-10 text-3xl lg:text-4xl text-red-600 text-shadow-lg cursor-pointer hover:-translate-y-0.5"
+            onClick={logout}
+          />
+        </div>
       </div>
     </div>
   );

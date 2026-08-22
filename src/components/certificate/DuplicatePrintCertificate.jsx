@@ -31,6 +31,11 @@ const DuplicatePrintCertificate = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
+        if (checkAuth("certificateEdit") === "NO") {
+            showSwalAlert("Error!", "User Authorization Failed!", "error");
+            navigate("/dashboard/certificates");
+            return;
+        }
         const handleDuplicatePrint = async () => {
             try {
                 const token = localStorage.getItem("token");

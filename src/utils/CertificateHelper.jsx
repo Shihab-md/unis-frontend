@@ -174,20 +174,20 @@ export const CertificateButtons = ({ Id, onCertificateDelete }) => {
       >
         <FaEye className="m-1" />
       </button>
-      <button
-        className={getButtonStyle('Reprint')}
-        //className="px-5 py-1 m-1 bg-violet-600 text-xs text-teal-100 rounded-md shadow-md shadow-teal-200 hover:-translate-y-0.5"
-        onClick={() => navigate(`/dashboard/certificates/reprint/${Id}`)}
-      >
-        <FaRedo className="m-1" />
-      </button>
-      <button
-        className={getButtonStyle('DuplicatePrint')}
-        //className="px-5 py-1 m-1 bg-yellow-600 text-xs text-teal-100 rounded-md shadow-md shadow-teal-200 hover:-translate-y-0.5"
-        onClick={() => navigate(`/dashboard/certificates/duplicate-print/${Id}`)}
-      >
-        <FaRegCopy className="m-1" />
-      </button>
+      {(user?.role === "superadmin" || user?.role === "hquser") && (<>
+        <button
+          className={getButtonStyle('Reprint')}
+          onClick={() => navigate(`/dashboard/certificates/reprint/${Id}`)}
+        >
+          <FaRedo className="m-1" />
+        </button>
+        <button
+          className={getButtonStyle('DuplicatePrint')}
+          onClick={() => navigate(`/dashboard/certificates/duplicate-print/${Id}`)}
+        >
+          <FaRegCopy className="m-1" />
+        </button>
+      </>)}
     </div>
   );
 };
