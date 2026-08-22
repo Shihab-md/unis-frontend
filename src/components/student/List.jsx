@@ -47,6 +47,16 @@ const List = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
 
+  const userRole = String(user?.role || "").toLowerCase();
+
+  const loggedInSchoolName = String(localStorage.getItem("schoolName") || "").trim();
+
+  const isHqAdmin =
+    userRole === "admin" && loggedInSchoolName.startsWith("UN-00-00001");
+
+  const canAddStudent =
+    userRole === "superadmin" || userRole === "hquser" || isHqAdmin;
+
   let schoolId;
   let schoolName;
 
@@ -1278,7 +1288,7 @@ const List = () => {
           {LinkIcon("#", "Filter")}
         </div>
 
-        {user.role === "superadmin" || user.role === "hquser" ? (
+        {canAddStudent ? (
           <div className="ml-1" onClick={() => navigate(`/dashboard/add-student`)}>
             {LinkIcon("#", "Add")}
           </div>

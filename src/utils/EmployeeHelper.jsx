@@ -138,15 +138,23 @@ export const EmployeeCard = ({ row, onEmployeeDelete }) => {
             <h3 className="text-sm font-semibold text-violet-700 break-words leading-5">
               {row.name || "-"}
             </h3>
+
             <p className="mt-0.5 mt-1 text-[11px] text-slate-500">
               🆔: {row.empId || "-"}
             </p>
+
+            {row.isSelfRow ? (
+              <p className="mt-1 inline-flex rounded-md border border-amber-200 bg-amber-50 px-2 py-0.5 text-[10px] font-semibold text-amber-700">
+                Logged-in User
+              </p>
+            ) : null}
           </div>
 
           <div className="flex flex-col items-end gap-1 shrink-0">
             <span className="inline-flex rounded-md border border-sky-200 bg-sky-50 px-2 py-1 text-[10px] font-medium text-sky-700 shadow-lg">
               {roleText}
             </span>
+
             <span
               className={`inline-flex rounded-md border px-2 py-1 text-[10px] font-medium shadow-lg ${statusClass}`}
             >
@@ -161,7 +169,8 @@ export const EmployeeCard = ({ row, onEmployeeDelete }) => {
             <span className="font-xs text-slate-500">
               {row.contactNumber || "-"}
             </span>
-            <span className="text-slate-500 ml-3">   @:</span>{" "}
+
+            <span className="text-slate-500 ml-3"> @:</span>{" "}
             <span className="font-xs text-slate-500 break-all">
               {row.email || "-"}
             </span>
@@ -187,9 +196,11 @@ export const EmployeeCard = ({ row, onEmployeeDelete }) => {
               {row.schoolCode ? `${row.schoolCode} - ` : ""}
               {row.schoolName || "-"}
             </span>
+
             <p className="font-xs break-words mt-1 mb-1 text-blue-700 font-semibold">
               {row.address}
             </p>
+
             <p className="font-xs text-slate-500 break-words">
               {row.distrcitState}
             </p>
@@ -197,18 +208,28 @@ export const EmployeeCard = ({ row, onEmployeeDelete }) => {
         </div>
 
         <div className="flex pt-2 items-center justify-center">
-          <EmployeeButtons Id={row._id} onEmployeeDelete={onEmployeeDelete} />
+          {row.action || (
+            <EmployeeButtons
+              Id={row._id}
+              isSelfRow={row.isSelfRow}
+              onEmployeeDelete={onEmployeeDelete}
+            />
+          )}
         </div>
       </div>
     </div>
   );
 };
 
-export const EmployeeButtons = ({ Id, onEmployeeDelete }) => {
+export const EmployeeButtons = ({ Id, isSelfRow = false, onEmployeeDelete }) => {
   const navigate = useNavigate();
 
   const handleDelete = async (id) => {
-    const result = await showConfirmationSwalAlert('Are you sure to Delete?', '', 'question');
+    const result = await showConfirmationSwalAlert(
+      'Are you sure to Delete?',
+      '',
+      'question'
+    );
 
     if (result.isConfirmed) {
       try {
@@ -220,26 +241,38 @@ export const EmployeeButtons = ({ Id, onEmployeeDelete }) => {
             },
           }
         );
+
         if (responnse.data.success) {
           showSwalAlert("Success!", "Successfully Deleted!", "success");
-          onEmployeeDelete();
+
+          if (typeof onEmployeeDelete === "function") {
+            onEmployeeDelete();
+          }
         }
       } catch (error) {
         if (error.response && !error.response.data.success) {
           showSwalAlert("Error!", error.response.data.error, "error");
         }
       }
-      //  } else if (result.dismiss === Swal.DismissReason.cancel) {
-      // Swal.fire('Cancelled', 'Your file is safe!', 'error');
-      // Handle cancellation logic (optional)
     }
   };
 
   const { user } = useAuth();
 
+  const disableEditDelete = user?.role === "guest" || isSelfRow;
+
+  const disabledTitle = isSelfRow
+    ? "You cannot edit or delete your own employee record."
+    : user?.role === "guest"
+      ? "Guest user cannot edit or delete."
+      : "";
+
   return (
     <div className="flex space-x-3">
-      {user.role === "superadmin" || user.role === "hquser" || user.role === "supervisor" || user.role === "admin" ?
+      {user?.role === "superadmin" ||
+        user?.role === "hquser" ||
+        user?.role === "supervisor" ||
+        user?.role === "admin" ? (
         <div className="flex space-x-3">
           <button
             className={getButtonStyle('View')}
@@ -247,25 +280,32 @@ export const EmployeeButtons = ({ Id, onEmployeeDelete }) => {
           >
             <FaEye className="m-1" />
           </button>
-        </div> : null}
+        </div>
+      ) : null}
 
-      {user.role === "superadmin" || user.role === "supervisor" || user.role === "admin" ?
+      {user?.role === "superadmin" ||
+        user?.role === "supervisor" ||
+        user?.role === "admin" ? (
         <div className="flex space-x-4">
           <button
-            className={getButtonStyle('Edit')}
-            disabled={user?.role === "guest"}
+            className={`${getButtonStyle('Edit')} disabled:cursor-not-allowed disabled:opacity-50`}
+            disabled={disableEditDelete}
+            title={disabledTitle}
             onClick={() => navigate(`/dashboard/employees/edit/${Id}`)}
           >
             <FaEdit className="m-1" />
           </button>
+
           <button
-            className={getButtonStyle('Delete')}
-            disabled={user?.role === "guest"}
+            className={`${getButtonStyle('Delete')} disabled:cursor-not-allowed disabled:opacity-50`}
+            disabled={disableEditDelete}
+            title={disabledTitle}
             onClick={() => handleDelete(Id)}
           >
             <FaTrashAlt className="m-1" />
           </button>
-        </div> : null}
+        </div>
+      ) : null}
     </div>
   );
 };

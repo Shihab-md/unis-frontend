@@ -13,8 +13,9 @@ import { FaRegTimesCircle } from "react-icons/fa";
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
-const getCourseById = (courses, courseId) => {
-  return courses.find((course) => String(course._id) === String(courseId));
+const getCourseById = (courses = [], courseId) => {
+  const safeCourses = Array.isArray(courses) ? courses : [];
+  return safeCourses.find((course) => String(course._id) === String(courseId));
 };
 
 const getMakthabYearOptions = (courseName = "") => {
@@ -93,6 +94,12 @@ const Add = () => {
 
   const navigate = useNavigate();
 
+  const safeSchools = Array.isArray(schools) ? schools : [];
+  const safeAcademicYears = Array.isArray(academicYears) ? academicYears : [];
+  const safeInstitutes = Array.isArray(institutes) ? institutes : [];
+  const safeCourses = Array.isArray(courses) ? courses : [];
+  const safeDistrictStates = Array.isArray(districtStates) ? districtStates : [];
+
   useEffect(() => {
     if (checkAuth("studentAdd") === "NO") {
       showSwalAlert("Error!", "User Authorization Failed!", "error");
@@ -102,15 +109,16 @@ const Add = () => {
 
   useEffect(() => {
     const getSchoolsMap = async () => {
-      const schools = await getSchoolsFromCache();
-      setSchools(schools);
+      const schoolsData = await getSchoolsFromCache();
+      setSchools(Array.isArray(schoolsData) ? schoolsData : []);
     };
+
     getSchoolsMap();
   }, []);
 
-  const activeAcademicYear = Array.isArray(academicYears)
-    ? academicYears.find((item) => item.active === "Active")
-    : null;
+  const activeAcademicYear = safeAcademicYears.find(
+    (item) => item.active === "Active"
+  );
 
   useEffect(() => {
     setAcYear(activeAcademicYear?._id || "");
@@ -118,32 +126,32 @@ const Add = () => {
 
   useEffect(() => {
     const getAcademicYearsMap = async () => {
-      const academicYears = await getAcademicYearsFromCache();
-      setAcademicYears(academicYears);
+      const academicYearsData = await getAcademicYearsFromCache();
+      setAcademicYears(Array.isArray(academicYearsData) ? academicYearsData : []);
     };
     getAcademicYearsMap();
   }, []);
 
   useEffect(() => {
     const getDistrictStatesMap = async () => {
-      const districtStates = await getDistrictStatesFromCache();
-      setDistrictStates(districtStates);
+      const districtStatesData = await getDistrictStatesFromCache();
+      setDistrictStates(Array.isArray(districtStatesData) ? districtStatesData : []);
     };
     getDistrictStatesMap();
   }, []);
 
   useEffect(() => {
     const getInstitutesMap = async () => {
-      const institutes = await getInstitutesFromCache();
-      setInstitutes(institutes);
+      const institutesData = await getInstitutesFromCache();
+      setInstitutes(Array.isArray(institutesData) ? institutesData : []);
     };
     getInstitutesMap();
   }, []);
 
   useEffect(() => {
     const getCoursesMap = async () => {
-      const courses = await getCoursesFromCache();
-      setCourses(courses);
+      const coursesData = await getCoursesFromCache();
+      setCourses(Array.isArray(coursesData) ? coursesData : []);
     };
     getCoursesMap();
   }, []);
@@ -327,7 +335,7 @@ const Add = () => {
     };
 
     if (name === "courseId1") {
-      const selectedCourse = getCourseById(courses, value);
+      const selectedCourse = getCourseById(safeCourses, value);
       const nextFees1 = selectedCourse?.fees || "";
       setFees1Val(nextFees1);
       nextFormData.fees1 = nextFees1;
@@ -337,22 +345,22 @@ const Add = () => {
         nextFormData.year1 = String(makthabOptions[0].value);
       }
     } else if (name === "courseId2") {
-      const selectedCourse = getCourseById(courses, value);
+      const selectedCourse = getCourseById(safeCourses, value);
       const nextFees2 = selectedCourse?.fees || "";
       setFees2Val(nextFees2);
       nextFormData.fees2 = nextFees2;
     } else if (name === "courseId3") {
-      const selectedCourse = getCourseById(courses, value);
+      const selectedCourse = getCourseById(safeCourses, value);
       const nextFees3 = selectedCourse?.fees || "";
       setFees3Val(nextFees3);
       nextFormData.fees3 = nextFees3;
     } else if (name === "courseId4") {
-      const selectedCourse = getCourseById(courses, value);
+      const selectedCourse = getCourseById(safeCourses, value);
       const nextFees4 = selectedCourse?.fees || "";
       setFees4Val(nextFees4);
       nextFormData.fees4 = nextFees4;
     } else if (name === "courseId5") {
-      const selectedCourse = getCourseById(courses, value);
+      const selectedCourse = getCourseById(safeCourses, value);
       const nextFees5 = selectedCourse?.fees || "";
       setFees5Val(nextFees5);
       nextFormData.fees5 = nextFees5;
@@ -529,7 +537,7 @@ const Add = () => {
     }
   };
 
-  const selectedCourse1 = getCourseById(courses, formData.courseId1);
+  const selectedCourse1 = getCourseById(safeCourses, formData.courseId1);
   const makthabYearOptions = getMakthabYearOptions(selectedCourse1?.name);
   const isMakthabLevelCourse = makthabYearOptions.length > 0;
 
@@ -554,14 +562,14 @@ const Add = () => {
                 </label>
                 <select
                   name="schoolId"
-                  value={localStorage.getItem('schoolId')}
+                  value={localStorage.getItem('schoolId') || ""}
                   onChange={handleChange}
                   disabled={true}
                   className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                   required
                 >
                   <option value=""></option>
-                  {schools.map((school) => (
+                  {safeSchools.map((school) => (
                     <option key={school._id} value={school._id}>
                       {school.code + " : " + school.nameEnglish}
                     </option>
@@ -963,7 +971,7 @@ const Add = () => {
                   required
                 >
                   <option value=""></option>
-                  {districtStates.map((districtState) => (
+                  {safeDistrictStates.map((districtState) => (
                     <option key={districtState._id} value={districtState._id}>
                       {districtState.district + ", " + districtState.state}
                     </option>
@@ -1070,7 +1078,7 @@ const Add = () => {
                   required
                 >
                   <option value=""></option>
-                  {institutes.filter(institute => institute.type === "Deeniyath Education").map((institute) => (
+                  {safeInstitutes.filter(institute => institute.type === "Deeniyath Education").map((institute) => (
                     <option key={institute._id} value={institute._id}>
                       {institute.name}
                     </option>
@@ -1091,7 +1099,7 @@ const Add = () => {
                   required
                 >
                   <option value=""></option>
-                  {courses.filter(course => course.type === "Deeniyath Education").map((course) => (
+                  {safeCourses.filter(course => course.type === "Deeniyath Education").map((course) => (
                     <option key={course._id} value={course._id}>
                       {course.name}
                     </option>
@@ -1289,7 +1297,7 @@ const Add = () => {
                       className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                     >
                       <option value=""></option>
-                      {institutes.filter(institute => institute.type === "Islamic Home Science").map((institute) => (
+                      {safeInstitutes.filter(institute => institute.type === "Islamic Home Science").map((institute) => (
                         <option key={institute._id} value={institute._id}>
                           {institute.name}
                         </option>
@@ -1307,7 +1315,7 @@ const Add = () => {
                       className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                     >
                       <option value=""></option>
-                      {courses.filter(course => course.type === "Islamic Home Science").map((course) => (
+                      {safeCourses.filter(course => course.type === "Islamic Home Science").map((course) => (
                         <option key={course._id} value={course._id}>
                           {course.name}
                         </option>
@@ -1365,7 +1373,7 @@ const Add = () => {
                       required={!!showSchool}
                     >
                       <option value=""></option>
-                      {institutes.filter(institute => institute.type === "School Education").map((institute) => (
+                      {safeInstitutes.filter(institute => institute.type === "School Education").map((institute) => (
                         <option key={institute._id} value={institute._id}>
                           {institute.name}
                         </option>
@@ -1384,7 +1392,7 @@ const Add = () => {
                       required={!!showSchool}
                     >
                       <option value=""></option>
-                      {courses.filter(course => course.type === "School Education").map((course) => (
+                      {safeCourses.filter(course => course.type === "School Education").map((course) => (
                         <option key={course._id} value={course._id}>
                           {course.name}
                         </option>
@@ -1442,7 +1450,7 @@ const Add = () => {
                       className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                     >
                       <option value=""></option>
-                      {institutes.filter(institute => institute.type === "College Education").map((institute) => (
+                      {safeInstitutes.filter(institute => institute.type === "College Education").map((institute) => (
                         <option key={institute._id} value={institute._id}>
                           {institute.name}
                         </option>
@@ -1460,7 +1468,7 @@ const Add = () => {
                       className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                     >
                       <option value=""></option>
-                      {courses.filter(course => course.type === "College Education").map((course) => (
+                      {safeCourses.filter(course => course.type === "College Education").map((course) => (
                         <option key={course._id} value={course._id}>
                           {course.name}
                         </option>
@@ -1535,7 +1543,7 @@ const Add = () => {
                       className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                     >
                       <option value=""></option>
-                      {institutes.filter(institute => institute.type === "Vocational Courses").map((institute) => (
+                      {safeInstitutes.filter(institute => institute.type === "Vocational Courses").map((institute) => (
                         <option key={institute._id} value={institute._id}>
                           {institute.name}
                         </option>
@@ -1553,7 +1561,7 @@ const Add = () => {
                       className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                     >
                       <option value=""></option>
-                      {courses.filter(course => course.type === "Vocational Courses").map((course) => (
+                      {safeCourses.filter(course => course.type === "Vocational Courses").map((course) => (
                         <option key={course._id} value={course._id}>
                           {course.name}
                         </option>

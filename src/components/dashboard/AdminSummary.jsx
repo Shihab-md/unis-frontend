@@ -51,7 +51,7 @@ const AdminSummary = () => {
   if (!summary) {
     return getSpinner();
   }
-  //p-6
+
   return (
     <div className="p-7 pt-3 items-center justify-center rounded-lg h-9/10">
       <CommonHeader userName={user?.name || ""} title="Dashboard" />
@@ -72,7 +72,7 @@ const AdminSummary = () => {
             <SummaryCard
               icon={<FaMosque />}
               text={user.role === "superadmin" || user.role === "hquser" || user.role === "supervisor" ? "Niswans" : "Niswan"}
-              number={user.role === "superadmin" || user.role === "hquser" ? summary.totalSchools : "*"}
+              number={user.role === "admin" || user.role === "guest" ? "*" : summary.totalSchools}
               color="bg-pink-600"
             />
           </Link> : null}
@@ -82,17 +82,17 @@ const AdminSummary = () => {
             <SummaryCard
               icon={<FaHouseUser />}
               text="Employees"
-              number={user.role === "superadmin" || user.role === "hquser" ? summary.totalEmployees : "*"}
+              number={user.role === "guest" ? "*" : summary.totalEmployees}
               color={user.role === "supervisor" ? "bg-slate-500" : "bg-cyan-600"}
             />
           </Link> : null}
 
-        {user.role === "superadmin" || user.role === "hquser" || user.role === "admin" || user.role === "guest" ?
+        {user.role === "superadmin" || user.role === "hquser" || user.role === "supervisor" || user.role === "admin" || user.role === "guest" ?
           <Link to="/dashboard/students"  >
             <SummaryCard
               icon={<FaUsers />}
               text="Students"
-              number={user.role === "superadmin" || user.role === "hquser" ? summary.totalStudents : "*"}
+              number={user.role === "guest" ? "*" : summary.totalStudents}
               color="bg-blue-500"
             />
           </Link> : null}

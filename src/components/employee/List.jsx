@@ -37,6 +37,61 @@ const List = () => {
 
   const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
+    const getEmployeeUserId = (employee) => {
+    return String(
+      employee?.userId?._id ||
+      employee?.userId ||
+      ""
+    );
+  };
+
+  const isLoggedInEmployeeRow = (employee) => {
+    return getEmployeeUserId(employee) === String(user?._id || "");
+  };
+
+  const handleEmployeeDeleteRefresh = () => {
+    const data = null; // keep same production behavior
+
+    if (data) {
+      getFilteredEmployees();
+    } else {
+      getEmployees();
+    }
+  };
+
+  const buildEmployeeRow = (sup, sno, onEmployeeDelete) => {
+    const isSelfRow = isLoggedInEmployeeRow(sup);
+
+    return {
+      _id: sup._id,
+      sno,
+      empId: sup.employeeId,
+      name: sup.userId?.name,
+      role: sup.userId?.role,
+      contactNumber: sup.contactNumber,
+      email: sup.userId?.email,
+      schoolCode: sup.schoolId?.code,
+      schoolName: sup.schoolId?.nameEnglish,
+      designation: sup.designation,
+      active: sup.active,
+      address: sup.schoolId?.address,
+      distrcitState:
+        sup.schoolId?.districtStateId?.district && sup.schoolId?.districtStateId?.state
+          ? sup.schoolId?.districtStateId?.district + ", " + sup.schoolId?.districtStateId?.state
+          : "",
+      doj: sup.doj,
+      dob: sup.dob,
+      isSelfRow,
+      action: (
+        <EmployeeButtons
+          Id={sup._id}
+          isSelfRow={isSelfRow}
+          onEmployeeDelete={onEmployeeDelete}
+        />
+      ),
+    };
+  };
+
   useEffect(() => {
     const getSchoolsMap = async (id) => {
       const schools = await getSchoolsFromCache(id);
@@ -148,7 +203,7 @@ const List = () => {
     }
   };
 
-  const getFilteredEmployees = async () => {
+    const getFilteredEmployees = async () => {
     setFiltering(true)
     try {
       const responnse = await axios.get(
@@ -162,26 +217,14 @@ const List = () => {
           },
         }
       );
+
       if (responnse.data.success) {
         let sno = 1;
-        const data = await responnse.data.employees.map((sup) => ({
-          _id: sup._id,
-          sno: sno++,
-          empId: sup.employeeId,
-          name: sup.userId?.name,
-          role: sup.userId?.role,
-          contactNumber: sup.contactNumber,
-          email: sup.userId?.email,
-          schoolCode: sup.schoolId?.code,
-          schoolName: sup.schoolId?.nameEnglish,
-          designation: sup.designation,
-          active: sup.active,
-          address: sup.schoolId?.address,
-          distrcitState: sup.schoolId?.districtStateId?.district + ", " + sup.schoolId?.districtStateId?.state,
-          doj: sup.doj,
-          dob: sup.dob,
-          action: (<EmployeeButtons Id={sup._id} />),
-        }));
+
+        const data = responnse.data.employees.map((sup) =>
+          buildEmployeeRow(sup, sno++, handleEmployeeDeleteRefresh)
+        );
+
         setEmployees(data);
         setFilteredEmployees(data)
         localStorage.removeItem('employees');
@@ -192,7 +235,6 @@ const List = () => {
       console.log(error.message)
       if (error.response && !error.response.data.success) {
         showSwalAlert("Error!", error.response.data.error, "error");
-        //  navigate("/dashboard");
       }
     } finally {
       setFiltering(false)
@@ -321,49 +363,18 @@ const List = () => {
 
   const getEmployees = async () => {
 
-    const onEmployeeDelete = () => {
-      const data = null;//localStorage.getItem('employees');
-      if (data) {
-        console.log("333")
-        getFilteredEmployees();
-      } else {
-        console.log("444")
-        getEmployees();
-      }
-    }
-
-    const me = String(user?._id || "");
     const data = localStorage.getItem('employees');
-    //console.log("Existing Data - " + JSON.parse(data))
-    //alert(user._id)
+
     if (data && (localStorage.getItem('empSchoolId')
       || localStorage.getItem('empRole')
       || localStorage.getItem('empStatus'))) {
+
       let sno = 1;
-      const data1 = JSON.parse(data).employees
-        .filter((sup) => {
-          const supUserId = String(sup?.userId?._id || sup?.userId || "");
-          //console.log(supUserId)
-          return supUserId !== me;
-        })
-        .map((sup) => ({
-          _id: sup._id,
-          sno: sno++,
-          empId: sup.employeeId,
-          name: sup.userId?.name,
-          role: sup.userId?.role,
-          contactNumber: sup.contactNumber,
-          email: sup.userId?.email,
-          schoolCode: sup.schoolId?.code,
-          schoolName: sup.schoolId?.nameEnglish,
-          designation: sup.designation,
-          active: sup.active,
-          address: sup.schoolId?.address,
-          distrcitState: sup.schoolId?.districtStateId?.district + ", " + sup.schoolId?.districtStateId?.state,
-          doj: sup.doj,
-          dob: sup.dob,
-          action: (<EmployeeButtons Id={sup._id} onEmployeeDelete={onEmployeeDelete} />),
-        }));
+
+      const data1 = JSON.parse(data).employees.map((sup) =>
+        buildEmployeeRow(sup, sno++, handleEmployeeDeleteRefresh)
+      );
+
       setEmployees(data1);
       setFilteredEmployees(data1);
       console.log("Data from local storage")
@@ -380,32 +391,14 @@ const List = () => {
             },
           }
         );
+
         if (responnse.data.success) {
           let sno = 1;
-          const data = await responnse.data.employees
-            .filter((sup) => {
-              const supUserId = String(sup?.userId?._id || sup?.userId || "");
-              return supUserId !== me;
-            }).map((sup) => ({
-              _id: sup._id,
-              sno: sno++,
-              empId: sup.employeeId,
-              name: sup.userId?.name,
-              role: sup.userId?.role,
-              contactNumber: sup.contactNumber,
-              email: sup.userId?.email,
-              schoolCode: sup.schoolId?.code,
-              schoolName: sup.schoolId?.nameEnglish,
-              designation: sup.designation,
-              active: sup.active,
-              address: sup.schoolId?.address,
-              distrcitState: sup.schoolId?.districtStateId?.district + ", " + sup.schoolId?.districtStateId?.state,
-              doj: sup.doj,
-              dob: sup.dob,
-              //dob: new Date(sup.dob).toLocaleDateString(),
-              //  profileImage: <img width={40} className='rounded-full' src={`https://unis-server.vercel.app/${sup.userId.profileImage}`} />,
-              action: (<EmployeeButtons Id={sup._id} onEmployeeDelete={onEmployeeDelete} />),
-            }));
+
+          const data = responnse.data.employees.map((sup) =>
+            buildEmployeeRow(sup, sno++, handleEmployeeDeleteRefresh)
+          );
+
           setEmployees(data);
           setFilteredEmployees(data);
           localStorage.removeItem('employees');

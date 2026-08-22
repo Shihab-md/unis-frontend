@@ -59,6 +59,16 @@ export function checkAuth(screenName) {
     return "OK";
 
   } else if (role === "admin" && authorizedScreensFor_ADMIN_Role.includes(screenName)) {
+    if (screenName === "studentAdd") {
+      const loggedInSchoolName = String(localStorage.getItem("schoolName") || "").trim();
+
+      if (loggedInSchoolName.startsWith("UN-00-00001")) {
+        return "OK";
+      }
+
+      return "NO";
+    }
+
     return "OK";
 
   } else if (role === "employee") {
