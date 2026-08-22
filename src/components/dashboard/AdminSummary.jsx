@@ -71,7 +71,7 @@ const AdminSummary = () => {
           <Link to="/dashboard/schools" >
             <SummaryCard
               icon={<FaMosque />}
-              text={user.role === "superadmin" || user.role === "hquser" || user.role === "supervisor"? "Niswans" : "Niswan"}
+              text={user.role === "superadmin" || user.role === "hquser" || user.role === "supervisor" ? "Niswans" : "Niswan"}
               number={user.role === "superadmin" || user.role === "hquser" ? summary.totalSchools : "*"}
               color="bg-pink-600"
             />
