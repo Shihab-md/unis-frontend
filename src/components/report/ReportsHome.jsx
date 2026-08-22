@@ -25,6 +25,7 @@ const defaultFilters = {
   q: "",
   courseId: "",
   acYear: "",
+  year: "",
   status: "",
   feesStatus: "",
   hostel: "",
@@ -83,6 +84,7 @@ export default function ReportsHome() {
     statuses: ["Active", "Alumni", "In-Active", "Transferred", "Graduated", "Discontinued"],
     feeStatuses: ["Paid", "Unpaid"],
     hostels: ["Yes", "No"],
+    studyYears: ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"],
   });
 
   const [kpis, setKpis] = useState({
@@ -122,6 +124,7 @@ export default function ReportsHome() {
     if (filters.q) qs.set("q", filters.q);
     if (filters.courseId) qs.set("courseId", filters.courseId);
     if (filters.acYear) qs.set("acYear", filters.acYear);
+    if (filters.year) qs.set("year", filters.year);
     if (filters.status) qs.set("status", filters.status);
     if (filters.feesStatus) qs.set("feesStatus", filters.feesStatus);
     if (filters.hostel) qs.set("hostel", filters.hostel);
@@ -151,7 +154,10 @@ export default function ReportsHome() {
     }
     if (filters.acYear) {
       const year = years.find((item) => String(item._id) === String(filters.acYear));
-      chips.push(`Year: ${year?.acYear || filters.acYear}`);
+      chips.push(`Academic Year: ${year?.acYear || filters.acYear}`);
+    }
+    if (filters.year !== "" && filters.year !== undefined && filters.year !== null) {
+      chips.push(`Studying Year: ${filters.year}`);
     }
     if (filters.status) chips.push(`Status: ${filters.status}`);
     if (filters.feesStatus) chips.push(`Fees: ${filters.feesStatus}`);
@@ -180,6 +186,9 @@ export default function ReportsHome() {
         statuses: Array.isArray(data?.statuses) ? data.statuses : [],
         feeStatuses: Array.isArray(data?.feeStatuses) ? data.feeStatuses : [],
         hostels: Array.isArray(data?.hostels) ? data.hostels : [],
+        studyYears: Array.isArray(data?.studyYears)
+          ? data.studyYears
+          : ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"],
       });
     } catch (e) {
       await MySwal.fire({

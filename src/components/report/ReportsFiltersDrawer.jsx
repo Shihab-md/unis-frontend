@@ -7,6 +7,7 @@ const getDefaultDraft = () => ({
   q: "",
   courseId: "",
   acYear: "",
+  year: "",
   status: "",
   feesStatus: "",
   hostel: "",
@@ -32,6 +33,13 @@ export default function ReportsFiltersDrawer({ meta, value, onApply, loading }) 
   const statuses = useMemo(() => (Array.isArray(meta?.statuses) ? meta.statuses : []), [meta]);
   const feeStatuses = useMemo(() => (Array.isArray(meta?.feeStatuses) ? meta.feeStatuses : []), [meta]);
   const hostels = useMemo(() => (Array.isArray(meta?.hostels) ? meta.hostels : []), [meta]);
+  const studyYears = useMemo(
+    () =>
+      Array.isArray(meta?.studyYears) && meta.studyYears.length > 0
+        ? meta.studyYears
+        : ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"],
+    [meta]
+  );
 
   useEffect(() => {
     setMounted(true);
@@ -96,7 +104,7 @@ export default function ReportsFiltersDrawer({ meta, value, onApply, loading }) 
                   <div>
                     <h3 className="text-lg font-semibold">Report Filters</h3>
                     <p className="text-sm text-white/80">
-                      Narrow by Niswan, course, year, status, fees and hostel.
+                      Narrow by Niswan, course, academic year, studying year, status, fees and hostel.
                     </p>
                   </div>
                   <button
@@ -162,20 +170,37 @@ export default function ReportsFiltersDrawer({ meta, value, onApply, loading }) 
                   </select>
                 </Field>
 
-                <Field label="Academic Year">
-                  <select
-                    className="w-full border rounded-lg p-2.5"
-                    value={draft.acYear || ""}
-                    onChange={(e) => setDraft((d) => ({ ...d, acYear: e.target.value }))}
-                  >
-                    <option value="">All</option>
-                    {academicYears.map((y) => (
-                      <option key={y._id} value={y._id}>
-                        {y.acYear}
-                      </option>
-                    ))}
-                  </select>
-                </Field>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <Field label="Academic Year">
+                    <select
+                      className="w-full border rounded-lg p-2.5"
+                      value={draft.acYear || ""}
+                      onChange={(e) => setDraft((d) => ({ ...d, acYear: e.target.value }))}
+                    >
+                      <option value="">All</option>
+                      {academicYears.map((y) => (
+                        <option key={y._id} value={y._id}>
+                          {y.acYear}
+                        </option>
+                      ))}
+                    </select>
+                  </Field>
+
+                  <Field label="Year of Studying">
+                    <select
+                      className="w-full border rounded-lg p-2.5"
+                      value={draft.year ?? ""}
+                      onChange={(e) => setDraft((d) => ({ ...d, year: e.target.value }))}
+                    >
+                      <option value="">All</option>
+                      {studyYears.map((year) => (
+                        <option key={String(year)} value={String(year)}>
+                          {year}
+                        </option>
+                      ))}
+                    </select>
+                  </Field>
+                </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <Field label="Status">
