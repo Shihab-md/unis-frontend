@@ -192,6 +192,9 @@ const View = () => {
                 <ViewCard type="title" text="Details" />
                 <ViewCard type="data" text={template?.details || "-"} />
 
+                <ViewCard type="title" text="Certificate Fees" />
+                <ViewCard type="data" text={String(template?.certificateFees ?? 0)} />
+
                 <div className="flex mt-1 space-x-3 mb-5" />
               </div>
             </div>

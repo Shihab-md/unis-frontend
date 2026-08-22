@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
-import { getBaseUrl, handleRightClickAndFullScreen, getSpinner, checkAuth, getPrcessing, showSwalAlert } from '../../utils/CommonHelper'
+import { getBaseUrl, handleRightClickAndFullScreen, checkAuth, getPrcessing, showSwalAlert } from '../../utils/CommonHelper'
 import { getSchoolsFromCache } from '../../utils/SchoolHelper'
 import { columnsSelect, getStudentsBySchoolAndCourse } from '../../utils/StudentHelper'
 import { getTemplatesFromCache } from '../../utils/TemplateHelper'
@@ -17,12 +17,13 @@ const Create = () => {
     handleRightClickAndFullScreen();
   }, []);
 
-  const [formData, setFormData] = useState(1);
+  const [formData, setFormData] = useState({});
   const [schools, setSchools] = useState([]);
   const [templates, setTemplates] = useState([]);
   const [students, setStudents] = useState([]);
-  const [tempId, setTempId] = useState([]);
-  const [schoolId, setSchoolId] = useState([]);
+  const [tempId, setTempId] = useState("");
+  const [schoolId, setSchoolId] = useState("");
+  const [selectedCertificateFees, setSelectedCertificateFees] = useState("0");
   const [selectedIssueDate, setSelectedIssueDate] = useState(null);
   const [studentsLoading, setStudentsLoading] = useState(false)
   const [createdAll, setCreatedAll] = useState(null)
@@ -31,13 +32,16 @@ const Create = () => {
   const [toggledClearRows, setToggleClearRows] = React.useState(false);
 
   const navigate = useNavigate()
+  const safeSchools = Array.isArray(schools) ? schools : [];
+  const safeTemplates = Array.isArray(templates) ? templates : [];
+  const safeStudents = Array.isArray(students) ? students : [];
 
   useEffect(() => {
     if (checkAuth("certificateAdd") === "NO") {
       showSwalAlert("Error!", "User Authorization Failed!", "error");
       navigate("/login");
     }
-  });
+  }, [navigate]);
 
   const handleRowChange = ({ selectedRows }) => {
     setSelectedRows(selectedRows);
@@ -47,19 +51,29 @@ const Create = () => {
     setToggleClearRows(!toggledClearRows);
   }
 
-  const handleReload = async (schoolIdIdVal) => {
+  const getTemplateFees = (templateId) => {
+    const selectedTemplate = safeTemplates.find(
+      (template) => String(template._id) === String(templateId)
+    );
+
+    const feeValue = Number(selectedTemplate?.certificateFees);
+    return String(Number.isFinite(feeValue) && feeValue >= 0 ? feeValue : 75);
+  };
+
+  const handleReload = async (schoolIdVal = schoolId, templateIdVal = tempId) => {
     setStudentsLoading(true)
     try {
-      console.log("Hi : " + schoolIdIdVal + ", " + tempId)
-      if (schoolIdIdVal && schoolIdIdVal != null && schoolIdIdVal != ''
-        && tempId && tempId != null && tempId != '') {
+      console.log("Hi : " + schoolIdVal + ", " + templateIdVal)
+      if (schoolIdVal && schoolIdVal != null && schoolIdVal !== ''
+        && templateIdVal && templateIdVal != null && templateIdVal !== '') {
         setStudents([]);
-        const students = await getStudentsBySchoolAndCourse(schoolIdIdVal, tempId);
-        setStudents(students);
+        const studentsData = await getStudentsBySchoolAndCourse(schoolIdVal, templateIdVal);
+        setStudents(Array.isArray(studentsData) ? studentsData : []);
       } else {
         setStudents([]);
       }
       setSelectedRows([]);
+      handleClearRows();
     } finally {
       setStudentsLoading(false)
     }
@@ -67,16 +81,16 @@ const Create = () => {
 
   useEffect(() => {
     const getSchoolsMap = async (id) => {
-      const schools = await getSchoolsFromCache(id);
-      setSchools(schools);
+      const schoolsData = await getSchoolsFromCache(id);
+      setSchools(Array.isArray(schoolsData) ? schoolsData : []);
     };
     getSchoolsMap();
   }, []);
 
   useEffect(() => {
     const getTemplatesMap = async (id) => {
-      const templates = await getTemplatesFromCache(id);
-      setTemplates(templates);
+      const templatesData = await getTemplatesFromCache(id);
+      setTemplates(Array.isArray(templatesData) ? templatesData : []);
     };
     getTemplatesMap();
   }, []);
@@ -87,17 +101,34 @@ const Create = () => {
     if (name === "templateId") {
       console.log('HIHIIH - ' + value)
       setTempId(value);
+      setSelectedCertificateFees(getTemplateFees(value));
+      handleReload(schoolId, value);
     }
 
     if (name === "schoolId") {
       setSchoolId(value);
-      handleReload(value);
+      handleReload(value, tempId);
     }
     setFormData((prevData) => ({ ...prevData, [name]: value }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!tempId) {
+      showSwalAlert("Error!", "Please Select Template!", "warning");
+      return;
+    }
+
+    if (!schoolId) {
+      showSwalAlert("Error!", "Please Select Niswan!", "warning");
+      return;
+    }
+
+    if (!selectedIssueDate) {
+      showSwalAlert("Error!", "Please Select Certificate Issue Date!", "warning");
+      return;
+    }
 
     if (!(selectedRows && selectedRows.length > 0)) {
       showSwalAlert("Error!", "Please Select Students!", "warning");
@@ -192,45 +223,36 @@ const Create = () => {
                 </label>
                 <select
                   name="templateId"
+                  value={tempId}
                   onChange={handleChange}
                   className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                   required
                 >
                   <option value=""></option>
-                  {templates.map((template) => (
+                  {safeTemplates.map((template) => (
                     <option key={template._id} value={template._id}>
-                      {template.courseId.name}
+                      {template.courseId?.name}
                     </option>
                   ))}
                 </select>
               </div>
 
-              {/* Schools  */}
-              <div className='md:col-span-2'>
+              {/* Certificate Fees */}
+              <div className="grid grid-cols-1 md:col-span-1">
                 <label className="block mt-2 text-sm font-medium text-slate-500">
-                  Select Niswan <span className="text-red-700">*</span>
+                  Certificate Fees
                 </label>
-
-                <Select className='mt-2 text-sm text-start mb-3'
-                  name="schoolId"
-                  // options={schools.filter(school => school.code !== 'UN-00-00001').map(option => ({
-                  options={schools.map(option => ({
-                    value: option._id, label: option.code + " : " + option.nameEnglish
-                  }))}
-
-                  onChange={(selectedOption) => {
-                    setSchoolId(selectedOption.value);
-                    handleReload(selectedOption.value);
-                    handleChange;
-                  }}
-                  maxMenuHeight={210}
-                  defaultOptions={[{ value: '', label: '' }]}
+                <input
+                  type="number"
+                  value={selectedCertificateFees}
+                  disabled={true}
+                  className="mt-2 p-2 block w-full border border-gray-300 rounded-md bg-slate-100 text-slate-700"
                 />
               </div>
 
               {/* Issue Date */}
               <div className="grid grid-cols-1 md:col-span-1">
-                <label className="block mt-3 text-sm font-medium text-slate-500">
+                <label className="block mt-2 text-sm font-medium text-slate-500">
                   Certificate Issue Date <span className="text-red-700">*</span>
                 </label>
                 <DatePicker
@@ -238,7 +260,7 @@ const Create = () => {
                   selected={selectedIssueDate}
                   onChange={(date) => setSelectedIssueDate(date)}
                   dateFormat="dd/MM/yyyy"
-                  className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                  className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                   required
                   showMonthDropdown
                   showYearDropdown
@@ -247,7 +269,28 @@ const Create = () => {
                 />
               </div>
 
-              <div className="md:col-span-2" />
+              {/* Schools  */}
+              <div className='md:col-span-3'>
+                <label className="block mt-2 text-sm font-medium text-slate-500">
+                  Select Niswan <span className="text-red-700">*</span>
+                </label>
+
+                <Select className='mt-2 text-sm text-start mb-3'
+                  name="schoolId"
+                  options={safeSchools.map(option => ({
+                    value: option._id, label: option.code + " : " + option.nameEnglish
+                  }))}
+
+                  onChange={(selectedOption) => {
+                    const selectedValue = selectedOption?.value || "";
+                    setSchoolId(selectedValue);
+                    handleReload(selectedValue, tempId);
+                    setFormData((prevData) => ({ ...prevData, schoolId: selectedValue }));
+                  }}
+                  maxMenuHeight={210}
+                  defaultOptions={[{ value: '', label: '' }]}
+                />
+              </div>
 
               {/* Students List */}
               <div className=''>
@@ -260,7 +303,7 @@ const Create = () => {
                 {!studentsLoading ?
                   <DataTable
                     columns={columnsSelect}
-                    data={students}
+                    data={safeStudents}
                     reloadData={handleReload}
                     selectableRows
                     selectableRowDisabled={(row) => !row.canSelectCertificate}
@@ -280,7 +323,7 @@ const Create = () => {
             type="submit"
             className="w-full mt-4 bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded-lg shadow-lg hover:-translate-y-0.5"
           >
-            Create Certificates
+            Create Certificate
           </button>
         </form>
       </div>

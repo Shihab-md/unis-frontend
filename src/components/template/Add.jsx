@@ -14,11 +14,12 @@ const Add = () => {
     handleRightClickAndFullScreen();
   }, []);;
 
-  const [formData, setFormData] = useState({});
+  const [formData, setFormData] = useState({ certificateFees: "75" });
   const [courses, setCourses] = useState([]);
   const [processing, setProcessing] = useState(null)
 
   const navigate = useNavigate()
+  const safeCourses = Array.isArray(courses) ? courses : [];
 
   useEffect(() => {
 
@@ -29,11 +30,11 @@ const Add = () => {
     }
 
     const getCoursesMap = async (id) => {
-      const courses = await getCoursesFromCache(id);
-      setCourses(courses);
+      const coursesData = await getCoursesFromCache(id);
+      setCourses(Array.isArray(coursesData) ? coursesData : []);
     };
     getCoursesMap();
-  }, []);
+  }, [navigate]);
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
@@ -49,10 +50,24 @@ const Add = () => {
     e.preventDefault();
     setProcessing(true);
 
+    const feesValue = Number(formData.certificateFees || 75);
+    if (!Number.isFinite(feesValue) || feesValue < 0) {
+      setProcessing(false);
+      showSwalAlert("Info!", "Certificate fees must be 0 or greater.", "info");
+      return;
+    }
+
     const formDataObj = new FormData()
     Object.keys(formData).forEach((key) => {
-      formDataObj.append(key, formData[key])
+      const value = formData[key];
+      if (value !== undefined && value !== null) {
+        formDataObj.append(key, value)
+      }
     })
+
+    if (!formDataObj.has("certificateFees")) {
+      formDataObj.append("certificateFees", "75");
+    }
 
     try {
       const headers = {
@@ -108,7 +123,7 @@ const Add = () => {
                 required
               >
                 <option value=""></option>
-                {courses.filter(course => course.type === "Deeniyath Education"
+                {safeCourses.filter(course => course.type === "Deeniyath Education"
                   || course.type === "Islamic Home Science"
                   || course.type === "Teacher Training").map((course) => (
                     <option key={course._id} value={course._id}>
@@ -132,10 +147,26 @@ const Add = () => {
               />
             </div>
 
+            {/* Certificate Fees */}
+            <div>
+              <label className="block mt-2 text-sm font-medium text-slate-500">
+                Certificate Fees
+              </label>
+              <input
+                type="number"
+                name="certificateFees"
+                value={formData.certificateFees || ""}
+                onChange={handleChange}
+                min="0"
+                step="1"
+                className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
+              />
+            </div>
+
             {/* Template Upload */}
             <div className="mt-5">
               <label className="block text-sm font-medium text-slate-500">
-                Upload Template Image<span className="text-red-700">*</span>
+                Upload Template Image/PDF<span className="text-red-700">*</span>
               </label>
               <input
                 type="file"
@@ -143,7 +174,7 @@ const Add = () => {
                 onChange={handleChange}
                 placeholder="Upload Template"
                 required
-                accept="image/*"
+                accept="image/*,application/pdf"
                 className="mt-1 p-2 mb-5 block w-full border border-gray-300 rounded-md"
               />
             </div>

@@ -23,7 +23,13 @@ export const columns = [
   {
     name: "Details",
     selector: (row) => row.details,
-    width: "340px",
+    width: "300px",
+  },
+  {
+    name: "Certificate Fees",
+    selector: (row) => Number(row.certificateFees ?? 75),
+    sortable: true,
+    width: "160px",
   },
   {
     name: "Action",
@@ -45,14 +51,14 @@ export const getTemplates = async (id) => {
       }
     );
     if (responnse.data.success) {
-      templates = responnse.data.templates;
+      templates = Array.isArray(responnse.data.templates) ? responnse.data.templates : [];
     }
   } catch (error) {
     if (error.response && !error.response.data.success) {
       showSwalAlert("Error!", error.response.data.error, "error");
     }
   }
-  return templates;
+  return Array.isArray(templates) ? templates : [];
 };
 
 export const getTemplatesFromCache = async (id) => {
@@ -67,14 +73,14 @@ export const getTemplatesFromCache = async (id) => {
       }
     );
     if (responnse.data.success) {
-      templates = responnse.data.templates;
+      templates = Array.isArray(responnse.data.templates) ? responnse.data.templates : [];
     }
   } catch (error) {
     if (error.response && !error.response.data.success) {
       showSwalAlert("Error!", error.response.data.error, "error");
     }
   }
-  return templates;
+  return Array.isArray(templates) ? templates : [];
 };
 
 export const TemplateButtons = ({ Id, onTemplateDelete }) => {

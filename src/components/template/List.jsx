@@ -50,6 +50,7 @@ const List = () => {
             code: sup.courseId?.code,
             name: sup.courseId?.name,
             details: sup.details,
+            certificateFees: Number(sup.certificateFees ?? 75),
             action: (<TemplateButtons Id={sup._id} onTemplateDelete={onTemplateDelete} />),
           }));
           setTemplates(data);
@@ -73,6 +74,7 @@ const List = () => {
     const records = templates.filter((sup) => (
       sup.code?.toLowerCase().includes(e.target.value.toLowerCase())
       || sup.name?.toLowerCase().includes(e.target.value.toLowerCase())
+      || String(sup.certificateFees || "").includes(e.target.value)
     ))
     setFilteredTemplates(records)
   }

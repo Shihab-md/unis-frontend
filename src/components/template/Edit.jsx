@@ -19,15 +19,17 @@ const Edit = () => {
   const [template, setTemplate] = useState({
     courseId: "",
     details: "",
+    certificateFees: "75",
   });
 
   const navigate = useNavigate();
   const { id } = useParams();
+  const safeCourses = Array.isArray(courses) ? courses : [];
 
   useEffect(() => {
     const getCoursesMap = async (id) => {
-      const courses = await getCoursesFromCache(id);
-      setCourses(courses);
+      const coursesData = await getCoursesFromCache(id);
+      setCourses(Array.isArray(coursesData) ? coursesData : []);
     };
     getCoursesMap();
   }, []);
@@ -54,9 +56,9 @@ const Edit = () => {
           const template = responnse.data.template;
           setTemplate((prev) => ({
             ...prev,
-            // code: template.code,
-            courseId: template.courseId && template.courseId._id ? template.courseId._id : null,
-            details: template.details,
+            courseId: template.courseId && template.courseId._id ? template.courseId._id : "",
+            details: template.details || "",
+            certificateFees: String(template.certificateFees ?? 75),
           }));
         }
       } catch (error) {
@@ -68,7 +70,7 @@ const Edit = () => {
     };
 
     fetchTemplate();
-  }, []);
+  }, [id, navigate]);
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
@@ -82,6 +84,14 @@ const Edit = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setProcessing(true);
+
+    const feesValue = Number(template.certificateFees || 75);
+    if (!Number.isFinite(feesValue) || feesValue < 0) {
+      setProcessing(false);
+      showSwalAlert("Info!", "Certificate fees must be 0 or greater.", "info");
+      return;
+    }
+
     try {
       const headers = {
         'Content-Type': 'multipart/form-data',
@@ -90,9 +100,18 @@ const Edit = () => {
         'Accept': 'application/json'
       }
 
+      const formDataObj = new FormData();
+      formDataObj.append("courseId", template.courseId || "");
+      formDataObj.append("details", template.details || "");
+      formDataObj.append("certificateFees", template.certificateFees || "75");
+
+      if (template.file) {
+        formDataObj.append("file", template.file);
+      }
+
       const response = await axios.put(
         (await getBaseUrl()).toString() + `template/${id}`,
-        template,
+        formDataObj,
         {
           headers: headers
         }
@@ -135,14 +154,14 @@ const Edit = () => {
                   </label>
                   <select
                     name="courseId"
-                    value={template.courseId}
+                    value={template.courseId || ""}
                     onChange={handleChange}
                     disabled={true}
-                    className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
+                    className="mt-2 p-2 block w-full border border-gray-300 rounded-md bg-slate-100"
                     required
                   >
                     <option value=""></option>
-                    {courses.map((course) => (
+                    {safeCourses.map((course) => (
                       <option key={course._id} value={course._id}>
                         {course.name}
                       </option>
@@ -158,27 +177,45 @@ const Edit = () => {
                   <input
                     type="text"
                     name="details"
-                    value={template.details}
+                    value={template.details || ""}
                     onChange={handleChange}
                     className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                     required
                   />
                 </div>
 
-                {/* Template Image Upload */}
+                {/* Certificate Fees */}
+                <div>
+                  <label className="block mt-2 text-sm font-medium text-slate-500">
+                    Certificate Fees
+                  </label>
+                  <input
+                    type="number"
+                    name="certificateFees"
+                    value={template.certificateFees || ""}
+                    onChange={handleChange}
+                    min="0"
+                    step="1"
+                    className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
+                  />
+                </div>
+
+                {/* Template Image/PDF Upload */}
                 <div className="mt-5">
                   <label className="block text-sm font-medium text-slate-500">
-                    Update Template <span className="text-red-700">*</span>
+                    Update Template
                   </label>
                   <input
                     type="file"
                     name="file"
                     onChange={handleChange}
                     placeholder="Upload Template"
-                    required
-                    accept="image/*"
-                    className="mt-1 p-2 mb-5 block w-full border border-gray-300 rounded-md"
+                    accept="image/*,application/pdf"
+                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                   />
+                  <p className="mt-1 mb-5 text-[11px] text-slate-500">
+                    Leave empty to keep existing template file.
+                  </p>
                 </div>
               </div>
             </div>
