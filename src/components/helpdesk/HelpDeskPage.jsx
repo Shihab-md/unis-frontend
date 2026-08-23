@@ -5,6 +5,7 @@ import CommonHeader from "../dashboard/CommonHeader";
 import { useAuth } from "../../context/AuthContext";
 import { helpDeskApi } from "../../api/helpDeskApi";
 import { LinkIcon } from "../../utils/CommonHelper";
+import { getSchoolsFromCache } from "../../utils/SchoolHelper";
 
 const PAGE_SIZE = 20;
 
@@ -29,6 +30,21 @@ const PRIORITY_OPTIONS = ["All", "Low", "Normal", "High", "Urgent"];
 const NEW_QUERY_PRIORITY_OPTIONS = PRIORITY_OPTIONS.filter((item) => item !== "All");
 const STATUS_OPTIONS = ["All", "Open", "In Progress", "Answered", "Closed"];
 const STATUS_UPDATE_OPTIONS = STATUS_OPTIONS.filter((item) => item !== "All");
+
+const ROLE_OPTIONS = [
+  "All",
+  "hquser",
+  "supervisor",
+  "admin",
+  "teacher",
+  "usthadh",
+  "warden",
+  "staff",
+  "employee",
+  "student",
+  "parent",
+  "guest",
+];
 
 const priorityClassMap = {
   Low: "bg-slate-50 text-slate-600 border-slate-200",
@@ -92,7 +108,7 @@ function QueryBadge({ children, className = "" }) {
   );
 }
 
-function SelectFilter({ label, value, onChange, options }) {
+function SelectFilter({ label, value, onChange, options, getLabel }) {
   return (
     <label className="grid gap-1 text-[11px] font-semibold text-slate-600">
       <span>{label}</span>
@@ -101,12 +117,74 @@ function SelectFilter({ label, value, onChange, options }) {
         onChange={(event) => onChange(event.target.value)}
         className="rounded-md border border-slate-300 bg-white px-2 py-2 text-xs font-medium text-slate-700 focus:border-teal-500 focus:outline-none"
       >
-        {options.map((option) => (
-          <option key={option} value={option === "All" ? "" : option}>
-            {option}
-          </option>
-        ))}
+        {options.map((option) => {
+          const optionValue = option === "All" ? "" : option;
+          const labelText = typeof getLabel === "function" ? getLabel(option) : option;
+
+          return (
+            <option key={option} value={optionValue}>
+              {labelText}
+            </option>
+          );
+        })}
       </select>
+    </label>
+  );
+}
+
+function SchoolFilter({ value, onChange, schools }) {
+  const safeSchools = Array.isArray(schools) ? schools : [];
+
+  return (
+    <label className="grid gap-1 text-[11px] font-semibold text-slate-600 xl:col-span-4">
+      <span>Niswan</span>
+      <select
+        value={value}
+        onChange={(event) => onChange(event.target.value)}
+        className="rounded-md border border-slate-300 bg-white px-2 py-2 text-xs font-medium text-slate-700 focus:border-teal-500 focus:outline-none"
+      >
+        <option value="">All Niswans</option>
+        {safeSchools.map((school) => {
+          const id = String(school?._id || "");
+          const code = String(school?.code || "").trim();
+          const name = String(school?.nameEnglish || "").trim();
+          const label = `${code}${code && name ? " : " : ""}${name}`.trim() || "Niswan";
+
+          return (
+            <option key={id || label} value={id}>
+              {label}
+            </option>
+          );
+        })}
+      </select>
+    </label>
+  );
+}
+
+function DateFilter({ label, value, onChange }) {
+  return (
+    <label className="grid gap-1 text-[11px] font-semibold text-slate-600">
+      <span>{label}</span>
+      <input
+        type="date"
+        value={value}
+        onChange={(event) => onChange(event.target.value)}
+        className="rounded-md border border-slate-300 bg-white px-2 py-2 text-xs font-medium text-slate-700 focus:border-teal-500 focus:outline-none"
+      />
+    </label>
+  );
+}
+
+function ToggleFilter({ checked, onChange, label }) {
+  return (
+    <label className="flex min-h-[58px] items-center gap-2 rounded-md border border-slate-300 bg-white px-3 py-2 text-xs font-bold text-slate-700">
+      <input
+        type="checkbox"
+        checked={checked}
+        onChange={(event) => onChange(event.target.checked)}
+        className="h-4 w-4 rounded border-slate-300 text-teal-600 focus:ring-teal-500"
+      />
+      <span>{label}</span>
     </label>
   );
 }
@@ -468,8 +546,15 @@ export default function HelpDeskPage() {
   const [statusFilter, setStatusFilter] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("");
   const [priorityFilter, setPriorityFilter] = useState("");
+  const [roleFilter, setRoleFilter] = useState("");
+  const [schoolFilter, setSchoolFilter] = useState("");
+  const [unreadOnly, setUnreadOnly] = useState(false);
+  const [updatedFrom, setUpdatedFrom] = useState("");
+  const [updatedTo, setUpdatedTo] = useState("");
+  const [schools, setSchools] = useState([]);
 
   const title = isSuperAdmin ? "HQ Help Desk - Received Queries" : "HQ Help Desk - My Queries";
+  const safeSchools = Array.isArray(schools) ? schools : [];
 
   const loadQueries = useCallback(async () => {
     setLoading(true);
@@ -483,6 +568,11 @@ export default function HelpDeskPage() {
         category: categoryFilter,
         priority: priorityFilter,
         search: appliedSearch,
+        unreadOnly,
+        role: isSuperAdmin ? roleFilter : "",
+        schoolId: isSuperAdmin ? schoolFilter : "",
+        updatedFrom,
+        updatedTo,
       });
 
       setQueries(Array.isArray(data?.queries) ? data.queries : []);
@@ -493,7 +583,19 @@ export default function HelpDeskPage() {
     } finally {
       setLoading(false);
     }
-  }, [page, statusFilter, categoryFilter, priorityFilter, appliedSearch]);
+  }, [
+    page,
+    statusFilter,
+    categoryFilter,
+    priorityFilter,
+    appliedSearch,
+    unreadOnly,
+    isSuperAdmin,
+    roleFilter,
+    schoolFilter,
+    updatedFrom,
+    updatedTo,
+  ]);
 
   const openQueryDetail = useCallback(async (id) => {
     if (!id) return;
@@ -518,6 +620,24 @@ export default function HelpDeskPage() {
   useEffect(() => {
     loadQueries();
   }, [loadQueries]);
+
+  useEffect(() => {
+    const loadSchools = async () => {
+      if (!isSuperAdmin) {
+        setSchools([]);
+        return;
+      }
+
+      try {
+        const schoolData = await getSchoolsFromCache();
+        setSchools(Array.isArray(schoolData) ? schoolData : []);
+      } catch {
+        setSchools([]);
+      }
+    };
+
+    loadSchools();
+  }, [isSuperAdmin]);
 
   useEffect(() => {
     const queryId = new URLSearchParams(location.search).get("queryId");
@@ -548,6 +668,11 @@ export default function HelpDeskPage() {
     setStatusFilter("");
     setCategoryFilter("");
     setPriorityFilter("");
+    setRoleFilter("");
+    setSchoolFilter("");
+    setUnreadOnly(false);
+    setUpdatedFrom("");
+    setUpdatedTo("");
     resetToFirstPage();
   };
 
@@ -632,12 +757,24 @@ export default function HelpDeskPage() {
 
   const queryList = useMemo(() => (Array.isArray(queries) ? queries : []), [queries]);
 
+  const activeFilterCount = [
+    appliedSearch,
+    statusFilter,
+    categoryFilter,
+    priorityFilter,
+    isSuperAdmin ? roleFilter : "",
+    isSuperAdmin ? schoolFilter : "",
+    unreadOnly ? "unread" : "",
+    updatedFrom,
+    updatedTo,
+  ].filter(Boolean).length;
+
   return (
     <>
       <div className="p-3 lg:p-5 bg-repeat mt-3">
         <div className="text-center">
           <h3 className="text-base lg:text-2xl font-bold px-5 py-0 text-gray-600">
-            Notifications
+            HQ Help Desk - My Queries
           </h3>
         </div>
       </div>
@@ -680,8 +817,21 @@ export default function HelpDeskPage() {
         </div>
 
         <div className="mb-4 rounded-xl border border-slate-200 bg-white/90 p-3 shadow-sm">
-          <div className="grid grid-cols-1 gap-3 md:grid-cols-5">
-            <div className="md:col-span-2">
+          <div className="mb-3 flex flex-col gap-1 md:flex-row md:items-center md:justify-between">
+            <div>
+              <p className="text-xs font-bold text-slate-700">Filters</p>
+              <p className="text-[10px] font-semibold text-slate-500">
+                Search, unread, status, category, priority, date, role, and Niswan filters are server-side.
+              </p>
+            </div>
+
+            <p className="text-[11px] font-bold text-teal-700">
+              Active Filters: {activeFilterCount}
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-8">
+            <div className="xl:col-span-2">
               <label className="grid gap-1 text-[11px] font-semibold text-slate-600">
                 <span>Search</span>
                 <div className="flex gap-2">
@@ -706,12 +856,45 @@ export default function HelpDeskPage() {
               </label>
             </div>
 
+            <ToggleFilter
+              checked={unreadOnly}
+              onChange={(checked) => {
+                setUnreadOnly(checked);
+                resetToFirstPage();
+              }}
+              label="Unread Only"
+            />
             <SelectFilter label="Status" value={statusFilter} onChange={handleFilterChange(setStatusFilter)} options={STATUS_OPTIONS} />
             <SelectFilter label="Category" value={categoryFilter} onChange={handleFilterChange(setCategoryFilter)} options={CATEGORY_OPTIONS} />
             <SelectFilter label="Priority" value={priorityFilter} onChange={handleFilterChange(setPriorityFilter)} options={PRIORITY_OPTIONS} />
+
+            {isSuperAdmin ? (
+              <SelectFilter
+                label="Role"
+                value={roleFilter}
+                onChange={handleFilterChange(setRoleFilter)}
+                options={ROLE_OPTIONS}
+                getLabel={(role) => role === "All" ? "All Roles" : getRoleLabel(role)}
+              />
+            ) : null}
+
+            {isSuperAdmin ? (
+              <SchoolFilter
+                value={schoolFilter}
+                onChange={handleFilterChange(setSchoolFilter)}
+                schools={safeSchools}
+              />
+            ) : null}
+
+            <DateFilter label="Updated From" value={updatedFrom} onChange={handleFilterChange(setUpdatedFrom)} />
+            <DateFilter label="Updated To" value={updatedTo} onChange={handleFilterChange(setUpdatedTo)} />
           </div>
 
-          <div className="mt-3 flex justify-end">
+          <div className="mt-3 flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
+            <p className="text-[10px] font-semibold text-slate-500">
+              Date filter uses last conversation update date, not only created date.
+            </p>
+
             <button
               type="button"
               onClick={clearFilters}

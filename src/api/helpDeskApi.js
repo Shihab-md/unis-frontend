@@ -20,11 +20,35 @@ const buildQueryString = (params = {}) => {
 };
 
 export const helpDeskApi = {
-  list: async ({ page = 1, limit = 20, status = "", category = "", priority = "", search = "" } = {}) =>
+  list: async ({
+    page = 1,
+    limit = 20,
+    status = "",
+    category = "",
+    priority = "",
+    search = "",
+    unreadOnly = false,
+    role = "",
+    schoolId = "",
+    updatedFrom = "",
+    updatedTo = "",
+  } = {}) =>
     (
       await axios.get(
         await buildUrl(
-          buildQueryString({ page, limit, status, category, priority, search })
+          buildQueryString({
+            page,
+            limit,
+            status,
+            category,
+            priority,
+            search,
+            unreadOnly: unreadOnly ? "true" : "",
+            role,
+            schoolId,
+            updatedFrom,
+            updatedTo,
+          })
         ),
         { headers: headers() }
       )

@@ -5,6 +5,7 @@ import { useAuth } from "../../context/AuthContext";
 import { notificationApi } from "../../api/notificationApi";
 import { getSchoolsFromCache } from "../../utils/SchoolHelper";
 import { LinkIcon } from "../../utils/CommonHelper";
+import { refreshNotificationBadge } from "./NotificationBell";
 
 const safePath = (path) =>
   typeof path === "string" &&
@@ -35,6 +36,50 @@ const TARGET_ROLE_OPTIONS = [
   { value: "parent", label: "Parent" },
 ];
 
+const RECEIVED_KIND_OPTIONS = [
+  { value: "all", label: "All Sources" },
+  { value: "manual", label: "Announcements" },
+  { value: "system", label: "System" },
+];
+
+const RESOURCE_TYPE_OPTIONS = [
+  { value: "all", label: "All Modules" },
+  { value: "System", label: "System" },
+  { value: "Student", label: "Student" },
+  { value: "Employee", label: "Employee" },
+  { value: "Certificate", label: "Certificate" },
+  { value: "Accounts", label: "Accounts" },
+  { value: "Inspection", label: "Inspection" },
+  { value: "School", label: "Niswan" },
+  { value: "Supervisor", label: "Muavin" },
+];
+
+const DELIVERY_STATUS_OPTIONS = [
+  { value: "all", label: "All Delivery" },
+  { value: "success", label: "Fully Sent" },
+  { value: "failed", label: "Has Failed" },
+  { value: "partial", label: "Partial" },
+  { value: "no-sent", label: "No Sent" },
+];
+
+const NOTIFICATION_PAGE_SIZE = 20;
+
+const defaultReceivedFilters = {
+  readStatus: "all",
+  kind: "all",
+  resourceType: "all",
+  dateFrom: "",
+  dateTo: "",
+};
+
+const defaultSentFilters = {
+  targetRole: "all",
+  schoolId: "all",
+  deliveryStatus: "all",
+  dateFrom: "",
+  dateTo: "",
+};
+
 const getRoleLabel = (role) => {
   return TARGET_ROLE_OPTIONS.find((item) => item.value === role)?.label || role;
 };
@@ -58,7 +103,38 @@ const getBroadcastNiswanText = (broadcast) => {
     .join(", ");
 };
 
-const NOTIFICATION_PAGE_SIZE = 20;
+const useDebouncedValue = (value, delay = 450) => {
+  const [debounced, setDebounced] = useState(value);
+
+  useEffect(() => {
+    const timer = window.setTimeout(() => setDebounced(value), delay);
+    return () => window.clearTimeout(timer);
+  }, [value, delay]);
+
+  return debounced;
+};
+
+const countActiveReceivedFilters = (filters, searchText) => {
+  return [
+    String(searchText || "").trim(),
+    filters.readStatus !== "all",
+    filters.kind !== "all",
+    filters.resourceType !== "all",
+    filters.dateFrom,
+    filters.dateTo,
+  ].filter(Boolean).length;
+};
+
+const countActiveSentFilters = (filters, searchText) => {
+  return [
+    String(searchText || "").trim(),
+    filters.targetRole !== "all",
+    filters.schoolId !== "all",
+    filters.deliveryStatus !== "all",
+    filters.dateFrom,
+    filters.dateTo,
+  ].filter(Boolean).length;
+};
 
 const PaginationFooter = ({
   page,
@@ -116,6 +192,9 @@ const PaginationFooter = ({
   );
 };
 
+const selectClass = "mt-1 w-full rounded-md border border-slate-300 bg-white px-2 py-2 text-xs text-slate-700 focus:border-teal-500 focus:outline-none";
+const inputClass = "mt-1 w-full rounded-md border border-slate-300 bg-white px-2 py-2 text-xs text-slate-700 focus:border-teal-500 focus:outline-none";
+
 export default function NotificationsPage() {
   const { user } = useAuth();
   const navigate = useNavigate();
@@ -126,7 +205,8 @@ export default function NotificationsPage() {
   const [items, setItems] = useState([]);
   const [broadcasts, setBroadcasts] = useState([]);
   const [activeTab, setActiveTab] = useState(isSuperAdmin ? "sent" : "received");
-  const [unreadOnly, setUnreadOnly] = useState(false);
+  const [receivedFilters, setReceivedFilters] = useState(defaultReceivedFilters);
+  const [sentFilters, setSentFilters] = useState(defaultSentFilters);
   const [unreadCount, setUnreadCount] = useState(0);
   const [allCount, setAllCount] = useState(0);
   const [receivedLoading, setReceivedLoading] = useState(true);
@@ -147,8 +227,13 @@ export default function NotificationsPage() {
   const [selectAllSchools, setSelectAllSchools] = useState(true);
   const [selectedSchoolIds, setSelectedSchoolIds] = useState([]);
 
+  const debouncedSearchText = useDebouncedValue(searchText, 450);
   const safeSchools = Array.isArray(schools) ? schools : [];
   const readCount = Math.max(0, Number(allCount || 0) - Number(unreadCount || 0));
+
+  const activeFilterCount = isSuperAdmin
+    ? countActiveSentFilters(sentFilters, debouncedSearchText)
+    : countActiveReceivedFilters(receivedFilters, debouncedSearchText);
 
   const loadReceived = useCallback(async (pageToLoad = receivedPage) => {
     if (isSuperAdmin) {
@@ -166,13 +251,19 @@ export default function NotificationsPage() {
       const data = await notificationApi.list({
         page: pageToLoad,
         limit: NOTIFICATION_PAGE_SIZE,
-        unreadOnly,
+        readStatus: receivedFilters.readStatus,
+        kind: receivedFilters.kind,
+        resourceType: receivedFilters.resourceType,
+        dateFrom: receivedFilters.dateFrom,
+        dateTo: receivedFilters.dateTo,
+        search: debouncedSearchText.trim(),
       });
 
       setItems(data?.notifications || []);
       setUnreadCount(Number(data?.unreadCount || 0));
       setAllCount(Number(data?.allCount ?? data?.total ?? 0));
       setReceivedTotal(Number(data?.total || 0));
+      refreshNotificationBadge();
     } catch (error) {
       setMessage(
         error?.response?.data?.error || "Unable to load notifications."
@@ -180,7 +271,7 @@ export default function NotificationsPage() {
     } finally {
       setReceivedLoading(false);
     }
-  }, [isSuperAdmin, receivedPage, unreadOnly]);
+  }, [debouncedSearchText, isSuperAdmin, receivedFilters, receivedPage]);
 
   const loadSent = useCallback(async (pageToLoad = sentPage) => {
     if (!isSuperAdmin) return;
@@ -191,6 +282,12 @@ export default function NotificationsPage() {
       const data = await notificationApi.sentList({
         page: pageToLoad,
         limit: NOTIFICATION_PAGE_SIZE,
+        search: debouncedSearchText.trim(),
+        targetRole: sentFilters.targetRole,
+        schoolId: sentFilters.schoolId,
+        deliveryStatus: sentFilters.deliveryStatus,
+        dateFrom: sentFilters.dateFrom,
+        dateTo: sentFilters.dateTo,
       });
 
       setBroadcasts(data?.broadcasts || []);
@@ -203,7 +300,15 @@ export default function NotificationsPage() {
     } finally {
       setSentLoading(false);
     }
-  }, [isSuperAdmin, sentPage]);
+  }, [debouncedSearchText, isSuperAdmin, sentFilters, sentPage]);
+
+  useEffect(() => {
+    setReceivedPage(1);
+  }, [debouncedSearchText, receivedFilters]);
+
+  useEffect(() => {
+    setSentPage(1);
+  }, [debouncedSearchText, sentFilters]);
 
   useEffect(() => {
     loadReceived();
@@ -243,43 +348,10 @@ export default function NotificationsPage() {
     return targetRoles.map((role) => getRoleLabel(role)).join(", ");
   }, [targetRoles]);
 
-  const filteredItems = useMemo(() => {
-    const keyword = searchText.trim().toLowerCase();
-    if (!keyword) return items;
-
-    return items.filter((item) => {
-      return [item?.title, item?.message, item?.type, item?.resourceType]
-        .filter(Boolean)
-        .join(" ")
-        .toLowerCase()
-        .includes(keyword);
-    });
-  }, [items, searchText]);
-
-  const filteredBroadcasts = useMemo(() => {
-    const keyword = searchText.trim().toLowerCase();
-    if (!keyword) return broadcasts;
-
-    return broadcasts.filter((broadcast) => {
-      return [
-        broadcast?.title,
-        broadcast?.message,
-        Array.isArray(broadcast?.targetRoles)
-          ? broadcast.targetRoles.map((role) => getRoleLabel(role)).join(" ")
-          : "",
-        getBroadcastNiswanText(broadcast),
-        broadcast?.createdByName,
-      ]
-        .filter(Boolean)
-        .join(" ")
-        .toLowerCase()
-        .includes(keyword);
-    });
-  }, [broadcasts, searchText]);
-
   const openItem = async (item) => {
     if (!item.readAt) {
       await notificationApi.markRead(item._id).catch(() => null);
+      refreshNotificationBadge();
       await loadReceived(receivedPage);
     }
 
@@ -296,6 +368,7 @@ export default function NotificationsPage() {
       await notificationApi.markAllRead();
       setReceivedPage(1);
       await loadReceived(1);
+      refreshNotificationBadge();
     } catch (error) {
       setMessage(
         error?.response?.data?.error ||
@@ -328,6 +401,27 @@ export default function NotificationsPage() {
     setTargetRoles([]);
     setSelectAllSchools(true);
     setSelectedSchoolIds([]);
+  };
+
+  const clearFilters = () => {
+    setSearchText("");
+    setMessage("");
+
+    if (isSuperAdmin) {
+      setSentFilters(defaultSentFilters);
+      setSentPage(1);
+    } else {
+      setReceivedFilters(defaultReceivedFilters);
+      setReceivedPage(1);
+    }
+  };
+
+  const updateReceivedFilter = (key, value) => {
+    setReceivedFilters((prev) => ({ ...prev, [key]: value }));
+  };
+
+  const updateSentFilter = (key, value) => {
+    setSentFilters((prev) => ({ ...prev, [key]: value }));
   };
 
   const handleSchoolSelection = (event) => {
@@ -416,7 +510,7 @@ export default function NotificationsPage() {
       setActiveTab("sent");
       setSentPage(1);
 
-      await Promise.all([loadReceived(1), loadSent(1)]);
+      await loadSent(1);
     } catch (error) {
       setMessage(
         error?.response?.data?.error || "Unable to send notification."
@@ -425,6 +519,181 @@ export default function NotificationsPage() {
       setBusy(false);
     }
   };
+
+  const receivedFilterPanel = !isSuperAdmin ? (
+    <div className="mb-4 rounded-xl border border-teal-100 bg-white/90 p-3 shadow-lg">
+      <div className="mb-3 flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
+        <p className="text-xs font-bold text-teal-700">
+          Notification Filters
+        </p>
+
+        <button
+          type="button"
+          onClick={clearFilters}
+          disabled={activeFilterCount === 0}
+          className="self-start rounded-md border border-slate-300 bg-white px-3 py-1 text-[11px] font-bold text-slate-600 disabled:cursor-not-allowed disabled:opacity-40 md:self-auto"
+        >
+          Clear Filters
+        </button>
+      </div>
+
+      <div className="grid grid-cols-1 gap-3 md:grid-cols-3 lg:grid-cols-6">
+        <div>
+          <label className="text-[11px] font-bold text-slate-600">Read Status</label>
+          <select
+            value={receivedFilters.readStatus}
+            onChange={(event) => updateReceivedFilter("readStatus", event.target.value)}
+            className={selectClass}
+          >
+            <option value="all">All</option>
+            <option value="unread">Unread Only</option>
+            <option value="read">Read Only</option>
+          </select>
+        </div>
+
+        <div>
+          <label className="text-[11px] font-bold text-slate-600">Source</label>
+          <select
+            value={receivedFilters.kind}
+            onChange={(event) => updateReceivedFilter("kind", event.target.value)}
+            className={selectClass}
+          >
+            {RECEIVED_KIND_OPTIONS.map((item) => (
+              <option key={item.value} value={item.value}>{item.label}</option>
+            ))}
+          </select>
+        </div>
+
+        <div>
+          <label className="text-[11px] font-bold text-slate-600">Module</label>
+          <select
+            value={receivedFilters.resourceType}
+            onChange={(event) => updateReceivedFilter("resourceType", event.target.value)}
+            className={selectClass}
+          >
+            {RESOURCE_TYPE_OPTIONS.map((item) => (
+              <option key={item.value} value={item.value}>{item.label}</option>
+            ))}
+          </select>
+        </div>
+
+        <div>
+          <label className="text-[11px] font-bold text-slate-600">From Date</label>
+          <input
+            type="date"
+            value={receivedFilters.dateFrom}
+            onChange={(event) => updateReceivedFilter("dateFrom", event.target.value)}
+            className={inputClass}
+          />
+        </div>
+
+        <div>
+          <label className="text-[11px] font-bold text-slate-600">To Date</label>
+          <input
+            type="date"
+            value={receivedFilters.dateTo}
+            onChange={(event) => updateReceivedFilter("dateTo", event.target.value)}
+            className={inputClass}
+          />
+        </div>
+
+        <div className="rounded-lg bg-teal-50 px-3 py-2 text-[11px] font-semibold text-teal-800">
+          <p>Unread: <span className="font-bold">{unreadCount}</span></p>
+          <p className="mt-1">Read: <span className="font-bold">{readCount}</span></p>
+        </div>
+      </div>
+    </div>
+  ) : null;
+
+  const sentFilterPanel = isSuperAdmin ? (
+    <div className="mb-4 rounded-xl border border-pink-100 bg-white/90 p-3 shadow-lg">
+      <div className="mb-3 flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
+        <p className="text-xs font-bold text-pink-700">
+          Sent Notification Filters
+        </p>
+
+        <button
+          type="button"
+          onClick={clearFilters}
+          disabled={activeFilterCount === 0}
+          className="self-start rounded-md border border-slate-300 bg-white px-3 py-1 text-[11px] font-bold text-slate-600 disabled:cursor-not-allowed disabled:opacity-40 md:self-auto"
+        >
+          Clear Filters
+        </button>
+      </div>
+
+      <div className="grid grid-cols-1 gap-3 md:grid-cols-3 lg:grid-cols-6">
+        <div>
+          <label className="text-[11px] font-bold text-slate-600">Target Role</label>
+          <select
+            value={sentFilters.targetRole}
+            onChange={(event) => updateSentFilter("targetRole", event.target.value)}
+            className={selectClass}
+          >
+            <option value="all">All Roles</option>
+            {TARGET_ROLE_OPTIONS.map((role) => (
+              <option key={role.value} value={role.value}>{role.label}</option>
+            ))}
+          </select>
+        </div>
+
+        <div>
+          <label className="text-[11px] font-bold text-slate-600">Target Niswan</label>
+          <select
+            value={sentFilters.schoolId}
+            onChange={(event) => updateSentFilter("schoolId", event.target.value)}
+            className={selectClass}
+          >
+            <option value="all">All Niswans / Any Scope</option>
+            <option value="ALL">Only All-Niswan Broadcasts</option>
+            {safeSchools.map((school) => (
+              <option key={school._id} value={school._id}>
+                {school.code} : {school.nameEnglish}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div>
+          <label className="text-[11px] font-bold text-slate-600">Delivery</label>
+          <select
+            value={sentFilters.deliveryStatus}
+            onChange={(event) => updateSentFilter("deliveryStatus", event.target.value)}
+            className={selectClass}
+          >
+            {DELIVERY_STATUS_OPTIONS.map((item) => (
+              <option key={item.value} value={item.value}>{item.label}</option>
+            ))}
+          </select>
+        </div>
+
+        <div>
+          <label className="text-[11px] font-bold text-slate-600">From Date</label>
+          <input
+            type="date"
+            value={sentFilters.dateFrom}
+            onChange={(event) => updateSentFilter("dateFrom", event.target.value)}
+            className={inputClass}
+          />
+        </div>
+
+        <div>
+          <label className="text-[11px] font-bold text-slate-600">To Date</label>
+          <input
+            type="date"
+            value={sentFilters.dateTo}
+            onChange={(event) => updateSentFilter("dateTo", event.target.value)}
+            className={inputClass}
+          />
+        </div>
+
+        <div className="rounded-lg bg-pink-50 px-3 py-2 text-[11px] font-semibold text-pink-800">
+          <p>Matched: <span className="font-bold">{sentTotal}</span></p>
+          <p className="mt-1">Page Size: <span className="font-bold">{NOTIFICATION_PAGE_SIZE}</span></p>
+        </div>
+      </div>
+    </div>
+  ) : null;
 
   return (
     <div className="p-3 lg:p-5 bg-repeat mt-3">
@@ -435,7 +704,7 @@ export default function NotificationsPage() {
       </div>
       <div className="mx-auto max-w-6xl">
         <div className="flex items-center justify-center mt-5 mb-3">
-          <div className="flex items-center justify-center gap-3 rounded-lg bg-white/80 border border-slate-200 shadow-lg p-2">
+          <div className="flex flex-wrap items-center justify-center gap-3 rounded-lg bg-white/80 border border-slate-200 shadow-lg p-2">
             <div className="mr-1">
               {LinkIcon("/dashboard", "Back")}
             </div>
@@ -447,6 +716,7 @@ export default function NotificationsPage() {
               placeholder={isSuperAdmin ? "Search sent notifications..." : "Search notifications..."}
               className="w-[190px] md:w-[320px] rounded-md border border-gray-300 px-3 py-2 text-xs md:text-sm focus:outline-none focus:border-teal-500"
             />
+
 
             {isSuperAdmin ? (
               <div
@@ -469,6 +739,9 @@ export default function NotificationsPage() {
             {message}
           </div>
         ) : null}
+
+        {receivedFilterPanel}
+        {sentFilterPanel}
 
         {isSuperAdmin && showSendForm ? (
           <form
@@ -633,15 +906,12 @@ export default function NotificationsPage() {
 
         {!isSuperAdmin && activeTab === "received" ? (
           <>
-            <div className="mb-3 flex items-center justify-between gap-2">
-              <div className="flex gap-2">
+            <div className="mb-3 flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
+              <div className="flex flex-wrap items-center gap-2">
                 <button
                   type="button"
-                  onClick={() => {
-                    setReceivedPage(1);
-                    setUnreadOnly(false);
-                  }}
-                  className={`rounded-full px-3 py-1.5 text-xs font-bold ${!unreadOnly
+                  onClick={() => updateReceivedFilter("readStatus", "all")}
+                  className={`rounded-full px-3 py-1.5 text-xs font-bold ${receivedFilters.readStatus === "all"
                     ? "bg-teal-600 text-white"
                     : "bg-white text-slate-600 border"
                     }`}
@@ -651,11 +921,8 @@ export default function NotificationsPage() {
 
                 <button
                   type="button"
-                  onClick={() => {
-                    setReceivedPage(1);
-                    setUnreadOnly(true);
-                  }}
-                  className={`rounded-full px-3 py-1.5 text-xs font-bold ${unreadOnly
+                  onClick={() => updateReceivedFilter("readStatus", "unread")}
+                  className={`rounded-full px-3 py-1.5 text-xs font-bold ${receivedFilters.readStatus === "unread"
                     ? "bg-teal-600 text-white"
                     : "bg-white text-slate-600 border"
                     }`}
@@ -663,20 +930,27 @@ export default function NotificationsPage() {
                   Unread
                 </button>
 
-                <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
-                  <p className="text-xs font-semibold text-slate-700 text-center md:text-left">
-                    Unread: <span className="font-bold text-teal-700">{unreadCount}</span>{" "}
-                    • Read: <span className="font-bold text-slate-600">{readCount}</span>
-                  </p>
+                <button
+                  type="button"
+                  onClick={() => updateReceivedFilter("readStatus", "read")}
+                  className={`rounded-full px-3 py-1.5 text-xs font-bold ${receivedFilters.readStatus === "read"
+                    ? "bg-teal-600 text-white"
+                    : "bg-white text-slate-600 border"
+                    }`}
+                >
+                  Read
+                </button>
 
-                </div>
-
+                <p className="text-xs font-semibold text-slate-700 text-center md:text-left">
+                  Unread: <span className="font-bold text-teal-700">{unreadCount}</span>{" "}
+                  • Read: <span className="font-bold text-slate-600">{readCount}</span>
+                </p>
               </div>
 
               <button
                 disabled={busy || unreadCount === 0}
                 onClick={markAll}
-                className="text-xs font-bold text-teal-700 disabled:opacity-40"
+                className="self-start text-xs font-bold text-teal-700 disabled:opacity-40 md:self-auto"
               >
                 Mark all read
               </button>
@@ -687,11 +961,11 @@ export default function NotificationsPage() {
                 <p className="p-5 text-sm text-slate-500">Loading notifications...</p>
               ) : null}
 
-              {!receivedLoading && filteredItems.length === 0 ? (
+              {!receivedLoading && items.length === 0 ? (
                 <p className="p-5 text-sm text-slate-500">No notifications found.</p>
               ) : null}
 
-              {filteredItems.map((item) => (
+              {items.map((item) => (
                 <button
                   key={item._id}
                   onClick={() => openItem(item)}
@@ -705,16 +979,28 @@ export default function NotificationsPage() {
                     />
 
                     <div className="min-w-0">
-                      <p className="font-bold text-sm text-slate-800">
-                        {item.title}
-                      </p>
+                      <div className="flex flex-wrap items-center gap-2">
+                        <p className="font-bold text-sm text-slate-800">
+                          {item.title}
+                        </p>
+                        {!item.readAt ? (
+                          <span className="rounded-full bg-teal-600 px-2 py-0.5 text-[9px] font-bold text-white">
+                            NEW
+                          </span>
+                        ) : null}
+                        {item.type === "manual.broadcast" ? (
+                          <span className="rounded-full bg-pink-50 px-2 py-0.5 text-[9px] font-bold text-pink-700">
+                            Announcement
+                          </span>
+                        ) : null}
+                      </div>
 
                       <p className="mt-1 whitespace-pre-line text-xs leading-5 text-slate-600">
                         {item.message}
                       </p>
 
                       <p className="mt-2 text-[10px] text-slate-400">
-                        {new Date(item.createdAt).toLocaleString()}
+                        {item.resourceType || "System"} • {new Date(item.createdAt).toLocaleString()}
                       </p>
                     </div>
                   </div>
@@ -726,7 +1012,7 @@ export default function NotificationsPage() {
                 total={receivedTotal}
                 limit={NOTIFICATION_PAGE_SIZE}
                 loading={receivedLoading}
-                label={unreadOnly ? "unread notifications" : "notifications"}
+                label={receivedFilters.readStatus === "unread" ? "unread notifications" : "notifications"}
                 onPageChange={setReceivedPage}
               />
             </div>
@@ -743,12 +1029,12 @@ export default function NotificationsPage() {
               <p className="p-5 text-sm text-slate-500">Loading sent details...</p>
             ) : null}
 
-            {!sentLoading && filteredBroadcasts.length === 0 ? (
+            {!sentLoading && broadcasts.length === 0 ? (
               <p className="p-5 text-sm text-slate-500">No sent notification details found.</p>
             ) : null}
 
             <div className="divide-y divide-slate-100">
-              {filteredBroadcasts.map((broadcast) => (
+              {broadcasts.map((broadcast) => (
                 <div key={broadcast._id} className="p-4 hover:bg-sky-50/50">
                   <div className="flex flex-col gap-2 md:flex-row md:items-start md:justify-between">
                     <div className="min-w-0">
@@ -760,7 +1046,10 @@ export default function NotificationsPage() {
                       </p>
                     </div>
 
-                    <div className="shrink-0 rounded-md bg-emerald-50 px-2 py-1 text-[11px] font-semibold text-emerald-700">
+                    <div className={`shrink-0 rounded-md px-2 py-1 text-[11px] font-semibold ${Number(broadcast.failedCount || 0) > 0
+                      ? "bg-rose-50 text-rose-700"
+                      : "bg-emerald-50 text-emerald-700"
+                      }`}>
                       Sent: {broadcast.sentCount || 0} / Target: {broadcast.targetUserCount || 0}
                     </div>
                   </div>

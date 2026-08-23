@@ -7,14 +7,43 @@ const headers = () => ({
 
 const url = async (path) => `${(await getBaseUrl()).toString()}notifications${path}`;
 
+const cleanParams = (params = {}) => {
+  const query = new URLSearchParams();
+
+  Object.entries(params).forEach(([key, value]) => {
+    if (value === undefined || value === null || value === "") return;
+    query.set(key, String(value));
+  });
+
+  return query.toString();
+};
+
 export const notificationApi = {
-  list: async ({ page = 1, limit = 20, unreadOnly = false } = {}) =>
-    (
-      await axios.get(
-        await url(`/?page=${page}&limit=${limit}&unreadOnly=${unreadOnly}`),
-        { headers: headers() }
-      )
-    ).data,
+  list: async ({
+    page = 1,
+    limit = 20,
+    unreadOnly = false,
+    readStatus = "all",
+    kind = "all",
+    resourceType = "all",
+    dateFrom = "",
+    dateTo = "",
+    search = "",
+  } = {}) => {
+    const query = cleanParams({
+      page,
+      limit,
+      unreadOnly,
+      readStatus,
+      kind,
+      resourceType,
+      dateFrom,
+      dateTo,
+      search,
+    });
+
+    return (await axios.get(await url(`/?${query}`), { headers: headers() })).data;
+  },
 
   unreadCount: async () =>
     (await axios.get(await url("/unread-count"), { headers: headers() })).data,
@@ -28,12 +57,29 @@ export const notificationApi = {
   sendMessage: async (payload) =>
     (await axios.post(await url("/send"), payload, { headers: headers() })).data,
 
-  sentList: async ({ page = 1, limit = 30 } = {}) =>
-    (
-      await axios.get(await url(`/sent?page=${page}&limit=${limit}`), {
-        headers: headers(),
-      })
-    ).data,
+  sentList: async ({
+    page = 1,
+    limit = 20,
+    search = "",
+    targetRole = "all",
+    schoolId = "all",
+    deliveryStatus = "all",
+    dateFrom = "",
+    dateTo = "",
+  } = {}) => {
+    const query = cleanParams({
+      page,
+      limit,
+      search,
+      targetRole,
+      schoolId,
+      deliveryStatus,
+      dateFrom,
+      dateTo,
+    });
+
+    return (await axios.get(await url(`/sent?${query}`), { headers: headers() })).data;
+  },
 
   // Kept for mobile/browser push registration compatibility.
   webPublicKey: async () =>
