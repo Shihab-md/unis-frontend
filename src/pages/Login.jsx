@@ -9,6 +9,7 @@ import {
   showSwalAlert,
 } from "../utils/CommonHelper";
 import { useKeyboardAvoidance } from "../utils/useKeyboardAvoidance";
+import Swal from "sweetalert2";
 
 const Login = () => {
   const [loginId, setLoginId] = useState(""); // ✅ employeeId or email
@@ -28,6 +29,23 @@ const Login = () => {
 
   useEffect(() => {
     handleRightClickAndFullScreen();
+  }, []);
+
+  useEffect(() => {
+    const message = sessionStorage.getItem("UNIS_LOGIN_MESSAGE");
+    const reason = new URLSearchParams(window.location.search).get("reason");
+
+    if (message || reason === "session-expired") {
+      sessionStorage.removeItem("UNIS_LOGIN_MESSAGE");
+
+      Swal.fire({
+        icon: "warning",
+        title: "Session Expired",
+        text: message || "Session expired. Please login again.",
+        confirmButtonText: "OK",
+        background: "url(/bg_card.png)",
+      });
+    }
   }, []);
 
   const handleForgotPass = () => {
