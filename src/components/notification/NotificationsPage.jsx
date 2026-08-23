@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
-import CommonHeader from "../dashboard/CommonHeader";
 import { useAuth } from "../../context/AuthContext";
 import { notificationApi } from "../../api/notificationApi";
 import { getSchoolsFromCache } from "../../utils/SchoolHelper";
@@ -16,11 +15,11 @@ const safePath = (path) =>
 
 const escapeHtml = (value = "") =>
   String(value)
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&#039;");
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
 
 const TARGET_ROLE_OPTIONS = [
   { value: "superadmin", label: "Superadmin" },
@@ -59,6 +58,64 @@ const getBroadcastNiswanText = (broadcast) => {
     .join(", ");
 };
 
+const NOTIFICATION_PAGE_SIZE = 20;
+
+const PaginationFooter = ({
+  page,
+  total,
+  limit = NOTIFICATION_PAGE_SIZE,
+  loading = false,
+  onPageChange,
+  label = "records",
+}) => {
+  const safeTotal = Math.max(0, Number(total || 0));
+  const safeLimit = Math.max(1, Number(limit || NOTIFICATION_PAGE_SIZE));
+  const totalPages = Math.max(1, Math.ceil(safeTotal / safeLimit));
+  const currentPage = Math.min(Math.max(Number(page || 1), 1), totalPages);
+  const start = safeTotal === 0 ? 0 : (currentPage - 1) * safeLimit + 1;
+  const end = Math.min(currentPage * safeLimit, safeTotal);
+
+  if (safeTotal <= safeLimit) {
+    return safeTotal > 0 ? (
+      <div className="flex flex-col gap-2 border-t border-slate-100 bg-slate-50/70 px-4 py-3 text-center text-[11px] font-semibold text-slate-500 md:flex-row md:items-center md:justify-between md:text-left">
+        <span>Showing {start}-{end} of {safeTotal} {label}</span>
+      </div>
+    ) : null;
+  }
+
+  return (
+    <div className="flex flex-col gap-2 border-t border-slate-100 bg-slate-50/70 px-4 py-3 text-center text-[11px] font-semibold text-slate-600 md:flex-row md:items-center md:justify-between md:text-left">
+      <span>
+        Showing {start}-{end} of {safeTotal} {label}
+      </span>
+
+      <div className="flex items-center justify-center gap-2">
+        <button
+          type="button"
+          disabled={loading || currentPage <= 1}
+          onClick={() => onPageChange?.(currentPage - 1)}
+          className="rounded-md border border-slate-300 bg-white px-3 py-1 text-[11px] font-bold text-slate-600 disabled:cursor-not-allowed disabled:opacity-40"
+        >
+          Previous
+        </button>
+
+        <span className="rounded-md bg-white px-3 py-1 text-[11px] font-bold text-pink-700 shadow-sm">
+          Page {currentPage} / {totalPages}
+        </span>
+
+        <button
+          type="button"
+          disabled={loading || currentPage >= totalPages}
+          onClick={() => onPageChange?.(currentPage + 1)}
+          className="rounded-md border border-slate-300 bg-white px-3 py-1 text-[11px] font-bold text-slate-600 disabled:cursor-not-allowed disabled:opacity-40"
+        >
+          Next
+        </button>
+      </div>
+    </div>
+  );
+};
+
 export default function NotificationsPage() {
   const { user } = useAuth();
   const navigate = useNavigate();
@@ -68,7 +125,7 @@ export default function NotificationsPage() {
 
   const [items, setItems] = useState([]);
   const [broadcasts, setBroadcasts] = useState([]);
-  const [activeTab, setActiveTab] = useState("received");
+  const [activeTab, setActiveTab] = useState(isSuperAdmin ? "sent" : "received");
   const [unreadOnly, setUnreadOnly] = useState(false);
   const [unreadCount, setUnreadCount] = useState(0);
   const [allCount, setAllCount] = useState(0);
@@ -77,6 +134,10 @@ export default function NotificationsPage() {
   const [message, setMessage] = useState("");
   const [busy, setBusy] = useState(false);
   const [searchText, setSearchText] = useState("");
+  const [receivedPage, setReceivedPage] = useState(1);
+  const [receivedTotal, setReceivedTotal] = useState(0);
+  const [sentPage, setSentPage] = useState(1);
+  const [sentTotal, setSentTotal] = useState(0);
 
   const [showSendForm, setShowSendForm] = useState(false);
   const [schools, setSchools] = useState([]);
@@ -89,19 +150,29 @@ export default function NotificationsPage() {
   const safeSchools = Array.isArray(schools) ? schools : [];
   const readCount = Math.max(0, Number(allCount || 0) - Number(unreadCount || 0));
 
-  const loadReceived = useCallback(async () => {
+  const loadReceived = useCallback(async (pageToLoad = receivedPage) => {
+    if (isSuperAdmin) {
+      setItems([]);
+      setUnreadCount(0);
+      setAllCount(0);
+      setReceivedTotal(0);
+      setReceivedLoading(false);
+      return;
+    }
+
     setReceivedLoading(true);
 
     try {
       const data = await notificationApi.list({
-        page: 1,
-        limit: 50,
+        page: pageToLoad,
+        limit: NOTIFICATION_PAGE_SIZE,
         unreadOnly,
       });
 
       setItems(data?.notifications || []);
       setUnreadCount(Number(data?.unreadCount || 0));
       setAllCount(Number(data?.allCount ?? data?.total ?? 0));
+      setReceivedTotal(Number(data?.total || 0));
     } catch (error) {
       setMessage(
         error?.response?.data?.error || "Unable to load notifications."
@@ -109,16 +180,21 @@ export default function NotificationsPage() {
     } finally {
       setReceivedLoading(false);
     }
-  }, [unreadOnly]);
+  }, [isSuperAdmin, receivedPage, unreadOnly]);
 
-  const loadSent = useCallback(async () => {
+  const loadSent = useCallback(async (pageToLoad = sentPage) => {
     if (!isSuperAdmin) return;
 
     setSentLoading(true);
 
     try {
-      const data = await notificationApi.sentList({ page: 1, limit: 50 });
+      const data = await notificationApi.sentList({
+        page: pageToLoad,
+        limit: NOTIFICATION_PAGE_SIZE,
+      });
+
       setBroadcasts(data?.broadcasts || []);
+      setSentTotal(Number(data?.total || 0));
     } catch (error) {
       setMessage(
         error?.response?.data?.error ||
@@ -127,14 +203,19 @@ export default function NotificationsPage() {
     } finally {
       setSentLoading(false);
     }
-  }, [isSuperAdmin]);
+  }, [isSuperAdmin, sentPage]);
 
   useEffect(() => {
     loadReceived();
   }, [loadReceived]);
 
   useEffect(() => {
-    if (isSuperAdmin) loadSent();
+    if (isSuperAdmin) {
+      setActiveTab("sent");
+      loadSent();
+    } else {
+      setActiveTab("received");
+    }
   }, [isSuperAdmin, loadSent]);
 
   useEffect(() => {
@@ -199,19 +280,22 @@ export default function NotificationsPage() {
   const openItem = async (item) => {
     if (!item.readAt) {
       await notificationApi.markRead(item._id).catch(() => null);
-      await loadReceived();
+      await loadReceived(receivedPage);
     }
 
     navigate(safePath(item.webPath));
   };
 
   const markAll = async () => {
+    if (isSuperAdmin) return;
+
     setBusy(true);
     setMessage("");
 
     try {
       await notificationApi.markAllRead();
-      await loadReceived();
+      setReceivedPage(1);
+      await loadReceived(1);
     } catch (error) {
       setMessage(
         error?.response?.data?.error ||
@@ -330,8 +414,9 @@ export default function NotificationsPage() {
       clearSendForm();
       setShowSendForm(false);
       setActiveTab("sent");
+      setSentPage(1);
 
-      await Promise.all([loadReceived(), loadSent()]);
+      await Promise.all([loadReceived(1), loadSent(1)]);
     } catch (error) {
       setMessage(
         error?.response?.data?.error || "Unable to send notification."
@@ -359,7 +444,7 @@ export default function NotificationsPage() {
               type="text"
               value={searchText}
               onChange={(event) => setSearchText(event.target.value)}
-              placeholder="Search notifications..."
+              placeholder={isSuperAdmin ? "Search sent notifications..." : "Search notifications..."}
               className="w-[190px] md:w-[320px] rounded-md border border-gray-300 px-3 py-2 text-xs md:text-sm focus:outline-none focus:border-teal-500"
             />
 
@@ -379,29 +464,9 @@ export default function NotificationsPage() {
           </div>
         </div>
 
-        {isSuperAdmin ? (
-          <div className="mb-4 flex items-center justify-center gap-2">
-            <button
-              type="button"
-              onClick={() => setActiveTab("received")}
-              className={`rounded-full px-4 py-1.5 text-xs font-bold shadow-sm ${activeTab === "received"
-                ? "bg-teal-600 text-white"
-                : "bg-white text-slate-600 border border-slate-200"
-                }`}
-            >
-              Received
-            </button>
-
-            <button
-              type="button"
-              onClick={() => setActiveTab("sent")}
-              className={`rounded-full px-4 py-1.5 text-xs font-bold shadow-sm ${activeTab === "sent"
-                ? "bg-pink-600 text-white"
-                : "bg-white text-slate-600 border border-slate-200"
-                }`}
-            >
-              Sent Details
-            </button>
+        {message ? (
+          <div className="mb-4 rounded-lg border border-slate-200 bg-white/90 px-3 py-2 text-xs text-slate-700 shadow-sm whitespace-pre-line text-center md:text-left">
+            {message}
           </div>
         ) : null}
 
@@ -566,13 +631,16 @@ export default function NotificationsPage() {
           </form>
         ) : null}
 
-        {activeTab === "received" ? (
+        {!isSuperAdmin && activeTab === "received" ? (
           <>
             <div className="mb-3 flex items-center justify-between gap-2">
               <div className="flex gap-2">
                 <button
                   type="button"
-                  onClick={() => setUnreadOnly(false)}
+                  onClick={() => {
+                    setReceivedPage(1);
+                    setUnreadOnly(false);
+                  }}
                   className={`rounded-full px-3 py-1.5 text-xs font-bold ${!unreadOnly
                     ? "bg-teal-600 text-white"
                     : "bg-white text-slate-600 border"
@@ -583,7 +651,10 @@ export default function NotificationsPage() {
 
                 <button
                   type="button"
-                  onClick={() => setUnreadOnly(true)}
+                  onClick={() => {
+                    setReceivedPage(1);
+                    setUnreadOnly(true);
+                  }}
                   className={`rounded-full px-3 py-1.5 text-xs font-bold ${unreadOnly
                     ? "bg-teal-600 text-white"
                     : "bg-white text-slate-600 border"
@@ -598,11 +669,6 @@ export default function NotificationsPage() {
                     • Read: <span className="font-bold text-slate-600">{readCount}</span>
                   </p>
 
-                  {message ? (
-                    <p className="text-xs text-slate-700 whitespace-pre-line text-center md:text-right">
-                      {message}
-                    </p>
-                  ) : null}
                 </div>
 
               </div>
@@ -654,11 +720,20 @@ export default function NotificationsPage() {
                   </div>
                 </button>
               ))}
+
+              <PaginationFooter
+                page={receivedPage}
+                total={receivedTotal}
+                limit={NOTIFICATION_PAGE_SIZE}
+                loading={receivedLoading}
+                label={unreadOnly ? "unread notifications" : "notifications"}
+                onPageChange={setReceivedPage}
+              />
             </div>
           </>
         ) : null}
 
-        {isSuperAdmin && activeTab === "sent" ? (
+        {isSuperAdmin ? (
           <div className="rounded-xl border border-slate-200 bg-white/90 shadow-lg overflow-hidden">
             <div className="bg-gray-100 px-4 py-3 text-sm font-bold text-pink-700">
               Sent Notification Details
@@ -716,6 +791,15 @@ export default function NotificationsPage() {
                 </div>
               ))}
             </div>
+
+            <PaginationFooter
+              page={sentPage}
+              total={sentTotal}
+              limit={NOTIFICATION_PAGE_SIZE}
+              loading={sentLoading}
+              label="sent notifications"
+              onPageChange={setSentPage}
+            />
           </div>
         ) : null}
       </div>

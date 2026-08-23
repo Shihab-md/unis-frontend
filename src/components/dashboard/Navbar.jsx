@@ -3,6 +3,7 @@ import { useAuth } from '../../context/AuthContext'
 import { Link } from 'react-router-dom';
 import { FaHome, FaPowerOff } from "react-icons/fa";
 import NotificationBell from '../notification/NotificationBell';
+import HelpDeskIcon from '../helpdesk/HelpDeskIcon';
 
 const Navbar = () => {
   const { user, logout } = useAuth();
@@ -40,6 +41,7 @@ const Navbar = () => {
       </div>
 
       <div className="relative flex items-center gap-3 lg:gap-5">
+        <HelpDeskIcon />
         <NotificationBell />
         <div className="relative">
           <div className="absolute -inset-1 rounded-2xl bg-gradient-to-br from-indigo-500 via-teal-400 to-amber-400 blur-md opacity-70" />
