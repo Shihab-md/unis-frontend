@@ -22,7 +22,7 @@ export default function BulkPromote() {
   const [loading, setLoading] = useState(false);
 
   const selectAllRef = useRef(null);
-  const GRADE_OPTIONS = ["A", "B", "C", "D"];
+  const GRADE_OPTIONS = ["A", "B", "C", "D", "E"];
   const EDUCATION_TYPE_ORDER = [
     "Deeniyath Education",
     "Islamic Home Science",
@@ -266,7 +266,7 @@ export default function BulkPromote() {
       html = `This will move <b>${studentIds.length}</b> student(s) to <b>${acYearLabel}</b> for <b>${courseName}</b> (same year) and create fees invoice.`;
     } else if (action === "COMPLETE") {
       title = "Are you sure to COMPLETE the selected Students?";
-      html = `This will mark <b>${studentIds.length}</b> student(s) as <b>Completed</b> for <b>${courseName}</b> in <b>${acYearLabel}</b> and create only <b>Certificate Print Fee</b> invoice (₹${CERTIFICATE_PRINT_FEE}).`;
+      html = `This will mark <b>${studentIds.length}</b> student(s) as <b>Completed</b> for <b>${courseName}</b> in <b>${acYearLabel}</b> and create only <b>Certificate Print Fee</b> invoice.`;
     }
 
     const result = await Swal.fire({
@@ -300,7 +300,7 @@ export default function BulkPromote() {
         policy: action,
         requireFeesPaid: true,
         chunkSize: 10,
-        certificateFee: action === "COMPLETE" ? CERTIFICATE_PRINT_FEE : 0,
+        certificateFee,
         gradesByStudentId: gradesPayload,
       });
 
