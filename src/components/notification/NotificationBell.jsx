@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import { FaBell } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { notificationApi } from "../../api/notificationApi";
+import { useAuth } from "../../context/AuthContext";
 
 export const NOTIFICATION_BADGE_REFRESH_EVENT = "unis:notification-badge-refresh";
 
@@ -15,16 +16,24 @@ export const refreshNotificationBadge = () => {
 
 export default function NotificationBell() {
   const navigate = useNavigate();
+  const { user } = useAuth();
+  const userRole = String(user?.role || "").toLowerCase();
+  const isSuperAdmin = userRole === "superadmin";
   const [unread, setUnread] = useState(0);
 
   const loadCount = useCallback(async () => {
+    if (isSuperAdmin) {
+      setUnread(0);
+      return;
+    }
+
     try {
       const data = await notificationApi.unreadCount();
       setUnread(Number(data?.unreadCount || 0));
     } catch {
       // keep navbar working even if notification count fails
     }
-  }, []);
+  }, [isSuperAdmin]);
 
   useEffect(() => {
     loadCount();

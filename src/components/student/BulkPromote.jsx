@@ -1,13 +1,41 @@
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { FaArrowAltCircleLeft } from "react-icons/fa";
 import Swal from "sweetalert2";
 import { fetchPromoteCandidates, promoteBulk } from "../../api/promoteApi";
-import { LinkIcon, showSwalAlert } from "../../utils/CommonHelper";
+import { showSwalAlert } from "../../utils/CommonHelper";
 import { getCoursesFromCache } from "../../utils/CourseHelper";
 import { getAcademicYearsFromCache } from "../../utils/AcademicYearHelper";
 
+const BULK_PROMOTE_SCHOOL_ID_BACKUP_KEY = "bulkPromoteSchoolId";
+const BULK_PROMOTE_SCHOOL_NAME_BACKUP_KEY = "bulkPromoteSchoolName";
+
+const getBulkPromoteSchoolContext = () => {
+  try {
+    return {
+      schoolId:
+        localStorage.getItem("schoolId") ||
+        sessionStorage.getItem(BULK_PROMOTE_SCHOOL_ID_BACKUP_KEY) ||
+        "",
+      schoolName:
+        localStorage.getItem("schoolName") ||
+        sessionStorage.getItem(BULK_PROMOTE_SCHOOL_NAME_BACKUP_KEY) ||
+        "",
+    };
+  } catch {
+    return { schoolId: "", schoolName: "" };
+  }
+};
+
 export default function BulkPromote() {
-  const mySchoolId = localStorage.getItem("schoolId");
-  const schoolId = mySchoolId;
+  const navigate = useNavigate();
+
+  // Keep the selected Niswan stable while this page is open.
+  // Some dashboard/shared cleanup can remove localStorage schoolId/schoolName for HQ roles,
+  // but Bulk Promote and the Back flow should continue using the selected Niswan.
+  const [schoolContext] = useState(() => getBulkPromoteSchoolContext());
+  const schoolId = schoolContext.schoolId;
+  const schoolName = schoolContext.schoolName;
 
   const [targetAcYear, setTargetAcYear] = useState("");
   const [courseType, setCourseType] = useState("");
@@ -22,7 +50,7 @@ export default function BulkPromote() {
   const [loading, setLoading] = useState(false);
 
   const selectAllRef = useRef(null);
-  const GRADE_OPTIONS = ["A", "B", "C", "D", "E"];
+  const GRADE_OPTIONS = ["A", "B", "C", "D"];
   const EDUCATION_TYPE_ORDER = [
     "Deeniyath Education",
     "Islamic Home Science",
@@ -31,7 +59,48 @@ export default function BulkPromote() {
     "Vocational Courses",
   ];
 
-  const CERTIFICATE_PRINT_FEE = 75;
+  const getApiErrorMessage = (error, fallback = "Action failed") => {
+    const data = error?.response?.data;
+
+    if (typeof data === "string" && data.trim()) return data.trim();
+
+    return (
+      data?.error ||
+      data?.message ||
+      error?.message ||
+      fallback
+    );
+  };
+
+  const restoreBulkPromoteSchoolContext = useCallback(() => {
+    try {
+      const backupSchoolId =
+        schoolId || sessionStorage.getItem(BULK_PROMOTE_SCHOOL_ID_BACKUP_KEY) || "";
+      const backupSchoolName =
+        schoolName || sessionStorage.getItem(BULK_PROMOTE_SCHOOL_NAME_BACKUP_KEY) || "";
+
+      if (backupSchoolId) {
+        localStorage.setItem("schoolId", backupSchoolId);
+        sessionStorage.setItem(BULK_PROMOTE_SCHOOL_ID_BACKUP_KEY, backupSchoolId);
+      }
+
+      if (backupSchoolName) {
+        localStorage.setItem("schoolName", backupSchoolName);
+        sessionStorage.setItem(BULK_PROMOTE_SCHOOL_NAME_BACKUP_KEY, backupSchoolName);
+      }
+    } catch {
+      // Restore should never block navigation or action completion.
+    }
+  }, [schoolId, schoolName]);
+
+  useEffect(() => {
+    restoreBulkPromoteSchoolContext();
+  }, [restoreBulkPromoteSchoolContext]);
+
+  const handleBack = () => {
+    restoreBulkPromoteSchoolContext();
+    navigate("/dashboard/students");
+  };
 
   useEffect(() => {
     const load = async () => {
@@ -122,7 +191,13 @@ export default function BulkPromote() {
     if (!courseId) missing.push("course");
 
     if (missing.length > 0) {
-      showSwalAlert("Info", `Please select: ${missing.join(", ")}`, "info");
+      showSwalAlert(
+        "Info",
+        missing.includes("schoolId")
+          ? "School is not available for Bulk Promote. Please go back to Dashboard and open Bulk Promote again, or login again if your session data was cleared."
+          : `Please select: ${missing.join(", ")}`,
+        "info"
+      );
       return;
     }
 
@@ -137,8 +212,18 @@ export default function BulkPromote() {
         setSelected({});
         setGradesByStudentId({});
       }
-    } catch {
-      showSwalAlert("Error", "Failed to load candidates", "error");
+    } catch (error) {
+      console.error("[BulkPromote] Failed to load candidates", {
+        status: error?.response?.status,
+        data: error?.response?.data,
+        message: error?.message,
+      });
+
+      showSwalAlert(
+        "Error",
+        getApiErrorMessage(error, "Failed to load candidates"),
+        "error"
+      );
     } finally {
       setLoading(false);
     }
@@ -266,7 +351,7 @@ export default function BulkPromote() {
       html = `This will move <b>${studentIds.length}</b> student(s) to <b>${acYearLabel}</b> for <b>${courseName}</b> (same year) and create fees invoice.`;
     } else if (action === "COMPLETE") {
       title = "Are you sure to COMPLETE the selected Students?";
-      html = `This will mark <b>${studentIds.length}</b> student(s) as <b>Completed</b> for <b>${courseName}</b> in <b>${acYearLabel}</b> and create only <b>Certificate Print Fee</b> invoice.`;
+      html = `This will mark <b>${studentIds.length}</b> student(s) as <b>Completed</b> for <b>${courseName}</b> in <b>${acYearLabel}</b> and create only <b>Certificate Print Fee</b> invoice as configured in Template Master.`;
     }
 
     const result = await Swal.fire({
@@ -300,7 +385,6 @@ export default function BulkPromote() {
         policy: action,
         requireFeesPaid: true,
         chunkSize: 10,
-        certificateFee,
         gradesByStudentId: gradesPayload,
       });
 
@@ -313,10 +397,21 @@ export default function BulkPromote() {
           `Done. Promoted: ${s.promoted || 0}, Skipped: ${s.skipped || 0}, Errors: ${s.errors?.length || 0}`,
           "success"
         );
+        restoreBulkPromoteSchoolContext();
         loadCandidates();
       }
-    } catch (e) {
-      showSwalAlert("Error", "Action failed", "error");
+    } catch (error) {
+      console.error("[BulkPromote] Action failed", {
+        status: error?.response?.status,
+        data: error?.response?.data,
+        message: error?.message,
+      });
+
+      showSwalAlert(
+        "Error",
+        getApiErrorMessage(error, "Action failed"),
+        "error"
+      );
     } finally {
       setLoading(false);
     }
@@ -325,7 +420,15 @@ export default function BulkPromote() {
   return (
     <div className="p-4 max-w-7xl mx-auto pb-28">
       <div className="flex items-center gap-3 mb-3">
-        <div>{LinkIcon("/dashboard/students", "Back")}</div>
+        <button
+          type="button"
+          onClick={handleBack}
+          className="inline-flex"
+          aria-label="Back to students"
+          title="Back"
+        >
+          <FaArrowAltCircleLeft className="text-3xl lg:text-4xl bg-blue-700 text-white rounded shadow-lg hover:-translate-y-0.5" />
+        </button>
         <h2 className="pl-2 text-lg font-semibold text-left">Bulk Promote</h2>
       </div>
 
