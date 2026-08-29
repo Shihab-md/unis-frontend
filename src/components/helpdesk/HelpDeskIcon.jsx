@@ -42,7 +42,7 @@ export default function HelpDeskIcon() {
         aria-label="UNIS Help Desk"
         title="Help Desk"
       >
-        <FaComments className="text-2xl lg:text-3xl text-sky-200 drop-shadow-lg" />
+        <FaComments title="Help Desk" aria-label="Help Desk" className="text-2xl lg:text-3xl text-sky-200 drop-shadow-lg" />
 
         {unread > 0 ? (
           <span className="absolute -right-2 -top-2 min-w-5 h-5 px-1 rounded-full bg-red-600 text-white text-[10px] font-bold flex items-center justify-center">

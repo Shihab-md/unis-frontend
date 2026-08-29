@@ -65,7 +65,7 @@ export default function NotificationBell() {
         aria-label="UNIS notifications"
         title={unread > 0 ? `${unread} unread notification(s)` : "Notifications"}
       >
-        <FaBell className="text-2xl lg:text-3xl text-amber-300 drop-shadow-lg" />
+        <FaBell title="Notifications" aria-label="Notifications" className="text-2xl lg:text-3xl text-amber-300 drop-shadow-lg" />
 
         {unread > 0 ? (
           <span className="absolute -right-2 -top-2 min-w-5 h-5 px-1 rounded-full bg-red-600 text-white text-[10px] font-bold flex items-center justify-center shadow-lg ring-2 ring-white/70">

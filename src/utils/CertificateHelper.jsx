@@ -170,22 +170,28 @@ export const CertificateButtons = ({ Id, onCertificateDelete }) => {
     <div className="flex space-x-3 rounded-sm">
       <button
         className={getButtonStyle('View')}
+        title="View Details"
+        aria-label="View Details"
         onClick={() => navigate(`/dashboard/certificates/${Id}`)}
       >
-        <FaEye className="m-1" />
+        <FaEye title="View Details" aria-label="View Details" className="m-1" />
       </button>
       {(user?.role === "superadmin" || user?.role === "hquser") && (<>
         <button
           className={getButtonStyle('Reprint')}
+          title="Reprint Certificate"
+          aria-label="Reprint Certificate"
           onClick={() => navigate(`/dashboard/certificates/reprint/${Id}`)}
         >
-          <FaRedo className="m-1" />
+          <FaRedo title="Reprint" aria-label="Reprint" className="m-1" />
         </button>
         <button
           className={getButtonStyle('DuplicatePrint')}
+          title="Duplicate Print"
+          aria-label="Duplicate Print"
           onClick={() => navigate(`/dashboard/certificates/duplicate-print/${Id}`)}
         >
-          <FaRegCopy className="m-1" />
+          <FaRegCopy title="Duplicate Print" aria-label="Duplicate Print" className="m-1" />
         </button>
       </>)}
     </div>

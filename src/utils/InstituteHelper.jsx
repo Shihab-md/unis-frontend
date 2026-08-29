@@ -131,23 +131,29 @@ export const InstituteButtons = ({ Id, onInstituteDelete }) => {
     <div className="flex space-x-3">
       <button
         className={getButtonStyle('View')}
+        title="View Details"
+        aria-label="View Details"
         onClick={() => navigate(`/dashboard/institutes/${Id}`)}
       >
-        <FaEye className="m-1" />
+        <FaEye title="View Details" aria-label="View Details" className="m-1" />
       </button>
       <button
         className={getButtonStyle('Edit')}
+        title="Edit"
+        aria-label="Edit"
         disabled={user?.role === "guest"}
         onClick={() => navigate(`/dashboard/institutes/edit/${Id}`)}
       >
-        <FaEdit className="m-1" />
+        <FaEdit title="Edit" aria-label="Edit" className="m-1" />
       </button>
       <button
         className={getButtonStyle('Delete')}
+        title="Delete"
+        aria-label="Delete"
         disabled={user?.role === "guest"}
         onClick={() => handleDelete(Id)}
       >
-        <FaTrashAlt className="m-1" />
+        <FaTrashAlt title="Delete" aria-label="Delete" className="m-1" />
       </button>
     </div>
   );

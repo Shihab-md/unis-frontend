@@ -182,6 +182,7 @@ const List = () => {
         <StudentButtons
           Id={student._id}
           onStudentDelete={onStudentDelete}
+          student={{ ...student, courses: normalizedCourses }}
         />
       ),
     };

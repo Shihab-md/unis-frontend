@@ -85,8 +85,10 @@ function InspectionReportCard({ row, index, navigate, user }) {
             <button
               onClick={() => navigate(`/dashboard/inspection-report/${row._id}`)}
               className={getButtonStyle("View")}
+              title="View Details"
+              aria-label="View Details"
             >
-              <FaEye className="text-base m-0.5" />
+              <FaEye title="View Details" aria-label="View Details" className="text-base m-0.5" />
             </button>
           </div>
         </div>
@@ -264,8 +266,10 @@ export default function InspectionReportList() {
           <button
             onClick={() => navigate(`/dashboard/inspection-report/${row._id}`)}
             className={getButtonStyle('View')}
+            title="View Details"
+            aria-label="View Details"
           >
-            <FaEye className="text-lg m-0.5" />
+            <FaEye title="View Details" aria-label="View Details" className="text-lg m-0.5" />
           </button>
         ),
       },

@@ -46,7 +46,7 @@ const GoToTopButton = () => {
       title="Go to top"
       aria-label="Go to top"
     >
-      <FaArrowUp className="text-xl md:text-3xl" />
+      <FaArrowUp title="Go to top" aria-label="Go to top" className="text-xl md:text-3xl" />
     </button>
   );
 };

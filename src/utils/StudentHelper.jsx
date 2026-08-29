@@ -586,14 +586,38 @@ const getStudentCourseYear = (course) => {
   return year;
 };
 
-const getStudentCourseStatus = (course, row) => {
-  const status = String(
+
+const getRawStudentCourseStatus = (course = {}) =>
+  String(
     course?.status ||
     course?.academicStatus ||
     course?.courseStatus ||
     course?.latestStatus ||
     ""
   ).trim();
+
+export const isStudentCompletedForEdit = (student = {}) => {
+  const activeStatus = String(student?.active || "").trim().toLowerCase();
+
+  if (["alumni", "graduated"].includes(activeStatus)) {
+    return true;
+  }
+
+  const courses = Array.isArray(student?.courses) ? student.courses : [];
+  const hasCompletedCourse = courses.some(
+    (course) => getRawStudentCourseStatus(course).toLowerCase() === "completed"
+  );
+
+  if (hasCompletedCourse) {
+    return true;
+  }
+
+  const courseSearchText = String(student?.course || "").toLowerCase();
+  return courseSearchText.includes("completed / alumni");
+};
+
+const getStudentCourseStatus = (course, row) => {
+  const status = getRawStudentCourseStatus(course);
 
   if (String(row?.active || "") === "Alumni" && status === "Completed") {
     return "Completed / Alumni";
@@ -895,7 +919,7 @@ export const StudentCard = ({ row, onStudentDelete }) => {
         </div> */}
 
         <div className="flex pt-2 items-center justify-center">
-          <StudentButtons Id={row._id} onStudentDelete={onStudentDelete} />
+          <StudentButtons Id={row._id} onStudentDelete={onStudentDelete} student={row} />
         </div>
       </div>
     </div>
@@ -975,7 +999,7 @@ export const getStudentsBySchoolAndCourse = async (schoolId, templateId) => {
   return studentsBySchoolAndCourse;
 };
 
-export const StudentButtons = ({ Id, onStudentDelete }) => {
+export const StudentButtons = ({ Id, onStudentDelete, student = {} }) => {
   const navigate = useNavigate();
 
   const handleDelete = async (id) => {
@@ -1009,45 +1033,80 @@ export const StudentButtons = ({ Id, onStudentDelete }) => {
 
   const { user } = useAuth();
 
+  const completedForAction = isStudentCompletedForEdit(student);
+
+  const editDisabled = user?.role === "guest" || completedForAction;
+  const editTooltip = completedForAction
+    ? "Completed student cannot be edited"
+    : "Edit";
+
+  const transferDisabled = user?.role === "guest" || completedForAction;
+  const transferTooltip = completedForAction
+    ? "Completed student cannot be transferred"
+    : "Transfer Student";
+
+  const disabledActionClass = (disabled) =>
+    disabled ? " opacity-40 cursor-not-allowed grayscale" : "";
+
+  const handleEditClick = () => {
+    if (editDisabled) return;
+    navigate(`/dashboard/students/edit/${Id}`);
+  };
+
+  const handleTransferClick = () => {
+    if (transferDisabled) return;
+    navigate(`#`);
+  };
+
   return (
     <div className="flex space-x-3">
       <button
         className={getButtonStyle('View')}
+        title="View Details"
+        aria-label="View Details"
         onClick={() => navigate(`/dashboard/students/${Id}`)}
       >
-        <FaEye className="m-1" />
+        <FaEye title="View Details" aria-label="View Details" className="m-1" />
       </button>
       <button
-        className={getButtonStyle('Edit')}
-        disabled={user?.role === "guest"}
-        onClick={() => navigate(`/dashboard/students/edit/${Id}`)}
+        className={`${getButtonStyle('Edit')}${disabledActionClass(editDisabled)}`}
+        title={editTooltip}
+        aria-label={editTooltip}
+        disabled={editDisabled}
+        onClick={handleEditClick}
       >
-        <FaEdit className="m-1" />
+        <FaEdit title={editTooltip} aria-label={editTooltip} className="m-1" />
       </button>
       {/*{user.role === "superadmin" || user.role === "hquser" || user.role === "admin" ?
         <div className="flex space-x-3">
           <button
             className={getButtonStyle('Promote')}
+            title="Promote / Complete"
+            aria-label="Promote / Complete"
             disabled={user?.role === "guest"}
             onClick={() => navigate(`/dashboard/students/promote/${Id}`)}
           >
-            <FaUserCheck className="m-1" />
+            <FaUserCheck title="Promote / Complete" aria-label="Promote / Complete" className="m-1" />
           </button> </div> : null}*/}
       {user.role === "superadmin" || user.role === "hquser" ?
         <div className="flex space-x-3">
           <button
-            className={getButtonStyle('Transfer')}
-            disabled={user?.role === "guest"}
-            onClick={() => navigate(`#`)}
+            className={`${getButtonStyle('Transfer')}${disabledActionClass(transferDisabled)}`}
+            title={transferTooltip}
+            aria-label={transferTooltip}
+            disabled={transferDisabled}
+            onClick={handleTransferClick}
           >
-            <FaExchangeAlt className="m-1" />
+            <FaExchangeAlt title={transferTooltip} aria-label={transferTooltip} className="m-1" />
           </button> </div> : null}
       <button
         className={getButtonStyle('Delete')}
+        title="Delete"
+        aria-label="Delete"
         disabled={user?.role === "guest"}
         onClick={() => handleDelete(Id)}
       >
-        <FaTrashAlt className="m-1" />
+        <FaTrashAlt title="Delete" aria-label="Delete" className="m-1" />
       </button>
     </div>
   );

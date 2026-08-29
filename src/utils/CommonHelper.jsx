@@ -279,43 +279,100 @@ export function getFilterGif() {
   </div>
 }
 
-export function LinkIcon(toPage, purpose) {
+export const getIconTooltip = (purpose = "", customTooltip = "") => {
+  const provided = String(customTooltip || "").trim();
+  if (provided) return provided;
+
+  const key = String(purpose || "").trim();
+  const tooltipMap = {
+    Add: "Add New",
+    Back: "Back",
+    Import: "Import Data",
+    "Importing.": "Importing, please wait",
+    Filter: "Filter",
+    FeesPaid: "Mark Fees as Paid",
+    RemoveStudents: "Remove Students",
+    Promote: "Promote / Complete Students",
+    Inspection: "Inspection Report",
+    Search: "Search",
+    View: "View Details",
+    Edit: "Edit",
+    Delete: "Delete",
+    Reprint: "Reprint Certificate",
+    DuplicatePrint: "Duplicate Print",
+    Transfer: "Transfer",
+    Print: "Print",
+    Download: "Download",
+    Upload: "Upload",
+    Save: "Save",
+    Submit: "Submit",
+    Cancel: "Cancel",
+    Close: "Close",
+    Notification: "Notifications",
+    HelpDesk: "Help Desk",
+    Profile: "Profile",
+    Logout: "Logout",
+    Top: "Go to Top",
+  };
+
+  return tooltipMap[key] || key || "Action";
+};
+
+export const getButtonTooltip = (buttonType = "") => getIconTooltip(buttonType);
+
+export function LinkIcon(toPage = "#", purpose = "", customTooltip = "") {
+  const tooltipText = getIconTooltip(purpose, customTooltip);
+  const commonIconClass = "hover:-translate-y-0.5";
+
+  const linkProps = {
+    to: toPage || "#",
+    title: tooltipText,
+    "aria-label": tooltipText,
+    className: "inline-flex items-center justify-center",
+  };
+
   if (purpose === "Add") {
-    return <Link to={toPage} >
-      <FaPlusSquare className="text-3xl lg:text-4xl bg-teal-700 text-white rounded shadow-lg hover:-translate-y-0.5" /></Link>
+    return <Link {...linkProps}>
+      <FaPlusSquare title={tooltipText} aria-label={tooltipText} className={`text-3xl lg:text-4xl bg-teal-700 text-white rounded shadow-lg ${commonIconClass}`} /></Link>
 
   } else if (purpose === "Back") {
-    return <Link to={toPage} >
-      <FaArrowAltCircleLeft className="text-3xl lg:text-4xl bg-blue-700 text-white rounded shadow-lg hover:-translate-y-0.5" /> </Link>
+    return <Link {...linkProps}>
+      <FaArrowAltCircleLeft title={tooltipText} aria-label={tooltipText} className={`text-3xl lg:text-4xl bg-blue-700 text-white rounded shadow-lg ${commonIconClass}`} /> </Link>
 
-  } else if (purpose === "Import") {
-    return <Link to={toPage} >
-      <FaUpload className="p-1 text-3xl lg:text-4xl bg- bg-white text-blue-500 border-2 border-blue-500 rounded shadow-2xl hover:-translate-y-0.5" /> </Link>
+  } else if (purpose === "Import" || purpose === "Importing.") {
+    return <Link {...linkProps}>
+      <FaUpload title={tooltipText} aria-label={tooltipText} className={`p-1 text-3xl lg:text-4xl bg-white text-blue-500 border-2 border-blue-500 rounded shadow-2xl ${commonIconClass}`} /> </Link>
 
   } else if (purpose === "Filter") {
-    return <Link to={toPage} >
-      <FaTasks className="text-3xl lg:text-4xl text-fuchsia-500 bg-white rounded shadow-lg border-2 border-fuchsia-700 p-1 lg:p-1.5 hover:-translate-y-0.5" /> </Link>
+    return <Link {...linkProps}>
+      <FaTasks title={tooltipText} aria-label={tooltipText} className={`text-3xl lg:text-4xl text-fuchsia-500 bg-white rounded shadow-lg border-2 border-fuchsia-700 p-1 lg:p-1.5 ${commonIconClass}`} /> </Link>
 
   } else if (purpose === "FeesPaid") {
-    return <Link to={toPage} >
-      <FaCheck className="text-3xl lg:text-4xl bg-white text-yellow-700 border-2 border-yellow-700 rounded shadow-lg p-1 lg:p-1.5 hover:-translate-y-0.5" /> </Link>
+    return <Link {...linkProps}>
+      <FaCheck title={tooltipText} aria-label={tooltipText} className={`text-3xl lg:text-4xl bg-white text-yellow-700 border-2 border-yellow-700 rounded shadow-lg p-1 lg:p-1.5 ${commonIconClass}`} /> </Link>
 
   } else if (purpose === "RemoveStudents") {
-    return <Link to={toPage} >
-      <FaTrashAlt className="text-3xl lg:text-4xl bg-white text-red-500 border-2 border-red-500 rounded shadow-lg p-1 lg:p-1.5 hover:-translate-y-0.5" /> </Link>
+    return <Link {...linkProps}>
+      <FaTrashAlt title={tooltipText} aria-label={tooltipText} className={`text-3xl lg:text-4xl bg-white text-red-500 border-2 border-red-500 rounded shadow-lg p-1 lg:p-1.5 ${commonIconClass}`} /> </Link>
 
   } else if (purpose === "Promote") {
-    return <Link to={toPage} >
-      <FaUserCheck className="text-3xl lg:text-4xl bg-white text-purple-500 border-2 border-purple-500 rounded shadow-lg p-1 lg:p-1.5 hover:-translate-y-0.5" /> </Link>
+    return <Link {...linkProps}>
+      <FaUserCheck title={tooltipText} aria-label={tooltipText} className={`text-3xl lg:text-4xl bg-white text-purple-500 border-2 border-purple-500 rounded shadow-lg p-1 lg:p-1.5 ${commonIconClass}`} /> </Link>
 
   } else if (purpose === "Inspection") {
-    return <Link to={toPage} >
-      <FaFileSignature className="text-3xl lg:text-4xl bg-white text-blue-600 border-2 border-blue-600 rounded shadow-lg p-1 lg:p-1.5 hover:-translate-y-0.5" /> </Link>
+    return <Link {...linkProps}>
+      <FaFileSignature title={tooltipText} aria-label={tooltipText} className={`text-3xl lg:text-4xl bg-white text-blue-600 border-2 border-blue-600 rounded shadow-lg p-1 lg:p-1.5 ${commonIconClass}`} /> </Link>
 
   } else if (purpose === "Search") {
-    return <Link to={toPage} >
-      <FaSearch className="text-3xl text-cyan-700 rounded p-1 hover:-translate-y-0.5" /> </Link>
+    return <Link {...linkProps}>
+      <FaSearch title={tooltipText} aria-label={tooltipText} className={`text-3xl text-cyan-700 rounded p-1 ${commonIconClass}`} /> </Link>
   }
+
+  return <Link {...linkProps}>
+    <span className="inline-flex items-center justify-center rounded px-2 py-1 text-xs font-semibold text-slate-600 hover:-translate-y-0.5">
+      {tooltipText}
+    </span>
+  </Link>;
 }
 
 export function getFormattedDate(dateString) {

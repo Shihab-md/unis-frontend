@@ -276,9 +276,11 @@ export const EmployeeButtons = ({ Id, isSelfRow = false, onEmployeeDelete }) => 
         <div className="flex space-x-3">
           <button
             className={getButtonStyle('View')}
+            title="View Details"
+            aria-label="View Details"
             onClick={() => navigate(`/dashboard/employees/${Id}`)}
           >
-            <FaEye className="m-1" />
+            <FaEye title="View Details" aria-label="View Details" className="m-1" />
           </button>
         </div>
       ) : null}
@@ -290,19 +292,21 @@ export const EmployeeButtons = ({ Id, isSelfRow = false, onEmployeeDelete }) => 
           <button
             className={`${getButtonStyle('Edit')} disabled:cursor-not-allowed disabled:opacity-50`}
             disabled={disableEditDelete}
-            title={disabledTitle}
+            title={disabledTitle || "Edit"}
+            aria-label="Edit"
             onClick={() => navigate(`/dashboard/employees/edit/${Id}`)}
           >
-            <FaEdit className="m-1" />
+            <FaEdit title="Edit" aria-label="Edit" className="m-1" />
           </button>
 
           <button
             className={`${getButtonStyle('Delete')} disabled:cursor-not-allowed disabled:opacity-50`}
             disabled={disableEditDelete}
-            title={disabledTitle}
+            title={disabledTitle || "Delete"}
+            aria-label="Delete"
             onClick={() => handleDelete(Id)}
           >
-            <FaTrashAlt className="m-1" />
+            <FaTrashAlt title="Delete" aria-label="Delete" className="m-1" />
           </button>
         </div>
       ) : null}
