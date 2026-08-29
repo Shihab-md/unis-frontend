@@ -371,9 +371,9 @@ const List = () => {
     <div className="p-3 lg:p-5 bg-repeat mt-1 lg:mt-5">
       <div className="text-center">
         <h3 className="text-base lg:text-2xl font-bold px-5 py-0 text-gray-600">Manage Niswans
-          <p className='flex md:grid text-sm md:text-base justify-center text-rose-700'>
+          <p className='flex md:grid text-sm justify-center text-rose-700'>
             (Records Count : {filteredSchool ? filteredSchool.length : 0}) </p>
-        </h3>
+        </h3> 
       </div>
 
       <div className="flex justify-between items-center mt-5 relative">

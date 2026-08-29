@@ -86,6 +86,69 @@ const List = () => {
 
   const MySwal = withReactContent(Swal);
 
+  const STUDENT_FILTER_KEYS = [
+    "courseId",
+    "status",
+    "acYear",
+    "maritalStatus",
+    "hosteller",
+    "year",
+    "instituteId",
+    "courseStatus",
+  ];
+
+  const getCleanStorageValue = (key) => {
+    const value = localStorage.getItem(key);
+    const text = String(value ?? "").trim();
+
+    if (!text || text === "null" || text === "undefined") {
+      return "";
+    }
+
+    return text;
+  };
+
+  const hasStudentFilterApplied = () => {
+    return STUDENT_FILTER_KEYS.some((key) => getCleanStorageValue(key));
+  };
+
+  const clearStudentFiltersFromStorage = () => {
+    localStorage.removeItem('students');
+    STUDENT_FILTER_KEYS.forEach((key) => localStorage.removeItem(key));
+  };
+
+  const getFilterPathValue = (key) => {
+    return getCleanStorageValue(key) || "null";
+  };
+
+  const getAcademicYearLabelById = (id) => {
+    const cleanId = String(id || "").trim();
+    if (!cleanId) return "";
+
+    return (
+      academicYears.find((academicYear) => String(academicYear?._id) === cleanId)?.acYear || ""
+    );
+  };
+
+  const getCurrentAcademicYearInfo = () => {
+    const filteredAcYearId = getCleanStorageValue('acYear');
+    const activeAcYear = academicYears.find((academicYear) => academicYear?.active === "Active");
+
+    if (filteredAcYearId) {
+      return {
+        label: getAcademicYearLabelById(filteredAcYearId) || "Selected AC Year",
+        mode: "Filtered AC Year",
+        isFiltered: true,
+      };
+    }
+
+    return {
+      label: activeAcYear?.acYear || "Loading AC Year...",
+      mode: "Active AC Year",
+      isFiltered: false,
+    };
+  };
+
   const safeParseJSON = (value, fallback = null) => {
     try {
       if (!value) return fallback;
@@ -307,7 +370,10 @@ const List = () => {
                 { value: '6', label: '6' },
                 { value: '7', label: '7' },
                 { value: '8', label: '8' },
-                { value: '9', label: '9' }
+                { value: '9', label: '9' },
+                { value: '10', label: '10' },
+                { value: '11', label: '11' },
+                { value: '12', label: '12' }
               ]}
               onChange={(selectedOption) => {
                 selectedYear = selectedOption?.value || null;
@@ -463,16 +529,7 @@ const List = () => {
 
         getFilteredStudents();
       } else {
-        localStorage.removeItem('students');
-        localStorage.removeItem('courseId');
-        localStorage.removeItem('status');
-        localStorage.removeItem('acYear');
-        localStorage.removeItem('maritalStatus');
-        localStorage.removeItem('hosteller');
-        localStorage.removeItem('year');
-        localStorage.removeItem('instituteId');
-        localStorage.removeItem('courseStatus');
-
+        clearStudentFiltersFromStorage();
         getStudents();
       }
     }
@@ -484,14 +541,14 @@ const List = () => {
       const responnse = await axios.get(
         (await getBaseUrl()).toString() + "student/byFilter/"
         + localStorage.getItem('schoolId') + "/"
-        + localStorage.getItem('courseId') + "/"
-        + localStorage.getItem('status') + "/"
-        + localStorage.getItem('acYear') + "/"
-        + localStorage.getItem('maritalStatus') + "/"
-        + localStorage.getItem('hosteller') + "/"
-        + localStorage.getItem('year') + "/"
-        + localStorage.getItem('instituteId') + "/"
-        + localStorage.getItem('courseStatus'),
+        + getFilterPathValue('courseId') + "/"
+        + getFilterPathValue('status') + "/"
+        + getFilterPathValue('acYear') + "/"
+        + getFilterPathValue('maritalStatus') + "/"
+        + getFilterPathValue('hosteller') + "/"
+        + getFilterPathValue('year') + "/"
+        + getFilterPathValue('instituteId') + "/"
+        + getFilterPathValue('courseStatus'),
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -713,16 +770,7 @@ const List = () => {
 
       localStorage.removeItem('students');
 
-      if (
-        localStorage.getItem('courseId') ||
-        localStorage.getItem('status') ||
-        localStorage.getItem('acYear') ||
-        localStorage.getItem('maritalStatus') ||
-        localStorage.getItem('hosteller') ||
-        localStorage.getItem('year') ||
-        localStorage.getItem('instituteId') ||
-        localStorage.getItem('courseStatus')
-      ) {
+      if (hasStudentFilterApplied()) {
         await getFilteredStudents();
       } else {
         await getStudents();
@@ -1022,19 +1070,7 @@ const List = () => {
         + ", courseStatus : " + localStorage.getItem('courseStatus')
       );
 
-      if (
-        data &&
-        (
-          localStorage.getItem('courseId')
-          || localStorage.getItem('status')
-          || localStorage.getItem('acYear')
-          || localStorage.getItem('maritalStatus')
-          || localStorage.getItem('hosteller')
-          || localStorage.getItem('year')
-          || localStorage.getItem('instituteId')
-          || localStorage.getItem('courseStatus')
-        )
-      ) {
+      if (hasStudentFilterApplied()) {
         console.log("111");
         getFilteredStudents();
       } else {
@@ -1065,14 +1101,7 @@ const List = () => {
     if (
       parsedLocalData &&
       (
-        localStorage.getItem('courseId')
-        || localStorage.getItem('status')
-        || localStorage.getItem('acYear')
-        || localStorage.getItem('maritalStatus')
-        || localStorage.getItem('hosteller')
-        || localStorage.getItem('year')
-        || localStorage.getItem('instituteId')
-        || localStorage.getItem('courseStatus')
+        hasStudentFilterApplied()
       )
     ) {
       // let sno = 1;
@@ -1232,6 +1261,11 @@ const List = () => {
     }
   };
 
+  const handleResetFilters = async () => {
+    clearStudentFiltersFromStorage();
+    await getStudents();
+  };
+
   const handleSearch = (e) => {
     const records = students.filter((student) => (
       student.rollNumber?.toLowerCase().includes(e.target.value.toLowerCase())
@@ -1252,8 +1286,29 @@ const List = () => {
     return getPrcessing();
   }
 
+  const currentAcademicYearInfo = getCurrentAcademicYearInfo();
+  const isFilterApplied = hasStudentFilterApplied();
+
+  const academicYearBadge = (
+    <div className="flex justify-center">
+      <div
+        className={`inline-flex items-center rounded-full border px-3 py-1 text-xs font-semibold shadow-sm ${currentAcademicYearInfo.isFiltered
+          ? "text-blue-700" : "text-blue-700"}`}
+        title={`Students shown for ${currentAcademicYearInfo.mode}: ${currentAcademicYearInfo.label}`}
+        aria-label={`Students shown for ${currentAcademicYearInfo.mode}: ${currentAcademicYearInfo.label}`}
+      >
+        <span>{currentAcademicYearInfo.mode}:</span>
+        <span className="ml-1 text-slate-700">{currentAcademicYearInfo.label}</span>
+      </div>
+    </div>
+  );
+
+  const safeCourses = Array.isArray(courses) ? courses : [];
+  const safeInstitutes = Array.isArray(institutes) ? institutes : [];
+  const safeAcademicYears = Array.isArray(academicYears) ? academicYears : [];
+
   return (
-    <div className="p-3 lg:p-5 bg-repeat mt-3 lg:mt-5">
+    <div className="p-3 lg:p-5 bg-repeat mt-3">
       <div className="text-center">
         <h3 className="text-base lg:text-2xl font-bold px-5 py-0 text-gray-600">
           Manage Students
@@ -1262,7 +1317,8 @@ const List = () => {
               {localStorage.getItem("schoolName") || "-"}
             </div>
           ) : null}
-          <p className='flex md:grid text-xs md:text-base justify-center text-rose-700'>
+
+          <p className='flex md:grid text-sm justify-center text-rose-700'>
             (Records Count : {filteredStudent ? filteredStudent.length : 0})
           </p>
         </h3>
@@ -1317,93 +1373,96 @@ const List = () => {
         ) : null}
       </div>
 
-      {(localStorage.getItem('courseId') != null && localStorage.getItem('courseId') !== 'null')
-        || (localStorage.getItem('year') != null && localStorage.getItem('year') !== 'null')
-        || (localStorage.getItem('courseStatus') != null && localStorage.getItem('courseStatus') !== 'null')
-        || (localStorage.getItem('instituteId') != null && localStorage.getItem('instituteId') !== 'null')
-        || (localStorage.getItem('acYear') != null && localStorage.getItem('acYear') !== 'null')
-        || (localStorage.getItem('status') != null && localStorage.getItem('status') !== 'null')
-        || (localStorage.getItem('maritalStatus') != null && localStorage.getItem('maritalStatus') !== 'null')
-        || (localStorage.getItem('hosteller') != null && localStorage.getItem('hosteller') !== 'null') ? (
+      <div className="mt-3 lg:mt-5 mb-2 space-y-2">
+        {isFilterApplied ? (
+          <div className='grid lg:flex text-xs text-lime-600 items-center justify-center'>
+            <div className="flex items-center justify-center gap-2 lg:mr-3">
+              <p className='justify-center text-center font-semibold'>Filter Applied:</p>
+              <button
+                type="button"
+                onClick={handleResetFilters}
+                className="rounded-full border border-rose-200 bg-rose-50 px-2 py-0.5 text-[11px] font-semibold text-rose-600 hover:bg-rose-100"
+                title="Reset filters and show active academic year students"
+                aria-label="Reset filters and show active academic year students"
+              >
+                Reset
+              </button>
+            </div>
 
-        <div className='grid lg:flex mb-2 lg:mt-5 text-xs text-lime-600 items-center justify-center'>
-          <p className='lg:mr-3 justify-center text-center'>Filter Applied: </p>
-
-          <p>
-            {localStorage.getItem('courseId') != null && localStorage.getItem('courseId') !== 'null' ? (
-              <span className='text-blue-500'>
-                Course: <span className='text-gray-500'>
-                  {courses.filter(course => course._id === localStorage.getItem('courseId')).map(course => course.name) + ", "}
-                </span>
-              </span>
-            ) : null}
-          </p>
-
-          <div className='grid grid-cols-1 md:flex'>
-            <p className='lg:ml-3'>
-              {localStorage.getItem('year') != null && localStorage.getItem('year') !== 'null' ? (
+            <p>
+              {getCleanStorageValue('courseId') ? (
                 <span className='text-blue-500'>
-                  Year: <span className='text-gray-500'>{localStorage.getItem('year') + ", "}</span>
-                </span>
-              ) : null}
-            </p>
-
-            <p className='lg:ml-3'>
-              {localStorage.getItem('courseStatus') != null && localStorage.getItem('courseStatus') !== 'null' ? (
-                <span className='text-blue-500'>
-                  Course's Status: <span className='text-gray-500'>{localStorage.getItem('courseStatus') + ", "}</span>
-                </span>
-              ) : null}
-            </p>
-
-            <p className='lg:ml-3'>
-              {localStorage.getItem('instituteId') != null && localStorage.getItem('instituteId') !== 'null' ? (
-                <span className='text-blue-500'>
-                  Institute: <span className='text-gray-500'>
-                    {institutes.filter(institute => institute._id === localStorage.getItem('instituteId')).map(institute => institute.name) + ", "}
+                  Course: <span className='text-gray-500'>
+                    {courses.filter(course => course._id === getCleanStorageValue('courseId')).map(course => course.name) + ", "}
                   </span>
                 </span>
               ) : null}
             </p>
 
-            <p className='lg:ml-3'>
-              {localStorage.getItem('acYear') != null && localStorage.getItem('acYear') !== 'null' ? (
-                <span className='text-blue-500'>
-                  AC Year: <span className='text-gray-500'>
-                    {academicYears.filter(acYear => acYear._id === localStorage.getItem('acYear')).map(acYear => acYear.acYear) + ", "}
+            <div className='grid grid-cols-1 md:flex md:flex-wrap justify-center'>
+              <p className='lg:ml-3'>
+                {getCleanStorageValue('year') ? (
+                  <span className='text-blue-500'>
+                    Year: <span className='text-gray-500'>{getCleanStorageValue('year') + ", "}</span>
                   </span>
-                </span>
-              ) : null}
-            </p>
+                ) : null}
+              </p>
 
-            <p className='lg:ml-3'>
-              {localStorage.getItem('status') != null && localStorage.getItem('status') !== 'null' ? (
-                <span className='text-blue-500'>
-                  Student's Status: <span className='text-gray-500'>{localStorage.getItem('status') + ", "}</span>
-                </span>
-              ) : null}
-            </p>
+              <p className='lg:ml-3'>
+                {getCleanStorageValue('courseStatus') ? (
+                  <span className='text-blue-500'>
+                    Course Status: <span className='text-gray-500'>{getCleanStorageValue('courseStatus') + ", "}</span>
+                  </span>
+                ) : null}
+              </p>
 
-            <p className='lg:ml-3'>
-              {localStorage.getItem('maritalStatus') != null && localStorage.getItem('maritalStatus') !== 'null' ? (
-                <span className='text-blue-500'>
-                  Marital Status: <span className='text-gray-500'>{localStorage.getItem('maritalStatus') + ", "}</span>
-                </span>
-              ) : null}
-            </p>
+              <p className='lg:ml-3'>
+                {getCleanStorageValue('instituteId') ? (
+                  <span className='text-blue-500'>
+                    Institute: <span className='text-gray-500'>
+                      {institutes.filter(institute => institute._id === getCleanStorageValue('instituteId')).map(institute => institute.name) + ", "}
+                    </span>
+                  </span>
+                ) : null}
+              </p>
 
-            <p className='lg:ml-3'>
-              {localStorage.getItem('hosteller') != null && localStorage.getItem('hosteller') !== 'null' ? (
-                <span className='text-blue-500'>
-                  Hostel: <span className='text-gray-500'>{localStorage.getItem('hosteller')}</span>
-                </span>
-              ) : null}
-            </p>
+              <p className='lg:ml-3'>
+                {getCleanStorageValue('acYear') ? (
+                  <span className='text-blue-500'>
+                    AC Year: <span className='text-gray-500'>
+                      {academicYears.filter(acYear => acYear._id === getCleanStorageValue('acYear')).map(acYear => acYear.acYear) + ", "}
+                    </span>
+                  </span>
+                ) : null}
+              </p>
+
+              <p className='lg:ml-3'>
+                {getCleanStorageValue('status') ? (
+                  <span className='text-blue-500'>
+                    Student Status: <span className='text-gray-500'>{getCleanStorageValue('status') + ", "}</span>
+                  </span>
+                ) : null}
+              </p>
+
+              <p className='lg:ml-3'>
+                {getCleanStorageValue('maritalStatus') ? (
+                  <span className='text-blue-500'>
+                    Marital Status: <span className='text-gray-500'>{getCleanStorageValue('maritalStatus') + ", "}</span>
+                  </span>
+                ) : null}
+              </p>
+
+              <p className='lg:ml-3'>
+                {getCleanStorageValue('hosteller') ? (
+                  <span className='text-blue-500'>
+                    Hostel: <span className='text-gray-500'>{getCleanStorageValue('hosteller')}</span>
+                  </span>
+                ) : null}
+              </p>
+            </div>
           </div>
-        </div>
-      ) : (
-        <div className='flex mt-3 lg:mt-5 mb-2'></div>
-      )}
+        ) : (academicYearBadge)}
+      </div>
 
       {filtering ? (
         getFilterGif()
