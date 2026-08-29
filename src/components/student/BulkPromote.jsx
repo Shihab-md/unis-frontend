@@ -50,7 +50,7 @@ export default function BulkPromote() {
   const [loading, setLoading] = useState(false);
 
   const selectAllRef = useRef(null);
-  const GRADE_OPTIONS = ["A+", "A", "B+","B", "C", "D"];
+  const GRADE_OPTIONS = ["A+", "A", "B+", "B", "C+", "C", "D"];
   const EDUCATION_TYPE_ORDER = [
     "Deeniyath Education",
     "Islamic Home Science",
@@ -70,6 +70,65 @@ export default function BulkPromote() {
       error?.message ||
       fallback
     );
+  };
+
+  const escapeHtml = (value = "") =>
+    String(value ?? "")
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+
+  const buildBulkActionSummaryHtml = (summary = {}) => {
+    const errors = Array.isArray(summary.errors) ? summary.errors : [];
+    const skippedDetails = Array.isArray(summary.skippedDetails)
+      ? summary.skippedDetails
+      : [];
+
+    const renderRows = (rows, emptyText) => {
+      if (!rows.length) return `<div class="text-left text-xs text-slate-500">${emptyText}</div>`;
+
+      return `
+        <div style="max-height:180px;overflow:auto;margin-top:8px;border:1px solid #e2e8f0;border-radius:8px;">
+          <table style="width:100%;font-size:11px;text-align:left;border-collapse:collapse;">
+            <thead style="background:#f1f5f9;color:#be185d;">
+              <tr>
+                <th style="padding:6px;border-bottom:1px solid #e2e8f0;">Student</th>
+                <th style="padding:6px;border-bottom:1px solid #e2e8f0;">Reason</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${rows
+                .slice(0, 12)
+                .map(
+                  (row) => `
+                    <tr>
+                      <td style="padding:6px;border-bottom:1px solid #f1f5f9;">${escapeHtml(row.studentId || "-")}</td>
+                      <td style="padding:6px;border-bottom:1px solid #f1f5f9;">${escapeHtml(row.reason || "-")}</td>
+                    </tr>`
+                )
+                .join("")}
+            </tbody>
+          </table>
+        </div>
+        ${rows.length > 12 ? `<div style="margin-top:6px;font-size:11px;color:#64748b;">Showing first 12 of ${rows.length} item(s).</div>` : ""}
+      `;
+    };
+
+    return `
+      <div style="text-align:left;font-size:13px;line-height:1.55;">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px;">
+          <div><b>Requested:</b> ${Number(summary.requested || 0)}</div>
+          <div><b>Updated:</b> ${Number(summary.promoted || 0)}</div>
+          <div><b>Skipped:</b> ${Number(summary.skipped || 0)}</div>
+          <div><b>Errors:</b> ${errors.length}</div>
+        </div>
+
+        ${skippedDetails.length ? `<b>Skipped Details</b>${renderRows(skippedDetails, "No skipped students.")}` : ""}
+        ${errors.length ? `<div style="margin-top:10px;"><b>Error Details</b>${renderRows(errors, "No errors.")}</div>` : ""}
+      </div>
+    `;
   };
 
   const restoreBulkPromoteSchoolContext = useCallback(() => {
@@ -392,11 +451,19 @@ export default function BulkPromote() {
         showSwalAlert("Error", resp?.error || "Action failed", "error");
       } else {
         const s = resp.summary || {};
-        showSwalAlert(
-          "Success",
-          `Done. Promoted: ${s.promoted || 0}, Skipped: ${s.skipped || 0}, Errors: ${s.errors?.length || 0}`,
-          "success"
-        );
+        const errorCount = Array.isArray(s.errors) ? s.errors.length : 0;
+        const skippedCount = Number(s.skipped || 0);
+        const hasWarnings = skippedCount > 0 || errorCount > 0;
+
+        await Swal.fire({
+          title: hasWarnings ? "Completed with Warnings" : "Success",
+          html: buildBulkActionSummaryHtml(s),
+          icon: hasWarnings ? "warning" : "success",
+          showConfirmButton: true,
+          background: "url(/bg_card.png)",
+          width: 640,
+        });
+
         restoreBulkPromoteSchoolContext();
         loadCandidates();
       }

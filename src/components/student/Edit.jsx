@@ -17,6 +17,111 @@ import { FaRegTimesCircle } from "react-icons/fa";
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
+
+const OBJECT_ID_RE = /^[a-fA-F0-9]{24}$/;
+
+const extractObjectIdText = (value) => {
+  if (value === undefined || value === null) return "";
+
+  if (typeof value === "object") {
+    return (
+      extractObjectIdText(value._id) ||
+      extractObjectIdText(value.id) ||
+      extractObjectIdText(value.value) ||
+      ""
+    );
+  }
+
+  const text = String(value || "").trim();
+  if (!text || text === "null" || text === "undefined" || text === "[object Object]") {
+    return "";
+  }
+
+  try {
+    if (text.startsWith("{") || text.startsWith("[")) {
+      const parsed = JSON.parse(text);
+      const parsedId = extractObjectIdText(parsed);
+      if (parsedId) return parsedId;
+    }
+  } catch {
+    // Continue with plain string extraction.
+  }
+
+  const exact = OBJECT_ID_RE.test(text) ? text : "";
+  if (exact) return exact;
+
+  const match = text.match(/[a-fA-F0-9]{24}/);
+  return match?.[0] || "";
+};
+
+const isValidObjectId = (value) => OBJECT_ID_RE.test(extractObjectIdText(value));
+
+const getStoredSchoolId = () => {
+  const candidates = [
+    localStorage.getItem("schoolId"),
+    sessionStorage.getItem("studentSelectedSchoolId"),
+    sessionStorage.getItem("bulkPromoteSchoolId"),
+    localStorage.getItem("selectedSchoolId"),
+  ];
+
+  for (const value of candidates) {
+    const id = extractObjectIdText(value);
+    if (id) return id;
+  }
+
+  return "";
+};
+
+const resolveSchoolIdFromLocalStorage = (schools = []) => {
+  const storedId = getStoredSchoolId();
+  if (storedId) return storedId;
+
+  const storedSchoolName = String(
+    localStorage.getItem("schoolName") ||
+    sessionStorage.getItem("studentSelectedSchoolName") ||
+    sessionStorage.getItem("bulkPromoteSchoolName") ||
+    ""
+  ).toLowerCase();
+
+  if (!storedSchoolName) return "";
+
+  const safeSchools = Array.isArray(schools) ? schools : [];
+  const matchedSchool = safeSchools.find((school) => {
+    const code = String(school?.code || "").toLowerCase();
+    const nameEnglish = String(school?.nameEnglish || "").toLowerCase();
+    const id = extractObjectIdText(school?._id);
+
+    return (
+      id &&
+      ((code && storedSchoolName.includes(code)) ||
+        (nameEnglish && storedSchoolName.includes(nameEnglish)))
+    );
+  });
+
+  return extractObjectIdText(matchedSchool?._id);
+};
+
+const persistSelectedSchoolContext = (schoolId, schools = []) => {
+  const normalizedSchoolId = extractObjectIdText(schoolId);
+  if (!normalizedSchoolId) return "";
+
+  localStorage.setItem("schoolId", normalizedSchoolId);
+  sessionStorage.setItem("studentSelectedSchoolId", normalizedSchoolId);
+
+  const safeSchools = Array.isArray(schools) ? schools : [];
+  const school = safeSchools.find((item) => String(item?._id) === normalizedSchoolId);
+  if (school) {
+    const districtText = school?.districtStateId
+      ? `, ${school.districtStateId?.district || ""}, ${school.districtStateId?.state || ""}`
+      : "";
+    const schoolName = `${school.code || ""} : ${school.nameEnglish || ""}${districtText}`.trim();
+    localStorage.setItem("schoolName", schoolName);
+    sessionStorage.setItem("studentSelectedSchoolName", schoolName);
+  }
+
+  return normalizedSchoolId;
+};
+
 const getCourseById = (courses, courseId) => {
   return courses.find((course) => String(course._id) === String(courseId));
 };
@@ -480,6 +585,9 @@ const Edit = () => {
             discount5: academics?.[0]?.discount5 || "",
           };
 
+          const loadedSchoolId = persistSelectedSchoolContext(loaded.schoolId, schools);
+          if (loadedSchoolId) loaded.schoolId = loadedSchoolId;
+
           setStudent((prev) => ({ ...prev, ...loaded }));
 
           if (!didInitLocks.current) {
@@ -694,6 +802,29 @@ const Edit = () => {
         dob: selectedDOBDate || "",
         doa: selectedDOADate || "",
       };
+
+      const resolvedSchoolId = persistSelectedSchoolContext(
+        extractObjectIdText(payload.schoolId) || resolveSchoolIdFromLocalStorage(schools),
+        schools
+      );
+
+      if (!isValidObjectId(resolvedSchoolId)) {
+        setProcessing(false);
+        showSwalAlert(
+          "Info!",
+          "Niswan is not available in localStorage. Please open Student List once and select the Niswan.",
+          "info"
+        );
+        return;
+      }
+
+      if (!isValidObjectId(payload.acYear)) {
+        setProcessing(false);
+        showSwalAlert("Info!", "Academic Year is required.", "info");
+        return;
+      }
+
+      payload.schoolId = resolvedSchoolId;
 
       if (!validateOptionalCourses(payload)) {
         setProcessing(false);

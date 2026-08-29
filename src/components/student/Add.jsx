@@ -13,6 +13,111 @@ import { FaRegTimesCircle } from "react-icons/fa";
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
+
+const OBJECT_ID_RE = /^[a-fA-F0-9]{24}$/;
+
+const extractObjectIdText = (value) => {
+  if (value === undefined || value === null) return "";
+
+  if (typeof value === "object") {
+    return (
+      extractObjectIdText(value._id) ||
+      extractObjectIdText(value.id) ||
+      extractObjectIdText(value.value) ||
+      ""
+    );
+  }
+
+  const text = String(value || "").trim();
+  if (!text || text === "null" || text === "undefined" || text === "[object Object]") {
+    return "";
+  }
+
+  try {
+    if (text.startsWith("{") || text.startsWith("[")) {
+      const parsed = JSON.parse(text);
+      const parsedId = extractObjectIdText(parsed);
+      if (parsedId) return parsedId;
+    }
+  } catch {
+    // Continue with plain string extraction.
+  }
+
+  const exact = OBJECT_ID_RE.test(text) ? text : "";
+  if (exact) return exact;
+
+  const match = text.match(/[a-fA-F0-9]{24}/);
+  return match?.[0] || "";
+};
+
+const isValidObjectId = (value) => OBJECT_ID_RE.test(extractObjectIdText(value));
+
+const getStoredSchoolId = () => {
+  const candidates = [
+    localStorage.getItem("schoolId"),
+    sessionStorage.getItem("studentSelectedSchoolId"),
+    sessionStorage.getItem("bulkPromoteSchoolId"),
+    localStorage.getItem("selectedSchoolId"),
+  ];
+
+  for (const value of candidates) {
+    const id = extractObjectIdText(value);
+    if (id) return id;
+  }
+
+  return "";
+};
+
+const resolveSchoolIdFromLocalStorage = (schools = []) => {
+  const storedId = getStoredSchoolId();
+  if (storedId) return storedId;
+
+  const storedSchoolName = String(
+    localStorage.getItem("schoolName") ||
+    sessionStorage.getItem("studentSelectedSchoolName") ||
+    sessionStorage.getItem("bulkPromoteSchoolName") ||
+    ""
+  ).toLowerCase();
+
+  if (!storedSchoolName) return "";
+
+  const safeSchools = Array.isArray(schools) ? schools : [];
+  const matchedSchool = safeSchools.find((school) => {
+    const code = String(school?.code || "").toLowerCase();
+    const nameEnglish = String(school?.nameEnglish || "").toLowerCase();
+    const id = extractObjectIdText(school?._id);
+
+    return (
+      id &&
+      ((code && storedSchoolName.includes(code)) ||
+        (nameEnglish && storedSchoolName.includes(nameEnglish)))
+    );
+  });
+
+  return extractObjectIdText(matchedSchool?._id);
+};
+
+const persistSelectedSchoolContext = (schoolId, schools = []) => {
+  const normalizedSchoolId = extractObjectIdText(schoolId);
+  if (!normalizedSchoolId) return "";
+
+  localStorage.setItem("schoolId", normalizedSchoolId);
+  sessionStorage.setItem("studentSelectedSchoolId", normalizedSchoolId);
+
+  const safeSchools = Array.isArray(schools) ? schools : [];
+  const school = safeSchools.find((item) => String(item?._id) === normalizedSchoolId);
+  if (school) {
+    const districtText = school?.districtStateId
+      ? `, ${school.districtStateId?.district || ""}, ${school.districtStateId?.state || ""}`
+      : "";
+    const schoolName = `${school.code || ""} : ${school.nameEnglish || ""}${districtText}`.trim();
+    localStorage.setItem("schoolName", schoolName);
+    sessionStorage.setItem("studentSelectedSchoolName", schoolName);
+  }
+
+  return normalizedSchoolId;
+};
+
 const getCourseById = (courses = [], courseId) => {
   const safeCourses = Array.isArray(courses) ? courses : [];
   return safeCourses.find((course) => String(course._id) === String(courseId));
@@ -85,6 +190,7 @@ const Add = () => {
   const [fees6Val, setFees6Val] = useState("");
 
   const [acYear, setAcYear] = useState(null);
+  const [selectedSchoolId, setSelectedSchoolId] = useState(() => getStoredSchoolId());
 
   const [showIslamicStudies, setShowIslamicStudies] = useState(false);
   const [showSchool, setShowSchool] = useState(false);
@@ -105,6 +211,14 @@ const Add = () => {
       navigate("/login");
     }
   }, [navigate]);
+
+  useEffect(() => {
+    const storedSchoolId = resolveSchoolIdFromLocalStorage(safeSchools);
+    if (!storedSchoolId) return;
+
+    const normalizedSchoolId = persistSelectedSchoolContext(storedSchoolId, safeSchools);
+    setSelectedSchoolId(normalizedSchoolId);
+  }, [schools.length]);
 
   useEffect(() => {
     const getSchoolsMap = async () => {
@@ -463,9 +577,27 @@ const Add = () => {
       return;
     }
 
+    const resolvedSchoolId = persistSelectedSchoolContext(
+      selectedSchoolId || resolveSchoolIdFromLocalStorage(safeSchools),
+      safeSchools
+    );
+
+    if (!isValidObjectId(resolvedSchoolId)) {
+      setProcessing(false);
+      showSwalAlert(
+        "Info!",
+        "Niswan is not available in localStorage. Please open Student List once and select the Niswan.",
+        "info"
+      );
+      return;
+    }
+
     const formDataObj = new FormData();
 
     Object.keys(formData).forEach((key) => {
+      // Always use the verified localStorage Niswan id below.
+      if (key === "schoolId") return;
+
       const value = formData[key];
       if (value !== "" && value !== null && value !== undefined) {
         formDataObj.append(key, value);
@@ -481,7 +613,7 @@ const Add = () => {
         formDataObj.append('acYear', acYear);
       }
 
-      formDataObj.append('schoolId', localStorage.getItem('schoolId'));
+      formDataObj.append('schoolId', resolvedSchoolId);
 
       const headers = {
         'Content-Type': 'multipart/form-data',
@@ -561,8 +693,12 @@ const Add = () => {
                 </label>
                 <select
                   name="schoolId"
-                  value={localStorage.getItem('schoolId') || ""}
-                  onChange={handleChange}
+                  value={selectedSchoolId}
+                  onChange={(event) => {
+                    const nextSchoolId = persistSelectedSchoolContext(event.target.value, safeSchools);
+                    setSelectedSchoolId(nextSchoolId);
+                    handleChange(event);
+                  }}
                   disabled={true}
                   className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                   required
