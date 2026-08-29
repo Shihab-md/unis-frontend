@@ -51,6 +51,21 @@ const Create = () => {
     setToggleClearRows(!toggledClearRows);
   }
 
+  const isSelectedCertificateFree = () => {
+    const feeValue = Number(selectedCertificateFees);
+    return Number.isFinite(feeValue) && feeValue <= 0;
+  };
+
+  const isExistingCertificateBlock = (row) =>
+    String(row?.certificateBlockReason || "").toLowerCase().includes("certificate already created");
+
+  const isCertificateRowDisabled = (row) => {
+    if (isExistingCertificateBlock(row)) return true;
+    if (isSelectedCertificateFree()) return false;
+    return !row?.canSelectCertificate;
+  };
+
+
   const getTemplateFees = (templateId) => {
     const selectedTemplate = safeTemplates.find(
       (template) => String(template._id) === String(templateId)
@@ -306,7 +321,7 @@ const Create = () => {
                     data={safeStudents}
                     reloadData={handleReload}
                     selectableRows
-                    selectableRowDisabled={(row) => !row.canSelectCertificate}
+                    selectableRowDisabled={isCertificateRowDisabled}
                     onSelectedRowsChange={handleRowChange}
                     clearSelectedRows={toggledClearRows}
                     highlightOnHover

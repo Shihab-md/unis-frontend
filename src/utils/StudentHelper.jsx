@@ -19,9 +19,13 @@ export const columnsSelect = [
           <div className="mt-1 text-xs font-medium text-red-600">
             {row.certificateBlockReason || "Certificate fee pending"}
           </div>
+        ) : Number(row?.certificateFees || 0) <= 0 || row?.certificateInvoiceStatus === "FREE" ? (
+          <div className="mt-1 text-xs font-medium text-green-700">
+            Free certificate
+          </div>
         ) : (
           <div className="mt-1 text-xs font-medium text-green-700">
-
+            Certificate fee paid
           </div>
         )}
       </div>

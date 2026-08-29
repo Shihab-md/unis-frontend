@@ -1015,7 +1015,6 @@ const Edit = () => {
                     <option value="Active">Active</option>
                     <option value="In-Active">In-Active</option>
                     <option value="Transferred">Transferred</option>
-                    <option value="Graduated">Graduated</option>
                     <option value="Discontinued">Discontinued</option>
                   </select>
                 </div>
