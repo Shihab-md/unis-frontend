@@ -1140,7 +1140,7 @@ const Add = () => {
               {/* Hostel Reference  */}
               <div>
                 <label className="block text-sm font-medium text-slate-500">
-                  Reference
+                  Reference / Note
                 </label>
                 <input
                   type="text"
