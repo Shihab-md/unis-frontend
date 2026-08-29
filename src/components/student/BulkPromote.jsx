@@ -50,7 +50,7 @@ export default function BulkPromote() {
   const [loading, setLoading] = useState(false);
 
   const selectAllRef = useRef(null);
-  const GRADE_OPTIONS = ["A+", "A", "B+", "B", "C+", "C", "D"];
+  const GRADE_OPTIONS = ["A+", "A", "B+", "B", "C"];
   const EDUCATION_TYPE_ORDER = [
     "Deeniyath Education",
     "Islamic Home Science",
