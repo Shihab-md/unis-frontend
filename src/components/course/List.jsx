@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { columns, CourseButtons, CourseCard } from '../../utils/CourseHelper';
+import { columns, CourseButtons, CourseCard, getCourseSubjects } from '../../utils/CourseHelper';
 import DataTable from 'react-data-table-component';
 import {
   getBaseUrl,
@@ -43,7 +43,12 @@ const List = () => {
 
       if (responnse.data.success) {
         let sno = 1;
-        const data = responnse.data.courses.map((sup) => ({
+        const courseList = Array.isArray(responnse.data.courses)
+          ? responnse.data.courses
+          : [];
+
+        const data = courseList.map((sup) => ({
+          ...sup,
           _id: sup._id,
           sno: sno++,
           code: sup.code,
@@ -53,7 +58,7 @@ const List = () => {
           fees: sup.fees,
           years: sup.years,
           promotionOrder: sup.promotionOrder,
-          subjectsCount: sup._subjectsCount ? sup._subjectsCount : 0,
+          subjectsCount: getCourseSubjects(sup).length,
           action: (
             <CourseButtons
               Id={sup._id}
@@ -94,13 +99,18 @@ const List = () => {
       const rowName = String(row?.name || "").toLowerCase();
       const rowType = String(row?.type || "").toLowerCase();
       const rowRemarks = String(row?.remarks || "").toLowerCase();
+      const rowSubjects = getCourseSubjects(row)
+        .map((subject) => `${subject.code} ${subject.name} ${subject.maxMark} ${subject.passMark}`)
+        .join(" ")
+        .toLowerCase();
 
       const matchesSearch =
         !search ||
         rowCode.includes(search) ||
         rowName.includes(search) ||
         rowType.includes(search) ||
-        rowRemarks.includes(search);
+        rowRemarks.includes(search) ||
+        rowSubjects.includes(search);
 
       const matchesCourseType =
         !courseType || rowType === courseType.toLowerCase();

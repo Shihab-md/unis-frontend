@@ -4,7 +4,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { getBaseUrl, handleRightClickAndFullScreen, checkAuth, getPrcessing, showSwalAlert } from '../../utils/CommonHelper'
 import { getSchoolsFromCache } from '../../utils/SchoolHelper'
 import { columnsSelect, getStudentsBySchoolAndCourse } from '../../utils/StudentHelper'
-import { getTemplatesFromCache } from '../../utils/TemplateHelper'
+import { getCertificateTemplatesFromCache } from '../../utils/TemplateHelper'
 import DataTable from 'react-data-table-component'
 import Select from 'react-select';
 import { FaRegTimesCircle } from "react-icons/fa";
@@ -103,8 +103,8 @@ const Create = () => {
   }, []);
 
   useEffect(() => {
-    const getTemplatesMap = async (id) => {
-      const templatesData = await getTemplatesFromCache(id);
+    const getTemplatesMap = async () => {
+      const templatesData = await getCertificateTemplatesFromCache();
       setTemplates(Array.isArray(templatesData) ? templatesData : []);
     };
     getTemplatesMap();

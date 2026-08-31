@@ -50,6 +50,8 @@ const List = () => {
             code: sup.courseId?.code,
             name: sup.courseId?.name,
             details: sup.details,
+            templateModule: sup.templateModule || "CERTIFICATE",
+            marksheetType: sup.marksheetType || "",
             certificateFees: Number(sup.certificateFees ?? 75),
             action: (<TemplateButtons Id={sup._id} onTemplateDelete={onTemplateDelete} />),
           }));
@@ -74,6 +76,9 @@ const List = () => {
     const records = templates.filter((sup) => (
       sup.code?.toLowerCase().includes(e.target.value.toLowerCase())
       || sup.name?.toLowerCase().includes(e.target.value.toLowerCase())
+      || sup.details?.toLowerCase().includes(e.target.value.toLowerCase())
+      || sup.templateModule?.toLowerCase().includes(e.target.value.toLowerCase())
+      || sup.marksheetType?.toLowerCase().includes(e.target.value.toLowerCase())
       || String(sup.certificateFees || "").includes(e.target.value)
     ))
     setFilteredTemplates(records)
@@ -99,7 +104,7 @@ const List = () => {
             <input
               type="text"
               placeholder="Search"
-              class="w-full px-3 py-0.5 border rounded shadow-md justify-center"
+              className="w-full px-3 py-0.5 border rounded shadow-md justify-center"
               onChange={handleFilter}
             />
           </div>

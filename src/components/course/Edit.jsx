@@ -17,33 +17,43 @@ const Edit = () => {
   const [course, setCourse] = useState({
     name: "",
     remarks: "",
+    subject1Code: "",
     subject1: "",
     subject1MaxMark: "",
     subject1PassMark: "",
+    subject2Code: "",
     subject2: "",
     subject2MaxMark: "",
     subject2PassMark: "",
+    subject3Code: "",
     subject3: "",
     subject3MaxMark: "",
     subject3PassMark: "",
+    subject4Code: "",
     subject4: "",
     subject4MaxMark: "",
     subject4PassMark: "",
+    subject5Code: "",
     subject5: "",
     subject5MaxMark: "",
     subject5PassMark: "",
+    subject6Code: "",
     subject6: "",
     subject6MaxMark: "",
     subject6PassMark: "",
+    subject7Code: "",
     subject7: "",
     subject7MaxMark: "",
     subject7PassMark: "",
+    subject8Code: "",
     subject8: "",
     subject8MaxMark: "",
     subject8PassMark: "",
+    subject9Code: "",
     subject9: "",
     subject9MaxMark: "",
     subject9PassMark: "",
+    subject10Code: "",
     subject10: "",
     subject10MaxMark: "",
     subject10PassMark: "",
@@ -83,33 +93,43 @@ const Edit = () => {
             years: course.years,
             promotionOrder: course.promotionOrder || 0,
 
+            subject1Code: course.subject1Code || "",
             subject1: course.subject1,
             subject1MaxMark: course.subject1MaxMark,
             subject1PassMark: course.subject1PassMark,
+            subject2Code: course.subject2Code || "",
             subject2: course.subject2,
             subject2MaxMark: course.subject2MaxMark,
             subject2PassMark: course.subject2PassMark,
+            subject3Code: course.subject3Code || "",
             subject3: course.subject3,
             subject3MaxMark: course.subject3MaxMark,
             subject3PassMark: course.subject3PassMark,
+            subject4Code: course.subject4Code || "",
             subject4: course.subject4,
             subject4MaxMark: course.subject4MaxMark,
             subject4PassMark: course.subject4PassMark,
+            subject5Code: course.subject5Code || "",
             subject5: course.subject5,
             subject5MaxMark: course.subject5MaxMark,
             subject5PassMark: course.subject5PassMark,
+            subject6Code: course.subject6Code || "",
             subject6: course.subject6,
             subject6MaxMark: course.subject6MaxMark,
             subject6PassMark: course.subject6PassMark,
+            subject7Code: course.subject7Code || "",
             subject7: course.subject7,
             subject7MaxMark: course.subject7MaxMark,
             subject7PassMark: course.subject7PassMark,
+            subject8Code: course.subject8Code || "",
             subject8: course.subject8,
             subject8MaxMark: course.subject8MaxMark,
             subject8PassMark: course.subject8PassMark,
+            subject9Code: course.subject9Code || "",
             subject9: course.subject9,
             subject9MaxMark: course.subject9MaxMark,
             subject9PassMark: course.subject9PassMark,
+            subject10Code: course.subject10Code || "",
             subject10: course.subject10,
             subject10MaxMark: course.subject10MaxMark,
             subject10PassMark: course.subject10PassMark,
@@ -164,7 +184,7 @@ const Edit = () => {
   return (
     <>
       {course ? (
-        <div className="max-w-4xl mx-auto mt-2 p-3 lg:p-5 shadow-lg border">
+        <div className="max-w-5xl mx-auto mt-2 p-3 lg:p-5 shadow-lg border">
           <div className="flex py-2 px-4 items-center justify-center bg-teal-700 text-white rounded-lg shadow-lg">
             <h2 className="text-sm lg:text-xl font-semibold items-center justify-center">Update Course Details</h2>
             <Link to="/dashboard/courses" >
@@ -203,7 +223,7 @@ const Edit = () => {
                 {/* Code */}
                 <div>
                   <label className="block text-sm font-medium text-slate-500">
-                    Code <span className="text-red-700">*</span>
+                    Course Code <span className="text-red-700">*</span>
                   </label>
                   <input
                     type="text"
@@ -219,7 +239,7 @@ const Edit = () => {
                 {/* Name */}
                 <div>
                   <label className="block text-sm font-medium text-slate-500">
-                    Name <span className="text-red-700">*</span>
+                    Course Name <span className="text-red-700">*</span>
                   </label>
                   <input
                     type="text"
@@ -234,7 +254,7 @@ const Edit = () => {
                 {/* Remarks */}
                 <div>
                   <label className="block text-sm font-medium text-slate-500">
-                    Remarks <span className="text-red-700">*</span>
+                    Remarks
                   </label>
                   <input
                     type="text"
@@ -250,7 +270,7 @@ const Edit = () => {
                   {/* Fees */}
                   <div>
                     <label className="block text-sm font-medium text-slate-500">
-                      Fees <span className="text-red-700">*</span>
+                      Course Fees <span className="text-red-700">*</span>
                     </label>
                     <input
                       type="number"
@@ -298,11 +318,27 @@ const Edit = () => {
 
                 <div className="flex space-x-3 mb-5" />
                 <div className="hidden lg:block flex space-x-3 mb-5" />
+              </div>
 
-                {/* Subject-1 */}
-                <div>
+              <div className="grid grid-cols-1 lg:grid-cols-8 gap-4 gap-y-7">
+                {/* Subject-1 Code */}
+                <div className="lg:col-span-2">
                   <label className="block text-sm font-medium text-slate-500">
-                    Subject-1 <span className="text-red-700">*</span>
+                    Subject-1 Code <span className="text-red-700">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    name="subject1Code"
+                    value={course.subject1Code || ""}
+                    onChange={handleChange}
+                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                  />
+                </div>
+
+                {/* Subject-1 Name */}
+                <div className="lg:col-span-4">
+                  <label className="block text-sm font-medium text-slate-500">
+                    Subject-1 Name <span className="text-red-700">*</span>
                   </label>
                   <input
                     type="text"
@@ -314,7 +350,7 @@ const Edit = () => {
                   />
                 </div>
 
-                <div className="grid grid-cols-2 gap-7 justify-between">
+                <div className="col-span-1 lg:col-span-2 grid grid-cols-2 gap-3">
                   {/* Subject-1 Max Mark */}
                   <div>
                     <label className="block text-sm font-medium text-slate-500">
@@ -348,10 +384,24 @@ const Edit = () => {
                   </div>
                 </div>
 
-                {/* Subject-2 */}
-                <div>
+                {/* Subject-2 Code */}
+                <div className="lg:col-span-2">
                   <label className="block text-sm font-medium text-slate-500">
-                    Subject-2
+                    Subject-2 Code
+                  </label>
+                  <input
+                    type="text"
+                    name="subject2Code"
+                    value={course.subject2Code || ""}
+                    onChange={handleChange}
+                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                  />
+                </div>
+
+                {/* Subject-2 Name */}
+                <div className="lg:col-span-4">
+                  <label className="block text-sm font-medium text-slate-500">
+                    Subject-2 Name
                   </label>
                   <input
                     type="text"
@@ -363,7 +413,7 @@ const Edit = () => {
                   />
                 </div>
 
-                <div className="grid grid-cols-2 gap-7 justify-between">
+                <div className="col-span-1 lg:col-span-2 grid grid-cols-2 gap-3">
                   {/* Subject-2 Max Mark */}
                   <div>
                     <label className="block text-sm font-medium text-slate-500">
@@ -397,10 +447,24 @@ const Edit = () => {
                   </div>
                 </div>
 
-                {/* Subject-3 */}
-                <div>
+                {/* Subject-3 Code */}
+                <div className="lg:col-span-2">
                   <label className="block text-sm font-medium text-slate-500">
-                    Subject-3
+                    Subject-3 Code
+                  </label>
+                  <input
+                    type="text"
+                    name="subject3Code"
+                    value={course.subject3Code || ""}
+                    onChange={handleChange}
+                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                  />
+                </div>
+
+                {/* Subject-3 Name */}
+                <div className="lg:col-span-4">
+                  <label className="block text-sm font-medium text-slate-500">
+                    Subject-3 Name
                   </label>
                   <input
                     type="text"
@@ -412,7 +476,7 @@ const Edit = () => {
                   />
                 </div>
 
-                <div className="grid grid-cols-2 gap-7 justify-between">
+                <div className="col-span-1 lg:col-span-2 grid grid-cols-2 gap-3">
                   {/* Subject-3 Max Mark */}
                   <div>
                     <label className="block text-sm font-medium text-slate-500">
@@ -446,10 +510,24 @@ const Edit = () => {
                   </div>
                 </div>
 
-                {/* Subject-4 */}
-                <div>
+                {/* Subject-4 Code */}
+                <div className="lg:col-span-2">
                   <label className="block text-sm font-medium text-slate-500">
-                    Subject-4
+                    Subject-4 Code
+                  </label>
+                  <input
+                    type="text"
+                    name="subject4Code"
+                    value={course.subject4Code || ""}
+                    onChange={handleChange}
+                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                  />
+                </div>
+
+                {/* Subject-4 Name */}
+                <div className="lg:col-span-4">
+                  <label className="block text-sm font-medium text-slate-500">
+                    Subject-4 Name
                   </label>
                   <input
                     type="text"
@@ -461,7 +539,7 @@ const Edit = () => {
                   />
                 </div>
 
-                <div className="grid grid-cols-2 gap-7 justify-between">
+                <div className="col-span-1 lg:col-span-2 grid grid-cols-2 gap-3">
                   {/* Subject-4 Max Mark */}
                   <div>
                     <label className="block text-sm font-medium text-slate-500">
@@ -495,10 +573,24 @@ const Edit = () => {
                   </div>
                 </div>
 
-                {/* Subject-5 */}
-                <div>
+                {/* Subject-5 Code */}
+                <div className="lg:col-span-2">
                   <label className="block text-sm font-medium text-slate-500">
-                    Subject-5
+                    Subject-5 Code
+                  </label>
+                  <input
+                    type="text"
+                    name="subject5Code"
+                    value={course.subject5Code || ""}
+                    onChange={handleChange}
+                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                  />
+                </div>
+
+                {/* Subject-5 Name */}
+                <div className="lg:col-span-4">
+                  <label className="block text-sm font-medium text-slate-500">
+                    Subject-5 Name
                   </label>
                   <input
                     type="text"
@@ -510,7 +602,7 @@ const Edit = () => {
                   />
                 </div>
 
-                <div className="grid grid-cols-2 gap-7 justify-between">
+                <div className="col-span-1 lg:col-span-2 grid grid-cols-2 gap-3">
                   {/* Subject-5 Max Mark */}
                   <div>
                     <label className="block text-sm font-medium text-slate-500">
@@ -544,10 +636,24 @@ const Edit = () => {
                   </div>
                 </div>
 
-                {/* Subject-6 */}
-                <div>
+                {/* Subject-6 Code */}
+                <div className="lg:col-span-2">
                   <label className="block text-sm font-medium text-slate-500">
-                    Subject-6
+                    Subject-6 Code
+                  </label>
+                  <input
+                    type="text"
+                    name="subject6Code"
+                    value={course.subject6Code || ""}
+                    onChange={handleChange}
+                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                  />
+                </div>
+
+                {/* Subject-6 Name */}
+                <div className="lg:col-span-4">
+                  <label className="block text-sm font-medium text-slate-500">
+                    Subject-6 Name
                   </label>
                   <input
                     type="text"
@@ -559,7 +665,7 @@ const Edit = () => {
                   />
                 </div>
 
-                <div className="grid grid-cols-2 gap-7 justify-between">
+                <div className="col-span-1 lg:col-span-2 grid grid-cols-2 gap-3">
                   {/* Subject-6 Max Mark */}
                   <div>
                     <label className="block text-sm font-medium text-slate-500">
@@ -593,10 +699,24 @@ const Edit = () => {
                   </div>
                 </div>
 
-                {/* Subject-7 */}
-                <div>
+                {/* Subject-7 Code */}
+                <div className="lg:col-span-2">
                   <label className="block text-sm font-medium text-slate-500">
-                    Subject-7
+                    Subject-7 Code
+                  </label>
+                  <input
+                    type="text"
+                    name="subject7Code"
+                    value={course.subject7Code || ""}
+                    onChange={handleChange}
+                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                  />
+                </div>
+
+                {/* Subject-7 Name */}
+                <div className="lg:col-span-4">
+                  <label className="block text-sm font-medium text-slate-500">
+                    Subject-7 Name
                   </label>
                   <input
                     type="text"
@@ -608,7 +728,7 @@ const Edit = () => {
                   />
                 </div>
 
-                <div className="grid grid-cols-2 gap-7 justify-between">
+                <div className="col-span-1 lg:col-span-2 grid grid-cols-2 gap-3">
                   {/* Subject-7 Max Mark */}
                   <div>
                     <label className="block text-sm font-medium text-slate-500">
@@ -642,10 +762,24 @@ const Edit = () => {
                   </div>
                 </div>
 
-                {/* Subject-8 */}
-                <div>
+                {/* Subject-8 Code */}
+                <div className="lg:col-span-2">
                   <label className="block text-sm font-medium text-slate-500">
-                    Subject-8
+                    Subject-8 Code
+                  </label>
+                  <input
+                    type="text"
+                    name="subject8Code"
+                    value={course.subject8Code || ""}
+                    onChange={handleChange}
+                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                  />
+                </div>
+
+                {/* Subject-8 Name */}
+                <div className="lg:col-span-4">
+                  <label className="block text-sm font-medium text-slate-500">
+                    Subject-8 Name
                   </label>
                   <input
                     type="text"
@@ -657,7 +791,7 @@ const Edit = () => {
                   />
                 </div>
 
-                <div className="grid grid-cols-2 gap-7 justify-between">
+                <div className="col-span-1 lg:col-span-2 grid grid-cols-2 gap-3">
                   {/* Subject-8 Max Mark */}
                   <div>
                     <label className="block text-sm font-medium text-slate-500">
@@ -691,10 +825,24 @@ const Edit = () => {
                   </div>
                 </div>
 
-                {/* Subject-9 */}
-                <div>
+                {/* Subject-9 Code */}
+                <div className="lg:col-span-2">
                   <label className="block text-sm font-medium text-slate-500">
-                    Subject-9
+                    Subject-9 Code
+                  </label>
+                  <input
+                    type="text"
+                    name="subject9Code"
+                    value={course.subject9Code || ""}
+                    onChange={handleChange}
+                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                  />
+                </div>
+
+                {/* Subject-9 Name */}
+                <div className="lg:col-span-4">
+                  <label className="block text-sm font-medium text-slate-500">
+                    Subject-9 Name
                   </label>
                   <input
                     type="text"
@@ -706,7 +854,7 @@ const Edit = () => {
                   />
                 </div>
 
-                <div className="grid grid-cols-2 gap-7 justify-between">
+                <div className="col-span-1 lg:col-span-2 grid grid-cols-2 gap-3">
                   {/* Subject-9 Max Mark */}
                   <div>
                     <label className="block text-sm font-medium text-slate-500">
@@ -740,10 +888,24 @@ const Edit = () => {
                   </div>
                 </div>
 
-                {/* Subject-10 */}
-                <div>
+                {/* Subject-10 Code */}
+                <div className="lg:col-span-2">
                   <label className="block text-sm font-medium text-slate-500">
-                    Subject-10
+                    Subject-10 Code
+                  </label>
+                  <input
+                    type="text"
+                    name="subject10Code"
+                    value={course.subject10Code || ""}
+                    onChange={handleChange}
+                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                  />
+                </div>
+
+                {/* Subject-10 Name */}
+                <div className="lg:col-span-4">
+                  <label className="block text-sm font-medium text-slate-500">
+                    Subject-10 Name
                   </label>
                   <input
                     type="text"
@@ -755,7 +917,7 @@ const Edit = () => {
                   />
                 </div>
 
-                <div className="grid grid-cols-2 gap-7 justify-between">
+                <div className="col-span-1 lg:col-span-2 grid grid-cols-2 gap-3">
                   {/* Subject-10 Max Mark */}
                   <div>
                     <label className="block text-sm font-medium text-slate-500">
@@ -796,8 +958,8 @@ const Edit = () => {
             >
               Update Course
             </button>
-          </form>
-        </div>
+          </form >
+        </div >
       ) : (
         getSpinner()
       )}

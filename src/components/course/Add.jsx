@@ -18,33 +18,43 @@ const Add = () => {
     code: "",
     name: "",
     remarks: "",
+    subject1Code: "",
     subject1: "",
     subject1MaxMark: "",
     subject1PassMark: "",
+    subject2Code: "",
     subject2: "",
     subject2MaxMark: "",
     subject2PassMark: "",
+    subject3Code: "",
     subject3: "",
     subject3MaxMark: "",
     subject3PassMark: "",
+    subject4Code: "",
     subject4: "",
     subject4MaxMark: "",
     subject4PassMark: "",
+    subject5Code: "",
     subject5: "",
     subject5MaxMark: "",
     subject5PassMark: "",
+    subject6Code: "",
     subject6: "",
     subject6MaxMark: "",
     subject6PassMark: "",
+    subject7Code: "",
     subject7: "",
     subject7MaxMark: "",
     subject7PassMark: "",
+    subject8Code: "",
     subject8: "",
     subject8MaxMark: "",
     subject8PassMark: "",
+    subject9Code: "",
     subject9: "",
     subject9MaxMark: "",
     subject9PassMark: "",
+    subject10Code: "",
     subject10: "",
     subject10MaxMark: "",
     subject10PassMark: "",
@@ -93,7 +103,7 @@ const Add = () => {
   }
 
   return (
-    <div className="max-w-4xl mx-auto mt-2 p-3 lg:p-5 shadow-lg border">
+    <div className="max-w-6xl mx-auto mt-2 p-3 lg:p-5 shadow-lg border">
       <div className="flex py-2 px-4 items-center justify-center bg-teal-700 text-white rounded-lg shadow-lg">
         <h2 className="text-sm lg:text-xl font-semibold items-center justify-center">Enter Course Details</h2>
         <Link to="/dashboard/courses" >
@@ -131,7 +141,7 @@ const Add = () => {
             {/* Code */}
             <div className="lg:col-span-1">
               <label className="block mt-2 text-sm font-medium text-slate-500">
-                Code <span className="text-red-700">*</span>
+                Course Code <span className="text-red-700">*</span>
               </label>
               <input
                 type="text"
@@ -145,7 +155,7 @@ const Add = () => {
             {/* Name */}
             <div className="lg:col-span-2">
               <label className="block mt-2 text-sm font-medium text-slate-500">
-                Name <span className="text-red-700">*</span>
+                Course Name <span className="text-red-700">*</span>
               </label>
               <input
                 type="text"
@@ -159,7 +169,7 @@ const Add = () => {
             {/* Fees */}
             <div className="lg:col-span-1">
               <label className="block mt-2 text-sm font-medium text-slate-500">
-                Fees <span className="text-red-700">*</span>
+                Course Fees <span className="text-red-700">*</span>
               </label>
               <input
                 type="number"
@@ -174,7 +184,7 @@ const Add = () => {
             {/* Remarks */}
             <div className="lg:col-span-2">
               <label className="block text-sm font-medium text-slate-500">
-                Remarks <span className="text-red-700">*</span>
+                Remarks
               </label>
               <input
                 type="text"
@@ -218,11 +228,27 @@ const Add = () => {
             </div>
 
             <div className="lg:col-span-4 mb-3" />
+          </div>
 
-            {/* Subject-1 */}
+          <div className="grid grid-cols-1 lg:grid-cols-8 gap-4 gap-y-7">
+            {/* Subject-1 Code */}
             <div className="lg:col-span-2">
               <label className="block text-sm font-medium text-slate-500">
-                Subject-1 <span className="text-red-700">*</span>
+                Subject-1 Code <span className="text-red-700">*</span>
+              </label>
+              <input
+                type="text"
+                name="subject1Code"
+                onChange={handleChange}
+                className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                required
+              />
+            </div>
+
+            {/* Subject-1 Name*/}
+            <div className="lg:col-span-4">
+              <label className="block text-sm font-medium text-slate-500">
+                Subject-1 Name <span className="text-red-700">*</span>
               </label>
               <input
                 type="text"
@@ -265,10 +291,23 @@ const Add = () => {
               </div>
             </div>
 
-            {/* Subject-2 */}
+            {/* Subject-2 Code */}
             <div className="lg:col-span-2">
               <label className="block text-sm font-medium text-slate-500">
-                Subject-2
+                Subject-2 Code
+              </label>
+              <input
+                type="text"
+                name="subject2Code"
+                onChange={handleChange}
+                className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+              />
+            </div>
+
+            {/* Subject-2 Name */}
+            <div className="lg:col-span-4">
+              <label className="block text-sm font-medium text-slate-500">
+                Subject-2 Name
               </label>
               <input
                 type="text"
@@ -307,10 +346,23 @@ const Add = () => {
               </div>
             </div>
 
-            {/* Subject-3 */}
+            {/* Subject-3 Code */}
             <div className="lg:col-span-2">
               <label className="block text-sm font-medium text-slate-500">
-                Subject-3
+                Subject-3 Code
+              </label>
+              <input
+                type="text"
+                name="subject3Code"
+                onChange={handleChange}
+                className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+              />
+            </div>
+
+            {/* Subject-3 Name */}
+            <div className="lg:col-span-4">
+              <label className="block text-sm font-medium text-slate-500">
+                Subject-3 Name
               </label>
               <input
                 type="text"
@@ -353,10 +405,23 @@ const Add = () => {
               </div>
             </div>
 
-            {/* Subject-4 */}
+            {/* Subject-4 Code */}
             <div className="lg:col-span-2">
               <label className="block text-sm font-medium text-slate-500">
-                Subject-4
+                Subject-4 Code
+              </label>
+              <input
+                type="text"
+                name="subject4Code"
+                onChange={handleChange}
+                className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+              />
+            </div>
+
+            {/* Subject-4 Name */}
+            <div className="lg:col-span-4">
+              <label className="block text-sm font-medium text-slate-500">
+                Subject-4 Name
               </label>
               <input
                 type="text"
@@ -399,10 +464,23 @@ const Add = () => {
               </div>
             </div>
 
-            {/* Subject-5 */}
+            {/* Subject-5 Code */}
             <div className="lg:col-span-2">
               <label className="block text-sm font-medium text-slate-500">
-                Subject-5
+                Subject-5 Code
+              </label>
+              <input
+                type="text"
+                name="subject5Code"
+                onChange={handleChange}
+                className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+              />
+            </div>
+
+            {/* Subject-5 Name */}
+            <div className="lg:col-span-4">
+              <label className="block text-sm font-medium text-slate-500">
+                Subject-5 Name
               </label>
               <input
                 type="text"
@@ -445,10 +523,23 @@ const Add = () => {
               </div>
             </div>
 
-            {/* Subject-6 */}
+            {/* Subject-6 Code */}
             <div className="lg:col-span-2">
               <label className="block text-sm font-medium text-slate-500">
-                Subject-6
+                Subject-6 Code
+              </label>
+              <input
+                type="text"
+                name="subject6Code"
+                onChange={handleChange}
+                className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+              />
+            </div>
+
+            {/* Subject-6 Name */}
+            <div className="lg:col-span-4">
+              <label className="block text-sm font-medium text-slate-500">
+                Subject-6 Name
               </label>
               <input
                 type="text"
@@ -491,10 +582,23 @@ const Add = () => {
               </div>
             </div>
 
-            {/* Subject-7 */}
+            {/* Subject-7 Code */}
             <div className="lg:col-span-2">
               <label className="block text-sm font-medium text-slate-500">
-                Subject-7
+                Subject-7 Code
+              </label>
+              <input
+                type="text"
+                name="subject7Code"
+                onChange={handleChange}
+                className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+              />
+            </div>
+
+            {/* Subject-7 Name */}
+            <div className="lg:col-span-4">
+              <label className="block text-sm font-medium text-slate-500">
+                Subject-7 Name
               </label>
               <input
                 type="text"
@@ -537,10 +641,23 @@ const Add = () => {
               </div>
             </div>
 
-            {/* Subject-8 */}
+            {/* Subject-8 Code */}
             <div className="lg:col-span-2">
               <label className="block text-sm font-medium text-slate-500">
-                Subject-8
+                Subject-8 Code
+              </label>
+              <input
+                type="text"
+                name="subject8Code"
+                onChange={handleChange}
+                className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+              />
+            </div>
+
+            {/* Subject-8 Name */}
+            <div className="lg:col-span-4">
+              <label className="block text-sm font-medium text-slate-500">
+                Subject-8 Name
               </label>
               <input
                 type="text"
@@ -583,10 +700,23 @@ const Add = () => {
               </div>
             </div>
 
-            {/* Subject-9 */}
+            {/* Subject-9 Code */}
             <div className="lg:col-span-2">
               <label className="block text-sm font-medium text-slate-500">
-                Subject-9
+                Subject-9 Code
+              </label>
+              <input
+                type="text"
+                name="subject9Code"
+                onChange={handleChange}
+                className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+              />
+            </div>
+
+            {/* Subject-9 Name */}
+            <div className="lg:col-span-4">
+              <label className="block text-sm font-medium text-slate-500">
+                Subject-9 Name
               </label>
               <input
                 type="text"
@@ -629,10 +759,23 @@ const Add = () => {
               </div>
             </div>
 
-            {/* Subject-10 */}
+            {/* Subject-10 Code */}
             <div className="lg:col-span-2">
               <label className="block text-sm font-medium text-slate-500">
-                Subject-10
+                Subject-10 Code
+              </label>
+              <input
+                type="text"
+                name="subject10Code"
+                onChange={handleChange}
+                className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+              />
+            </div>
+
+            {/* Subject-10 Name */}
+            <div className="lg:col-span-4">
+              <label className="block text-sm font-medium text-slate-500">
+                Subject-10 Name
               </label>
               <input
                 type="text"
@@ -682,8 +825,8 @@ const Add = () => {
         >
           Add Course
         </button>
-      </form>
-    </div>
+      </form >
+    </div >
   );
 };
 

@@ -16,8 +16,9 @@ const authorizedScreensFor_SA_HQ_Role = [
   "acYearsList", "acYearAdd", "acYearEdit", "acYearView",
   "certificatesList", "certificateAdd", "certificateEdit", "certificateView",
   "templatesList", "templateAdd", "templateEdit", "templateView",
-  "settings", "profile",
-  "districtStateAdd", "districtStateEdit", "districtStateView", "districtStateList"
+  "settings", "profile", "marksheetList",
+  "districtStateAdd", "districtStateEdit", "districtStateView", "districtStateList",
+  "gradesList", "gradeAdd", "gradeEdit", "gradeView"
 ];
 
 const authorizedScreensFor_GUEST_Role = [
@@ -30,7 +31,8 @@ const authorizedScreensFor_GUEST_Role = [
   "acYearsList", "acYearView",
   "certificatesList", "certificateView",
   "templatesList", "templateView",
-  "districtStateList", "districtStateView"
+  "districtStateList", "districtStateView",
+  "gradesList", "gradeView"
 ];
 
 const authorizedScreensFor_SUP_Role = [
@@ -44,7 +46,7 @@ const authorizedScreensFor_SUP_Role = [
 const authorizedScreensFor_ADMIN_Role = [
   "schoolsList", "schoolView",
   "employeesList", "employeeAdd", "employeeEdit", "employeeView",
-  "studentsList", "studentAdd", "studentEdit", "studentPromote", "studentView",
+  "studentsList", "studentAdd", "studentEdit", "studentPromote", "studentView", "marksheetList",
   "settings", "profile"
 ];
 

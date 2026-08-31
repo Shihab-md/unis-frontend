@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext'
 import { getBaseUrl, handleRightClickAndFullScreen, getSpinner, LinkIcon, showSwalAlert } from '../../utils/CommonHelper'
 import {
-  FaUniversity, FaWpforms, FaClipboardList, FaCalendarAlt, FaUserCog, FaMapMarkerAlt, FaGoogleDrive, FaRedo, FaCentos
+  FaUniversity, FaWpforms, FaClipboardList, FaCalendarAlt, FaUserCog, FaMapMarkerAlt, FaGoogleDrive, FaRedo, FaCentos, FaMedal
 } from "react-icons/fa";
 import axios from 'axios'
 import { useNavigate } from "react-router-dom";
@@ -98,6 +98,16 @@ const Masters = () => {
               text="Districts, States"
               number={summary.totalDistrictStates}
               color="bg-green-600"
+            />
+          </Link> : null}
+
+        {user.role === "superadmin" || user.role === "hquser" || user.role === "guest" ?
+          <Link to="/dashboard/grades" >
+            <SummaryCard
+              icon={<FaMedal />}
+              text="Grades"
+              number={summary.totalGrades || 0}
+              color="bg-indigo-600"
             />
           </Link> : null}
 

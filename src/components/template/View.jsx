@@ -186,14 +186,28 @@ const View = () => {
               <div>
                 <div className="flex mt-1 space-x-3 mb-5" />
 
+                <ViewCard type="title" text="Template Module" />
+                <ViewCard type="data" text={template?.templateModule === "MARKSHEET" ? "Marksheet" : "Certificate"} />
+
+                {template?.templateModule === "MARKSHEET" ? (
+                  <>
+                    <ViewCard type="title" text="Marksheet Type" />
+                    <ViewCard type="data" text={template?.marksheetType === "CONSOLIDATED" ? "Consolidated Marksheet" : "Normal Marksheet"} />
+                  </>
+                ) : null}
+
                 <ViewCard type="title" text="Course Name" />
-                <ViewCard type="data" text={template?.courseId?.name || "-"} />
+                <ViewCard type="data" text={`${template?.courseId?.code ? template.courseId.code + " - " : ""}${template?.courseId?.name || "-"}`} />
 
                 <ViewCard type="title" text="Details" />
                 <ViewCard type="data" text={template?.details || "-"} />
 
-                <ViewCard type="title" text="Certificate Fees" />
-                <ViewCard type="data" text={String(template?.certificateFees ?? 0)} />
+                {template?.templateModule !== "MARKSHEET" ? (
+                  <>
+                    <ViewCard type="title" text="Certificate Fees" />
+                    <ViewCard type="data" text={String(template?.certificateFees ?? 0)} />
+                  </>
+                ) : null}
 
                 <div className="flex mt-1 space-x-3 mb-5" />
               </div>

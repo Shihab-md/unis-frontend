@@ -8,6 +8,13 @@ import {
 } from "react-icons/fa";
 import { useAuth } from '../context/AuthContext'
 
+const getTemplateModuleLabel = (row) => {
+  if (row.templateModule === "MARKSHEET") {
+    return row.marksheetType === "CONSOLIDATED" ? "Consolidated Marksheet" : "Normal Marksheet";
+  }
+  return "Certificate";
+};
+
 export const columns = [
   {
     name: "S No",
@@ -15,21 +22,41 @@ export const columns = [
     width: "60px",
   },
   {
-    name: "Course",
-    selector: (row) => row.code + " : " + row.name,
+    name: "Template Type",
+    selector: (row) => getTemplateModuleLabel(row),
     sortable: true,
-    width: "520px",
+    width: "190px",
+    cell: (row) => (
+      <div className="py-1">
+        <div className="font-semibold text-blue-700">{getTemplateModuleLabel(row)}</div>
+        <div className="text-[11px] text-slate-500">{row.templateModule === "MARKSHEET" ? row.marksheetType : "CERTIFICATE"}</div>
+      </div>
+    ),
+  },
+  {
+    name: "Course",
+    selector: (row) => `${row.code || ""} ${row.name || ""}`,
+    sortable: true,
+    width: "340px",
+    cell: (row) => (
+      <div className="py-1 leading-6">
+        <div><span className="font-semibold text-slate-500">Code:</span> <span className="font-bold text-blue-700">{row.code || "-"}</span></div>
+        <div><span className="font-semibold text-slate-500">Name:</span> <span className="font-semibold text-slate-700">{row.name || "-"}</span></div>
+      </div>
+    ),
   },
   {
     name: "Details",
     selector: (row) => row.details,
-    width: "300px",
+    width: "250px",
+    wrap: true,
   },
   {
     name: "Certificate Fees",
-    selector: (row) => Number(row.certificateFees ?? 75),
+    selector: (row) => row.templateModule === "CERTIFICATE" ? Number(row.certificateFees ?? 75) : "-",
     sortable: true,
-    width: "160px",
+    width: "150px",
+    cell: (row) => row.templateModule === "CERTIFICATE" ? Number(row.certificateFees ?? 75) : <span className="text-slate-400">-</span>,
   },
   {
     name: "Action",
@@ -38,7 +65,6 @@ export const columns = [
   },
 ];
 
-// templates for salary form
 export const getTemplates = async (id) => {
   let templates;
   try {
@@ -83,6 +109,18 @@ export const getTemplatesFromCache = async (id) => {
   return Array.isArray(templates) ? templates : [];
 };
 
+export const getCertificateTemplatesFromCache = async () => {
+  const templates = await getTemplatesFromCache();
+  return templates.filter((template) => !template.templateModule || template.templateModule === "CERTIFICATE");
+};
+
+export const getMarksheetTemplatesFromCache = async (marksheetType = "NORMAL") => {
+  const templates = await getTemplatesFromCache();
+  return templates.filter((template) =>
+    template.templateModule === "MARKSHEET" && String(template.marksheetType || "NORMAL") === String(marksheetType || "NORMAL")
+  );
+};
+
 export const TemplateButtons = ({ Id, onTemplateDelete }) => {
   const navigate = useNavigate();
 
@@ -109,9 +147,6 @@ export const TemplateButtons = ({ Id, onTemplateDelete }) => {
           showSwalAlert("Error!", error.response.data.error, "error");
         }
       }
-      //  } else if (result.dismiss === Swal.DismissReason.cancel) {
-      // Swal.fire('Cancelled', 'Your file is safe!', 'error');
-      // Handle cancellation logic (optional)
     }
   };
 

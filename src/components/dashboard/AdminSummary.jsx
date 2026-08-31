@@ -23,6 +23,16 @@ const AdminSummary = () => {
   const navigate = useNavigate()
   const { user } = useAuth()
 
+  const userRole = String(user?.role || "").toLowerCase();
+
+  const loggedInSchoolName = String(localStorage.getItem("schoolName") || "").trim();
+
+  const isHqAdmin =
+    userRole === "admin" && loggedInSchoolName.startsWith("UN-00-00001");
+
+  const canViewExam =
+    userRole === "superadmin" || userRole === "hquser" || isHqAdmin;
+
   useEffect(() => {
 
     if (user.role === "superadmin" || user.role === "hquser" || user.role === "supervisor" || user.role === "guest") {
@@ -129,8 +139,8 @@ const AdminSummary = () => {
             />
           </Link> : null}
 
-        {user.role === "superadmin" || user.role === "hquser" || user.role === "guest" ?
-          <Link to="#" >
+        {user.role === "superadmin" || user.role === "hquser" || user.role === "admin" || user.role === "guest" ?
+          <Link to={canViewExam ? "/dashboard/exams" : "#"} >
             <SummaryCard
               icon={<FaClipboardList />}
               text="Exams"

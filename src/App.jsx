@@ -68,6 +68,11 @@ import DistrictStateAdd from "./components/districtstate/Add";
 import DistrictStateView from "./components/districtstate/View";
 import DistrictStateEdit from "./components/districtstate/Edit";
 
+import GradeList from "./components/grade/List";
+import GradeAdd from "./components/grade/Add";
+import GradeView from "./components/grade/View";
+import GradeEdit from "./components/grade/Edit";
+
 import ReportsHome from "./components/report/ReportsHome";
 
 import AccountsPage from "./components/dashboard/AccountsPage";
@@ -83,6 +88,9 @@ import MigrationBatchesFromInvoicesAll from "./components/fees/MigrationBatchesF
 import BulkIhsExcel from "./components/certificate/BulkIhsExcel";
 import NotificationsPage from "./components/notification/NotificationsPage";
 import HelpDeskPage from "./components/helpdesk/HelpDeskPage";
+import MarksheetPage from "./components/marksheet/MarksheetPage";
+import ExamsHome from "./components/exam/ExamsHome";
+import QuestionPapersPage from "./components/exam/QuestionPapersPage";
 
 function App() {
   return (
@@ -164,10 +172,18 @@ function App() {
           <Route path="/dashboard/districtStates/:id" element={<DistrictStateView />}></Route>
           <Route path="/dashboard/districtStates/edit/:id" element={<DistrictStateEdit />}></Route>
 
+          <Route path="/dashboard/grades" element={<GradeList />}></Route>
+          <Route path="/dashboard/add-grade" element={<GradeAdd />}></Route>
+          <Route path="/dashboard/grades/:id" element={<GradeView />}></Route>
+          <Route path="/dashboard/grades/edit/:id" element={<GradeEdit />}></Route>
+
           <Route path="/dashboard/masters" element={<Masters />}></Route>
           <Route path="/dashboard/profile" element={<ProfilePage />}></Route>
           <Route path="/dashboard/notifications" element={<NotificationsPage />}></Route>
           <Route path="/dashboard/help-desk" element={<HelpDeskPage />}></Route>
+          <Route path="/dashboard/exams" element={<ExamsHome />}></Route>
+          <Route path="/dashboard/exams/questions" element={<QuestionPapersPage />}></Route>
+          <Route path="/dashboard/exams/results" element={<MarksheetPage />}></Route>
           <Route path="/dashboard/changePassword" element={<ChangePassword />}></Route>
           <Route path="/dashboard/reset-password" element={<ResetPassword />} />
 

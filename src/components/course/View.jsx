@@ -80,6 +80,8 @@ const View = () => {
 
               <div className="flex space-x-3 mb-5" />
 
+              <ViewCard type="title" text="Subject-1 Code " />
+              <ViewCard type="data" text={course.subject1Code || "-"} />
               <ViewCard type="title" text="Subject-1 " />
               <ViewCard type="data" text={course.subject1} />
               <ViewCard type="title" text="Max Marks " />
@@ -89,6 +91,8 @@ const View = () => {
 
               <div className="flex space-x-3 mb-5" />
 
+              <ViewCard type="title" text="Subject-2 Code " />
+              <ViewCard type="data" text={course.subject2Code || "-"} />
               <ViewCard type="title" text="Subject-2 " />
               <ViewCard type="data" text={course.subject2} />
               <ViewCard type="title" text="Max Marks " />
@@ -98,6 +102,8 @@ const View = () => {
 
               <div className="flex space-x-3 mb-5" />
 
+              <ViewCard type="title" text="Subject-3 Code " />
+              <ViewCard type="data" text={course.subject3Code || "-"} />
               <ViewCard type="title" text="Subject-3 " />
               <ViewCard type="data" text={course.subject3} />
               <ViewCard type="title" text="Max Marks " />
@@ -107,6 +113,8 @@ const View = () => {
 
               <div className="flex space-x-3 mb-5" />
 
+              <ViewCard type="title" text="Subject-4 Code " />
+              <ViewCard type="data" text={course.subject4Code || "-"} />
               <ViewCard type="title" text="Subject-4 " />
               <ViewCard type="data" text={course.subject4} />
               <ViewCard type="title" text="Max Marks " />
@@ -117,6 +125,8 @@ const View = () => {
 
               <div className="flex space-x-3 mb-5" />
 
+              <ViewCard type="title" text="Subject-5 Code " />
+              <ViewCard type="data" text={course.subject5Code || "-"} />
               <ViewCard type="title" text="Subject-5 " />
               <ViewCard type="data" text={course.subject5} />
               <ViewCard type="title" text="Max Marks " />
@@ -126,6 +136,8 @@ const View = () => {
 
               <div className="flex space-x-3 mb-5" />
 
+              <ViewCard type="title" text="Subject-6 Code " />
+              <ViewCard type="data" text={course.subject6Code || "-"} />
               <ViewCard type="title" text="Subject-6 " />
               <ViewCard type="data" text={course.subject6} />
               <ViewCard type="title" text="Max Marks " />
@@ -135,6 +147,8 @@ const View = () => {
 
               <div className="flex space-x-3 mb-5" />
 
+              <ViewCard type="title" text="Subject-7 Code " />
+              <ViewCard type="data" text={course.subject7Code || "-"} />
               <ViewCard type="title" text="Subject-7 " />
               <ViewCard type="data" text={course.subject7} />
               <ViewCard type="title" text="Max Marks " />
@@ -144,6 +158,8 @@ const View = () => {
 
               <div className="flex space-x-3 mb-5" />
 
+              <ViewCard type="title" text="Subject-8 Code " />
+              <ViewCard type="data" text={course.subject8Code || "-"} />
               <ViewCard type="title" text="Subject-8 " />
               <ViewCard type="data" text={course.subject8} />
               <ViewCard type="title" text="Max Marks " />
@@ -153,6 +169,8 @@ const View = () => {
 
               <div className="flex space-x-3 mb-5" />
 
+              <ViewCard type="title" text="Subject-9 Code " />
+              <ViewCard type="data" text={course.subject9Code || "-"} />
               <ViewCard type="title" text="Subject-9 " />
               <ViewCard type="data" text={course.subject9} />
               <ViewCard type="title" text="Max Marks " />
@@ -162,6 +180,8 @@ const View = () => {
 
               <div className="flex space-x-3 mb-5" />
 
+              <ViewCard type="title" text="Subject-10 Code " />
+              <ViewCard type="data" text={course.subject10Code || "-"} />
               <ViewCard type="title" text="Subject-10 " />
               <ViewCard type="data" text={course.subject10} />
               <ViewCard type="title" text="Max Marks " />
