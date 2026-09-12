@@ -2,9 +2,11 @@ import React, { useCallback, useEffect, useState } from "react";
 import { FaComments } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { helpDeskApi } from "../../api/helpDeskApi";
+import { useLanguage } from "../../i18n/LanguageContext";
 
 export default function HelpDeskIcon() {
   const navigate = useNavigate();
+  const { tr } = useLanguage();
   const [unread, setUnread] = useState(0);
 
   const loadCount = useCallback(async () => {
@@ -39,10 +41,10 @@ export default function HelpDeskIcon() {
         type="button"
         onClick={() => navigate("/dashboard/help-desk")}
         className="relative z-10 rounded-xl p-1 hover:-translate-y-0.5"
-        aria-label="UNIS Help Desk"
-        title="Help Desk"
+        aria-label={tr("UNIS Help Desk")}
+        title={tr("Help Desk")}
       >
-        <FaComments title="Help Desk" aria-label="Help Desk" className="text-2xl lg:text-3xl text-sky-200 drop-shadow-lg" />
+        <FaComments title={tr("Help Desk")} aria-label={tr("Help Desk")} className="text-2xl lg:text-3xl text-sky-200 drop-shadow-lg" />
 
         {unread > 0 ? (
           <span className="absolute -right-2 -top-2 min-w-5 h-5 px-1 rounded-full bg-red-600 text-white text-[10px] font-bold flex items-center justify-center">

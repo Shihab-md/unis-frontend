@@ -5,6 +5,7 @@ import {
   showSwalAlert,
   showConfirmationSwalAlert,
   getButtonStyle,
+  getButtonTooltip,
 } from '../utils/CommonHelper';
 import { useAuth } from '../context/AuthContext'
 import {
@@ -12,6 +13,7 @@ import {
   FaEdit,
   FaTrashAlt,
 } from "react-icons/fa";
+import { UiText } from '../i18n/LanguageContext';
 
 const toNumber = (value) => {
   const numberValue = Number(value);
@@ -30,7 +32,7 @@ export const StudentCountTable = ({ row }) => {
   return (
     <div className="mt-3 md:mt-1 mb-1 rounded-md border border-pink-200 bg-white/75 p-1 shadow-md mr-5 ml-5 md:mr-0 md:ml-0">
       <div className="text-center text-[13px] font-semibold text-blue-600">
-        Students: {totalCount}
+        <UiText text="Students" />: {totalCount}
       </div>
 
       {courses.length > 0 ? (
@@ -38,9 +40,9 @@ export const StudentCountTable = ({ row }) => {
           <table className="w-full text-left text-[11px]">
             <thead className="bg-gray-100 text-pink-700">
               <tr>
-                <th className="px-2 py-1.5 font-semibold">Course</th>
+                <th className="px-2 py-1.5 font-semibold"><UiText text="Course" /></th>
                 <th className="w-16 px-2 py-1.5 text-center font-semibold">
-                  Count
+                  <UiText text="Count" />
                 </th>
               </tr>
             </thead>
@@ -77,7 +79,7 @@ export const EmployeeCountTable = ({ row }) => {
   return (
     <div className="mt-3 rounded-md border border-pink-200 bg-white/75 p-1 shadow-md mr-5 ml-5 md:mr-0 md:ml-0">
       <div className="text-center text-[13px] font-semibold text-blue-600">
-        Employees: {totalCount}
+        <UiText text="Employees" />: {totalCount}
       </div>
 
       {roles.length > 0 ? (
@@ -85,9 +87,9 @@ export const EmployeeCountTable = ({ row }) => {
           <table className="w-full text-left text-[11px]">
             <thead className="bg-gray-100 text-pink-700">
               <tr>
-                <th className="px-2 py-1.5 font-semibold">Role</th>
+                <th className="px-2 py-1.5 font-semibold"><UiText text="Role" /></th>
                 <th className="w-16 px-2 py-1.5 text-center font-semibold">
-                  Count
+                  <UiText text="Count" />
                 </th>
               </tr>
             </thead>
@@ -96,7 +98,7 @@ export const EmployeeCountTable = ({ row }) => {
               {roles.map((role, i) => (
                 <tr key={i} className="hover:bg-sky-50/60">
                   <td className="px-2 py-1.5 text-slate-700 break-words">
-                    {role.role || "-"}
+                    <UiText text={role.role || "-"} />
                   </td>
 
                   <td className="px-3 py-1.5 text-right font-semibold text-sky-700">
@@ -114,25 +116,25 @@ export const EmployeeCountTable = ({ row }) => {
 
 export const columns = [
   {
-    name: "S.No",
+    name: <UiText text="S.No" />,
     selector: (row) => row.sno,
     width: "60px",
   },
   {
-    name: "Niswan details",
+    name: <UiText text="Niswan details" />,
     selector: (row) => (
       <div className="mt-2 mb-5">
         <p className="mb-5">
-          <span className="text-blue-700 mr-2">Code:</span> {row.code}
+          <span className="text-blue-700 mr-2"><UiText text="Code" />:</span> {row.code}
           {row.active === "Active" ? (
             <span>
               <span className="ml-24 mr-1">✅:</span>
-              <span className="mr-1">{row.active}</span>
+              <span className="mr-1"><UiText text={row.active} /></span>
             </span>
           ) : (
             <span>
               <span className="ml-24 mr-1">❎:</span>
-              <span className="mr-1">{row.active}</span>
+              <span className="mr-1"><UiText text={row.active} /></span>
             </span>
           )}
         </p>
@@ -152,7 +154,7 @@ export const columns = [
     width: "410px",
   },
   {
-    name: "Contact details",
+    name: <UiText text="Contact details" />,
     selector: (row) => (
       <div className="mt-2 mb-2">
         <span className="font-xs text-slate-500 break-words">
@@ -169,7 +171,7 @@ export const columns = [
         </span>
 
         <p className="mt-5 mb-1">
-          <span className="text-slate-500 mr-1">Incharge</span>
+          <span className="text-slate-500 mr-1"><UiText text="Incharge" /></span>
         </p>
 
         <p className="mb-1 text-black">
@@ -179,7 +181,7 @@ export const columns = [
           <span className=" text-black mr-1">📱:</span> {row.incharge1Number}
         </p>
         <p className="mt-5 mb-1">
-          <span className="text-slate-500 mr-1">Supervisor</span>
+          <span className="text-slate-500 mr-1"><UiText text="Supervisor" /></span>
         </p>
         <p className="mb-2 text-black">
           <span className=" text-black-700 mb-3"></span> {row.supervisorId}
@@ -191,7 +193,7 @@ export const columns = [
     width: "370px",
   },
   {
-    name: "Employees",
+    name: <UiText text="Employees" />,
     selector: (row) => (
       <div className="w-full py-1">
         <EmployeeCountTable row={row} />
@@ -201,7 +203,7 @@ export const columns = [
     width: "210px",
   },
   {
-    name: "Students",
+    name: <UiText text="Students" />,
     selector: (row) => (
       <div className="w-full py-1">
         <StudentCountTable row={row} />
@@ -211,7 +213,7 @@ export const columns = [
     width: "290px",
   },
   {
-    name: "Action",
+    name: <UiText text="Action" />,
     selector: (row) => row.action,
     center: "true",
     width: "190px",
@@ -273,7 +275,7 @@ export const SchoolCard = ({ row, onSchoolDelete }) => {
             <span
               className={`inline-flex rounded-md border px-2 py-1 text-[10px] font-medium shadow-lg ${statusClass}`}
             >
-              {row.active || "-"}
+              <UiText text={row.active || "-"} />
             </span>
           </div>
         </div>
@@ -297,7 +299,7 @@ export const SchoolCard = ({ row, onSchoolDelete }) => {
         <div className="mt-3 grid gap-x-3 gap-y-2 text-xs">
           <div>
             <p className="text-medium font-semibold text-slate-600 mb-1">
-              Incharge:
+              <UiText text="Incharge" />:
             </p>
             <span className="text-slate-500">👤:</span>{" "}
             <span className="font-xs text-slate-500">
@@ -311,7 +313,7 @@ export const SchoolCard = ({ row, onSchoolDelete }) => {
 
           <div>
             <p className="text-medium font-semibold text-slate-600 mb-1">
-              Supervisor:
+              <UiText text="Supervisor" />:
             </p>
             <span className="font-xs text-slate-500">
               {row.supervisorId && row.supervisorName
@@ -422,23 +424,23 @@ export const SchoolButtons = ({ Id, onSchoolDelete }) => {
     <div className="flex space-x-3 lg:flex-col lg:space-x-0 lg:space-y-3 items-center">
       <button
         className={getButtonStyle('View')}
-        title="View Details"
-        aria-label="View Details"
+        title={getButtonTooltip("View")}
+        aria-label={getButtonTooltip("View")}
         onClick={() => navigate(`/dashboard/schools/${Id}`)}
       >
-        <FaEye title="View Details" aria-label="View Details" className="m-1" />
+        <FaEye title={getButtonTooltip("View")} aria-label={getButtonTooltip("View")} className="m-1" />
       </button>
 
       {user.role === "superadmin" || user.role === "hquser" ? (
         <div className="flex space-x-3">
           <button
             className={getButtonStyle('Edit')}
-            title="Edit"
-            aria-label="Edit"
+            title={getButtonTooltip("Edit")}
+            aria-label={getButtonTooltip("Edit")}
             disabled={user?.role === "guest"}
             onClick={() => navigate(`/dashboard/schools/edit/${Id}`)}
           >
-            <FaEdit title="Edit" aria-label="Edit" className="m-1" />
+            <FaEdit title={getButtonTooltip("Edit")} aria-label={getButtonTooltip("Edit")} className="m-1" />
           </button>
         </div>
       ) : null}
@@ -447,12 +449,12 @@ export const SchoolButtons = ({ Id, onSchoolDelete }) => {
         <div className="flex space-x-3">
           <button
             className={getButtonStyle('Delete')}
-            title="Delete"
-            aria-label="Delete"
+            title={getButtonTooltip("Delete")}
+            aria-label={getButtonTooltip("Delete")}
             disabled={user?.role === "guest"}
             onClick={() => handleDelete(Id)}
           >
-            <FaTrashAlt title="Delete" aria-label="Delete" className="m-1" />
+            <FaTrashAlt title={getButtonTooltip("Delete")} aria-label={getButtonTooltip("Delete")} className="m-1" />
           </button>
         </div>
       ) : null}

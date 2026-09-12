@@ -7,6 +7,9 @@ import {
   getButtonStyle,
 } from '../utils/CommonHelper';
 import { useAuth } from '../context/AuthContext';
+import { UiText, useLanguage } from '../i18n/LanguageContext';
+import { translateUiPhrase } from '../i18n/uiPhrases';
+import { formatAge, formatWorkingExperience } from './supervisorProfileUtils';
 import {
   FaEye,
   FaEdit,
@@ -18,6 +21,24 @@ const toNumber = (value) => {
   return Number.isFinite(numberValue) ? numberValue : 0;
 };
 
+const CompactDateDuration = ({ value, formatter }) => {
+  const { tr } = useLanguage();
+
+  if (!value) return <span>-</span>;
+
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return <span>-</span>;
+
+  return (
+    <span className="inline-flex flex-col align-top">
+      <span>{date.toLocaleDateString("en-GB")}</span>
+      <span className="mt-0.5 text-[10px] font-normal leading-tight text-slate-500">
+        ({formatter(value, tr)})
+      </span>
+    </span>
+  );
+};
+
 export const columns = [
   {
     name: "#",
@@ -25,7 +46,7 @@ export const columns = [
     width: "50px",
   },
   {
-    name: "Supervisor details",
+    name: <UiText text="Supervisor details" />,
     selector: (row) => (
       <div className="mt-2 mb-2">
         <p className="mb-2">
@@ -41,7 +62,7 @@ export const columns = [
     wrap: true,
   },
   {
-    name: "Contact",
+    name: <UiText text="Contact" />,
     selector: (row) => (
       <div className="mt-2 mb-2">
         <p className="mb-1.5">
@@ -52,11 +73,11 @@ export const columns = [
         </p>
         <p className="mb-1.5">
           <span className="text-blue-700 mr-1">🎂:</span>{" "}
-          {row.dob ? new Date(row.dob).toLocaleDateString("en-GB") : "-"}
+          <CompactDateDuration value={row.dob} formatter={formatAge} />
         </p>
         <p className="mb-1.5">
           <span className="text-blue-700 mr-1">🗓️:</span>{" "}
-          {row.doj ? new Date(row.doj).toLocaleDateString("en-GB") : "-"}
+          <CompactDateDuration value={row.doj} formatter={formatWorkingExperience} />
         </p>
         <p>
           <span className="text-blue-700 mr-1">🗺️:</span>{" "}
@@ -64,11 +85,11 @@ export const columns = [
         </p>
       </div>
     ),
-    width: "230px",
+    width: "210px",
     wrap: true,
   },
   {
-    name: "Niswans",
+    name: <UiText text="Niswans" />,
     selector: (row) => (
       <div className="w-full py-1">
         <NiswanCountTable row={row} />
@@ -79,7 +100,7 @@ export const columns = [
     wrap: true,
   },
   {
-    name: "Employees",
+    name: <UiText text="Employees" />,
     selector: (row) => (
       <div className="w-full py-1">
         <EmployeeCountTable row={row} />
@@ -89,7 +110,7 @@ export const columns = [
     wrap: true,
   },
   {
-    name: "Students",
+    name: <UiText text="Students" />,
     selector: (row) => (
       <div className="w-full py-2">
         <StudentCountTable row={row} />
@@ -99,28 +120,28 @@ export const columns = [
     wrap: true,
   },
   {
-    name: "Status",
+    name: <UiText text="Status" />,
     selector: (row) => (
       <div className="mt-2 mb-2">
         {row.active === "Active" ? (
           <p className="mb-2">
-            <span className="text-blue-700 mr-1">✅:</span> {row.active}
+            <span className="text-blue-700 mr-1">✅:</span> <UiText text={row.active} />
           </p>
         ) : (
           <p className="mb-2">
-            <span className="text-blue-700 mr-1">❎:</span> {row.active}
+            <span className="text-blue-700 mr-1">❎:</span> <UiText text={row.active} />
           </p>
         )}
 
         <p>
-          <span className="text-blue-700 mr-1">💼:</span> {row.jobType}
+          <span className="text-blue-700 mr-1">💼:</span> <UiText text={row.jobType} />
         </p>
       </div>
     ),
-    width: "120px",
+    width: "140px",
   },
   {
-    name: "Action",
+    name: <UiText text="Action" />,
     selector: (row) => row.action,
     center: "true",
     width: "100px",
@@ -150,28 +171,28 @@ export const NiswanCountTable = ({ row }) => {
   return (
     <div className="mt-2 rounded-md bg-white/75 p-1">
       <div className="text-center text-[12px] font-semibold text-blue-600">
-        Niswans
+        {translateUiPhrase("Niswans")}
       </div>
 
       <div className="overflow-hidden rounded-sm border border-slate-300 bg-white/80 mx-1 mt-1 mb-1">
         <table className="w-full text-left text-[12px] md:text-[12px]">
           <tbody className="divide-y divide-slate-100">
             <tr className="hover:bg-sky-50/60">
-              <td className="px-2 py-1 text-slate-700">Active</td>
+              <td className="px-2 py-1 text-slate-700">{translateUiPhrase("Active")}</td>
               <td className="w-10 px-2 py-1 text-right font-semibold text-emerald-700">
                 {activeCount}
               </td>
             </tr>
 
             <tr className="hover:bg-sky-50/60">
-              <td className="px-2 py-1 text-slate-700">In-Active</td>
+              <td className="px-2 py-1 text-slate-700">{translateUiPhrase("In-Active")}</td>
               <td className="w-10 px-2 py-1 text-right font-semibold text-rose-700">
                 {inactiveCount}
               </td>
             </tr>
 
             <tr className="bg-gray-100">
-              <td className="px-2 py-1 font-semibold text-pink-700">Total</td>
+              <td className="px-2 py-1 font-semibold text-pink-700">{translateUiPhrase("Total")}</td>
               <td className="w-10 px-2 py-1 text-right font-semibold text-pink-700">
                 {totalCount}
               </td>
@@ -195,7 +216,7 @@ export const EmployeeCountTable = ({ row }) => {
   return (
     <div className="mt-2 rounded-md bg-white/75 p-1 mb-1">
       <div className="text-center text-[12px] font-semibold text-blue-600">
-        Employees
+        {translateUiPhrase("Employees")}
       </div>
 
       {roles.length > 0 ? (
@@ -203,9 +224,9 @@ export const EmployeeCountTable = ({ row }) => {
           <table className="w-full text-left text-[12px]">
             <thead className="bg-gray-100 text-pink-700">
               <tr>
-                <th className="px-2 py-1 font-semibold">Role</th>
+                <th className="px-2 py-1 font-semibold">{translateUiPhrase("Role")}</th>
                 <th className="w-14 px-2 py-1 text-right font-semibold">
-                  Count
+                  {translateUiPhrase("Count")}
                 </th>
               </tr>
             </thead>
@@ -214,7 +235,7 @@ export const EmployeeCountTable = ({ row }) => {
               {roles.map((role, i) => (
                 <tr key={i} className="hover:bg-sky-50/60">
                   <td className="px-2 py-1 text-slate-700 break-words">
-                    {role.role || "-"}
+                    {translateUiPhrase(role.role || "-")}
                   </td>
 
                   <td className="w-14 px-2 py-1 text-right font-semibold text-sky-700">
@@ -225,7 +246,7 @@ export const EmployeeCountTable = ({ row }) => {
 
               <tr className="bg-gray-100">
                 <td className="px-2 py-1 font-semibold text-pink-700">
-                  Total
+                  {translateUiPhrase("Total")}
                 </td>
 
                 <td className="w-10 px-2 py-1 text-right font-semibold text-pink-700">
@@ -254,7 +275,7 @@ export const StudentCountTable = ({ row }) => {
   return (
     <div className="mt-3 md:mt-1 rounded-md bg-white/75 p-1 mr-3 ml-3 md:mr-0 md:ml-0">
       <div className="text-center text-[12px] font-semibold text-blue-600">
-        Students: {uniqueStudentCount}
+        {translateUiPhrase("Students")}: {uniqueStudentCount}
       </div>
 
       {courses.length > 0 ? (
@@ -262,9 +283,9 @@ export const StudentCountTable = ({ row }) => {
           <table className="w-full text-left text-[12px]">
             <thead className="bg-gray-100 text-pink-700">
               <tr>
-                <th className="px-2 py-1.5 font-semibold">Course</th>
+                <th className="px-2 py-1.5 font-semibold">{translateUiPhrase("Course")}</th>
                 <th className="w-16 px-2 py-1.5 text-center font-semibold">
-                  Count
+                  {translateUiPhrase("Count")}
                 </th>
               </tr>
             </thead>
@@ -284,7 +305,7 @@ export const StudentCountTable = ({ row }) => {
 
               <tr className="bg-gray-100">
                 <td className="px-2 py-1.5 font-semibold text-pink-700">
-                  Course wise Total
+                  {translateUiPhrase("Course wise Total")}
                 </td>
 
                 <td className="px-3 py-1.5 text-right font-semibold text-pink-700">
@@ -339,13 +360,13 @@ export const SupervisorCard = ({ row }) => {
             <span
               className={`inline-flex rounded-md border shadow-lg px-2 py-1 text-[12px] font-medium ${statusClass}`}
             >
-              {row.active || "-"}
+              <UiText text={row.active || "-"} />
             </span>
 
             <span
               className={`inline-flex rounded-md border shadow-lg px-2 py-1 text-[12px] font-medium ${typeClass}`}
             >
-              {row.jobType || "-"}
+              <UiText text={row.jobType || "-"} />
             </span>
           </div>
         </div>
@@ -368,14 +389,14 @@ export const SupervisorCard = ({ row }) => {
           <div>
             <span className="text-slate-500">🎂:</span>{" "}
             <span className="font-xs text-slate-800">
-              {row.dob ? new Date(row.dob).toLocaleDateString("en-GB") : "-"}
+              <CompactDateDuration value={row.dob} formatter={formatAge} />
             </span>
           </div>
 
           <div>
             <span className="text-slate-500">🗓️:</span>{" "}
             <span className="font-xs text-slate-800">
-              {row.doj ? new Date(row.doj).toLocaleDateString("en-GB") : "-"}
+              <CompactDateDuration value={row.doj} formatter={formatWorkingExperience} />
             </span>
           </div>
         </div>
@@ -494,31 +515,31 @@ export const SupervisorButtons = ({ Id, onSupervisorDelete }) => {
         <div className="flex space-x-3 lg:flex-col lg:space-x-0 lg:space-y-3 items-center">
           <button
             className={getButtonStyle('View')}
-            title="View Details"
-            aria-label="View Details"
+            title={translateUiPhrase("View Details")}
+            aria-label={translateUiPhrase("View Details")}
             onClick={() => navigate(`/dashboard/supervisors/${Id}`)}
           >
-            <FaEye title="View Details" aria-label="View Details" className="m-1" />
+            <FaEye title={translateUiPhrase("View Details")} aria-label={translateUiPhrase("View Details")} className="m-1" />
           </button>
 
           <button
             className={getButtonStyle('Edit')}
-            title="Edit"
-            aria-label="Edit"
+            title={translateUiPhrase("Edit")}
+            aria-label={translateUiPhrase("Edit")}
             disabled={user?.role === "guest"}
             onClick={() => navigate(`/dashboard/supervisors/edit/${Id}`)}
           >
-            <FaEdit title="Edit" aria-label="Edit" className="m-1" />
+            <FaEdit title={translateUiPhrase("Edit")} aria-label={translateUiPhrase("Edit")} className="m-1" />
           </button>
 
           <button
             className={getButtonStyle('Delete')}
-            title="Delete"
-            aria-label="Delete"
+            title={translateUiPhrase("Delete")}
+            aria-label={translateUiPhrase("Delete")}
             disabled={user?.role === "guest"}
             onClick={() => handleDelete(Id)}
           >
-            <FaTrashAlt title="Delete" aria-label="Delete" className="m-1" />
+            <FaTrashAlt title={translateUiPhrase("Delete")} aria-label={translateUiPhrase("Delete")} className="m-1" />
           </button>
         </div>
       ) : null}

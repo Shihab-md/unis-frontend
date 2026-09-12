@@ -12,10 +12,12 @@ import {
   LinkIcon, showSwalAlert, toCamelCase, getFilterGif
 } from '../../utils/CommonHelper';
 import { useAuth } from '../../context/AuthContext'
+import { AutoText, useLanguage } from '../../i18n/LanguageContext';
 import 'animate.css';
 import * as XLSX from 'xlsx';
 
 const List = () => {
+  const { tr, t, direction, fontFamily } = useLanguage();
 
   // To prevent right-click AND For FULL screen view.
   useEffect(() => {
@@ -109,9 +111,9 @@ const List = () => {
       background: "url(/bg_card.png)",
       html: (
         <div className="mb-2 h-80 w-full">
-          <div className='text-xl font-bold mb-1 text-green-600 text-center'>Filter</div>
+          <div className='text-xl font-bold mb-1 text-green-600 text-center'>{tr("Filter")}</div>
           <div className='grid'>
-            <span className='text-sm mb-1 text-start text-blue-500'>Niswan</span>
+            <span className='text-sm mb-1 text-start text-blue-500'>{tr("Niswan")}</span>
             <Select className='text-sm text-start mb-3'
               options={schools.map(option => ({
                 value: option._id, label: option.code + " : " + option.nameEnglish
@@ -126,15 +128,15 @@ const List = () => {
           </div>
 
           <div className='grid'>
-            <span className='text-sm mb-1 text-start text-blue-500'>Role</span>
+            <span className='text-sm mb-1 text-start text-blue-500'>{tr("Role")}</span>
             <Select className='text-sm text-start mb-3'
               options={
-                [{ value: 'superadmin', label: 'SuperAdmin' },
-                { value: 'hquser', label: 'HQUser' },
-                { value: 'admin', label: 'Admin' },
-                { value: 'teacher', label: 'Teacher' },
-                { value: 'usthadh', label: 'Usthadh' },
-                { value: 'warden', label: 'Warden' }]
+                [{ value: 'superadmin', label: t('roles.superadmin', 'SuperAdmin') },
+                { value: 'hquser', label: t('roles.hquser', 'HQUser') },
+                { value: 'admin', label: t('roles.admin', 'Admin') },
+                { value: 'teacher', label: t('roles.teacher', 'Teacher') },
+                { value: 'usthadh', label: t('roles.usthadh', 'Usthadh') },
+                { value: 'warden', label: t('roles.warden', 'Warden') }]
               }
 
               onChange={(selectedOption) => {
@@ -146,11 +148,11 @@ const List = () => {
           </div>
 
           <div className='grid'>
-            <span className='text-sm mb-1 text-start text-blue-500'>Status</span>
+            <span className='text-sm mb-1 text-start text-blue-500'>{tr("Status")}</span>
             <Select className='text-sm text-start mb-3'
               options={
-                [{ value: 'Active', label: 'Active' },
-                { value: 'In-Active', label: 'In-Active' }]
+                [{ value: 'Active', label: tr('Active') },
+                { value: 'In-Active', label: tr('In-Active') }]
               }
               // defaultValue={selectedStatus}
               onChange={(selectedOption) => {
@@ -164,6 +166,8 @@ const List = () => {
       ),
       focusConfirm: false,
       showCancelButton: true,
+      confirmButtonText: tr("Apply"),
+      cancelButtonText: tr("Cancel"),
       preConfirm: () => {
         const select1 = selectedSchool ? selectedSchool : null;
         const select2 = selectedRole ? selectedRole : null;
@@ -243,7 +247,7 @@ const List = () => {
 
   const handleImport = async () => {
     const { value: file } = await Swal.fire({
-      title: "<h3 style='color:blue; font-size: 25px;'>Import Employee Data</h3>",
+      title: `<h3 style='color:blue; font-size: 25px;'>${tr("Import Employee Data")}</h3>`,
       input: "file",
       background: "url(/bg_card.png)",
       inputAttributes: {
@@ -251,7 +255,7 @@ const List = () => {
         'Authorization': `Bearer ${localStorage.getItem("token")}`,
         'Access-Control-Allow-Origin': '*',
         "accept": ".xlsx, .xls",
-        "aria-label": "Upload Employee Data."
+        "aria-label": tr("Upload Employee Data.")
       },
       showClass: { popup: `animate__animated animate__fadeInUp animate__faster` },
       hideClass: { popup: `animate__animated animate__fadeOutDown animate__faster` }
@@ -299,8 +303,8 @@ const List = () => {
             window.URL.revokeObjectURL(url);
 
             Swal.fire({
-              title: "Success!",
-              html: "<b>" + "Successfully Imported! </br> Please check the result in downloaded text file : </br>" + fileName + "</b>",
+              title: tr("Success!"),
+              html: `<b>${tr("Successfully Imported!")} </br> ${tr("Please check the result in downloaded text file :")} </br>${fileName}</b>`,
               icon: "success",
               showConfirmButton: true,
               background: "url(/bg_card.png)",
@@ -312,8 +316,8 @@ const List = () => {
             const resData = JSON.parse(JSON.stringify(await response.json()));
             setProcessing(false);
             Swal.fire({
-              title: "Error!",
-              html: "<b>" + "Data NOT Imported. Error : \n" + resData.error + "</b>",
+              title: tr("Error!"),
+              html: `<b>${tr("Data NOT Imported. Error :")} ${resData.error}</b>`,
               icon: "error",
               showConfirmButton: true,
               background: "url(/bg_card.png)",
@@ -324,8 +328,8 @@ const List = () => {
       } catch (error) {
         setProcessing(false);
         Swal.fire({
-          title: "Error!",
-          html: "<b>" + "Data NOT Imported. Exception : \n" + error + "</b>",
+          title: tr("Error!"),
+          html: `<b>${tr("Data NOT Imported. Exception :")} ${error}</b>`,
           icon: "error",
           showConfirmButton: true,
           background: "url(/bg_card.png)",
@@ -438,12 +442,12 @@ const List = () => {
   }
 
   return (
-    <div className="p-3 lg:p-5 bg-repeat mt-1 lg:mt-5">
+    <div dir={direction} style={{ fontFamily }} className="p-3 lg:p-5 bg-repeat mt-1 lg:mt-5">
       <div className="text-center">
-        <h3 className="text-base lg:text-2xl font-bold px-5 py-0 text-gray-600">Manage Employees
-          <p className='flex md:grid text-sm md:text-base justify-center text-rose-700'>
-            (Records Count : {filteredEmployee ? filteredEmployee.length : 0}) </p>
-        </h3>
+        <AutoText as="h3" text={tr("Manage Employees")} variant="heading" className="font-bold px-5 py-0 text-gray-600" />
+        <p className='text-xs sm:text-sm justify-center text-rose-700'>
+          ({tr("Records Count")} : {filteredEmployee ? filteredEmployee.length : 0})
+        </p>
       </div>
       <div className="flex justify-between items-center mt-5">
         {LinkIcon("/dashboard", "Back")}
@@ -452,8 +456,8 @@ const List = () => {
           <div className={`w-full text-md flex justify-center items-center pl-2 rounded-l-md`}>
             <input
               type="text"
-              placeholder="Search"
-              class="w-full px-3 py-0.5 border rounded shadow-md justify-center ml-1 lg:ml-0 mr-3 lg:mr-0"
+              placeholder={tr("Search")}
+              className="w-full px-3 py-0.5 border rounded shadow-md justify-center ml-1 lg:ml-0 mr-3 lg:mr-0"
               onChange={handleFilter}
             />
           </div>
@@ -477,20 +481,20 @@ const List = () => {
         || (localStorage.getItem('empStatus') != null && localStorage.getItem('empStatus') != 'null') ?
 
         <div className='grid lg:flex mt-3 lg:mt-5 text-xs text-lime-600 items-center justify-center'>
-          <p className='lg:mr-3 justify-center text-center'>Filter Applied: </p>
+          <p className='lg:mr-3 justify-center text-center'>{tr("Filter Applied:")} </p>
 
           <p>{localStorage.getItem('empSchoolId') != null && localStorage.getItem('empSchoolId') != 'null' ?
-            <span className='text-blue-500'>Niswan: <span className='text-gray-500'>
+            <span className='text-blue-500'>{tr("Niswan")}: <span className='text-gray-500'>
               {schools.filter(school => school._id === localStorage.getItem('empSchoolId')).map(school => school.code + " : " + school.nameEnglish) + ", "}
             </span></span> : null}</p>
 
           <p className='lg:ml-3'>{localStorage.getItem('empRole') != null && localStorage.getItem('empRole') != 'null' ?
-            <span className='text-blue-500'>Role: <span className='text-gray-500'>
-              {toCamelCase(localStorage.getItem('empRole'))}</span></span> : null}</p>
+            <span className='text-blue-500'>{tr("Role")}: <span className='text-gray-500'>
+              {t(`roles.${String(localStorage.getItem('empRole') || '').toLowerCase()}`, toCamelCase(localStorage.getItem('empRole')))}</span></span> : null}</p>
 
           <p className='lg:ml-3'>{localStorage.getItem('empStatus') != null && localStorage.getItem('empStatus') != 'null' ?
-            <span className='text-blue-500'>Status: <span className='text-gray-500'>
-              {localStorage.getItem('empStatus')}</span></span> : null}</p>
+            <span className='text-blue-500'>{tr("Status")}: <span className='text-gray-500'>
+              {tr(localStorage.getItem('empStatus'))}</span></span> : null}</p>
 
         </div>
         : <div className='flex mt-3 lg:mt-7'></div>}

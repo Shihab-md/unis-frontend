@@ -14,8 +14,11 @@ import { AcademicDetailsCard, columnsSelectForAcademic } from "../../utils/Stude
 import DataTable from "react-data-table-component";
 import { FaRegTimesCircle, FaPrint } from "react-icons/fa";
 import StudentProfilePrint from "../../components/report/StudentProfilePrint";
+import { AutoText, useLanguage } from "../../i18n/LanguageContext";
+import { formatCompactAge, formatCompactDuration } from "../../utils/studentProfileUtils";
 
 const View = () => {
+  const { tr, direction, fontFamily } = useLanguage();
   useEffect(() => {
     handleRightClickAndFullScreen();
   }, []);
@@ -79,9 +82,9 @@ const View = () => {
       {student ? (
         <>
           {/* SCREEN VIEW */}
-          <div className="no-print max-w-4xl mx-auto mt-2 p-3 md:p-5 shadow-lg border">
+          <div dir={direction} style={{ fontFamily }} className="no-print max-w-4xl mx-auto mt-2 p-3 md:p-5 shadow-lg border">
             <div className="flex py-2 px-4 items-center justify-between bg-teal-700 text-white rounded-lg shadow-lg">
-              <h2 className="text-sm lg:text-xl font-semibold">Student Details</h2>
+              <AutoText as="h2" text={tr("Student Details")} variant="button" className="font-semibold" />
 
               <div className="flex items-center gap-3 text-xs lg:text-lg">
                 <button
@@ -89,7 +92,7 @@ const View = () => {
                   className="flex items-center gap-2 px-3 py-1 rounded-lg shadow-md bg-emerald-600 hover:bg-emerald-700"
                 >
                   <FaPrint />
-                  Print / Save PDF
+                  <AutoText text={tr("Print / Save PDF")} variant="button" />
                 </button>
 
                 <Link to="/dashboard/students">
@@ -136,8 +139,12 @@ const View = () => {
                     <ViewCard type="data" text={student?.userId?.name || ""} />
                     <ViewCard type="title" text="Date of Admission" />
                     <ViewCard type="data" text={getFormattedDate(student?.doa)} />
+                    <ViewCard type="title" text="Admission Duration" />
+                    <ViewCard type="data" text={formatCompactDuration(student?.doa, tr)} />
                     <ViewCard type="title" text="Date of Birth" />
                     <ViewCard type="data" text={getFormattedDate(student?.dob)} />
+                    <ViewCard type="title" text="Age" />
+                    <ViewCard type="data" text={formatCompactAge(student?.dob, tr)} />
                   </div>
 
                   <div className="flex space-x-3 mb-10" />

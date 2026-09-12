@@ -12,8 +12,11 @@ import {
 import ViewCard from "../dashboard/ViewCard";
 import { FaRegTimesCircle, FaPrint } from "react-icons/fa";
 import SupervisorProfilePrint from "../../components/report/SupervisorProfilePrint";
+import { AutoText, useLanguage } from "../../i18n/LanguageContext";
+import { formatAge, formatWorkingExperience } from "../../utils/supervisorProfileUtils";
 
 const View = () => {
+  const { tr, direction, fontFamily } = useLanguage();
   useEffect(() => {
     handleRightClickAndFullScreen();
   }, []);
@@ -66,9 +69,9 @@ const View = () => {
       {supervisor ? (
         <>
           {/* SCREEN VIEW */}
-          <div className="no-print max-w-3xl mx-auto mt-2 p-5 shadow-lg border">
+          <div dir={direction} style={{ fontFamily }} className="no-print max-w-3xl mx-auto mt-2 p-5 shadow-lg border">
             <div className="flex py-2 px-4 items-center justify-between bg-teal-700 text-white rounded-lg shadow-lg">
-              <h2 className="text-sm lg:text-xl font-semibold">Supervisor Details</h2>
+              <AutoText as="h2" text={tr("Supervisor Details")} variant="button" className="font-semibold" />
 
               <div className="flex items-center gap-3 text-xs lg:text-lg">
                 <button
@@ -76,7 +79,7 @@ const View = () => {
                   className="flex items-center gap-2 px-3 py-1 rounded-lg shadow-md bg-emerald-600 hover:bg-emerald-700"
                 >
                   <FaPrint />
-                  Print / Save PDF
+                  <AutoText text={tr("Print / Save PDF")} variant="button" />
                 </button>
 
                 <Link to="/dashboard/supervisors">
@@ -121,26 +124,47 @@ const View = () => {
                   <ViewCard type="title" text="Route" />
                   <ViewCard type="data" text={supervisor?.routeName} />
 
+                  <ViewCard type="title" text="Father / Guardian Name" />
+                  <ViewCard type="data" text={supervisor?.fatherGuardianName} />
+
                   <ViewCard type="title" text="Qualification" />
                   <ViewCard type="data" text={supervisor?.qualification} />
 
                   <ViewCard type="title" text="Date of Birth" />
                   <ViewCard type="data" text={getFormattedDate(supervisor?.dob)} />
 
+                  <ViewCard type="title" text="Age" />
+                  <ViewCard type="data" text={formatAge(supervisor?.dob, tr)} />
+
                   <ViewCard type="title" text="Gender" />
-                  <ViewCard type="data" text={supervisor?.gender} />
+                  <ViewCard type="data" text={tr(supervisor?.gender || "-")} />
 
                   <ViewCard type="title" text="Marital Status" />
-                  <ViewCard type="data" text={supervisor?.maritalStatus} />
+                  <ViewCard type="data" text={tr(supervisor?.maritalStatus || "-")} />
 
                   <ViewCard type="title" text="Job Type" />
-                  <ViewCard type="data" text={supervisor?.jobType} />
+                  <ViewCard type="data" text={tr(supervisor?.jobType || "-")} />
 
                   <ViewCard type="title" text="Date of Joining" />
                   <ViewCard type="data" text={getFormattedDate(supervisor?.doj)} />
 
-                  <ViewCard type="title" text="Salary" />
+                  <ViewCard type="title" text="Working Experience" />
+                  <ViewCard type="data" text={formatWorkingExperience(supervisor?.doj, tr)} />
+
+                  <ViewCard type="title" text="Other Designation" />
+                  <ViewCard type="data" text={<span className="whitespace-pre-wrap break-words">{supervisor?.otherDesignation || "-"}</span>} />
+
+                  <ViewCard type="title" text="Hadhiya" />
                   <ViewCard type="data" text={supervisor?.salary} />
+
+                  <ViewCard type="title" text="Travelling Allowance" />
+                  <ViewCard type="data" text={supervisor?.travellingAllowance ?? 0} />
+
+                  <ViewCard type="title" text="Activities carried out" />
+                  <ViewCard type="data" text={<span className="whitespace-pre-wrap break-words">{supervisor?.activitiesCarriedOut || "-"}</span>} />
+
+                  <ViewCard type="title" text="Bank account details" />
+                  <ViewCard type="data" text={<span className="whitespace-pre-wrap break-words">{supervisor?.bankAccountDetails || "-"}</span>} />
 
                   <ViewCard type="title" text="Remarks" />
                   <ViewCard type="data" text={supervisor?.remarks} />
@@ -151,7 +175,7 @@ const View = () => {
                 className="w-full mb-3 bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded-lg shadow-lg hover:-translate-y-0.5"
                 onClick={() => navigate("/dashboard/supervisors")}
               >
-                Back
+                <AutoText text={tr("Back")} variant="button" className="font-bold" />
               </button>
             </div>
           </div>

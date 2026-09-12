@@ -9,8 +9,11 @@ import { getSchoolsFromCache } from '../../utils/SchoolHelper';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import Select from 'react-select';
+import { AutoText, useLanguage } from '../../i18n/LanguageContext';
 
 const List = () => {
+  const { tr, direction, fontFamily } = useLanguage();
+  const { user } = useAuth();
 
   // To prevent right-click AND For FULL screen view.
   useEffect(() => {
@@ -43,9 +46,9 @@ const List = () => {
       background: "url(/bg_card.png)",
       html: (
         <div className="mb-2 h-80 w-full">
-          <div className='text-xl font-bold mb-1 text-green-600 text-center'>Filter</div>
+          <div className='text-xl font-bold mb-1 text-green-600 text-center'>{tr("Filter")}</div>
           <div className='grid'>
-            <span className='text-sm mb-1 text-start text-blue-500'>Niswan</span>
+            <span className='text-sm mb-1 text-start text-blue-500'>{tr("Niswan")}</span>
             <Select className='text-sm text-start mb-3'
               options={schools.filter(school => school.code !== 'UN-00-00001').map(option => ({
                 value: option._id, label: option.code + " : " + option.nameEnglish
@@ -60,11 +63,11 @@ const List = () => {
           </div>
 
           <div className='grid'>
-            <span className='text-sm mb-1 text-start text-blue-500'>Status</span>
+            <span className='text-sm mb-1 text-start text-blue-500'>{tr("Status")}</span>
             <Select className='text-sm text-start mb-3'
               options={
-                [{ value: 'Active', label: 'Active' },
-                { value: 'In-Active', label: 'In-Active' }]
+                [{ value: 'Active', label: tr('Active') },
+                { value: 'In-Active', label: tr('In-Active') }]
               }
               // defaultValue={selectedStatus}
               onChange={(selectedOption) => {
@@ -76,11 +79,11 @@ const List = () => {
           </div>
 
           <div className='grid'>
-            <span className='text-sm mb-1 text-start text-blue-500'>Job Type</span>
+            <span className='text-sm mb-1 text-start text-blue-500'>{tr("Job Type")}</span>
             <Select className='text-sm text-start mb-3'
               options={
-                [{ value: 'Full-Time', label: 'Full-Time' },
-                { value: 'Part-Time', label: 'Part-Time' }]
+                [{ value: 'Full-Time', label: tr('Full-Time') },
+                { value: 'Part-Time', label: tr('Part-Time') }]
               }
 
               onChange={(selectedOption) => {
@@ -94,6 +97,8 @@ const List = () => {
       ),
       focusConfirm: false,
       showCancelButton: true,
+      confirmButtonText: tr("Apply"),
+      cancelButtonText: tr("Cancel"),
       preConfirm: () => {
         const select1 = selectedSchool ? selectedSchool : null;
         const select2 = selectedStatus ? selectedStatus : null;
@@ -336,15 +341,13 @@ const List = () => {
     return getSpinner();
   }
 
-  const { user } = useAuth();
-
   return (
-    <div className="p-3 lg:p-5 bg-repeat mt-1 lg:mt-5">
+    <div dir={direction} style={{ fontFamily }} className="p-3 lg:p-5 bg-repeat mt-1 lg:mt-5">
       <div className="text-center">
-        <h3 className="text-base lg:text-2xl font-bold px-5 py-0 text-shadow-lg text-gray-600">Manage Supervisors
-          <p className='flex md:grid text-xs md:text-sm justify-center text-rose-700'>
-            (Records Count : {filteredSupervisor ? filteredSupervisor.length : 0}) </p>
-        </h3>
+        <AutoText as="h3" text={tr("Manage Supervisors")} variant="heading" className="font-bold px-5 py-0 text-gray-600" />
+        <p className='text-xs sm:text-sm justify-center text-rose-700'>
+          ({tr("Records Count")} : {filteredSupervisor ? filteredSupervisor.length : 0})
+        </p>
       </div>
       <div className="flex justify-between items-center mt-5">
         {LinkIcon("/dashboard", "Back")}
@@ -353,7 +356,7 @@ const List = () => {
           <div className={`w-full text-md flex justify-center items-center pl-2 rounded-l-md`}>
             <input
               type="text"
-              placeholder="Search"
+              placeholder={tr("Search")}
               className="w-full px-3 py-0.5 border rounded shadow-md justify-center ml-1 lg:ml-0 mr-3 lg:mr-0"
               onChange={handleFilter}
             />
@@ -376,20 +379,20 @@ const List = () => {
         || (localStorage.getItem('supType') != null && localStorage.getItem('supType') != 'null') ?
 
         <div className='grid lg:flex mt-3 lg:mt-3 mb-2 text-xs text-lime-600 items-center justify-center'>
-          <p className='lg:mr-3 justify-center text-center'>Filter Applied: </p>
+          <p className='lg:mr-3 justify-center text-center'>{tr("Filter Applied:")} </p>
 
           <p>{localStorage.getItem('supSchoolId') != null && localStorage.getItem('supSchoolId') != 'null' ?
-            <span className='text-blue-500'>Niswan: <span className='text-gray-500'>
+            <span className='text-blue-500'>{tr("Niswan")}: <span className='text-gray-500'>
               {schools.filter(school => school._id === localStorage.getItem('supSchoolId')).map(school => school.code + " : " + school.nameEnglish) + ", "}
             </span></span> : null}</p>
 
           <p className='lg:ml-3'>{localStorage.getItem('supStatus') != null && localStorage.getItem('supStatus') != 'null' ?
-            <span className='text-blue-500'>Status: <span className='text-gray-500'>
-              {localStorage.getItem('supStatus')}</span></span> : null}</p>
+            <span className='text-blue-500'>{tr("Status")}: <span className='text-gray-500'>
+              {tr(localStorage.getItem('supStatus'))}</span></span> : null}</p>
 
           <p className='lg:ml-3'>{localStorage.getItem('supType') != null && localStorage.getItem('supType') != 'null' ?
-            <span className='text-blue-500'>Job Type: <span className='text-gray-500'>
-              {localStorage.getItem('supType')}</span></span> : null}</p>
+            <span className='text-blue-500'>{tr("Job Type")}: <span className='text-gray-500'>
+              {tr(localStorage.getItem('supType'))}</span></span> : null}</p>
 
         </div>
         : <div className='flex mt-3 lg:mt-3'></div>}

@@ -2,16 +2,19 @@ import { createRoot } from 'react-dom/client'
 import App from './App.jsx'
 import './index.css'
 import AuthContext from './context/AuthContext'
+import { LanguageProvider } from './i18n/LanguageContext'
 import { setupAxiosInterceptor } from './api/axiosInterceptor'
 
 setupAxiosInterceptor();
 
 createRoot(document.getElementById('root')).render(
   <AuthContext>
+    <LanguageProvider>
     <div>
       <meta name="apple-mobile-web-app-capable" content="yes" />
       <meta name="mobile-web-app-capable" content="yes" />
       <App />
     </div>
+    </LanguageProvider>
   </AuthContext>,
 )

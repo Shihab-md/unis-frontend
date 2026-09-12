@@ -16,6 +16,8 @@ import ViewCard from "../dashboard/ViewCard";
 import { FaRegTimesCircle } from "react-icons/fa";
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import { AutoText, useLanguage } from "../../i18n/LanguageContext";
+import { formatCompactAge, formatCompactDuration } from "../../utils/studentProfileUtils";
 
 
 const OBJECT_ID_RE = /^[a-fA-F0-9]{24}$/;
@@ -170,6 +172,7 @@ const getMakthabYearOptions = (courseName = "") => {
 };
 
 const Edit = () => {
+  const { tr, direction, fontFamily } = useLanguage();
   useEffect(() => {
     handleRightClickAndFullScreen();
   }, []);
@@ -888,9 +891,9 @@ const Edit = () => {
   return (
     <>
       {student ? (
-        <div className="max-w-5xl mx-auto mt-2 p-5 shadow-lg border">
+        <div dir={direction} style={{ fontFamily }} className="max-w-5xl mx-auto mt-2 p-5 shadow-lg border">
           <div className="flex py-2 px-4 items-center justify-center bg-teal-700 text-white rounded-lg shadow-lg">
-            <h2 className="text-sm lg:text-xl font-semibold items-center justify-center">Update Student Details</h2>
+            <AutoText as="h2" text={tr("Update Student Details") } variant="button" className="font-semibold items-center justify-center" />
             <Link to="/dashboard/students" >
               <FaRegTimesCircle className="text-2xl ml-7 text-red-700 bg-gray-200 rounded-xl shadow-md items-center justify-end" />
             </Link>
@@ -901,8 +904,8 @@ const Edit = () => {
 
                 {/* School */}
                 <div className="lg:col-span-3 lg:mb-3">
-                  <label className="block mt-2 text-sm font-medium text-slate-500">
-                    Niswan <span className="text-red-700">*</span>
+                  <label className="block mt-2 text-xs sm:text-sm font-medium text-slate-500">
+                    {tr("Niswan")} <span className="text-red-700">*</span>
                   </label>
                   <select
                     name="schoolId"
@@ -923,8 +926,8 @@ const Edit = () => {
 
                 {/* Roll Number */}
                 <div>
-                  <label className="block mt-2 text-sm font-medium text-slate-500">
-                    Roll Number <span className="text-red-700">*</span>
+                  <label className="block mt-2 text-xs sm:text-sm font-medium text-slate-500">
+                    {tr("Roll Number")} <span className="text-red-700">*</span>
                   </label>
                   <input
                     type="text"
@@ -941,8 +944,8 @@ const Edit = () => {
               <div className="grid mt-5 grid-cols-1 md:grid-cols-2 gap-5">
                 {/* Name */}
                 <div>
-                  <label className="block mt-2 text-sm font-medium text-slate-500">
-                    Student Name <span className="text-red-700">*</span>
+                  <label className="block mt-2 text-xs sm:text-sm font-medium text-slate-500">
+                    {tr("Student Name")} <span className="text-red-700">*</span>
                   </label>
                   <input
                     type="text"
@@ -957,8 +960,8 @@ const Edit = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                   {/* Date of Admission */}
                   <div className="grid grid-cols-1">
-                    <label className="block mt-2 text-sm font-medium text-slate-500">
-                      Admission Date <span className="text-red-700">*</span>
+                    <label className="block mt-2 text-xs sm:text-sm font-medium text-slate-500">
+                      {tr("Admission Date")} <span className="text-red-700">*</span>
                     </label>
                     <DatePicker
                       name="doa"
@@ -972,12 +975,22 @@ const Edit = () => {
                       dropdownMode="select"
                       isClearable
                     />
+                    <div className="mt-1 h-4 text-[10px] font-normal text-slate-500">
+                      {selectedDOADate ? (
+                        <>
+                          {tr("Admission Duration")}: {" "}
+                          <span className="font-medium text-blue-700">
+                            {formatCompactDuration(selectedDOADate, tr)}
+                          </span>
+                        </>
+                      ) : null}
+                    </div>
                   </div>
 
                   {/* Date of Birth */}
                   <div className="grid grid-cols-1">
-                    <label className="block mt-2 text-sm font-medium text-slate-500">
-                      Date of Birth <span className="text-red-700">*</span>
+                    <label className="block mt-2 text-xs sm:text-sm font-medium text-slate-500">
+                      {tr("Date of Birth")} <span className="text-red-700">*</span>
                     </label>
                     <DatePicker
                       name="dob"
@@ -991,6 +1004,16 @@ const Edit = () => {
                       dropdownMode="select"
                       isClearable
                     />
+                    <div className="mt-1 h-4 text-[10px] font-normal text-slate-500">
+                      {selectedDOBDate ? (
+                        <>
+                          {tr("Age")}:{" "}
+                          <span className="font-medium text-blue-700">
+                            {formatCompactAge(selectedDOBDate, tr)}
+                          </span>
+                        </>
+                      ) : null}
+                    </div>
                   </div>
                 </div>
 
@@ -1001,8 +1024,8 @@ const Edit = () => {
               <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
                 {/* Active */}
                 <div>
-                  <label className="block text-sm font-medium text-slate-500">
-                    Status <span className="text-red-700">*</span>
+                  <label className="block text-xs sm:text-sm font-medium text-slate-500">
+                    {tr("Status")} <span className="text-red-700">*</span>
                   </label>
                   <select
                     name="active"
@@ -1012,17 +1035,17 @@ const Edit = () => {
                     required
                   >
                     <option value=""></option>
-                    <option value="Active">Active</option>
-                    <option value="In-Active">In-Active</option>
-                    <option value="Transferred">Transferred</option>
-                    <option value="Discontinued">Discontinued</option>
+                    <option value="Active">{tr("Active")}</option>
+                    <option value="In-Active">{tr("In-Active")}</option>
+                    <option value="Transferred">{tr("Transferred")}</option>
+                    <option value="Discontinued">{tr("Discontinued")}</option>
                   </select>
                 </div>
 
                 {/* Remarks */}
                 <div className='col-span-2'>
-                  <label className="block text-sm font-medium text-slate-500">
-                    Reason for Status change
+                  <label className="block text-xs sm:text-sm font-medium text-slate-500">
+                    {tr("Reason for Status change")}
                   </label>
                   <input
                     type="text"
@@ -1042,8 +1065,8 @@ const Edit = () => {
 
                 {/* Gender */}
                 <div>
-                  <label className="block text-sm font-medium text-slate-500">
-                    Gender <span className="text-red-700">*</span>
+                  <label className="block text-xs sm:text-sm font-medium text-slate-500">
+                    {tr("Gender")} <span className="text-red-700">*</span>
                   </label>
                   <select
                     name="gender"
@@ -1053,40 +1076,40 @@ const Edit = () => {
                     required
                   >
                     <option value=""></option>
-                    <option value="Male">Male</option>
-                    <option value="Female">Female</option>
+                    <option value="Male">{tr("Male")}</option>
+                    <option value="Female">{tr("Female")}</option>
                   </select>
                 </div>
 
                 {/* Marital Status */}
                 <div>
-                  <label className="block text-sm font-medium text-slate-500">
-                    Marital Status <span className="text-red-700">*</span>
+                  <label className="block text-xs sm:text-sm font-medium text-slate-500">
+                    {tr("Marital Status")} <span className="text-red-700">*</span>
                   </label>
                   <select
                     name="maritalStatus"
                     value={student.maritalStatus}
                     onChange={handleChange}
-                    placeholder="Marital Status"
+                    placeholder={tr("Marital Status")}
                     className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                     required
                   >
                     <option value=""></option>
-                    <option value="Single">Single</option>
-                    <option value="Married">Married</option>
+                    <option value="Single">{tr("Single")}</option>
+                    <option value="Married">{tr("Married")}</option>
                   </select>
                 </div>
 
                 {/* Mother Tongue */}
                 <div>
-                  <label className="block text-sm font-medium text-slate-500">
-                    Mother Tongue
+                  <label className="block text-xs sm:text-sm font-medium text-slate-500">
+                    {tr("Mother Tongue")}
                   </label>
                   <select
                     name="motherTongue"
                     value={student.motherTongue}
                     onChange={handleChange}
-                    placeholder="Mother Tongue"
+                    placeholder={tr("Mother Tongue")}
                     className="mt-2 p-2 block w-full border border-gray-300 rounded-md"
                   >
                     <option value=""></option>
@@ -1100,8 +1123,8 @@ const Edit = () => {
 
                 {/* Blood Group */}
                 <div>
-                  <label className="block text-sm font-medium text-slate-500">
-                    Blood Group
+                  <label className="block text-xs sm:text-sm font-medium text-slate-500">
+                    {tr("Blood Group")}
                   </label>
                   <input
                     type="text"
@@ -1116,8 +1139,8 @@ const Edit = () => {
               <div className="grid mt-7 grid-cols-1 md:grid-cols-2 gap-5 gap-y-7">
                 {/* Identification Mark-1 */}
                 <div>
-                  <label className="block text-sm font-medium text-slate-500">
-                    Identification Mark-1 <span className="text-red-700">*</span>
+                  <label className="block text-xs sm:text-sm font-medium text-slate-500">
+                    {tr("Identification Mark-1")} <span className="text-red-700">*</span>
                   </label>
                   <input
                     type="text"
@@ -1131,8 +1154,8 @@ const Edit = () => {
 
                 {/* Identification Mark-2 */}
                 <div>
-                  <label className="block text-sm font-medium text-slate-500">
-                    Identification Mark-2
+                  <label className="block text-xs sm:text-sm font-medium text-slate-500">
+                    {tr("Identification Mark-2")}
                   </label>
                   <input
                     type="text"
@@ -1147,8 +1170,8 @@ const Edit = () => {
               <div className="grid mt-12 grid-cols-1 md:grid-cols-1 gap-5">
                 {/* About */}
                 <div>
-                  <label className="block text-sm font-medium text-slate-500">
-                    More details about the Student
+                  <label className="block text-xs sm:text-sm font-medium text-slate-500">
+                    {tr("More details about the Student")}
                   </label>
                   <input
                     type="text"
@@ -1166,8 +1189,8 @@ const Edit = () => {
               <div className="grid grid-cols-1 md:grid-cols-3 gap-5 gap-y-7">
                 {/* Father's Name */}
                 <div>
-                  <label className="block text-sm font-medium text-slate-500">
-                    Father's Name
+                  <label className="block text-xs sm:text-sm font-medium text-slate-500">
+                    {tr("Father's Name")}
                   </label>
                   <input
                     type="text"
@@ -1180,8 +1203,8 @@ const Edit = () => {
 
                 {/* Father's Number */}
                 <div>
-                  <label className="block text-sm font-medium text-slate-500">
-                    Father's Number
+                  <label className="block text-xs sm:text-sm font-medium text-slate-500">
+                    {tr("Father's Number")}
                   </label>
                   <input
                     type="number"
@@ -1195,8 +1218,8 @@ const Edit = () => {
 
                 {/* Father's Occupation */}
                 <div>
-                  <label className="block text-sm font-medium text-slate-500">
-                    Father's Occupation
+                  <label className="block text-xs sm:text-sm font-medium text-slate-500">
+                    {tr("Father's Occupation")}
                   </label>
                   <input
                     type="text"
@@ -1209,8 +1232,8 @@ const Edit = () => {
 
                 {/* Mother's Name */}
                 <div>
-                  <label className="block text-sm font-medium text-slate-500">
-                    Mother's Name
+                  <label className="block text-xs sm:text-sm font-medium text-slate-500">
+                    {tr("Mother's Name")}
                   </label>
                   <input
                     type="text"
@@ -1223,8 +1246,8 @@ const Edit = () => {
 
                 {/* Mother's Number */}
                 <div>
-                  <label className="block text-sm font-medium text-slate-500">
-                    Mother's Number
+                  <label className="block text-xs sm:text-sm font-medium text-slate-500">
+                    {tr("Mother's Number")}
                   </label>
                   <input
                     type="number"
@@ -1238,8 +1261,8 @@ const Edit = () => {
 
                 {/* Mother's Occupation */}
                 <div>
-                  <label className="block text-sm font-medium text-slate-500">
-                    Mother's Occupation
+                  <label className="block text-xs sm:text-sm font-medium text-slate-500">
+                    {tr("Mother's Occupation")}
                   </label>
                   <input
                     type="text"
@@ -1254,8 +1277,8 @@ const Edit = () => {
               <div className="grid mt-7 grid-cols-1 md:grid-cols-4 gap-5">
                 {/* Guardian's Name */}
                 <div>
-                  <label className="block text-sm font-medium text-slate-500">
-                    Guardian's Name
+                  <label className="block text-xs sm:text-sm font-medium text-slate-500">
+                    {tr("Guardian's Name")}
                   </label>
                   <input
                     type="text"
@@ -1268,8 +1291,8 @@ const Edit = () => {
 
                 {/* Guardian's Number */}
                 <div>
-                  <label className="block text-sm font-medium text-slate-500">
-                    Guardian's Number
+                  <label className="block text-xs sm:text-sm font-medium text-slate-500">
+                    {tr("Guardian's Number")}
                   </label>
                   <input
                     type="number"
@@ -1283,8 +1306,8 @@ const Edit = () => {
 
                 {/* Guardian's Occupation */}
                 <div>
-                  <label className="block text-sm font-medium text-slate-500">
-                    Guardian's Occupation
+                  <label className="block text-xs sm:text-sm font-medium text-slate-500">
+                    {tr("Guardian's Occupation")}
                   </label>
                   <input
                     type="text"
@@ -1297,8 +1320,8 @@ const Edit = () => {
 
                 {/* Guardian's Relationship */}
                 <div>
-                  <label className="block text-sm font-medium text-slate-500">
-                    Guardian's Relationship
+                  <label className="block text-xs sm:text-sm font-medium text-slate-500">
+                    {tr("Guardian's Relationship")}
                   </label>
                   <input
                     type="text"
@@ -1317,8 +1340,8 @@ const Edit = () => {
               <div className="grid mt-5 grid-cols-1 md:grid-cols-2 gap-5">
                 {/* Address */}
                 <div>
-                  <label className="block text-sm font-medium text-slate-500">
-                    Door No. & Street <span className="text-red-700">*</span>
+                  <label className="block text-xs sm:text-sm font-medium text-slate-500">
+                    {tr("Door No. & Street")} <span className="text-red-700">*</span>
                   </label>
                   <input
                     type="text"
@@ -1332,8 +1355,8 @@ const Edit = () => {
 
                 {/* City */}
                 <div>
-                  <label className="block text-sm font-medium text-slate-500">
-                    Area & Town / City <span className="text-red-700">*</span>
+                  <label className="block text-xs sm:text-sm font-medium text-slate-500">
+                    {tr("Area & Town / City")} <span className="text-red-700">*</span>
                   </label>
                   <input
                     type="text"
@@ -1349,8 +1372,8 @@ const Edit = () => {
               <div className="grid mt-5 grid-cols-1 md:grid-cols-3 gap-5">
                 {/* LandMark */}
                 <div>
-                  <label className="block text-sm font-medium text-slate-500">
-                    LandMark
+                  <label className="block text-xs sm:text-sm font-medium text-slate-500">
+                    {tr("LandMark")}
                   </label>
                   <input
                     type="text"
@@ -1363,8 +1386,8 @@ const Edit = () => {
 
                 {/* Pincode */}
                 <div>
-                  <label className="block text-sm font-medium text-slate-500">
-                    Pincode <span className="text-red-700">*</span>
+                  <label className="block text-xs sm:text-sm font-medium text-slate-500">
+                    {tr("Pincode")} <span className="text-red-700">*</span>
                   </label>
                   <input
                     type="number"
@@ -1382,8 +1405,8 @@ const Edit = () => {
 
                 {/* District & State*/}
                 <div>
-                  <label className="block text-sm font-medium text-slate-500">
-                    Select District & State <span className="text-red-600">*</span>
+                  <label className="block text-xs sm:text-sm font-medium text-slate-500">
+                    {tr("Select District & State")} <span className="text-red-600">*</span>
                   </label>
                   <select
                     name="districtStateId"
@@ -1409,8 +1432,8 @@ const Edit = () => {
 
                 {/* Hostel */}
                 <div>
-                  <label className="block text-sm font-medium text-slate-500">
-                    Hostel Admission Required? <span className="text-red-700">*</span>
+                  <label className="block text-xs sm:text-sm font-medium text-slate-500">
+                    {tr("Hostel Admission Required?")} <span className="text-red-700">*</span>
                   </label>
                   <select
                     name="hostel"
@@ -1420,15 +1443,15 @@ const Edit = () => {
                     required
                   >
                     <option value=""></option>
-                    <option value="Yes">Yes</option>
-                    <option value="No">No</option>
+                    <option value="Yes">{tr("Yes")}</option>
+                    <option value="No">{tr("No")}</option>
                   </select>
                 </div>
 
                 {/* Hostel Reference */}
                 <div>
-                  <label className="block text-sm font-medium text-slate-500">
-                    Reference / Note
+                  <label className="block text-xs sm:text-sm font-medium text-slate-500">
+                    {tr("Reference / Note")}
                   </label>
                   <input
                     type="text"
@@ -1441,8 +1464,8 @@ const Edit = () => {
 
                 {/* Hostel Fees */}
                 <div>
-                  <label className="block text-sm font-medium text-slate-500">
-                    Monthly Fees
+                  <label className="block text-xs sm:text-sm font-medium text-slate-500">
+                    {tr("Monthly Fees")}
                   </label>
                   <input
                     type="number"
@@ -1463,8 +1486,8 @@ const Edit = () => {
                 <div className="hidden lg:block flex space-x-3 mb-5" />
                 {/* Academic Year */}
                 <div>
-                  <label className="block mt-2 text-sm font-medium text-slate-500">
-                    Academic Year <span className="text-red-700">*</span>
+                  <label className="block mt-2 text-xs sm:text-sm font-medium text-slate-500">
+                    {tr("Academic Year")} <span className="text-red-700">*</span>
                   </label>
                   <select
                     name="acYear"
@@ -1492,8 +1515,8 @@ const Edit = () => {
               <div className="grid mt-5 grid-cols-1 md:grid-cols-2 gap-5">
                 {/* Institute 1 */}
                 <div>
-                  <label className="block mt-2 text-sm font-medium text-slate-500">
-                    Select Institute <span className="text-red-700">*</span>
+                  <label className="block mt-2 text-xs sm:text-sm font-medium text-slate-500">
+                    {tr("Select Institute")} <span className="text-red-700">*</span>
                   </label>
                   <select
                     name="instituteId1"
@@ -1514,8 +1537,8 @@ const Edit = () => {
 
                 {/* Course 1 */}
                 <div>
-                  <label className="block mt-2 text-sm font-medium text-slate-500">
-                    Select Course <span className="text-red-700">*</span>
+                  <label className="block mt-2 text-xs sm:text-sm font-medium text-slate-500">
+                    {tr("Select Course")} <span className="text-red-700">*</span>
                   </label>
                   <select
                     name="courseId1"
@@ -1536,8 +1559,8 @@ const Edit = () => {
 
                 {/* Reference Number-1 */}
                 <div>
-                  <label className="block text-sm font-medium text-slate-500">
-                    Reference Number
+                  <label className="block text-xs sm:text-sm font-medium text-slate-500">
+                    {tr("Reference Number")}
                   </label>
                   <input
                     type="text"
@@ -1552,8 +1575,8 @@ const Edit = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                   {/* Year1 */}
                   <div>
-                    <label className="block text-sm font-medium text-slate-500">
-                      Year / Grade<span className="text-red-700">*</span>
+                    <label className="block text-xs sm:text-sm font-medium text-slate-500">
+                      {tr("Year / Grade")}<span className="text-red-700">*</span>
                     </label>
 
                     {isMakthabLevelCourse ? (
@@ -1591,8 +1614,8 @@ const Edit = () => {
 
                   {/* Fees1 */}
                   <div>
-                    <label className="block text-sm font-medium text-slate-500">
-                      Fees
+                    <label className="block text-xs sm:text-sm font-medium text-slate-500">
+                      {tr("Fees")}
                     </label>
                     <input
                       type="number"
@@ -1614,7 +1637,7 @@ const Edit = () => {
               <div className="grid grid-cols-1 md:grid-cols-1 mt-14 mb-4 p-2 lg:p-5 gap-5 pt-5 lg:ml-16 lg:mr-20 border-2 border-green-500 rounded-md shadow-lg">
                 <div className="flex justify-center">
                   <label className='flex text-sm lg:text-md text-pink-600 ml-2 lg:ml-1 mr-2 lg:mr-1'>
-                    If the student is studying / planning to study below courses also with our Niswan, Please check the relevant checkboxes and fill the details.
+                    {tr("If the student is studying / planning to study below courses also with our Niswan, Please check the relevant checkboxes and fill the details.")}
                   </label>
                 </div>
 
@@ -1627,7 +1650,7 @@ const Edit = () => {
                       onChange={handleIslamicCheckBox}
                       style={{ transform: "scale(1.25)" }}
                     />
-                    <span className='text-sm lg:text-md text-blue-600 ml-2'> Islamic Home Science</span>
+                    <span className='text-sm lg:text-md text-blue-600 ml-2'> {tr("Islamic Home Science")}</span>
                   </div>
                   <div className="ml-14 justify-center items-center mb-3">
                     <input
@@ -1636,7 +1659,7 @@ const Edit = () => {
                       onChange={handleSchoolCheckBox}
                       style={{ transform: "scale(1.25)" }}
                     />
-                    <span className='text-sm lg:text-md text-blue-600 ml-2'> School Education</span>
+                    <span className='text-sm lg:text-md text-blue-600 ml-2'> {tr("School Education")}</span>
                   </div>
                   <div className="ml-14 justify-center items-center mb-3">
                     <input
@@ -1645,7 +1668,7 @@ const Edit = () => {
                       onChange={handleCollegeCheckBox}
                       style={{ transform: "scale(1.25)" }}
                     />
-                    <span className='text-sm lg:text-md text-blue-600 ml-2'> College Education</span>
+                    <span className='text-sm lg:text-md text-blue-600 ml-2'> {tr("College Education")}</span>
                   </div>
                   <div className="ml-14 justify-center items-center mb-3">
                     <input
@@ -1654,7 +1677,7 @@ const Edit = () => {
                       onChange={handleVocationalCheckBox}
                       style={{ transform: "scale(1.25)" }}
                     />
-                    <span className='text-sm lg:text-md text-blue-600 ml-2'> Vocational Course</span>
+                    <span className='text-sm lg:text-md text-blue-600 ml-2'> {tr("Vocational Course")}</span>
                   </div>
                 </div>
 
@@ -1671,7 +1694,7 @@ const Edit = () => {
                       />
                     </div>
                     <div>
-                      <p className='text-sm lg:text-md text-blue-600 ml-2'> Islamic Home Science</p>
+                      <p className='text-sm lg:text-md text-blue-600 ml-2'> {tr("Islamic Home Science")}</p>
                     </div>
 
                     <div>
@@ -1684,7 +1707,7 @@ const Edit = () => {
                       />
                     </div>
                     <div>
-                      <p className='text-sm lg:text-md text-blue-600 ml-2'> School Education</p>
+                      <p className='text-sm lg:text-md text-blue-600 ml-2'> {tr("School Education")}</p>
                     </div>
 
                     <div>
@@ -1697,7 +1720,7 @@ const Edit = () => {
                       />
                     </div>
                     <div>
-                      <p className='text-sm lg:text-md text-blue-600 ml-2'> College Education</p>
+                      <p className='text-sm lg:text-md text-blue-600 ml-2'> {tr("College Education")}</p>
                     </div>
 
                     <div>
@@ -1710,7 +1733,7 @@ const Edit = () => {
                       />
                     </div>
                     <div>
-                      <p className='text-sm lg:text-md text-blue-600 ml-2'> Vocational Course</p>
+                      <p className='text-sm lg:text-md text-blue-600 ml-2'> {tr("Vocational Course")}</p>
                     </div>
                   </div>
                 </div>
@@ -1724,8 +1747,8 @@ const Edit = () => {
 
                   <div className="grid mt-5 grid-cols-1 md:grid-cols-10 gap-5 mt-2">
                     <div className='md:col-span-3'>
-                      <label className="block mt-2 text-sm font-medium text-slate-500">
-                        Select Institute
+                      <label className="block mt-2 text-xs sm:text-sm font-medium text-slate-500">
+                        {tr("Select Institute")}
                       </label>
                       <select
                         name="instituteId4"
@@ -1744,8 +1767,8 @@ const Edit = () => {
                     </div>
 
                     <div className='md:col-span-4'>
-                      <label className="block mt-2 text-sm font-medium text-slate-500">
-                        Select Course
+                      <label className="block mt-2 text-xs sm:text-sm font-medium text-slate-500">
+                        {tr("Select Course")}
                       </label>
                       <select
                         name="courseId4"
@@ -1764,8 +1787,8 @@ const Edit = () => {
                     </div>
 
                     <div className='md:col-span-2'>
-                      <label className="block md:mt-2 text-sm font-medium text-slate-500">
-                        Reference Number
+                      <label className="block md:mt-2 text-xs sm:text-sm font-medium text-slate-500">
+                        {tr("Reference Number")}
                       </label>
                       <input
                         type="text"
@@ -1778,8 +1801,8 @@ const Edit = () => {
                     </div>
 
                     <div className='md:col-span-1'>
-                      <label className="block md:mt-2 text-sm font-medium text-slate-500">
-                        Fees
+                      <label className="block md:mt-2 text-xs sm:text-sm font-medium text-slate-500">
+                        {tr("Fees")}
                       </label>
                       <input
                         type="number"
@@ -1805,8 +1828,8 @@ const Edit = () => {
 
                   <div className="grid grid-cols-1 md:grid-cols-10 gap-5 mt-2">
                     <div className='md:col-span-4'>
-                      <label className="block mt-2 text-sm font-medium text-slate-500">
-                        Select Institute
+                      <label className="block mt-2 text-xs sm:text-sm font-medium text-slate-500">
+                        {tr("Select Institute")}
                       </label>
                       <select
                         name="instituteId2"
@@ -1825,8 +1848,8 @@ const Edit = () => {
                     </div>
 
                     <div className='md:col-span-3'>
-                      <label className="block mt-2 text-sm font-medium text-slate-500">
-                        Select Course
+                      <label className="block mt-2 text-xs sm:text-sm font-medium text-slate-500">
+                        {tr("Select Course")}
                       </label>
                       <select
                         name="courseId2"
@@ -1845,8 +1868,8 @@ const Edit = () => {
                     </div>
 
                     <div className='md:col-span-2'>
-                      <label className="block md:mt-2 text-sm font-medium text-slate-500">
-                        Reference Number
+                      <label className="block md:mt-2 text-xs sm:text-sm font-medium text-slate-500">
+                        {tr("Reference Number")}
                       </label>
                       <input
                         type="text"
@@ -1859,8 +1882,8 @@ const Edit = () => {
                     </div>
 
                     <div className='md:col-span-1'>
-                      <label className="block md:mt-2 text-sm font-medium text-slate-500">
-                        Fees
+                      <label className="block md:mt-2 text-xs sm:text-sm font-medium text-slate-500">
+                        {tr("Fees")}
                       </label>
                       <input
                         type="number"
@@ -1886,8 +1909,8 @@ const Edit = () => {
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mt-5">
                     <div>
-                      <label className="block mt-2 text-sm font-medium text-slate-500">
-                        Select Institute
+                      <label className="block mt-2 text-xs sm:text-sm font-medium text-slate-500">
+                        {tr("Select Institute")}
                       </label>
                       <select
                         name="instituteId3"
@@ -1906,8 +1929,8 @@ const Edit = () => {
                     </div>
 
                     <div>
-                      <label className="block mt-2 text-sm font-medium text-slate-500">
-                        Select Course
+                      <label className="block mt-2 text-xs sm:text-sm font-medium text-slate-500">
+                        {tr("Select Course")}
                       </label>
                       <select
                         name="courseId3"
@@ -1926,8 +1949,8 @@ const Edit = () => {
                     </div>
 
                     <div>
-                      <label className="block text-sm font-medium text-slate-500">
-                        Reference Number
+                      <label className="block text-xs sm:text-sm font-medium text-slate-500">
+                        {tr("Reference Number")}
                       </label>
                       <input
                         type="text"
@@ -1941,8 +1964,8 @@ const Edit = () => {
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                       <div>
-                        <label className="block text-sm font-medium text-slate-500">
-                          Year
+                        <label className="block text-xs sm:text-sm font-medium text-slate-500">
+                          {tr("Year")}
                         </label>
                         <input
                           type="number"
@@ -1959,8 +1982,8 @@ const Edit = () => {
                       </div>
 
                       <div>
-                        <label className="block text-sm font-medium text-slate-500">
-                          Fees
+                        <label className="block text-xs sm:text-sm font-medium text-slate-500">
+                          {tr("Fees")}
                         </label>
                         <input
                           type="number"
@@ -1987,8 +2010,8 @@ const Edit = () => {
 
                   <div className="grid grid-cols-1 md:grid-cols-10 gap-5 mt-2">
                     <div className='md:col-span-3'>
-                      <label className="block mt-2 text-sm font-medium text-slate-500">
-                        Select Institute
+                      <label className="block mt-2 text-xs sm:text-sm font-medium text-slate-500">
+                        {tr("Select Institute")}
                       </label>
                       <select
                         name="instituteId5"
@@ -2007,8 +2030,8 @@ const Edit = () => {
                     </div>
 
                     <div className='md:col-span-4'>
-                      <label className="block mt-2 text-sm font-medium text-slate-500">
-                        Select Course
+                      <label className="block mt-2 text-xs sm:text-sm font-medium text-slate-500">
+                        {tr("Select Course")}
                       </label>
                       <select
                         name="courseId5"
@@ -2027,8 +2050,8 @@ const Edit = () => {
                     </div>
 
                     <div className='md:col-span-2'>
-                      <label className="block md:mt-2 text-sm font-medium text-slate-500">
-                        Reference Number
+                      <label className="block md:mt-2 text-xs sm:text-sm font-medium text-slate-500">
+                        {tr("Reference Number")}
                       </label>
                       <input
                         type="text"
@@ -2041,8 +2064,8 @@ const Edit = () => {
                     </div>
 
                     <div className='md:col-span-1'>
-                      <label className="block md:mt-2 text-sm font-medium text-slate-500">
-                        Fees
+                      <label className="block md:mt-2 text-xs sm:text-sm font-medium text-slate-500">
+                        {tr("Fees")}
                       </label>
                       <input
                         type="number"
@@ -2068,7 +2091,7 @@ const Edit = () => {
               type="submit"
               className="w-full mt-3 bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded-lg shadow-lg hover:-translate-y-0.5"
             >
-              Update Student
+              <AutoText text={tr("Update Student") } variant="button" className="font-bold" />
             </button>
           </form>
         </div>

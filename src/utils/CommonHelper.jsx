@@ -5,6 +5,7 @@ import {
   FaPlusSquare, FaArrowAltCircleLeft, FaFileSignature, FaUserCheck, FaTrashAlt, FaSearch, FaTasks, FaCheck, FaUpload
 } from "react-icons/fa";
 import Swal from 'sweetalert2';
+import { translateUiPhrase } from '../i18n/uiPhrases';
 
 const authorizedScreensFor_SA_HQ_Role = [
   "supervisorsList", "supervisorAdd", "supervisorEdit", "supervisorView",
@@ -39,6 +40,7 @@ const authorizedScreensFor_SUP_Role = [
   "supervisorsList",
   "schoolsList", "schoolView",
   "employeesList", "employeeView", "employeeAdd", "employeeEdit",
+  "studentsList", "studentView",
   "inspectionReportList", "inspectionReportAdd", "inspectionReportView",
   "settings", "profile"
 ];
@@ -184,13 +186,13 @@ export function toCamelCase(inputString) {
 }
 
 export const getBaseUrl = async () => {
-  return "https://unis-server.vercel.app/api/";
-  //return "http://localhost:5001/api/";
+  //return "https://unis-server.vercel.app/api/";
+  return "http://localhost:5001/api/";
 };
 
 export function handleRightClickAndFullScreen() {
   const isDisableRightClick = true;
-  const isOpenFullScreen = true;
+  const isOpenFullScreen = false;
 
   // -------- Right click disable (mostly desktop feature; keep only if you want) --------
   const handleRightClick = (e) => e.preventDefault();
@@ -317,7 +319,7 @@ export const getIconTooltip = (purpose = "", customTooltip = "") => {
     Top: "Go to Top",
   };
 
-  return tooltipMap[key] || key || "Action";
+  return translateUiPhrase(tooltipMap[key] || key || "Action");
 };
 
 export const getButtonTooltip = (buttonType = "") => getIconTooltip(buttonType);
@@ -397,8 +399,8 @@ export function showSwalAlert(title, message, icon) {
   const isShortTimerTitle = title === "Success!" || title === "Uploaded";
 
   return Swal.fire({
-    title: title,
-    html: "<b>" + msg + "</b>",
+    title: translateUiPhrase(title),
+    html: "<b>" + translateUiPhrase(msg) + "</b>",
     icon: icon,
     timer: isShortTimerTitle ? 1600 : 5200,
     timerProgressBar: true,
@@ -430,13 +432,14 @@ export function showSwalAlert(title, message, icon) {
 
 export function showConfirmationSwalAlert(title, message, icon) {
   return Swal.fire({
-    title: title,
+    title: translateUiPhrase(title),
+    text: translateUiPhrase(message),
     icon: icon,
     showCancelButton: true,
     confirmButtonColor: '#3085d6',
     cancelButtonColor: '#d33',
-    confirmButtonText: 'Yes',
-    cancelButtonText: 'No',
+    confirmButtonText: translateUiPhrase('Yes'),
+    cancelButtonText: translateUiPhrase('No'),
     background: "url(/bg_card.png)",
   });
 }

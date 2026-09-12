@@ -17,7 +17,8 @@ import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import Select from 'react-select';
 import { useAuth } from '../../context/AuthContext'
-import { getSchoolsFromCache } from '../../utils/SchoolHelper';
+import { AutoText, useLanguage } from '../../i18n/LanguageContext';
+import { getSchools, getSchoolsFromCache } from '../../utils/SchoolHelper';
 import { getCoursesFromCache } from '../../utils/CourseHelper';
 import { getInstitutesFromCache } from '../../utils/InstituteHelper';
 import { getAcademicYearsFromCache } from '../../utils/AcademicYearHelper';
@@ -25,6 +26,7 @@ import 'animate.css';
 import * as XLSX from 'xlsx';
 
 const List = () => {
+  const { tr, direction, fontFamily, language } = useLanguage();
   const IMPORT_CHUNK_SIZE = 20;
 
   // To prevent right-click AND For FULL screen view.
@@ -76,7 +78,7 @@ const List = () => {
       data?.about ?
         <div className='ml-12 p-2 bg-blue-50'>
           <p className='pl-2 text-xs'>
-            {"More details : "}
+            {tr("More details") + " : "}
             {data.about ? data.about : ""}
           </p>
         </div>
@@ -136,15 +138,15 @@ const List = () => {
 
     if (filteredAcYearId) {
       return {
-        label: getAcademicYearLabelById(filteredAcYearId) || "Selected AC Year",
-        mode: "Filtered AC Year",
+        label: getAcademicYearLabelById(filteredAcYearId) || tr("Selected AC Year"),
+        mode: tr("Filtered AC Year"),
         isFiltered: true,
       };
     }
 
     return {
-      label: activeAcYear?.acYear || "Loading AC Year...",
-      mode: "Active AC Year",
+      label: activeAcYear?.acYear || tr("Loading AC Year..."),
+      mode: tr("Active AC Year"),
       isFiltered: false,
     };
   };
@@ -339,12 +341,12 @@ const List = () => {
       background: "url(/bg_card.png)",
       html: (
         <div className="mb-2 h-80 w-full">
-          <div className='text-xl font-bold md:mb-1 text-green-600 text-center'>Filter</div>
+          <div className='text-xl font-bold md:mb-1 text-green-600 text-center'>{tr("Filter")}</div>
 
           <div className='grid grid-cols-4 md:grid-cols-6 gap-x-3 lg:gap-x-3'>
-            <span className='col-span-2 md:col-span-3 text-sm mb-1 text-start text-blue-500'>Course</span>
-            <span className='text-sm mb-1 text-start text-blue-500'>Year</span>
-            <span className='md:col-span-2 text-sm mb-1 text-start text-blue-500'>Course Status</span>
+            <span className='col-span-2 md:col-span-3 text-sm mb-1 text-start text-blue-500'>{tr("Course")}</span>
+            <span className='text-sm mb-1 text-start text-blue-500'>{tr("Year")}</span>
+            <span className='md:col-span-2 text-sm mb-1 text-start text-blue-500'>{tr("Course Status")}</span>
 
             <Select
               className='col-span-2 md:col-span-3 text-sm text-start mb-3'
@@ -385,10 +387,10 @@ const List = () => {
             <Select
               className='md:col-span-2 text-sm text-start mb-3'
               options={[
-                { value: 'Admission', label: 'Admission' },
-                { value: 'Promoted', label: 'Promoted' },
-                { value: 'Completed', label: 'Completed' },
-                { value: 'Not-Promoted', label: 'Not-Promoted' }
+                { value: 'Admission', label: tr('Admission') },
+                { value: 'Promoted', label: tr('Promoted') },
+                { value: 'Completed', label: tr('Completed') },
+                { value: 'Not-Promoted', label: tr('Not-Promoted') }
               ]}
               onChange={(selectedOption) => {
                 selectedCourseStatus = selectedOption?.value || null;
@@ -399,8 +401,8 @@ const List = () => {
           </div>
 
           <div className='grid grid-cols-3 gap-x-3 lg:gap-x-5'>
-            <span className='col-span-2 text-sm mb-1 text-start text-blue-500'>Institute</span>
-            <span className='text-sm mb-1 text-start text-blue-500'>AC year</span>
+            <span className='col-span-2 text-sm mb-1 text-start text-blue-500'>{tr("Institute")}</span>
+            <span className='text-sm mb-1 text-start text-blue-500'>{tr("AC year")}</span>
 
             <Select
               className='col-span-2 text-sm text-start mb-3'
@@ -430,19 +432,19 @@ const List = () => {
           </div>
 
           <div className='grid grid-cols-3 gap-x-2 lg:gap-x-5'>
-            <span className='text-sm mb-1 text-start text-blue-500'>Status</span>
-            <span className='text-sm mb-1 text-start text-blue-500'>Marital Status</span>
-            <span className='text-sm mb-1 text-start text-blue-500'>Hosteller</span>
+            <span className='text-sm mb-1 text-start text-blue-500'>{tr("Status")}</span>
+            <span className='text-sm mb-1 text-start text-blue-500'>{tr("Marital Status")}</span>
+            <span className='text-sm mb-1 text-start text-blue-500'>{tr("Hosteller")}</span>
 
             <Select
               className='text-sm text-start mb-3'
               options={[
-                { value: 'Active', label: 'Active' },
-                { value: 'Alumni', label: 'Alumni' },
-                { value: 'In-Active', label: 'In-Active' },
-                { value: 'Transferred', label: 'Transferred' },
-                { value: 'Graduated', label: 'Graduated' },
-                { value: 'Discontinued', label: 'Discontinued' }
+                { value: 'Active', label: tr('Active') },
+                { value: 'Alumni', label: tr('Alumni') },
+                { value: 'In-Active', label: tr('In-Active') },
+                { value: 'Transferred', label: tr('Transferred') },
+                { value: 'Graduated', label: tr('Graduated') },
+                { value: 'Discontinued', label: tr('Discontinued') }
               ]}
               onChange={(selectedOption) => {
                 selectedStatus = selectedOption?.value || null;
@@ -454,8 +456,8 @@ const List = () => {
             <Select
               className='text-sm text-start mb-3'
               options={[
-                { value: 'Married', label: 'Married' },
-                { value: 'Single', label: 'Single' }
+                { value: 'Married', label: tr('Married') },
+                { value: 'Single', label: tr('Single') }
               ]}
               onChange={(selectedOption) => {
                 selectedMaritalStatus = selectedOption?.value || null;
@@ -467,8 +469,8 @@ const List = () => {
             <Select
               className='text-sm text-start mb-3'
               options={[
-                { value: 'Yes', label: 'Yes' },
-                { value: 'No', label: 'No' }
+                { value: 'Yes', label: tr('Yes') },
+                { value: 'No', label: tr('No') }
               ]}
               onChange={(selectedOption) => {
                 selectedHosteller = selectedOption?.value || null;
@@ -481,6 +483,8 @@ const List = () => {
       ),
       focusConfirm: false,
       showCancelButton: true,
+      confirmButtonText: tr("Apply"),
+      cancelButtonText: tr("Cancel"),
       preConfirm: () => {
         const select1 = selectedCourse || null;
         const select2 = selectedStatus || null;
@@ -626,14 +630,14 @@ const List = () => {
 
     try {
       const { value: file } = await Swal.fire({
-        title: "<h3 style='color:blue; font-size: 25px;'>Import Student Data</h3>",
+        title: `<h3 style='color:blue; font-size: 25px;'>${tr("Import Student Data")}</h3>`,
         input: "file",
         background: "url(/bg_card.png)",
         inputAttributes: {
           accept: ".xlsx, .xls",
-          "aria-label": "Upload School Student Data."
+          "aria-label": tr("Upload School Student Data.")
         },
-        confirmButtonText: "Upload",
+        confirmButtonText: tr("Upload"),
         showCancelButton: true,
         showClass: { popup: `animate__animated animate__fadeInUp animate__faster` },
         hideClass: { popup: `animate__animated animate__fadeOutDown animate__faster` }
@@ -656,8 +660,8 @@ const List = () => {
       if (!Array.isArray(rawRows) || rawRows.length === 0) {
         setProcessing(false);
         await Swal.fire({
-          title: "Info!",
-          html: "<b>No rows found in selected Excel file.</b>",
+          title: tr("Info!"),
+          html: `<b>${tr("No rows found in selected Excel file.")}</b>`,
           icon: "info",
           showConfirmButton: true,
           background: "url(/bg_card.png)",
@@ -673,8 +677,8 @@ const List = () => {
       const importSessionId = `UI-IMP-${Date.now()}`;
 
       Swal.fire({
-        title: "Importing Students...",
-        html: `<b>Preparing ${totalRows} rows in ${totalChunks} chunks...</b>`,
+        title: tr("Importing Students..."),
+        html: `<b>${tr("Preparing")} ${totalRows} ${tr("rows")} / ${totalChunks} ${tr("chunks")}...</b>`,
         allowOutsideClick: false,
         allowEscapeKey: false,
         showConfirmButton: false,
@@ -691,11 +695,11 @@ const List = () => {
 
         if (Swal.isVisible()) {
           Swal.update({
-            title: "Importing Students...",
+            title: tr("Importing Students..."),
             html: `
-              <div style="font-weight:bold;">Chunk ${i + 1} / ${totalChunks}</div>
-              <div style="margin-top:8px;">Rows ${startRow} - ${endRow}</div>
-              <div style="margin-top:8px; font-size:12px; color:#666;">Please do not close or refresh the page.</div>
+              <div style="font-weight:bold;">${tr("Chunk")} ${i + 1} / ${totalChunks}</div>
+              <div style="margin-top:8px;">${tr("Rows")} ${startRow} - ${endRow}</div>
+              <div style="margin-top:8px; font-size:12px; color:#666;">${tr("Please do not close or refresh the page.")}</div>
             `,
           });
         }
@@ -761,8 +765,8 @@ const List = () => {
       downloadTextFile(finalText, fileName);
 
       await Swal.fire({
-        title: "Success!",
-        html: `<b>Imported: ${totalImported}, Duplicates: ${totalDuplicates}, Invalid: ${totalInvalid}, Failed: ${totalFailed}, Total: ${totalRows}</b><br/><br/>Please check the downloaded file:<br/>${fileName}`,
+        title: tr("Success!"),
+        html: `<b>Imported: ${totalImported}, Duplicates: ${totalDuplicates}, Invalid: ${totalInvalid}, Failed: ${totalFailed}, Total: ${totalRows}</b><br/><br/>${tr("Please check the downloaded file:")}<br/>${fileName}`,
         icon: "success",
         showConfirmButton: true,
         background: "url(/bg_card.png)",
@@ -793,8 +797,8 @@ const List = () => {
       }
 
       await Swal.fire({
-        title: "Error!",
-        html: `<b>Chunk import stopped.</b><br/><br/>${error?.message || error}${combinedLogs.length > 0 ? `<br/><br/>Partial result file downloaded:<br/>${partialFileName}` : ""}`,
+        title: tr("Error!"),
+        html: `<b>${tr("Chunk import stopped.")}</b><br/><br/>${error?.message || error}${combinedLogs.length > 0 ? `<br/><br/>${tr("Partial result file downloaded:")}<br/>${partialFileName}` : ""}`,
         icon: "error",
         showConfirmButton: true,
         background: "url(/bg_card.png)",
@@ -823,8 +827,8 @@ const List = () => {
 
     if (members.length === 0) {
       await Swal.fire({
-        title: "No unpaid students",
-        text: "All students already paid the fees (or no students found).",
+        title: tr("No unpaid students"),
+        text: tr("All students already paid the fees (or no students found)."),
         icon: "info",
         background: "url(/bg_card.png)",
       });
@@ -836,18 +840,18 @@ const List = () => {
       .join("");
 
     const { value: selectedStudentIds } = await Swal.fire({
-      title: "Select Students (Unpaid)",
+      title: tr("Select Students (Unpaid)"),
       html: `
       <select id="studentSelect" multiple size="10"
         style="width:100%; padding:8px; border:1px solid #ccc; border-radius:6px;">
         ${optionsHtml}
       </select>
       <div style="margin-top:8px; font-size:12px; color:#666;">
-        Hold Ctrl to select multiple students.
+        ${tr("Hold Ctrl to select multiple students.")}
       </div>
     `,
       showCancelButton: true,
-      confirmButtonText: "Mark as Paid",
+      confirmButtonText: tr("Mark as Paid"),
       focusConfirm: false,
       background: "url(/bg_card.png)",
       preConfirm: () => {
@@ -856,7 +860,7 @@ const List = () => {
 
         const ids = Array.from(el.selectedOptions).map((o) => o.value);
         if (ids.length === 0) {
-          Swal.showValidationMessage("Please select at least one student.");
+          Swal.showValidationMessage(tr("Please select at least one student."));
           return;
         }
         return ids;
@@ -871,7 +875,7 @@ const List = () => {
 
     if (members.length === 0) {
       await Swal.fire({
-        title: "No students to remove",
+        title: tr("No students to remove"),
         icon: "info",
         background: "url(/bg_card.png)",
       });
@@ -883,18 +887,18 @@ const List = () => {
       .join("");
 
     const { value: selectedStudentIds } = await Swal.fire({
-      title: "Select Students (Unpaid)",
+      title: tr("Select Students (Unpaid)"),
       html: `
       <select id="studentSelect" multiple size="10"
         style="width:100%; padding:8px; border:1px solid #ccc; border-radius:6px;">
         ${optionsHtml}
       </select>
       <div style="margin-top:8px; font-size:12px; color:#666;">
-        Hold Ctrl to select multiple students.
+        ${tr("Hold Ctrl to select multiple students.")}
       </div>
     `,
       showCancelButton: true,
-      confirmButtonText: "Remove Students",
+      confirmButtonText: tr("Remove Students"),
       focusConfirm: false,
       background: "url(/bg_card.png)",
       preConfirm: () => {
@@ -903,7 +907,7 @@ const List = () => {
 
         const ids = Array.from(el.selectedOptions).map((o) => o.value);
         if (ids.length === 0) {
-          Swal.showValidationMessage("Please select at least one student.");
+          Swal.showValidationMessage(tr("Please select at least one student."));
           return;
         }
         return ids;
@@ -931,7 +935,7 @@ const List = () => {
     const data = await resp.json().catch(() => ({}));
 
     if (!resp.ok || data?.success === false) {
-      throw new Error(data?.error || "API request failed");
+      throw new Error(data?.error || tr("API request failed"));
     }
 
     return data;
@@ -954,7 +958,7 @@ const List = () => {
     const data = await resp.json().catch(() => ({}));
 
     if (!resp.ok || data?.success === false) {
-      throw new Error(data?.error || "API request failed");
+      throw new Error(data?.error || tr("API request failed"));
     }
 
     return data;
@@ -965,8 +969,8 @@ const List = () => {
     try {
       if (!Array.isArray(students) || students.length === 0) {
         await Swal.fire({
-          title: "No Students Found",
-          text: "No students found in the list.",
+          title: tr("No Students Found"),
+          text: tr("No students found in the list."),
           icon: "info",
           background: "url(/bg_card.png)",
         });
@@ -977,8 +981,8 @@ const List = () => {
       if (!selectedStudentIds.length) return;
 
       Swal.fire({
-        title: "Updating...",
-        html: "Please wait…",
+        title: tr("Updating..."),
+        html: tr("Please wait…"),
         allowOutsideClick: false,
         allowEscapeKey: false,
         didOpen: () => Swal.showLoading(),
@@ -988,8 +992,8 @@ const List = () => {
       const result = await postSelectedStudents(selectedStudentIds);
 
       await Swal.fire({
-        title: "Success!",
-        text: result?.message || "Fees marked as paid to selected students.",
+        title: tr("Success!"),
+        text: result?.message || tr("Fees marked as paid to selected students."),
         icon: "success",
         background: "url(/bg_card.png)",
       });
@@ -998,7 +1002,7 @@ const List = () => {
       return result;
     } catch (err) {
       Swal.fire({
-        title: "Error!",
+        title: tr("Error!"),
         text: err?.message || String(err),
         icon: "error",
         background: "url(/bg_card.png)",
@@ -1010,8 +1014,8 @@ const List = () => {
     try {
       if (!Array.isArray(students) || students.length === 0) {
         await Swal.fire({
-          title: "No Students Found",
-          text: "No students found in the list.",
+          title: tr("No Students Found"),
+          text: tr("No students found in the list."),
           icon: "info",
           background: "url(/bg_card.png)",
         });
@@ -1022,8 +1026,8 @@ const List = () => {
       if (!selectedStudentIds.length) return;
 
       Swal.fire({
-        title: "Updating...",
-        html: "Please wait…",
+        title: tr("Updating..."),
+        html: tr("Please wait…"),
         allowOutsideClick: false,
         allowEscapeKey: false,
         didOpen: () => Swal.showLoading(),
@@ -1033,8 +1037,8 @@ const List = () => {
       const result = await removeSelectedStudents(selectedStudentIds);
 
       await Swal.fire({
-        title: "Success!",
-        text: result?.message || "Selected students are removed.",
+        title: tr("Success!"),
+        text: result?.message || tr("Selected students are removed."),
         icon: "success",
         background: "url(/bg_card.png)",
       });
@@ -1043,7 +1047,7 @@ const List = () => {
       return result;
     } catch (err) {
       Swal.fire({
-        title: "Error!",
+        title: tr("Error!"),
         text: err?.message || String(err),
         icon: "error",
         background: "url(/bg_card.png)",
@@ -1055,6 +1059,7 @@ const List = () => {
     if (checkAuth("studentsList") === "NO") {
       showSwalAlert("Error!", "User Authorization Failed!", "error");
       navigate("/login");
+      return;
     }
 
     const fetchStudents = async () => {
@@ -1143,7 +1148,12 @@ const List = () => {
       console.log("schoolId : " + localStorage.getItem('schoolId'));
 
       if (!localStorage.getItem('schoolId')) {
-        const schools = await getSchoolsFromCache();
+        // Supervisor must see only Niswans assigned to that Supervisor.
+        // Other read roles keep the existing cached Niswan source.
+        const loadedSchools = userRole === "supervisor"
+          ? await getSchools()
+          : await getSchoolsFromCache();
+        const schools = Array.isArray(loadedSchools) ? loadedSchools : [];
         setSchools(schools);
 
         let selectedOptionInSwal;
@@ -1151,7 +1161,17 @@ const List = () => {
           background: "url(/bg_card.png)",
           html: (
             <div className="mb-2 h-80 w-full">
-              <div className='text-2xl lg:text-3xl mb-3 text-blue-600'>Select the Niswan</div>
+              <div
+                dir={direction}
+                style={{ fontFamily }}
+                className={`mb-3 font-semibold text-blue-600 ${
+                  language === "ta"
+                    ? "text-sm sm:text-base lg:text-lg"
+                    : "text-lg sm:text-xl lg:text-2xl"
+                }`}
+              >
+                {tr("Select the Niswan")}
+              </div>
               <Select
                 className='text-sm text-start'
                 //options={schools.filter((school) => school.code !== 'UN-00-00001' && school.active === 'Active')
@@ -1184,7 +1204,10 @@ const List = () => {
 
           schoolName = schools.filter(school => school._id === schoolId)
             .map((sch) => {
-              return sch.code + " : " + sch.nameEnglish + ", " + sch.districtStateId.district + ", " + sch.districtStateId.state
+              const district = sch?.districtStateId?.district || "";
+              const state = sch?.districtStateId?.state || "";
+              const location = [district, state].filter(Boolean).join(", ");
+              return `${sch?.code || ""} : ${sch?.nameEnglish || ""}${location ? `, ${location}` : ""}`;
             });
           localStorage.setItem('schoolName', schoolName);
           console.log(schoolName);
@@ -1255,7 +1278,7 @@ const List = () => {
           setSupLoading(false);
         }
       } else {
-        showSwalAlert("Info!", 'Niswan NOT selected.', "info");
+        showSwalAlert("Info!", tr("Niswan NOT selected."), "info");
         navigate("/dashboard");
       }
     }
@@ -1308,20 +1331,17 @@ const List = () => {
   const safeAcademicYears = Array.isArray(academicYears) ? academicYears : [];
 
   return (
-    <div className="p-3 lg:p-5 bg-repeat mt-3">
+    <div dir={direction} style={{ fontFamily }} className="p-3 lg:p-5 bg-repeat mt-3">
       <div className="text-center">
-        <h3 className="text-base lg:text-2xl font-bold px-5 py-0 text-gray-600">
-          Manage Students
-          {user.role === "superadmin" || user.role === "hquser" ? (
-            <div className="text-xs md:text-base font-semibold text-slate-500">
-              {localStorage.getItem("schoolName") || "-"}
-            </div>
-          ) : null}
-
-          <p className='flex md:grid text-sm justify-center text-rose-700'>
-            (Records Count : {filteredStudent ? filteredStudent.length : 0})
-          </p>
-        </h3>
+        <AutoText as="h3" text={tr("Manage Students")} variant="heading" className="font-bold px-5 py-0 text-gray-600" />
+        {user.role === "superadmin" || user.role === "hquser" ? (
+          <div className="text-xs md:text-base font-semibold text-slate-500" dir="auto">
+            {localStorage.getItem("schoolName") || "-"}
+          </div>
+        ) : null}
+        <p className='text-xs sm:text-sm justify-center text-rose-700'>
+          ({tr("Records Count")} : {filteredStudent ? filteredStudent.length : 0})
+        </p>
       </div>
 
       <div className="flex justify-between items-center mt-5 relative">
@@ -1331,7 +1351,7 @@ const List = () => {
           <div className={`w-full text-md flex justify-center items-center pl-1 rounded-l-md`}>
             <input
               type="text"
-              placeholder="Search"
+              placeholder={tr("Search")}
               className="w-full px-3 py-0.5 border rounded shadow-md justify-center mr-1 lg:mr-0"
               onChange={handleSearch}
             />
@@ -1377,22 +1397,22 @@ const List = () => {
         {isFilterApplied ? (
           <div className='grid lg:flex text-xs text-lime-600 items-center justify-center'>
             <div className="flex items-center justify-center gap-2 lg:mr-3">
-              <p className='justify-center text-center font-semibold'>Filter Applied:</p>
+              <p className='justify-center text-center font-semibold'>{tr("Filter Applied:")}</p>
               <button
                 type="button"
                 onClick={handleResetFilters}
                 className="rounded-full border border-rose-200 bg-rose-50 px-2 py-0.5 text-[11px] font-semibold text-rose-600 hover:bg-rose-100"
-                title="Reset filters and show active academic year students"
-                aria-label="Reset filters and show active academic year students"
+                title={tr("Reset filters and show active academic year students")}
+                aria-label={tr("Reset filters and show active academic year students")}
               >
-                Reset
+                {tr("Reset")}
               </button>
             </div>
 
             <p>
               {getCleanStorageValue('courseId') ? (
                 <span className='text-blue-500'>
-                  Course: <span className='text-gray-500'>
+                  {tr("Course")}: <span className='text-gray-500'>
                     {courses.filter(course => course._id === getCleanStorageValue('courseId')).map(course => course.name) + ", "}
                   </span>
                 </span>
@@ -1403,7 +1423,7 @@ const List = () => {
               <p className='lg:ml-3'>
                 {getCleanStorageValue('year') ? (
                   <span className='text-blue-500'>
-                    Year: <span className='text-gray-500'>{getCleanStorageValue('year') + ", "}</span>
+                    {tr("Year")}: <span className='text-gray-500'>{getCleanStorageValue('year') + ", "}</span>
                   </span>
                 ) : null}
               </p>
@@ -1411,7 +1431,7 @@ const List = () => {
               <p className='lg:ml-3'>
                 {getCleanStorageValue('courseStatus') ? (
                   <span className='text-blue-500'>
-                    Course Status: <span className='text-gray-500'>{getCleanStorageValue('courseStatus') + ", "}</span>
+                    {tr("Course Status")}: <span className='text-gray-500'>{tr(getCleanStorageValue('courseStatus')) + ", "}</span>
                   </span>
                 ) : null}
               </p>
@@ -1419,7 +1439,7 @@ const List = () => {
               <p className='lg:ml-3'>
                 {getCleanStorageValue('instituteId') ? (
                   <span className='text-blue-500'>
-                    Institute: <span className='text-gray-500'>
+                    {tr("Institute")}: <span className='text-gray-500'>
                       {institutes.filter(institute => institute._id === getCleanStorageValue('instituteId')).map(institute => institute.name) + ", "}
                     </span>
                   </span>
@@ -1429,7 +1449,7 @@ const List = () => {
               <p className='lg:ml-3'>
                 {getCleanStorageValue('acYear') ? (
                   <span className='text-blue-500'>
-                    AC Year: <span className='text-gray-500'>
+                    {tr("AC year")}: <span className='text-gray-500'>
                       {academicYears.filter(acYear => acYear._id === getCleanStorageValue('acYear')).map(acYear => acYear.acYear) + ", "}
                     </span>
                   </span>
@@ -1439,7 +1459,7 @@ const List = () => {
               <p className='lg:ml-3'>
                 {getCleanStorageValue('status') ? (
                   <span className='text-blue-500'>
-                    Student Status: <span className='text-gray-500'>{getCleanStorageValue('status') + ", "}</span>
+                    {tr("Status")}: <span className='text-gray-500'>{tr(getCleanStorageValue('status')) + ", "}</span>
                   </span>
                 ) : null}
               </p>
@@ -1447,7 +1467,7 @@ const List = () => {
               <p className='lg:ml-3'>
                 {getCleanStorageValue('maritalStatus') ? (
                   <span className='text-blue-500'>
-                    Marital Status: <span className='text-gray-500'>{getCleanStorageValue('maritalStatus') + ", "}</span>
+                    {tr("Marital Status")}: <span className='text-gray-500'>{tr(getCleanStorageValue('maritalStatus')) + ", "}</span>
                   </span>
                 ) : null}
               </p>
@@ -1455,7 +1475,7 @@ const List = () => {
               <p className='lg:ml-3'>
                 {getCleanStorageValue('hosteller') ? (
                   <span className='text-blue-500'>
-                    Hostel: <span className='text-gray-500'>{getCleanStorageValue('hosteller')}</span>
+                    {tr("Hostel")}: <span className='text-gray-500'>{tr(getCleanStorageValue('hosteller'))}</span>
                   </span>
                 ) : null}
               </p>

@@ -1,7 +1,10 @@
 import React from "react";
 import { getFormattedDate } from "../../utils/CommonHelper";
+import { useLanguage } from "../../i18n/LanguageContext";
+import { formatCompactAge, formatCompactDuration } from "../../utils/studentProfileUtils";
 
 const StudentProfilePrint = ({ student }) => {
+  const { tr } = useLanguage();
   const safeValue = (value) => {
     if (value === null || value === undefined || value === "") return "-";
 
@@ -207,7 +210,9 @@ const StudentProfilePrint = ({ student }) => {
           { label: "Roll Number", value: student?.rollNumber },
           { label: "Name", value: student?.userId?.name },
           { label: "Date of Admission", value: getFormattedDate(student?.doa) },
+          { label: tr("Admission Duration"), value: formatCompactDuration(student?.doa, tr) },
           { label: "Date of Birth", value: getFormattedDate(student?.dob) },
+          { label: tr("Age"), value: formatCompactAge(student?.dob, tr) },
           { label: "Status", value: student?.active },
           { label: "Remarks", value: student?.remarks },
         ]}

@@ -14,8 +14,11 @@ import {
 } from "react-icons/fa";
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import { AutoText, useLanguage } from "../../i18n/LanguageContext";
+import { formatAge, formatWorkingExperience } from "../../utils/supervisorProfileUtils";
 
 const Add = () => {
+  const { tr, direction, fontFamily } = useLanguage();
 
   // To prevent right-click AND For FULL screen view.
   useEffect(() => {
@@ -127,11 +130,9 @@ const Add = () => {
   }
 
   return (
-    <div className="max-w-5xl mx-auto mt-2 p-5 shadow-lg border">
+    <div dir={direction} style={{ fontFamily }} className="max-w-5xl mx-auto mt-2 p-5 shadow-lg border">
       <div className="flex py-2 px-4 items-center justify-center bg-teal-700 text-white rounded-lg shadow-lg">
-        <h2 className="text-sm lg:text-xl font-semibold items-center justify-center">
-          Enter Supervisor Details
-        </h2>
+        <AutoText as="h2" text={tr("Enter Supervisor Details")} variant="button" className="font-semibold items-center justify-center" />
         <Link to="/dashboard/supervisors" >
           <FaRegTimesCircle className="text-2xl ml-7 text-red-700 bg-gray-200 rounded-xl shadow-md items-center justify-end" />
         </Link>
@@ -143,7 +144,7 @@ const Add = () => {
             {/* Name */}
             <div>
               <label className="block mt-2 text-sm font-medium text-slate-500">
-                Name <span className="text-red-700">*</span>
+                {tr("Name")} <span className="text-red-700">*</span>
               </label>
               <input
                 type="text"
@@ -158,7 +159,7 @@ const Add = () => {
             {/* Email */}
             <div>
               <label className="block mt-2 text-sm font-medium text-slate-500">
-                Email <span className="text-red-700">*</span>
+                {tr("Email")} <span className="text-red-700">*</span>
               </label>
               <input
                 type="email"
@@ -176,7 +177,7 @@ const Add = () => {
             {/* Supervisor ID */}
             <div>
               <label className="block mt-2 text-sm font-medium text-slate-500">
-                Supervisor ID <span className="text-red-700">*</span>
+                {tr("Supervisor ID")} <span className="text-red-700">*</span>
               </label>
               <input
                 type="text"
@@ -191,7 +192,7 @@ const Add = () => {
             {/* Contact Number */}
             <div>
               <label className="block mt-2 text-sm font-medium text-slate-500">
-                Contact Number <span className="text-red-700">*</span>
+                {tr("Contact Number")} <span className="text-red-700">*</span>
               </label>
               <input
                 type="number"
@@ -207,7 +208,7 @@ const Add = () => {
             {/* Route Name */}
             <div>
               <label className="block mt-2 text-sm font-medium text-slate-500">
-                Route Name <span className="text-red-700">*</span>
+                {tr("Route Name")} <span className="text-red-700">*</span>
               </label>
               <input
                 type="text"
@@ -220,11 +221,11 @@ const Add = () => {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mt-7">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-5 mt-7">
             {/* Address */}
             <div className="md:col-span-2">
               <label className="block mt-2 text-sm font-medium text-slate-500">
-                Address <span className="text-red-700">*</span>
+                {tr("Address")} <span className="text-red-700">*</span>
               </label>
               <input
                 type="text"
@@ -239,7 +240,7 @@ const Add = () => {
             {/* Qualification */}
             <div>
               <label className="block mt-2 text-sm font-medium text-slate-500">
-                Qualification <span className="text-red-700">*</span>
+                {tr("Qualification")} <span className="text-red-700">*</span>
               </label>
               <input
                 type="text"
@@ -250,13 +251,26 @@ const Add = () => {
                 required
               />
             </div>
+
+            {/* Father / Guardian Name */}
+            <div>
+              <label className="block mt-2 text-sm font-medium text-slate-500">
+                {tr("Father / Guardian Name")}
+              </label>
+              <input
+                type="text"
+                name="fatherGuardianName"
+                onChange={handleChange}
+                className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+              />
+            </div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mt-7">
             {/* Date of Birth */}
             <div className="grid grid-cols-1">
               <label className="block mt-2 text-sm font-medium text-slate-500">
-                Date of Birth <span className="text-red-700">*</span>
+                {tr("Date of Birth")} <span className="text-red-700">*</span>
               </label>
               <DatePicker
                 name="dob"
@@ -272,12 +286,19 @@ const Add = () => {
               //showIcon
               //toggleCalendarOnIconClick
               />
+              <div className="mt-1 h-4 text-[10px] font-normal text-slate-500 leading-4">
+                {selectedDOBDate ? (
+                  <>
+                    {tr("Age")}: <span className="text-blue-700">{formatAge(selectedDOBDate, tr)}</span>
+                  </>
+                ) : null}
+              </div>
             </div>
 
             {/* Gender */}
             <div>
               <label className="block mt-2 text-sm font-medium text-slate-500">
-                Gender <span className="text-red-700">*</span>
+                {tr("Gender")} <span className="text-red-700">*</span>
               </label>
               <select
                 name="gender"
@@ -286,26 +307,26 @@ const Add = () => {
                 required
               >
                 <option value=""></option>
-                <option value="Male">Male</option>
-                <option value="Female">Female</option>
+                <option value="Male">{tr("Male")}</option>
+                <option value="Female">{tr("Female")}</option>
               </select>
             </div>
 
             {/* Marital Status */}
             <div>
               <label className="block mt-2 text-sm font-medium text-slate-500">
-                Marital Status <span className="text-red-700">*</span>
+                {tr("Marital Status")} <span className="text-red-700">*</span>
               </label>
               <select
                 name="maritalStatus"
                 onChange={handleChange}
-                placeholder="Marital Status"
+                placeholder={tr("Marital Status")}
                 className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                 required
               >
                 <option value=""></option>
-                <option value="Single">Single</option>
-                <option value="Married">Married</option>
+                <option value="Single">{tr("Single")}</option>
+                <option value="Married">{tr("Married")}</option>
               </select>
             </div>
           </div>
@@ -314,25 +335,25 @@ const Add = () => {
             {/* Job Type */}
             <div>
               <label className="block mt-2 text-sm font-medium text-slate-500">
-                Job Type <span className="text-red-700">*</span>
+                {tr("Job Type")} <span className="text-red-700">*</span>
               </label>
               <select
                 name="jobType"
                 onChange={handleChange}
-                placeholder="Job Type"
+                placeholder={tr("Job Type")}
                 className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                 required
               >
                 <option value=""></option>
-                <option value="Full-Time">Full-Time</option>
-                <option value="Part-Time">Part-Time</option>
+                <option value="Full-Time">{tr("Full-Time")}</option>
+                <option value="Part-Time">{tr("Part-Time")}</option>
               </select><p></p>
             </div>
 
             {/* Date of Joining */}
             <div className="grid">
               <label className="block mt-2 text-sm font-medium text-slate-500">
-                Date of Joining <span className="text-red-700">*</span>
+                {tr("Date of Joining")} <span className="text-red-700">*</span>
               </label>
               <DatePicker
                 name="doj"
@@ -347,20 +368,27 @@ const Add = () => {
                 isClearable
               //showIcon
               //toggleCalendarOnIconClick
-              /><p></p>
+              />
+              <div className="mt-1 h-4 text-[10px] font-normal text-slate-500 leading-4">
+                {selectedDOJDate ? (
+                  <>
+                    {tr("Working Experience")}: <span className="text-blue-700">{formatWorkingExperience(selectedDOJDate, tr)}</span>
+                  </>
+                ) : null}
+              </div><p></p>
             </div>
 
             {/* Salary */}
             <div>
               <label className="block mt-2 text-sm font-medium text-slate-500">
-                Salary <span className="text-red-700">*</span>
+                {tr("Hadhiya")} <span className="text-red-700">*</span>
               </label>
               <input
                 type="number"
                 name="salary"
                 onChange={handleChange}
                 min="0"
-                //    placeholder="Salary"
+                //    placeholder="Hadhiya"
                 className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                 required
               /><p></p>
@@ -369,7 +397,7 @@ const Add = () => {
             {/* Password */}
             <div>
               <label className="block mt-2 text-sm font-medium text-slate-500">
-                Password <span className="text-red-700">*</span>
+                {tr("Password")} <span className="text-red-700">*</span>
               </label>
               <input
                 type="password"
@@ -380,7 +408,65 @@ const Add = () => {
                 className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                 required
                 pattern={PASSWORD_REGEX.source}
-                title="8-64 chars, 1 uppercase, 1 lowercase, 1 number, 1 special, no spaces"
+                title={tr("Password requirements")}
+              />
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mt-7">
+            {/* Travelling Allowance */}
+            <div>
+              <label className="block mt-2 text-sm font-medium text-slate-500">
+                {tr("Travelling Allowance")}
+              </label>
+              <input
+                type="number"
+                name="travellingAllowance"
+                onChange={handleChange}
+                min="0"
+                step="0.01"
+                className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+              />
+            </div>
+
+            {/* Other Designation */}
+            <div>
+              <label className="block mt-2 text-sm font-medium text-slate-500">
+                {tr("Other Designation")}
+              </label>
+              <textarea
+                name="otherDesignation"
+                onChange={handleChange}
+                rows={2}
+                className="mt-1 p-2 block w-full border border-gray-300 rounded-md resize-y"
+              />
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mt-7">
+            {/* Activities carried out */}
+            <div>
+              <label className="block mt-2 text-sm font-medium text-slate-500">
+                {tr("Activities carried out")}
+              </label>
+              <textarea
+                name="activitiesCarriedOut"
+                onChange={handleChange}
+                rows={3}
+                className="mt-1 p-2 block w-full border border-gray-300 rounded-md resize-y"
+              />
+            </div>
+
+            {/* Bank account details */}
+            <div>
+              <label className="block mt-2 text-sm font-medium text-slate-500">
+                {tr("Bank account details")}
+              </label>
+              <textarea
+                name="bankAccountDetails"
+                onChange={handleChange}
+                rows={3}
+                className="mt-1 p-2 block w-full border border-gray-300 rounded-md resize-y"
               />
             </div>
           </div>
@@ -389,13 +475,13 @@ const Add = () => {
             {/* Image Upload */}
             <div>
               <label className="block mt-2 text-sm font-medium text-slate-500">
-                Upload Image
+                {tr("Upload Image")}
               </label>
               <input
                 type="file"
                 name="file"
                 onChange={handleChange}
-                placeholder="Upload Image"
+                placeholder={tr("Upload Image")}
                 accept="image/*"
                 className="mt-1 p-1 mb-5 block w-full border border-gray-300 rounded-md"
               />
@@ -404,7 +490,7 @@ const Add = () => {
             {/* More details about the Supervisor */}
             <div className="md:col-span-2">
               <label className="block mt-2 text-sm font-medium text-slate-500">
-                More details about the Supervisor
+                {tr("More details about the Supervisor")}
               </label>
               <input
                 type="text"
@@ -421,7 +507,7 @@ const Add = () => {
           disabled={processing || !isPasswordStrong(password)}
           className="w-full mt-3 bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded-lg shadow-lg disabled:opacity-50 hover:-translate-y-0.5"
         >
-          Add Supervisor
+          <AutoText text={tr("Add Supervisor")} variant="button" className="font-bold" />
         </button>
       </form >
     </div >

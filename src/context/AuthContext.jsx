@@ -247,6 +247,9 @@ const AuthContext = ({ children }) => {
 
         if (response.data.success) {
           setUser(response.data.user);
+          if (response.data.user?.preferredLanguage) {
+            localStorage.setItem("preferredLanguage", String(response.data.user.preferredLanguage).toLowerCase());
+          }
           scheduleSessionTimers(token);
           refreshSessionToken({ force: false }).catch(() => null);
         } else {
@@ -312,6 +315,9 @@ const AuthContext = ({ children }) => {
   const login = (loggedInUser) => {
     redirectingRef.current = false;
     lastActivityAtRef.current = Date.now();
+    if (loggedInUser?.preferredLanguage) {
+      localStorage.setItem("preferredLanguage", String(loggedInUser.preferredLanguage).toLowerCase());
+    }
     setUser(loggedInUser);
     scheduleSessionTimers();
   };

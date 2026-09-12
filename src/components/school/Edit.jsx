@@ -9,8 +9,10 @@ import { getDistrictStatesFromCache } from '../../utils/DistrictStateHelper';
 import { getBaseUrl, handleRightClickAndFullScreen, getSpinner, checkAuth, getPrcessing, showSwalAlert } from '../../utils/CommonHelper';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import { AutoText, useLanguage } from "../../i18n/LanguageContext";
 
 const Edit = () => {
+  const { tr, direction, fontFamily } = useLanguage();
 
   // To prevent right-click AND For FULL screen view.
   useEffect(() => {
@@ -211,9 +213,9 @@ const Edit = () => {
   return (
     <>
       {school ? (
-        <div className="max-w-5xl mx-auto mt-2 p-5 shadow-lg border">
+        <div dir={direction} style={{ fontFamily }} className="max-w-5xl mx-auto mt-2 p-5 shadow-lg border">
           <div className="flex py-2 px-4 items-center justify-center bg-teal-700 text-white rounded-lg shadow-lg">
-            <h2 className="text-sm lg:text-xl font-semibold items-center justify-center">Update Niswan Details</h2>
+            <AutoText as="h2" text={tr("Update Niswan Details") } variant="button" className="font-semibold items-center justify-center" />
             <Link to="/dashboard/schools" >
               <FaRegTimesCircle className="text-2xl ml-7 text-red-700 bg-gray-200 rounded-xl shadow-md items-center justify-end" />
             </Link>
@@ -224,8 +226,8 @@ const Edit = () => {
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 {/* Code */}
                 <div>
-                  <label className="block mt-3 text-sm font-medium text-slate-500">
-                    Code <span className="text-red-700">*</span>
+                  <label className="block mt-3 text-xs sm:text-sm font-medium text-slate-500">
+                    {tr("Code")} <span className="text-red-700">*</span>
                   </label>
                   <input
                     type="text"
@@ -233,7 +235,7 @@ const Edit = () => {
                     value={school.code}
                     disabled={true}
                     onChange={handleChange}
-                    placeholder="Insert Code"
+                    placeholder={tr("Code")}
                     className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                     required
                   />
@@ -241,8 +243,8 @@ const Edit = () => {
 
                 {/* Date of Establishment */}
                 <div className="grid grid-cols-1">
-                  <label className="block mt-3 text-sm font-medium text-slate-500">
-                    Date of Establishment
+                  <label className="block mt-3 text-xs sm:text-sm font-medium text-slate-500">
+                    {tr("Date of Establishment")}
                   </label>
                   <DatePicker
                     name="doe"
@@ -262,8 +264,8 @@ const Edit = () => {
 
                 {/* Active */}
                 <div>
-                  <label className="block mt-3 text-sm font-medium text-slate-500">
-                    Status <span className="text-red-700">*</span>
+                  <label className="block mt-3 text-xs sm:text-sm font-medium text-slate-500">
+                    {tr("Status")} <span className="text-red-700">*</span>
                   </label>
                   <select
                     name="active"
@@ -273,8 +275,8 @@ const Edit = () => {
                     required
                   >
                     <option value=""></option>
-                    <option value="Active">Active</option>
-                    <option value="In-Active">In-Active</option>
+                    <option value="Active">{tr("Active")}</option>
+                    <option value="In-Active">{tr("In-Active")}</option>
                   </select>
                 </div>
 
@@ -287,8 +289,8 @@ const Edit = () => {
                 <div className="hidden lg:block flex space-x-3 mb-5" />
                 {/* Name English*/}
                 <div className='col-span-6'>
-                  <label className="block text-sm font-medium text-slate-500">
-                    Name in English <span className="text-red-700">*</span>
+                  <label className="block text-xs sm:text-sm font-medium text-slate-500">
+                    {tr("Name in English")} <span className="text-red-700">*</span>
                   </label>
                   <input
                     type="text"
@@ -296,7 +298,7 @@ const Edit = () => {
                     value={school.nameEnglish}
                     onChange={handleChange}
                     // disabled={true}
-                    //  placeholder="Insert Name"
+                    //  placeholder={tr("Name")}
                     className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                     required
                   />
@@ -306,8 +308,8 @@ const Edit = () => {
                 <div className="hidden lg:block flex space-x-3 mb-5" />
                 {/* Name Arabic*/}
                 <div className='col-span-6'>
-                  <label className="block text-sm font-medium text-slate-500">
-                    Name in Arabic
+                  <label className="block text-xs sm:text-sm font-medium text-slate-500">
+                    {tr("Name in Arabic")}
                   </label>
                   <input
                     type="text"
@@ -315,7 +317,7 @@ const Edit = () => {
                     value={school.nameArabic}
                     onChange={handleChange}
                     //  disabled={true}
-                    //  placeholder="Insert Name"
+                    //  placeholder={tr("Name")}
                     className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                   //  required
                   />
@@ -325,8 +327,8 @@ const Edit = () => {
                 <div className="hidden lg:block flex space-x-3 mb-5" />
                 {/* Name Native*/}
                 <div className='col-span-6'>
-                  <label className="block text-sm font-medium text-slate-500">
-                    Name in Native
+                  <label className="block text-xs sm:text-sm font-medium text-slate-500">
+                    {tr("Name in Native")}
                   </label>
                   <input
                     type="text"
@@ -334,7 +336,7 @@ const Edit = () => {
                     value={school.nameNative}
                     onChange={handleChange}
                     //  disabled={true}
-                    //  placeholder="Insert Name"
+                    //  placeholder={tr("Name")}
                     className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                   //  required
                   />
@@ -345,15 +347,15 @@ const Edit = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {/* Contact Number */}
                 <div>
-                  <label className="block text-sm font-medium text-slate-500">
-                    Contact Number
+                  <label className="block text-xs sm:text-sm font-medium text-slate-500">
+                    {tr("Contact Number")}
                   </label>
                   <input
                     type="text"
                     name="contactNumber"
                     value={school.contactNumber}
                     onChange={handleChange}
-                    //  placeholder="Insert Contact Number"
+                    //  placeholder={tr("Contact Number")}
                     className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                   //required
                   />
@@ -361,15 +363,15 @@ const Edit = () => {
 
                 {/* Email */}
                 <div>
-                  <label className="block text-sm font-medium text-slate-500">
-                    Email
+                  <label className="block text-xs sm:text-sm font-medium text-slate-500">
+                    {tr("Email")}
                   </label>
                   <input
                     type="email"
                     name="email"
                     value={school.email}
                     onChange={handleChange}
-                    //  placeholder="Insert Email"
+                    //  placeholder={tr("Email")}
                     className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                   //required
                   />
@@ -380,15 +382,15 @@ const Edit = () => {
 
                 {/* Address */}
                 <div>
-                  <label className="block text-sm font-medium text-slate-500">
-                    Door No. & Street <span className="text-red-700">*</span>
+                  <label className="block text-xs sm:text-sm font-medium text-slate-500">
+                    {tr("Door No. & Street")} <span className="text-red-700">*</span>
                   </label>
                   <input
                     type="text"
                     name="address"
                     value={school.address}
                     onChange={handleChange}
-                    //  placeholder="Insert Address"
+                    //  placeholder={tr("Address")}
                     className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                     required
                   />
@@ -396,8 +398,8 @@ const Edit = () => {
 
                 {/* City */}
                 <div>
-                  <label className="block text-sm font-medium text-slate-500">
-                    Area & Town / City <span className="text-red-700">*</span>
+                  <label className="block text-xs sm:text-sm font-medium text-slate-500">
+                    {tr("Area & Town / City")} <span className="text-red-700">*</span>
                   </label>
                   <input
                     type="text"
@@ -413,8 +415,8 @@ const Edit = () => {
               <div className="grid mt-5 grid-cols-1 md:grid-cols-3 gap-5">
                 {/* LandMark */}
                 <div>
-                  <label className="block text-sm font-medium text-slate-500">
-                    LandMark
+                  <label className="block text-xs sm:text-sm font-medium text-slate-500">
+                    {tr("LandMark")}
                   </label>
                   <input
                     type="text"
@@ -428,8 +430,8 @@ const Edit = () => {
 
                 {/* Pincode */}
                 <div>
-                  <label className="block text-sm font-medium text-slate-500">
-                    Pincode <span className="text-red-700">*</span>
+                  <label className="block text-xs sm:text-sm font-medium text-slate-500">
+                    {tr("Pincode")} <span className="text-red-700">*</span>
                   </label>
                   <input
                     type="number"
@@ -447,8 +449,8 @@ const Edit = () => {
 
                 {/* District & State*/}
                 <div>
-                  <label className="block text-sm font-medium text-slate-500">
-                    Select District & State <span className="text-red-700">*</span>
+                  <label className="block text-xs sm:text-sm font-medium text-slate-500">
+                    {tr("Select District & State")} <span className="text-red-700">*</span>
                   </label>
                   <select
                     name="districtStateId"
@@ -471,8 +473,8 @@ const Edit = () => {
                 <div className="hidden lg:block flex space-x-3 mb-5" />
                 {/* Supervisor Id */}
                 <div className='lg:col-span-3'>
-                  <label className="block text-sm font-medium text-slate-500">
-                    Select Supervisor <span className="text-red-700">*</span>
+                  <label className="block text-xs sm:text-sm font-medium text-slate-500">
+                    {tr("Select Supervisor")} <span className="text-red-700">*</span>
                   </label>
                   <select
                     name="supervisorId"
@@ -495,8 +497,8 @@ const Edit = () => {
               <div className="grid mt-10 grid-cols-1 md:grid-cols-4 gap-4 gap-y-7 mb-5">
                 {/* Incharge-1 */}
                 <div className='lg:col-span-2'>
-                  <label className="block text-sm font-medium text-slate-500">
-                    <span className='font-bold text-blue-400'>Incharge-1 : </span> <span>Name </span>
+                  <label className="block text-xs sm:text-sm font-medium text-slate-500">
+                    <span className='font-bold text-blue-400'>{tr("Incharge")} - 1 : </span> <span>{tr("Name")} </span>
                     <span className="text-red-700">*</span>
                   </label>
                   <input
@@ -504,7 +506,7 @@ const Edit = () => {
                     name="incharge1"
                     value={school.incharge1}
                     onChange={handleChange}
-                    //  placeholder="Incharge1 Name"
+                    //  placeholder={`${tr("Incharge")} 1 ${tr("Name")}`}
                     className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                     required
                   />
@@ -512,8 +514,8 @@ const Edit = () => {
 
                 {/* Incharge-1 Number */}
                 <div>
-                  <label className="block text-sm font-medium text-slate-500">
-                    Mobile Number <span className="text-red-700">*</span>
+                  <label className="block text-xs sm:text-sm font-medium text-slate-500">
+                    {tr("Mobile Number")} <span className="text-red-700">*</span>
                   </label>
                   <input
                     type="number"
@@ -521,15 +523,15 @@ const Edit = () => {
                     value={school.incharge1Number}
                     onChange={handleChange}
                     min="0"
-                    //  placeholder="Incharge1 Number"
+                    //  placeholder={`${tr("Incharge")} 1 ${tr("Contact Number")}`}
                     className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                     required
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-slate-500">
-                    Designation
+                  <label className="block text-xs sm:text-sm font-medium text-slate-500">
+                    {tr("Designation")}
                   </label>
                   <input
                     type="text"
@@ -542,15 +544,15 @@ const Edit = () => {
 
                 {/* Incharge-2 */}
                 <div className='lg:col-span-2'>
-                  <label className="block text-sm font-medium text-slate-500">
-                    <span className='font-bold text-blue-400'>Incharge-2 : </span> <span>Name</span>
+                  <label className="block text-xs sm:text-sm font-medium text-slate-500">
+                    <span className='font-bold text-blue-400'>{tr("Incharge")} - 2 : </span> <span>{tr("Name")}</span>
                   </label>
                   <input
                     type="text"
                     name="incharge2"
                     value={school.incharge2}
                     onChange={handleChange}
-                    //  placeholder="Incharge2 Name"
+                    //  placeholder={`${tr("Incharge")} 2 ${tr("Name")}`}
                     className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                   //required
                   />
@@ -558,8 +560,8 @@ const Edit = () => {
 
                 {/* Incharge-2 Number */}
                 <div>
-                  <label className="block text-sm font-medium text-slate-500">
-                    Mobile Number
+                  <label className="block text-xs sm:text-sm font-medium text-slate-500">
+                    {tr("Mobile Number")}
                   </label>
                   <input
                     type="number"
@@ -567,15 +569,15 @@ const Edit = () => {
                     value={school.incharge2Number}
                     onChange={handleChange}
                     min="0"
-                    //  placeholder="Incharge2 Number"
+                    //  placeholder={`${tr("Incharge")} 2 ${tr("Contact Number")}`}
                     className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                   //required
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-slate-500">
-                    Designation
+                  <label className="block text-xs sm:text-sm font-medium text-slate-500">
+                    {tr("Designation")}
                   </label>
                   <input
                     type="text"
@@ -588,15 +590,15 @@ const Edit = () => {
 
                 {/* Incharge-3 */}
                 <div className='lg:col-span-2'>
-                  <label className="block text-sm font-medium text-slate-500">
-                    <span className='font-bold text-blue-400'>Incharge-3 : </span> <span>Name</span>
+                  <label className="block text-xs sm:text-sm font-medium text-slate-500">
+                    <span className='font-bold text-blue-400'>{tr("Incharge")} - 3 : </span> <span>{tr("Name")}</span>
                   </label>
                   <input
                     type="text"
                     name="incharge3"
                     value={school.incharge3}
                     onChange={handleChange}
-                    //  placeholder="Incharge3 Name"
+                    //  placeholder={`${tr("Incharge")} 3 ${tr("Name")}`}
                     className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                   //required
                   />
@@ -604,8 +606,8 @@ const Edit = () => {
 
                 {/* Incharge-3 Number */}
                 <div>
-                  <label className="block text-sm font-medium text-slate-500">
-                    Mobile Number
+                  <label className="block text-xs sm:text-sm font-medium text-slate-500">
+                    {tr("Mobile Number")}
                   </label>
                   <input
                     type="number"
@@ -613,15 +615,15 @@ const Edit = () => {
                     value={school.incharge3Number}
                     onChange={handleChange}
                     min="0"
-                    //  placeholder="Incharge3 Number"
+                    //  placeholder={`${tr("Incharge")} 3 ${tr("Contact Number")}`}
                     className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                   //required
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-slate-500">
-                    Designation
+                  <label className="block text-xs sm:text-sm font-medium text-slate-500">
+                    {tr("Designation")}
                   </label>
                   <input
                     type="text"
@@ -634,15 +636,15 @@ const Edit = () => {
 
                 {/* Incharge-4 */}
                 <div className='lg:col-span-2'>
-                  <label className="block text-sm font-medium text-slate-500">
-                    <span className='font-bold text-blue-400'>Incharge-4 : </span> <span>Name</span>
+                  <label className="block text-xs sm:text-sm font-medium text-slate-500">
+                    <span className='font-bold text-blue-400'>{tr("Incharge")} - 4 : </span> <span>{tr("Name")}</span>
                   </label>
                   <input
                     type="text"
                     name="incharge4"
                     value={school.incharge4}
                     onChange={handleChange}
-                    //  placeholder="Incharge4 Name"
+                    //  placeholder={`${tr("Incharge")} 4 ${tr("Name")}`}
                     className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                   //required
                   />
@@ -650,8 +652,8 @@ const Edit = () => {
 
                 {/* Incharge-4 Number */}
                 <div>
-                  <label className="block text-sm font-medium text-slate-500">
-                    Mobile Number
+                  <label className="block text-xs sm:text-sm font-medium text-slate-500">
+                    {tr("Mobile Number")}
                   </label>
                   <input
                     type="number"
@@ -659,15 +661,15 @@ const Edit = () => {
                     value={school.incharge4Number}
                     onChange={handleChange}
                     min="0"
-                    //  placeholder="Incharge4 Number"
+                    //  placeholder={`${tr("Incharge")} 4 ${tr("Contact Number")}`}
                     className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                   //required
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-slate-500">
-                    Designation
+                  <label className="block text-xs sm:text-sm font-medium text-slate-500">
+                    {tr("Designation")}
                   </label>
                   <input
                     type="text"
@@ -680,15 +682,15 @@ const Edit = () => {
 
                 {/* Incharge-5 */}
                 <div className='lg:col-span-2'>
-                  <label className="block text-sm font-medium text-slate-500">
-                    <span className='font-bold text-blue-400'>Incharge-5 : </span> <span>Name</span>
+                  <label className="block text-xs sm:text-sm font-medium text-slate-500">
+                    <span className='font-bold text-blue-400'>{tr("Incharge")} - 5 : </span> <span>{tr("Name")}</span>
                   </label>
                   <input
                     type="text"
                     name="incharge5"
                     value={school.incharge5}
                     onChange={handleChange}
-                    //  placeholder="Incharge5 Name"
+                    //  placeholder={`${tr("Incharge")} 5 ${tr("Name")}`}
                     className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                   //required
                   />
@@ -696,8 +698,8 @@ const Edit = () => {
 
                 {/* Incharge-5 Number */}
                 <div>
-                  <label className="block text-sm font-medium text-slate-500">
-                    Mobile Number
+                  <label className="block text-xs sm:text-sm font-medium text-slate-500">
+                    {tr("Mobile Number")}
                   </label>
                   <input
                     type="number"
@@ -705,15 +707,15 @@ const Edit = () => {
                     value={school.incharge5Number}
                     onChange={handleChange}
                     min="0"
-                    //  placeholder="Incharge5 Number"
+                    //  placeholder={`${tr("Incharge")} 5 ${tr("Contact Number")}`}
                     className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                   //required
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-slate-500">
-                    Designation
+                  <label className="block text-xs sm:text-sm font-medium text-slate-500">
+                    {tr("Designation")}
                   </label>
                   <input
                     type="text"
@@ -726,15 +728,15 @@ const Edit = () => {
 
                 {/* Incharge-6 */}
                 <div className='lg:col-span-2'>
-                  <label className="block text-sm font-medium text-slate-500">
-                    <span className='font-bold text-blue-400'>Incharge-6 : </span> <span>Name</span>
+                  <label className="block text-xs sm:text-sm font-medium text-slate-500">
+                    <span className='font-bold text-blue-400'>{tr("Incharge")} - 6 : </span> <span>{tr("Name")}</span>
                   </label>
                   <input
                     type="text"
                     name="incharge6"
                     value={school.incharge6}
                     onChange={handleChange}
-                    //  placeholder="Incharge5 Name"
+                    //  placeholder={`${tr("Incharge")} 5 ${tr("Name")}`}
                     className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                   //required
                   />
@@ -742,8 +744,8 @@ const Edit = () => {
 
                 {/* Incharge-6 Number */}
                 <div>
-                  <label className="block text-sm font-medium text-slate-500">
-                    Mobile Number
+                  <label className="block text-xs sm:text-sm font-medium text-slate-500">
+                    {tr("Mobile Number")}
                   </label>
                   <input
                     type="number"
@@ -751,15 +753,15 @@ const Edit = () => {
                     value={school.incharge6Number}
                     onChange={handleChange}
                     min="0"
-                    //  placeholder="Incharge5 Number"
+                    //  placeholder={`${tr("Incharge")} 5 ${tr("Contact Number")}`}
                     className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                   //required
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-slate-500">
-                    Designation
+                  <label className="block text-xs sm:text-sm font-medium text-slate-500">
+                    {tr("Designation")}
                   </label>
                   <input
                     type="text"
@@ -772,15 +774,15 @@ const Edit = () => {
 
                 {/* Incharge-7 */}
                 <div className='lg:col-span-2'>
-                  <label className="block text-sm font-medium text-slate-500">
-                    <span className='font-bold text-blue-400'>Incharge-7 : </span> <span>Name</span>
+                  <label className="block text-xs sm:text-sm font-medium text-slate-500">
+                    <span className='font-bold text-blue-400'>{tr("Incharge")} - 7 : </span> <span>{tr("Name")}</span>
                   </label>
                   <input
                     type="text"
                     name="incharge7"
                     value={school.incharge7}
                     onChange={handleChange}
-                    //  placeholder="Incharge5 Name"
+                    //  placeholder={`${tr("Incharge")} 5 ${tr("Name")}`}
                     className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                   //required
                   />
@@ -788,8 +790,8 @@ const Edit = () => {
 
                 {/* Incharge-7 Number */}
                 <div>
-                  <label className="block text-sm font-medium text-slate-500">
-                    Mobile Number
+                  <label className="block text-xs sm:text-sm font-medium text-slate-500">
+                    {tr("Mobile Number")}
                   </label>
                   <input
                     type="number"
@@ -797,15 +799,15 @@ const Edit = () => {
                     value={school.incharge7Number}
                     onChange={handleChange}
                     min="0"
-                    //  placeholder="Incharge5 Number"
+                    //  placeholder={`${tr("Incharge")} 5 ${tr("Contact Number")}`}
                     className="mt-1 mb-3 p-2 block w-full border border-gray-300 rounded-md"
                   //required
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-slate-500">
-                    Designation
+                  <label className="block text-xs sm:text-sm font-medium text-slate-500">
+                    {tr("Designation")}
                   </label>
                   <input
                     type="text"
@@ -823,7 +825,7 @@ const Edit = () => {
               data-ripple-light="true"
               className="w-full mt-3 bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded-lg shadow-lg hover:-translate-y-0.5"
             >
-              Update Niswan
+              <AutoText text={tr("Update Niswan") } variant="button" className="font-bold" />
             </button>
           </form>
         </div>

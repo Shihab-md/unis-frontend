@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
+import { useLanguage } from "../../i18n/LanguageContext.jsx";
 
 const getDefaultDraft = () => ({
   schoolId: "",
@@ -15,6 +16,7 @@ const getDefaultDraft = () => ({
 });
 
 export default function ReportsFiltersDrawer({ meta, value, onApply, loading }) {
+  const { tr, direction, fontFamily } = useLanguage();
   const [open, setOpen] = useState(false);
   const [draft, setDraft] = useState({ ...getDefaultDraft(), ...(value || {}) });
   const [mounted, setMounted] = useState(false);
@@ -97,14 +99,16 @@ export default function ReportsFiltersDrawer({ meta, value, onApply, loading }) 
 
             <div
               className="absolute right-0 top-0 h-full w-full max-w-md bg-white shadow-2xl overflow-auto"
+              dir={direction}
+              style={{ fontFamily }}
               onClick={(e) => e.stopPropagation()}
             >
               <div className="sticky top-0 z-10 bg-gradient-to-r from-sky-700 via-cyan-700 to-teal-700 text-white px-4 py-4 shadow">
                 <div className="flex items-start justify-between gap-3">
                   <div>
-                    <h3 className="text-lg font-semibold">Report Filters</h3>
+                    <h3 className="text-lg font-semibold">{tr("Report Filters")}</h3>
                     <p className="text-sm text-white/80">
-                      Narrow by Niswan, course, academic year, studying year, status, fees and hostel.
+                      {tr("Narrow by Niswan, course, academic year, studying year, status, fees and hostel.")}
                     </p>
                   </div>
                   <button
@@ -118,24 +122,24 @@ export default function ReportsFiltersDrawer({ meta, value, onApply, loading }) 
               </div>
 
               <div className="p-4 space-y-4">
-                <Field label="Niswan search">
+                <Field label={tr("Niswan search")}>
                   <input
                     type="text"
                     className="w-full border rounded-lg p-2.5"
-                    placeholder="Code or Niswan name"
+                    placeholder={tr("Code or Niswan name")}
                     value={draft.q || ""}
                     onChange={(e) => setDraft((d) => ({ ...d, q: e.target.value }))}
                   />
                 </Field>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  <Field label="Niswan">
+                  <Field label={tr("Niswan")}>
                     <select
                       className="w-full border rounded-lg p-2.5"
                       value={draft.schoolId || ""}
                       onChange={(e) => setDraft((d) => ({ ...d, schoolId: e.target.value }))}
                     >
-                      <option value="">All</option>
+                      <option value="">{tr("All")}</option>
                       {schools.map((s) => (
                         <option key={s._id} value={s._id}>
                           {(s.code ? s.code + " - " : "") + (s.nameEnglish || "")}
@@ -144,24 +148,24 @@ export default function ReportsFiltersDrawer({ meta, value, onApply, loading }) 
                     </select>
                   </Field>
 
-                  <Field label="Niswan code">
+                  <Field label={tr("Niswan code")}>
                     <input
                       type="text"
                       className="w-full border rounded-lg p-2.5"
-                      placeholder="Exact code"
+                      placeholder={tr("Exact code")}
                       value={draft.schoolCode || ""}
                       onChange={(e) => setDraft((d) => ({ ...d, schoolCode: e.target.value }))}
                     />
                   </Field>
                 </div>
 
-                <Field label="Course">
+                <Field label={tr("Course")}>
                   <select
                     className="w-full border rounded-lg p-2.5"
                     value={draft.courseId || ""}
                     onChange={(e) => setDraft((d) => ({ ...d, courseId: e.target.value }))}
                   >
-                    <option value="">All</option>
+                    <option value="">{tr("All")}</option>
                     {courses.map((c) => (
                       <option key={c._id} value={c._id}>
                         {c.name}
@@ -171,13 +175,13 @@ export default function ReportsFiltersDrawer({ meta, value, onApply, loading }) 
                 </Field>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  <Field label="Academic Year">
+                  <Field label={tr("Academic Year")}>
                     <select
                       className="w-full border rounded-lg p-2.5"
                       value={draft.acYear || ""}
                       onChange={(e) => setDraft((d) => ({ ...d, acYear: e.target.value }))}
                     >
-                      <option value="">All</option>
+                      <option value="">{tr("All")}</option>
                       {academicYears.map((y) => (
                         <option key={y._id} value={y._id}>
                           {y.acYear}
@@ -186,13 +190,13 @@ export default function ReportsFiltersDrawer({ meta, value, onApply, loading }) 
                     </select>
                   </Field>
 
-                  <Field label="Year of Studying">
+                  <Field label={tr("Year of Studying")}>
                     <select
                       className="w-full border rounded-lg p-2.5"
                       value={draft.year ?? ""}
                       onChange={(e) => setDraft((d) => ({ ...d, year: e.target.value }))}
                     >
-                      <option value="">All</option>
+                      <option value="">{tr("All")}</option>
                       {studyYears.map((year) => (
                         <option key={String(year)} value={String(year)}>
                           {year}
@@ -203,31 +207,31 @@ export default function ReportsFiltersDrawer({ meta, value, onApply, loading }) 
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  <Field label="Status">
+                  <Field label={tr("Status")}>
                     <select
                       className="w-full border rounded-lg p-2.5"
                       value={draft.status || ""}
                       onChange={(e) => setDraft((d) => ({ ...d, status: e.target.value }))}
                     >
-                      <option value="">All</option>
+                      <option value="">{tr("All")}</option>
                       {statuses.map((s) => (
                         <option key={s} value={s}>
-                          {s}
+                          {tr(s)}
                         </option>
                       ))}
                     </select>
                   </Field>
 
-                  <Field label="Fees Status">
+                  <Field label={tr("Fees Status")}>
                     <select
                       className="w-full border rounded-lg p-2.5"
                       value={draft.feesStatus || ""}
                       onChange={(e) => setDraft((d) => ({ ...d, feesStatus: e.target.value }))}
                     >
-                      <option value="">All</option>
+                      <option value="">{tr("All")}</option>
                       {feeStatuses.map((s) => (
                         <option key={s} value={s}>
-                          {s}
+                          {tr(s)}
                         </option>
                       ))}
                     </select>
@@ -235,22 +239,22 @@ export default function ReportsFiltersDrawer({ meta, value, onApply, loading }) 
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  <Field label="Hostel">
+                  <Field label={tr("Hostel")}>
                     <select
                       className="w-full border rounded-lg p-2.5"
                       value={draft.hostel || ""}
                       onChange={(e) => setDraft((d) => ({ ...d, hostel: e.target.value }))}
                     >
-                      <option value="">All</option>
+                      <option value="">{tr("All")}</option>
                       {hostels.map((s) => (
                         <option key={s} value={s}>
-                          {s}
+                          {tr(s)}
                         </option>
                       ))}
                     </select>
                   </Field>
 
-                  <Field label="Months (Trends)">
+                  <Field label={tr("Months (Trends)")}>
                     <select
                       className="w-full border rounded-lg p-2.5"
                       value={draft.months || 12}
@@ -265,7 +269,7 @@ export default function ReportsFiltersDrawer({ meta, value, onApply, loading }) 
                 </div>
 
                 <div className="rounded-xl border border-slate-200 bg-slate-50 p-3 text-xs text-slate-600">
-                  Filters affect KPI cards, trends and Niswan report together.
+                  {tr("Filters affect KPI cards, trends and Niswan report together.")}
                 </div>
               </div>
 
@@ -275,14 +279,14 @@ export default function ReportsFiltersDrawer({ meta, value, onApply, loading }) 
                   className="flex-1 px-3 py-2 rounded-lg bg-sky-600 text-white hover:bg-sky-700 shadow"
                   onClick={apply}
                 >
-                  Apply
+                  {tr("Apply")}
                 </button>
                 <button
                   type="button"
                   className="flex-1 px-3 py-2 rounded-lg border hover:bg-slate-50"
                   onClick={reset}
                 >
-                  Reset
+                  {tr("Reset")}
                 </button>
               </div>
             </div>
@@ -299,7 +303,7 @@ export default function ReportsFiltersDrawer({ meta, value, onApply, loading }) 
         onClick={openDrawer}
         disabled={loading}
       >
-        Filters
+        {tr("Filter")}
       </button>
 
       {drawerContent}

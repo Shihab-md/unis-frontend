@@ -1,12 +1,33 @@
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { getBaseUrl, showSwalAlert, showConfirmationSwalAlert, getButtonStyle } from '../utils/CommonHelper';
+import { getBaseUrl, showSwalAlert, showConfirmationSwalAlert, getButtonStyle, getButtonTooltip } from '../utils/CommonHelper';
 import { FaEye, FaEdit, FaTrashAlt, FaExchangeAlt } from "react-icons/fa";
 import { useAuth } from '../context/AuthContext'
+import { UiText, useLanguage } from '../i18n/LanguageContext';
+import { translateUiPhrase } from '../i18n/uiPhrases';
+import { formatCompactAge, formatCompactDuration } from './studentProfileUtils';
+
+const CompactDateDuration = ({ value, formatter }) => {
+  const { tr } = useLanguage();
+
+  if (!value) return <span>-</span>;
+
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return <span>-</span>;
+
+  return (
+    <span className="inline-flex flex-col align-top">
+      <span>{date.toLocaleDateString("en-GB")}</span>
+      <span className="mt-0.5 text-[10px] font-normal leading-tight text-slate-500">
+        ({formatter(value, tr)})
+      </span>
+    </span>
+  );
+};
 
 export const columnsSelect = [
   {
-    name: "Roll Number",
+    name: <UiText text="Roll Number" />,
     selector: (row) => `${row.rollNumber || "-"}`,
     width: "200px",
     cell: (row) => (
@@ -21,18 +42,18 @@ export const columnsSelect = [
           </div>
         ) : Number(row?.certificateFees || 0) <= 0 || row?.certificateInvoiceStatus === "FREE" ? (
           <div className="mt-1 text-xs font-medium text-green-700">
-            Free certificate
+            <UiText text="Free certificate" />
           </div>
         ) : (
           <div className="mt-1 text-xs font-medium text-green-700">
-            Certificate fee paid
+            <UiText text="Certificate fee paid" />
           </div>
         )}
       </div>
     ),
   },
   {
-    name: "Name",
+    name: <UiText text="Name" />,
     selector: (row) => `${row.userId?.name || "-"}`,
     width: "250px",
     cell: (row) => (
@@ -153,7 +174,7 @@ function getDetails(
 
   return (
     <div className="mt-3 mb-5">
-      <p className="text-md font-bold text-pink-500 mb-2">{title}</p>
+      <p className="text-md font-bold text-pink-500 mb-2"><UiText text={title} /></p>
 
       <p className="mb-1">
         {courseName}
@@ -162,49 +183,46 @@ function getDetails(
       </p>
 
       <p>
-        {"Ref. No. : " + refNumber}
+        <><UiText text="Ref. No." /> : {refNumber}</>
         <span className="text-gray-300 font-bold ml-5 mr-5">|</span>
 
         {year || year === 0 ? (
           <span>
-            <span>Year : {year}</span>
+            <span><UiText text="Year" /> : {year}</span>
           </span>
         ) : null}
       </p>
 
       <p className="mt-1">
-        {`Fees : ₹ ${normalFees.toLocaleString("en-IN")}`}
+        <><UiText text="Fees" /> : ₹ {normalFees.toLocaleString("en-IN")}</>
         <span className="text-gray-300 font-bold ml-5 mr-5">|</span>
 
-        {"Status : "}
+        <><UiText text="Status" /> : </>
         <span className="text-blue-500 ml-1">{normalFeeStatus}</span>
         <span className="text-gray-300 font-bold ml-5 mr-5">|</span>
 
-        {"Invoice # : "}
+        <><UiText text="Invoice #" /> : </>
         <span className="text-emerald-600 ml-1">{normalInvoiceNo}</span>
         <span className="text-gray-300 font-bold ml-5 mr-5">|</span>
 
-        {"Payment : "}
+        <><UiText text="Payment" /> : </>
         <span className="text-emerald-600 ml-1">{normalPaymentStatus}</span>
       </p>
 
       {isCompleted ? (
         <p className="mt-1">
-          {`Certificate Fee : ${certificateFeeValue != null
-            ? `₹ ${certificateFeeValue.toLocaleString("en-IN")}`
-            : "-"
-            }`}
+          <><UiText text="Certificate Fee" /> : {certificateFeeValue != null ? `₹ ${certificateFeeValue.toLocaleString("en-IN")}` : "-"}</>
           <span className="text-gray-300 font-bold ml-5 mr-5">|</span>
 
-          {"Status : "}
+          <><UiText text="Status" /> : </>
           <span className="text-blue-500 ml-1">Completed</span>
           <span className="text-gray-300 font-bold ml-5 mr-5">|</span>
 
-          {"Invoice # : "}
+          <><UiText text="Invoice #" /> : </>
           <span className="text-emerald-600 ml-1">{certificateInvoiceNo}</span>
           <span className="text-gray-300 font-bold ml-5 mr-5">|</span>
 
-          {"Payment : "}
+          <><UiText text="Payment" /> : </>
           <span className="text-emerald-600 ml-1">{certificatePaymentStatus}</span>
         </p>
       ) : null}
@@ -225,7 +243,7 @@ const formatAcademicFee = (value) => {
 const AcademicValue = ({ label, value, valueClassName = "" }) => (
   <div className="rounded-md border border-slate-100 bg-white/80 p-2 shadow-sm">
     <p className="text-[10px] font-semibold uppercase tracking-wide text-slate-400">
-      {label}
+      <UiText text={label} />
     </p>
     <p
       className={`mt-0.5 text-xs font-semibold text-slate-700 break-words ${valueClassName}`}
@@ -304,7 +322,7 @@ const AcademicCourseCard = ({
       <div className="relative z-10 mb-2">
         <div className="flex items-start justify-between gap-2">
           <div className="min-w-0">
-            <p className="text-xs font-bold text-pink-700">{title}</p>
+            <p className="text-xs font-bold text-pink-700"><UiText text={title} /></p>
             <h4 className="mt-1 text-sm font-semibold text-slate-800 break-words">
               {courseName || "-"}
             </h4>
@@ -341,7 +359,7 @@ const AcademicCourseCard = ({
         {isCompleted ? (
           <div className="mt-3 rounded-md border border-emerald-100 bg-emerald-50/80 p-2">
             <p className="text-xs font-bold text-emerald-700 mb-2">
-              Certificate Fee
+              <UiText text="Certificate Fee" />
             </p>
 
             <div className="grid grid-cols-2 gap-2">
@@ -447,7 +465,7 @@ export const AcademicDetailsCard = ({ row }) => {
         <div className="flex items-center justify-between gap-2 mb-3">
           <div>
             <p className="text-[11px] font-semibold text-slate-500">
-              Academic Year
+              <UiText text="Academic Year" />
             </p>
             <h3 className="text-sm font-bold text-pink-800">
               {row.acYear?.acYear || "-"}
@@ -455,7 +473,7 @@ export const AcademicDetailsCard = ({ row }) => {
           </div>
 
           <span className="rounded-md border border-lime-200 bg-lime-50 px-2 py-1 text-[10px] font-semibold text-lime-700 shadow-sm">
-            {activeCourses.length} Course{activeCourses.length === 1 ? "" : "s"}
+            {activeCourses.length} <UiText text={activeCourses.length === 1 ? "Course" : "Courses"} />
           </span>
         </div>
 
@@ -473,7 +491,7 @@ export const AcademicDetailsCard = ({ row }) => {
           </div>
         ) : (
           <div className="rounded-md border border-slate-100 bg-white/80 p-3 text-xs text-slate-500 shadow-sm">
-            No course details found.
+            <UiText text="No course details found." />
           </div>
         )}
       </div>
@@ -483,12 +501,12 @@ export const AcademicDetailsCard = ({ row }) => {
 
 export const columnsSelectForAcademic = [
   {
-    name: <div className="text-sm font-bold text-lime-600">AC Year</div>,
+    name: <div className="text-sm font-bold text-lime-600"><UiText text="AC year" /></div>,
     selector: (row) => row.acYear?.acYear,
     width: "95px",
   },
   {
-    name: <div className="text-sm font-bold text-lime-600">Course Details</div>,
+    name: <div className="text-sm font-bold text-lime-600"><UiText text="Course Details" /></div>,
     selector: (row) => (
       <div>
         {row.courseId1
@@ -647,7 +665,7 @@ export const StudentCourseTable = ({ row }) => {
   return (
     <div className="mt-4 md:mt-1 mb-2 rounded-md border border-pink-200 md:border-none bg-white/75 p-1 shadow-md md:shadow-none mr-5 ml-5 md:mr-0 md:ml-0">
       <div className="md:hidden text-center text-[13px] font-semibold text-blue-600">
-        Courses
+        <UiText text="Course" />
       </div>
 
       {courses.length > 0 ? (
@@ -655,12 +673,12 @@ export const StudentCourseTable = ({ row }) => {
           <table className="w-full table-fixed text-left text-[11px]">
             <thead className="bg-gray-100 text-pink-700">
               <tr>
-                <th className="px-2 py-1.5 font-semibold">Course</th>
+                <th className="px-2 py-1.5 font-semibold"><UiText text="Course" /></th>
                 <th className="w-12 px-1 py-1.5 text-center font-semibold">
-                  Year
+                  <UiText text="Year" />
                 </th>
                 <th className="w-24 px-1 py-1.5 text-center font-semibold">
-                  Status
+                  <UiText text="Status" />
                 </th>
               </tr>
             </thead>
@@ -703,41 +721,41 @@ export const StudentCourseTable = ({ row }) => {
 
 export const columns = [
   {
-    name: "S No",
+    name: <UiText text="S No" />,
     selector: (row) => row.sno,
     width: "60px",
   },
   {
-    name: "Student details",
+    name: <UiText text="Student details" />,
     selector: (row) => <div className="mt-2 mb-2">
-      <p className="mb-1"><span className="text-blue-700 mr-1">Roll No:</span> {row.rollNumber}</p>
-      <p className="mb-1"><span className="text-blue-700 mr-1">Name:</span> {row.name}</p>
-      <p className="mb-1"><span className="text-blue-700 mr-1">Parent / Guardian:</span> {row.fatherName}</p>
-      <p><span className="text-blue-700 mr-1">Ref:</span> {row.about}</p>
+      <p className="mb-1"><span className="text-blue-700 mr-1"><UiText text="Roll No" />:</span> {row.rollNumber}</p>
+      <p className="mb-1"><span className="text-blue-700 mr-1"><UiText text="Name" />:</span> {row.name}</p>
+      <p className="mb-1"><span className="text-blue-700 mr-1"><UiText text="Parent / Guardian" />:</span> {row.fatherName}</p>
+      <p><span className="text-blue-700 mr-1"><UiText text="Ref" />:</span> {row.about}</p>
     </div>,
     //  sortable: true,
     width: "320px",
   },
   {
-    name: "Address",
+    name: <UiText text="Address" />,
     selector: (row) => <div className="mt-2 mb-2">
       <p className="mb-1">{row.address}</p>
       <p className="mb-1">{row.city}</p>
       <p>{row.district}</p>
     </div>,
     wrap: true,
-    width: "210px",
+    width: "190px",
   },
   {
-    name: "Details",
+    name: <UiText text="Details" />,
     selector: (row) => <div className="mt-2 mb-2">
       <p className="mb-1"><span className="text-blue-700">📱:</span> {row.contactNumber}</p>
-      <p className="mb-1"><span className="text-blue-700">🎀:</span> {row.gender}</p>
-      <p className="mb-1"><span className="text-blue-700">🎂:</span> {row.dob ? new Date(row.dob).toLocaleDateString("en-GB") : "-"}</p>
-      <p><span className="text-blue-700">🗓️:</span> {row.doa ? new Date(row.doa).toLocaleDateString("en-GB") : "-"}</p>
+      <p className="mb-1"><span className="text-blue-700">🎀:</span> <UiText text={row.gender || "-"} /></p>
+      <p className="mb-1"><span className="text-blue-700">🎂:</span> <CompactDateDuration value={row.dob} formatter={formatCompactAge} /></p>
+      <p><span className="text-blue-700">🗓️:</span> <CompactDateDuration value={row.doa} formatter={formatCompactDuration} /></p>
     </div>,
     //  sortable: true,
-    width: "140px",
+    width: "160px",
   },
   // {
   //   name: "Course",
@@ -762,7 +780,7 @@ export const columns = [
   //   ),
   // },
   {
-    name: "Course details",
+    name: <UiText text="Course details" />,
     width: "360px",
     wrap: true,
     selector: (row) => (
@@ -772,18 +790,19 @@ export const columns = [
     ),
   },
   {
-    name: "Status",
+    name: <UiText text="Status" />,
     //selector: (row) => row.active,
     selector: (row) => <div className="mt-2 mb-2">
-      <p className="mb-1"><span className="text-blue-700 mr-1">Status:</span> {row.active}</p>
-      <p className="mb-1"><span className="text-blue-700 mr-1">Married:</span> {row.maritalStatus}</p>
-      <p><span className="text-blue-700 mr-1">Hosteler:</span> {row.hostel}</p>
+      <p className="mb-1"><span className="text-blue-700 mr-1"><UiText text="Status" />:</span> <UiText text={row.active} /></p>
+      <p className="mb-1"><span className="text-blue-700 mr-1"><UiText text="Marital Status" />:</span> <UiText text={row.maritalStatus || "-"} /></p>
+      <p><span className="text-blue-700 mr-1"><UiText text="Hosteler" />:</span> <UiText text={row.hostel || "-"} /></p>
     </div>,
     //  sortable: true,
     width: "160px",
+    wrap: true,
   },
   {
-    name: "Action",
+    name: <UiText text="Action" />,
     selector: (row) => row.action,
     center: "true",
   },
@@ -827,10 +846,10 @@ export const StudentCard = ({ row, onStudentDelete }) => {
               {row.name || "-"}
             </h3>
             <p className="mt-0.5 text-[11px] text-slate-500">
-              Roll No: {row.rollNumber || "-"}
+              <UiText text="Roll No" />: {row.rollNumber || "-"}
             </p>
             <p className="mt-0.5 text-[11px] text-slate-500 break-words">
-              Ref: {row.about || "-"}
+              <UiText text="Ref" />: {row.about || "-"}
             </p>
           </div>
 
@@ -838,14 +857,14 @@ export const StudentCard = ({ row, onStudentDelete }) => {
             <span
               className={`inline-flex rounded-md border px-2 py-1 text-[10px] font-medium shadow-lg ${statusClass}`}
             >
-              {row.active || "-"}
+              <UiText text={row.active || "-"} />
             </span>
           </div>
         </div>
 
         <div className="mt-3 grid grid-cols-2 gap-x-3 gap-y-2 text-xs">
           <div className="col-span-2">
-            <span className="text-slate-500">👤 Parent:</span>{" "}
+            <span className="text-slate-500">👤 <UiText text="Parent" />:</span>{" "}
             <span className="font-medium text-slate-800">
               {row.fatherName || "-"}
             </span>
@@ -858,35 +877,35 @@ export const StudentCard = ({ row, onStudentDelete }) => {
           <div>
             <span className="text-slate-500">🎀:</span>{" "}
             <span className="font-medium text-slate-800">
-              {row.gender || "-"}
+              <UiText text={row.gender || "-"} />
             </span>
           </div>
 
           <div>
             <span className="text-slate-500">💍:</span>{" "}
             <span className="font-medium text-slate-800">
-              {row.maritalStatus || "-"}
+              <UiText text={row.maritalStatus || "-"} />
             </span>
           </div>
 
           <div>
             <span className="text-slate-500">🎂:</span>{" "}
             <span className="font-medium text-slate-800">
-              {row.dob ? new Date(row.dob).toLocaleDateString("en-GB") : "-"}
+              <CompactDateDuration value={row.dob} formatter={formatCompactAge} />
             </span>
           </div>
 
           <div>
             <span className="text-slate-500">🗓️:</span>{" "}
             <span className="font-medium text-slate-800">
-              {row.doa ? new Date(row.doa).toLocaleDateString("en-GB") : "-"}
+              <CompactDateDuration value={row.doa} formatter={formatCompactDuration} />
             </span>
           </div>
 
           <div>
-            <span className="text-slate-500">🏠 Hosteler:</span>{" "}
+            <span className="text-slate-500">🏠 <UiText text="Hosteler" />:</span>{" "}
             <span className="font-medium text-slate-800">
-              {row.hostel || "-"}
+              <UiText text={row.hostel || "-"} />
             </span>
           </div>
 
@@ -1034,16 +1053,17 @@ export const StudentButtons = ({ Id, onStudentDelete, student = {} }) => {
   const { user } = useAuth();
 
   const completedForAction = isStudentCompletedForEdit(student);
+  const readOnlyStudentRole = ["guest", "supervisor"].includes(String(user?.role || "").toLowerCase());
 
-  const editDisabled = user?.role === "guest" || completedForAction;
-  const editTooltip = completedForAction
-    ? "Completed student cannot be edited"
-    : "Edit";
+  const editDisabled = readOnlyStudentRole || completedForAction;
+  const editTooltip = translateUiPhrase(
+    completedForAction ? "Completed student cannot be edited" : "Edit"
+  );
 
-  const transferDisabled = user?.role === "guest" || completedForAction;
-  const transferTooltip = completedForAction
-    ? "Completed student cannot be transferred"
-    : "Transfer Student";
+  const transferDisabled = readOnlyStudentRole || completedForAction;
+  const transferTooltip = translateUiPhrase(
+    completedForAction ? "Completed student cannot be transferred" : "Transfer Student"
+  );
 
   const disabledActionClass = (disabled) =>
     disabled ? " opacity-40 cursor-not-allowed grayscale" : "";
@@ -1062,11 +1082,11 @@ export const StudentButtons = ({ Id, onStudentDelete, student = {} }) => {
     <div className="flex space-x-3">
       <button
         className={getButtonStyle('View')}
-        title="View Details"
-        aria-label="View Details"
+        title={getButtonTooltip("View")}
+        aria-label={getButtonTooltip("View")}
         onClick={() => navigate(`/dashboard/students/${Id}`)}
       >
-        <FaEye title="View Details" aria-label="View Details" className="m-1" />
+        <FaEye title={getButtonTooltip("View")} aria-label={getButtonTooltip("View")} className="m-1" />
       </button>
       <button
         className={`${getButtonStyle('Edit')}${disabledActionClass(editDisabled)}`}
@@ -1100,13 +1120,13 @@ export const StudentButtons = ({ Id, onStudentDelete, student = {} }) => {
             <FaExchangeAlt title={transferTooltip} aria-label={transferTooltip} className="m-1" />
           </button> </div> : null}
       <button
-        className={getButtonStyle('Delete')}
-        title="Delete"
-        aria-label="Delete"
-        disabled={user?.role === "guest"}
+        className={`${getButtonStyle('Delete')}${disabledActionClass(readOnlyStudentRole)}`}
+        title={getButtonTooltip("Delete")}
+        aria-label={getButtonTooltip("Delete")}
+        disabled={readOnlyStudentRole}
         onClick={() => handleDelete(Id)}
       >
-        <FaTrashAlt title="Delete" aria-label="Delete" className="m-1" />
+        <FaTrashAlt title={getButtonTooltip("Delete")} aria-label={getButtonTooltip("Delete")} className="m-1" />
       </button>
     </div>
   );

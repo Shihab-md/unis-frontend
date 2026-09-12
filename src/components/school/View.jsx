@@ -12,8 +12,10 @@ import {
   showSwalAlert,
 } from "../../utils/CommonHelper";
 import NiswanProfilePrint from "../../components/report/NiswanProfilePrint";
+import { AutoText, useLanguage } from "../../i18n/LanguageContext";
 
 const View = () => {
+  const { tr, direction, fontFamily } = useLanguage();
   useEffect(() => {
     handleRightClickAndFullScreen();
   }, []);
@@ -66,9 +68,9 @@ const View = () => {
       {school ? (
         <>
           {/* SCREEN VIEW */}
-          <div className="no-print max-w-3xl mx-auto mt-2 p-5 shadow-lg border">
+          <div dir={direction} style={{ fontFamily }} className="no-print max-w-3xl mx-auto mt-2 p-5 shadow-lg border">
             <div className="flex py-2 px-4 items-center justify-between bg-teal-700 text-white rounded-lg shadow-lg">
-              <h2 className="text-sm lg:text-xl font-semibold">Niswan Details</h2>
+              <AutoText as="h2" text={tr("Niswan Details")} variant="button" className="font-semibold" />
 
               <div className="flex items-center gap-3 text-xs lg:text-lg">
                 <button
@@ -76,7 +78,7 @@ const View = () => {
                   className="flex items-center gap-2 px-3 py-1 rounded-lg shadow-md bg-emerald-600 hover:bg-emerald-700"
                 >
                   <FaPrint />
-                  Print / Save PDF
+                  <AutoText text={tr("Print / Save PDF")} variant="button" />
                 </button>
 
                 <Link to="/dashboard/schools">

@@ -6,6 +6,7 @@ import { fetchPromoteCandidates, promoteBulk } from "../../api/promoteApi";
 import { showSwalAlert } from "../../utils/CommonHelper";
 import { getCoursesFromCache } from "../../utils/CourseHelper";
 import { getAcademicYearsFromCache } from "../../utils/AcademicYearHelper";
+import { AutoText, useLanguage } from "../../i18n/LanguageContext";
 
 const BULK_PROMOTE_SCHOOL_ID_BACKUP_KEY = "bulkPromoteSchoolId";
 const BULK_PROMOTE_SCHOOL_NAME_BACKUP_KEY = "bulkPromoteSchoolName";
@@ -29,6 +30,7 @@ const getBulkPromoteSchoolContext = () => {
 
 export default function BulkPromote() {
   const navigate = useNavigate();
+  const { tr, direction, fontFamily } = useLanguage();
 
   // Keep the selected Niswan stable while this page is open.
   // Some dashboard/shared cleanup can remove localStorage schoolId/schoolName for HQ roles,
@@ -94,8 +96,8 @@ export default function BulkPromote() {
           <table style="width:100%;font-size:11px;text-align:left;border-collapse:collapse;">
             <thead style="background:#f1f5f9;color:#be185d;">
               <tr>
-                <th style="padding:6px;border-bottom:1px solid #e2e8f0;">Student</th>
-                <th style="padding:6px;border-bottom:1px solid #e2e8f0;">Reason</th>
+                <th style="padding:6px;border-bottom:1px solid #e2e8f0;">${tr("Student")}</th>
+                <th style="padding:6px;border-bottom:1px solid #e2e8f0;">${tr("Reason")}</th>
               </tr>
             </thead>
             <tbody>
@@ -119,14 +121,14 @@ export default function BulkPromote() {
     return `
       <div style="text-align:left;font-size:13px;line-height:1.55;">
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px;">
-          <div><b>Requested:</b> ${Number(summary.requested || 0)}</div>
-          <div><b>Updated:</b> ${Number(summary.promoted || 0)}</div>
-          <div><b>Skipped:</b> ${Number(summary.skipped || 0)}</div>
-          <div><b>Errors:</b> ${errors.length}</div>
+          <div><b>${tr("Requested")}:</b> ${Number(summary.requested || 0)}</div>
+          <div><b>${tr("Updated")}:</b> ${Number(summary.promoted || 0)}</div>
+          <div><b>${tr("Skipped")}:</b> ${Number(summary.skipped || 0)}</div>
+          <div><b>${tr("Errors")}:</b> ${errors.length}</div>
         </div>
 
-        ${skippedDetails.length ? `<b>Skipped Details</b>${renderRows(skippedDetails, "No skipped students.")}` : ""}
-        ${errors.length ? `<div style="margin-top:10px;"><b>Error Details</b>${renderRows(errors, "No errors.")}</div>` : ""}
+        ${skippedDetails.length ? `<b>${tr("Skipped Details")}</b>${renderRows(skippedDetails, tr("No skipped students."))}` : ""}
+        ${errors.length ? `<div style="margin-top:10px;"><b>${tr("Error Details")}</b>${renderRows(errors, tr("No errors."))}</div>` : ""}
       </div>
     `;
   };
@@ -245,16 +247,16 @@ export default function BulkPromote() {
   const loadCandidates = async () => {
     const missing = [];
     if (!schoolId) missing.push("schoolId");
-    if (!targetAcYear) missing.push("academic year");
-    if (!courseType) missing.push("course type");
-    if (!courseId) missing.push("course");
+    if (!targetAcYear) missing.push(tr("Academic Year"));
+    if (!courseType) missing.push(tr("Course Type"));
+    if (!courseId) missing.push(tr("Course"));
 
     if (missing.length > 0) {
       showSwalAlert(
-        "Info",
+        tr("Info"),
         missing.includes("schoolId")
-          ? "School is not available for Bulk Promote. Please go back to Dashboard and open Bulk Promote again, or login again if your session data was cleared."
-          : `Please select: ${missing.join(", ")}`,
+          ? tr("School is not available for Bulk Promote. Please go back to Dashboard and open Bulk Promote again, or login again if your session data was cleared.")
+          : tr("Please select: {{items}}", { items: missing.join(", ") }),
         "info"
       );
       return;
@@ -264,7 +266,7 @@ export default function BulkPromote() {
     try {
       const res = await fetchPromoteCandidates({ schoolId, targetAcYear, courseId });
       if (!res?.success) {
-        showSwalAlert("Error", res?.error || "Failed to load candidates", "error");
+        showSwalAlert(tr("Error"), res?.error || tr("Failed to load candidates"), "error");
       } else {
         const rows = res.students || [];
         setCandidates(rows);
@@ -279,8 +281,8 @@ export default function BulkPromote() {
       });
 
       showSwalAlert(
-        "Error",
-        getApiErrorMessage(error, "Failed to load candidates"),
+        tr("Error"),
+        getApiErrorMessage(error, tr("Failed to load candidates")),
         "error"
       );
     } finally {
@@ -346,8 +348,8 @@ export default function BulkPromote() {
 
     if (missing.length > 0) {
       showSwalAlert(
-        "Info",
-        `Please enter grade for all selected students. Missing: ${missing.length}`,
+        tr("Info"),
+        tr("Please enter grade for all selected students. Missing: {{count}}", { count: missing.length }),
         "info"
       );
       return false;
@@ -360,14 +362,14 @@ export default function BulkPromote() {
     const studentIds = selectedIds;
 
     if (studentIds.length === 0) {
-      showSwalAlert("Info", "Select at least one student", "info");
+      showSwalAlert(tr("Info"), tr("Select at least one student"), "info");
       return;
     }
 
     if (hasPendingFeesSelected) {
       showSwalAlert(
-        "Info",
-        "Students with pending fee invoices cannot be promoted, not promoted, or completed.",
+        tr("Info"),
+        tr("Students with pending fee invoices cannot be promoted, not promoted, or completed."),
         "info"
       );
       return;
@@ -375,8 +377,8 @@ export default function BulkPromote() {
 
     if (action === "PROMOTE" && hasFinalYearSelected) {
       showSwalAlert(
-        "Info",
-        "Final year students cannot be promoted. Please unselect them or use Complete / Not Promote.",
+        tr("Info"),
+        tr("Final year students cannot be promoted. Please unselect them or use Complete / Not Promote."),
         "info"
       );
       return;
@@ -384,8 +386,8 @@ export default function BulkPromote() {
 
     if (action === "COMPLETE" && hasNonFinalYearSelected) {
       showSwalAlert(
-        "Info",
-        "Only final year students can be marked as Complete. Please unselect non-final-year students.",
+        tr("Info"),
+        tr("Only final year students can be marked as Complete. Please unselect non-final-year students."),
         "info"
       );
       return;
@@ -399,18 +401,24 @@ export default function BulkPromote() {
     const acYearLabel =
       academicYears.find((a) => String(a._id) === String(targetAcYear))?.acYear || "Selected Year";
 
-    let title = "Confirm Action";
+    let title = tr("Confirm Action");
     let html = "";
 
     if (action === "PROMOTE") {
-      title = "Are you sure to PROMOTE the selected Students?";
-      html = `This will promote <b>${studentIds.length}</b> student(s) for <b>${courseName}</b> into <b>${acYearLabel}</b> and create fees invoice.`;
+      title = tr("Are you sure to PROMOTE the selected Students?");
+      html = tr("This will promote {{count}} student(s) for {{course}} into {{year}} and create fees invoice.", {
+        count: `<b>${studentIds.length}</b>`, course: `<b>${escapeHtml(courseName)}</b>`, year: `<b>${escapeHtml(acYearLabel)}</b>`
+      });
     } else if (action === "NOT_PROMOTE") {
-      title = "Are you sure to NOT PROMOTE the selected Students?";
-      html = `This will move <b>${studentIds.length}</b> student(s) to <b>${acYearLabel}</b> for <b>${courseName}</b> (same year) and create fees invoice.`;
+      title = tr("Are you sure to NOT PROMOTE the selected Students?");
+      html = tr("This will move {{count}} student(s) to {{year}} for {{course}} (same year) and create fees invoice.", {
+        count: `<b>${studentIds.length}</b>`, course: `<b>${escapeHtml(courseName)}</b>`, year: `<b>${escapeHtml(acYearLabel)}</b>`
+      });
     } else if (action === "COMPLETE") {
-      title = "Are you sure to COMPLETE the selected Students?";
-      html = `This will mark <b>${studentIds.length}</b> student(s) as <b>Completed</b> for <b>${courseName}</b> in <b>${acYearLabel}</b> and create only <b>Certificate Print Fee</b> invoice as configured in Template Master.`;
+      title = tr("Are you sure to COMPLETE the selected Students?");
+      html = tr("This will mark {{count}} student(s) as Completed for {{course}} in {{year}} and create only Certificate Print Fee invoice as configured in Template Master.", {
+        count: `<b>${studentIds.length}</b>`, course: `<b>${escapeHtml(courseName)}</b>`, year: `<b>${escapeHtml(acYearLabel)}</b>`
+      });
     }
 
     const result = await Swal.fire({
@@ -418,8 +426,8 @@ export default function BulkPromote() {
       html,
       icon: "question",
       showCancelButton: true,
-      confirmButtonText: "Yes, Proceed",
-      cancelButtonText: "Cancel",
+      confirmButtonText: tr("Yes, Proceed"),
+      cancelButtonText: tr("Cancel"),
       reverseButtons: true,
       allowOutsideClick: !loading,
       background: "url(/bg_card.png)",
@@ -448,7 +456,7 @@ export default function BulkPromote() {
       });
 
       if (!resp?.success) {
-        showSwalAlert("Error", resp?.error || "Action failed", "error");
+        showSwalAlert(tr("Error"), resp?.error || tr("Action failed"), "error");
       } else {
         const s = resp.summary || {};
         const errorCount = Array.isArray(s.errors) ? s.errors.length : 0;
@@ -456,7 +464,7 @@ export default function BulkPromote() {
         const hasWarnings = skippedCount > 0 || errorCount > 0;
 
         await Swal.fire({
-          title: hasWarnings ? "Completed with Warnings" : "Success",
+          title: hasWarnings ? tr("Completed with Warnings") : tr("Success"),
           html: buildBulkActionSummaryHtml(s),
           icon: hasWarnings ? "warning" : "success",
           showConfirmButton: true,
@@ -475,8 +483,8 @@ export default function BulkPromote() {
       });
 
       showSwalAlert(
-        "Error",
-        getApiErrorMessage(error, "Action failed"),
+        tr("Error"),
+        getApiErrorMessage(error, tr("Action failed")),
         "error"
       );
     } finally {
@@ -485,31 +493,31 @@ export default function BulkPromote() {
   };
 
   return (
-    <div className="p-4 max-w-7xl mx-auto pb-28">
+    <div dir={direction} style={{ fontFamily }} className="p-4 max-w-7xl mx-auto pb-28">
       <div className="flex items-center gap-3 mb-3">
         <button
           type="button"
           onClick={handleBack}
           className="inline-flex"
-          aria-label="Back to students"
-          title="Back"
+          aria-label={tr("Back to students")}
+          title={tr("Back")}
         >
           <FaArrowAltCircleLeft className="text-3xl lg:text-4xl bg-blue-700 text-white rounded shadow-lg hover:-translate-y-0.5" />
         </button>
-        <h2 className="pl-2 text-lg font-semibold text-left">Bulk Promote</h2>
+        <AutoText as="h2" text={tr("Bulk Promote")} variant="heading" className="pl-2 font-semibold text-left" />
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-12 gap-3 mb-4 mt-4">
         <div className="md:col-span-3">
           <label className="block text-xs font-semibold text-slate-700 mb-1">
-            Academic Year
+            {tr("Academic Year")}
           </label>
           <select
             className="w-full border p-2 text-sm rounded"
             value={targetAcYear}
             onChange={(e) => setTargetAcYear(e.target.value)}
           >
-            <option value="">Select Academic Year</option>
+            <option value="">{tr("Select Academic Year")}</option>
             {academicYears.map((a) => (
               <option key={a._id} value={a._id}>
                 {a.acYear}
@@ -520,14 +528,14 @@ export default function BulkPromote() {
 
         <div className="md:col-span-4">
           <label className="block text-xs font-semibold text-slate-700 mb-1">
-            Course Type
+            {tr("Course Type")}
           </label>
           <select
             className="w-full border p-2 text-sm rounded"
             value={courseType}
             onChange={(e) => setCourseType(e.target.value)}
           >
-            <option value="">Select Course Type</option>
+            <option value="">{tr("Select Course Type")}</option>
             {typeOptions.map((t) => (
               <option key={t} value={t}>
                 {t}
@@ -538,7 +546,7 @@ export default function BulkPromote() {
 
         <div className="md:col-span-3">
           <label className="block text-xs font-semibold text-slate-700 mb-1">
-            Course
+            {tr("Course")}
           </label>
           <select
             className="w-full border p-2 text-sm rounded"
@@ -546,7 +554,7 @@ export default function BulkPromote() {
             onChange={(e) => setCourseId(e.target.value)}
             disabled={!courseType}
           >
-            <option value="">{courseType ? "Select Course" : "Select type first"}</option>
+            <option value="">{courseType ? tr("Select Course") : tr("Select type first")}</option>
             {filteredCourses.map((c) => (
               <option key={c._id} value={c._id}>
                 {c.name}
@@ -561,7 +569,7 @@ export default function BulkPromote() {
             disabled={loading}
             className="w-full border rounded bg-blue-700 p-2 text-sm font-semibold text-white hover:bg-blue-500 disabled:opacity-60"
           >
-            {loading ? "Loading..." : "Load Students"}
+            {loading ? tr("Loading...") : tr("Load Students")}
           </button>
         </div>
       </div>
@@ -575,14 +583,14 @@ export default function BulkPromote() {
               checked={candidates.length > 0 && selectedCount === candidates.length}
               onChange={toggleAll}
               disabled={!candidates.length}
-              title="Select all"
+              title={tr("Select all")}
             />
           </div>
-          <div className="col-span-2">Roll</div>
-          <div className="col-span-3">Student</div>
-          <div className="col-span-2">Current Year</div>
-          <div className="col-span-2">Status</div>
-          <div className="col-span-2">Grade</div>
+          <div className="col-span-2">{tr("Roll")}</div>
+          <div className="col-span-3">{tr("Student")}</div>
+          <div className="col-span-2">{tr("Current Year")}</div>
+          <div className="col-span-2">{tr("Status")}</div>
+          <div className="col-span-2">{tr("Grade")}</div>
         </div>
 
         {candidates.map((s) => {
@@ -607,11 +615,11 @@ export default function BulkPromote() {
 
                 {s.hasPendingFees ? (
                   <div className="mt-1 text-[11px] font-medium text-amber-700">
-                    {s.feeBlockReason || "Pending fee invoice exists"}
+                    {s.feeBlockReason || tr("Pending fee invoice exists")}
                   </div>
                 ) : s.isFinalYear ? (
                   <div className="mt-1 text-[11px] font-medium text-red-600">
-                    Final year student
+                    {tr("Final year student")}
                   </div>
                 ) : null}
               </div>
@@ -629,7 +637,7 @@ export default function BulkPromote() {
                   className="w-full border p-2 rounded text-xs bg-white"
                   disabled={!checked}
                 >
-                  <option value="">Select grade</option>
+                  <option value="">{tr("Select grade")}</option>
                   {GRADE_OPTIONS.map((grade) => (
                     <option key={grade} value={grade}>
                       {grade}
@@ -641,25 +649,25 @@ export default function BulkPromote() {
           );
         })}
 
-        {!candidates.length && <div className="p-4 text-sm text-gray-600">No students loaded.</div>}
+        {!candidates.length && <div className="p-4 text-sm text-gray-600">{tr("No students loaded.")}</div>}
       </div>
 
       <div className="fixed bottom-0 left-0 right-0 z-20 border-t bg-white/95 backdrop-blur">
         <div className="mx-auto max-w-7xl px-4 py-3 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
           <div className="text-sm font-semibold text-slate-700">
-            Selected Students : <span className="font-semibold text-slate-900">{selectedCount}</span>
+            {tr("Selected Students")} : <span className="font-semibold text-slate-900">{selectedCount}</span>
 
             {hasPendingFeesSelected ? (
               <span className="ml-3 text-amber-700">
-                Pending fees selected - All actions disabled
+                {tr("Pending fees selected - All actions disabled")}
               </span>
             ) : hasFinalYearSelected ? (
               <span className="ml-3 text-red-600">
-                Final year selected - Promote disabled
+                {tr("Final year selected - Promote disabled")}
               </span>
             ) : hasNonFinalYearSelected ? (
               <span className="ml-3 text-indigo-600">
-                Non-final year selected - Complete disabled
+                {tr("Non-final year selected - Complete disabled")}
               </span>
             ) : null}
           </div>
@@ -671,22 +679,22 @@ export default function BulkPromote() {
               className="flex-1 rounded-lg bg-teal-600 px-4 py-2 text-sm font-semibold text-white hover:bg-teal-700 hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-60 sm:flex-none"
               title={
                 hasPendingFeesSelected
-                  ? "Students with pending fees cannot be promoted"
+                  ? tr("Students with pending fees cannot be promoted")
                   : hasFinalYearSelected
-                  ? "Final year students cannot be promoted"
+                  ? tr("Final year students cannot be promoted")
                   : ""
               }
             >
-              {loading ? "Working..." : "Promote"}
+              {loading ? tr("Working...") : tr("Promote")}
             </button>
 
             <button
               onClick={() => confirmAndSubmit("NOT_PROMOTE")}
               disabled={loading || selectedCount === 0 || hasPendingFeesSelected}
               className="flex-1 rounded-lg bg-amber-500 px-4 py-2 text-sm font-semibold text-white hover:bg-amber-600 hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-60 sm:flex-none"
-              title={hasPendingFeesSelected ? "Students with pending fees cannot be marked as Not Promote" : ""}
+              title={hasPendingFeesSelected ? tr("Students with pending fees cannot be marked as Not Promote") : ""}
             >
-              {loading ? "Working..." : "Not Promote"}
+              {loading ? tr("Working...") : tr("Not Promote")}
             </button>
 
             <button
@@ -695,13 +703,13 @@ export default function BulkPromote() {
               className="flex-1 rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-700 hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-60 sm:flex-none"
               title={
                 hasPendingFeesSelected
-                  ? "Students with pending fees cannot be completed"
+                  ? tr("Students with pending fees cannot be completed")
                   : hasNonFinalYearSelected
-                  ? "Only final year students can be completed"
+                  ? tr("Only final year students can be completed")
                   : ""
               }
             >
-              {loading ? "Working..." : "Complete"}
+              {loading ? tr("Working...") : tr("Complete")}
             </button>
           </div>
         </div>

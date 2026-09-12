@@ -12,8 +12,11 @@ import {
 } from "react-icons/fa";
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import { AutoText, useLanguage } from "../../i18n/LanguageContext";
+import { formatAge, formatWorkingExperience } from "../../utils/employeeProfileUtils";
 
 const Edit = () => {
+  const { tr, t, direction, fontFamily } = useLanguage();
 
   // To prevent right-click AND For FULL screen view.
   useEffect(() => {
@@ -37,7 +40,12 @@ const Edit = () => {
     maritalStatus: "",
     doj: "",
     designation: "",
+    fatherGuardianName: "",
     salary: "",
+    travellingAllowance: "",
+    otherDesignation: "",
+    activitiesCarriedOut: "",
+    bankAccountDetails: "",
   });
 
   const navigate = useNavigate();
@@ -47,12 +55,12 @@ const Edit = () => {
   const { user } = useAuth();
 
   const roleOptions = [
-    { value: "superadmin", label: "SuperAdmin" },
-    { value: "hquser", label: "HQUser" },
-    { value: "admin", label: "Admin" },
-    { value: "teacher", label: "Teacher" },
-    { value: "usthadh", label: "Usthadh" },
-    { value: "warden", label: "Warden" }
+    { value: "superadmin", label: t("roles.superadmin", "SuperAdmin") },
+    { value: "hquser", label: t("roles.hquser", "HQUser") },
+    { value: "admin", label: t("roles.admin", "Admin") },
+    { value: "teacher", label: t("roles.teacher", "Teacher") },
+    { value: "usthadh", label: t("roles.usthadh", "Usthadh") },
+    { value: "warden", label: t("roles.warden", "Warden") }
   ];
 
   const getAllowedRoleValues = (loginRole) => {
@@ -128,9 +136,14 @@ const Edit = () => {
             address: employee.address,
             designation: employee.designation,
             qualification: employee.qualification,
+            fatherGuardianName: employee.fatherGuardianName || "",
             gender: employee.gender,
             maritalStatus: employee.maritalStatus,
             salary: employee.salary,
+            travellingAllowance: employee.travellingAllowance ?? 0,
+            otherDesignation: employee.otherDesignation || "",
+            activitiesCarriedOut: employee.activitiesCarriedOut || "",
+            bankAccountDetails: employee.bankAccountDetails || "",
             active: employee.active
           }));
         }
@@ -217,9 +230,9 @@ const Edit = () => {
   return (
     <>
       {employee ? (
-        <div className="max-w-5xl mx-auto mt-2 p-5 shadow-lg border">
+        <div dir={direction} style={{ fontFamily }} className="max-w-5xl mx-auto mt-2 p-5 shadow-lg border">
           <div className="flex py-2 px-4 items-center justify-center bg-teal-700 text-white rounded-lg shadow-lg">
-            <h2 className="text-sm lg:text-xl font-semibold items-center justify-center">Update Employee Details</h2>
+            <AutoText as="h2" text={tr("Update Employee Details") } variant="button" className="font-semibold items-center justify-center" />
             <Link to="/dashboard/employees" >
               <FaRegTimesCircle className="text-2xl ml-7 text-red-700 bg-gray-200 rounded-xl shadow-md items-center justify-end" />
             </Link>
@@ -231,8 +244,8 @@ const Edit = () => {
 
                 {/* School */}
                 <div className='md:col-span-2'>
-                  <label className="block mt-2 text-sm font-medium text-slate-500">
-                    Select Niswan <span className="text-red-700">*</span>
+                  <label className="block mt-2 text-xs sm:text-sm font-medium text-slate-500">
+                    {tr("Select Niswan")} <span className="text-red-700">*</span>
                   </label>
                   <select
                     name="schoolId"
@@ -253,15 +266,15 @@ const Edit = () => {
 
                 {/* Name */}
                 <div>
-                  <label className="block mt-2 text-sm font-medium text-slate-500">
-                    Name <span className="text-red-700">*</span>
+                  <label className="block mt-2 text-xs sm:text-sm font-medium text-slate-500">
+                    {tr("Name")} <span className="text-red-700">*</span>
                   </label>
                   <input
                     type="text"
                     name="name"
                     value={employee.name}
                     onChange={handleChange}
-                    //      placeholder="Insert Name"
+                    //      placeholder={tr("Name")}
                     className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                     required
                   />
@@ -269,8 +282,8 @@ const Edit = () => {
 
                 {/* Email */}
                 <div>
-                  <label className="block mt-2 text-sm font-medium text-slate-500">
-                    Email <span className="text-red-700">*</span>
+                  <label className="block mt-2 text-xs sm:text-sm font-medium text-slate-500">
+                    {tr("Email")} <span className="text-red-700">*</span>
                   </label>
                   <input
                     type="email"
@@ -278,7 +291,7 @@ const Edit = () => {
                     value={employee.email}
                     onChange={handleChange}
                     disabled={true}
-                    //      placeholder="Insert Email"
+                    //      placeholder={tr("Email")}
                     className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                     required
                   />
@@ -288,8 +301,8 @@ const Edit = () => {
               <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-3 mt-7">
                 {/* Employee ID */}
                 <div>
-                  <label className="block mt-2 text-sm font-medium text-slate-500">
-                    Employee ID <span className="text-red-700">*</span>
+                  <label className="block mt-2 text-xs sm:text-sm font-medium text-slate-500">
+                    {tr("Employee ID")} <span className="text-red-700">*</span>
                   </label>
                   <input
                     type="text"
@@ -297,7 +310,7 @@ const Edit = () => {
                     value={employee.employeeId}
                     onChange={handleChange}
                     disabled={true}
-                    //      placeholder="Employee ID"
+                    //      placeholder={tr("Employee ID")}
                     className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                     required
                   />
@@ -305,8 +318,8 @@ const Edit = () => {
 
                 {/* Role */}
                 <div>
-                  <label className="block mt-2 text-sm font-medium text-slate-500">
-                    Role <span className="text-red-700">*</span>
+                  <label className="block mt-2 text-xs sm:text-sm font-medium text-slate-500">
+                    {tr("Role")} <span className="text-red-700">*</span>
                   </label>
                   <select
                     name="role"
@@ -328,8 +341,8 @@ const Edit = () => {
 
                 {/* Active */}
                 <div>
-                  <label className="block mt-3 text-sm font-medium text-slate-500">
-                    Status <span className="text-red-700">*</span>
+                  <label className="block mt-3 text-xs sm:text-sm font-medium text-slate-500">
+                    {tr("Status")} <span className="text-red-700">*</span>
                   </label>
                   <select
                     name="active"
@@ -339,15 +352,15 @@ const Edit = () => {
                     required
                   >
                     <option value=""></option>
-                    <option value="Active">Active</option>
-                    <option value="In-Active">In-Active</option>
+                    <option value="Active">{tr("Active")}</option>
+                    <option value="In-Active">{tr("In-Active")}</option>
                   </select>
                 </div>
 
                 {/* Contact Number */}
                 <div>
-                  <label className="block mt-2 text-sm font-medium text-slate-500">
-                    Contact Number <span className="text-red-700">*</span>
+                  <label className="block mt-2 text-xs sm:text-sm font-medium text-slate-500">
+                    {tr("Contact Number")} <span className="text-red-700">*</span>
                   </label>
                   <input
                     type="number"
@@ -355,25 +368,25 @@ const Edit = () => {
                     value={employee.contactNumber}
                     onChange={handleChange}
                     min="0"
-                    //     placeholder="Contact Number"
+                    //     placeholder={tr("Contact Number")}
                     className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                     required
                   />
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-7">
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mt-7">
                 {/* Address */}
                 <div className='md:col-span-2'>
-                  <label className="block mt-2 text-sm font-medium text-slate-500">
-                    Address <span className="text-red-700">*</span>
+                  <label className="block mt-2 text-xs sm:text-sm font-medium text-slate-500">
+                    {tr("Address")} <span className="text-red-700">*</span>
                   </label>
                   <input
                     type="text"
                     name="address"
                     value={employee.address}
                     onChange={handleChange}
-                    //    placeholder="Address"
+                    //    placeholder={tr("Address")}
                     className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                     required
                   />
@@ -381,17 +394,30 @@ const Edit = () => {
 
                 {/* Qualification */}
                 <div>
-                  <label className="block mt-2 text-sm font-medium text-slate-500">
-                    Qualification <span className="text-red-700">*</span>
+                  <label className="block mt-2 text-xs sm:text-sm font-medium text-slate-500">
+                    {tr("Qualification")} <span className="text-red-700">*</span>
                   </label>
                   <input
                     type="text"
                     name="qualification"
                     value={employee.qualification}
                     onChange={handleChange}
-                    //    placeholder="Qualification"
                     className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                     required
+                  />
+                </div>
+
+                {/* Father / Guardian Name */}
+                <div>
+                  <label className="block mt-2 text-xs sm:text-sm font-medium text-slate-500">
+                    {tr("Father / Guardian Name")}
+                  </label>
+                  <input
+                    type="text"
+                    name="fatherGuardianName"
+                    value={employee.fatherGuardianName || ""}
+                    onChange={handleChange}
+                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                   />
                 </div>
               </div>
@@ -400,15 +426,15 @@ const Edit = () => {
 
                 {/* Date of Birth 
                 <div>
-                  <label className="block mt-2 text-sm font-medium text-slate-500">
-                    Date of Birth <span className="text-red-700">*</span>
+                  <label className="block mt-2 text-xs sm:text-sm font-medium text-slate-500">
+                    {tr("Date of Birth")} <span className="text-red-700">*</span>
                   </label>
                   <input
                     type="date"
                     name="dob"
                     value={moment(new Date(employee.dob)).format("YYYY-MM-DD")}
                     onChange={handleChange}
-                    //    placeholder="DOB"
+                    //    placeholder={tr("Date of Birth")}
                     className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                     required
                   />
@@ -416,8 +442,8 @@ const Edit = () => {
 
                 {/* Date of Birth */}
                 <div className="grid grid-cols-1">
-                  <label className="block mt-3 text-sm font-medium text-slate-500">
-                    Date of Birth <span className="text-red-700">*</span>
+                  <label className="block mt-3 text-xs sm:text-sm font-medium text-slate-500">
+                    {tr("Date of Birth")} <span className="text-red-700">*</span>
                   </label>
                   <DatePicker
                     name="dob"
@@ -433,12 +459,19 @@ const Edit = () => {
                   //showIcon
                   //toggleCalendarOnIconClick
                   />
+                  <div className="mt-1 h-4 text-[10px] font-normal text-slate-500 leading-4">
+                    {selectedDOBDate ? (
+                      <>
+                        {tr("Age")}: <span className="text-blue-700">{formatAge(selectedDOBDate, tr)}</span>
+                      </>
+                    ) : null}
+                  </div>
                 </div>
 
                 {/* Gender */}
                 <div>
-                  <label className="block mt-3 text-sm font-medium text-slate-500">
-                    Gender <span className="text-red-700">*</span>
+                  <label className="block mt-3 text-xs sm:text-sm font-medium text-slate-500">
+                    {tr("Gender")} <span className="text-red-700">*</span>
                   </label>
                   <select
                     name="gender"
@@ -448,41 +481,41 @@ const Edit = () => {
                     required
                   >
                     <option value=""></option>
-                    <option value="Male">Male</option>
-                    <option value="Female">Female</option>
+                    <option value="Male">{tr("Male")}</option>
+                    <option value="Female">{tr("Female")}</option>
                   </select>
                 </div>
 
                 {/* Marital Status */}
                 <div>
-                  <label className="block mt-3 text-sm font-medium text-slate-500">
-                    Marital Status <span className="text-red-700">*</span>
+                  <label className="block mt-3 text-xs sm:text-sm font-medium text-slate-500">
+                    {tr("Marital Status")} <span className="text-red-700">*</span>
                   </label>
                   <select
                     name="maritalStatus"
                     value={employee.maritalStatus}
                     onChange={handleChange}
-                    placeholder="Marital Status"
+                    placeholder={tr("Marital Status")}
                     className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                     required
                   >
                     <option value=""></option>
-                    <option value="Single">Single</option>
-                    <option value="Married">Married</option>
+                    <option value="Single">{tr("Single")}</option>
+                    <option value="Married">{tr("Married")}</option>
                   </select>
                 </div>
 
                 {/* Date of Joining 
                 <div>
-                  <label className="block mt-2 text-sm font-medium text-slate-500">
-                    Date of Joining <span className="text-red-700">*</span>
+                  <label className="block mt-2 text-xs sm:text-sm font-medium text-slate-500">
+                    {tr("Date of Joining")} <span className="text-red-700">*</span>
                   </label>
                   <input
                     type="date"
                     name="doj"
                     value={moment(new Date(employee.doj)).format("YYYY-MM-DD")}
                     onChange={handleChange}
-                    //     placeholder="DOJ"
+                    //     placeholder={tr("Date of Joining")}
                     className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                     required
                   />
@@ -492,8 +525,8 @@ const Edit = () => {
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-7">
                 {/* Date of Joining */}
                 <div className="grid grid-cols-1">
-                  <label className="block mt-1 text-sm font-medium text-slate-500">
-                    Date of Joining <span className="text-red-700">*</span>
+                  <label className="block mt-1 text-xs sm:text-sm font-medium text-slate-500">
+                    {tr("Date of Joining")} <span className="text-red-700">*</span>
                   </label>
                   <DatePicker
                     name="doj"
@@ -509,12 +542,19 @@ const Edit = () => {
                   //showIcon
                   //toggleCalendarOnIconClick
                   />
+                  <div className="mt-1 h-4 text-[10px] font-normal text-slate-500 leading-4">
+                    {selectedDOJDate ? (
+                      <>
+                        {tr("Working Experience")}: <span className="text-blue-700">{formatWorkingExperience(selectedDOJDate, tr)}</span>
+                      </>
+                    ) : null}
+                  </div>
                 </div>
 
                 {/* Salary */}
                 <div>
-                  <label className="block mt-2 text-sm font-medium text-slate-500">
-                    Salary <span className="text-red-700">*</span>
+                  <label className="block mt-2 text-xs sm:text-sm font-medium text-slate-500">
+                    {tr("Hadhiya")} <span className="text-red-700">*</span>
                   </label>
                   <input
                     type="number"
@@ -522,7 +562,7 @@ const Edit = () => {
                     onChange={handleChange}
                     value={employee.salary}
                     min="0"
-                    //    placeholder="Salary"
+                    //    placeholder={tr("Salary")}
                     className="mt-1 mb-3 p-2 block w-full border border-gray-300 rounded-md"
                     required
                   />
@@ -530,35 +570,78 @@ const Edit = () => {
 
                 {/* Image Upload */}
                 <div>
-                  <label className="block mt-2 text-sm font-medium text-slate-500">
-                    Update Image
+                  <label className="block mt-2 text-xs sm:text-sm font-medium text-slate-500">
+                    {tr("Update Image")}
                   </label>
                   <input
                     type="file"
                     name="file"
                     onChange={handleChange}
-                    placeholder="Upload Image"
+                    placeholder={tr("Upload Image")}
                     accept="image/*"
                     className="mt-1 p-2 mb-5 block w-full border border-gray-300 rounded-md"
                   />
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-7 mb-5">
-
-                {/* Designation */}
-                <div className='md:col-span-3'>
-                  <label className="block mt-2 text-sm font-medium text-slate-500">
-                    More details about the Employee
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-7">
+                {/* Travelling Allowance */}
+                <div>
+                  <label className="block mt-2 text-xs sm:text-sm font-medium text-slate-500">
+                    {tr("Travelling Allowance")}
                   </label>
                   <input
-                    type="text"
-                    name="designation"
-                    value={employee.designation}
+                    type="number"
+                    name="travellingAllowance"
+                    value={employee.travellingAllowance ?? ""}
                     onChange={handleChange}
-                    //  placeholder="Route Name"
+                    min="0"
+                    step="0.01"
                     className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-                  //  required
+                  />
+                </div>
+
+                {/* Other Designation */}
+                <div>
+                  <label className="block mt-2 text-xs sm:text-sm font-medium text-slate-500">
+                    {tr("Other Designation")}
+                  </label>
+                  <textarea
+                    name="otherDesignation"
+                    value={employee.otherDesignation || ""}
+                    onChange={handleChange}
+                    rows={2}
+                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md resize-y"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-7 mb-5">
+                {/* Activities carried out */}
+                <div>
+                  <label className="block mt-2 text-xs sm:text-sm font-medium text-slate-500">
+                    {tr("Activities carried out")}
+                  </label>
+                  <textarea
+                    name="activitiesCarriedOut"
+                    value={employee.activitiesCarriedOut || ""}
+                    onChange={handleChange}
+                    rows={3}
+                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md resize-y"
+                  />
+                </div>
+
+                {/* Bank account details */}
+                <div>
+                  <label className="block mt-2 text-xs sm:text-sm font-medium text-slate-500">
+                    {tr("Bank account details")}
+                  </label>
+                  <textarea
+                    name="bankAccountDetails"
+                    value={employee.bankAccountDetails || ""}
+                    onChange={handleChange}
+                    rows={3}
+                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md resize-y"
                   />
                 </div>
               </div>
@@ -567,7 +650,7 @@ const Edit = () => {
               type="submit"
               className="w-full mt-3 bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded-lg shadow-lg hover:-translate-y-0.5"
             >
-              Update Employee
+              <AutoText text={tr("Update Employee") } variant="button" className="font-bold" />
             </button>
           </form>
         </div>

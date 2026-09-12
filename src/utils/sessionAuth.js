@@ -7,6 +7,7 @@ const AUTH_STORAGE_KEYS = [
   "schoolName",
   "schoolIds",
   "schools",
+  "preferredLanguage",
 ];
 
 const MAX_BROWSER_TIMEOUT_MS = 2147483000;
@@ -124,6 +125,9 @@ export const persistAuthSession = ({ token, user }) => {
 
     if (user?._id) localStorage.setItem("userId", user._id);
     if (user?.role) localStorage.setItem("role", user.role);
+    if (user?.preferredLanguage) {
+      localStorage.setItem("preferredLanguage", String(user.preferredLanguage).toLowerCase());
+    }
 
     if (user?.schoolId) {
       localStorage.setItem("schoolId", user.schoolId);

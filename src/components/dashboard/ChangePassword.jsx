@@ -12,11 +12,13 @@ import {
   isPasswordStrong,
 } from "../../utils/CommonHelper";
 import { FaRegTimesCircle } from "react-icons/fa";
+import { AutoText, useLanguage } from "../../i18n/LanguageContext";
 
 const ChangePassword = () => {
   const [processing, setProcessing] = useState(false);
   const navigate = useNavigate();
   const { user } = useAuth();
+  const { tr, direction, fontFamily } = useLanguage();
 
   const [setting, setSetting] = useState({
     userId: user?._id,
@@ -51,7 +53,7 @@ const ChangePassword = () => {
 
     // Live validation
     if (name === "newPassword") {
-      const msg = validatePassword(value);
+      const msg = tr(validatePassword(value));
       setErrors((prev) => ({ ...prev, newPassword: msg, form: "" }));
 
       // If confirm already typed, re-check match
@@ -59,7 +61,7 @@ const ChangePassword = () => {
         setErrors((prev) => ({
           ...prev,
           confirmPassword:
-            value !== setting.confirmPassword ? "New Password and Confirm Password are not matched" : "",
+            value !== setting.confirmPassword ? tr("New Password and Confirm Password are not matched") : "",
         }));
       }
     }
@@ -68,7 +70,7 @@ const ChangePassword = () => {
       setErrors((prev) => ({
         ...prev,
         confirmPassword:
-          value !== setting.newPassword ? "New Password and Confirm Password are not matched" : "",
+          value !== setting.newPassword ? tr("New Password and Confirm Password are not matched") : "",
         form: "",
       }));
     }
@@ -96,12 +98,12 @@ const ChangePassword = () => {
 
     // Validate old password presence
     if (!setting.oldPassword?.trim()) {
-      setErrors((prev) => ({ ...prev, oldPassword: "Old Password is required" }));
+      setErrors((prev) => ({ ...prev, oldPassword: tr("Old Password is required") }));
       return;
     }
 
     // Validate new password strength
-    const newErr = validatePassword(setting.newPassword);
+    const newErr = tr(validatePassword(setting.newPassword));
     if (newErr) {
       setErrors((prev) => ({ ...prev, newPassword: newErr }));
       return;
@@ -111,7 +113,7 @@ const ChangePassword = () => {
     if (setting.newPassword !== setting.confirmPassword) {
       setErrors((prev) => ({
         ...prev,
-        confirmPassword: "New Password and Confirm Password are not matched",
+        confirmPassword: tr("New Password and Confirm Password are not matched"),
       }));
       return;
     }
@@ -149,7 +151,7 @@ const ChangePassword = () => {
     } catch (error) {
       setProcessing(false);
       const msg =
-        error?.response?.data?.error || "Server error while changing password";
+        error?.response?.data?.error || tr("Server error while changing password");
       setErrors((prev) => ({ ...prev, form: msg }));
       showSwalAlert("Error!", msg, "error");
     }
@@ -158,11 +160,9 @@ const ChangePassword = () => {
   if (processing) return getPrcessing();
 
   return (
-    <div className="max-w-3xl mx-auto mt-10 p-7 rounded-md shadow-lg border">
+    <div dir={direction} style={{ fontFamily }} className="max-w-3xl mx-auto mt-10 p-7 rounded-md shadow-lg border">
       <div className="flex py-2 px-4 items-center justify-center bg-teal-700 text-white rounded-lg shadow-lg">
-        <h2 className="text-xl font-semibold items-center justify-center">
-          Change Password
-        </h2>
+        <AutoText as="h2" text={tr("Change Password")} variant="heading" className="font-semibold items-center justify-center" />
         <Link to="/dashboard">
           <FaRegTimesCircle className="text-2xl ml-7 text-red-700 bg-gray-200 rounded-xl shadow-md items-center justify-end" />
         </Link>
@@ -177,12 +177,12 @@ const ChangePassword = () => {
           {/* Old Password */}
           <div className="mt-5">
             <label className="text-sm font-medium text-slate-500">
-              Old Password <span className="text-red-700">*</span>
+              {tr("Old Password")} <span className="text-red-700">*</span>
             </label>
             <input
               type="password"
               name="oldPassword"
-              placeholder="Old Password"
+              placeholder={tr("Old Password")}
               value={setting.oldPassword}
               onChange={handleChange}
               className="mt-1 w-full p-2 border border-gray-300 rounded-md"
@@ -196,24 +196,24 @@ const ChangePassword = () => {
           {/* New Password */}
           <div className="mt-5">
             <label className="text-sm mt-5 font-medium text-slate-500">
-              New Password <span className="text-red-700">*</span>
+              {tr("New Password")} <span className="text-red-700">*</span>
             </label>
             <input
               type="password"
               name="newPassword"
-              placeholder="New Password"
+              placeholder={tr("New Password")}
               value={setting.newPassword}
               onChange={handleChange}
               className="mt-1 w-full p-2 border border-gray-300 rounded-md"
               required
               pattern={PASSWORD_REGEX.source}
-              title="8-64 chars, 1 uppercase, 1 lowercase, 1 number, 1 special, no spaces"
+              title={tr("Password requirements")}
             />
             {errors.newPassword ? (
               <p className="text-red-600 text-sm mt-1">{errors.newPassword}</p>
             ) : (
               <p className="text-slate-500 text-xs mt-1">
-                Must be 8–64 chars, include uppercase, lowercase, number, and special character.
+                {tr("Password requirements")}
               </p>
             )}
           </div>
@@ -221,12 +221,12 @@ const ChangePassword = () => {
           {/* Confirm Password */}
           <div className="mt-5 mb-5">
             <label className="text-sm mt-5 mb-5 font-medium text-slate-500">
-              Confirm Password <span className="text-red-700">*</span>
+              {tr("Confirm Password")} <span className="text-red-700">*</span>
             </label>
             <input
               type="password"
               name="confirmPassword"
-              placeholder="Confirm Password"
+              placeholder={tr("Confirm Password")}
               value={setting.confirmPassword}
               onChange={handleChange}
               className="mt-1 w-full p-2 border border-gray-300 rounded-md"
@@ -243,7 +243,7 @@ const ChangePassword = () => {
           disabled={!canSubmit}
           className="w-full mt-3 bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded-lg shadow-lg disabled:opacity-50"
         >
-          Change Password
+          <AutoText as="span" text={tr("Change Password")} variant="button" />
         </button>
       </form>
     </div>

@@ -10,10 +10,12 @@ import {
 import { FaRegTimesCircle, FaPrint, FaEye, FaDownload } from "react-icons/fa";
 import { fetchInspectionReportById } from "../../api/inspectionReportApi";
 import ViewCard from "../dashboard/ViewCard";
+import { AutoText, useLanguage } from "../../i18n/LanguageContext";
 
 const View = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const { tr, direction, fontFamily } = useLanguage();
   const [inspectionReport, setInspectionReport] = useState(null);
 
   useEffect(() => {
@@ -22,7 +24,7 @@ const View = () => {
 
   useEffect(() => {
     if (checkAuth("inspectionReportView") === "NO") {
-      showSwalAlert("Error!", "User Authorization Failed!", "error");
+      showSwalAlert(tr("Error!"), tr("User Authorization Failed!"), "error");
       navigate("/login");
       return;
     }
@@ -34,15 +36,15 @@ const View = () => {
         if (res?.success) {
           setInspectionReport(res.data);
         } else {
-          showSwalAlert("Error!", "Inspection report not found.", "error");
+          showSwalAlert(tr("Error!"), tr("Inspection report not found."), "error");
           navigate("/dashboard/inspection-reports");
         }
       } catch (error) {
         showSwalAlert(
-          "Error!",
+          tr("Error!"),
           error?.response?.data?.message ||
           error?.message ||
-          "Failed to load inspection report.",
+          tr("Failed to load inspection report."),
           "error"
         );
         navigate("/dashboard/inspection-reports");
@@ -84,9 +86,9 @@ const View = () => {
       </style>
 
       {/* SCREEN VIEW */} 
-      <div className="no-print max-w-4xl mx-auto mt-2 p-3">
+      <div className="no-print max-w-4xl mx-auto mt-2 p-3" dir={direction} style={{ fontFamily }}>
         <div className="flex py-2 px-4 items-center justify-between bg-teal-700 text-white rounded-lg shadow-lg">
-          <h2 className="text-sm lg:text-xl font-semibold">Inspection Details</h2>
+          <AutoText as="h2" text={tr("Inspection Details")} variant="heading" className="font-semibold" />
 
           <div className="flex items-center gap-3 text-xs lg:text-lg">
             <button
@@ -94,7 +96,7 @@ const View = () => {
               className="flex items-center gap-2 px-3 py-1 rounded-lg shadow-md bg-emerald-600 hover:bg-emerald-700 text-sm"
             >
               <FaPrint />
-              Print / Save PDF
+              {tr("Print / Save PDF")}
             </button>
 
             <Link to="/dashboard/inspection-reports">
@@ -113,15 +115,15 @@ const View = () => {
               <ViewCard type="data" text={getFormattedDate(inspectionReport?.reportDate) || "-"} />
 
               <ViewCard type="title" text="Supervisor" />
-              <div className="border p-2 text-sm">
+              <div className="border p-2 text-sm" dir="auto">
                 <p className="mb-1">{inspectionReport?.supervisorId || "-"}</p>
                 <p className="mb-1">{inspectionReport?.userId?.name || "-"}</p>
                 <p className="mb-1">{inspectionReport?.contactNumber || "-"}</p>
-                <p className="mb-1">{"Route : " + inspectionReport?.routeName || "-"}</p>
+                <p className="mb-1">{`${tr("Route")} : ${inspectionReport?.routeName || "-"}`}</p>
               </div>
 
               <ViewCard type="title" text="Niswan" />
-              <div className="border p-2 text-sm">
+              <div className="border p-2 text-sm" dir="auto">
                 <p className="mb-1">{inspectionReport?.schoolId?.code || "-"}</p>
                 <p className="mb-1">{inspectionReport?.schoolId?.nameEnglish || "-"}</p>
                 <p className='mb-1 text-lg font-["Noto_Naskh_Arabic"]'>{inspectionReport?.schoolId?.nameArabic || "-"}</p>
@@ -131,21 +133,21 @@ const View = () => {
               </div>
 
               <div className="mt-4 mb-2">
-                <p className="text-sm font-semibold text-slate-700">Report Content</p>
+                <p className="text-sm font-semibold text-slate-700">{tr("Report Content")}</p>
               </div>
               <div className="rounded-lg border bg-slate-50 p-4 shadow-sm min-h-[180px] overflow-hidden break-words">
                 {inspectionReport?.contentHtml ? (
                   <div
-                    className="prose prose-sm max-w-none text-sm text-slate-700 whitespace-pre-wrap break-all [&_*]:whitespace-pre-wrap [&_*]:break-all"
+                    className="prose prose-sm max-w-none text-sm text-slate-700 whitespace-pre-wrap break-all [&_*]:whitespace-pre-wrap [&_*]:break-all" dir="auto"
                     dangerouslySetInnerHTML={{ __html: inspectionReport.contentHtml }}
                   />
                 ) : (
-                  <p className="text-sm text-slate-500">No content available.</p>
+                  <p className="text-sm text-slate-500">{tr("No content available.")}</p>
                 )}
               </div>
 
               <div className="mt-6 mb-2">
-                <p className="text-sm font-semibold text-slate-700">Attachments</p>
+                <p className="text-sm font-semibold text-slate-700">{tr("Attachments")}</p>
               </div>
 
               {inspectionReport?.attachments?.length > 0 ? (
@@ -156,8 +158,8 @@ const View = () => {
                       className="flex flex-col gap-3 rounded-lg border bg-slate-50 px-4 py-3 shadow-sm md:flex-row md:items-center md:justify-between"
                     >
                       <div className="min-w-0">
-                        <p className="truncate text-sm font-semibold text-slate-800">
-                          {file.fileName || `Attachment ${index + 1}`}
+                        <p className="truncate text-sm font-semibold text-slate-800" dir="auto">
+                          {file.fileName || `${tr("Attachment")} ${index + 1}`}
                         </p>
                         <p className="text-xs text-slate-500">
                           {file.mimeType || "-"}
@@ -174,7 +176,7 @@ const View = () => {
                             className="inline-flex items-center gap-2 rounded-md bg-blue-100 px-3 py-2 text-sm font-semibold text-blue-700 hover:bg-blue-200"
                           >
                             <FaEye />
-                            View
+                            {tr("View")}
                           </a>
                         ) : null}
 
@@ -186,7 +188,7 @@ const View = () => {
                             className="inline-flex items-center gap-2 rounded-md bg-emerald-100 px-3 py-2 text-sm font-semibold text-emerald-700 hover:bg-emerald-200"
                           >
                             <FaDownload />
-                            Download
+                            {tr("Download")}
                           </a>
                         ) : null}
                       </div>
@@ -195,7 +197,7 @@ const View = () => {
                 </div>
               ) : (
                 <div className="rounded-lg border bg-slate-50 px-4 py-4 text-sm text-slate-500 shadow-sm">
-                  No attachments uploaded.
+                  {tr("No attachments uploaded.")}
                 </div>
               )}
             </div>
@@ -205,13 +207,13 @@ const View = () => {
             className="w-full mb-3 bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded-lg shadow-lg hover:-translate-y-0.5"
             onClick={() => navigate("/dashboard/inspection-reports")}
           >
-            Back
+            {tr("Back")}
           </button>
         </div>
       </div>
 
       {/* PRINT VIEW */}
-      <div className="print-root hidden p-6">
+      <div className="print-root hidden p-6" dir={direction} style={{ fontFamily }}>
         <div className="max-w-4xl mx-auto">
           <div className="border rounded-md p-6">
             <div className="mb-6 grid grid-cols-5 items-center gap-4 text-sm">
@@ -223,28 +225,28 @@ const View = () => {
                 />
               </div>
               <h3 className="col-span-3 text-center text-xl font-bold">
-                UNIS - Inspection Report
+                {tr("UNIS - Inspection Report")}
               </h3>
             </div>
 
             <div className="grid grid-cols-2 gap-4 mb-6 text-sm">
-              <PrintInfo label="Title" value={inspectionReport?.title} />
+              <PrintInfo label={tr("Title")} value={inspectionReport?.title} />
               <PrintInfo
-                label="Report Date"
+                label={tr("Report Date")}
                 value={getFormattedDate(inspectionReport?.reportDate)}
               />
               <PrintInfo
-                label="Supervisor"
-                value={<div className="text-sm">
+                label={tr("Supervisor")}
+                value={<div className="text-sm" dir="auto">
                   <p className="mb-1">{inspectionReport?.supervisorId || "-"}</p>
                   <p className="mb-1">{inspectionReport?.userId?.name || "-"}</p>
                   <p className="mb-1">{inspectionReport?.contactNumber || "-"}</p>
-                  <p className="mb-1">{"Route : " + inspectionReport?.routeName || "-"}</p>
+                  <p className="mb-1">{`${tr("Route")} : ${inspectionReport?.routeName || "-"}`}</p>
                 </div>}
               />
               <PrintInfo
-                label="Niswan"
-                value={<div className="text-sm">
+                label={tr("Niswan")}
+                value={<div className="text-sm" dir="auto">
                   <p className="mb-1">{inspectionReport?.schoolId?.code || "-"}</p>
                   <p className="mb-1">{inspectionReport?.schoolId?.nameEnglish || "-"}</p>
                   <p className='mb-1 text-lg font-["Noto_Naskh_Arabic"]'>{inspectionReport?.schoolId?.nameArabic || "-"}</p>
@@ -256,9 +258,9 @@ const View = () => {
             </div>
 
             <div className="mb-6">
-              <p className="font-semibold mb-2">Report Content</p>
+              <p className="font-semibold mb-2">{tr("Report Content")}</p>
               <div
-                className="inspection-report-html text-xs border rounded-md p-3"
+                className="inspection-report-html text-xs border rounded-md p-3" dir="auto"
                 dangerouslySetInnerHTML={{
                   __html: normalizeInspectionHtml(inspectionReport?.contentHtml || "-"),
                 }}
@@ -266,17 +268,17 @@ const View = () => {
             </div>
 
             <div>
-              <p className="font-semibold mb-2">Attachments</p>
+              <p className="font-semibold mb-2">{tr("Attachments")}</p>
               {inspectionReport?.attachments?.length > 0 ? (
                 <ul className="list-disc pl-5 text-sm">
                   {inspectionReport.attachments.map((file, index) => (
                     <li key={`${file.driveFileId || file.fileName}-${index}`}>
-                      {file.fileName || `Attachment ${index + 1}`}
+                      {file.fileName || `${tr("Attachment")} ${index + 1}`}
                     </li>
                   ))}
                 </ul>
               ) : (
-                <p className="text-sm">No attachments uploaded.</p>
+                <p className="text-sm">{tr("No attachments uploaded.")}</p>
               )}
             </div>
           </div>
@@ -290,7 +292,7 @@ function PrintInfo({ label, value }) {
   return (
     <div>
       <p className="font-bold">{label}</p>
-      <p>{value || "-"}</p>
+      <div dir="auto">{value || "-"}</div>
     </div>
   );
 }

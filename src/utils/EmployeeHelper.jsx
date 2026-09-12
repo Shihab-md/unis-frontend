@@ -1,21 +1,42 @@
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { getBaseUrl, showSwalAlert, showConfirmationSwalAlert, getButtonStyle } from '../utils/CommonHelper';
+import { getBaseUrl, showSwalAlert, showConfirmationSwalAlert, getButtonStyle, getButtonTooltip } from '../utils/CommonHelper';
 import { useAuth } from '../context/AuthContext'
 import {
   FaEye,
   FaEdit,
   FaTrashAlt,
 } from "react-icons/fa";
+import { UiText, useLanguage } from '../i18n/LanguageContext';
+import { translateUiPhrase } from '../i18n/uiPhrases';
+import { formatAge, formatWorkingExperience } from './employeeProfileUtils';
+
+const CompactDateDuration = ({ value, formatter }) => {
+  const { tr } = useLanguage();
+
+  if (!value) return <span>-</span>;
+
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return <span>-</span>;
+
+  return (
+    <span className="inline-flex flex-col align-top">
+      <span>{date.toLocaleDateString("en-GB")}</span>
+      <span className="mt-0.5 text-[10px] font-normal leading-tight text-slate-500">
+        ({formatter(value, tr)})
+      </span>
+    </span>
+  );
+};
 
 export const columns = [
   {
-    name: "S No",
+    name: <UiText text="S No" />,
     selector: (row) => row.sno,
     width: "60px",
   },
   {
-    name: "Name",
+    name: <UiText text="Name" />,
     selector: (row) => <div className="mt-2 mb-2">
       <p className="mb-1"><span className="text-blue-700 mr-1">🆔:</span> {row.empId}</p>
       <p><span className="text-blue-700 mr-1">👤:</span> {row.name}</p>
@@ -25,30 +46,30 @@ export const columns = [
     width: "300px",
   },
   {
-    name: "Role",
+    name: <UiText text="Role" />,
     selector: (row) => {
       const r = String(row?.role || "").trim();
       if (!r) return "-";
-      return r.charAt(0).toUpperCase() + r.slice(1).toLowerCase();
+      return <UiText text={r} />;
     },
     sortable: true,
     width: "110px",
   },
   {
-    name: "Contact",
+    name: <UiText text="Contact" />,
     selector: (row) => <div className="mt-2 mb-2">
       <p className="mb-1"><span className="text-blue-700">📱:</span> {row.contactNumber}</p>
       <p className="mb-1"><span className="text-blue-700 mr-0.5 drop-shadow-xl">@ :</span> {row.email}</p>
-      <p className="mb-1"><span className="text-blue-700">🎂:</span> {row.dob ? new Date(row.dob).toLocaleDateString("en-GB") : "-"}</p>
-      <p><span className="text-blue-700">🗓️:</span> {row.doj ? new Date(row.doj).toLocaleDateString("en-GB") : "-"}</p>
+      <p className="mb-1"><span className="text-blue-700">🎂:</span> <CompactDateDuration value={row.dob} formatter={formatAge} /></p>
+      <p><span className="text-blue-700">🗓️:</span> <CompactDateDuration value={row.doj} formatter={formatWorkingExperience} /></p>
     </div>,
     width: "270px",
   },
   {
-    name: "Niswan",
+    name: <UiText text="Niswan" />,
     selector: (row) => <div className="mt-2 mb-2">
       <p className="mb-1">
-        <span className="text-blue-700 mr-1">Code:</span> {row.schoolCode}
+        <span className="text-blue-700 mr-1"><UiText text="Code" />:</span> {row.schoolCode}
       </p>
       <p className="mb-1">{row.schoolName}</p>
       <p className="mb-1 text-blue-700 font-semibold">{row.address}</p>
@@ -56,19 +77,19 @@ export const columns = [
     </div>,
     sortable: true,
     wrap: true,
-    width: "430px",
+    width: "400px",
   },
   {
-    name: "Status",
+    name: <UiText text="Status" />,
     selector: (row) => <div className="mt-2 mb-2">
       {row.active === "Active" ?
-        <p><span className="text-blue-700 mr-0.5">✅:</span> {row.active}</p>
-        : <p><span className="text-blue-700 mr-0.5">❎:</span> {row.active}</p>}
+        <p><span className="text-blue-700 mr-0.5">✅:</span> <UiText text={row.active} /></p>
+        : <p><span className="text-blue-700 mr-0.5">❎:</span> <UiText text={row.active} /></p>}
     </div>,
-    width: "110px",
+    width: "140px",
   },
   {
-    name: "Action",
+    name: <UiText text="Action" />,
     selector: (row) => row.action,
     center: "true",
   },
@@ -118,9 +139,9 @@ export const EmployeeCard = ({ row, onEmployeeDelete }) => {
       : "bg-rose-50 text-rose-700 border-rose-200";
 
   const roleText = (() => {
-    const r = String(row?.role || "").trim();
-    if (!r) return "-";
-    return r.charAt(0).toUpperCase() + r.slice(1).toLowerCase();
+    const r = String(row?.role || "").trim().toLowerCase();
+    const roleLabels = { superadmin: "SuperAdmin", hquser: "HQUser", admin: "Admin", teacher: "Teacher", usthadh: "Usthadh", warden: "Warden", staff: "Staff", supervisor: "Supervisor" };
+    return roleLabels[r] || r || "-";
   })();
 
   return (
@@ -145,20 +166,20 @@ export const EmployeeCard = ({ row, onEmployeeDelete }) => {
 
             {row.isSelfRow ? (
               <p className="mt-1 inline-flex rounded-md border border-amber-200 bg-amber-50 px-2 py-0.5 text-[10px] font-semibold text-amber-700">
-                Logged-in User
+                <UiText text="Logged-in User" />
               </p>
             ) : null}
           </div>
 
           <div className="flex flex-col items-end gap-1 shrink-0">
             <span className="inline-flex rounded-md border border-sky-200 bg-sky-50 px-2 py-1 text-[10px] font-medium text-sky-700 shadow-lg">
-              {roleText}
+              <UiText text={roleText} />
             </span>
 
             <span
               className={`inline-flex rounded-md border px-2 py-1 text-[10px] font-medium shadow-lg ${statusClass}`}
             >
-              {row.active || "-"}
+              <UiText text={row.active || "-"} />
             </span>
           </div>
         </div>
@@ -179,19 +200,19 @@ export const EmployeeCard = ({ row, onEmployeeDelete }) => {
           <div>
             <span className="text-slate-500">🎂:</span>{" "}
             <span className="font-xs text-slate-500">
-              {row.dob ? new Date(row.dob).toLocaleDateString("en-GB") : "-"}
+              <CompactDateDuration value={row.dob} formatter={formatAge} />
             </span>
           </div>
 
           <div>
             <span className="text-slate-500">🗓️:</span>{" "}
             <span className="font-xs text-slate-500">
-              {row.doj ? new Date(row.doj).toLocaleDateString("en-GB") : "-"}
+              <CompactDateDuration value={row.doj} formatter={formatWorkingExperience} />
             </span>
           </div>
 
           <div className="col-span-2">
-            <p className="text-slate-800">Niswan:</p>{" "}
+            <p className="text-slate-800"><UiText text="Niswan" />:</p>{" "}
             <span className="font-xs text-slate-500 break-words">
               {row.schoolCode ? `${row.schoolCode} - ` : ""}
               {row.schoolName || "-"}
@@ -262,9 +283,9 @@ export const EmployeeButtons = ({ Id, isSelfRow = false, onEmployeeDelete }) => 
   const disableEditDelete = user?.role === "guest" || isSelfRow;
 
   const disabledTitle = isSelfRow
-    ? "You cannot edit or delete your own employee record."
+    ? translateUiPhrase("You cannot edit or delete your own employee record.")
     : user?.role === "guest"
-      ? "Guest user cannot edit or delete."
+      ? translateUiPhrase("Guest user cannot edit or delete.")
       : "";
 
   return (
@@ -276,11 +297,11 @@ export const EmployeeButtons = ({ Id, isSelfRow = false, onEmployeeDelete }) => 
         <div className="flex space-x-3">
           <button
             className={getButtonStyle('View')}
-            title="View Details"
-            aria-label="View Details"
+            title={getButtonTooltip("View")}
+            aria-label={getButtonTooltip("View")}
             onClick={() => navigate(`/dashboard/employees/${Id}`)}
           >
-            <FaEye title="View Details" aria-label="View Details" className="m-1" />
+            <FaEye title={getButtonTooltip("View")} aria-label={getButtonTooltip("View")} className="m-1" />
           </button>
         </div>
       ) : null}
@@ -292,21 +313,21 @@ export const EmployeeButtons = ({ Id, isSelfRow = false, onEmployeeDelete }) => 
           <button
             className={`${getButtonStyle('Edit')} disabled:cursor-not-allowed disabled:opacity-50`}
             disabled={disableEditDelete}
-            title={disabledTitle || "Edit"}
-            aria-label="Edit"
+            title={disabledTitle || getButtonTooltip("Edit")}
+            aria-label={getButtonTooltip("Edit")}
             onClick={() => navigate(`/dashboard/employees/edit/${Id}`)}
           >
-            <FaEdit title="Edit" aria-label="Edit" className="m-1" />
+            <FaEdit title={getButtonTooltip("Edit")} aria-label={getButtonTooltip("Edit")} className="m-1" />
           </button>
 
           <button
             className={`${getButtonStyle('Delete')} disabled:cursor-not-allowed disabled:opacity-50`}
             disabled={disableEditDelete}
-            title={disabledTitle || "Delete"}
-            aria-label="Delete"
+            title={disabledTitle || getButtonTooltip("Delete")}
+            aria-label={getButtonTooltip("Delete")}
             onClick={() => handleDelete(Id)}
           >
-            <FaTrashAlt title="Delete" aria-label="Delete" className="m-1" />
+            <FaTrashAlt title={getButtonTooltip("Delete")} aria-label={getButtonTooltip("Delete")} className="m-1" />
           </button>
         </div>
       ) : null}

@@ -6,6 +6,7 @@ import { useAuth } from "../../context/AuthContext";
 import { helpDeskApi } from "../../api/helpDeskApi";
 import { LinkIcon } from "../../utils/CommonHelper";
 import { getSchoolsFromCache } from "../../utils/SchoolHelper";
+import { useLanguage } from "../../i18n/LanguageContext";
 
 const PAGE_SIZE = 20;
 
@@ -76,13 +77,13 @@ const formatDateTime = (value) => {
   }
 };
 
-const getRoleLabel = (role = "") => {
+const getRoleLabel = (role = "", tr = (value) => value) => {
   const value = String(role || "").trim();
   if (!value) return "-";
-  if (value === "hquser") return "HQ User";
-  if (value === "superadmin") return "Superadmin";
-  if (value === "usthadh") return "Usthadh";
-  return value.charAt(0).toUpperCase() + value.slice(1);
+  if (value === "hquser") return tr("HQ User");
+  if (value === "superadmin") return tr("Superadmin");
+  if (value === "usthadh") return tr("Usthadh");
+  return tr(value.charAt(0).toUpperCase() + value.slice(1));
 };
 
 const getNiswanText = (query) => {
@@ -109,9 +110,10 @@ function QueryBadge({ children, className = "" }) {
 }
 
 function SelectFilter({ label, value, onChange, options, getLabel }) {
+  const { tr } = useLanguage();
   return (
     <label className="grid gap-1 text-[11px] font-semibold text-slate-600">
-      <span>{label}</span>
+      <span>{tr(label)}</span>
       <select
         value={value}
         onChange={(event) => onChange(event.target.value)}
@@ -123,7 +125,7 @@ function SelectFilter({ label, value, onChange, options, getLabel }) {
 
           return (
             <option key={option} value={optionValue}>
-              {labelText}
+              {tr(labelText)}
             </option>
           );
         })}
@@ -133,22 +135,23 @@ function SelectFilter({ label, value, onChange, options, getLabel }) {
 }
 
 function SchoolFilter({ value, onChange, schools }) {
+  const { tr } = useLanguage();
   const safeSchools = Array.isArray(schools) ? schools : [];
 
   return (
     <label className="grid gap-1 text-[11px] font-semibold text-slate-600 xl:col-span-4">
-      <span>Niswan</span>
+      <span>{tr("Niswan")}</span>
       <select
         value={value}
         onChange={(event) => onChange(event.target.value)}
         className="rounded-md border border-slate-300 bg-white px-2 py-2 text-xs font-medium text-slate-700 focus:border-teal-500 focus:outline-none"
       >
-        <option value="">All Niswans</option>
+        <option value="">{tr("All Niswans")}</option>
         {safeSchools.map((school) => {
           const id = String(school?._id || "");
           const code = String(school?.code || "").trim();
           const name = String(school?.nameEnglish || "").trim();
-          const label = `${code}${code && name ? " : " : ""}${name}`.trim() || "Niswan";
+          const label = `${code}${code && name ? " : " : ""}${name}`.trim() || tr("Niswan");
 
           return (
             <option key={id || label} value={id}>
@@ -162,9 +165,10 @@ function SchoolFilter({ value, onChange, schools }) {
 }
 
 function DateFilter({ label, value, onChange }) {
+  const { tr } = useLanguage();
   return (
     <label className="grid gap-1 text-[11px] font-semibold text-slate-600">
-      <span>{label}</span>
+      <span>{tr(label)}</span>
       <input
         type="date"
         value={value}
@@ -176,6 +180,7 @@ function DateFilter({ label, value, onChange }) {
 }
 
 function ToggleFilter({ checked, onChange, label }) {
+  const { tr } = useLanguage();
   return (
     <label className="flex min-h-[58px] items-center gap-2 rounded-md border border-slate-300 bg-white px-3 py-2 text-xs font-bold text-slate-700">
       <input
@@ -184,12 +189,13 @@ function ToggleFilter({ checked, onChange, label }) {
         onChange={(event) => onChange(event.target.checked)}
         className="h-4 w-4 rounded border-slate-300 text-teal-600 focus:ring-teal-500"
       />
-      <span>{label}</span>
+      <span>{tr(label)}</span>
     </label>
   );
 }
 
 function PaginationBar({ page, total, hasMore, loading, onPrevious, onNext }) {
+  const { tr } = useLanguage();
   const start = total === 0 ? 0 : (page - 1) * PAGE_SIZE + 1;
   const end = Math.min(page * PAGE_SIZE, total);
   const totalPages = Math.max(1, Math.ceil(Number(total || 0) / PAGE_SIZE));
@@ -197,7 +203,7 @@ function PaginationBar({ page, total, hasMore, loading, onPrevious, onNext }) {
   return (
     <div className="mt-4 flex flex-col gap-2 rounded-md border border-slate-200 bg-white/80 p-3 text-xs font-semibold text-slate-600 shadow-sm md:flex-row md:items-center md:justify-between">
       <p className="text-center md:text-left">
-        Showing <span className="text-teal-700">{start}</span> - <span className="text-teal-700">{end}</span> of {total}
+        {tr("Showing")} <span className="text-teal-700">{start}</span> - <span className="text-teal-700">{end}</span> {tr("of")} {total}
       </p>
 
       <div className="flex items-center justify-center gap-2">
@@ -207,11 +213,11 @@ function PaginationBar({ page, total, hasMore, loading, onPrevious, onNext }) {
           onClick={onPrevious}
           className="rounded-md border border-slate-300 bg-white px-3 py-1.5 text-xs font-bold text-slate-600 disabled:opacity-40"
         >
-          Previous
+          {tr("Previous")}
         </button>
 
         <span className="rounded-md bg-slate-100 px-3 py-1.5 text-[11px] font-bold text-slate-600">
-          Page {page} / {totalPages}
+          {tr("Page")} {page} / {totalPages}
         </span>
 
         <button
@@ -220,7 +226,7 @@ function PaginationBar({ page, total, hasMore, loading, onPrevious, onNext }) {
           onClick={onNext}
           className="rounded-md border border-slate-300 bg-white px-3 py-1.5 text-xs font-bold text-slate-600 disabled:opacity-40"
         >
-          Next
+          {tr("Next")}
         </button>
       </div>
     </div>
@@ -228,6 +234,7 @@ function PaginationBar({ page, total, hasMore, loading, onPrevious, onNext }) {
 }
 
 function QueryCard({ query, selected, onOpen, isSuperAdmin }) {
+  const { tr } = useLanguage();
   return (
     <button
       type="button"
@@ -244,28 +251,28 @@ function QueryCard({ query, selected, onOpen, isSuperAdmin }) {
           <div className="mb-2 flex flex-wrap items-center gap-2">
             {query?.unreadForCurrentUser ? (
               <span className="rounded-full bg-red-600 px-2 py-0.5 text-[10px] font-bold text-white">
-                New
+                {tr("New")}
               </span>
             ) : null}
 
             <QueryBadge className={priorityClassMap[query?.priority] || priorityClassMap.Normal}>
-              {query?.priority || "Normal"}
+              {tr(query?.priority || "Normal")}
             </QueryBadge>
 
             <QueryBadge className={statusClassMap[query?.status] || statusClassMap.Open}>
-              {query?.status || "Open"}
+              {tr(query?.status || "Open")}
             </QueryBadge>
 
             <QueryBadge className="bg-white text-pink-700 border-pink-200">
-              {query?.category || "General"}
+              {tr(query?.category || "General")}
             </QueryBadge>
           </div>
 
-          <p className="break-words text-sm font-bold text-slate-800">
+          <p dir="auto" className="break-words text-sm font-bold text-slate-800">
             {query?.subject || "-"}
           </p>
 
-          <p className="mt-1 line-clamp-2 break-words text-xs text-slate-600">
+          <p dir="auto" className="mt-1 line-clamp-2 break-words text-xs text-slate-600">
             {query?.message || "-"}
           </p>
         </div>
@@ -274,12 +281,12 @@ function QueryCard({ query, selected, onOpen, isSuperAdmin }) {
           {isSuperAdmin ? (
             <>
               <p>{query?.createdByName || "-"}</p>
-              <p>{getRoleLabel(query?.createdByRole)}</p>
+              <p>{getRoleLabel(query?.createdByRole, tr)}</p>
               <p className="max-w-[220px] truncate">{getNiswanText(query)}</p>
             </>
           ) : null}
-          <p className="mt-1">Updated: {formatDateTime(query?.lastMessageAt)}</p>
-          <p>Replies: {query?.repliesCount || 0}</p>
+          <p className="mt-1">{tr("Updated")}: {formatDateTime(query?.lastMessageAt)}</p>
+          <p>{tr("Replies")}: {query?.repliesCount || 0}</p>
         </div>
       </div>
     </button>
@@ -287,6 +294,7 @@ function QueryCard({ query, selected, onOpen, isSuperAdmin }) {
 }
 
 function NewQueryForm({ busy, onCancel, onSubmit }) {
+  const { tr } = useLanguage();
   const [subject, setSubject] = useState("");
   const [category, setCategory] = useState("General");
   const [priority, setPriority] = useState("Normal");
@@ -301,8 +309,8 @@ function NewQueryForm({ busy, onCancel, onSubmit }) {
     <form onSubmit={submit} className="mb-5 rounded-xl border border-sky-200 bg-white/95 p-4 shadow-xl">
       <div className="mb-3 flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
         <div>
-          <p className="font-bold text-sky-700">New Query</p>
-          <p className="text-[11px] text-slate-500">Send your question, issue, or feedback to superadmin.</p>
+          <p className="font-bold text-sky-700">{tr("New Query")}</p>
+          <p className="text-[11px] text-slate-500">{tr("Send your question, issue, or feedback to superadmin.")}</p>
         </div>
 
         <button
@@ -310,47 +318,47 @@ function NewQueryForm({ busy, onCancel, onSubmit }) {
           onClick={onCancel}
           className="rounded-md border border-slate-300 px-3 py-1 text-xs font-semibold text-slate-600 hover:bg-slate-50"
         >
-          Close
+          {tr("Close")}
         </button>
       </div>
 
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
         <label className="grid gap-1 text-xs font-semibold text-slate-600">
-          <span>Subject <span className="text-red-600">*</span></span>
+          <span>{tr("Subject")} <span className="text-red-600">*</span></span>
           <input
             type="text"
             value={subject}
             onChange={(event) => setSubject(event.target.value)}
             maxLength={160}
             className="rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-teal-500 focus:outline-none"
-            placeholder="Example: Certificate not printing"
+            placeholder={tr("Example: Certificate not printing")}
           />
           <span className="text-[10px] text-slate-400">{subject.length}/160</span>
         </label>
 
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
           <label className="grid gap-1 text-xs font-semibold text-slate-600">
-            <span>Category</span>
+            <span>{tr("Category")}</span>
             <select
               value={category}
               onChange={(event) => setCategory(event.target.value)}
               className="rounded-md border border-slate-300 bg-white px-3 py-2 text-sm focus:border-teal-500 focus:outline-none"
             >
               {NEW_QUERY_CATEGORY_OPTIONS.map((option) => (
-                <option key={option} value={option}>{option}</option>
+                <option key={option} value={option}>{tr(option)}</option>
               ))}
             </select>
           </label>
 
           <label className="grid gap-1 text-xs font-semibold text-slate-600">
-            <span>Priority</span>
+            <span>{tr("Priority")}</span>
             <select
               value={priority}
               onChange={(event) => setPriority(event.target.value)}
               className="rounded-md border border-slate-300 bg-white px-3 py-2 text-sm focus:border-teal-500 focus:outline-none"
             >
               {NEW_QUERY_PRIORITY_OPTIONS.map((option) => (
-                <option key={option} value={option}>{option}</option>
+                <option key={option} value={option}>{tr(option)}</option>
               ))}
             </select>
           </label>
@@ -358,14 +366,14 @@ function NewQueryForm({ busy, onCancel, onSubmit }) {
       </div>
 
       <label className="mt-4 grid gap-1 text-xs font-semibold text-slate-600">
-        <span>Message <span className="text-red-600">*</span></span>
+        <span>{tr("Message")} <span className="text-red-600">*</span></span>
         <textarea
           value={message}
           onChange={(event) => setMessage(event.target.value)}
           maxLength={2500}
           rows={5}
           className="rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-teal-500 focus:outline-none"
-          placeholder="Please explain the issue clearly. Mention student name, Niswan, invoice/certificate/report details if relevant."
+          placeholder={tr("Please explain the issue clearly. Mention student name, Niswan, invoice/certificate/report details if relevant.")}
         />
         <span className="text-[10px] text-slate-400">{message.length}/2500</span>
       </label>
@@ -376,7 +384,7 @@ function NewQueryForm({ busy, onCancel, onSubmit }) {
           disabled={busy}
           className="rounded-lg bg-sky-600 px-4 py-2 text-sm font-bold text-white shadow-lg hover:bg-sky-700 disabled:opacity-40"
         >
-          {busy ? "Submitting..." : "Submit Query"}
+          {busy ? tr("Submitting...") : tr("Submit Query")}
         </button>
       </div>
     </form>
@@ -384,6 +392,7 @@ function NewQueryForm({ busy, onCancel, onSubmit }) {
 }
 
 function QueryDetail({ query, isSuperAdmin, busy, onReply, onStatusChange, onCloseDetail }) {
+  const { tr } = useLanguage();
   const [replyMessage, setReplyMessage] = useState("");
   const [statusValue, setStatusValue] = useState(query?.status || "Open");
 
@@ -395,7 +404,7 @@ function QueryDetail({ query, isSuperAdmin, busy, onReply, onStatusChange, onClo
   if (!query) {
     return (
       <div className="rounded-xl border border-slate-200 bg-white/80 p-5 text-center text-sm font-semibold text-slate-500 shadow-lg">
-        Select a query to read details.
+        {tr("Select a query to read details.")}
       </div>
     );
   }
@@ -410,14 +419,14 @@ function QueryDetail({ query, isSuperAdmin, busy, onReply, onStatusChange, onClo
       <div className="mb-3 flex flex-col gap-2 md:flex-row md:items-start md:justify-between">
         <div>
           <div className="mb-2 flex flex-wrap items-center gap-2">
-            <QueryBadge className={priorityClassMap[query.priority] || priorityClassMap.Normal}>{query.priority}</QueryBadge>
-            <QueryBadge className={statusClassMap[query.status] || statusClassMap.Open}>{query.status}</QueryBadge>
-            <QueryBadge className="bg-white text-pink-700 border-pink-200">{query.category}</QueryBadge>
+            <QueryBadge className={priorityClassMap[query.priority] || priorityClassMap.Normal}>{tr(query.priority)}</QueryBadge>
+            <QueryBadge className={statusClassMap[query.status] || statusClassMap.Open}>{tr(query.status)}</QueryBadge>
+            <QueryBadge className="bg-white text-pink-700 border-pink-200">{tr(query.category)}</QueryBadge>
           </div>
 
-          <h3 className="break-words text-base font-bold text-slate-800">{query.subject}</h3>
+          <h3 dir="auto" className="break-words text-base font-bold text-slate-800">{query.subject}</h3>
           <p className="mt-1 text-[11px] font-semibold text-slate-500">
-            Created: {formatDateTime(query.createdAt)} • Updated: {formatDateTime(query.lastMessageAt)}
+            {tr("Created")}: {formatDateTime(query.createdAt)} • {tr("Updated")}: {formatDateTime(query.lastMessageAt)}
           </p>
         </div>
 
@@ -426,21 +435,21 @@ function QueryDetail({ query, isSuperAdmin, busy, onReply, onStatusChange, onClo
           onClick={onCloseDetail}
           className="rounded-md border border-slate-300 px-3 py-1 text-xs font-semibold text-slate-600 hover:bg-slate-50"
         >
-          Close Detail
+          {tr("Close Detail")}
         </button>
       </div>
 
       {isSuperAdmin ? (
         <div className="mb-4 rounded-lg bg-slate-50 p-3 text-[11px] font-semibold text-slate-600">
-          <p>From: <span className="text-slate-800">{query.createdByName || "-"}</span></p>
-          <p>Role: <span className="text-slate-800">{getRoleLabel(query.createdByRole)}</span></p>
-          <p>Niswan: <span className="text-slate-800">{getNiswanText(query)}</span></p>
+          <p>{tr("From")}: <span className="text-slate-800">{query.createdByName || "-"}</span></p>
+          <p>{tr("Role")}: <span className="text-slate-800">{getRoleLabel(query.createdByRole, tr)}</span></p>
+          <p>{tr("Niswan")}: <span className="text-slate-800">{getNiswanText(query)}</span></p>
         </div>
       ) : null}
 
       <div className="rounded-lg border border-sky-100 bg-sky-50/60 p-3">
-        <p className="mb-1 text-[11px] font-bold text-sky-700">Original Message</p>
-        <p className="whitespace-pre-wrap break-words text-sm text-slate-700">{query.message}</p>
+        <p className="mb-1 text-[11px] font-bold text-sky-700">{tr("Original Message")}</p>
+        <p dir="auto" className="whitespace-pre-wrap break-words text-sm text-slate-700">{query.message}</p>
       </div>
 
       <div className="mt-4 space-y-3">
@@ -457,11 +466,11 @@ function QueryDetail({ query, isSuperAdmin, busy, onReply, onStatusChange, onClo
             >
               <div className="mb-1 flex flex-col gap-1 md:flex-row md:items-center md:justify-between">
                 <p className="text-xs font-bold text-slate-700">
-                  {reply?.repliedByName || "-"} <span className="text-[10px] text-slate-500">({getRoleLabel(reply?.repliedByRole)})</span>
+                  {reply?.repliedByName || "-"} <span className="text-[10px] text-slate-500">({getRoleLabel(reply?.repliedByRole, tr)})</span>
                 </p>
                 <p className="text-[10px] font-semibold text-slate-500">{formatDateTime(reply?.createdAt)}</p>
               </div>
-              <p className="whitespace-pre-wrap break-words text-sm text-slate-700">{reply?.message || "-"}</p>
+              <p dir="auto" className="whitespace-pre-wrap break-words text-sm text-slate-700">{reply?.message || "-"}</p>
             </div>
           );
         })}
@@ -470,14 +479,14 @@ function QueryDetail({ query, isSuperAdmin, busy, onReply, onStatusChange, onClo
       {isSuperAdmin ? (
         <div className="mt-4 rounded-lg border border-slate-200 bg-white/90 p-3">
           <label className="grid gap-1 text-xs font-semibold text-slate-600 md:max-w-xs">
-            <span>Update Status</span>
+            <span>{tr("Update Status")}</span>
             <select
               value={statusValue}
               onChange={(event) => setStatusValue(event.target.value)}
               className="rounded-md border border-slate-300 bg-white px-3 py-2 text-sm focus:border-teal-500 focus:outline-none"
             >
               {STATUS_UPDATE_OPTIONS.map((option) => (
-                <option key={option} value={option}>{option}</option>
+                <option key={option} value={option}>{tr(option)}</option>
               ))}
             </select>
           </label>
@@ -488,21 +497,21 @@ function QueryDetail({ query, isSuperAdmin, busy, onReply, onStatusChange, onClo
             onClick={() => onStatusChange(statusValue)}
             className="mt-3 rounded-md bg-teal-600 px-4 py-2 text-xs font-bold text-white shadow-lg hover:bg-teal-700 disabled:opacity-40"
           >
-            Update Status
+            {tr("Update Status")}
           </button>
         </div>
       ) : null}
 
       <form onSubmit={submitReply} className="mt-4 rounded-lg border border-slate-200 bg-white/90 p-3">
         <label className="grid gap-1 text-xs font-semibold text-slate-600">
-          <span>{isSuperAdmin ? "Reply to User" : "Add Follow-up"}</span>
+          <span>{isSuperAdmin ? tr("Reply to User") : tr("Add Follow-up")}</span>
           <textarea
             value={replyMessage}
             onChange={(event) => setReplyMessage(event.target.value)}
             maxLength={2500}
             rows={4}
             className="rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-teal-500 focus:outline-none"
-            placeholder={isSuperAdmin ? "Type superadmin reply here..." : "Add more details or reply to superadmin..."}
+            placeholder={isSuperAdmin ? tr("Type superadmin reply here...") : tr("Add more details or reply to superadmin...")}
           />
           <span className="text-[10px] text-slate-400">{replyMessage.length}/2500</span>
         </label>
@@ -513,7 +522,7 @@ function QueryDetail({ query, isSuperAdmin, busy, onReply, onStatusChange, onClo
             disabled={busy}
             className="rounded-lg bg-pink-600 px-4 py-2 text-sm font-bold text-white shadow-lg hover:bg-pink-700 disabled:opacity-40"
           >
-            {busy ? "Sending..." : "Send Reply"}
+            {busy ? tr("Sending...") : tr("Send Reply")}
           </button>
         </div>
       </form>
@@ -525,6 +534,7 @@ export default function HelpDeskPage() {
   const { user } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
+  const { tr, direction, fontFamily } = useLanguage();
 
   const userRole = String(user?.role || "").toLowerCase();
   const isSuperAdmin = userRole === "superadmin";
@@ -553,7 +563,7 @@ export default function HelpDeskPage() {
   const [updatedTo, setUpdatedTo] = useState("");
   const [schools, setSchools] = useState([]);
 
-  const title = isSuperAdmin ? "HQ Help Desk - Received Queries" : "HQ Help Desk - My Queries";
+  const title = tr(isSuperAdmin ? "HQ Help Desk - Received Queries" : "HQ Help Desk - My Queries");
   const safeSchools = Array.isArray(schools) ? schools : [];
 
   const loadQueries = useCallback(async () => {
@@ -579,7 +589,7 @@ export default function HelpDeskPage() {
       setTotal(Number(data?.total || 0));
       setHasMore(Boolean(data?.hasMore));
     } catch (error) {
-      setMessage(normalizeApiError(error, "Unable to load Help Desk queries."));
+      setMessage(normalizeApiError(error, tr("Unable to load Help Desk queries.")));
     } finally {
       setLoading(false);
     }
@@ -595,6 +605,7 @@ export default function HelpDeskPage() {
     schoolFilter,
     updatedFrom,
     updatedTo,
+    tr,
   ]);
 
   const openQueryDetail = useCallback(async (id) => {
@@ -610,12 +621,12 @@ export default function HelpDeskPage() {
       dispatchHelpDeskRefresh();
       await loadQueries();
     } catch (error) {
-      setMessage(normalizeApiError(error, "Unable to load Help Desk query detail."));
+      setMessage(normalizeApiError(error, tr("Unable to load Help Desk query detail.")));
       setSelectedQuery(null);
     } finally {
       setDetailLoading(false);
     }
-  }, [loadQueries]);
+  }, [loadQueries, tr]);
 
   useEffect(() => {
     loadQueries();
@@ -690,14 +701,14 @@ export default function HelpDeskPage() {
       dispatchHelpDeskRefresh();
 
       await Swal.fire({
-        title: "Submitted",
-        text: "Your query has been sent to superadmin.",
+        title: tr("Submitted"),
+        text: tr("Your query has been sent to superadmin."),
         icon: "success",
         confirmButtonText: "OK",
         background: "url(/bg_card.png)",
       });
     } catch (error) {
-      setMessage(normalizeApiError(error, "Unable to submit Help Desk query."));
+      setMessage(normalizeApiError(error, tr("Unable to submit Help Desk query.")));
     } finally {
       setBusy(false);
     }
@@ -709,7 +720,7 @@ export default function HelpDeskPage() {
 
     if (!id) return;
     if (!messageText) {
-      setMessage("Reply message is required.");
+      setMessage(tr("Reply message is required."));
       return;
     }
 
@@ -722,9 +733,9 @@ export default function HelpDeskPage() {
       if (typeof onSuccess === "function") onSuccess();
       await loadQueries();
       dispatchHelpDeskRefresh();
-      setMessage("Reply sent successfully.");
+      setMessage(tr("Reply sent successfully."));
     } catch (error) {
-      setMessage(normalizeApiError(error, "Unable to send Help Desk reply."));
+      setMessage(normalizeApiError(error, tr("Unable to send Help Desk reply.")));
     } finally {
       setBusy(false);
     }
@@ -742,16 +753,16 @@ export default function HelpDeskPage() {
       setSelectedQuery(data?.query || null);
       await loadQueries();
       dispatchHelpDeskRefresh();
-      setMessage("Status updated successfully.");
+      setMessage(tr("Status updated successfully."));
     } catch (error) {
-      setMessage(normalizeApiError(error, "Unable to update Help Desk status."));
+      setMessage(normalizeApiError(error, tr("Unable to update Help Desk status.")));
     } finally {
       setBusy(false);
     }
   };
 
-  const listTitle = isSuperAdmin ? "Received Queries" : "My Queries";
-  const emptyText = isSuperAdmin ? "No received Help Desk queries found." : "No Help Desk queries found.";
+  const listTitle = tr(isSuperAdmin ? "Received Queries" : "My Queries");
+  const emptyText = tr(isSuperAdmin ? "No received Help Desk queries found." : "No Help Desk queries found.");
 
   const selectedId = selectedQuery?._id || selectedQueryId;
 
@@ -771,21 +782,21 @@ export default function HelpDeskPage() {
 
   return (
     <>
-      <div className="p-3 lg:p-5 bg-repeat mt-3">
+      <div className="p-3 lg:p-5 bg-repeat mt-3" dir={direction} style={{ fontFamily }}>
         <div className="text-center">
           <h3 className="text-base lg:text-2xl font-bold px-5 py-0 text-gray-600">
-            HQ Help Desk - My Queries
+            {title}
           </h3>
         </div>
       </div>
-      <div className="mx-2 mb-6 mt-2 rounded-md border border-sky-100 bg-white/70 p-2 shadow-lg md:mx-6 md:p-4">
+      <div className="mx-2 mb-6 mt-2 rounded-md border border-sky-100 bg-white/70 p-2 shadow-lg md:mx-6 md:p-4" dir={direction} style={{ fontFamily }}>
         <div className="mb-4 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
           <div>
             <p className="text-sm font-bold text-slate-700">{listTitle}</p>
             <p className="text-[11px] font-semibold text-slate-500">
               {isSuperAdmin
-                ? "Read, reply, and close queries received from users."
-                : "Ask questions, report issues, or follow up with superadmin."}
+                ? tr("Read, reply, and close queries received from users.")
+                : tr("Ask questions, report issues, or follow up with superadmin.")}
             </p>
           </div>
 
@@ -795,10 +806,10 @@ export default function HelpDeskPage() {
               onClick={() => navigate(-1)}
               className="hidden"
             >
-              Back
+              {tr("Back")}
             </button>
             <div onClick={(event) => { event.preventDefault(); navigate(-1); }}>
-              {LinkIcon("#", "Back")}
+              {LinkIcon("#", tr("Back"))}
             </div>
 
             {!isSuperAdmin ? (
@@ -810,7 +821,7 @@ export default function HelpDeskPage() {
                   setMessage("");
                 }}
               >
-                {LinkIcon("#", "Add")}
+                {LinkIcon("#", tr("Add"))}
               </div>
             ) : null}
           </div>
@@ -819,21 +830,21 @@ export default function HelpDeskPage() {
         <div className="mb-4 rounded-xl border border-slate-200 bg-white/90 p-3 shadow-sm">
           <div className="mb-3 flex flex-col gap-1 md:flex-row md:items-center md:justify-between">
             <div>
-              <p className="text-xs font-bold text-slate-700">Filters</p>
+              <p className="text-xs font-bold text-slate-700">{tr("Filters")}</p>
               <p className="text-[10px] font-semibold text-slate-500">
-                Search, unread, status, category, priority, date, role, and Niswan filters are server-side.
+                {tr("Search, unread, status, category, priority, date, role, and Niswan filters are server-side.")}
               </p>
             </div>
 
             <p className="text-[11px] font-bold text-teal-700">
-              Active Filters: {activeFilterCount}
+              {tr("Active Filters")}: {activeFilterCount}
             </p>
           </div>
 
           <div className="grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-8">
             <div className="xl:col-span-2">
               <label className="grid gap-1 text-[11px] font-semibold text-slate-600">
-                <span>Search</span>
+                <span>{tr("Search")}</span>
                 <div className="flex gap-2">
                   <input
                     type="text"
@@ -842,7 +853,7 @@ export default function HelpDeskPage() {
                     onKeyDown={(event) => {
                       if (event.key === "Enter") handleSearch();
                     }}
-                    placeholder="Search subject, message, role, Niswan..."
+                    placeholder={tr("Search subject, message, role, Niswan...")}
                     className="min-w-0 flex-1 rounded-md border border-slate-300 px-3 py-2 text-xs focus:border-teal-500 focus:outline-none"
                   />
                   <button
@@ -850,7 +861,7 @@ export default function HelpDeskPage() {
                     onClick={handleSearch}
                     className="rounded-md bg-teal-600 px-3 py-2 text-xs font-bold text-white shadow-sm hover:bg-teal-700"
                   >
-                    Search
+                    {tr("Search")}
                   </button>
                 </div>
               </label>
@@ -862,19 +873,19 @@ export default function HelpDeskPage() {
                 setUnreadOnly(checked);
                 resetToFirstPage();
               }}
-              label="Unread Only"
+              label={tr("Unread Only")}
             />
-            <SelectFilter label="Status" value={statusFilter} onChange={handleFilterChange(setStatusFilter)} options={STATUS_OPTIONS} />
-            <SelectFilter label="Category" value={categoryFilter} onChange={handleFilterChange(setCategoryFilter)} options={CATEGORY_OPTIONS} />
-            <SelectFilter label="Priority" value={priorityFilter} onChange={handleFilterChange(setPriorityFilter)} options={PRIORITY_OPTIONS} />
+            <SelectFilter label={tr("Status")} value={statusFilter} onChange={handleFilterChange(setStatusFilter)} options={STATUS_OPTIONS} />
+            <SelectFilter label={tr("Category")} value={categoryFilter} onChange={handleFilterChange(setCategoryFilter)} options={CATEGORY_OPTIONS} />
+            <SelectFilter label={tr("Priority")} value={priorityFilter} onChange={handleFilterChange(setPriorityFilter)} options={PRIORITY_OPTIONS} />
 
             {isSuperAdmin ? (
               <SelectFilter
-                label="Role"
+                label={tr("Role")}
                 value={roleFilter}
                 onChange={handleFilterChange(setRoleFilter)}
                 options={ROLE_OPTIONS}
-                getLabel={(role) => role === "All" ? "All Roles" : getRoleLabel(role)}
+                getLabel={(role) => role === "All" ? tr("All Roles") : getRoleLabel(role, tr)}
               />
             ) : null}
 
@@ -886,13 +897,13 @@ export default function HelpDeskPage() {
               />
             ) : null}
 
-            <DateFilter label="Updated From" value={updatedFrom} onChange={handleFilterChange(setUpdatedFrom)} />
-            <DateFilter label="Updated To" value={updatedTo} onChange={handleFilterChange(setUpdatedTo)} />
+            <DateFilter label={tr("Updated From")} value={updatedFrom} onChange={handleFilterChange(setUpdatedFrom)} />
+            <DateFilter label={tr("Updated To")} value={updatedTo} onChange={handleFilterChange(setUpdatedTo)} />
           </div>
 
           <div className="mt-3 flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
             <p className="text-[10px] font-semibold text-slate-500">
-              Date filter uses last conversation update date, not only created date.
+              {tr("Date filter uses last conversation update date, not only created date.")}
             </p>
 
             <button
@@ -900,7 +911,7 @@ export default function HelpDeskPage() {
               onClick={clearFilters}
               className="rounded-md border border-slate-300 bg-white px-3 py-1.5 text-xs font-bold text-slate-600 hover:bg-slate-50"
             >
-              Clear Filters
+              {tr("Clear Filters")}
             </button>
           </div>
         </div>
@@ -920,7 +931,7 @@ export default function HelpDeskPage() {
             <div className="space-y-3">
               {loading ? (
                 <p className="rounded-xl border border-slate-200 bg-white/90 p-5 text-center text-sm text-slate-500 shadow-lg">
-                  Loading Help Desk queries...
+                  {tr("Loading Help Desk queries...")}
                 </p>
               ) : null}
 
@@ -954,7 +965,7 @@ export default function HelpDeskPage() {
           <div className="xl:sticky xl:top-4 xl:self-start">
             {detailLoading ? (
               <div className="rounded-xl border border-slate-200 bg-white/80 p-5 text-center text-sm font-semibold text-slate-500 shadow-lg">
-                Loading query details...
+                {tr("Loading query details...")}
               </div>
             ) : (
               <QueryDetail

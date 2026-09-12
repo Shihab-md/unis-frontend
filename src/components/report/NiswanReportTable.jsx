@@ -1,4 +1,5 @@
 import React, { useMemo } from "react";
+import { useLanguage } from "../../i18n/LanguageContext.jsx";
 
 const formatNumber = (value) => Number(value || 0).toLocaleString();
 const formatPercent = (value) => `${Number(value || 0).toFixed(1)}%`;
@@ -10,31 +11,32 @@ const formatDate = (value) => {
 };
 
 export default function NiswanReportTable({ rows }) {
+  const { tr, direction, fontFamily } = useLanguage();
   const list = useMemo(() => (Array.isArray(rows) ? rows : []), [rows]);
 
   return (
-    <div className="rounded-xl border border-slate-200 bg-white overflow-hidden shadow-lg">
-      <div className="hidden lg:block overflow-auto">
+    <div className="rounded-xl border border-slate-200 bg-white overflow-hidden shadow-lg" dir={direction} style={{ fontFamily }}>
+      <div className="hidden lg:block overflow-auto" dir="ltr">
         <table className="min-w-[1200px] w-full text-sm">
           <thead className="bg-slate-50">
             <tr>
-              <Th>Code</Th>
-              <Th>Niswan</Th>
-              <Th className="text-right">Total</Th>
-              <Th className="text-right">Paid</Th>
-              <Th className="text-right">Unpaid</Th>
-              <Th className="text-right">Paid %</Th>
-              <Th className="text-right">Active</Th>
-              <Th className="text-right">Graduated</Th>
-              <Th className="text-right">Hostel</Th>
-              <Th className="text-right">Last Admission</Th>
+              <Th>{tr("Code")}</Th>
+              <Th>{tr("Niswan")}</Th>
+              <Th className="text-right">{tr("Total")}</Th>
+              <Th className="text-right">{tr("Paid")}</Th>
+              <Th className="text-right">{tr("Unpaid")}</Th>
+              <Th className="text-right">{tr("Paid %")}</Th>
+              <Th className="text-right">{tr("Active")}</Th>
+              <Th className="text-right">{tr("Graduated")}</Th>
+              <Th className="text-right">{tr("Hostel")}</Th>
+              <Th className="text-right">{tr("Last Admission")}</Th>
             </tr>
           </thead>
           <tbody>
             {list.length === 0 ? (
               <tr>
                 <td colSpan={10} className="px-3 py-6 text-slate-400 text-center">
-                  No data
+                  {tr("No data")}
                 </td>
               </tr>
             ) : (
@@ -59,7 +61,7 @@ export default function NiswanReportTable({ rows }) {
 
       <div className="lg:hidden divide-y">
         {list.length === 0 ? (
-          <div className="px-4 py-6 text-slate-400 text-center">No data</div>
+          <div className="px-4 py-6 text-slate-400 text-center">{tr("No data")}</div>
         ) : (
           list.map((r) => (
             <div key={r._id} className="p-4 bg-white">
@@ -69,26 +71,26 @@ export default function NiswanReportTable({ rows }) {
                   <div className="text-sm font-semibold text-slate-800 mt-1">{r.nameEnglish || "-"}</div>
                 </div>
                 <div className="rounded-full bg-sky-50 text-sky-700 text-xs font-medium px-2.5 py-1">
-                  Total {formatNumber(r.totalStudents)}
+                  {tr("Total")} {formatNumber(r.totalStudents)}
                 </div>
               </div>
 
               <div className="grid grid-cols-2 gap-2 mt-3 text-xs">
-                <MiniStat label="Paid" value={formatNumber(r.feesPaid)} className="bg-emerald-50 text-emerald-700" />
-                <MiniStat label="Unpaid" value={formatNumber(r.unpaid)} className="bg-rose-50 text-rose-700" />
-                <MiniStat label="Active" value={formatNumber(r.activeStudents)} className="bg-sky-50 text-sky-700" />
-                <MiniStat label="Graduated" value={formatNumber(r.graduatedStudents)} className="bg-violet-50 text-violet-700" />
+                <MiniStat label={tr("Paid")} value={formatNumber(r.feesPaid)} className="bg-emerald-50 text-emerald-700" />
+                <MiniStat label={tr("Unpaid")} value={formatNumber(r.unpaid)} className="bg-rose-50 text-rose-700" />
+                <MiniStat label={tr("Active")} value={formatNumber(r.activeStudents)} className="bg-sky-50 text-sky-700" />
+                <MiniStat label={tr("Graduated")} value={formatNumber(r.graduatedStudents)} className="bg-violet-50 text-violet-700" />
               </div>
 
               <div className="grid grid-cols-2 gap-3 mt-3 text-xs text-slate-600">
                 <div>
-                  <span className="font-medium">Paid %:</span> {formatPercent(r.paidPercent)}
+                  <span className="font-medium">{tr("Paid %")}:</span> {formatPercent(r.paidPercent)}
                 </div>
                 <div>
-                  <span className="font-medium">Hostel:</span> {formatNumber(r.hostelYes)}
+                  <span className="font-medium">{tr("Hostel")}:</span> {formatNumber(r.hostelYes)}
                 </div>
                 <div className="col-span-2">
-                  <span className="font-medium">Last Admission:</span> {formatDate(r.lastAdmissionDate)}
+                  <span className="font-medium">{tr("Last Admission")}:</span> {formatDate(r.lastAdmissionDate)}
                 </div>
               </div>
             </div>

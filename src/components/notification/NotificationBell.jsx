@@ -3,6 +3,7 @@ import { FaBell } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { notificationApi } from "../../api/notificationApi";
 import { useAuth } from "../../context/AuthContext";
+import { useLanguage } from "../../i18n/LanguageContext";
 
 export const NOTIFICATION_BADGE_REFRESH_EVENT = "unis:notification-badge-refresh";
 
@@ -17,6 +18,7 @@ export const refreshNotificationBadge = () => {
 export default function NotificationBell() {
   const navigate = useNavigate();
   const { user } = useAuth();
+  const { tr } = useLanguage();
   const userRole = String(user?.role || "").toLowerCase();
   const isSuperAdmin = userRole === "superadmin";
   const [unread, setUnread] = useState(0);
@@ -62,10 +64,10 @@ export default function NotificationBell() {
         type="button"
         onClick={() => navigate("/dashboard/notifications")}
         className="relative z-10 rounded-xl p-1 hover:-translate-y-0.5"
-        aria-label="UNIS notifications"
-        title={unread > 0 ? `${unread} unread notification(s)` : "Notifications"}
+        aria-label={tr("UNIS notifications")}
+        title={unread > 0 ? `${unread} ${tr("unread notification(s)")}` : tr("Notifications")}
       >
-        <FaBell title="Notifications" aria-label="Notifications" className="text-2xl lg:text-3xl text-amber-300 drop-shadow-lg" />
+        <FaBell title={tr("Notifications")} aria-label={tr("Notifications")} className="text-2xl lg:text-3xl text-amber-300 drop-shadow-lg" />
 
         {unread > 0 ? (
           <span className="absolute -right-2 -top-2 min-w-5 h-5 px-1 rounded-full bg-red-600 text-white text-[10px] font-bold flex items-center justify-center shadow-lg ring-2 ring-white/70">

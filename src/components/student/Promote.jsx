@@ -9,6 +9,7 @@ import { getBaseUrl, handleRightClickAndFullScreen, getSpinner, checkAuth, getPr
 import ViewCard from "../dashboard/ViewCard";
 import { FaRegTimesCircle } from "react-icons/fa";
 import { useAuth } from '../../context/AuthContext'
+import { AutoText, useLanguage } from '../../i18n/LanguageContext';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
@@ -32,6 +33,7 @@ const Promote = () => {
 
   const navigate = useNavigate();
   const { user } = useAuth()
+  const { tr, direction, fontFamily } = useLanguage();
 
   const { id } = useParams();
   const [schools, setSchools] = useState([]);
@@ -215,9 +217,9 @@ const Promote = () => {
   return (
     <>
       {student ? (
-        <div className="max-w-4xl mx-auto mt-2 p-3 lg:p-5 rounded-md shadow-lg border">
+        <div dir={direction} style={{ fontFamily }} className="max-w-4xl mx-auto mt-2 p-3 lg:p-5 rounded-md shadow-lg border">
           <div className="flex py-2 px-4 items-center justify-center bg-teal-700 text-white rounded-lg shadow-lg">
-            <h2 className="text-xl font-semibold items-center justify-center">Promote Student</h2>
+            <AutoText as="h2" text={tr("Promote Student")} variant="heading" className="font-semibold items-center justify-center" />
             <Link to="/dashboard/students" >
               <FaRegTimesCircle className="text-2xl ml-7 text-red-700 bg-gray-200 rounded-xl shadow-md items-center justify-end" />
             </Link>
@@ -229,7 +231,7 @@ const Promote = () => {
                 {/* School */}
                 <div>
                   <label className="block mt-2 text-sm font-medium text-slate-500">
-                    Niswan <span className="text-red-700">*</span>
+                    {tr("Niswan")} <span className="text-red-700">*</span>
                   </label>
                   <select
                     name="schoolId"
@@ -253,7 +255,7 @@ const Promote = () => {
                 {/* Roll Number (Email) */}
                 <div>
                   <label className="block mt-2 text-sm font-medium text-slate-500">
-                    Roll Number <span className="text-red-700">*</span>
+                    {tr("Roll Number")} <span className="text-red-700">*</span>
                   </label>
                   <input
                     type="text"
@@ -269,7 +271,7 @@ const Promote = () => {
                 {/* Name */}
                 <div>
                   <label className="block mt-2 text-sm font-medium text-slate-500">
-                    Name <span className="text-red-700">*</span>
+                    {tr("Name")} <span className="text-red-700">*</span>
                   </label>
                   <input
                     type="text"
@@ -290,7 +292,7 @@ const Promote = () => {
                 {/* Academic Year */}
                 <div>
                   <label className="block mt-2 text-sm font-medium text-slate-500">
-                    Academic Year <span className="text-red-700">*</span>
+                    {tr("Academic Year")} <span className="text-red-700">*</span>
                   </label>
                   <select
                     name="acYear"
@@ -340,7 +342,7 @@ const Promote = () => {
                       {/* Status1 */}
                       <div className='col-span-2'>
                         <label className="block mt-2 lg:mt-0 text-sm font-medium text-slate-500">
-                          Status <span className="text-red-700">*</span>
+                          {tr("Status")} <span className="text-red-700">*</span>
                         </label>
                         <select
                           name="status1"
@@ -349,16 +351,16 @@ const Promote = () => {
                           required
                         >
                           <option value=""></option>
-                          <option value="Promoted">Promoted</option>
-                          <option value="Completed">Completed</option>
-                          <option value="Not-Promoted">Not-Promoted</option>
+                          <option value="Promoted">{tr("Promoted")}</option>
+                          <option value="Completed">{tr("Completed")}</option>
+                          <option value="Not-Promoted">{tr("Not-Promoted")}</option>
                         </select>
                       </div>
 
                       {/* Fees1 */}
                       <div>
                         <label className="block text-sm font-medium text-slate-500">
-                          Fees
+                          {tr("Fees")}
                         </label>
                         <input
                           type="number"
@@ -398,7 +400,7 @@ const Promote = () => {
                           {/* Status4 */}
                           <div className='col-span-2'>
                             <label className="block mt-2 lg:mt-0 text-sm font-medium text-slate-500">
-                              Status <span className="text-red-700">*</span>
+                              {tr("Status")} <span className="text-red-700">*</span>
                             </label>
                             <select
                               name="status4"
@@ -407,16 +409,16 @@ const Promote = () => {
                               required
                             >
                               <option value=""></option>
-                              <option value="Promoted">Promoted</option>
-                              <option value="Completed">Completed</option>
-                              <option value="Not-Promoted">Not-Promoted</option>
+                              <option value="Promoted">{tr("Promoted")}</option>
+                              <option value="Completed">{tr("Completed")}</option>
+                              <option value="Not-Promoted">{tr("Not-Promoted")}</option>
                             </select>
                           </div>
 
                           {/* Fees 4 */}
                           <div>
                             <label className="block text-sm font-medium text-slate-500">
-                              Fees
+                              {tr("Fees")}
                             </label>
                             <input
                               type="number"
@@ -460,7 +462,7 @@ const Promote = () => {
                           {/* Status2 */}
                           <div className='col-span-2'>
                             <label className="block mt-2 lg:mt-0 text-sm font-medium text-slate-500">
-                              Status <span className="text-red-700">*</span>
+                              {tr("Status")} <span className="text-red-700">*</span>
                             </label>
                             <select
                               name="status2"
@@ -469,16 +471,16 @@ const Promote = () => {
                               required
                             >
                               <option value=""></option>
-                              <option value="Promoted">Promoted</option>
-                              <option value="Completed">Completed</option>
-                              <option value="Not-Promoted">Not-Promoted</option>
+                              <option value="Promoted">{tr("Promoted")}</option>
+                              <option value="Completed">{tr("Completed")}</option>
+                              <option value="Not-Promoted">{tr("Not-Promoted")}</option>
                             </select>
                           </div>
 
                           {/* Next Course 2 */}
                           <div className='col-span-2'>
                             <label className="block text-sm font-medium text-slate-500">
-                              Next Course
+                              {tr("Next Course")}
                             </label>
                             <select
                               name="nextCourseId"
@@ -499,7 +501,7 @@ const Promote = () => {
                           {/* Fees 2 */}
                           <div>
                             <label className="block text-sm font-medium text-slate-500">
-                              Fees
+                              {tr("Fees")}
                             </label>
                             <input
                               type="number"
@@ -544,7 +546,7 @@ const Promote = () => {
                           {/* Status3 */}
                           <div className='col-span-2'>
                             <label className="block mt-2 lg:mt-0 text-sm font-medium text-slate-500">
-                              Status <span className="text-red-700">*</span>
+                              {tr("Status")} <span className="text-red-700">*</span>
                             </label>
                             <select
                               name="status3"
@@ -553,16 +555,16 @@ const Promote = () => {
                               required
                             >
                               <option value=""></option>
-                              <option value="Promoted">Promoted</option>
-                              <option value="Completed">Completed</option>
-                              <option value="Not-Promoted">Not-Promoted</option>
+                              <option value="Promoted">{tr("Promoted")}</option>
+                              <option value="Completed">{tr("Completed")}</option>
+                              <option value="Not-Promoted">{tr("Not-Promoted")}</option>
                             </select>
                           </div>
 
                           {/* Fees 3 */}
                           <div>
                             <label className="block text-sm font-medium text-slate-500">
-                              Fees
+                              {tr("Fees")}
                             </label>
                             <input
                               type="number"
@@ -603,7 +605,7 @@ const Promote = () => {
                           {/* Status5 */}
                           <div className='col-span-2'>
                             <label className="block mt-2 lg:mt-0 text-sm font-medium text-slate-500">
-                              Status <span className="text-red-700">*</span>
+                              {tr("Status")} <span className="text-red-700">*</span>
                             </label>
                             <select
                               name="status5"
@@ -612,16 +614,16 @@ const Promote = () => {
                               required
                             >
                               <option value=""></option>
-                              <option value="Promoted">Promoted</option>
-                              <option value="Completed">Completed</option>
-                              <option value="Not-Promoted">Not-Promoted</option>
+                              <option value="Promoted">{tr("Promoted")}</option>
+                              <option value="Completed">{tr("Completed")}</option>
+                              <option value="Not-Promoted">{tr("Not-Promoted")}</option>
                             </select>
                           </div>
 
                           {/* Fees 5 */}
                           <div>
                             <label className="block text-sm font-medium text-slate-500">
-                              Fees
+                              {tr("Fees")}
                             </label>
                             <input
                               type="number"
@@ -644,7 +646,7 @@ const Promote = () => {
                 type="submit"
                 className="w-full mt-3 mb-3 bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded-lg shadow-lg hover:-translate-y-0.5"
               >
-                Promote Student
+                <AutoText as="span" text={tr("Promote Student")} variant="button" />
               </button>
             </div >
           </form >

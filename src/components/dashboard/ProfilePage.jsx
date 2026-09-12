@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from '../../context/AuthContext'
+import { AutoText, useLanguage } from '../../i18n/LanguageContext'
 import { getBaseUrl, getPrcessing, showSwalAlert } from "../../utils/CommonHelper";
 import {
     FaUserCircle,
@@ -18,6 +19,7 @@ import {
     FaTimesCircle,
     FaEnvelope,
     FaShieldAlt,
+    FaLanguage,
 } from "react-icons/fa";
 
 const authHeaders = () => {
@@ -83,10 +85,10 @@ const Field = ({ label, value, icon: Icon, accent = "teal" }) => {
                     >
                         {Icon ? <Icon className="text-sm" /> : null}
                     </div>
-                    <div className="text-xs font-bold text-slate-700 truncate">{label}</div>
+                    <AutoText as="div" text={label} className="font-bold text-slate-700" />
                 </div>
 
-                <div className="mt-3 text-sm lg:text-md font-xl text-slate-900 break-words">
+                <div className="mt-3 text-sm lg:text-md font-xl text-slate-900 break-words" dir="auto">
                     {value ?? "-"}
                 </div>
 
@@ -105,6 +107,8 @@ export default function ProfilePage() {
 
     const navigate = useNavigate();
     const { user } = useAuth()
+    const { language, setLanguage, t, direction, fontFamily, languageOptions } = useLanguage();
+    const [languageSaving, setLanguageSaving] = useState(false);
 
     const [pass, setPass] = useState({
         oldPassword: "",
@@ -128,6 +132,9 @@ export default function ProfilePage() {
 
                 if (!alive) return;
                 setData({ user: res.data.user, employee: res.data.employee });
+                if (res.data?.user?.preferredLanguage) {
+                    setLanguage(res.data.user.preferredLanguage);
+                }
             } catch (err) {
                 const msg =
                     err?.response?.data?.error ||
@@ -150,6 +157,38 @@ export default function ProfilePage() {
         [pass.newPassword, pass.confirmPassword]
     );
 
+    const handleLanguageSave = async (nextLanguage) => {
+        const selected = String(nextLanguage || "").toLowerCase();
+        if (!selected || selected === language) return;
+
+        try {
+            setLanguageSaving(true);
+            const res = await axios.put(
+                (await getBaseUrl()).toString() + "profile/language",
+                { preferredLanguage: selected },
+                { headers: authHeaders() }
+            );
+
+            if (!res.data?.success) {
+                showSwalAlert("Error!", res.data?.error || t("common.languageSaveFailed"), "error");
+                return;
+            }
+
+            const savedLanguage = String(res.data.preferredLanguage || selected).toLowerCase();
+            setLanguage(savedLanguage);
+            setData((prev) => ({
+                ...prev,
+                user: prev.user ? { ...prev.user, preferredLanguage: savedLanguage } : prev.user,
+            }));
+            showSwalAlert("Success!", t("common.languageSaved"), "success");
+        } catch (err) {
+            const msg = err?.response?.data?.error || t("common.languageSaveFailed");
+            showSwalAlert("Error!", msg, "error");
+        } finally {
+            setLanguageSaving(false);
+        }
+    };
+
     const handlePasswordSave = async (e1) => {
         e1.preventDefault();
 
@@ -171,7 +210,6 @@ export default function ProfilePage() {
                 navigate("/dashboard/profile");
             } else {
                 const msg = res.data.error || "Password change failed";
-                setErrors((prev) => ({ ...prev, form: msg }));
                 showSwalAlert("Error!", msg, "error");
             }
             setProcessing(false);
@@ -208,7 +246,7 @@ export default function ProfilePage() {
     const isActive = String(e.active || "").toLowerCase() === "active";
 
     return (
-        <div className="min-h-screen relative overflow-hidden">
+        <div className="min-h-screen relative overflow-hidden" dir={direction} style={{ fontFamily }}>
             <div className="relative p-3 sm:p-6">
                 <div className="mx-auto max-w-6xl">
                     <div className="relative overflow-hidden rounded-[16px] border border-white/40 bg-white/55 backdrop-blur-2xl">
@@ -218,9 +256,7 @@ export default function ProfilePage() {
 
                             <div className="relative z-10 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                                 <div className="min-w-0">
-                                    <div className="text-xl sm:text-2xl font-bold tracking-tight text-slate-900">
-                                        My Profile
-                                    </div>
+                                    <AutoText as="div" text={t("profile.myProfile")} variant="heading" className="font-bold tracking-tight text-slate-900" />
                                 </div>
 
                                 <div className="flex w-full sm:w-auto gap-2">
@@ -233,7 +269,7 @@ export default function ProfilePage() {
                                         type="button"
                                     >
                                         <FaUserCircle />
-                                        Profile
+                                        <AutoText text={t("common.profile")} variant="button" className="font-bold" />
                                     </button>
 
                                     <button
@@ -245,7 +281,7 @@ export default function ProfilePage() {
                                         type="button"
                                     >
                                         <FaLock />
-                                        Password
+                                        <AutoText text={t("common.password")} variant="button" className="font-bold" />
                                     </button>
                                 </div>
                             </div>
@@ -291,12 +327,12 @@ export default function ProfilePage() {
                                                     <div className="mt-4 text-lg font-semibold text-slate-900">
                                                         {u.name || "-"}
                                                     </div>
-                                                    <div className="mt-1 text-xs font-semibold text-slate-700 break-all">
+                                                    <div className="mt-1 text-xs font-semibold text-slate-700 break-all" dir="auto">
                                                         {u.email || "-"}
                                                     </div>
 
                                                     <div className="mt-3 inline-flex items-center rounded-lg bg-gradient-to-r from-teal-600 to-emerald-600 px-3 py-1 text-[11px] font-semibold text-white shadow">
-                                                        {roleLabel(u.role)}
+                                                        {t(`roles.${String(u.role || "").toLowerCase()}`, roleLabel(u.role))}
                                                     </div>
                                                 </div>
                                             </div>
@@ -306,20 +342,49 @@ export default function ProfilePage() {
                                         <div className="w-full lg:col-span-2">
                                             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                                                 {/* Icons fixed here */}
-                                                <Field label="Employee ID" value={e.employeeId || "-"} icon={FaIdBadge} accent="teal" />
-                                                <Field label="Contact Number" value={e.contactNumber || "-"} icon={FaPhoneAlt} accent="indigo" />
+                                                <Field label={t("profile.employeeId")} value={e.employeeId || "-"} icon={FaIdBadge} accent="teal" />
+                                                <Field label={t("profile.contactNumber")} value={e.contactNumber || "-"} icon={FaPhoneAlt} accent="indigo" />
 
-                                                <Field label="Gender" value={e.gender || "-"} icon={FaVenusMars} accent="rose" />
-                                                <Field label="Marital Status" value={e.maritalStatus || "-"} icon={FaUserTie} accent="amber" />
+                                                <Field label={t("profile.gender")} value={e.gender || "-"} icon={FaVenusMars} accent="rose" />
+                                                <Field label={t("profile.maritalStatus")} value={e.maritalStatus || "-"} icon={FaUserTie} accent="amber" />
 
-                                                <Field label="Date of Birth" value={fmtDate(e.dob)} icon={FaBirthdayCake} accent="indigo" />
-                                                <Field label="Date of Joining" value={fmtDate(e.doj)} icon={FaCalendarAlt} accent="rose" />
+                                                <Field label={t("profile.dateOfBirth")} value={fmtDate(e.dob)} icon={FaBirthdayCake} accent="indigo" />
+                                                <Field label={t("profile.dateOfJoining")} value={fmtDate(e.doj)} icon={FaCalendarAlt} accent="rose" />
 
-                                                <Field label="Qualification" value={e.qualification || "-"} icon={FaGraduationCap} accent="teal" />
-                                                <Field label="Status" value={e.active || "-"} icon={FaShieldAlt} accent="amber" />
+                                                <Field label={t("profile.qualification")} value={e.qualification || "-"} icon={FaGraduationCap} accent="teal" />
+                                                <Field label={t("profile.status")} value={e.active || "-"} icon={FaShieldAlt} accent="amber" />
 
                                                 <div className="sm:col-span-2 w-full">
-                                                    <Field label="Address" value={e.address || "-"} icon={FaMapMarkerAlt} accent="indigo" />
+                                                    <Field label={t("profile.address")} value={e.address || "-"} icon={FaMapMarkerAlt} accent="indigo" />
+                                                </div>
+
+                                                <div className="sm:col-span-2 w-full rounded-lg border border-white/40 bg-white/60 backdrop-blur-xl p-4 shadow-lg">
+                                                    <div className="flex items-center gap-2">
+                                                        <div className="shrink-0 inline-flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-r from-cyan-500 to-blue-500 text-white shadow-lg">
+                                                            <FaLanguage className="text-base" />
+                                                        </div>
+                                                        <AutoText as="label" text={t("common.preferredLanguage")} className="font-bold text-slate-700" />
+                                                    </div>
+                                                    <div className="mt-3 flex flex-col gap-2 sm:flex-row sm:items-center">
+                                                        <select
+                                                            value={language}
+                                                            onChange={(event) => handleLanguageSave(event.target.value)}
+                                                            disabled={languageSaving}
+                                                            className="w-full rounded-xl border bg-white/90 px-3 py-2 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-300 sm:max-w-sm"
+                                                            aria-label={t("common.preferredLanguage")}
+                                                        >
+                                                            {languageOptions.map((option) => (
+                                                                <option key={option.code} value={option.code}>
+                                                                    {option.nativeLabel} ({option.label})
+                                                                </option>
+                                                            ))}
+                                                        </select>
+                                                        {languageSaving ? (
+                                                            <AutoText text={t("common.saving")} variant="button" className="font-semibold text-blue-700" />
+                                                        ) : (
+                                                            <AutoText text={t("common.englishFallback")} variant="button" className="text-slate-500" />
+                                                        )}
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -329,14 +394,12 @@ export default function ProfilePage() {
                                         <div className="rounded-3xl border border-white/40 bg-white/60 backdrop-blur-xl p-5 shadow-sm">
                                             <div className="flex items-center justify-between gap-3 flex-wrap">
                                                 <div>
-                                                    <div className="text-lg font-semibold text-slate-900">Update Password</div>
-                                                    <div className="text-xs text-slate-700">
-                                                        Tip: use 8+ characters with uppercase, number & special.
-                                                    </div>
+                                                    <AutoText as="div" text={t("profile.updatePassword")} className="font-semibold text-slate-900" />
+                                                    <AutoText as="div" text={t("profile.passwordTip")} className="text-slate-700" />
                                                 </div>
 
                                                 <div className="w-full sm:w-auto flex items-center gap-2 rounded-full border bg-white/70 px-3 py-2">
-                                                    <div className="text-[11px] font-extrabold text-slate-700">Strength</div>
+                                                    <AutoText as="div" text={t("profile.strength")} variant="button" className="font-extrabold text-slate-700" />
                                                     <div className="flex gap-1">
                                                         {Array.from({ length: 5 }).map((_, i) => (
                                                             <span
@@ -351,7 +414,7 @@ export default function ProfilePage() {
 
                                             <div className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-3">
                                                 <div className="sm:col-span-1">
-                                                    <label className="text-xs font-semibold text-slate-700">Current Password</label>
+                                                    <label className="text-xs font-semibold text-slate-700">{t("profile.currentPassword")}</label>
                                                     <input
                                                         type="password"
                                                         value={pass.oldPassword}
@@ -362,7 +425,7 @@ export default function ProfilePage() {
                                                 </div>
 
                                                 <div className="sm:col-span-1">
-                                                    <label className="text-xs font-semibold text-slate-700">New Password</label>
+                                                    <label className="text-xs font-semibold text-slate-700">{t("profile.newPassword")}</label>
                                                     <input
                                                         type="password"
                                                         value={pass.newPassword}
@@ -373,7 +436,7 @@ export default function ProfilePage() {
                                                 </div>
 
                                                 <div className="sm:col-span-1">
-                                                    <label className="text-xs font-semibold text-slate-700">Confirm Password</label>
+                                                    <label className="text-xs font-semibold text-slate-700">{t("profile.confirmPassword")}</label>
                                                     <input
                                                         type="password"
                                                         value={pass.confirmPassword}
@@ -387,12 +450,12 @@ export default function ProfilePage() {
                                                             {pwdMatch ? (
                                                                 <>
                                                                     <FaCheckCircle className="text-emerald-600" />
-                                                                    <span className="text-emerald-700">Passwords match</span>
+                                                                    <span className="text-emerald-700">{t("profile.passwordsMatch")}</span>
                                                                 </>
                                                             ) : (
                                                                 <>
                                                                     <FaTimesCircle className="text-rose-600" />
-                                                                    <span className="text-rose-700">Passwords do not match</span>
+                                                                    <span className="text-rose-700">{t("profile.passwordsDoNotMatch")}</span>
                                                                 </>
                                                             )}
                                                         </div>
@@ -405,7 +468,7 @@ export default function ProfilePage() {
                                                 disabled={user?.role === "guest"}
                                                 className="mt-6 w-full rounded-2xl bg-gradient-to-r from-indigo-300 via-violet-300 to-rose-300 px-4 py-3 text-sm font-bold text-blue-700 shadow-lg hover:opacity-95"
                                             >
-                                                Update Password
+                                                <AutoText text={t("profile.updatePassword")} variant="button" className="font-bold" />
                                             </button>
                                         </div>
                                     </form>
@@ -413,8 +476,8 @@ export default function ProfilePage() {
                             </div>
                         </div>
 
-                        <div className="px-6 pb-6 text-center text-xs font-semibold text-slate-700">
-                            If any profile detail is wrong, please contact HQ/Admin to update data.
+                        <div className="px-6 pb-6 text-center font-semibold text-slate-700">
+                            <AutoText text={t("profile.contactHelp")} />
                         </div>
                     </div>
 

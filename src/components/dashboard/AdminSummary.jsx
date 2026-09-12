@@ -3,6 +3,7 @@ import SummaryCard from "./SummaryCard";
 import CommonHeader from "./CommonHeader";
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext'
+import { useLanguage } from '../../i18n/LanguageContext'
 import { getBaseUrl, handleRightClickAndFullScreen, getSpinner, showSwalAlert, removeLocalStorage } from '../../utils/CommonHelper'
 import {
   FaMosque, FaUserFriends, FaCoins, FaGraduationCap,
@@ -22,6 +23,7 @@ const AdminSummary = () => {
   const [summary, setSummary] = useState(null)
   const navigate = useNavigate()
   const { user } = useAuth()
+  const { t, direction, fontFamily } = useLanguage()
 
   const userRole = String(user?.role || "").toLowerCase();
 
@@ -63,15 +65,15 @@ const AdminSummary = () => {
   }
 
   return (
-    <div className="p-7 pt-3 items-center justify-center rounded-lg h-9/10">
-      <CommonHeader userName={user?.name || ""} title="Dashboard" />
+    <div className="p-7 pt-3 items-center justify-center rounded-lg h-9/10" dir={direction} style={{ fontFamily }}>
+      <CommonHeader userName={user?.name || ""} title={t("common.dashboard")} />
       <div className="content-center rounded-lg grid grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-7 lg:gap-14 mt-7 lg:mt-16 flex rounded-lg">
 
         {user.role === "superadmin" || user.role === "hquser" || user.role === "supervisor" || user.role === "guest" ?
           <Link to="/dashboard/supervisors" >
             <SummaryCard
               icon={<FaUserFriends />}
-              text="Muavins"
+              text={t("dashboard.muavins")}
               number={summary.totalSupervisors}
               color="bg-teal-600"
             />
@@ -81,7 +83,7 @@ const AdminSummary = () => {
           <Link to="/dashboard/schools" >
             <SummaryCard
               icon={<FaMosque />}
-              text={user.role === "superadmin" || user.role === "hquser" || user.role === "supervisor" ? "Niswans" : "Niswan"}
+              text={user.role === "superadmin" || user.role === "hquser" || user.role === "supervisor" ? t("dashboard.niswans") : t("dashboard.niswan")}
               number={user.role === "admin" || user.role === "guest" ? "*" : summary.totalSchools}
               color="bg-pink-600"
             />
@@ -91,7 +93,7 @@ const AdminSummary = () => {
           <Link to="/dashboard/employees" >
             <SummaryCard
               icon={<FaHouseUser />}
-              text="Employees"
+              text={t("dashboard.employees")}
               number={user.role === "guest" ? "*" : summary.totalEmployees}
               color={user.role === "supervisor" ? "bg-slate-500" : "bg-cyan-600"}
             />
@@ -101,7 +103,7 @@ const AdminSummary = () => {
           <Link to="/dashboard/students"  >
             <SummaryCard
               icon={<FaUsers />}
-              text="Students"
+              text={t("dashboard.students")}
               number={user.role === "guest" ? "*" : summary.totalStudents}
               color="bg-blue-500"
             />
@@ -111,7 +113,7 @@ const AdminSummary = () => {
           <Link to="/dashboard/inspection-reports" >
             <SummaryCard
               icon={<FaFileSignature />}
-              text="Inspection"
+              text={t("dashboard.inspection")}
               number="*"
               color={user.role === "supervisor" ? "bg-blue-600" : "bg-lime-600"}
             />
@@ -122,7 +124,7 @@ const AdminSummary = () => {
           <Link to="#" >
             <SummaryCard
               icon={<FaTasks />}
-              text="Attendance"
+              text={t("dashboard.attendance")}
               number="*"
               color="bg-purple-700"
             />
@@ -133,7 +135,7 @@ const AdminSummary = () => {
           <Link to="#" >
             <SummaryCard
               icon={<FaCalendarAlt />}
-              text="Leaves"
+              text={t("dashboard.leaves")}
               number="*"
               color="bg-gray-500"
             />
@@ -143,7 +145,7 @@ const AdminSummary = () => {
           <Link to={canViewExam ? "/dashboard/exams" : "#"} >
             <SummaryCard
               icon={<FaClipboardList />}
-              text="Exams"
+              text={t("dashboard.exams")}
               number="*"
               color="bg-emerald-600"
             />
@@ -153,7 +155,7 @@ const AdminSummary = () => {
           <Link to="/dashboard/certificates" >
             <SummaryCard
               icon={<FaMedal />}
-              text="Certificates"
+              text={t("dashboard.certificates")}
               number={summary.totalCertificates}
               color="bg-yellow-600"
             />
@@ -163,7 +165,7 @@ const AdminSummary = () => {
           <Link to="/dashboard/accountsPage" >
             <SummaryCard
               icon={<FaRupeeSign />}
-              text="Accounts"
+              text={t("dashboard.accounts")}
               number="*"
               color="bg-orange-700"
             />
@@ -173,7 +175,7 @@ const AdminSummary = () => {
           <Link to="/dashboard/masters" >
             <SummaryCard
               icon={<FaCoins />}
-              text="Masters"
+              text={t("dashboard.masters")}
               number="*"
               color="bg-purple-500"
             />
@@ -183,7 +185,7 @@ const AdminSummary = () => {
           <Link to="/dashboard/reports" >
             <SummaryCard
               icon={<FaFileContract />}
-              text="Reports"
+              text={t("dashboard.reports")}
               number="*"
               color={user.role === "supervisor" ? "bg-purple-500" : "bg-pink-500"}
             />
@@ -192,7 +194,7 @@ const AdminSummary = () => {
         <Link to="/dashboard/profile" >
           <SummaryCard
             icon={<FaCogs />}
-            text="Profile"
+            text={t("dashboard.profile")}
             number="*"
             color="bg-lime-700"
           />

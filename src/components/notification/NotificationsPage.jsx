@@ -6,6 +6,7 @@ import { notificationApi } from "../../api/notificationApi";
 import { getSchoolsFromCache } from "../../utils/SchoolHelper";
 import { LinkIcon } from "../../utils/CommonHelper";
 import { refreshNotificationBadge } from "./NotificationBell";
+import { useLanguage } from "../../i18n/LanguageContext";
 
 const safePath = (path) =>
   typeof path === "string" &&
@@ -80,12 +81,13 @@ const defaultSentFilters = {
   dateTo: "",
 };
 
-const getRoleLabel = (role) => {
-  return TARGET_ROLE_OPTIONS.find((item) => item.value === role)?.label || role;
+const getRoleLabel = (role, tr = (value) => value) => {
+  const label = TARGET_ROLE_OPTIONS.find((item) => item.value === role)?.label || role;
+  return tr(label);
 };
 
-const getBroadcastNiswanText = (broadcast) => {
-  if (broadcast?.selectAllSchools) return "All Niswans";
+const getBroadcastNiswanText = (broadcast, tr = (value) => value) => {
+  if (broadcast?.selectAllSchools) return tr("All Niswans");
 
   const niswans = Array.isArray(broadcast?.targetNiswans)
     ? broadcast.targetNiswans
@@ -144,6 +146,7 @@ const PaginationFooter = ({
   onPageChange,
   label = "records",
 }) => {
+  const { tr } = useLanguage();
   const safeTotal = Math.max(0, Number(total || 0));
   const safeLimit = Math.max(1, Number(limit || NOTIFICATION_PAGE_SIZE));
   const totalPages = Math.max(1, Math.ceil(safeTotal / safeLimit));
@@ -154,7 +157,7 @@ const PaginationFooter = ({
   if (safeTotal <= safeLimit) {
     return safeTotal > 0 ? (
       <div className="flex flex-col gap-2 border-t border-slate-100 bg-slate-50/70 px-4 py-3 text-center text-[11px] font-semibold text-slate-500 md:flex-row md:items-center md:justify-between md:text-left">
-        <span>Showing {start}-{end} of {safeTotal} {label}</span>
+        <span>{tr("Showing")} {start}-{end} {tr("of")} {safeTotal} {tr(label)}</span>
       </div>
     ) : null;
   }
@@ -162,7 +165,7 @@ const PaginationFooter = ({
   return (
     <div className="flex flex-col gap-2 border-t border-slate-100 bg-slate-50/70 px-4 py-3 text-center text-[11px] font-semibold text-slate-600 md:flex-row md:items-center md:justify-between md:text-left">
       <span>
-        Showing {start}-{end} of {safeTotal} {label}
+        {tr("Showing")} {start}-{end} {tr("of")} {safeTotal} {tr(label)}
       </span>
 
       <div className="flex items-center justify-center gap-2">
@@ -172,11 +175,11 @@ const PaginationFooter = ({
           onClick={() => onPageChange?.(currentPage - 1)}
           className="rounded-md border border-slate-300 bg-white px-3 py-1 text-[11px] font-bold text-slate-600 disabled:cursor-not-allowed disabled:opacity-40"
         >
-          Previous
+          {tr("Previous")}
         </button>
 
         <span className="rounded-md bg-white px-3 py-1 text-[11px] font-bold text-pink-700 shadow-sm">
-          Page {currentPage} / {totalPages}
+          {tr("Page")} {currentPage} / {totalPages}
         </span>
 
         <button
@@ -185,7 +188,7 @@ const PaginationFooter = ({
           onClick={() => onPageChange?.(currentPage + 1)}
           className="rounded-md border border-slate-300 bg-white px-3 py-1 text-[11px] font-bold text-slate-600 disabled:cursor-not-allowed disabled:opacity-40"
         >
-          Next
+          {tr("Next")}
         </button>
       </div>
     </div>
@@ -198,6 +201,7 @@ const inputClass = "mt-1 w-full rounded-md border border-slate-300 bg-white px-2
 export default function NotificationsPage() {
   const { user } = useAuth();
   const navigate = useNavigate();
+  const { tr, direction, fontFamily } = useLanguage();
 
   const userRole = String(user?.role || "").toLowerCase();
   const isSuperAdmin = userRole === "superadmin";
@@ -266,12 +270,12 @@ export default function NotificationsPage() {
       refreshNotificationBadge();
     } catch (error) {
       setMessage(
-        error?.response?.data?.error || "Unable to load notifications."
+        error?.response?.data?.error || tr("Unable to load notifications.")
       );
     } finally {
       setReceivedLoading(false);
     }
-  }, [debouncedSearchText, isSuperAdmin, receivedFilters, receivedPage]);
+  }, [debouncedSearchText, isSuperAdmin, receivedFilters, receivedPage, tr]);
 
   const loadSent = useCallback(async (pageToLoad = sentPage) => {
     if (!isSuperAdmin) return;
@@ -295,12 +299,12 @@ export default function NotificationsPage() {
     } catch (error) {
       setMessage(
         error?.response?.data?.error ||
-        "Unable to load sent notification history."
+        tr("Unable to load sent notification history.")
       );
     } finally {
       setSentLoading(false);
     }
-  }, [debouncedSearchText, isSuperAdmin, sentFilters, sentPage]);
+  }, [debouncedSearchText, isSuperAdmin, sentFilters, sentPage, tr]);
 
   useEffect(() => {
     setReceivedPage(1);
@@ -345,8 +349,8 @@ export default function NotificationsPage() {
     : selectedSchoolIds.length;
 
   const selectedRoleLabels = useMemo(() => {
-    return targetRoles.map((role) => getRoleLabel(role)).join(", ");
-  }, [targetRoles]);
+    return targetRoles.map((role) => getRoleLabel(role, tr)).join(", ");
+  }, [targetRoles, tr]);
 
   const openItem = async (item) => {
     if (!item.readAt) {
@@ -372,7 +376,7 @@ export default function NotificationsPage() {
     } catch (error) {
       setMessage(
         error?.response?.data?.error ||
-        "Unable to mark notifications as read."
+        tr("Unable to mark notifications as read.")
       );
     } finally {
       setBusy(false);
@@ -441,46 +445,46 @@ export default function NotificationsPage() {
     const body = sendMessage.trim();
 
     if (!title) {
-      setMessage("Notification title is required.");
+      setMessage(tr("Notification title is required."));
       return;
     }
 
     if (!body) {
-      setMessage("Notification message is required.");
+      setMessage(tr("Notification message is required."));
       return;
     }
 
     if (targetRoles.length === 0) {
-      setMessage("Please select at least one target role.");
+      setMessage(tr("Please select at least one target role."));
       return;
     }
 
     if (!selectAllSchools && selectedSchoolIds.length === 0) {
       setMessage(
-        "Please select at least one Niswan or choose Select All Niswans."
+        tr("Please select at least one Niswan or choose Select All Niswans.")
       );
       return;
     }
 
     const confirmResult = await Swal.fire({
-      title: "Send Notification?",
+      title: tr("Send Notification?"),
       html: `
-        <div style="text-align:left; font-size:13px; line-height:1.7;">
-          <b>Title:</b> ${escapeHtml(title)}<br/>
-          <b>Target Roles:</b> ${escapeHtml(selectedRoleLabels || "-")}<br/>
-          <b>Niswan Scope:</b> ${selectAllSchools
-          ? "All Niswans"
-          : `${selectedSchoolCount} selected Niswan(s)`
+        <div dir="${direction}" style="text-align:${direction === "rtl" ? "right" : "left"}; font-size:13px; line-height:1.7; font-family:${escapeHtml(fontFamily)};">
+          <b>${escapeHtml(tr("Title"))}:</b> ${escapeHtml(title)}<br/>
+          <b>${escapeHtml(tr("Target Roles"))}:</b> ${escapeHtml(selectedRoleLabels || "-")}<br/>
+          <b>${escapeHtml(tr("Niswan Scope"))}:</b> ${selectAllSchools
+          ? tr("All Niswans")
+          : tr("{{count}} selected Niswan(s)", { count: selectedSchoolCount })
         }<br/><br/>
           <span style="color:#b91c1c; font-weight:600;">
-            Are you sure you want to send this notification?
+            ${escapeHtml(tr("Are you sure you want to send this notification?"))}
           </span>
         </div>
       `,
       icon: "question",
       showCancelButton: true,
-      confirmButtonText: "Yes, Send",
-      cancelButtonText: "Cancel",
+      confirmButtonText: tr("Yes, Send"),
+      cancelButtonText: tr("Cancel"),
       reverseButtons: true,
       focusCancel: true,
       background: "url(/bg_card.png)",
@@ -501,8 +505,10 @@ export default function NotificationsPage() {
       });
 
       setMessage(
-        `Notification sent successfully. Sent: ${result?.sentCount || 0
-        }, Failed: ${result?.failedCount || 0}.`
+        tr("Notification sent successfully. Sent: {{sent}}, Failed: {{failed}}.", {
+          sent: result?.sentCount || 0,
+          failed: result?.failedCount || 0,
+        })
       );
 
       clearSendForm();
@@ -513,7 +519,7 @@ export default function NotificationsPage() {
       await loadSent(1);
     } catch (error) {
       setMessage(
-        error?.response?.data?.error || "Unable to send notification."
+        error?.response?.data?.error || tr("Unable to send notification.")
       );
     } finally {
       setBusy(false);
@@ -524,7 +530,7 @@ export default function NotificationsPage() {
     <div className="mb-4 rounded-xl border border-teal-100 bg-white/90 p-3 shadow-lg">
       <div className="mb-3 flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
         <p className="text-xs font-bold text-teal-700">
-          Notification Filters
+          {tr("Notification Filters")}
         </p>
 
         <button
@@ -533,52 +539,52 @@ export default function NotificationsPage() {
           disabled={activeFilterCount === 0}
           className="self-start rounded-md border border-slate-300 bg-white px-3 py-1 text-[11px] font-bold text-slate-600 disabled:cursor-not-allowed disabled:opacity-40 md:self-auto"
         >
-          Clear Filters
+          {tr("Clear Filters")}
         </button>
       </div>
 
       <div className="grid grid-cols-1 gap-3 md:grid-cols-3 lg:grid-cols-6">
         <div>
-          <label className="text-[11px] font-bold text-slate-600">Read Status</label>
+          <label className="text-[11px] font-bold text-slate-600">{tr("Read Status")}</label>
           <select
             value={receivedFilters.readStatus}
             onChange={(event) => updateReceivedFilter("readStatus", event.target.value)}
             className={selectClass}
           >
-            <option value="all">All</option>
-            <option value="unread">Unread Only</option>
-            <option value="read">Read Only</option>
+            <option value="all">{tr("All")}</option>
+            <option value="unread">{tr("Unread Only")}</option>
+            <option value="read">{tr("Read Only")}</option>
           </select>
         </div>
 
         <div>
-          <label className="text-[11px] font-bold text-slate-600">Source</label>
+          <label className="text-[11px] font-bold text-slate-600">{tr("Source")}</label>
           <select
             value={receivedFilters.kind}
             onChange={(event) => updateReceivedFilter("kind", event.target.value)}
             className={selectClass}
           >
             {RECEIVED_KIND_OPTIONS.map((item) => (
-              <option key={item.value} value={item.value}>{item.label}</option>
+              <option key={item.value} value={item.value}>{tr(item.label)}</option>
             ))}
           </select>
         </div>
 
         <div>
-          <label className="text-[11px] font-bold text-slate-600">Module</label>
+          <label className="text-[11px] font-bold text-slate-600">{tr("Module")}</label>
           <select
             value={receivedFilters.resourceType}
             onChange={(event) => updateReceivedFilter("resourceType", event.target.value)}
             className={selectClass}
           >
             {RESOURCE_TYPE_OPTIONS.map((item) => (
-              <option key={item.value} value={item.value}>{item.label}</option>
+              <option key={item.value} value={item.value}>{tr(item.label)}</option>
             ))}
           </select>
         </div>
 
         <div>
-          <label className="text-[11px] font-bold text-slate-600">From Date</label>
+          <label className="text-[11px] font-bold text-slate-600">{tr("From Date")}</label>
           <input
             type="date"
             value={receivedFilters.dateFrom}
@@ -588,7 +594,7 @@ export default function NotificationsPage() {
         </div>
 
         <div>
-          <label className="text-[11px] font-bold text-slate-600">To Date</label>
+          <label className="text-[11px] font-bold text-slate-600">{tr("To Date")}</label>
           <input
             type="date"
             value={receivedFilters.dateTo}
@@ -598,8 +604,8 @@ export default function NotificationsPage() {
         </div>
 
         <div className="rounded-lg bg-teal-50 px-3 py-2 text-[11px] font-semibold text-teal-800">
-          <p>Unread: <span className="font-bold">{unreadCount}</span></p>
-          <p className="mt-1">Read: <span className="font-bold">{readCount}</span></p>
+          <p>{tr("Unread")}: <span className="font-bold">{unreadCount}</span></p>
+          <p className="mt-1">{tr("Read")}: <span className="font-bold">{readCount}</span></p>
         </div>
       </div>
     </div>
@@ -609,7 +615,7 @@ export default function NotificationsPage() {
     <div className="mb-4 rounded-xl border border-pink-100 bg-white/90 p-3 shadow-lg">
       <div className="mb-3 flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
         <p className="text-xs font-bold text-pink-700">
-          Sent Notification Filters
+          {tr("Sent Notification Filters")}
         </p>
 
         <button
@@ -618,34 +624,34 @@ export default function NotificationsPage() {
           disabled={activeFilterCount === 0}
           className="self-start rounded-md border border-slate-300 bg-white px-3 py-1 text-[11px] font-bold text-slate-600 disabled:cursor-not-allowed disabled:opacity-40 md:self-auto"
         >
-          Clear Filters
+          {tr("Clear Filters")}
         </button>
       </div>
 
       <div className="grid grid-cols-1 gap-3 md:grid-cols-3 lg:grid-cols-6">
         <div>
-          <label className="text-[11px] font-bold text-slate-600">Target Role</label>
+          <label className="text-[11px] font-bold text-slate-600">{tr("Target Role")}</label>
           <select
             value={sentFilters.targetRole}
             onChange={(event) => updateSentFilter("targetRole", event.target.value)}
             className={selectClass}
           >
-            <option value="all">All Roles</option>
+            <option value="all">{tr("All Roles")}</option>
             {TARGET_ROLE_OPTIONS.map((role) => (
-              <option key={role.value} value={role.value}>{role.label}</option>
+              <option key={role.value} value={role.value}>{tr(role.label)}</option>
             ))}
           </select>
         </div>
 
         <div>
-          <label className="text-[11px] font-bold text-slate-600">Target Niswan</label>
+          <label className="text-[11px] font-bold text-slate-600">{tr("Target Niswan")}</label>
           <select
             value={sentFilters.schoolId}
             onChange={(event) => updateSentFilter("schoolId", event.target.value)}
             className={selectClass}
           >
-            <option value="all">All Niswans / Any Scope</option>
-            <option value="ALL">Only All-Niswan Broadcasts</option>
+            <option value="all">{tr("All Niswans / Any Scope")}</option>
+            <option value="ALL">{tr("Only All-Niswan Broadcasts")}</option>
             {safeSchools.map((school) => (
               <option key={school._id} value={school._id}>
                 {school.code} : {school.nameEnglish}
@@ -655,20 +661,20 @@ export default function NotificationsPage() {
         </div>
 
         <div>
-          <label className="text-[11px] font-bold text-slate-600">Delivery</label>
+          <label className="text-[11px] font-bold text-slate-600">{tr("Delivery")}</label>
           <select
             value={sentFilters.deliveryStatus}
             onChange={(event) => updateSentFilter("deliveryStatus", event.target.value)}
             className={selectClass}
           >
             {DELIVERY_STATUS_OPTIONS.map((item) => (
-              <option key={item.value} value={item.value}>{item.label}</option>
+              <option key={item.value} value={item.value}>{tr(item.label)}</option>
             ))}
           </select>
         </div>
 
         <div>
-          <label className="text-[11px] font-bold text-slate-600">From Date</label>
+          <label className="text-[11px] font-bold text-slate-600">{tr("From Date")}</label>
           <input
             type="date"
             value={sentFilters.dateFrom}
@@ -678,7 +684,7 @@ export default function NotificationsPage() {
         </div>
 
         <div>
-          <label className="text-[11px] font-bold text-slate-600">To Date</label>
+          <label className="text-[11px] font-bold text-slate-600">{tr("To Date")}</label>
           <input
             type="date"
             value={sentFilters.dateTo}
@@ -688,32 +694,32 @@ export default function NotificationsPage() {
         </div>
 
         <div className="rounded-lg bg-pink-50 px-3 py-2 text-[11px] font-semibold text-pink-800">
-          <p>Matched: <span className="font-bold">{sentTotal}</span></p>
-          <p className="mt-1">Page Size: <span className="font-bold">{NOTIFICATION_PAGE_SIZE}</span></p>
+          <p>{tr("Matched")}: <span className="font-bold">{sentTotal}</span></p>
+          <p className="mt-1">{tr("Page Size")}: <span className="font-bold">{NOTIFICATION_PAGE_SIZE}</span></p>
         </div>
       </div>
     </div>
   ) : null;
 
   return (
-    <div className="p-3 lg:p-5 bg-repeat mt-3">
+    <div className="p-3 lg:p-5 bg-repeat mt-3" dir={direction} style={{ fontFamily }}>
       <div className="text-center">
         <h3 className="text-base lg:text-2xl font-bold px-5 py-0 text-gray-600">
-          Notifications
+          {tr("Notifications")}
         </h3>
       </div>
       <div className="mx-auto max-w-6xl">
         <div className="flex items-center justify-center mt-5 mb-3">
           <div className="flex flex-wrap items-center justify-center gap-3 rounded-lg bg-white/80 border border-slate-200 shadow-lg p-2">
             <div className="mr-1">
-              {LinkIcon("/dashboard", "Back")}
+              {LinkIcon("/dashboard", tr("Back"))}
             </div>
 
             <input
               type="text"
               value={searchText}
               onChange={(event) => setSearchText(event.target.value)}
-              placeholder={isSuperAdmin ? "Search sent notifications..." : "Search notifications..."}
+              placeholder={isSuperAdmin ? tr("Search sent notifications...") : tr("Search notifications...")}
               className="w-[190px] md:w-[320px] rounded-md border border-gray-300 px-3 py-2 text-xs md:text-sm focus:outline-none focus:border-teal-500"
             />
 
@@ -728,7 +734,7 @@ export default function NotificationsPage() {
                   setMessage("");
                 }}
               >
-                {LinkIcon("#", "Add")}
+                {LinkIcon("#", tr("Add"))}
               </div>
             ) : null}
           </div>
@@ -750,9 +756,9 @@ export default function NotificationsPage() {
           >
             <div className="mb-3 flex flex-col gap-1 md:flex-row md:items-center md:justify-between">
               <div>
-                <p className="font-bold text-pink-700">Send Notification</p>
+                <p className="font-bold text-pink-700">{tr("Send Notification")}</p>
                 <p className="text-[11px] text-slate-500">
-                  Select target roles and Niswan scope. Users will receive it in notification bell and list page.
+                  {tr("Select target roles and Niswan scope. Users will receive it in notification bell and list page.")}
                 </p>
               </div>
 
@@ -761,14 +767,14 @@ export default function NotificationsPage() {
                 onClick={() => setShowSendForm(false)}
                 className="rounded-md border border-slate-300 px-3 py-1 text-xs font-semibold text-slate-600 hover:bg-slate-50"
               >
-                Close
+                {tr("Close")}
               </button>
             </div>
 
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
               <div>
                 <label className="block text-xs font-semibold text-slate-600">
-                  Title <span className="text-red-600">*</span>
+                  {tr("Title")} <span className="text-red-600">*</span>
                 </label>
                 <input
                   type="text"
@@ -776,7 +782,7 @@ export default function NotificationsPage() {
                   onChange={(event) => setSendTitle(event.target.value)}
                   maxLength={140}
                   className="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-teal-500 focus:outline-none"
-                  placeholder="Example: Important announcement"
+                  placeholder={tr("Example: Important announcement")}
                 />
                 <p className="mt-1 text-[10px] text-slate-400">
                   {sendTitle.length}/140
@@ -785,7 +791,7 @@ export default function NotificationsPage() {
 
               <div>
                 <label className="block text-xs font-semibold text-slate-600">
-                  Target Roles <span className="text-red-600">*</span>
+                  {tr("Target Roles")} <span className="text-red-600">*</span>
                 </label>
 
                 <div className="mt-1 flex gap-2">
@@ -794,7 +800,7 @@ export default function NotificationsPage() {
                     onClick={selectAllRoles}
                     className="rounded-md border border-teal-500 px-2 py-1 text-[11px] font-semibold text-teal-700"
                   >
-                    Select All Roles
+                    {tr("Select All Roles")}
                   </button>
 
                   <button
@@ -802,7 +808,7 @@ export default function NotificationsPage() {
                     onClick={clearRoles}
                     className="rounded-md border border-slate-300 px-2 py-1 text-[11px] font-semibold text-slate-600"
                   >
-                    Clear
+                    {tr("Clear")}
                   </button>
                 </div>
 
@@ -817,7 +823,7 @@ export default function NotificationsPage() {
                         checked={targetRoles.includes(role.value)}
                         onChange={() => toggleRole(role.value)}
                       />
-                      {role.label}
+                      {tr(role.label)}
                     </label>
                   ))}
                 </div>
@@ -825,7 +831,7 @@ export default function NotificationsPage() {
 
               <div className="md:col-span-2">
                 <label className="block text-xs font-semibold text-slate-600">
-                  Message <span className="text-red-600">*</span>
+                  {tr("Message")} <span className="text-red-600">*</span>
                 </label>
                 <textarea
                   value={sendMessage}
@@ -833,7 +839,7 @@ export default function NotificationsPage() {
                   maxLength={500}
                   rows={5}
                   className="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm leading-6 focus:border-teal-500 focus:outline-none"
-                  placeholder="Type notification message here..."
+                  placeholder={tr("Type notification message here...")}
                 />
                 <p className="mt-1 text-[10px] text-slate-400">
                   {sendMessage.length}/500
@@ -843,7 +849,7 @@ export default function NotificationsPage() {
               <div className="md:col-span-2">
                 <div className="mb-2 flex flex-wrap items-center justify-between gap-2">
                   <label className="block text-xs font-semibold text-slate-600">
-                    Target Niswans <span className="text-red-600">*</span>
+                    {tr("Target Niswans")} <span className="text-red-600">*</span>
                   </label>
 
                   <label className="flex items-center gap-2 rounded-md bg-emerald-50 px-2 py-1 text-[11px] font-semibold text-emerald-700">
@@ -855,7 +861,7 @@ export default function NotificationsPage() {
                         if (event.target.checked) setSelectedSchoolIds([]);
                       }}
                     />
-                    Select All Niswans
+                    {tr("Select All Niswans")}
                   </label>
                 </div>
 
@@ -874,21 +880,21 @@ export default function NotificationsPage() {
                 </select>
 
                 <p className="mt-1 text-[10px] text-slate-400">
-                  Hold Ctrl key to select multiple Niswans. If Select All is checked, selected roles will be targeted across all Niswans.
+                  {tr("Hold Ctrl key to select multiple Niswans. If Select All is checked, selected roles will be targeted across all Niswans.")}
                 </p>
               </div>
             </div>
 
             <div className="mt-4 rounded-lg bg-slate-50 p-3 text-[11px] text-slate-600">
               <p>
-                <span className="font-semibold text-slate-700">Selected Roles:</span>{" "}
+                <span className="font-semibold text-slate-700">{tr("Selected Roles")}:</span>{" "}
                 {selectedRoleLabels || "-"}
               </p>
               <p className="mt-1">
-                <span className="font-semibold text-slate-700">Niswan Scope:</span>{" "}
+                <span className="font-semibold text-slate-700">{tr("Niswan Scope")}:</span>{" "}
                 {selectAllSchools
-                  ? "All Niswans"
-                  : `${selectedSchoolCount} selected Niswan(s)`}
+                  ? tr("All Niswans")
+                  : tr("{{count}} selected Niswan(s)", { count: selectedSchoolCount })}
               </p>
             </div>
 
@@ -898,7 +904,7 @@ export default function NotificationsPage() {
                 type="submit"
                 className="rounded-lg bg-pink-600 px-4 py-2 text-sm font-bold text-white shadow-lg hover:bg-pink-700 disabled:opacity-40"
               >
-                {busy ? "Sending..." : "Send Notification"}
+                {busy ? tr("Sending...") : tr("Send Notification")}
               </button>
             </div>
           </form>
@@ -916,7 +922,7 @@ export default function NotificationsPage() {
                     : "bg-white text-slate-600 border"
                     }`}
                 >
-                  All
+                  {tr("All")}
                 </button>
 
                 <button
@@ -927,7 +933,7 @@ export default function NotificationsPage() {
                     : "bg-white text-slate-600 border"
                     }`}
                 >
-                  Unread
+                  {tr("Unread")}
                 </button>
 
                 <button
@@ -938,12 +944,12 @@ export default function NotificationsPage() {
                     : "bg-white text-slate-600 border"
                     }`}
                 >
-                  Read
+                  {tr("Read")}
                 </button>
 
                 <p className="text-xs font-semibold text-slate-700 text-center md:text-left">
-                  Unread: <span className="font-bold text-teal-700">{unreadCount}</span>{" "}
-                  • Read: <span className="font-bold text-slate-600">{readCount}</span>
+                  {tr("Unread")}: <span className="font-bold text-teal-700">{unreadCount}</span>{" "}
+                  • {tr("Read")}: <span className="font-bold text-slate-600">{readCount}</span>
                 </p>
               </div>
 
@@ -952,17 +958,17 @@ export default function NotificationsPage() {
                 onClick={markAll}
                 className="self-start text-xs font-bold text-teal-700 disabled:opacity-40 md:self-auto"
               >
-                Mark all read
+                {tr("Mark all read")}
               </button>
             </div>
 
             <div className="overflow-hidden rounded-xl border border-slate-200 bg-white/90 shadow-lg">
               {receivedLoading ? (
-                <p className="p-5 text-sm text-slate-500">Loading notifications...</p>
+                <p className="p-5 text-sm text-slate-500">{tr("Loading notifications...")}</p>
               ) : null}
 
               {!receivedLoading && items.length === 0 ? (
-                <p className="p-5 text-sm text-slate-500">No notifications found.</p>
+                <p className="p-5 text-sm text-slate-500">{tr("No notifications found.")}</p>
               ) : null}
 
               {items.map((item) => (
@@ -980,27 +986,27 @@ export default function NotificationsPage() {
 
                     <div className="min-w-0">
                       <div className="flex flex-wrap items-center gap-2">
-                        <p className="font-bold text-sm text-slate-800">
+                        <p dir="auto" className="font-bold text-sm text-slate-800">
                           {item.title}
                         </p>
                         {!item.readAt ? (
                           <span className="rounded-full bg-teal-600 px-2 py-0.5 text-[9px] font-bold text-white">
-                            NEW
+                            {tr("NEW")}
                           </span>
                         ) : null}
                         {item.type === "manual.broadcast" ? (
                           <span className="rounded-full bg-pink-50 px-2 py-0.5 text-[9px] font-bold text-pink-700">
-                            Announcement
+                            {tr("Announcement")}
                           </span>
                         ) : null}
                       </div>
 
-                      <p className="mt-1 whitespace-pre-line text-xs leading-5 text-slate-600">
+                      <p dir="auto" className="mt-1 whitespace-pre-line text-xs leading-5 text-slate-600">
                         {item.message}
                       </p>
 
                       <p className="mt-2 text-[10px] text-slate-400">
-                        {item.resourceType || "System"} • {new Date(item.createdAt).toLocaleString()}
+                        {tr(item.resourceType || "System")} • {new Date(item.createdAt).toLocaleString()}
                       </p>
                     </div>
                   </div>
@@ -1012,7 +1018,7 @@ export default function NotificationsPage() {
                 total={receivedTotal}
                 limit={NOTIFICATION_PAGE_SIZE}
                 loading={receivedLoading}
-                label={receivedFilters.readStatus === "unread" ? "unread notifications" : "notifications"}
+                label={receivedFilters.readStatus === "unread" ? tr("unread notifications") : tr("notifications")}
                 onPageChange={setReceivedPage}
               />
             </div>
@@ -1022,15 +1028,15 @@ export default function NotificationsPage() {
         {isSuperAdmin ? (
           <div className="rounded-xl border border-slate-200 bg-white/90 shadow-lg overflow-hidden">
             <div className="bg-gray-100 px-4 py-3 text-sm font-bold text-pink-700">
-              Sent Notification Details
+              {tr("Sent Notification Details")}
             </div>
 
             {sentLoading ? (
-              <p className="p-5 text-sm text-slate-500">Loading sent details...</p>
+              <p className="p-5 text-sm text-slate-500">{tr("Loading sent details...")}</p>
             ) : null}
 
             {!sentLoading && broadcasts.length === 0 ? (
-              <p className="p-5 text-sm text-slate-500">No sent notification details found.</p>
+              <p className="p-5 text-sm text-slate-500">{tr("No sent notification details found.")}</p>
             ) : null}
 
             <div className="divide-y divide-slate-100">
@@ -1038,10 +1044,10 @@ export default function NotificationsPage() {
                 <div key={broadcast._id} className="p-4 hover:bg-sky-50/50">
                   <div className="flex flex-col gap-2 md:flex-row md:items-start md:justify-between">
                     <div className="min-w-0">
-                      <p className="text-sm font-bold text-slate-800 break-words">
+                      <p dir="auto" className="text-sm font-bold text-slate-800 break-words">
                         {broadcast.title}
                       </p>
-                      <p className="mt-1 whitespace-pre-line text-xs leading-5 text-slate-600 break-words">
+                      <p dir="auto" className="mt-1 whitespace-pre-line text-xs leading-5 text-slate-600 break-words">
                         {broadcast.message}
                       </p>
                     </div>
@@ -1050,30 +1056,30 @@ export default function NotificationsPage() {
                       ? "bg-rose-50 text-rose-700"
                       : "bg-emerald-50 text-emerald-700"
                       }`}>
-                      Sent: {broadcast.sentCount || 0} / Target: {broadcast.targetUserCount || 0}
+                      {tr("Sent")}: {broadcast.sentCount || 0} / {tr("Target")}: {broadcast.targetUserCount || 0}
                     </div>
                   </div>
 
                   <div className="mt-3 grid grid-cols-1 gap-2 md:grid-cols-2 text-[11px] text-slate-600">
                     <p>
-                      <span className="font-semibold text-slate-700">Roles:</span>{" "}
+                      <span className="font-semibold text-slate-700">{tr("Roles")}:</span>{" "}
                       {Array.isArray(broadcast.targetRoles) && broadcast.targetRoles.length > 0
-                        ? broadcast.targetRoles.map((role) => getRoleLabel(role)).join(", ")
+                        ? broadcast.targetRoles.map((role) => getRoleLabel(role, tr)).join(", ")
                         : "-"}
                     </p>
 
                     <p>
-                      <span className="font-semibold text-slate-700">Niswans:</span>{" "}
-                      {getBroadcastNiswanText(broadcast)}
+                      <span className="font-semibold text-slate-700">{tr("Niswans")}:</span>{" "}
+                      {getBroadcastNiswanText(broadcast, tr)}
                     </p>
 
                     <p>
-                      <span className="font-semibold text-slate-700">Failed:</span>{" "}
+                      <span className="font-semibold text-slate-700">{tr("Failed")}:</span>{" "}
                       {broadcast.failedCount || 0}
                     </p>
 
                     <p>
-                      <span className="font-semibold text-slate-700">Sent By:</span>{" "}
+                      <span className="font-semibold text-slate-700">{tr("Sent By")}:</span>{" "}
                       {broadcast.createdByName || "-"} • {new Date(broadcast.createdAt).toLocaleString()}
                     </p>
                   </div>
@@ -1086,7 +1092,7 @@ export default function NotificationsPage() {
               total={sentTotal}
               limit={NOTIFICATION_PAGE_SIZE}
               loading={sentLoading}
-              label="sent notifications"
+              label={tr("sent notifications")}
               onPageChange={setSentPage}
             />
           </div>

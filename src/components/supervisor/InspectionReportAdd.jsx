@@ -19,6 +19,7 @@ import {
   showSwalAlert,
   getPrcessing,
 } from "../../utils/CommonHelper";
+import { AutoText, useLanguage } from "../../i18n/LanguageContext";
 
 const VOICE_LANGUAGE_OPTIONS = [
   {
@@ -40,10 +41,22 @@ const VOICE_LANGUAGE_OPTIONS = [
     color: "from-emerald-500 to-green-500",
   },
   {
+    value: "ar-SA",
+    label: "Arabic",
+    helper: "Speak clearly in Arabic. Browser support may vary.",
+    color: "from-amber-500 to-orange-500",
+  },
+  {
     value: "ml-IN",
     label: "Malayalam",
     helper: "Speak clearly in Malayalam. Browser support may vary.",
     color: "from-violet-500 to-fuchsia-500",
+  },
+  {
+    value: "kn-IN",
+    label: "Kannada",
+    helper: "Speak clearly in Kannada. Browser support may vary.",
+    color: "from-indigo-500 to-blue-600",
   },
   {
     value: "te-IN",
@@ -88,6 +101,7 @@ const getSchoolLabel = (school) =>
 
 export default function InspectionReportAdd() {
   const navigate = useNavigate();
+  const { tr, direction, fontFamily, isRtl } = useLanguage();
   const quillRef = useRef(null);
   const recognitionRef = useRef(null);
   const finalTranscriptRef = useRef("");
@@ -115,7 +129,7 @@ export default function InspectionReportAdd() {
     handleRightClickAndFullScreen();
 
     if (checkAuth("inspectionReportAdd") === "NO") {
-      showSwalAlert("Error!", "User Authorization Failed!", "error");
+      showSwalAlert(tr("Error!"), tr("User Authorization Failed!"), "error");
       navigate("/login");
       return;
     }
@@ -170,8 +184,8 @@ export default function InspectionReportAdd() {
         }
       } catch (error) {
         showSwalAlert(
-          "Error!",
-          error?.message || "Failed to load Niswan list.",
+          tr("Error!"),
+          error?.message || tr("Failed to load Niswan list."),
           "error"
         );
       } finally {
@@ -330,7 +344,7 @@ export default function InspectionReportAdd() {
     );
 
     if (allowed.length !== selected.length) {
-      showSwalAlert("Info!", "Only pdf, jpg, jpeg, png files are allowed.", "info");
+      showSwalAlert(tr("Info!"), tr("Only pdf, jpg, jpeg, png files are allowed."), "info");
     }
 
     setFiles(allowed);
@@ -343,8 +357,8 @@ export default function InspectionReportAdd() {
 
     if (!SpeechRecognitionCtor) {
       showSwalAlert(
-        "Info!",
-        "Voice input is not supported in this browser. Please use latest Chrome or Edge.",
+        tr("Info!"),
+        tr("Voice input is not supported in this browser. Please use latest Chrome or Edge."),
         "info"
       );
       return;
@@ -409,40 +423,40 @@ export default function InspectionReportAdd() {
 
         if (errorCode === "not-allowed" || errorCode === "service-not-allowed") {
           showSwalAlert(
-            "Error!",
-            "Microphone permission denied. Please allow microphone access and try again.",
+            tr("Error!"),
+            tr("Microphone permission denied. Please allow microphone access and try again."),
             "error"
           );
         } else if (errorCode === "no-speech") {
           showSwalAlert(
-            "Info!",
-            "No speech detected. Please try again more clearly.",
+            tr("Info!"),
+            tr("No speech detected. Please try again more clearly."),
             "info"
           );
         } else if (errorCode === "audio-capture") {
           showSwalAlert(
-            "Error!",
-            "Microphone not found or unavailable.",
+            tr("Error!"),
+            tr("Microphone not found or unavailable."),
             "error"
           );
         } else if (errorCode === "language-not-supported") {
           showSwalAlert(
-            "Error!",
-            "Selected voice language is not supported by this browser.",
+            tr("Error!"),
+            tr("Selected voice language is not supported by this browser."),
             "error"
           );
         } else if (errorCode === "network") {
           showSwalAlert(
-            "Error!",
-            "Voice recognition network issue. Please try again.",
+            tr("Error!"),
+            tr("Voice recognition network issue. Please try again."),
             "error"
           );
         } else if (errorCode === "aborted") {
           // silent
         } else {
           showSwalAlert(
-            "Error!",
-            `Voice input failed${errorCode ? `: ${errorCode}` : "."}`,
+            tr("Error!"),
+            `${tr("Voice input failed")}${errorCode ? `: ${errorCode}` : "."}`,
             "error"
           );
         }
@@ -469,8 +483,8 @@ export default function InspectionReportAdd() {
 
         if (!transcript) {
           showSwalAlert(
-            "Info!",
-            "No final transcript was captured. Please try again.",
+            tr("Info!"),
+            tr("No final transcript was captured. Please try again."),
             "info"
           );
           return;
@@ -480,8 +494,8 @@ export default function InspectionReportAdd() {
         setLastTranscript(transcript);
 
         showSwalAlert(
-          "Success!",
-          "Voice text inserted into report content.",
+          tr("Success!"),
+          tr("Voice text inserted into report content."),
           "success"
         );
       };
@@ -492,8 +506,8 @@ export default function InspectionReportAdd() {
       recognitionRef.current = null;
 
       showSwalAlert(
-        "Error!",
-        error?.message || "Failed to start voice input.",
+        tr("Error!"),
+        error?.message || tr("Failed to start voice input."),
         "error"
       );
     }
@@ -510,8 +524,8 @@ export default function InspectionReportAdd() {
       recognitionRef.current = null;
 
       showSwalAlert(
-        "Error!",
-        error?.message || "Failed to stop voice input.",
+        tr("Error!"),
+        error?.message || tr("Failed to stop voice input."),
         "error"
       );
     }
@@ -521,22 +535,22 @@ export default function InspectionReportAdd() {
     e.preventDefault();
 
     if (!schoolId.trim()) {
-      showSwalAlert("Info!", "Niswan is required.", "info");
+      showSwalAlert(tr("Info!"), tr("Niswan is required."), "info");
       return;
     }
 
     if (!title.trim()) {
-      showSwalAlert("Info!", "Inspection report title is required.", "info");
+      showSwalAlert(tr("Info!"), tr("Inspection report title is required."), "info");
       return;
     }
 
     if (!reportDate) {
-      showSwalAlert("Info!", "Report date is required.", "info");
+      showSwalAlert(tr("Info!"), tr("Report date is required."), "info");
       return;
     }
 
     if (!contentHtml.trim() || !getPlainTextFromHtml(contentHtml)) {
-      showSwalAlert("Info!", "Inspection report content is required.", "info");
+      showSwalAlert(tr("Info!"), tr("Inspection report content is required."), "info");
       return;
     }
 
@@ -557,18 +571,18 @@ export default function InspectionReportAdd() {
       const res = await addInspectionReport(formData);
 
       showSwalAlert(
-        "Success!",
-        res?.message || "Inspection report submitted successfully.",
+        tr("Success!"),
+        tr(res?.message || "Inspection report submitted successfully."),
         "success"
       );
 
       navigate("/dashboard/inspection-reports");
     } catch (error) {
       showSwalAlert(
-        "Error!",
+        tr("Error!"),
         error?.response?.data?.message ||
           error.message ||
-          "Failed to submit inspection report.",
+          tr("Failed to submit inspection report."),
         "error"
       );
     } finally {
@@ -581,12 +595,15 @@ export default function InspectionReportAdd() {
   }
 
   return (
-    <div className="mt-1 bg-transparent md:p-5">
+    <div className="mt-1 bg-transparent md:p-5" dir={direction} style={{ fontFamily }}>
       <div className="mt-1 rounded-xl border border-slate-200 bg-transparent p-3 shadow-xl md:p-6">
         <div className="mb-5 flex items-center justify-center rounded-md bg-gradient-to-r from-teal-600 via-cyan-600 to-blue-600 px-4 py-2 text-white shadow-lg">
-          <h3 className="text-base font-semibold md:text-lg">
-            Add Inspection Report
-          </h3>
+          <AutoText
+            as="h3"
+            text={tr("Add Inspection Report")}
+            variant="heading"
+            className="font-semibold"
+          />
           <Link to="/dashboard/inspection-reports">
             <FaRegTimesCircle className="ml-4 rounded-full bg-white/90 p-1 text-2xl text-red-600 shadow-md md:ml-7" />
           </Link>
@@ -594,7 +611,7 @@ export default function InspectionReportAdd() {
 
         <form onSubmit={handleSubmit}>
           <div className="grid grid-cols-1 gap-4 text-sm md:grid-cols-12 bg-slate-50 p-5 rounded-lg shadow-xl">
-            <Field label="Niswan" className="text-xs md:col-span-4">
+            <Field label={tr("Niswan")} className="text-xs md:col-span-4">
               <Select
                 options={schoolOptions}
                 value={selectedSchoolOption}
@@ -605,24 +622,26 @@ export default function InspectionReportAdd() {
                 isDisabled={loadingSchools || schools.length === 1}
                 isClearable={schools.length !== 1}
                 isSearchable
-                placeholder="Select Niswan"
+                placeholder={tr("Select Niswan")}
                 styles={customSelectStyles}
                 className="text-xs"
                 classNamePrefix="inspection-school-select"
-                noOptionsMessage={() => "No Niswan found"}
+                isRtl={isRtl}
+                noOptionsMessage={() => tr("No Niswan found")}
                 menuPortalTarget={typeof document !== "undefined" ? document.body : null}
               />
             </Field>
 
-            <Field label="Report Title" className="text-xs md:col-span-4">
+            <Field label={tr("Report Title")} className="text-xs md:col-span-4">
               <input
                 value={title}
+                dir="auto"
                 onChange={(e) => setTitle(e.target.value)}
                 className="w-full rounded-md border border-violet-200 bg-violet-50 px-3 py-3 text-xs outline-none shadow-lg transition focus:border-violet-400 focus:bg-white"
               />
             </Field>
 
-            <Field label="Report Date" className="md:col-span-2">
+            <Field label={tr("Report Date")} className="md:col-span-2">
               <input
                 type="date"
                 value={reportDate}
@@ -631,10 +650,10 @@ export default function InspectionReportAdd() {
               />
             </Field>
 
-            <Field label="Attachments (pdf / jpg / png)" className="md:col-span-2">
+            <Field label={tr("Attachments (pdf / jpg / png)")} className="md:col-span-2">
               <label className="flex cursor-pointer items-center gap-3 rounded-md border border-emerald-200 bg-emerald-50 px-3 py-2.5 text-xs text-slate-700 shadow-lg transition hover:bg-emerald-100">
                 <FaUpload className="text-emerald-600" />
-                <span>Choose files</span>
+                <span>{tr("Choose files")}</span>
                 <input
                   type="file"
                   multiple
@@ -649,7 +668,7 @@ export default function InspectionReportAdd() {
           {files.length > 0 && (
             <div className="mt-4 rounded-lg border border-sky-100 bg-gradient-to-r from-sky-50 to-cyan-50 p-4 shadow-sm">
               <p className="mb-3 text-sm font-semibold text-slate-700">
-                Selected Files
+                {tr("Selected Files")}
               </p>
               <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
                 {files.map((file, index) => (
@@ -674,7 +693,7 @@ export default function InspectionReportAdd() {
             <div className="grid grid-cols-1 gap-4 bg-slate-50 p-4 lg:grid-cols-12">
               <div className="lg:col-span-6">
                 <label className="mb-1 block text-sm font-semibold text-slate-700">
-                  Voice Input Language
+                  {tr("Voice Input Language")}
                 </label>
                 <select
                   value={voiceLanguage}
@@ -684,7 +703,7 @@ export default function InspectionReportAdd() {
                 >
                   {VOICE_LANGUAGE_OPTIONS.map((item) => (
                     <option key={item.value} value={item.value}>
-                      {item.label}
+                      {tr(item.label)}
                     </option>
                   ))}
                 </select>
@@ -699,7 +718,7 @@ export default function InspectionReportAdd() {
                     className="inline-flex items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-emerald-500 to-green-600 px-4 py-2.5 text-sm font-semibold text-white shadow-xl transition hover:scale-[1.01] hover:from-emerald-600 hover:to-green-700 disabled:cursor-not-allowed disabled:opacity-60"
                   >
                     <FaMicrophone />
-                    {isListening ? "Listening..." : "Start Voice"}
+                    {isListening ? tr("Listening...") : tr("Start Voice")}
                   </button>
 
                   <button
@@ -709,7 +728,7 @@ export default function InspectionReportAdd() {
                     className="inline-flex items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-red-500 to-rose-600 px-4 py-2.5 text-sm font-semibold text-white shadow-xl transition hover:scale-[1.01] hover:from-red-600 hover:to-rose-700 disabled:cursor-not-allowed disabled:opacity-60"
                   >
                     <FaStop />
-                    Stop
+                    {tr("Stop")}
                   </button>
                 </div>
               </div>
@@ -718,7 +737,7 @@ export default function InspectionReportAdd() {
 
           <div className="mt-5">
             <label className="mb-2 block text-sm font-semibold text-slate-700">
-              Report Content
+              {tr("Report Content")}
             </label>
             <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-xl">
               <ReactQuill
@@ -740,7 +759,7 @@ export default function InspectionReportAdd() {
               className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-teal-600 to-cyan-600 px-5 py-2.5 text-sm font-bold text-white shadow-lg transition hover:scale-[1.01] hover:from-teal-700 hover:to-cyan-700 disabled:opacity-60"
             >
               <FaPaperPlane />
-              {submitting ? "Submitting..." : "Submit"}
+              {submitting ? tr("Submitting...") : tr("Submit")}
             </button>
           </div>
         </form>

@@ -16,6 +16,8 @@ import withReactContent from "sweetalert2-react-content";
 import { getBaseUrl } from "../../utils/CommonHelper.jsx";
 import ReportsFiltersDrawer from "./ReportsFiltersDrawer.jsx";
 import NiswanReportTable from "./NiswanReportTable.jsx";
+import DetailedReportsSection from "./DetailedReportsSection.jsx";
+import { useLanguage } from "../../i18n/LanguageContext.jsx";
 
 const MySwal = withReactContent(Swal);
 
@@ -72,6 +74,7 @@ const formatNumber = (value) => Number(value || 0).toLocaleString();
 const formatCurrency = (value) => `₹ ${Number(value || 0).toLocaleString()}`;
 
 export default function ReportsHome() {
+  const { tr, direction, fontFamily } = useLanguage();
   const [loading, setLoading] = useState(true);
   const [metaLoading, setMetaLoading] = useState(true);
   const [filters, setFilters] = useState(defaultFilters);
@@ -142,29 +145,29 @@ export default function ReportsHome() {
         ? meta.years
         : [];
 
-    if (filters.q) chips.push(`Search: ${filters.q}`);
-    if (filters.schoolCode) chips.push(`Code: ${filters.schoolCode}`);
+    if (filters.q) chips.push(`${tr("Search")}: ${filters.q}`);
+    if (filters.schoolCode) chips.push(`${tr("Code")}: ${filters.schoolCode}`);
     if (filters.schoolId) {
       const school = schools.find((item) => String(item._id) === String(filters.schoolId));
-      chips.push(`Niswan: ${school?.code || school?.nameEnglish || filters.schoolId}`);
+      chips.push(`${tr("Niswan")}: ${school?.code || school?.nameEnglish || filters.schoolId}`);
     }
     if (filters.courseId) {
       const course = courses.find((item) => String(item._id) === String(filters.courseId));
-      chips.push(`Course: ${course?.name || filters.courseId}`);
+      chips.push(`${tr("Course")}: ${course?.name || filters.courseId}`);
     }
     if (filters.acYear) {
       const year = years.find((item) => String(item._id) === String(filters.acYear));
-      chips.push(`Academic Year: ${year?.acYear || filters.acYear}`);
+      chips.push(`${tr("Academic Year")}: ${year?.acYear || filters.acYear}`);
     }
     if (filters.year !== "" && filters.year !== undefined && filters.year !== null) {
-      chips.push(`Studying Year: ${filters.year}`);
+      chips.push(`${tr("Studying Year")}: ${filters.year}`);
     }
-    if (filters.status) chips.push(`Status: ${filters.status}`);
-    if (filters.feesStatus) chips.push(`Fees: ${filters.feesStatus}`);
-    if (filters.hostel) chips.push(`Hostel: ${filters.hostel}`);
-    chips.push(`Months: ${filters.months}`);
+    if (filters.status) chips.push(`${tr("Status")}: ${tr(filters.status)}`);
+    if (filters.feesStatus) chips.push(`${tr("Fees")}: ${tr(filters.feesStatus)}`);
+    if (filters.hostel) chips.push(`${tr("Hostel")}: ${tr(filters.hostel)}`);
+    chips.push(`${tr("Months")}: ${filters.months}`);
     return chips;
-  }, [filters, meta]);
+  }, [filters, meta, tr]);
 
   const loadMeta = async () => {
     setMetaLoading(true);
@@ -192,8 +195,8 @@ export default function ReportsHome() {
       });
     } catch (e) {
       await MySwal.fire({
-        title: "Error",
-        text: e?.message || "Failed to load filters",
+        title: tr("Error!"),
+        text: e?.message || tr("Failed to load filters"),
         icon: "error",
       });
     } finally {
@@ -254,8 +257,8 @@ export default function ReportsHome() {
       );
     } catch (e) {
       await MySwal.fire({
-        title: "Error",
-        text: e?.message || "Failed to load report home",
+        title: tr("Error!"),
+        text: e?.message || tr("Failed to load report home"),
         icon: "error",
       });
     } finally {
@@ -284,7 +287,7 @@ export default function ReportsHome() {
         timer: 2500,
         showConfirmButton: false,
         icon: "warning",
-        title: e?.message || "Failed to load Niswan report",
+        title: e?.message || tr("Failed to load Niswan report"),
       });
       setNiswanRows([]);
       setNiswanSummary({
@@ -326,13 +329,13 @@ export default function ReportsHome() {
   const clearAllFilters = () => setFilters(defaultFilters);
 
   return (
-    <div className="p-3 md:p-6 bg-slate-50 min-h-screen">
+    <div className="p-3 md:p-6 bg-slate-50 min-h-screen" dir={direction} style={{ fontFamily }}>
       <div className="rounded-lg bg-gradient-to-r from-sky-700 via-cyan-700 to-emerald-700 text-white shadow-xl hover:shadow-2xl transition hover:-translate-y-0.5 p-5 md:p-6">
         <div className="flex items-start justify-between gap-4 flex-wrap">
           <div>
-            <h1 className="text-2xl md:text-3xl font-bold tracking-tight">Reports Dashboard</h1>
+            <h1 className="text-2xl md:text-3xl font-bold tracking-tight">{tr("Reports Dashboard")}</h1>
             <p className="text-sm md:text-base text-white/85 mt-2">
-              Overall UNIS student reporting with filters, trends, Niswan summary and export.
+              {tr("Overall UNIS student reporting with filters, trends, Niswan summary and export.")}
             </p>
           </div>
 
@@ -347,13 +350,13 @@ export default function ReportsHome() {
               className="px-3 py-2 rounded-lg bg-white/10 border border-white/20 hover:bg-white/20 text-sm"
               onClick={clearAllFilters}
             >
-              Clear Filters
+              {tr("Clear Filters")}
             </button>
             <button
               className="px-3 py-2 rounded-lg bg-white text-sky-700 hover:bg-sky-50 text-sm font-medium"
               onClick={() => exportHome("xlsx")}
             >
-              Export Home
+              {tr("Export Home")}
             </button>
           </div>
         </div>
@@ -371,25 +374,25 @@ export default function ReportsHome() {
       </div>
 
       <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-3 mt-5">
-        <ColorStatCard title="Total Students" value={formatNumber(kpis.totalStudents)} loading={loading} tone="blue" />
-        <ColorStatCard title="Fees Paid" value={formatNumber(kpis.feesPaid)} loading={loading} tone="green" />
-        <ColorStatCard title="Fees Unpaid" value={formatNumber(kpis.feesUnpaid)} loading={loading} tone="red" />
-        <ColorStatCard title="Active" value={formatNumber(kpis.active)} loading={loading} tone="sky" />
-        <ColorStatCard title="Graduated" value={formatNumber(kpis.graduated)} loading={loading} tone="violet" />
-        <ColorStatCard title="Niswans Covered" value={formatNumber(kpis.niswansCovered)} loading={loading} tone="amber" />
+        <ColorStatCard title={tr("Total Students")} value={formatNumber(kpis.totalStudents)} loading={loading} tone="blue" />
+        <ColorStatCard title={tr("Fees Paid")} value={formatNumber(kpis.feesPaid)} loading={loading} tone="green" />
+        <ColorStatCard title={tr("Fees Unpaid")} value={formatNumber(kpis.feesUnpaid)} loading={loading} tone="red" />
+        <ColorStatCard title={tr("Active")} value={formatNumber(kpis.active)} loading={loading} tone="sky" />
+        <ColorStatCard title={tr("Graduated")} value={formatNumber(kpis.graduated)} loading={loading} tone="violet" />
+        <ColorStatCard title={tr("Niswans Covered")} value={formatNumber(kpis.niswansCovered)} loading={loading} tone="amber" />
       </div>
 
       <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-3 mt-3">
-        <ColorStatCard title="This Month Admissions" value={formatNumber(kpis.thisMonthAdmissions)} loading={loading} tone="teal" small />
-        <ColorStatCard title="This Month Fees" value={formatCurrency(kpis.thisMonthFeesCollection)} loading={loading} tone="emerald" small />
-        <ColorStatCard title="Hostel Yes" value={formatNumber(kpis.hostelYes)} loading={loading} tone="pink" small />
-        <ColorStatCard title="Hostel No" value={formatNumber(kpis.hostelNo)} loading={loading} tone="indigo" small />
-        <ColorStatCard title="Transferred" value={formatNumber(kpis.transferred)} loading={loading} tone="orange" small />
-        <ColorStatCard title="Discontinued" value={formatNumber(kpis.discontinued)} loading={loading} tone="slate" small />
+        <ColorStatCard title={tr("This Month Admissions")} value={formatNumber(kpis.thisMonthAdmissions)} loading={loading} tone="teal" small />
+        <ColorStatCard title={tr("This Month Fees")} value={formatCurrency(kpis.thisMonthFeesCollection)} loading={loading} tone="emerald" small />
+        <ColorStatCard title={tr("Hostel Yes")} value={formatNumber(kpis.hostelYes)} loading={loading} tone="pink" small />
+        <ColorStatCard title={tr("Hostel No")} value={formatNumber(kpis.hostelNo)} loading={loading} tone="indigo" small />
+        <ColorStatCard title={tr("Transferred")} value={formatNumber(kpis.transferred)} loading={loading} tone="orange" small />
+        <ColorStatCard title={tr("Discontinued")} value={formatNumber(kpis.discontinued)} loading={loading} tone="slate" small />
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mt-5">
-        <ChartCard title="Admissions per month" subtitle={`Last ${filters.months} months`}>
+        <ChartCard title={tr("Admissions per month")} subtitle={`${tr("Last")} ${filters.months} ${tr("months")}`}>
           <ResponsiveContainer width="100%" height="100%">
             <LineChart data={trendAdmissions}>
               <CartesianGrid strokeDasharray="3 3" />
@@ -397,12 +400,12 @@ export default function ReportsHome() {
               <YAxis allowDecimals={false} />
               <Tooltip />
               <Legend />
-              <Line type="monotone" dataKey="count" name="Admissions" strokeWidth={2} dot={false} />
+              <Line type="monotone" dataKey="count" name={tr("Admissions")} strokeWidth={2} dot={false} />
             </LineChart>
           </ResponsiveContainer>
         </ChartCard>
 
-        <ChartCard title="Fees collection" subtitle={`Last ${filters.months} months`}>
+        <ChartCard title={tr("Fees collection")} subtitle={`${tr("Last")} ${filters.months} ${tr("months")}`}>
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={trendFees}>
               <CartesianGrid strokeDasharray="3 3" />
@@ -410,7 +413,7 @@ export default function ReportsHome() {
               <YAxis />
               <Tooltip />
               <Legend />
-              <Bar dataKey="amount" name="Fees" radius={[6, 6, 0, 0]} />
+              <Bar dataKey="amount" name={tr("Fees")} radius={[6, 6, 0, 0]} />
             </BarChart>
           </ResponsiveContainer>
         </ChartCard>
@@ -418,38 +421,40 @@ export default function ReportsHome() {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mt-5">
         <PreviewTable
-          title="Latest Unpaid Students"
-          subtitle="Recent students whose fees are still unpaid"
+          title={tr("Latest Unpaid Students")}
+          subtitle={tr("Recent students whose fees are still unpaid")}
           rows={latestUnpaid}
           columns={[
-            { key: "name", label: "Name" },
-            { key: "school", label: "Niswan" },
-            { key: "course", label: "Course" },
-            { key: "status", label: "Status", type: "status" },
-            { key: "feesStatus", label: "Fees", type: "feesStatus" },
+            { key: "name", label: tr("Name") },
+            { key: "school", label: tr("Niswan") },
+            { key: "course", label: tr("Course") },
+            { key: "status", label: tr("Status"), type: "status" },
+            { key: "feesStatus", label: tr("Fees"), type: "feesStatus" },
           ]}
         />
 
         <PreviewTable
-          title="Latest Admissions"
-          subtitle="Recently admitted students in the filtered scope"
+          title={tr("Latest Admissions")}
+          subtitle={tr("Recently admitted students in the filtered scope")}
           rows={latestAdmissions}
           columns={[
-            { key: "name", label: "Name" },
-            { key: "school", label: "Niswan" },
-            { key: "course", label: "Course" },
-            { key: "date", label: "Admission Date" },
-            { key: "hostel", label: "Hostel", type: "hostel" },
+            { key: "name", label: tr("Name") },
+            { key: "school", label: tr("Niswan") },
+            { key: "course", label: tr("Course") },
+            { key: "date", label: tr("Admission Date") },
+            { key: "hostel", label: tr("Hostel"), type: "hostel" },
           ]}
         />
       </div>
 
+      <DetailedReportsSection meta={meta} studentQueryString={queryString} />
+
       <div className="mt-6 rounded-xl bg-white border border-slate-200 shadow-xl hover:shadow-2xl transition hover:-translate-y-0.5 p-4 md:p-5">
         <div className="flex items-start justify-between gap-4 flex-wrap">
           <div>
-            <h2 className="text-lg md:text-xl font-semibold text-slate-800">Niswan Report</h2>
+            <h2 className="text-lg md:text-xl font-semibold text-slate-800">{tr("Niswan Report")}</h2>
             <p className="text-sm text-slate-500 mt-1">
-              Niswan-wise overall student, fees and status summary.
+              {tr("Niswan-wise overall student, fees and status summary.")}
             </p>
           </div>
           <div className="flex gap-2 flex-wrap">
@@ -457,24 +462,24 @@ export default function ReportsHome() {
               className="px-3 py-2 rounded-lg border bg-white hover:bg-slate-50 text-sm"
               onClick={() => exportNiswan("csv")}
             >
-              Export CSV
+              {tr("Export CSV")}
             </button>
             <button
               className="px-3 py-2 rounded-lg border bg-white hover:bg-slate-50 text-sm"
               onClick={() => exportNiswan("xlsx")}
             >
-              Export XLSX
+              {tr("Export XLSX")}
             </button>
           </div>
         </div>
 
         <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-3 mt-4">
-          <MiniSummaryCard title="Niswans" value={formatNumber(niswanSummary.totalNiswans)} />
-          <MiniSummaryCard title="Students" value={formatNumber(niswanSummary.totalStudents)} />
-          <MiniSummaryCard title="Fees Paid" value={formatNumber(niswanSummary.totalFeesPaid)} tone="green" />
-          <MiniSummaryCard title="Unpaid" value={formatNumber(niswanSummary.totalUnpaid)} tone="red" />
-          <MiniSummaryCard title="Active" value={formatNumber(niswanSummary.totalActive)} tone="sky" />
-          <MiniSummaryCard title="Graduated" value={formatNumber(niswanSummary.totalGraduated)} tone="violet" />
+          <MiniSummaryCard title={tr("Niswans")} value={formatNumber(niswanSummary.totalNiswans)} />
+          <MiniSummaryCard title={tr("Students")} value={formatNumber(niswanSummary.totalStudents)} />
+          <MiniSummaryCard title={tr("Fees Paid")} value={formatNumber(niswanSummary.totalFeesPaid)} tone="green" />
+          <MiniSummaryCard title={tr("Unpaid")} value={formatNumber(niswanSummary.totalUnpaid)} tone="red" />
+          <MiniSummaryCard title={tr("Active")} value={formatNumber(niswanSummary.totalActive)} tone="sky" />
+          <MiniSummaryCard title={tr("Graduated")} value={formatNumber(niswanSummary.totalGraduated)} tone="violet" />
         </div>
 
         <div className="mt-4">
@@ -543,6 +548,7 @@ function MiniSummaryCard({ title, value, tone = "slate" }) {
 }
 
 function PreviewTable({ title, subtitle, rows, columns }) {
+  const { tr } = useLanguage();
   const safeRows = Array.isArray(rows) ? rows : [];
 
   return (
@@ -552,10 +558,10 @@ function PreviewTable({ title, subtitle, rows, columns }) {
           <h3 className="font-semibold text-slate-800">{title}</h3>
           <p className="text-xs text-slate-500 mt-1">{subtitle}</p>
         </div>
-        <span className="text-xs text-slate-400">{safeRows.length} rows</span>
+        <span className="text-xs text-slate-400">{safeRows.length} {tr("rows")}</span>
       </div>
 
-      <div className="overflow-auto mt-3 hidden md:block">
+      <div className="overflow-auto mt-3 hidden md:block" dir="ltr">
         <table className="w-full text-sm">
           <thead className="bg-slate-50">
             <tr>
@@ -570,7 +576,7 @@ function PreviewTable({ title, subtitle, rows, columns }) {
             {safeRows.length === 0 ? (
               <tr>
                 <td className="px-2 py-3 text-slate-400" colSpan={columns.length}>
-                  No data
+                  {tr("No data")}
                 </td>
               </tr>
             ) : (
@@ -590,7 +596,7 @@ function PreviewTable({ title, subtitle, rows, columns }) {
 
       <div className="md:hidden mt-3 space-y-3">
         {safeRows.length === 0 ? (
-          <div className="text-slate-400 text-sm">No data</div>
+          <div className="text-slate-400 text-sm">{tr("No data")}</div>
         ) : (
           safeRows.map((row, idx) => (
             <div key={row?._id || idx} className="rounded-2xl border border-slate-200 p-3 bg-slate-50/60">
@@ -611,6 +617,7 @@ function PreviewTable({ title, subtitle, rows, columns }) {
 }
 
 function CellValue({ value, type }) {
+  const { tr } = useLanguage();
   const safe = value ?? "-";
 
   if (type === "status") {
@@ -625,17 +632,17 @@ function CellValue({ value, type }) {
               ? "bg-rose-50 text-rose-700"
               : "bg-slate-100 text-slate-700";
 
-    return <span className={`px-2.5 py-1 rounded-full text-xs font-medium ${color}`}>{safe}</span>;
+    return <span className={`px-2.5 py-1 rounded-full text-xs font-medium ${color}`}>{tr(String(safe))}</span>;
   }
 
   if (type === "feesStatus") {
     const color = safe === "Paid" ? "bg-emerald-50 text-emerald-700" : "bg-rose-50 text-rose-700";
-    return <span className={`px-2.5 py-1 rounded-full text-xs font-medium ${color}`}>{safe}</span>;
+    return <span className={`px-2.5 py-1 rounded-full text-xs font-medium ${color}`}>{tr(String(safe))}</span>;
   }
 
   if (type === "hostel") {
     const color = safe === "Yes" ? "bg-pink-50 text-pink-700" : "bg-slate-100 text-slate-700";
-    return <span className={`px-2.5 py-1 rounded-full text-xs font-medium ${color}`}>{safe}</span>;
+    return <span className={`px-2.5 py-1 rounded-full text-xs font-medium ${color}`}>{tr(String(safe))}</span>;
   }
 
   return <>{safe || "-"}</>;

@@ -78,6 +78,9 @@ const Login = () => {
       localStorage.setItem("token", response.data.token);
       localStorage.setItem("role", response.data.user.role);
       localStorage.setItem("userId", response.data.user._id);
+      if (response.data.user.preferredLanguage) {
+        localStorage.setItem("preferredLanguage", String(response.data.user.preferredLanguage).toLowerCase());
+      }
 
       if (response.data.user.schoolId) {
         localStorage.setItem("schoolId", response.data.user.schoolId);

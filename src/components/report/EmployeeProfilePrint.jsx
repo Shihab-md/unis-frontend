@@ -1,7 +1,10 @@
 import React from "react";
 import { getFormattedDate } from "../../utils/CommonHelper";
+import { useLanguage } from "../../i18n/LanguageContext";
+import { formatAge, formatWorkingExperience } from "../../utils/employeeProfileUtils";
 
 const EmployeeProfilePrint = ({ employee }) => {
+  const { tr, direction, fontFamily } = useLanguage();
   const safeValue = (value) => {
     if (value === null || value === undefined || value === "") return "-";
 
@@ -43,7 +46,7 @@ const EmployeeProfilePrint = ({ employee }) => {
               <td className="w-[34%] border border-t-0 border-r border-gray-300 bg-gray-50 px-2 py-2 align-middle font-semibold leading-normal">
                 {row.label}
               </td>
-              <td className="border border-t-0 border-gray-300 px-2 py-2 align-middle leading-normal break-words">
+              <td className="border border-t-0 border-gray-300 px-2 py-2 align-middle leading-normal break-words whitespace-pre-wrap">
                 {safeValue(row.value)}
               </td>
             </tr>
@@ -54,7 +57,7 @@ const EmployeeProfilePrint = ({ employee }) => {
   );
 
   return (
-    <div className="print-page w-full max-w-[210mm] min-h-[297mm] bg-white mx-auto p-[12mm] text-[12px] text-gray-900">
+    <div dir={direction} style={{ fontFamily }} className="print-page w-full max-w-[210mm] min-h-[297mm] bg-white mx-auto p-[12mm] text-[12px] text-gray-900">
       {/* Header */}
       <div className="border-b-2 border-gray-700 pb-3">
         <table className="w-full border-collapse">
@@ -75,9 +78,9 @@ const EmployeeProfilePrint = ({ employee }) => {
                 <h1 className="text-[20px] font-bold uppercase tracking-wide leading-tight">
                   UNIS Academy
                 </h1>
-                <p className="text-[11px] mt-1">Employee Management</p>
+                <p className="text-[11px] mt-1">{tr("Employee Management")}</p>
                 <p className="text-[16px] font-semibold mt-2 uppercase">
-                  Employee Profile Report
+                  {tr("Employee Profile Report")}
                 </p>
               </td>
 
@@ -106,21 +109,21 @@ const EmployeeProfilePrint = ({ employee }) => {
           <tr>
             <td className="w-1/2 border border-gray-400 px-2 py-2 align-middle">
               <p>
-                <span className="font-semibold">Generated Date:</span>{" "}
+                <span className="font-semibold">{tr("Generated Date")}:</span>{" "}
                 {todayFormatted()}
               </p>
               <p>
-                <span className="font-semibold">Employee ID:</span>{" "}
+                <span className="font-semibold">{tr("Employee ID")}:</span>{" "}
                 {safeValue(employee?.employeeId)}
               </p>
             </td>
             <td className="w-1/2 border border-gray-400 px-2 py-2 align-middle">
               <p>
-                <span className="font-semibold">Name:</span>{" "}
+                <span className="font-semibold">{tr("Name")}:</span>{" "}
                 {safeValue(employee?.userId?.name)}
               </p>
               <p>
-                <span className="font-semibold">Email:</span>{" "}
+                <span className="font-semibold">{tr("Email")}:</span>{" "}
                 {safeValue(employee?.userId?.email)}
               </p>
             </td>
@@ -129,40 +132,46 @@ const EmployeeProfilePrint = ({ employee }) => {
       </table>
 
       <SectionTable
-        title="Basic Information"
+        title={tr("Basic Information")}
         rows={[
-          { label: "Name", value: employee?.userId?.name },
-          { label: "Email", value: employee?.userId?.email },
-          { label: "Employee ID", value: employee?.employeeId },
-          { label: "Niswan Name", value: getSchoolName() },
-          { label: "Contact Number", value: employee?.contactNumber },
-          { label: "Address", value: employee?.address },
+          { label: tr("Name"), value: employee?.userId?.name },
+          { label: tr("Email"), value: employee?.userId?.email },
+          { label: tr("Employee ID"), value: employee?.employeeId },
+          { label: tr("Niswan Name"), value: getSchoolName() },
+          { label: tr("Contact Number"), value: employee?.contactNumber },
+          { label: tr("Address"), value: employee?.address },
         ]}
       />
 
       <SectionTable
-        title="Personal Information"
+        title={tr("Personal Information")}
         rows={[
-          { label: "Qualification", value: employee?.qualification },
-          { label: "Date of Birth", value: getFormattedDate(employee?.dob) },
-          { label: "Gender", value: employee?.gender },
-          { label: "Marital Status", value: employee?.maritalStatus },
+          { label: tr("Father / Guardian Name"), value: employee?.fatherGuardianName },
+          { label: tr("Qualification"), value: employee?.qualification },
+          { label: tr("Date of Birth"), value: getFormattedDate(employee?.dob) },
+          { label: tr("Age"), value: formatAge(employee?.dob, tr) },
+          { label: tr("Gender"), value: tr(employee?.gender || "-") },
+          { label: tr("Marital Status"), value: tr(employee?.maritalStatus || "-") },
         ]}
       />
 
       <SectionTable
-        title="Employment Information"
+        title={tr("Employment Information")}
         rows={[
-          { label: "Date of Joining", value: getFormattedDate(employee?.doj) },
-          { label: "Salary", value: employee?.salary },
-          { label: "Designation / More Details", value: employee?.designation },
+          { label: tr("Date of Joining"), value: getFormattedDate(employee?.doj) },
+          { label: tr("Working Experience"), value: formatWorkingExperience(employee?.doj, tr) },
+          { label: tr("Other Designation"), value: employee?.otherDesignation },
+          { label: tr("Hadhiya"), value: employee?.salary },
+          { label: tr("Travelling Allowance"), value: employee?.travellingAllowance ?? 0 },
+          { label: tr("Activities carried out"), value: employee?.activitiesCarriedOut },
+          { label: tr("Bank account details"), value: employee?.bankAccountDetails },
         ]}
       />
 
       {/* Footer */}
       <div className="mt-8 pt-2 border-t border-gray-400 text-center text-[10px] text-gray-700">
-        <p>UNIS Academy - Employee Profile Report</p>
-        <p>Generated on {todayFormatted()}</p>
+        <p>UNIS Academy - {tr("Employee Profile Report")}</p>
+        <p>{tr("Generated on")} {todayFormatted()}</p>
       </div>
     </div>
   );

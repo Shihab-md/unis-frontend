@@ -11,8 +11,10 @@ import {
 } from "react-icons/fa";
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import { AutoText, useLanguage } from '../../i18n/LanguageContext';
 
 const Edit = () => {
+  const { tr, direction, fontFamily } = useLanguage();
 
   // To prevent right-click AND For FULL screen view.
   useEffect(() => {
@@ -34,12 +36,17 @@ const Edit = () => {
     address: "",
     routeName: "",
     qualification: "",
+    fatherGuardianName: "",
     dob: "",
     gender: "",
     maritalStatus: "",
     doj: "",
     designation: "",
     salary: "",
+    travellingAllowance: "",
+    otherDesignation: "",
+    activitiesCarriedOut: "",
+    bankAccountDetails: "",
     jobType: "",
   });
 
@@ -76,12 +83,17 @@ const Edit = () => {
             address: supervisor.address,
             routeName: supervisor.routeName,
             qualification: supervisor.qualification,
+            fatherGuardianName: supervisor.fatherGuardianName || "",
             //  dob: supervisor.dob,
             gender: supervisor.gender,
             maritalStatus: supervisor.maritalStatus,
             //  doj: supervisor.doj,
             designation: supervisor.designation,
             salary: supervisor.salary,
+            travellingAllowance: supervisor.travellingAllowance ?? 0,
+            otherDesignation: supervisor.otherDesignation || "",
+            activitiesCarriedOut: supervisor.activitiesCarriedOut || "",
+            bankAccountDetails: supervisor.bankAccountDetails || "",
             jobType: supervisor.jobType,
             remarks: supervisor.remarks,
             active: supervisor.active
@@ -147,10 +159,15 @@ const Edit = () => {
       formData.append("address", supervisor.address || "");
       formData.append("routeName", supervisor.routeName || "");
       formData.append("qualification", supervisor.qualification || "");
+      formData.append("fatherGuardianName", supervisor.fatherGuardianName || "");
       formData.append("gender", supervisor.gender || "");
       formData.append("maritalStatus", supervisor.maritalStatus || "");
       formData.append("designation", supervisor.designation || "");
       formData.append("salary", supervisor.salary || "");
+      formData.append("travellingAllowance", supervisor.travellingAllowance ?? "");
+      formData.append("otherDesignation", supervisor.otherDesignation || "");
+      formData.append("activitiesCarriedOut", supervisor.activitiesCarriedOut || "");
+      formData.append("bankAccountDetails", supervisor.bankAccountDetails || "");
       formData.append("jobType", supervisor.jobType || "");
       formData.append("remarks", supervisor.remarks || "");
       formData.append("active", supervisor.active || "");
@@ -246,9 +263,9 @@ const Edit = () => {
   return (
     <>
       {supervisor ? (
-        <div className="max-w-5xl mx-auto mt-2 p-5 shadow-lg border">
+        <div dir={direction} style={{ fontFamily }} className="max-w-5xl mx-auto mt-2 p-5 shadow-lg border">
           <div className="flex py-2 px-4 items-center justify-center bg-teal-700 text-white rounded-lg shadow-lg">
-            <h2 className="text-sm lg:text-xl font-semibold items-center justify-center">Update Supervisor Details</h2>
+            <AutoText as="h2" text={tr("Update Supervisor Details")} variant="button" className="font-semibold items-center justify-center" />
             <Link to="/dashboard/supervisors" >
               <FaRegTimesCircle className="text-2xl ml-7 text-red-700 bg-gray-200 rounded-xl shadow-md items-center justify-end" />
             </Link>
@@ -261,7 +278,7 @@ const Edit = () => {
                 {/* Name */}
                 <div>
                   <label className="block mt-2 text-sm font-medium text-slate-500">
-                    Name <span className="text-red-700">*</span>
+                    {tr("Name")} <span className="text-red-700">*</span>
                   </label>
                   <input
                     type="text"
@@ -277,7 +294,7 @@ const Edit = () => {
                 {/* Email */}
                 <div>
                   <label className="block mt-2 text-sm font-medium text-slate-500">
-                    Email <span className="text-red-700">*</span>
+                    {tr("Email")} <span className="text-red-700">*</span>
                   </label>
                   <input
                     type="email"
@@ -296,7 +313,7 @@ const Edit = () => {
                 {/* Supervisor ID */}
                 <div>
                   <label className="block mt-2 text-sm font-medium text-slate-500">
-                    Supervisor ID <span className="text-red-700">*</span>
+                    {tr("Supervisor ID")} <span className="text-red-700">*</span>
                   </label>
                   <input
                     type="text"
@@ -313,7 +330,7 @@ const Edit = () => {
                 {/* Contact Number */}
                 <div>
                   <label className="block mt-2 text-sm font-medium text-slate-500">
-                    Contact Number <span className="text-red-700">*</span>
+                    {tr("Contact Number")} <span className="text-red-700">*</span>
                   </label>
                   <input
                     type="number"
@@ -330,7 +347,7 @@ const Edit = () => {
                 {/* Route Name */}
                 <div>
                   <label className="block mt-2 text-sm font-medium text-slate-500">
-                    Route Name <span className="text-red-700">*</span>
+                    {tr("Route Name")} <span className="text-red-700">*</span>
                   </label>
                   <input
                     type="text"
@@ -344,11 +361,11 @@ const Edit = () => {
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mt-7">
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-5 mt-7">
                 {/* Address */}
                 <div className="md:col-span-2">
                   <label className="block mt-2 text-sm font-medium text-slate-500">
-                    Address <span className="text-red-700">*</span>
+                    {tr("Address")} <span className="text-red-700">*</span>
                   </label>
                   <input
                     type="text"
@@ -364,7 +381,7 @@ const Edit = () => {
                 {/* Qualification */}
                 <div>
                   <label className="block mt-2 text-sm font-medium text-slate-500">
-                    Qualification <span className="text-red-700">*</span>
+                    {tr("Qualification")} <span className="text-red-700">*</span>
                   </label>
                   <input
                     type="text"
@@ -376,13 +393,27 @@ const Edit = () => {
                     required
                   />
                 </div>
+
+                {/* Father / Guardian Name */}
+                <div>
+                  <label className="block mt-2 text-sm font-medium text-slate-500">
+                    {tr("Father / Guardian Name")}
+                  </label>
+                  <input
+                    type="text"
+                    name="fatherGuardianName"
+                    value={supervisor.fatherGuardianName || ""}
+                    onChange={handleChange}
+                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                  />
+                </div>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mt-7">
                 {/* Date of Birth */}
                 <div className="grid grid-cols-1">
                   <label className="block mt-2 text-sm font-medium text-slate-500">
-                    Date of Birth <span className="text-red-700">*</span>
+                    {tr("Date of Birth")} <span className="text-red-700">*</span>
                   </label>
                   <DatePicker
                     name="dob"
@@ -398,12 +429,19 @@ const Edit = () => {
                   //showIcon
                   //toggleCalendarOnIconClick
                   />
+                  <div className="mt-1 h-4 text-[10px] font-normal text-slate-500 leading-4">
+                    {selectedDOBDate ? (
+                      <>
+                        {tr("Age")}: <span className="text-blue-700">{formatAge(selectedDOBDate, tr)}</span>
+                      </>
+                    ) : null}
+                  </div>
                 </div>
 
                 {/* Gender */}
                 <div>
                   <label className="block mt-2 text-sm font-medium text-slate-500">
-                    Gender <span className="text-red-700">*</span>
+                    {tr("Gender")} <span className="text-red-700">*</span>
                   </label>
                   <select
                     name="gender"
@@ -413,27 +451,27 @@ const Edit = () => {
                     required
                   >
                     <option value=""></option>
-                    <option value="Male">Male</option>
-                    <option value="Female">Female</option>
+                    <option value="Male">{tr("Male")}</option>
+                    <option value="Female">{tr("Female")}</option>
                   </select>
                 </div>
 
                 {/* Marital Status */}
                 <div>
                   <label className="block mt-2 text-sm font-medium text-slate-500">
-                    Marital Status <span className="text-red-700">*</span>
+                    {tr("Marital Status")} <span className="text-red-700">*</span>
                   </label>
                   <select
                     name="maritalStatus"
                     value={supervisor.maritalStatus}
                     onChange={handleChange}
-                    placeholder="Marital Status"
+                    placeholder={tr("Marital Status")}
                     className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                     required
                   >
                     <option value=""></option>
-                    <option value="Single">Single</option>
-                    <option value="Married">Married</option>
+                    <option value="Single">{tr("Single")}</option>
+                    <option value="Married">{tr("Married")}</option>
                   </select>
                 </div>
               </div>
@@ -442,26 +480,26 @@ const Edit = () => {
                 {/* Job Type */}
                 <div>
                   <label className="block mt-2 text-sm font-medium text-slate-500">
-                    Job Type <span className="text-red-700">*</span>
+                    {tr("Job Type")} <span className="text-red-700">*</span>
                   </label>
                   <select
                     name="jobType"
                     value={supervisor.jobType}
                     onChange={handleChange}
-                    placeholder="Job Type"
+                    placeholder={tr("Job Type")}
                     className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
                     required
                   >
                     <option value=""></option>
-                    <option value="Full-Time">Full-Time</option>
-                    <option value="Part-Time">Part-Time</option>
+                    <option value="Full-Time">{tr("Full-Time")}</option>
+                    <option value="Part-Time">{tr("Part-Time")}</option>
                   </select>
                 </div>
 
                 {/* Date of Joining */}
                 <div className="grid grid-cols-1">
                   <label className="block mt-2 text-sm font-medium text-slate-500">
-                    Date of Joining <span className="text-red-700">*</span>
+                    {tr("Date of Joining")} <span className="text-red-700">*</span>
                   </label>
                   <DatePicker
                     name="doj"
@@ -477,12 +515,19 @@ const Edit = () => {
                   //showIcon
                   //toggleCalendarOnIconClick
                   />
+                  <div className="mt-1 h-4 text-[10px] font-normal text-slate-500 leading-4">
+                    {selectedDOJDate ? (
+                      <>
+                        {tr("Working Experience")}: <span className="text-blue-700">{formatWorkingExperience(selectedDOJDate, tr)}</span>
+                      </>
+                    ) : null}
+                  </div>
                 </div>
 
                 {/* Salary */}
                 <div>
                   <label className="block mt-2 text-sm font-medium text-slate-500">
-                    Salary <span className="text-red-700">*</span>
+                    {tr("Hadhiya")} <span className="text-red-700">*</span>
                   </label>
                   <input
                     type="number"
@@ -490,7 +535,7 @@ const Edit = () => {
                     onChange={handleChange}
                     value={supervisor.salary}
                     min="0"
-                    //    placeholder="Salary"
+                    //    placeholder="Hadhiya"
                     className="mt-1 p-2 mb-3 block w-full border border-gray-300 rounded-md"
                     required
                   />
@@ -499,7 +544,7 @@ const Edit = () => {
                 {/* Active */}
                 <div>
                   <label className="block mt-3 text-sm font-medium text-slate-500">
-                    Status <span className="text-red-700">*</span>
+                    {tr("Status")} <span className="text-red-700">*</span>
                   </label>
                   <select
                     name="active"
@@ -509,9 +554,71 @@ const Edit = () => {
                     required
                   >
                     <option value=""></option>
-                    <option value="Active">Active</option>
-                    <option value="In-Active">In-Active</option>
+                    <option value="Active">{tr("Active")}</option>
+                    <option value="In-Active">{tr("In-Active")}</option>
                   </select>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mt-7">
+                {/* Travelling Allowance */}
+                <div>
+                  <label className="block mt-2 text-sm font-medium text-slate-500">
+                    {tr("Travelling Allowance")}
+                  </label>
+                  <input
+                    type="number"
+                    name="travellingAllowance"
+                    value={supervisor.travellingAllowance ?? ""}
+                    onChange={handleChange}
+                    min="0"
+                    step="0.01"
+                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                  />
+                </div>
+
+                {/* Other Designation */}
+                <div>
+                  <label className="block mt-2 text-sm font-medium text-slate-500">
+                    {tr("Other Designation")}
+                  </label>
+                  <textarea
+                    name="otherDesignation"
+                    value={supervisor.otherDesignation || ""}
+                    onChange={handleChange}
+                    rows={2}
+                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md resize-y"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mt-7">
+                {/* Activities carried out */}
+                <div>
+                  <label className="block mt-2 text-sm font-medium text-slate-500">
+                    {tr("Activities carried out")}
+                  </label>
+                  <textarea
+                    name="activitiesCarriedOut"
+                    value={supervisor.activitiesCarriedOut || ""}
+                    onChange={handleChange}
+                    rows={3}
+                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md resize-y"
+                  />
+                </div>
+
+                {/* Bank account details */}
+                <div>
+                  <label className="block mt-2 text-sm font-medium text-slate-500">
+                    {tr("Bank account details")}
+                  </label>
+                  <textarea
+                    name="bankAccountDetails"
+                    value={supervisor.bankAccountDetails || ""}
+                    onChange={handleChange}
+                    rows={3}
+                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md resize-y"
+                  />
                 </div>
               </div>
 
@@ -519,13 +626,13 @@ const Edit = () => {
                 {/* Image Upload */}
                 <div>
                   <label className="block mt-2 text-sm font-medium text-slate-500">
-                    Update Image
+                    {tr("Update Image")}
                   </label>
                   <input
                     type="file"
                     name="file"
                     onChange={handleChange}
-                    placeholder="Upload Image"
+                    placeholder={tr("Upload Image")}
                     accept="image/*"
                     className="mt-1 p-1 mb-5 block w-full border border-gray-300 rounded-md"
                   />
@@ -534,7 +641,7 @@ const Edit = () => {
                 {/* More details about the Supervisor */}
                 <div className="md:col-span-2">
                   <label className="block mt-2 text-sm font-medium text-slate-500">
-                    More details about the Supervisor
+                    {tr("More details about the Supervisor")}
                   </label>
                   <input
                     type="text"
@@ -551,7 +658,7 @@ const Edit = () => {
               type="submit"
               className="w-full mt-3 bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded-lg shadow-lg hover:-translate-y-0.5"
             >
-              Update Supervisor
+              <AutoText text={tr("Update Supervisor")} variant="button" className="font-bold" />
             </button>
           </form>
         </div>

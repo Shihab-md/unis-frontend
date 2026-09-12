@@ -1,7 +1,10 @@
 import React from "react";
 import { getFormattedDate } from "../../utils/CommonHelper";
+import { useLanguage } from "../../i18n/LanguageContext";
+import { formatAge, formatWorkingExperience } from "../../utils/supervisorProfileUtils";
 
 const SupervisorProfilePrint = ({ supervisor }) => {
+  const { tr, direction, fontFamily } = useLanguage();
   const safeValue = (value) => {
     if (value === null || value === undefined || value === "") return "-";
 
@@ -34,7 +37,7 @@ const SupervisorProfilePrint = ({ supervisor }) => {
               <td className="w-[34%] border border-t-0 border-r border-gray-300 bg-gray-50 px-2 py-2 align-middle font-semibold leading-normal">
                 {row.label}
               </td>
-              <td className="border border-t-0 border-gray-300 px-2 py-2 align-middle leading-normal break-words">
+              <td className="border border-t-0 border-gray-300 px-2 py-2 align-middle leading-normal break-words whitespace-pre-wrap">
                 {safeValue(row.value)}
               </td>
             </tr>
@@ -45,7 +48,7 @@ const SupervisorProfilePrint = ({ supervisor }) => {
   );
 
   return (
-    <div className="print-page w-full max-w-[210mm] min-h-[297mm] bg-white mx-auto p-[12mm] text-[12px] text-gray-900">
+    <div dir={direction} style={{ fontFamily }} className="print-page w-full max-w-[210mm] min-h-[297mm] bg-white mx-auto p-[12mm] text-[12px] text-gray-900">
       {/* Header */}
       <div className="border-b-2 border-gray-700 pb-3">
         <table className="w-full border-collapse">
@@ -66,9 +69,9 @@ const SupervisorProfilePrint = ({ supervisor }) => {
                 <h1 className="text-[20px] font-bold uppercase tracking-wide leading-tight">
                   UNIS Academy
                 </h1>
-                <p className="text-[11px] mt-1">Supervisor Management</p>
+                <p className="text-[11px] mt-1">{tr("Supervisor Management")}</p>
                 <p className="text-[16px] font-semibold mt-2 uppercase">
-                  Supervisor Profile Report
+                  {tr("Supervisor Profile Report")}
                 </p>
               </td>
 
@@ -98,21 +101,21 @@ const SupervisorProfilePrint = ({ supervisor }) => {
           <tr>
             <td className="w-1/2 border border-gray-400 px-2 py-2 align-middle">
               <p>
-                <span className="font-semibold">Generated Date:</span>{" "}
+                <span className="font-semibold">{tr("Generated Date")}:</span>{" "}
                 {todayFormatted()}
               </p>
               <p>
-                <span className="font-semibold">Supervisor ID:</span>{" "}
+                <span className="font-semibold">{tr("Supervisor ID")}:</span>{" "}
                 {safeValue(supervisor?.supervisorId)}
               </p>
             </td>
             <td className="w-1/2 border border-gray-400 px-2 py-2 align-middle">
               <p>
-                <span className="font-semibold">Name:</span>{" "}
+                <span className="font-semibold">{tr("Name")}:</span>{" "}
                 {safeValue(supervisor?.userId?.name)}
               </p>
               <p>
-                <span className="font-semibold">Email:</span>{" "}
+                <span className="font-semibold">{tr("Email")}:</span>{" "}
                 {safeValue(supervisor?.userId?.email)}
               </p>
             </td>
@@ -121,41 +124,48 @@ const SupervisorProfilePrint = ({ supervisor }) => {
       </table>
 
       <SectionTable
-        title="Basic Information"
+        title={tr("Basic Information")}
         rows={[
-          { label: "Name", value: supervisor?.userId?.name },
-          { label: "Email", value: supervisor?.userId?.email },
-          { label: "Supervisor ID", value: supervisor?.supervisorId },
-          { label: "Contact Number", value: supervisor?.contactNumber },
-          { label: "Address", value: supervisor?.address },
-          { label: "Route", value: supervisor?.routeName },
+          { label: tr("Name"), value: supervisor?.userId?.name },
+          { label: tr("Email"), value: supervisor?.userId?.email },
+          { label: tr("Supervisor ID"), value: supervisor?.supervisorId },
+          { label: tr("Contact Number"), value: supervisor?.contactNumber },
+          { label: tr("Address"), value: supervisor?.address },
+          { label: tr("Route"), value: supervisor?.routeName },
         ]}
       />
 
       <SectionTable
-        title="Personal Information"
+        title={tr("Personal Information")}
         rows={[
-          { label: "Qualification", value: supervisor?.qualification },
-          { label: "Date of Birth", value: getFormattedDate(supervisor?.dob) },
-          { label: "Gender", value: supervisor?.gender },
-          { label: "Marital Status", value: supervisor?.maritalStatus },
+          { label: tr("Father / Guardian Name"), value: supervisor?.fatherGuardianName },
+          { label: tr("Qualification"), value: supervisor?.qualification },
+          { label: tr("Date of Birth"), value: getFormattedDate(supervisor?.dob) },
+          { label: tr("Age"), value: formatAge(supervisor?.dob, tr) },
+          { label: tr("Gender"), value: tr(supervisor?.gender || "-") },
+          { label: tr("Marital Status"), value: tr(supervisor?.maritalStatus || "-") },
         ]}
       />
 
       <SectionTable
-        title="Employment Information"
+        title={tr("Employment Information")}
         rows={[
-          { label: "Job Type", value: supervisor?.jobType },
-          { label: "Date of Joining", value: getFormattedDate(supervisor?.doj) },
-          { label: "Salary", value: supervisor?.salary },
-          { label: "Remarks", value: supervisor?.remarks },
+          { label: tr("Job Type"), value: tr(supervisor?.jobType || "-") },
+          { label: tr("Date of Joining"), value: getFormattedDate(supervisor?.doj) },
+          { label: tr("Working Experience"), value: formatWorkingExperience(supervisor?.doj, tr) },
+          { label: tr("Other Designation"), value: supervisor?.otherDesignation },
+          { label: tr("Hadhiya"), value: supervisor?.salary },
+          { label: tr("Travelling Allowance"), value: supervisor?.travellingAllowance ?? 0 },
+          { label: tr("Activities carried out"), value: supervisor?.activitiesCarriedOut },
+          { label: tr("Bank account details"), value: supervisor?.bankAccountDetails },
+          { label: tr("Remarks"), value: supervisor?.remarks },
         ]}
       />
 
       {/* Footer */}
       <div className="mt-8 pt-2 border-t border-gray-400 text-center text-[10px] text-gray-700">
-        <p>UNIS Academy - Supervisor Profile Report</p>
-        <p>Generated on {todayFormatted()}</p>
+        <p>UNIS Academy - {tr("Supervisor Profile Report")}</p>
+        <p>{tr("Generated on")} {todayFormatted()}</p>
       </div>
     </div>
   );
