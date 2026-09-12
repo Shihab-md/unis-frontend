@@ -9,6 +9,7 @@ import { getDistrictStatesFromCache } from '../../utils/DistrictStateHelper';
 import { getBaseUrl, handleRightClickAndFullScreen, getSpinner, checkAuth, getPrcessing, showSwalAlert } from '../../utils/CommonHelper';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import { getBusinessTodayDate } from "../../utils/dateRules";
 import { AutoText, useLanguage } from "../../i18n/LanguageContext";
 
 const Edit = () => {
@@ -248,6 +249,7 @@ const Edit = () => {
                   </label>
                   <DatePicker
                     name="doe"
+                    maxDate={getBusinessTodayDate()}
                     selected={selectedDOEDate}
                     onChange={(date) => setSelectedDOEDate(date)}
                     dateFormat="dd/MM/yyyy"

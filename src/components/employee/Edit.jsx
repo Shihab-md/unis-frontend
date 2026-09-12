@@ -12,6 +12,7 @@ import {
 } from "react-icons/fa";
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import { getBusinessTodayDate } from "../../utils/dateRules";
 import { AutoText, useLanguage } from "../../i18n/LanguageContext";
 import { formatAge, formatWorkingExperience } from "../../utils/employeeProfileUtils";
 
@@ -447,6 +448,7 @@ const Edit = () => {
                   </label>
                   <DatePicker
                     name="dob"
+                    maxDate={getBusinessTodayDate()}
                     selected={selectedDOBDate}
                     onChange={(date) => setSelectedDOBDate(date)}
                     dateFormat="dd/MM/yyyy"
@@ -530,6 +532,7 @@ const Edit = () => {
                   </label>
                   <DatePicker
                     name="doj"
+                    maxDate={getBusinessTodayDate()}
                     selected={selectedDOJDate}
                     onChange={(date) => setSelectedDOJDate(date)}
                     dateFormat="dd/MM/yyyy"

@@ -91,6 +91,7 @@ import HelpDeskPage from "./components/helpdesk/HelpDeskPage";
 import MarksheetPage from "./components/marksheet/MarksheetPage";
 import ExamsHome from "./components/exam/ExamsHome";
 import QuestionPapersPage from "./components/exam/QuestionPapersPage";
+import AttendancePage from "./components/attendance/AttendancePage";
 
 function App() {
   return (
@@ -181,6 +182,7 @@ function App() {
           <Route path="/dashboard/profile" element={<ProfilePage />}></Route>
           <Route path="/dashboard/notifications" element={<NotificationsPage />}></Route>
           <Route path="/dashboard/help-desk" element={<HelpDeskPage />}></Route>
+          <Route path="/dashboard/attendance" element={<AttendancePage />}></Route>
           <Route path="/dashboard/exams" element={<ExamsHome />}></Route>
           <Route path="/dashboard/exams/questions" element={<QuestionPapersPage />}></Route>
           <Route path="/dashboard/exams/results" element={<MarksheetPage />}></Route>

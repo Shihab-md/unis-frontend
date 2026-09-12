@@ -7,7 +7,7 @@ import { useLanguage } from '../../i18n/LanguageContext'
 import { getBaseUrl, handleRightClickAndFullScreen, getSpinner, showSwalAlert, removeLocalStorage } from '../../utils/CommonHelper'
 import {
   FaMosque, FaUserFriends, FaCoins, FaGraduationCap,
-  FaUsers, FaHouseUser, FaClipboardList, FaTasks, FaCalendarAlt,
+  FaUsers, FaHouseUser, FaClipboardList, FaTasks,
   FaRupeeSign, FaMedal, FaFileContract, FaCogs, FaFileSignature,
 } from "react-icons/fa";
 import axios from 'axios'
@@ -120,24 +120,14 @@ const AdminSummary = () => {
           </Link> : null}
 
         {user.role === "superadmin" || user.role === "hquser" || user.role === "admin"
-          || user.role === "teacher" || user.role === "usthadh" || user.role === "guest" ?
-          <Link to="#" >
+          || user.role === "teacher" || user.role === "usthadh" || user.role === "supervisor"
+          || user.role === "employee" || user.role === "warden" || user.role === "staff" ?
+          <Link to={canViewExam ? "/dashboard/attendance" : "#"} >
             <SummaryCard
               icon={<FaTasks />}
               text={t("dashboard.attendance")}
               number="*"
               color="bg-purple-700"
-            />
-          </Link> : null}
-
-        {user.role === "superadmin" || user.role === "hquser" || user.role === "admin"
-          || user.role === "teacher" || user.role === "usthadh" || user.role === "student" || user.role === "guest" ?
-          <Link to="#" >
-            <SummaryCard
-              icon={<FaCalendarAlt />}
-              text={t("dashboard.leaves")}
-              number="*"
-              color="bg-gray-500"
             />
           </Link> : null}
 

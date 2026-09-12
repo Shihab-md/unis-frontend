@@ -2,14 +2,12 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 import {
   FaBuilding,
-  FaCalendarAlt,
   FaCogs,
   FaMoneyBillWave,
   FaRegCalendarAlt,
   FaTachometerAlt,
   FaUsers,
 } from "react-icons/fa";
-import { AiOutlineFileText } from 'react-icons/ai'
 import { AutoText, useLanguage } from '../../i18n/LanguageContext';
 
 const AdminSidebar = () => {
@@ -22,10 +20,8 @@ const AdminSidebar = () => {
     { to: "/dashboard/classSections", label: "ClassSection", icon: <FaUsers /> },
     { to: "/dashboard/employees", label: "Employee", icon: <FaUsers /> },
     { to: "/dashboard/departments", label: "Department", icon: <FaBuilding /> },
-    { to: "/dashboard/leaves", label: "Leave", icon: <FaCalendarAlt /> },
     { to: "/dashboard/salary/add", label: "Salary", icon: <FaMoneyBillWave /> },
     { to: "/dashboard/attendance", label: "Attendance", icon: <FaRegCalendarAlt /> },
-    { to: "/dashboard/attendance-report", label: "Attendance Report", icon: <AiOutlineFileText /> },
     { to: "/dashboard/setting", label: "Settings", icon: <FaCogs /> },
   ];
 
