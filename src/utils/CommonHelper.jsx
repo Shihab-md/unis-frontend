@@ -186,13 +186,13 @@ export function toCamelCase(inputString) {
 }
 
 export const getBaseUrl = async () => {
-  //return "https://unis-server.vercel.app/api/";
-  return "http://localhost:5001/api/";
+  return "https://unis-server.vercel.app/api/";
+  //return "http://localhost:5001/api/";
 };
 
 export function handleRightClickAndFullScreen() {
   const isDisableRightClick = true;
-  const isOpenFullScreen = false;
+  const isOpenFullScreen = true;
 
   // -------- Right click disable (mostly desktop feature; keep only if you want) --------
   const handleRightClick = (e) => e.preventDefault();
