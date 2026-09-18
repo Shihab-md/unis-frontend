@@ -8,6 +8,8 @@ import EmployeeProfilePrint from "../../components/report/EmployeeProfilePrint";
 import { AutoText, useLanguage } from "../../i18n/LanguageContext";
 import { formatAge, formatWorkingExperience } from "../../utils/employeeProfileUtils";
 
+const SHOW_EXTENDED_EMPLOYEE_FIELDS = false;
+
 const View = () => {
   const { tr, direction, fontFamily } = useLanguage();
   useEffect(() => {
@@ -139,20 +141,28 @@ const View = () => {
                 <ViewCard type="title" text="Working Experience" />
                 <ViewCard type="data" text={formatWorkingExperience(employee?.doj, tr)} />
 
-                <ViewCard type="title" text="Other Designation" />
-                <ViewCard type="data" text={<span className="whitespace-pre-wrap break-words">{employee?.otherDesignation || "-"}</span>} />
+                {SHOW_EXTENDED_EMPLOYEE_FIELDS && (
+                  <>
+                    <ViewCard type="title" text="Other Designation" />
+                    <ViewCard type="data" text={<span className="whitespace-pre-wrap break-words">{employee?.otherDesignation || "-"}</span>} />
+                  </>
+                )}
 
                 <ViewCard type="title" text="Hadhiya" />
                 <ViewCard type="data" text={employee?.salary} />
 
-                <ViewCard type="title" text="Travelling Allowance" />
-                <ViewCard type="data" text={employee?.travellingAllowance ?? 0} />
+                {SHOW_EXTENDED_EMPLOYEE_FIELDS && (
+                  <>
+                    <ViewCard type="title" text="Travelling Allowance" />
+                    <ViewCard type="data" text={employee?.travellingAllowance ?? 0} />
 
-                <ViewCard type="title" text="Activities carried out" />
-                <ViewCard type="data" text={<span className="whitespace-pre-wrap break-words">{employee?.activitiesCarriedOut || "-"}</span>} />
+                    <ViewCard type="title" text="Activities carried out" />
+                    <ViewCard type="data" text={<span className="whitespace-pre-wrap break-words">{employee?.activitiesCarriedOut || "-"}</span>} />
 
-                <ViewCard type="title" text="Bank account details" />
-                <ViewCard type="data" text={<span className="whitespace-pre-wrap break-words">{employee?.bankAccountDetails || "-"}</span>} />
+                    <ViewCard type="title" text="Bank account details" />
+                    <ViewCard type="data" text={<span className="whitespace-pre-wrap break-words">{employee?.bankAccountDetails || "-"}</span>} />
+                  </>
+                )}
 
                 <div className="flex space-x-3 mb-5" />
               </div>

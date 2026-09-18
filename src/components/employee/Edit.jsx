@@ -16,6 +16,8 @@ import { getBusinessTodayDate } from "../../utils/dateRules";
 import { AutoText, useLanguage } from "../../i18n/LanguageContext";
 import { formatAge, formatWorkingExperience } from "../../utils/employeeProfileUtils";
 
+const SHOW_EXTENDED_EMPLOYEE_FIELDS = false;
+
 const Edit = () => {
   const { tr, t, direction, fontFamily } = useLanguage();
 
@@ -587,67 +589,71 @@ const Edit = () => {
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-7">
-                {/* Travelling Allowance */}
-                <div>
-                  <label className="block mt-2 text-xs sm:text-sm font-medium text-slate-500">
-                    {tr("Travelling Allowance")}
-                  </label>
-                  <input
-                    type="number"
-                    name="travellingAllowance"
-                    value={employee.travellingAllowance ?? ""}
-                    onChange={handleChange}
-                    min="0"
-                    step="0.01"
-                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-                  />
-                </div>
+              {SHOW_EXTENDED_EMPLOYEE_FIELDS && (
+                <>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-7">
+                    {/* Travelling Allowance */}
+                    <div>
+                      <label className="block mt-2 text-xs sm:text-sm font-medium text-slate-500">
+                        {tr("Travelling Allowance")}
+                      </label>
+                      <input
+                        type="number"
+                        name="travellingAllowance"
+                        value={employee.travellingAllowance ?? ""}
+                        onChange={handleChange}
+                        min="0"
+                        step="0.01"
+                        className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                      />
+                    </div>
 
-                {/* Other Designation */}
-                <div>
-                  <label className="block mt-2 text-xs sm:text-sm font-medium text-slate-500">
-                    {tr("Other Designation")}
-                  </label>
-                  <textarea
-                    name="otherDesignation"
-                    value={employee.otherDesignation || ""}
-                    onChange={handleChange}
-                    rows={2}
-                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md resize-y"
-                  />
-                </div>
-              </div>
+                    {/* Other Designation */}
+                    <div>
+                      <label className="block mt-2 text-xs sm:text-sm font-medium text-slate-500">
+                        {tr("Other Designation")}
+                      </label>
+                      <textarea
+                        name="otherDesignation"
+                        value={employee.otherDesignation || ""}
+                        onChange={handleChange}
+                        rows={2}
+                        className="mt-1 p-2 block w-full border border-gray-300 rounded-md resize-y"
+                      />
+                    </div>
+                  </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-7 mb-5">
-                {/* Activities carried out */}
-                <div>
-                  <label className="block mt-2 text-xs sm:text-sm font-medium text-slate-500">
-                    {tr("Activities carried out")}
-                  </label>
-                  <textarea
-                    name="activitiesCarriedOut"
-                    value={employee.activitiesCarriedOut || ""}
-                    onChange={handleChange}
-                    rows={3}
-                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md resize-y"
-                  />
-                </div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-7 mb-5">
+                    {/* Activities carried out */}
+                    <div>
+                      <label className="block mt-2 text-xs sm:text-sm font-medium text-slate-500">
+                        {tr("Activities carried out")}
+                      </label>
+                      <textarea
+                        name="activitiesCarriedOut"
+                        value={employee.activitiesCarriedOut || ""}
+                        onChange={handleChange}
+                        rows={3}
+                        className="mt-1 p-2 block w-full border border-gray-300 rounded-md resize-y"
+                      />
+                    </div>
 
-                {/* Bank account details */}
-                <div>
-                  <label className="block mt-2 text-xs sm:text-sm font-medium text-slate-500">
-                    {tr("Bank account details")}
-                  </label>
-                  <textarea
-                    name="bankAccountDetails"
-                    value={employee.bankAccountDetails || ""}
-                    onChange={handleChange}
-                    rows={3}
-                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md resize-y"
-                  />
-                </div>
-              </div>
+                    {/* Bank account details */}
+                    <div>
+                      <label className="block mt-2 text-xs sm:text-sm font-medium text-slate-500">
+                        {tr("Bank account details")}
+                      </label>
+                      <textarea
+                        name="bankAccountDetails"
+                        value={employee.bankAccountDetails || ""}
+                        onChange={handleChange}
+                        rows={3}
+                        className="mt-1 p-2 block w-full border border-gray-300 rounded-md resize-y"
+                      />
+                    </div>
+                  </div>
+                </>
+              )}
             </div>
             <button
               type="submit"
