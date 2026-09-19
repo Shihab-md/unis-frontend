@@ -86,6 +86,7 @@ import ConnectDriveHidden from "./components/admin/ConnectDriveHidden";
 import MigrationBatchesFromInvoicesAll from "./components/fees/MigrationBatchesFromInvoicesAll";
 
 import BulkIhsExcel from "./components/certificate/BulkIhsExcel";
+import TempSchoolMarksheets from "./components/marksheet/TempSchoolMarksheets";
 import NotificationsPage from "./components/notification/NotificationsPage";
 import HelpDeskPage from "./components/helpdesk/HelpDeskPage";
 import MarksheetPage from "./components/marksheet/MarksheetPage";
@@ -162,6 +163,7 @@ function App() {
           <Route path="/dashboard/certificates/duplicate-print/:id" element={<DuplicatePrintCertificate />} />
 
           <Route path="/dashboard/certificate-bulk-ihs" element={<BulkIhsExcel />}></Route>
+          <Route path="/dashboard/temp-school-marksheets" element={<TempSchoolMarksheets />}></Route>
 
           <Route path="/dashboard/academicYears" element={<AcademicYearList />}></Route>
           <Route path="/dashboard/add-academicYear" element={<AcademicYearAdd />}></Route>

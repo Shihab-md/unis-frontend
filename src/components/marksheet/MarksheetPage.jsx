@@ -18,7 +18,9 @@ import {
   fetchMarksheetExams,
   fetchMarksheetOptions,
   printConsolidatedMarksheetPdf,
-  printMarksheetExamPdf,
+  requestOfficialMarksheetPdf,
+  downloadOfficialCombinedMarksheetPdf,
+  downloadOfficialStudentMarksheetPdf,
   saveBulkMarksheet,
 } from "../../api/marksheetApi";
 
@@ -32,6 +34,13 @@ const toNumber = (value, fallback = 0) => {
 const normalizeConduct = (value) => clean(value).toLowerCase().replace(/\s+/g, " ");
 const getDisplayGrade = (grade, result) => (clean(result) === "Fail" ? "F" : clean(grade));
 
+const isOfficialPdfTemplateOutdated = (pdf = {}) => {
+  if (clean(pdf.status) !== "Generated" || !pdf.templateReady) return false;
+  const used = Number(pdf.templateVersion || 0);
+  const available = Number(pdf.availableTemplateVersion || 0);
+  return used > 0 && available > 0 && used !== available;
+};
+
 const getOfficialPdfStatus = (exam = {}) => {
   if (clean(exam.status) !== "Finalized") {
     return { label: "-", className: "bg-slate-50 text-slate-400", title: "Official PDF starts after finalization." };
@@ -39,6 +48,13 @@ const getOfficialPdfStatus = (exam = {}) => {
 
   const pdf = exam.marksheetPdf || {};
   const status = clean(pdf.status) || "Pending";
+  if (isOfficialPdfTemplateOutdated(pdf)) {
+    return {
+      label: "Template Updated",
+      className: "bg-amber-50 text-amber-700",
+      title: "The Normal marksheet template was replaced after this PDF was generated. Regenerate the official PDF.",
+    };
+  }
   if (status === "Generated") {
     const generatedCount = Number(pdf.individualGeneratedCount || 0);
     const totalStudents = Number(pdf.totalStudents || exam.totalStudents || 0);
@@ -146,6 +162,24 @@ const downloadPdfResponse = (data, fallbackFileName = "marksheet.pdf") => {
   document.body.appendChild(link);
   link.click();
   document.body.removeChild(link);
+};
+
+const downloadBlobResponse = (response, fallbackFileName = "marksheet.pdf") => {
+  const blob = response?.data;
+  if (!(blob instanceof Blob)) throw new Error("PDF file not received.");
+
+  const contentDisposition = response?.headers?.["content-disposition"] || "";
+  const fileNameMatch = contentDisposition.match(/filename="?([^";]+)"?/i);
+  const fileName = fileNameMatch?.[1] || fallbackFileName;
+  const url = URL.createObjectURL(blob);
+
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = fileName;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  URL.revokeObjectURL(url);
 };
 
 const MarksheetPage = () => {
@@ -415,11 +449,30 @@ const MarksheetPage = () => {
           background: "url(/bg_card.png)",
         });
       } else if (status === "Finalized") {
-        const pdfStatus = getOfficialPdfStatus({ status: "Finalized", totalStudents: safeStudents.length, marksheetPdf: data.marksheetPdf });
+        let marksheetPdf = data.marksheetPdf;
+        let generationError = "";
+
+        // Finalized academic data is already committed. Generate the official PDF
+        // separately so template/Drive failures can never unlock the marks.
+        if (marksheetPdf?.templateReady && data.examId) {
+          try {
+            const generation = await requestOfficialMarksheetPdf(data.examId);
+            marksheetPdf = generation?.marksheetPdf || marksheetPdf;
+          } catch (pdfError) {
+            marksheetPdf = pdfError?.response?.data?.marksheetPdf || marksheetPdf;
+            generationError = pdfError?.response?.data?.error || pdfError.message || "Official PDF generation failed.";
+          }
+        }
+
+        const pdfStatus = getOfficialPdfStatus({
+          status: "Finalized",
+          totalStudents: safeStudents.length,
+          marksheetPdf,
+        });
         await Swal.fire({
           title: "Finalized Successfully",
-          html: `Marks are now locked as official academic data.<br/><br/><b>Official Marksheet PDF:</b> ${pdfStatus.label}<br/><span style="font-size:12px;color:#64748b">PDF generation is independent from finalization.</span>`,
-          icon: "success",
+          html: `Marks are now locked as official academic data.<br/><br/><b>Official Marksheet PDF:</b> ${pdfStatus.label}${generationError ? `<br/><span style="font-size:12px;color:#be123c">${generationError}</span>` : ""}<br/><span style="font-size:12px;color:#64748b">PDF generation is separate from finalization and can be retried safely.</span>`,
+          icon: generationError ? "warning" : "success",
           background: "url(/bg_card.png)",
         });
       } else {
@@ -539,13 +592,77 @@ const MarksheetPage = () => {
     }
   };
 
-  const downloadExamPdf = async (examId) => {
+  const downloadExamPdf = async (examOrId) => {
+    const exam = typeof examOrId === "object" && examOrId ? examOrId : null;
+    const examId = String(exam?._id || examOrId || "");
+    if (!examId) return;
+
+    if (exam && exam.status !== "Finalized") {
+      showSwalAlert("Info!", "Finalize the marksheet before generating the official PDF.", "info");
+      return;
+    }
+
+    if (exam && !exam.marksheetPdf?.templateReady) {
+      showSwalAlert("Info!", "Normal marksheet PDF template is not uploaded for this course.", "info");
+      return;
+    }
+
     try {
       setProcessing(true);
-      const data = await printMarksheetExamPdf(examId);
-      downloadPdfResponse(data, "marksheet.pdf");
+      let pdfStatus = clean(exam?.marksheetPdf?.status);
+      const templateOutdated = isOfficialPdfTemplateOutdated(exam?.marksheetPdf || {});
+
+      if (pdfStatus !== "Generated" || templateOutdated) {
+        const generation = await requestOfficialMarksheetPdf(examId);
+        pdfStatus = clean(generation?.marksheetPdf?.status);
+        if (pdfStatus !== "Generated") {
+          throw new Error(generation?.marksheetPdf?.lastError || "Official PDF generation did not complete.");
+        }
+      }
+
+      const response = await downloadOfficialCombinedMarksheetPdf(examId);
+      downloadBlobResponse(response, "marksheet.pdf");
+      await loadExams();
     } catch (error) {
       showSwalAlert("Error!", error?.response?.data?.error || error.message || "Download marksheet PDF failed.", "error");
+    } finally {
+      setProcessing(false);
+    }
+  };
+
+  const downloadStudentPdf = async (exam, record) => {
+    const examId = String(exam?._id || "");
+    const recordId = String(record?._id || "");
+    if (!examId || !recordId) return;
+
+    if (exam?.status !== "Finalized") {
+      showSwalAlert("Info!", "Finalize the marksheet before generating the official PDF.", "info");
+      return;
+    }
+    if (!exam?.marksheetPdf?.templateReady) {
+      showSwalAlert("Info!", "Normal marksheet PDF template is not uploaded for this course.", "info");
+      return;
+    }
+
+    try {
+      setProcessing(true);
+      let pdfStatus = clean(exam?.marksheetPdf?.status);
+      if (pdfStatus !== "Generated" || isOfficialPdfTemplateOutdated(exam?.marksheetPdf || {})) {
+        const generation = await requestOfficialMarksheetPdf(examId);
+        pdfStatus = clean(generation?.marksheetPdf?.status);
+        if (pdfStatus !== "Generated") {
+          throw new Error(generation?.marksheetPdf?.lastError || "Official PDF generation did not complete.");
+        }
+      }
+
+      const response = await downloadOfficialStudentMarksheetPdf(examId, recordId);
+      const rollNumber = clean(record?.studentId?.rollNumber) || "student";
+      downloadBlobResponse(response, `${rollNumber}_marksheet.pdf`);
+
+      const refreshed = await fetchMarksheetExam(examId);
+      setViewData(refreshed);
+    } catch (error) {
+      showSwalAlert("Error!", error?.response?.data?.error || error.message || "Download student marksheet PDF failed.", "error");
     } finally {
       setProcessing(false);
     }
@@ -945,8 +1062,15 @@ const MarksheetPage = () => {
                             <FaEdit className="mr-1" /> Edit
                           </button>
                         ) : null}
-                        <button type="button" onClick={() => downloadExamPdf(exam._id)} className="inline-flex items-center rounded bg-emerald-600 px-2 py-1 text-white" title="Download PDF" aria-label="Download PDF">
-                          <FaDownload className="mr-1" /> PDF
+                        <button
+                          type="button"
+                          onClick={() => downloadExamPdf(exam)}
+                          disabled={exam.status !== "Finalized" || !exam.marksheetPdf?.templateReady}
+                          className={`inline-flex items-center rounded px-2 py-1 text-white ${exam.status === "Finalized" && exam.marksheetPdf?.templateReady ? "bg-emerald-600 hover:bg-emerald-700" : "cursor-not-allowed bg-slate-300"}`}
+                          title={exam.status !== "Finalized" ? "Finalize marksheet before PDF generation" : exam.marksheetPdf?.templateReady ? "Generate / download official PDF" : "Upload Normal marksheet template first"}
+                          aria-label="Generate or download official marksheet PDF"
+                        >
+                          <FaDownload className="mr-1" /> {isOfficialPdfTemplateOutdated(exam.marksheetPdf || {}) ? "Regenerate PDF" : clean(exam.marksheetPdf?.status) === "Generated" ? "PDF" : clean(exam.marksheetPdf?.status) === "Failed" ? "Retry PDF" : "Generate PDF"}
                         </button>
                       </div>
                     </td>
@@ -963,15 +1087,16 @@ const MarksheetPage = () => {
           <div className="print:hidden mb-3 flex justify-center">
             <button
               type="button"
-              onClick={() => downloadExamPdf(viewData?.exam?._id)}
-              className="inline-flex items-center rounded-md bg-emerald-600 px-4 py-2 text-xs font-bold text-white shadow hover:bg-emerald-700"
-              title="Download marksheet PDF using uploaded template"
-              aria-label="Download marksheet PDF using uploaded template"
+              onClick={() => downloadExamPdf(viewData?.exam)}
+              disabled={viewData?.exam?.status !== "Finalized" || !viewData?.exam?.marksheetPdf?.templateReady}
+              className={`inline-flex items-center rounded-md px-4 py-2 text-xs font-bold text-white shadow ${viewData?.exam?.status === "Finalized" && viewData?.exam?.marksheetPdf?.templateReady ? "bg-emerald-600 hover:bg-emerald-700" : "cursor-not-allowed bg-slate-300"}`}
+              title={viewData?.exam?.status !== "Finalized" ? "Finalize marksheet before PDF generation" : viewData?.exam?.marksheetPdf?.templateReady ? "Generate / download official marksheet PDF" : "Upload Normal marksheet template first"}
+              aria-label="Generate or download official marksheet PDF"
             >
-              <FaDownload className="mr-1" /> Download Template PDF
+              <FaDownload className="mr-1" /> {isOfficialPdfTemplateOutdated(viewData?.exam?.marksheetPdf || {}) ? "Regenerate Official PDF" : clean(viewData?.exam?.marksheetPdf?.status) === "Generated" ? "Download Official PDF" : clean(viewData?.exam?.marksheetPdf?.status) === "Failed" ? "Retry Official PDF" : "Generate Official PDF"}
             </button>
           </div>
-          <SingleMarksheetView data={viewData} />
+          <SingleMarksheetView data={viewData} onDownloadStudentPdf={downloadStudentPdf} />
         </>
       ) : null}
 
@@ -1013,7 +1138,7 @@ const MarksheetPage = () => {
   );
 };
 
-const SingleMarksheetView = ({ data }) => {
+const SingleMarksheetView = ({ data, onDownloadStudentPdf }) => {
   const exam = data?.exam || {};
   const records = Array.isArray(data?.records) ? data.records : [];
   const school = exam.schoolId || {};
@@ -1032,6 +1157,18 @@ const SingleMarksheetView = ({ data }) => {
         const student = record.studentId || {};
         return (
           <div key={record._id} className="mt-5 page-break-after border rounded p-3">
+            <div className="print:hidden mb-2 flex justify-end">
+              <button
+                type="button"
+                onClick={() => onDownloadStudentPdf?.(exam, record)}
+                disabled={exam.status !== "Finalized" || !exam.marksheetPdf?.templateReady}
+                className={`inline-flex items-center rounded px-3 py-1.5 text-xs font-bold text-white ${exam.status === "Finalized" && exam.marksheetPdf?.templateReady ? "bg-emerald-600 hover:bg-emerald-700" : "cursor-not-allowed bg-slate-300"}`}
+                title={exam.status !== "Finalized" ? "Finalize marksheet first" : exam.marksheetPdf?.templateReady ? "Generate / download this student's official Muballiga marksheet PDF" : "Upload Normal marksheet template first"}
+                aria-label="Download individual official marksheet PDF"
+              >
+                <FaDownload className="mr-1" /> Individual PDF
+              </button>
+            </div>
             <div className="grid grid-cols-2 gap-2 text-xs mb-3">
               <div><b>Name of the Student:</b> {student.userId?.name || "-"}</div>
               <div><b>Register Number:</b> {student.rollNumber || "-"}</div>

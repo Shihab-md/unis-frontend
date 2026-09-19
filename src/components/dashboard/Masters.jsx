@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext'
 import { getBaseUrl, handleRightClickAndFullScreen, getSpinner, LinkIcon, showSwalAlert } from '../../utils/CommonHelper'
 import {
-  FaUniversity, FaWpforms, FaClipboardList, FaCalendarAlt, FaUserCog, FaMapMarkerAlt, FaGoogleDrive, FaRedo, FaCentos, FaMedal
+  FaUniversity, FaWpforms, FaClipboardList, FaCalendarAlt, FaUserCog, FaMapMarkerAlt, FaGoogleDrive, FaRedo, FaCentos, FaMedal, FaFileExcel
 } from "react-icons/fa";
 import axios from 'axios'
 import { useNavigate } from "react-router-dom";
@@ -138,6 +138,16 @@ const Masters = () => {
               text="Create IHS Old Certificates"
               number="*"
               color="bg-lime-500"
+            />
+          </Link> : null}
+
+        {user.role === "superadmin" || user.role === "hquser" ?
+          <Link to="/dashboard/temp-school-marksheets" >
+            <SummaryCard
+              icon={<FaFileExcel />}
+              text="Create Temp School Marksheets"
+              number="*"
+              color="bg-emerald-600"
             />
           </Link> : null}
 
