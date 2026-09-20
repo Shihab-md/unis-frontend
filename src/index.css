@@ -32,3 +32,22 @@
     margin: 10mm;
   }
 }
+
+/* Demo - Tutorial: subtle pattern ON cards for mobile/tablet only.
+   The page itself stays plain; desktop cards/tables remain plain white. */
+.demo-tutorial-card-pattern {
+  background-color: #ffffff;
+  background-image:
+    radial-gradient(circle at 2px 2px, rgba(13, 148, 136, 0.085) 1.05px, transparent 1.25px),
+    linear-gradient(135deg, rgba(37, 99, 235, 0.026) 25%, transparent 25%),
+    linear-gradient(315deg, rgba(13, 148, 136, 0.022) 25%, transparent 25%);
+  background-position: 0 0, 0 0, 23px 23px;
+  background-size: 22px 22px, 46px 46px, 46px 46px;
+}
+
+@media (min-width: 1024px) {
+  .demo-tutorial-card-pattern {
+    background-color: #ffffff;
+    background-image: none;
+  }
+}
