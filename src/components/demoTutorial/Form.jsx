@@ -37,6 +37,7 @@ const Form = () => {
   const [loading, setLoading] = useState(isEdit);
   const [saving, setSaving] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
+  const [uploadingFile, setUploadingFile] = useState(false);
   const [form, setForm] = useState({
     title: "",
     description: "",
@@ -127,34 +128,78 @@ const Form = () => {
       return;
     }
 
-    const payload = new FormData();
-    payload.append("title", title);
-    payload.append("description", form.description.trim());
-    payload.append("visibleRoles", JSON.stringify(form.visibleRoles));
-    if (form.file) payload.append("file", form.file);
+    const metadataPayload = {
+      title,
+      description: form.description.trim(),
+      visibleRoles: form.visibleRoles,
+    };
 
     setSaving(true);
     setUploadProgress(0);
+    setUploadingFile(Boolean(form.file));
     try {
-      const progress = (progressEvent) => {
-        const total = Number(progressEvent?.total || 0);
-        if (!total) return;
-        setUploadProgress(Math.min(100, Math.round((Number(progressEvent.loaded || 0) * 100) / total)));
+      let uploadToken = "";
+      let driveFileId = "";
+
+      if (form.file) {
+        const session = isEdit
+          ? await demoTutorialApi.createReplacementUploadSession(id, {
+              file: form.file,
+              ...metadataPayload,
+            })
+          : await demoTutorialApi.createUploadSession({
+              file: form.file,
+              ...metadataPayload,
+            });
+
+        const uploaded = await demoTutorialApi.uploadDirectlyToGoogleDrive({
+          sessionUrl: session.sessionUrl,
+          file: form.file,
+          mimeType: session.mimeType,
+          onUploadProgress: (progressEvent) => {
+            const total = Number(progressEvent?.total || form.file?.size || 0);
+            if (!total) return;
+            setUploadProgress(
+              Math.min(
+                100,
+                Math.round((Number(progressEvent.loaded || 0) * 100) / total)
+              )
+            );
+          },
+        });
+
+        uploadToken = session.uploadToken || "";
+        driveFileId = uploaded?.id || session.driveFileId || "";
+        if (!uploadToken || !driveFileId) {
+          throw new Error("Unable to upload Demo - Tutorial file.");
+        }
+        setUploadProgress(0);
+        setUploadingFile(false);
+      }
+
+      const payload = {
+        ...metadataPayload,
+        ...(uploadToken ? { uploadToken, driveFileId } : {}),
       };
 
-      if (isEdit) await demoTutorialApi.update(id, payload, progress);
-      else await demoTutorialApi.create(payload, progress);
+      if (isEdit) await demoTutorialApi.update(id, payload);
+      else await demoTutorialApi.create(payload);
 
-      showSwalAlert(tr("Success!"), isEdit ? tr("Successfully Updated!") : tr("Successfully Added!"), "success");
+      showSwalAlert(
+        tr("Success!"),
+        isEdit ? tr("Successfully Updated!") : tr("Successfully Added!"),
+        "success"
+      );
       navigate("/dashboard/demo-tutorial");
     } catch (error) {
       const message = translateDemoTutorialMessage(
         tr,
-        error?.response?.data?.error || "Unable to save Demo - Tutorial file."
+        error?.response?.data?.error || error?.message || "Unable to save Demo - Tutorial file."
       );
       showSwalAlert(tr("Error!"), message, "error");
     } finally {
       setSaving(false);
+      setUploadingFile(false);
       setUploadProgress(0);
     }
   };
@@ -287,7 +332,7 @@ const Form = () => {
             disabled={saving}
             className="w-full rounded-lg bg-teal-700 px-4 py-2 font-semibold text-white shadow hover:bg-teal-800 disabled:cursor-not-allowed disabled:opacity-60"
           >
-            {saving ? tr("Saving...") : isEdit ? tr("Update Demo - Tutorial") : tr("Add Demo - Tutorial")}
+            {saving ? (uploadingFile ? tr("Uploading...") : tr("Saving...")) : isEdit ? tr("Update Demo - Tutorial") : tr("Add Demo - Tutorial")}
           </button>
         </form>
       </div>

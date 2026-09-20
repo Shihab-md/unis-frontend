@@ -3618,6 +3618,56 @@ Object.assign(PHRASES.te, {
   "Demo - Tutorial file deleted successfully.": "డెమో - మార్గదర్శిని ఫైల్ విజయవంతంగా తొలగించబడింది."
 });
 
+
+// Demo - Tutorial direct Google Drive upload messages.
+Object.assign(PHRASES.ta, {
+  "File name is too long.": "கோப்பு பெயர் மிகவும் நீளமாக உள்ளது.",
+  "The uploaded file is invalid or unsupported.": "பதிவேற்றிய கோப்பு செல்லுபடியாகாது அல்லது ஆதரிக்கப்படவில்லை.",
+  "Upload session expired or is invalid. Please try again.": "பதிவேற்ற அமர்வு காலாவதியானது அல்லது செல்லுபடியாகாது. மீண்டும் முயற்சிக்கவும்.",
+  "Uploaded Google Drive file could not be verified.": "Google Drive-க்கு பதிவேற்றிய கோப்பை சரிபார்க்க முடியவில்லை.",
+  "Google Drive did not return a resumable upload session URL.": "Google Drive மீண்டும் தொடரக்கூடிய பதிவேற்ற அமர்வு URL-ஐ வழங்கவில்லை."
+});
+
+Object.assign(PHRASES.ur, {
+  "File name is too long.": "فائل کا نام بہت طویل ہے۔",
+  "The uploaded file is invalid or unsupported.": "اپ لوڈ کی گئی فائل درست نہیں یا معاونت یافتہ نہیں ہے۔",
+  "Upload session expired or is invalid. Please try again.": "اپ لوڈ سیشن کی میعاد ختم ہو گئی ہے یا یہ درست نہیں ہے۔ براہ کرم دوبارہ کوشش کریں۔",
+  "Uploaded Google Drive file could not be verified.": "Google Drive پر اپ لوڈ کی گئی فائل کی تصدیق نہیں ہو سکی۔",
+  "Google Drive did not return a resumable upload session URL.": "Google Drive نے قابلِ بحالی اپ لوڈ سیشن URL واپس نہیں کیا۔"
+});
+
+Object.assign(PHRASES.ar, {
+  "File name is too long.": "اسم الملف طويل جدًا.",
+  "The uploaded file is invalid or unsupported.": "الملف المرفوع غير صالح أو غير مدعوم.",
+  "Upload session expired or is invalid. Please try again.": "انتهت صلاحية جلسة الرفع أو أنها غير صالحة. يرجى المحاولة مرة أخرى.",
+  "Uploaded Google Drive file could not be verified.": "تعذر التحقق من الملف المرفوع إلى Google Drive.",
+  "Google Drive did not return a resumable upload session URL.": "لم يُرجع Google Drive رابط جلسة رفع قابلة للاستئناف."
+});
+
+Object.assign(PHRASES.ml, {
+  "File name is too long.": "ഫയൽ പേര് വളരെ നീളമാണ്.",
+  "The uploaded file is invalid or unsupported.": "അപ്‌ലോഡ് ചെയ്ത ഫയൽ അസാധുവാണ് അല്ലെങ്കിൽ പിന്തുണയ്ക്കുന്നില്ല.",
+  "Upload session expired or is invalid. Please try again.": "അപ്‌ലോഡ് സെഷൻ കാലഹരണപ്പെട്ടു അല്ലെങ്കിൽ അസാധുവാണ്. വീണ്ടും ശ്രമിക്കുക.",
+  "Uploaded Google Drive file could not be verified.": "Google Drive-ലേക്ക് അപ്‌ലോഡ് ചെയ്ത ഫയൽ സ്ഥിരീകരിക്കാൻ കഴിഞ്ഞില്ല.",
+  "Google Drive did not return a resumable upload session URL.": "Google Drive പുനരാരംഭിക്കാവുന്ന അപ്‌ലോഡ് സെഷൻ URL നൽകിയില്ല."
+});
+
+Object.assign(PHRASES.kn, {
+  "File name is too long.": "ಕಡತದ ಹೆಸರು ತುಂಬಾ ಉದ್ದವಾಗಿದೆ.",
+  "The uploaded file is invalid or unsupported.": "ಅಪ್‌ಲೋಡ್ ಮಾಡಿದ ಕಡತ ಅಮಾನ್ಯವಾಗಿದೆ ಅಥವಾ ಬೆಂಬಲಿತವಲ್ಲ.",
+  "Upload session expired or is invalid. Please try again.": "ಅಪ್‌ಲೋಡ್ ಸೆಷನ್ ಅವಧಿ ಮುಗಿದಿದೆ ಅಥವಾ ಅಮಾನ್ಯವಾಗಿದೆ. ದಯವಿಟ್ಟು ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ.",
+  "Uploaded Google Drive file could not be verified.": "Google Drive ಗೆ ಅಪ್‌ಲೋಡ್ ಮಾಡಿದ ಕಡತವನ್ನು ಪರಿಶೀಲಿಸಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ.",
+  "Google Drive did not return a resumable upload session URL.": "Google Drive ಪುನರಾರಂಭಿಸಬಹುದಾದ ಅಪ್‌ಲೋಡ್ ಸೆಷನ್ URL ಅನ್ನು ಮರಳಿಸಲಿಲ್ಲ."
+});
+
+Object.assign(PHRASES.te, {
+  "File name is too long.": "ఫైల్ పేరు చాలా పొడవుగా ఉంది.",
+  "The uploaded file is invalid or unsupported.": "అప్‌లోడ్ చేసిన ఫైల్ చెల్లదు లేదా మద్దతు లేదు.",
+  "Upload session expired or is invalid. Please try again.": "అప్‌లోడ్ సెషన్ గడువు ముగిసింది లేదా చెల్లదు. దయచేసి మళ్లీ ప్రయత్నించండి.",
+  "Uploaded Google Drive file could not be verified.": "Google Drive కి అప్‌లోడ్ చేసిన ఫైల్‌ను ధృవీకరించలేకపోయాం.",
+  "Google Drive did not return a resumable upload session URL.": "Google Drive పునఃప్రారంభించగల అప్‌లోడ్ సెషన్ URL ను ఇవ్వలేదు."
+});
+
 const normalizeLanguage = (language) => {
   const value = String(language || "").toLowerCase();
   return ["en", "ta", "ur", "ar", "ml", "kn", "te"].includes(value) ? value : "en";

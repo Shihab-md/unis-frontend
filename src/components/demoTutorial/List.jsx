@@ -103,10 +103,12 @@ const List = () => {
     if (!item?._id || downloadingId) return;
     setDownloadingId(item._id);
     try {
-      const { blob, fileName } = await demoTutorialApi.download(
-        item._id,
-        item.driveFileName || item.originalFileName || ""
-      );
+      const { blob, fileName } = await demoTutorialApi.download({
+        id: item._id,
+        fallbackFileName: item.driveFileName || item.originalFileName || "",
+        fileSize: item.fileSize,
+        mimeType: item.mimeType,
+      });
       const objectUrl = window.URL.createObjectURL(blob);
       const link = document.createElement("a");
       link.href = objectUrl;
