@@ -263,7 +263,19 @@ export const demoTutorialApi = {
     const response = await axios.get(await buildUrl(`/${id}/download`), {
       headers: authHeaders(),
       responseType: "blob",
+      onDownloadProgress: (event) => {
+        if (typeof onProgress !== "function") return;
+        const loaded = Number(event?.loaded || 0);
+        const reportedTotal = Number(event?.total || 0);
+        const total = reportedTotal > 0 ? reportedTotal : numericSize;
+        onProgress(loaded, total > 0 ? total : loaded);
+      },
     });
+
+    if (typeof onProgress === "function") {
+      const actualSize = Number(response.data?.size || numericSize || 0);
+      if (actualSize > 0) onProgress(actualSize, numericSize > 0 ? numericSize : actualSize);
+    }
 
     return {
       blob: response.data,

@@ -48,6 +48,7 @@ const List = () => {
   const [page, setPage] = useState(1);
   const [pagination, setPagination] = useState({ page: 1, totalPages: 1, total: 0 });
   const [downloadingId, setDownloadingId] = useState("");
+  const [downloadProgress, setDownloadProgress] = useState(null);
   const [deletingId, setDeletingId] = useState("");
 
   useEffect(() => {
@@ -101,14 +102,45 @@ const List = () => {
 
   const handleDownload = async (item) => {
     if (!item?._id || downloadingId) return;
+
+    const expectedTotal = Number(item.fileSize || 0);
     setDownloadingId(item._id);
+    setDownloadProgress({
+      id: item._id,
+      loaded: 0,
+      total: Number.isFinite(expectedTotal) && expectedTotal > 0 ? expectedTotal : 0,
+      percent: 0,
+    });
+
     try {
       const { blob, fileName } = await demoTutorialApi.download({
         id: item._id,
         fallbackFileName: item.driveFileName || item.originalFileName || "",
         fileSize: item.fileSize,
         mimeType: item.mimeType,
+        onProgress: (loaded, total) => {
+          const safeLoaded = Number(loaded || 0);
+          const safeTotal = Number(total || expectedTotal || 0);
+          const percent =
+            safeTotal > 0
+              ? Math.min(100, Math.max(0, Math.round((safeLoaded / safeTotal) * 100)))
+              : 0;
+          setDownloadProgress({
+            id: item._id,
+            loaded: safeLoaded,
+            total: safeTotal,
+            percent,
+          });
+        },
       });
+
+      setDownloadProgress({
+        id: item._id,
+        loaded: expectedTotal > 0 ? expectedTotal : Number(blob?.size || 0),
+        total: expectedTotal > 0 ? expectedTotal : Number(blob?.size || 0),
+        percent: 100,
+      });
+
       const objectUrl = window.URL.createObjectURL(blob);
       const link = document.createElement("a");
       link.href = objectUrl;
@@ -117,6 +149,13 @@ const List = () => {
       link.click();
       link.remove();
       window.URL.revokeObjectURL(objectUrl);
+
+      setDownloadingId("");
+      window.setTimeout(() => {
+        setDownloadProgress((current) =>
+          current?.id === item._id && current?.percent === 100 ? null : current
+        );
+      }, 800);
     } catch (error) {
       let message = "Unable to download this file.";
       const responseData = error?.response?.data;
@@ -130,9 +169,9 @@ const List = () => {
       } else if (responseData?.error) {
         message = responseData.error;
       }
-      showSwalAlert(tr("Error!"), translateDemoTutorialMessage(tr, message), "error");
-    } finally {
       setDownloadingId("");
+      setDownloadProgress(null);
+      showSwalAlert(tr("Error!"), translateDemoTutorialMessage(tr, message), "error");
     }
   };
 
@@ -171,6 +210,29 @@ const List = () => {
             {roleLabels[role] || role}
           </span>
         ))}
+      </div>
+    );
+  };
+
+  const renderDownloadProgress = (item) => {
+    if (!downloadProgress || downloadProgress.id !== item?._id) return null;
+
+    const percent = Math.min(100, Math.max(0, Number(downloadProgress.percent || 0)));
+    const loadedText = formatBytes(downloadProgress.loaded);
+    const totalText = formatBytes(downloadProgress.total);
+
+    return (
+      <div className="mt-2" role="status" aria-live="polite">
+        <div className="mb-1 flex items-center justify-between gap-2 text-[10px] font-medium text-blue-700">
+          <span>{tr("Download")} {percent}%</span>
+          {loadedText && totalText ? <span className="text-slate-500">{loadedText} / {totalText}</span> : null}
+        </div>
+        <div className="h-1.5 overflow-hidden rounded-full bg-slate-200">
+          <div
+            className="h-full rounded-full bg-blue-700 transition-[width] duration-200"
+            style={{ width: `${percent}%` }}
+          />
+        </div>
       </div>
     );
   };
@@ -252,6 +314,7 @@ const List = () => {
                           {tr(item.fileKind === "VIDEO" ? "Video" : "PDF")}
                           {formatBytes(item.fileSize) ? ` • ${formatBytes(item.fileSize)}` : ""}
                         </div>
+                        {renderDownloadProgress(item)}
                       </div>
                     </div>
                   </div>
@@ -273,7 +336,9 @@ const List = () => {
                         className="inline-flex items-center gap-1.5 rounded-md bg-blue-700 px-3 py-1.5 text-xs font-medium text-white disabled:opacity-50"
                         title={tr("Download")}
                       >
-                        <FaDownload /> {downloadingId === item._id ? "..." : tr("Download")}
+                        <FaDownload /> {downloadingId === item._id
+                          ? `${tr("Download")} ${downloadProgress?.id === item._id ? `${downloadProgress.percent}%` : "..."}`
+                          : tr("Download")}
                       </button>
                       {isSuperadmin ? (
                         <>
@@ -347,6 +412,7 @@ const List = () => {
                       <div className="mt-1 text-[11px] text-slate-500">
                         {tr(item.fileKind === "VIDEO" ? "Video" : "PDF")}{formatBytes(item.fileSize) ? ` • ${formatBytes(item.fileSize)}` : ""}
                       </div>
+                      {renderDownloadProgress(item)}
                     </td>
                     {isSuperadmin ? <td className="px-4 py-3">{renderRoles(item)}</td> : null}
                     <td className="px-4 py-3">
@@ -358,7 +424,12 @@ const List = () => {
                           className="rounded-md bg-blue-700 p-2 text-white disabled:opacity-50"
                           title={tr("Download")}
                         >
-                          <FaDownload />
+                          <span className="inline-flex items-center gap-1">
+                            <FaDownload />
+                            {downloadingId === item._id && downloadProgress?.id === item._id ? (
+                              <span className="text-[10px] font-semibold">{downloadProgress.percent}%</span>
+                            ) : null}
+                          </span>
                         </button>
                         {isSuperadmin ? (
                           <>
