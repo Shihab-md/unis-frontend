@@ -152,10 +152,10 @@ const Form = () => {
               ...metadataPayload,
             });
 
-        const uploaded = await demoTutorialApi.uploadDirectlyToGoogleDrive({
-          sessionUrl: session.sessionUrl,
+        const uploaded = await demoTutorialApi.uploadInChunksThroughServer({
+          uploadToken: session.uploadToken,
           file: form.file,
-          mimeType: session.mimeType,
+          chunkSize: session.uploadChunkBytes,
           onUploadProgress: (progressEvent) => {
             const total = Number(progressEvent?.total || form.file?.size || 0);
             if (!total) return;

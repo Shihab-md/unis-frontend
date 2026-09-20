@@ -39,41 +39,96 @@ const buildUploadSessionPayload = async ({ file, title, description, visibleRole
   signatureBase64: file ? await fileHeadBase64(file) : "",
 });
 
-const uploadDirectlyToGoogleDrive = ({
-  sessionUrl,
+const DEFAULT_UPLOAD_CHUNK_BYTES = 2 * 1024 * 1024;
+
+const sleep = (ms) => new Promise((resolve) => window.setTimeout(resolve, ms));
+
+const uploadInChunksThroughServer = async ({
+  uploadToken,
   file,
-  mimeType,
+  chunkSize = DEFAULT_UPLOAD_CHUNK_BYTES,
   onUploadProgress,
-}) =>
-  new Promise((resolve, reject) => {
-    const xhr = new XMLHttpRequest();
-    xhr.open("PUT", sessionUrl, true);
-    xhr.setRequestHeader("Content-Type", mimeType || file?.type || "application/octet-stream");
+}) => {
+  const total = Number(file?.size || 0);
+  const size = Number(chunkSize || DEFAULT_UPLOAD_CHUNK_BYTES);
+  if (!uploadToken || !file || !Number.isSafeInteger(total) || total <= 0) {
+    throw new Error("Unable to upload Demo - Tutorial file.");
+  }
+  if (!Number.isSafeInteger(size) || size <= 0 || size > DEFAULT_UPLOAD_CHUNK_BYTES) {
+    throw new Error("Unable to upload Demo - Tutorial file.");
+  }
 
-    xhr.upload.onprogress = (event) => {
-      if (typeof onUploadProgress === "function") {
-        onUploadProgress({ loaded: event.loaded, total: event.total || file?.size || 0 });
-      }
-    };
+  let start = 0;
+  while (start < total) {
+    const endExclusive = Math.min(total, start + size);
+    const endInclusive = endExclusive - 1;
+    const chunk = file.slice(start, endExclusive);
+    let response = null;
+    let lastError = null;
 
-    xhr.onerror = () => reject(new Error("Unable to upload Demo - Tutorial file."));
-    xhr.onabort = () => reject(new Error("Unable to upload Demo - Tutorial file."));
-    xhr.onload = () => {
-      if (xhr.status < 200 || xhr.status >= 300) {
-        reject(new Error("Unable to upload Demo - Tutorial file."));
-        return;
-      }
-
+    for (let attempt = 0; attempt < 3; attempt += 1) {
       try {
-        const data = xhr.responseText ? JSON.parse(xhr.responseText) : {};
-        resolve(data);
-      } catch {
-        reject(new Error("Unable to upload Demo - Tutorial file."));
+        response = await axios.put(await buildUrl("/upload-chunk"), chunk, {
+          headers: {
+            ...authHeaders(),
+            "Content-Type": "application/octet-stream",
+            "Content-Range": `bytes ${start}-${endInclusive}/${total}`,
+            "X-Demo-Upload-Token": uploadToken,
+          },
+          onUploadProgress: (event) => {
+            if (typeof onUploadProgress !== "function") return;
+            const loadedInChunk = Math.min(
+              Number(event?.loaded || 0),
+              Number(chunk.size || 0)
+            );
+            onUploadProgress({
+              loaded: Math.min(total, start + loadedInChunk),
+              total,
+            });
+          },
+        });
+        lastError = null;
+        break;
+      } catch (error) {
+        lastError = error;
+        const status = Number(error?.response?.status || 0);
+        if ((status >= 400 && status < 500) || attempt === 2) break;
+        await sleep(500 * 2 ** attempt);
       }
-    };
+    }
 
-    xhr.send(file);
-  });
+    if (lastError || !response?.data?.success) {
+      throw lastError || new Error("Unable to upload Demo - Tutorial file.");
+    }
+
+    const data = response.data;
+    if (data.completed) {
+      if (typeof onUploadProgress === "function") {
+        onUploadProgress({ loaded: total, total });
+      }
+      if (!data.driveFileId) {
+        throw new Error("Unable to upload Demo - Tutorial file.");
+      }
+      return { id: data.driveFileId };
+    }
+
+    const nextOffset = Number(data.nextOffset);
+    if (
+      !Number.isSafeInteger(nextOffset) ||
+      nextOffset <= start ||
+      nextOffset > total
+    ) {
+      throw new Error("Upload session expired or is invalid. Please try again.");
+    }
+
+    start = nextOffset;
+    if (typeof onUploadProgress === "function") {
+      onUploadProgress({ loaded: start, total });
+    }
+  }
+
+  throw new Error("Unable to upload Demo - Tutorial file.");
+};
 
 const DOWNLOAD_CHUNK_BYTES = 2 * 1024 * 1024;
 
@@ -162,7 +217,7 @@ export const demoTutorialApi = {
     ).data;
   },
 
-  uploadDirectlyToGoogleDrive,
+  uploadInChunksThroughServer,
 
   create: async (payload) =>
     (

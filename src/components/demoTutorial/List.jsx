@@ -227,57 +227,99 @@ const List = () => {
           <div className="mt-5 space-y-3 md:hidden">
             {items.map((item) => (
               <div key={item._id} className="rounded-lg border bg-white p-4 shadow-md">
-                <div className="flex items-start gap-3">
-                  <div className="mt-1 text-xl"><FileIcon kind={item.fileKind} /></div>
-                  <div className="min-w-0 flex-1">
-                    <h2 className="break-words text-sm font-semibold text-slate-800">{item.title}</h2>
-                    {item.description ? (
-                      <p className="mt-1 whitespace-pre-wrap break-words text-xs leading-5 text-slate-600">{item.description}</p>
-                    ) : null}
-                    <p className="mt-2 break-all text-[11px] text-slate-500">
-                      {item.driveFileName || item.originalFileName}{formatBytes(item.fileSize) ? ` • ${formatBytes(item.fileSize)}` : ""}
-                    </p>
-                    {renderRoles(item)}
+                <div className="space-y-3">
+                  <div>
+                    <div className="text-[11px] font-medium text-slate-500">{tr("Title")}</div>
+                    <div className="mt-0.5 break-words text-sm font-semibold text-slate-800">{item.title}</div>
                   </div>
-                </div>
 
-                <div className="mt-3 flex justify-end gap-2 border-t pt-3">
-                  <button
-                    type="button"
-                    onClick={() => handleDownload(item)}
-                    disabled={Boolean(downloadingId)}
-                    className="inline-flex items-center gap-1 rounded-md bg-blue-700 px-3 py-1.5 text-xs font-medium text-white disabled:opacity-50"
-                    title={tr("Download")}
-                  >
-                    <FaDownload /> {downloadingId === item._id ? "..." : tr("Download")}
-                  </button>
+                  <div>
+                    <div className="text-[11px] font-medium text-slate-500">{tr("Description")}</div>
+                    <div className="mt-0.5 whitespace-pre-wrap break-words text-xs leading-5 text-slate-600">
+                      {item.description || "-"}
+                    </div>
+                  </div>
+
+                  <div>
+                    <div className="text-[11px] font-medium text-slate-500">{tr("File")}</div>
+                    <div className="mt-1 flex items-start gap-2">
+                      <div className="mt-0.5 shrink-0 text-lg"><FileIcon kind={item.fileKind} /></div>
+                      <div className="min-w-0 flex-1">
+                        <div className="break-all text-xs text-slate-700">
+                          {item.driveFileName || item.originalFileName}
+                        </div>
+                        <div className="mt-0.5 text-[11px] text-slate-500">
+                          {tr(item.fileKind === "VIDEO" ? "Video" : "PDF")}
+                          {formatBytes(item.fileSize) ? ` • ${formatBytes(item.fileSize)}` : ""}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
                   {isSuperadmin ? (
-                    <>
-                      <Link
-                        to={`/dashboard/demo-tutorial/edit/${item._id}`}
-                        className="inline-flex items-center rounded-md bg-amber-600 px-3 py-1.5 text-xs text-white"
-                        title={tr("Edit")}
-                      >
-                        <FaEdit />
-                      </Link>
+                    <div>
+                      <div className="text-[11px] font-medium text-slate-500">{tr("Visible To")}</div>
+                      {renderRoles(item)}
+                    </div>
+                  ) : null}
+
+                  <div className="border-t pt-3">
+                    <div className="mb-2 text-[11px] font-medium text-slate-500">{tr("Action")}</div>
+                    <div className="flex flex-wrap gap-2">
                       <button
                         type="button"
-                        onClick={() => handleDelete(item)}
-                        disabled={Boolean(deletingId)}
-                        className="inline-flex items-center rounded-md bg-red-700 px-3 py-1.5 text-xs text-white disabled:opacity-50"
-                        title={tr("Delete")}
+                        onClick={() => handleDownload(item)}
+                        disabled={Boolean(downloadingId)}
+                        className="inline-flex items-center gap-1.5 rounded-md bg-blue-700 px-3 py-1.5 text-xs font-medium text-white disabled:opacity-50"
+                        title={tr("Download")}
                       >
-                        <FaTrash />
+                        <FaDownload /> {downloadingId === item._id ? "..." : tr("Download")}
                       </button>
-                    </>
-                  ) : null}
+                      {isSuperadmin ? (
+                        <>
+                          <Link
+                            to={`/dashboard/demo-tutorial/edit/${item._id}`}
+                            className="inline-flex items-center gap-1.5 rounded-md bg-amber-600 px-3 py-1.5 text-xs font-medium text-white"
+                            title={tr("Edit")}
+                          >
+                            <FaEdit /> {tr("Edit")}
+                          </Link>
+                          <button
+                            type="button"
+                            onClick={() => handleDelete(item)}
+                            disabled={Boolean(deletingId)}
+                            className="inline-flex items-center gap-1.5 rounded-md bg-red-700 px-3 py-1.5 text-xs font-medium text-white disabled:opacity-50"
+                            title={tr("Delete")}
+                          >
+                            <FaTrash /> {deletingId === item._id ? "..." : tr("Delete")}
+                          </button>
+                        </>
+                      ) : null}
+                    </div>
+                  </div>
                 </div>
               </div>
             ))}
           </div>
 
           <div className="mt-5 hidden overflow-x-auto rounded-lg border bg-white shadow-lg md:block">
-            <table className={`w-full min-w-[900px] text-sm ${isRtl ? "text-right" : "text-left"}`}>
+            <table className={`w-full min-w-[900px] table-fixed text-sm ${isRtl ? "text-right" : "text-left"}`}>
+              <colgroup>
+                {isSuperadmin ? (
+                  <>
+                    <col className="w-[40%]" />
+                    <col className="w-[25%]" />
+                    <col className="w-[23%]" />
+                    <col className="w-[12%]" />
+                  </>
+                ) : (
+                  <>
+                    <col className="w-[50%]" />
+                    <col className="w-[35%]" />
+                    <col className="w-[15%]" />
+                  </>
+                )}
+              </colgroup>
               <thead className="bg-slate-100 text-xs uppercase text-slate-600">
                 <tr>
                   <th className="px-4 py-3">{tr("Title / Description")}</th>
@@ -289,16 +331,16 @@ const List = () => {
               <tbody className="divide-y">
                 {items.map((item) => (
                   <tr key={item._id} className="align-top hover:bg-slate-50">
-                    <td className="max-w-xl px-4 py-3">
-                      <div className="font-semibold text-slate-800">{item.title}</div>
+                    <td className="px-4 py-3 break-words">
+                      <div className="break-words font-semibold text-slate-800">{item.title}</div>
                       {item.description ? (
-                        <div className="mt-1 whitespace-pre-wrap text-xs leading-5 text-slate-600">{item.description}</div>
+                        <div className="mt-1 whitespace-pre-wrap break-words text-xs leading-5 text-slate-600">{item.description}</div>
                       ) : null}
                     </td>
                     <td className="px-4 py-3">
                       <div className="flex items-center gap-2">
                         <FileIcon kind={item.fileKind} />
-                        <span className="max-w-[220px] break-all text-xs text-slate-700">
+                        <span className="min-w-0 break-all text-xs text-slate-700">
                           {item.driveFileName || item.originalFileName}
                         </span>
                       </div>
