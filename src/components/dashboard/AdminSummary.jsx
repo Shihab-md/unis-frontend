@@ -8,7 +8,7 @@ import { getBaseUrl, handleRightClickAndFullScreen, getSpinner, showSwalAlert, r
 import {
   FaMosque, FaUserFriends, FaCoins, FaGraduationCap,
   FaUsers, FaHouseUser, FaClipboardList, FaTasks,
-  FaRupeeSign, FaMedal, FaFileContract, FaCogs, FaFileSignature,
+  FaRupeeSign, FaMedal, FaFileContract, FaCogs, FaFileSignature, FaBookOpen,
 } from "react-icons/fa";
 import axios from 'axios'
 import { useNavigate } from "react-router-dom";
@@ -23,7 +23,7 @@ const AdminSummary = () => {
   const [summary, setSummary] = useState(null)
   const navigate = useNavigate()
   const { user } = useAuth()
-  const { t, direction, fontFamily } = useLanguage()
+  const { t, tr, direction, fontFamily } = useLanguage()
 
   const userRole = String(user?.role || "").toLowerCase();
 
@@ -170,6 +170,15 @@ const AdminSummary = () => {
               color="bg-purple-500"
             />
           </Link> : null}
+
+        <Link to="/dashboard/demo-tutorial" >
+          <SummaryCard
+            icon={<FaBookOpen />}
+            text={tr("Demo - Tutorial")}
+            number="*"
+            color="bg-sky-700"
+          />
+        </Link>
 
         {user.role === "superadmin" || user.role === "hquser" || user.role === "supervisor" || user.role === "admin" || user.role === "guest" ?
           <Link to="/dashboard/reports" >
