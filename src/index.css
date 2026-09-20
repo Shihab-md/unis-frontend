@@ -33,21 +33,88 @@
   }
 }
 
-/* Demo - Tutorial: subtle pattern ON cards for mobile/tablet only.
-   The page itself stays plain; desktop cards/tables remain plain white. */
-.demo-tutorial-card-pattern {
+/* Demo - Tutorial: premium mobile/tablet tutorial card surface.
+   Actual tutorial cards get a soft blue/teal corner glow, a subtle dot accent,
+   and a slim gradient edge. Header/form/desktop surfaces stay clean and plain. */
+.demo-tutorial-premium-card {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
   background-color: #ffffff;
   background-image:
-    radial-gradient(circle at 2px 2px, rgba(13, 148, 136, 0.085) 1.05px, transparent 1.25px),
-    linear-gradient(135deg, rgba(37, 99, 235, 0.026) 25%, transparent 25%),
-    linear-gradient(315deg, rgba(13, 148, 136, 0.022) 25%, transparent 25%);
-  background-position: 0 0, 0 0, 23px 23px;
-  background-size: 22px 22px, 46px 46px, 46px 46px;
+    radial-gradient(circle at 92% 8%, rgba(59, 130, 246, 0.13) 0%, rgba(59, 130, 246, 0.055) 18%, transparent 40%),
+    radial-gradient(circle at 5% 96%, rgba(13, 148, 136, 0.12) 0%, rgba(13, 148, 136, 0.045) 20%, transparent 42%);
+  border-color: rgba(148, 163, 184, 0.42);
+  box-shadow:
+    0 10px 26px rgba(15, 23, 42, 0.075),
+    0 2px 7px rgba(37, 99, 235, 0.045);
+  transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+}
+
+.demo-tutorial-premium-card::before {
+  content: "";
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  z-index: 0;
+  width: 64px;
+  height: 42px;
+  pointer-events: none;
+  opacity: 0.34;
+  background-image: radial-gradient(circle, rgba(14, 116, 144, 0.42) 1px, transparent 1.35px);
+  background-size: 10px 10px;
+}
+
+.demo-tutorial-premium-card::after {
+  content: "";
+  position: absolute;
+  inset-block: 12px;
+  left: 0;
+  z-index: 0;
+  width: 4px;
+  border-radius: 0 999px 999px 0;
+  pointer-events: none;
+  background: linear-gradient(180deg, #2563eb 0%, #06b6d4 50%, #0d9488 100%);
+  opacity: 0.92;
+}
+
+[dir="rtl"] .demo-tutorial-premium-card::before {
+  right: auto;
+  left: 16px;
+}
+
+[dir="rtl"] .demo-tutorial-premium-card::after {
+  left: auto;
+  right: 0;
+  border-radius: 999px 0 0 999px;
+}
+
+.demo-tutorial-premium-card > * {
+  position: relative;
+  z-index: 1;
+}
+
+@media (hover: hover) and (pointer: fine) and (max-width: 1023px) {
+  .demo-tutorial-premium-card:hover {
+    transform: translateY(-2px);
+    border-color: rgba(96, 165, 250, 0.55);
+    box-shadow:
+      0 14px 32px rgba(15, 23, 42, 0.10),
+      0 4px 12px rgba(37, 99, 235, 0.07);
+  }
 }
 
 @media (min-width: 1024px) {
-  .demo-tutorial-card-pattern {
+  .demo-tutorial-premium-card {
     background-color: #ffffff;
     background-image: none;
+    border-color: inherit;
+    box-shadow: inherit;
+    transform: none;
+  }
+
+  .demo-tutorial-premium-card::before,
+  .demo-tutorial-premium-card::after {
+    display: none;
   }
 }

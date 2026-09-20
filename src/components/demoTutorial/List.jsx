@@ -240,7 +240,7 @@ const List = () => {
   return (
     <div className="min-h-screen">
       <div className="mx-auto max-w-7xl p-3 md:p-5" dir={direction} style={{ fontFamily }}>
-      <div className="demo-tutorial-card-pattern rounded-lg border p-4 shadow-lg">
+      <div className="rounded-lg border bg-white p-4 shadow-lg">
         <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
           <div>
             <h1 className="text-lg font-semibold text-slate-800 md:text-xl">{tr("Demo - Tutorial")}</h1>
@@ -280,16 +280,16 @@ const List = () => {
       </div>
 
       {loading ? (
-        <div className="demo-tutorial-card-pattern mt-5 rounded-lg border p-8 text-center text-sm text-slate-500 shadow">{tr("Loading...")}</div>
+        <div className="mt-5 rounded-lg border bg-white p-8 text-center text-sm text-slate-500 shadow">{tr("Loading...")}</div>
       ) : items.length === 0 ? (
-        <div className="demo-tutorial-card-pattern mt-5 rounded-lg border p-8 text-center text-sm text-slate-500 shadow">
+        <div className="mt-5 rounded-lg border bg-white p-8 text-center text-sm text-slate-500 shadow">
           {tr("No Demo - Tutorial files are available for your role.")}
         </div>
       ) : (
         <>
           <div className="mt-5 space-y-3 md:hidden">
             {items.map((item) => (
-              <div key={item._id} className="demo-tutorial-card-pattern rounded-lg border p-4 shadow-md">
+              <div key={item._id} className="demo-tutorial-premium-card rounded-xl border p-4 shadow-md">
                 <div className="space-y-3">
                   <div>
                     <div className="text-[11px] font-medium text-slate-500">{tr("Title")}</div>

@@ -18,7 +18,7 @@ const AdminSummary = () => {
   // To prevent right-click AND For FULL screen view.
   useEffect(() => {
     handleRightClickAndFullScreen();
-  }, []);;
+  }, []);
 
   const [summary, setSummary] = useState(null)
   const navigate = useNavigate()
@@ -171,15 +171,6 @@ const AdminSummary = () => {
             />
           </Link> : null}
 
-        <Link to="/dashboard/demo-tutorial" >
-          <SummaryCard
-            icon={<FaBookOpen />}
-            text={tr("Demo - Tutorial")}
-            number="*"
-            color="bg-sky-700"
-          />
-        </Link>
-
         {user.role === "superadmin" || user.role === "hquser" || user.role === "supervisor" || user.role === "admin" || user.role === "guest" ?
           <Link to="/dashboard/reports" >
             <SummaryCard
@@ -196,6 +187,15 @@ const AdminSummary = () => {
             text={t("dashboard.profile")}
             number="*"
             color="bg-lime-700"
+          />
+        </Link>
+
+        <Link to="/dashboard/demo-tutorial" >
+          <SummaryCard
+            icon={<FaBookOpen />}
+            text={tr("Demo - Tutorial")}
+            number="*"
+            color="bg-sky-700"
           />
         </Link>
 

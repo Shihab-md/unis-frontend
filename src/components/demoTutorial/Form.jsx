@@ -210,7 +210,7 @@ const Form = () => {
     return (
       <div className="min-h-screen p-3 md:p-5">
         <div
-          className="demo-tutorial-card-pattern mx-auto mt-3 max-w-4xl rounded-lg border p-8 text-center text-sm text-slate-500 shadow"
+          className="mx-auto mt-3 max-w-4xl rounded-lg border bg-white p-8 text-center text-sm text-slate-500 shadow"
           dir={direction}
           style={{ fontFamily }}
         >
@@ -223,7 +223,7 @@ const Form = () => {
   return (
     <div className="min-h-screen">
       <div className="mx-auto max-w-4xl p-3 md:p-5" dir={direction} style={{ fontFamily }}>
-      <div className="demo-tutorial-card-pattern rounded-lg border p-5 shadow-lg">
+      <div className="rounded-lg border bg-white p-5 shadow-lg">
         <div className="flex items-center justify-between rounded-lg bg-teal-700 px-4 py-3 text-white shadow">
           <div>
             <h1 className="text-base font-semibold md:text-xl">
