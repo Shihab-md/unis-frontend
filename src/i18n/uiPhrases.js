@@ -3764,3 +3764,77 @@ const DEMO_TUTORIAL_VIEWER_TRANSLATIONS = {
 Object.entries(DEMO_TUTORIAL_VIEWER_TRANSLATIONS).forEach(([language, phrases]) => {
   if (PHRASES[language]) Object.assign(PHRASES[language], phrases);
 });
+
+// Demo - Tutorial viewer/filter/upload UX translations (9_13_36).
+const DEMO_TUTORIAL_UX_TRANSLATIONS = {
+  ta: {
+    "Search title, description, file, type or role": "தலைப்பு, விளக்கம், கோப்பு, வகை அல்லது பயனர் பங்கைத் தேடவும்",
+    "File Type": "கோப்பு வகை",
+    "Playback Speed": "இயக்க வேகம்",
+    "Full Screen": "முழுத் திரை",
+    "Exit Full Screen": "முழுத் திரையிலிருந்து வெளியேறு",
+    "Zoom Out": "சிறிதாக்கு",
+    "Zoom In": "பெரிதாக்கு",
+    "Fit Width": "அகலத்திற்கு பொருத்து",
+    "Preparing...": "தயாராகிறது..."
+  },
+  ur: {
+    "Search title, description, file, type or role": "عنوان، تفصیل، فائل، قسم یا کردار تلاش کریں",
+    "File Type": "فائل کی قسم",
+    "Playback Speed": "پلے بیک رفتار",
+    "Full Screen": "فل اسکرین",
+    "Exit Full Screen": "فل اسکرین سے باہر نکلیں",
+    "Zoom Out": "زوم آؤٹ",
+    "Zoom In": "زوم اِن",
+    "Fit Width": "چوڑائی کے مطابق",
+    "Preparing...": "تیاری ہو رہی ہے..."
+  },
+  ar: {
+    "Search title, description, file, type or role": "ابحث في العنوان أو الوصف أو الملف أو النوع أو الدور",
+    "File Type": "نوع الملف",
+    "Playback Speed": "سرعة التشغيل",
+    "Full Screen": "ملء الشاشة",
+    "Exit Full Screen": "الخروج من ملء الشاشة",
+    "Zoom Out": "تصغير",
+    "Zoom In": "تكبير",
+    "Fit Width": "ملاءمة العرض",
+    "Preparing...": "جارٍ التحضير..."
+  },
+  ml: {
+    "Search title, description, file, type or role": "ശീർഷകം, വിവരണം, ഫയൽ, തരം അല്ലെങ്കിൽ റോൾ തിരയുക",
+    "File Type": "ഫയൽ തരം",
+    "Playback Speed": "പ്ലേബാക്ക് വേഗം",
+    "Full Screen": "പൂർണ്ണ സ്ക്രീൻ",
+    "Exit Full Screen": "പൂർണ്ണ സ്ക്രീനിൽ നിന്ന് പുറത്തുകടക്കുക",
+    "Zoom Out": "സൂം ഔട്ട്",
+    "Zoom In": "സൂം ഇൻ",
+    "Fit Width": "വീതിക്ക് ഒത്താക്കുക",
+    "Preparing...": "തയ്യാറാക്കുന്നു..."
+  },
+  kn: {
+    "Search title, description, file, type or role": "ಶೀರ್ಷಿಕೆ, ವಿವರಣೆ, ಕಡತ, ಪ್ರಕಾರ ಅಥವಾ ಪಾತ್ರವನ್ನು ಹುಡುಕಿ",
+    "File Type": "ಕಡತದ ಪ್ರಕಾರ",
+    "Playback Speed": "ಪ್ಲೇಬ್ಯಾಕ್ ವೇಗ",
+    "Full Screen": "ಪೂರ್ಣ ಪರದೆ",
+    "Exit Full Screen": "ಪೂರ್ಣ ಪರದೆಯಿಂದ ಹೊರಬನ್ನಿ",
+    "Zoom Out": "ಜೂಮ್ ಔಟ್",
+    "Zoom In": "ಜೂಮ್ ಇನ್",
+    "Fit Width": "ಅಗಲಕ್ಕೆ ಹೊಂದಿಸಿ",
+    "Preparing...": "ಸಿದ್ಧಪಡಿಸಲಾಗುತ್ತಿದೆ..."
+  },
+  te: {
+    "Search title, description, file, type or role": "శీర్షిక, వివరణ, ఫైల్, రకం లేదా పాత్రను వెతకండి",
+    "File Type": "ఫైల్ రకం",
+    "Playback Speed": "ప్లేబ్యాక్ వేగం",
+    "Full Screen": "పూర్తి తెర",
+    "Exit Full Screen": "పూర్తి తెర నుంచి బయటకు రండి",
+    "Zoom Out": "జూమ్ అవుట్",
+    "Zoom In": "జూమ్ ఇన్",
+    "Fit Width": "వెడల్పుకు సరిపోల్చు",
+    "Preparing...": "సిద్ధం చేస్తోంది..."
+  }
+};
+
+Object.entries(DEMO_TUTORIAL_UX_TRANSLATIONS).forEach(([language, phrases]) => {
+  if (PHRASES[language]) Object.assign(PHRASES[language], phrases);
+});

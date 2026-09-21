@@ -26,6 +26,17 @@ const ROLE_VALUES = [
 
 const ACCEPTED_FILE_TYPES = ".pdf,.mp4,.webm,.mov,.m4v,application/pdf,video/mp4,video/webm,video/quicktime,video/x-m4v";
 
+const formatBytes = (value) => {
+  const bytes = Number(value || 0);
+  if (!Number.isFinite(bytes) || bytes <= 0) return "0 B";
+  if (bytes < 1024) return `${bytes} B`;
+  if (bytes < 1024 ** 2) return `${(bytes / 1024).toFixed(1)} KB`;
+  if (bytes < 1024 ** 3) return `${(bytes / 1024 ** 2).toFixed(1)} MB`;
+  return `${(bytes / 1024 ** 3).toFixed(2)} GB`;
+};
+
+const sleep = (ms) => new Promise((resolve) => window.setTimeout(resolve, ms));
+
 const Form = () => {
   const { id } = useParams();
   const isEdit = Boolean(id);
@@ -36,8 +47,8 @@ const Form = () => {
 
   const [loading, setLoading] = useState(isEdit);
   const [saving, setSaving] = useState(false);
-  const [uploadProgress, setUploadProgress] = useState(0);
-  const [uploadingFile, setUploadingFile] = useState(false);
+  const [uploadStage, setUploadStage] = useState("idle");
+  const [uploadProgress, setUploadProgress] = useState({ loaded: 0, total: 0, percent: 0 });
   const [form, setForm] = useState({
     title: "",
     description: "",
@@ -133,38 +144,39 @@ const Form = () => {
       description: form.description.trim(),
       visibleRoles: form.visibleRoles,
     };
+    const selectedFile = form.file;
+    const selectedFileSize = Number(selectedFile?.size || 0);
+    let succeeded = false;
 
     setSaving(true);
-    setUploadProgress(0);
-    setUploadingFile(Boolean(form.file));
+    setUploadStage(selectedFile ? "preparing" : "saving");
+    setUploadProgress({ loaded: 0, total: selectedFileSize, percent: 0 });
+
     try {
       let uploadToken = "";
       let driveFileId = "";
 
-      if (form.file) {
+      if (selectedFile) {
         const session = isEdit
           ? await demoTutorialApi.createReplacementUploadSession(id, {
-              file: form.file,
+              file: selectedFile,
               ...metadataPayload,
             })
           : await demoTutorialApi.createUploadSession({
-              file: form.file,
+              file: selectedFile,
               ...metadataPayload,
             });
 
+        setUploadStage("uploading");
         const uploaded = await demoTutorialApi.uploadInChunksThroughServer({
           uploadToken: session.uploadToken,
-          file: form.file,
+          file: selectedFile,
           chunkSize: session.uploadChunkBytes,
           onUploadProgress: (progressEvent) => {
-            const total = Number(progressEvent?.total || form.file?.size || 0);
-            if (!total) return;
-            setUploadProgress(
-              Math.min(
-                100,
-                Math.round((Number(progressEvent.loaded || 0) * 100) / total)
-              )
-            );
+            const total = Number(progressEvent?.total || selectedFileSize || 0);
+            const loaded = Math.min(total, Number(progressEvent?.loaded || 0));
+            const percent = total > 0 ? Math.min(100, Math.max(0, Math.round((loaded * 100) / total))) : 0;
+            setUploadProgress({ loaded, total, percent });
           },
         });
 
@@ -173,8 +185,8 @@ const Form = () => {
         if (!uploadToken || !driveFileId) {
           throw new Error("Unable to upload Demo - Tutorial file.");
         }
-        setUploadProgress(0);
-        setUploadingFile(false);
+        setUploadProgress({ loaded: selectedFileSize, total: selectedFileSize, percent: 100 });
+        setUploadStage("saving");
       }
 
       const payload = {
@@ -185,6 +197,12 @@ const Form = () => {
       if (isEdit) await demoTutorialApi.update(id, payload);
       else await demoTutorialApi.create(payload);
 
+      setUploadStage("completed");
+      if (selectedFileSize > 0) {
+        setUploadProgress({ loaded: selectedFileSize, total: selectedFileSize, percent: 100 });
+      }
+      await sleep(400);
+      succeeded = true;
       showSwalAlert(
         tr("Success!"),
         isEdit ? tr("Successfully Updated!") : tr("Successfully Added!"),
@@ -198,9 +216,11 @@ const Form = () => {
       );
       showSwalAlert(tr("Error!"), message, "error");
     } finally {
-      setSaving(false);
-      setUploadingFile(false);
-      setUploadProgress(0);
+      if (!succeeded) {
+        setSaving(false);
+        setUploadStage("idle");
+        setUploadProgress({ loaded: 0, total: 0, percent: 0 });
+      }
     }
   };
 
@@ -327,14 +347,39 @@ const Form = () => {
             <div className="mt-1 text-[11px] text-slate-500">{tr("Allowed: PDF, MP4, WEBM, MOV, M4V.")}</div>
           </div>
 
-          {saving && uploadProgress > 0 ? (
-            <div>
-              <div className="mb-1 flex justify-between text-[11px] text-slate-500">
-                <span>{tr("Uploading...")}</span><span>{uploadProgress}%</span>
+          {saving && uploadStage !== "idle" ? (
+            <div className={`rounded-lg border p-3 ${uploadStage === "completed" ? "border-emerald-200 bg-emerald-50" : "border-blue-100 bg-blue-50"}`} role="status" aria-live="polite">
+              <div className="flex items-center justify-between gap-3 text-xs">
+                <span className={`font-semibold ${uploadStage === "completed" ? "text-emerald-700" : "text-blue-700"}`}>
+                  {uploadStage === "preparing"
+                    ? tr("Preparing...")
+                    : uploadStage === "uploading"
+                      ? tr("Uploading...")
+                      : uploadStage === "saving"
+                        ? tr("Saving...")
+                        : tr("Completed")}
+                </span>
+                {uploadStage === "uploading" && uploadProgress.total > 0 ? (
+                  <span className="text-slate-600">
+                    {formatBytes(uploadProgress.loaded)} / {formatBytes(uploadProgress.total)} • {uploadProgress.percent}%
+                  </span>
+                ) : uploadStage === "completed" ? (
+                  <span className="font-semibold text-emerald-700">100%</span>
+                ) : null}
               </div>
-              <div className="h-2 overflow-hidden rounded-full bg-slate-200">
-                <div className="h-full bg-blue-700 transition-all" style={{ width: `${uploadProgress}%` }} />
-              </div>
+
+              {uploadStage === "uploading" || uploadStage === "completed" ? (
+                <div className="mt-2 h-2 overflow-hidden rounded-full bg-white">
+                  <div
+                    className={`h-full rounded-full transition-[width] duration-200 ${uploadStage === "completed" ? "bg-emerald-600" : "bg-blue-700"}`}
+                    style={{ width: `${uploadStage === "completed" ? 100 : uploadProgress.percent}%` }}
+                  />
+                </div>
+              ) : (
+                <div className="mt-2 h-2 overflow-hidden rounded-full bg-white">
+                  <div className="h-full w-1/3 animate-pulse rounded-full bg-blue-500" />
+                </div>
+              )}
             </div>
           ) : null}
 
@@ -343,7 +388,17 @@ const Form = () => {
             disabled={saving}
             className="w-full rounded-lg bg-teal-700 px-4 py-2 font-semibold text-white shadow hover:bg-teal-800 disabled:cursor-not-allowed disabled:opacity-60"
           >
-            {saving ? (uploadingFile ? tr("Uploading...") : tr("Saving...")) : isEdit ? tr("Update Demo - Tutorial") : tr("Add Demo - Tutorial")}
+            {saving
+              ? uploadStage === "preparing"
+                ? tr("Preparing...")
+                : uploadStage === "uploading"
+                  ? `${tr("Uploading...")} ${uploadProgress.percent}%`
+                  : uploadStage === "completed"
+                    ? tr("Completed")
+                    : tr("Saving...")
+              : isEdit
+                ? tr("Update Demo - Tutorial")
+                : tr("Add Demo - Tutorial")}
           </button>
         </form>
       </div>

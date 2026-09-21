@@ -8,7 +8,7 @@ import { getBaseUrl, handleRightClickAndFullScreen, getSpinner, showSwalAlert, r
 import {
   FaMosque, FaUserFriends, FaCoins, FaGraduationCap,
   FaUsers, FaHouseUser, FaClipboardList, FaTasks,
-  FaRupeeSign, FaMedal, FaFileContract, FaCogs, FaFileSignature, FaBookOpen,
+  FaRupeeSign, FaMedal, FaFileContract, FaCogs, FaFileSignature, FaBookOpen, FaHeadset,
 } from "react-icons/fa";
 import axios from 'axios'
 import { useNavigate } from "react-router-dom";
@@ -196,6 +196,15 @@ const AdminSummary = () => {
             text={tr("Demo - Tutorial")}
             number="*"
             color="bg-sky-700"
+          />
+        </Link>
+
+        <Link to="/dashboard/help-desk" >
+          <SummaryCard
+            icon={<FaHeadset />}
+            text={tr("Help Desk")}
+            number="*"
+            color="bg-indigo-600"
           />
         </Link>
 

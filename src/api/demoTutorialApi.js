@@ -166,11 +166,13 @@ const downloadInChunks = async ({ id, fileSize, mimeType, onProgress }) => {
 };
 
 export const demoTutorialApi = {
-  list: async ({ page = 1, limit = 20, search = "" } = {}) => {
+  list: async ({ page = 1, limit = 20, search = "", fileType = "ALL" } = {}) => {
     const query = new URLSearchParams();
     query.set("page", String(page));
     query.set("limit", String(limit));
     if (String(search || "").trim()) query.set("search", String(search).trim());
+    const normalizedType = String(fileType || "ALL").trim().toUpperCase();
+    if (["PDF", "VIDEO"].includes(normalizedType)) query.set("type", normalizedType);
 
     return (
       await axios.get(await buildUrl(`/?${query.toString()}`), {

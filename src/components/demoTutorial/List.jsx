@@ -60,6 +60,7 @@ const List = () => {
   const [loading, setLoading] = useState(true);
   const [searchInput, setSearchInput] = useState("");
   const [search, setSearch] = useState("");
+  const [fileType, setFileType] = useState("ALL");
   const [page, setPage] = useState(1);
   const [pagination, setPagination] = useState({ page: 1, totalPages: 1, total: 0 });
   const [downloadingId, setDownloadingId] = useState("");
@@ -73,7 +74,7 @@ const List = () => {
   const loadItems = useCallback(async () => {
     setLoading(true);
     try {
-      const data = await demoTutorialApi.list({ page, limit: 20, search });
+      const data = await demoTutorialApi.list({ page, limit: 20, search, fileType });
       setItems(Array.isArray(data?.items) ? data.items : []);
       setPagination(data?.pagination || { page: 1, totalPages: 1, total: 0 });
     } catch (error) {
@@ -86,7 +87,7 @@ const List = () => {
     } finally {
       setLoading(false);
     }
-  }, [page, search, tr]);
+  }, [fileType, page, search, tr]);
 
   useEffect(() => {
     loadItems();
@@ -113,6 +114,11 @@ const List = () => {
     event.preventDefault();
     setPage(1);
     setSearch(searchInput.trim());
+  };
+
+  const handleFileTypeChange = (value) => {
+    setPage(1);
+    setFileType(value);
   };
 
   const handleDownload = async (item) => {
@@ -285,23 +291,47 @@ const List = () => {
           ) : null}
         </div>
 
-        <form onSubmit={handleSearch} className="mt-4 flex gap-2">
-          <div className="relative flex-1">
-            <FaSearch
-              className={`absolute top-1/2 -translate-y-1/2 text-slate-400 ${isRtl ? "right-3" : "left-3"}`}
-            />
-            <input
-              value={searchInput}
-              onChange={(event) => setSearchInput(event.target.value)}
-              placeholder={tr("Search title or description")}
-              className={`w-full rounded-md border border-slate-300 py-2 text-sm outline-none focus:border-blue-500 ${
-                isRtl ? "pl-3 pr-9 text-right" : "pl-9 pr-3 text-left"
-              }`}
-            />
+        <form onSubmit={handleSearch} className="mt-4 flex flex-col gap-2 lg:flex-row lg:items-center">
+          <div className="flex min-w-0 flex-1 gap-2">
+            <div className="relative min-w-0 flex-1">
+              <FaSearch
+                className={`absolute top-1/2 -translate-y-1/2 text-slate-400 ${isRtl ? "right-3" : "left-3"}`}
+              />
+              <input
+                value={searchInput}
+                onChange={(event) => setSearchInput(event.target.value)}
+                placeholder={tr("Search title, description, file, type or role")}
+                className={`w-full rounded-md border border-slate-300 py-2 text-sm outline-none focus:border-blue-500 ${
+                  isRtl ? "pl-3 pr-9 text-right" : "pl-9 pr-3 text-left"
+                }`}
+              />
+            </div>
+            <button type="submit" className="rounded-md bg-blue-700 px-4 py-2 text-sm font-medium text-white hover:bg-blue-800">
+              {tr("Search")}
+            </button>
           </div>
-          <button type="submit" className="rounded-md bg-blue-700 px-4 py-2 text-sm font-medium text-white hover:bg-blue-800">
-            {tr("Search")}
-          </button>
+
+          <div className="inline-flex w-full rounded-md border border-slate-200 bg-slate-50 p-1 lg:w-auto" role="group" aria-label={tr("File Type")}>
+            {[
+              { value: "ALL", label: tr("All") },
+              { value: "VIDEO", label: tr("Video") },
+              { value: "PDF", label: tr("PDF") },
+            ].map((option) => (
+              <button
+                key={option.value}
+                type="button"
+                onClick={() => handleFileTypeChange(option.value)}
+                aria-pressed={fileType === option.value}
+                className={`flex-1 rounded px-3 py-1.5 text-xs font-semibold transition lg:flex-none ${
+                  fileType === option.value
+                    ? "bg-blue-700 text-white shadow-sm"
+                    : "text-slate-600 hover:bg-white hover:text-blue-700"
+                }`}
+              >
+                {option.label}
+              </button>
+            ))}
+          </div>
         </form>
       </div>
 
