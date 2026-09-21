@@ -272,7 +272,7 @@ const Form = () => {
                   {tr("Visible To Roles")} <span className="text-red-700">*</span>
                 </div>
                 <div className="mt-0.5 text-[11px] text-slate-500">
-                  {tr("Only selected roles can see this item in the list and download it. Superadmin always has access.")}
+                  {tr("Only selected roles can see, view and download this item. Superadmin always has access.")}
                 </div>
               </div>
               <div className="flex gap-2">

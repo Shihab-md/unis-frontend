@@ -186,6 +186,20 @@ export const demoTutorialApi = {
       })
     ).data,
 
+  createViewSession: async (id) => {
+    const data = (
+      await axios.post(await buildUrl(`/${id}/view-token`), {}, {
+        headers: authHeaders(),
+      })
+    ).data;
+    const token = String(data?.viewToken || "");
+    if (!token) throw new Error("Unable to load Demo - Tutorial file.");
+    return {
+      ...data,
+      streamUrl: await buildUrl(`/${id}/stream?token=${encodeURIComponent(token)}`),
+    };
+  },
+
   createUploadSession: async ({ file, title, description, visibleRoles }) => {
     const payload = await buildUploadSessionPayload({
       file,

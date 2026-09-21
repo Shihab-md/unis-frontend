@@ -3726,3 +3726,41 @@ export const translateUiPhrase = (value, language = getCurrentUiLanguage(), para
 };
 
 export const isUiRtlLanguage = (language = getCurrentUiLanguage()) => ["ur", "ar"].includes(normalizeLanguage(language));
+
+// Demo - Tutorial embedded viewer translations.
+const DEMO_TUTORIAL_VIEWER_TRANSLATIONS = {
+  ta: {
+    "View or download demo and tutorial PDF/video files available for your role.": "உங்கள் பயனர் பங்கிற்கு கிடைக்கும் டெமோ மற்றும் வழிகாட்டி PDF/வீடியோ கோப்புகளைப் பார்க்கவும் அல்லது பதிவிறக்கவும்.",
+    "Only selected roles can see, view and download this item. Superadmin always has access.": "தேர்ந்தெடுக்கப்பட்ட பயனர் பங்குகள் மட்டுமே இந்த உருப்படியை பட்டியலில் காணவும், பார்க்கவும், பதிவிறக்கவும் முடியும். Superadmin-க்கு எப்போதும் அணுகல் உண்டு.",
+    "Demo - Tutorial viewing session expired. Please reopen the file.": "டெமோ - வழிகாட்டி பார்வை அமர்வு காலாவதியானது. கோப்பை மீண்டும் திறக்கவும்."
+  },
+  ur: {
+    "View or download demo and tutorial PDF/video files available for your role.": "اپنے کردار کے لیے دستیاب ڈیمو اور رہنمائی PDF/ویڈیو فائلیں دیکھیں یا ڈاؤن لوڈ کریں۔",
+    "Only selected roles can see, view and download this item. Superadmin always has access.": "صرف منتخب کردار اس آئٹم کو فہرست میں دیکھ، کھول اور ڈاؤن لوڈ کر سکتے ہیں۔ Superadmin کو ہمیشہ رسائی حاصل ہے۔",
+    "Demo - Tutorial viewing session expired. Please reopen the file.": "ڈیمو - رہنمائی دیکھنے کا سیشن ختم ہو گیا ہے۔ براہ کرم فائل دوبارہ کھولیں۔"
+  },
+  ar: {
+    "View or download demo and tutorial PDF/video files available for your role.": "اعرض أو نزّل ملفات PDF/الفيديو الخاصة بالعرض التوضيحي والدليل المتاحة لدورك.",
+    "Only selected roles can see, view and download this item. Superadmin always has access.": "يمكن للأدوار المحددة فقط رؤية هذا العنصر في القائمة وفتحه وتنزيله. يتمتع Superadmin دائمًا بإمكانية الوصول.",
+    "Demo - Tutorial viewing session expired. Please reopen the file.": "انتهت صلاحية جلسة عرض الديمو - الدليل. يرجى إعادة فتح الملف."
+  },
+  ml: {
+    "View or download demo and tutorial PDF/video files available for your role.": "നിങ്ങളുടെ റോളിന് ലഭ്യമായ ഡെമോ, ട്യൂട്ടോറിയൽ PDF/വീഡിയോ ഫയലുകൾ കാണുകയോ ഡൗൺലോഡ് ചെയ്യുകയോ ചെയ്യുക.",
+    "Only selected roles can see, view and download this item. Superadmin always has access.": "തിരഞ്ഞെടുത്ത റോളുകൾക്ക് മാത്രമേ ഈ ഇനം പട്ടികയിൽ കാണാനും തുറന്ന് കാണാനും ഡൗൺലോഡ് ചെയ്യാനും കഴിയൂ. Superadmin-ന് എപ്പോഴും ആക്സസ് ഉണ്ടായിരിക്കും.",
+    "Demo - Tutorial viewing session expired. Please reopen the file.": "ഡെമോ - ട്യൂട്ടോറിയൽ കാണൽ സെഷൻ കാലഹരണപ്പെട്ടു. ഫയൽ വീണ്ടും തുറക്കുക."
+  },
+  kn: {
+    "View or download demo and tutorial PDF/video files available for your role.": "ನಿಮ್ಮ ಪಾತ್ರಕ್ಕೆ ಲಭ್ಯವಿರುವ ಡೆಮೊ ಮತ್ತು ಟ್ಯುಟೋರಿಯಲ್ PDF/ವೀಡಿಯೊ ಕಡತಗಳನ್ನು ವೀಕ್ಷಿಸಿ ಅಥವಾ ಡೌನ್‌ಲೋಡ್ ಮಾಡಿ.",
+    "Only selected roles can see, view and download this item. Superadmin always has access.": "ಆಯ್ಕೆ ಮಾಡಿದ ಪಾತ್ರಗಳು ಮಾತ್ರ ಈ ಅಂಶವನ್ನು ಪಟ್ಟಿಯಲ್ಲಿ ನೋಡಲು, ತೆರೆಯಲು ಮತ್ತು ಡೌನ್‌ಲೋಡ್ ಮಾಡಲು ಸಾಧ್ಯ. Superadmin ಗೆ ಯಾವಾಗಲೂ ಪ್ರವೇಶವಿದೆ.",
+    "Demo - Tutorial viewing session expired. Please reopen the file.": "ಡೆಮೊ - ಟ್ಯುಟೋರಿಯಲ್ ವೀಕ್ಷಣೆ ಅವಧಿ ಮುಗಿದಿದೆ. ಕಡತವನ್ನು ಮತ್ತೆ ತೆರೆಯಿರಿ."
+  },
+  te: {
+    "View or download demo and tutorial PDF/video files available for your role.": "మీ పాత్రకు అందుబాటులో ఉన్న డెమో మరియు ట్యుటోరియల్ PDF/వీడియో ఫైళ్లను వీక్షించండి లేదా డౌన్‌లోడ్ చేయండి.",
+    "Only selected roles can see, view and download this item. Superadmin always has access.": "ఎంచుకున్న పాత్రలు మాత్రమే ఈ అంశాన్ని జాబితాలో చూడగలరు, తెరిచి వీక్షించగలరు మరియు డౌన్‌లోడ్ చేయగలరు. Superadmin కు ఎల్లప్పుడూ ప్రాప్తి ఉంటుంది.",
+    "Demo - Tutorial viewing session expired. Please reopen the file.": "డెమో - ట్యుటోరియల్ వీక్షణ సెషన్ గడువు ముగిసింది. దయచేసి ఫైల్‌ను మళ్లీ తెరవండి."
+  }
+};
+
+Object.entries(DEMO_TUTORIAL_VIEWER_TRANSLATIONS).forEach(([language, phrases]) => {
+  if (PHRASES[language]) Object.assign(PHRASES[language], phrases);
+});

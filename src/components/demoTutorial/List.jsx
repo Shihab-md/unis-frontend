@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import {
   FaDownload,
   FaEdit,
+  FaEye,
   FaFilePdf,
   FaPlus,
   FaSearch,
@@ -18,6 +19,20 @@ import {
   showSwalAlert,
 } from "../../utils/CommonHelper";
 import { translateDemoTutorialMessage } from "./translateMessage";
+
+const ROLE_VALUES = [
+  "hquser",
+  "supervisor",
+  "admin",
+  "employee",
+  "teacher",
+  "usthadh",
+  "student",
+  "parent",
+  "warden",
+  "staff",
+  "guest",
+];
 
 const formatBytes = (value) => {
   const bytes = Number(value || 0);
@@ -203,13 +218,24 @@ const List = () => {
 
   const renderRoles = (item) => {
     if (!isSuperadmin) return null;
+
+    const visibleRoles = Array.isArray(item?.visibleRoles) ? item.visibleRoles : [];
+    const visibleRoleSet = new Set(visibleRoles);
+    const allRolesSelected = ROLE_VALUES.every((role) => visibleRoleSet.has(role));
+
     return (
-      <div className="mt-2 flex flex-wrap gap-1">
-        {(item.visibleRoles || []).map((role) => (
-          <span key={role} className="rounded-full bg-slate-100 px-2 py-0.5 text-[10px] font-medium text-slate-600">
-            {roleLabels[role] || role}
+      <div className="mt-2 flex flex-wrap gap-1 md:mt-0 md:justify-center">
+        {allRolesSelected ? (
+          <span className="rounded-full bg-blue-100 px-2.5 py-0.5 text-[10px] font-semibold text-blue-700">
+            ALL
           </span>
-        ))}
+        ) : (
+          visibleRoles.map((role) => (
+            <span key={role} className="rounded-full bg-slate-100 px-2 py-0.5 text-[10px] font-medium text-slate-600">
+              {roleLabels[role] || role}
+            </span>
+          ))
+        )}
       </div>
     );
   };
@@ -245,7 +271,7 @@ const List = () => {
           <div>
             <h1 className="text-lg font-semibold text-slate-800 md:text-xl">{tr("Demo - Tutorial")}</h1>
             <p className="mt-1 text-xs text-slate-500 md:text-sm">
-              {tr("Download demo and tutorial PDF/video files available for your role.")}
+              {tr("View or download demo and tutorial PDF/video files available for your role.")}
             </p>
           </div>
 
@@ -292,19 +318,19 @@ const List = () => {
               <div key={item._id} className="demo-tutorial-premium-card rounded-xl border p-4 shadow-md">
                 <div className="space-y-3">
                   <div>
-                    <div className="text-[11px] font-medium text-slate-500">{tr("Title")}</div>
+                    <div className="text-[11px] font-medium text-blue-700">{tr("Title")}</div>
                     <div className="mt-0.5 break-words text-sm font-semibold text-slate-800">{item.title}</div>
                   </div>
 
                   <div>
-                    <div className="text-[11px] font-medium text-slate-500">{tr("Description")}</div>
+                    <div className="text-[11px] font-medium text-blue-700">{tr("Description")}</div>
                     <div className="mt-0.5 whitespace-pre-wrap break-words text-xs leading-5 text-slate-600">
                       {item.description || "-"}
                     </div>
                   </div>
 
                   <div>
-                    <div className="text-[11px] font-medium text-slate-500">{tr("File")}</div>
+                    <div className="text-[11px] font-medium text-blue-700">{tr("File")}</div>
                     <div className="mt-1 flex items-start gap-2">
                       <div className="mt-0.5 shrink-0 text-lg"><FileIcon kind={item.fileKind} /></div>
                       <div className="min-w-0 flex-1">
@@ -322,19 +348,26 @@ const List = () => {
 
                   {isSuperadmin ? (
                     <div>
-                      <div className="text-[11px] font-medium text-slate-500">{tr("Visible To")}</div>
+                      <div className="text-[11px] font-medium text-blue-700">{tr("Visible To")}</div>
                       {renderRoles(item)}
                     </div>
                   ) : null}
 
                   <div className="border-t pt-3">
-                    <div className="mb-2 text-[11px] font-medium text-slate-500">{tr("Action")}</div>
-                    <div className="flex flex-wrap gap-2">
+                    <div className="mb-2 text-[11px] font-medium text-blue-700">{tr("Action")}</div>
+                    <div className={`flex items-center gap-1.5 ${isSuperadmin ? "flex-wrap" : "flex-nowrap"}`}>
+                      <Link
+                        to={`/dashboard/demo-tutorial/view/${item._id}`}
+                        className={`inline-flex items-center justify-center rounded-md bg-teal-700 font-medium text-white hover:bg-teal-800 ${isSuperadmin ? "gap-1.5 px-3 py-1.5 text-xs" : "h-8 gap-1 px-2.5 text-[11px]"}`}
+                        title={tr("View")}
+                      >
+                        <FaEye /> {tr("View")}
+                      </Link>
                       <button
                         type="button"
                         onClick={() => handleDownload(item)}
                         disabled={Boolean(downloadingId)}
-                        className="inline-flex items-center gap-1.5 rounded-md bg-blue-700 px-3 py-1.5 text-xs font-medium text-white disabled:opacity-50"
+                        className={`inline-flex items-center justify-center rounded-md bg-blue-700 font-medium text-white disabled:opacity-50 ${isSuperadmin ? "gap-1.5 px-3 py-1.5 text-xs" : "h-8 gap-1 px-2.5 text-[11px]"}`}
                         title={tr("Download")}
                       >
                         <FaDownload /> {downloadingId === item._id
@@ -375,8 +408,8 @@ const List = () => {
                   <>
                     <col className="w-[40%]" />
                     <col className="w-[25%]" />
-                    <col className="w-[23%]" />
-                    <col className="w-[12%]" />
+                    <col className="w-[20%]" />
+                    <col className="w-[15%]" />
                   </>
                 ) : (
                   <>
@@ -386,17 +419,17 @@ const List = () => {
                   </>
                 )}
               </colgroup>
-              <thead className="bg-slate-100 text-xs uppercase text-slate-600">
+              <thead className="bg-slate-100 text-xs uppercase text-blue-700">
                 <tr>
                   <th className="px-4 py-3">{tr("Title / Description")}</th>
                   <th className="px-4 py-3">{tr("File")}</th>
-                  {isSuperadmin ? <th className="px-4 py-3">{tr("Visible To")}</th> : null}
+                  {isSuperadmin ? <th className="px-4 py-3 text-center">{tr("Visible To")}</th> : null}
                   <th className="px-4 py-3 text-center">{tr("Action")}</th>
                 </tr>
               </thead>
               <tbody className="divide-y">
                 {items.map((item) => (
-                  <tr key={item._id} className="align-top hover:bg-slate-50">
+                  <tr key={item._id} className="align-middle hover:bg-slate-50">
                     <td className="px-4 py-3 break-words">
                       <div className="break-words font-semibold text-slate-800">{item.title}</div>
                       {item.description ? (
@@ -415,28 +448,30 @@ const List = () => {
                       </div>
                       {renderDownloadProgress(item)}
                     </td>
-                    {isSuperadmin ? <td className="px-4 py-3">{renderRoles(item)}</td> : null}
+                    {isSuperadmin ? <td className="px-4 py-3 align-middle">{renderRoles(item)}</td> : null}
                     <td className="px-4 py-3">
-                      <div className="flex justify-center gap-2">
+                      <div className={isSuperadmin ? "mx-auto grid w-fit grid-cols-2 gap-2" : "mx-auto flex w-fit items-center justify-center gap-2"}>
+                        <Link
+                          to={`/dashboard/demo-tutorial/view/${item._id}`}
+                          className={isSuperadmin ? "inline-flex h-9 w-9 items-center justify-center rounded-md bg-teal-700 text-white hover:bg-teal-800" : "inline-flex h-8 w-8 items-center justify-center rounded-md bg-teal-700 text-white hover:bg-teal-800"}
+                          title={tr("View")}
+                        >
+                          <FaEye />
+                        </Link>
                         <button
                           type="button"
                           onClick={() => handleDownload(item)}
                           disabled={Boolean(downloadingId)}
-                          className="rounded-md bg-blue-700 p-2 text-white disabled:opacity-50"
+                          className={isSuperadmin ? "inline-flex h-9 w-9 items-center justify-center rounded-md bg-blue-700 text-white disabled:opacity-50" : "inline-flex h-8 w-8 items-center justify-center rounded-md bg-blue-700 text-white disabled:opacity-50"}
                           title={tr("Download")}
                         >
-                          <span className="inline-flex items-center gap-1">
-                            <FaDownload />
-                            {downloadingId === item._id && downloadProgress?.id === item._id ? (
-                              <span className="text-[10px] font-semibold">{downloadProgress.percent}%</span>
-                            ) : null}
-                          </span>
+                          <FaDownload />
                         </button>
                         {isSuperadmin ? (
                           <>
                             <Link
                               to={`/dashboard/demo-tutorial/edit/${item._id}`}
-                              className="rounded-md bg-amber-600 p-2 text-white"
+                              className="inline-flex h-9 w-9 items-center justify-center rounded-md bg-amber-600 text-white"
                               title={tr("Edit")}
                             >
                               <FaEdit />
@@ -445,7 +480,7 @@ const List = () => {
                               type="button"
                               onClick={() => handleDelete(item)}
                               disabled={Boolean(deletingId)}
-                              className="rounded-md bg-red-700 p-2 text-white disabled:opacity-50"
+                              className="inline-flex h-9 w-9 items-center justify-center rounded-md bg-red-700 text-white disabled:opacity-50"
                               title={tr("Delete")}
                             >
                               <FaTrash />
