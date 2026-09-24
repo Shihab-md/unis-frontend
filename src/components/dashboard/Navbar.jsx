@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { FaHome, FaPowerOff } from "react-icons/fa";
 import NotificationBell from '../notification/NotificationBell';
 import { AutoText, useLanguage } from '../../i18n/LanguageContext';
+import EnvironmentBadge from '../common/EnvironmentBadge';
 
 const Navbar = () => {
   const { user, logout } = useAuth();
@@ -24,9 +25,12 @@ const Navbar = () => {
         </Link>
       </div>
       <div className="relative z-10 flex flex-col items-center mt-2 min-w-0 px-2">
-        <p className={`font-bold drop-shadow-4xl ${isHQ ? "text-xl lg:text-2xl" : "text-xl lg:text-3xl"}`}>
-          UNIS ACADEMY
-        </p>
+        <div className="flex items-center justify-center gap-2">
+          <p className={`font-bold drop-shadow-4xl ${isHQ ? "text-xl lg:text-2xl" : "text-xl lg:text-3xl"}`}>
+            UNIS ACADEMY
+          </p>
+          <EnvironmentBadge />
+        </div>
 
         {user?.role && (
           <AutoText

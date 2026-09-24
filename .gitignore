@@ -4,3 +4,7 @@ build/
 dist/
 *.log
 package-lock.json
+EMPLOYEE_UI_CHANGE_9_18_1.md
+*.md
+.env.local
+.env.*.local

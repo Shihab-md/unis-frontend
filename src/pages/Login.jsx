@@ -10,6 +10,7 @@ import {
 } from "../utils/CommonHelper";
 import { useKeyboardAvoidance } from "../utils/useKeyboardAvoidance";
 import Swal from "sweetalert2";
+import EnvironmentBadge from "../components/common/EnvironmentBadge";
 
 const Login = () => {
   const [loginId, setLoginId] = useState(""); // ✅ employeeId or email
@@ -150,7 +151,10 @@ const Login = () => {
         <div className="flex flex-col items-center justify-center min-h-screen space-y-6 h-75 bg-[url(/bg-img.jpg)] bg-fixed bg-cover bg-center bg-repeat">
           {/*<img width={140} className="rounded-md shadow-lg w-34 border hover:-translate-y-0.5" src="/Logo - UNIS.PNG" />*/}
           <img width={160} className="rounded-md shadow-lg w-34 border hover:-translate-y-0.5" src="/UNIS_logo_3D.png" />
-          <p className="p-5 font-bold drop-shadow-lg text-indigo-900 text-4xl hover:-translate-y-0.5">UNIS ACADEMY</p>
+          <div className="flex flex-col items-center gap-1">
+            <p className="p-5 pb-2 font-bold drop-shadow-lg text-indigo-900 text-4xl hover:-translate-y-0.5">UNIS ACADEMY</p>
+            <EnvironmentBadge className="mb-2 px-3 py-1 text-[10px] md:text-xs" />
+          </div>
 
           <div className="border p-6 w-80 bg-white shadow-lg rounded-lg bg-[url(/bg-img.jpg)] hover:-translate-y-0.5">
             <h2 className="flex text-2xl font-bold mb-4 content-right">Login</h2>

@@ -6,6 +6,7 @@ import {
 } from "react-icons/fa";
 import Swal from 'sweetalert2';
 import { translateUiPhrase } from '../i18n/uiPhrases';
+import { getApiBaseUrl } from './frontendEnvironment';
 
 const authorizedScreensFor_SA_HQ_Role = [
   "supervisorsList", "supervisorAdd", "supervisorEdit", "supervisorView",
@@ -186,8 +187,7 @@ export function toCamelCase(inputString) {
 }
 
 export const getBaseUrl = async () => {
-  return "https://unis-server.vercel.app/api/";
-  //return "http://localhost:5001/api/";
+  return getApiBaseUrl();
 };
 
 export function handleRightClickAndFullScreen() {
