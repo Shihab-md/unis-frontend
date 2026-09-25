@@ -414,9 +414,7 @@ const Add = () => {
                 title={tr("Password requirements")}
               />
               {passwordError && (
-                <p className="text-red-600 text-sm mt-1">
-                  {tr(passwordError)}
-                </p>
+                <p className="text-red-600 text-sm mt-1">{tr(passwordError)}</p>
               )}
             </div>
           </div>
