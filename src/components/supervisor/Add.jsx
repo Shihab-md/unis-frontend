@@ -413,6 +413,11 @@ const Add = () => {
                 pattern={PASSWORD_REGEX.source}
                 title={tr("Password requirements")}
               />
+              {passwordError && (
+                <p className="text-red-600 text-sm mt-1">
+                  {tr(passwordError)}
+                </p>
+              )}
             </div>
           </div>
 
