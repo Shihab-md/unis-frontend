@@ -78,6 +78,36 @@ export const PERMISSIONS = Object.freeze({
   HELP_DESK_REPLY: "helpdesk.reply",
   HELP_DESK_STATUS_MANAGE: "helpdesk.status.manage",
 
+  MASTER_INSTITUTE_VIEW: "master.institute.view",
+  MASTER_INSTITUTE_CREATE: "master.institute.create",
+  MASTER_INSTITUTE_EDIT: "master.institute.edit",
+  MASTER_INSTITUTE_DELETE: "master.institute.delete",
+
+  MASTER_COURSE_VIEW: "master.course.view",
+  MASTER_COURSE_CREATE: "master.course.create",
+  MASTER_COURSE_EDIT: "master.course.edit",
+  MASTER_COURSE_DELETE: "master.course.delete",
+
+  MASTER_ACADEMIC_YEAR_VIEW: "master.academic_year.view",
+  MASTER_ACADEMIC_YEAR_CREATE: "master.academic_year.create",
+  MASTER_ACADEMIC_YEAR_EDIT: "master.academic_year.edit",
+  MASTER_ACADEMIC_YEAR_DELETE: "master.academic_year.delete",
+
+  MASTER_TEMPLATE_VIEW: "master.template.view",
+  MASTER_TEMPLATE_CREATE: "master.template.create",
+  MASTER_TEMPLATE_EDIT: "master.template.edit",
+  MASTER_TEMPLATE_DELETE: "master.template.delete",
+
+  MASTER_DISTRICT_STATE_VIEW: "master.district_state.view",
+  MASTER_DISTRICT_STATE_CREATE: "master.district_state.create",
+  MASTER_DISTRICT_STATE_EDIT: "master.district_state.edit",
+  MASTER_DISTRICT_STATE_DELETE: "master.district_state.delete",
+
+  MASTER_GRADE_VIEW: "master.grade.view",
+  MASTER_GRADE_CREATE: "master.grade.create",
+  MASTER_GRADE_EDIT: "master.grade.edit",
+  MASTER_GRADE_DELETE: "master.grade.delete",
+
   MARKSHEET_VIEW: "marksheet.view",
   MARKSHEET_ENTER: "marksheet.enter",
   MARKSHEET_FINALIZE: "marksheet.finalize",
@@ -107,6 +137,36 @@ export const SCREEN_PERMISSION_MAP = Object.freeze({
   studentAdd: PERMISSIONS.STUDENT_CREATE,
   studentEdit: PERMISSIONS.STUDENT_EDIT,
   studentPromote: PERMISSIONS.STUDENT_PROMOTE,
+
+  institutesList: PERMISSIONS.MASTER_INSTITUTE_VIEW,
+  instituteView: PERMISSIONS.MASTER_INSTITUTE_VIEW,
+  instituteAdd: PERMISSIONS.MASTER_INSTITUTE_CREATE,
+  instituteEdit: PERMISSIONS.MASTER_INSTITUTE_EDIT,
+
+  coursesList: PERMISSIONS.MASTER_COURSE_VIEW,
+  courseView: PERMISSIONS.MASTER_COURSE_VIEW,
+  courseAdd: PERMISSIONS.MASTER_COURSE_CREATE,
+  courseEdit: PERMISSIONS.MASTER_COURSE_EDIT,
+
+  acYearsList: PERMISSIONS.MASTER_ACADEMIC_YEAR_VIEW,
+  acYearView: PERMISSIONS.MASTER_ACADEMIC_YEAR_VIEW,
+  acYearAdd: PERMISSIONS.MASTER_ACADEMIC_YEAR_CREATE,
+  acYearEdit: PERMISSIONS.MASTER_ACADEMIC_YEAR_EDIT,
+
+  templatesList: PERMISSIONS.MASTER_TEMPLATE_VIEW,
+  templateView: PERMISSIONS.MASTER_TEMPLATE_VIEW,
+  templateAdd: PERMISSIONS.MASTER_TEMPLATE_CREATE,
+  templateEdit: PERMISSIONS.MASTER_TEMPLATE_EDIT,
+
+  districtStateList: PERMISSIONS.MASTER_DISTRICT_STATE_VIEW,
+  districtStateView: PERMISSIONS.MASTER_DISTRICT_STATE_VIEW,
+  districtStateAdd: PERMISSIONS.MASTER_DISTRICT_STATE_CREATE,
+  districtStateEdit: PERMISSIONS.MASTER_DISTRICT_STATE_EDIT,
+
+  gradesList: PERMISSIONS.MASTER_GRADE_VIEW,
+  gradeView: PERMISSIONS.MASTER_GRADE_VIEW,
+  gradeAdd: PERMISSIONS.MASTER_GRADE_CREATE,
+  gradeEdit: PERMISSIONS.MASTER_GRADE_EDIT,
 
   certificatesList: PERMISSIONS.CERTIFICATE_VIEW,
   certificateView: PERMISSIONS.CERTIFICATE_VIEW,

@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom'
 import { columns, InstituteButtons } from '../../utils/InstituteHelper'
 import DataTable from 'react-data-table-component'
 import axios from 'axios'
+import { useAuth } from '../../context/AuthContext'
+import { PERMISSIONS } from '../../auth/permissions'
 import { getBaseUrl, handleRightClickAndFullScreen, getSpinner, checkAuth, LinkIcon, showSwalAlert } from '../../utils/CommonHelper';
 
 const List = () => {
@@ -16,6 +18,7 @@ const List = () => {
   const [supLoading, setSupLoading] = useState(false)
   const [filteredInstitute, setFilteredInstitutes] = useState(null)
   const navigate = useNavigate()
+  const { can } = useAuth()
 
   useEffect(() => {
 
@@ -109,7 +112,7 @@ const List = () => {
           </div>
         </div>
 
-        {LinkIcon("/dashboard/add-institute", "Add")}
+        {can(PERMISSIONS.MASTER_INSTITUTE_CREATE) ? LinkIcon("/dashboard/add-institute", "Add") : <span />}
       </div>
       <div className='mt-6 rounded-lg shadow-lg'>
         <DataTable columns={columns} data={filteredInstitute} pagination />

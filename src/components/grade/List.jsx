@@ -3,6 +3,8 @@ import DataTable from "react-data-table-component";
 import { useNavigate } from "react-router-dom";
 import { fetchGrades } from "../../api/gradeApi";
 import { GradeButtons, gradeColumns } from "../../utils/GradeHelper";
+import { useAuth } from "../../context/AuthContext";
+import { PERMISSIONS } from "../../auth/permissions";
 import {
   LinkIcon,
   checkAuth,
@@ -13,6 +15,7 @@ import {
 
 const List = () => {
   const navigate = useNavigate();
+  const { can } = useAuth()
   const [grades, setGrades] = useState([]);
   const [filteredGrades, setFilteredGrades] = useState(null);
 
@@ -76,7 +79,7 @@ const List = () => {
         <div className="w-3/4 lg:w-1/2 rounded-md flex border shadow-lg justify-between items-center bg-[url(/bg-img.jpg)]">
           <input type="text" placeholder="Search" className="w-full px-3 py-1 border rounded-md shadow-md" onChange={handleFilter} />
         </div>
-        {LinkIcon("/dashboard/add-grade", "Add")}
+        {can(PERMISSIONS.MASTER_GRADE_CREATE) ? LinkIcon("/dashboard/add-grade", "Add") : <span />}
       </div>
 
       <div className="mt-6 rounded-lg shadow-lg">

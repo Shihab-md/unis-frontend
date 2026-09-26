@@ -52,7 +52,7 @@ const Masters = () => {
       <CommonHeader userName={user?.name || ""} title="Masters" />
       <div className="content-center rounded-lg grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-7 lg:gap-14 mt-7 lg:mt-16 flex rounded-lg">
 
-        {user.role === "superadmin" || user.role === "guest" ?
+        {can(PERMISSIONS.MASTER_INSTITUTE_VIEW) ?
           <Link to="/dashboard/institutes" >
             <SummaryCard
               icon={<FaUniversity />}
@@ -62,7 +62,7 @@ const Masters = () => {
             />
           </Link> : null}
 
-        {user.role === "superadmin" || user.role === "guest" ?
+        {can(PERMISSIONS.MASTER_COURSE_VIEW) ?
           <Link to="/dashboard/courses" >
             <SummaryCard
               icon={<FaClipboardList />}
@@ -72,7 +72,7 @@ const Masters = () => {
             />
           </Link> : null}
 
-        {user.role === "superadmin" || user.role === "guest" ?
+        {can(PERMISSIONS.MASTER_ACADEMIC_YEAR_VIEW) ?
           <Link to="/dashboard/academicYears" >
             <SummaryCard
               icon={<FaCalendarAlt />}
@@ -82,7 +82,7 @@ const Masters = () => {
             />
           </Link> : null}
 
-        {user.role === "superadmin" || user.role === "guest" ?
+        {can(PERMISSIONS.MASTER_TEMPLATE_VIEW) ?
           <Link to="/dashboard/templates" >
             <SummaryCard
               icon={<FaWpforms />}
@@ -92,7 +92,7 @@ const Masters = () => {
             />
           </Link> : null}
 
-        {user.role === "superadmin" || user.role === "guest" ?
+        {can(PERMISSIONS.MASTER_DISTRICT_STATE_VIEW) ?
           <Link to="/dashboard/districtStates" >
             <SummaryCard
               icon={<FaMapMarkerAlt />}
@@ -102,7 +102,7 @@ const Masters = () => {
             />
           </Link> : null}
 
-        {user.role === "superadmin" || user.role === "hquser" || user.role === "guest" ?
+        {can(PERMISSIONS.MASTER_GRADE_VIEW) ?
           <Link to="/dashboard/grades" >
             <SummaryCard
               icon={<FaMedal />}

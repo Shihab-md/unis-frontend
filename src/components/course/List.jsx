@@ -14,6 +14,7 @@ import axios from 'axios';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import { useAuth } from '../../context/AuthContext';
+import { PERMISSIONS } from '../../auth/permissions'
 
 const List = () => {
   useEffect(() => {
@@ -26,7 +27,7 @@ const List = () => {
   const [searchText, setSearchText] = useState("");
 
   const navigate = useNavigate();
-  const { user } = useAuth();
+  const { can } = useAuth();
   const MySwal = withReactContent(Swal);
 
   const fetchCourses = async () => {
@@ -208,7 +209,7 @@ const List = () => {
           </div>
         </div>
 
-        {user.role === "superadmin" || user.role === "hquser" ? (
+        {(can(PERMISSIONS.MASTER_COURSE_CREATE) || can(PERMISSIONS.MASTER_COURSE_EDIT) || can(PERMISSIONS.MASTER_COURSE_DELETE)) ? (
           <div className="mr-3 flex items-center gap-2">
             {filterCourseType ? (
               <span className="hidden md:inline-flex max-w-[220px] truncate rounded-full bg-sky-100 px-3 py-1 text-xs font-semibold text-sky-700 border border-sky-200">
@@ -225,7 +226,7 @@ const List = () => {
           </div>
         ) : null}
 
-        {LinkIcon("/dashboard/add-course", "Add")}
+        {can(PERMISSIONS.MASTER_COURSE_CREATE) ? LinkIcon("/dashboard/add-course", "Add") : <span />}
       </div>
 
       <>

@@ -4,6 +4,8 @@ import { columns, TemplateButtons } from '../../utils/TemplateHelper'
 import { getBaseUrl, handleRightClickAndFullScreen, getSpinner, checkAuth, LinkIcon, showSwalAlert } from '../../utils/CommonHelper';
 import DataTable from 'react-data-table-component'
 import axios from 'axios'
+import { useAuth } from '../../context/AuthContext'
+import { PERMISSIONS } from '../../auth/permissions'
 
 const List = () => {
 
@@ -16,6 +18,7 @@ const List = () => {
   const [supLoading, setSupLoading] = useState(false)
   const [filteredTemplate, setFilteredTemplates] = useState(null)
   const navigate = useNavigate()
+  const { can } = useAuth()
 
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -113,7 +116,7 @@ const List = () => {
           </div>
         </div>
 
-        {LinkIcon("/dashboard/add-template", "Add")}
+        {can(PERMISSIONS.MASTER_TEMPLATE_CREATE) ? LinkIcon("/dashboard/add-template", "Add") : <span />}
       </div>
       <div className='mt-6 rounded-lg shadow-lg'>
         <DataTable columns={columns} data={filteredTemplate} pagination />

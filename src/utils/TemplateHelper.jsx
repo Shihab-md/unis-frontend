@@ -7,6 +7,7 @@ import {
   FaTrashAlt,
 } from "react-icons/fa";
 import { useAuth } from '../context/AuthContext'
+import { PERMISSIONS } from '../auth/permissions'
 
 const getTemplateModuleLabel = (row) => {
   if (row.templateModule === "MARKSHEET") {
@@ -150,7 +151,7 @@ export const TemplateButtons = ({ Id, onTemplateDelete }) => {
     }
   };
 
-  const { user } = useAuth();
+  const { can } = useAuth();
 
   return (
     <div className="flex space-x-3 rounded-sm shadow-lg">
@@ -166,7 +167,7 @@ export const TemplateButtons = ({ Id, onTemplateDelete }) => {
         className={getButtonStyle('Edit')}
         title="Edit"
         aria-label="Edit"
-        disabled={user?.role === "guest"}
+        disabled={!can(PERMISSIONS.MASTER_TEMPLATE_EDIT)}
         onClick={() => navigate(`/dashboard/templates/edit/${Id}`)}
       >
         <FaEdit title="Edit" aria-label="Edit" className="m-1" />
@@ -175,7 +176,7 @@ export const TemplateButtons = ({ Id, onTemplateDelete }) => {
         className={getButtonStyle('Delete')}
         title="Delete"
         aria-label="Delete"
-        disabled={user?.role === "guest"}
+        disabled={!can(PERMISSIONS.MASTER_TEMPLATE_DELETE)}
         onClick={() => handleDelete(Id)}
       >
         <FaTrashAlt title="Delete" aria-label="Delete" className="m-1" />

@@ -4,6 +4,8 @@ import { columns, AcademicYearButtons } from '../../utils/AcademicYearHelper'
 import DataTable from 'react-data-table-component'
 import { getBaseUrl, handleRightClickAndFullScreen, getSpinner, checkAuth, LinkIcon, showSwalAlert } from '../../utils/CommonHelper';
 import axios from 'axios'
+import { useAuth } from '../../context/AuthContext'
+import { PERMISSIONS } from '../../auth/permissions'
 
 const List = () => {
   // To prevent right-click AND For FULL screen view.
@@ -15,6 +17,7 @@ const List = () => {
   const [supLoading, setSupLoading] = useState(false)
   const [filteredAcademicYear, setFilteredAcademicYears] = useState(null)
   const navigate = useNavigate()
+  const { can } = useAuth()
 
   useEffect(() => {
 
@@ -104,7 +107,7 @@ const List = () => {
           </div>
         </div> 
 
-        {LinkIcon("/dashboard/add-academicYear", "Add")}
+        {can(PERMISSIONS.MASTER_ACADEMIC_YEAR_CREATE) ? LinkIcon("/dashboard/add-academicYear", "Add") : <span />}
       </div>
       <div className='mt-6 rounded-lg shadow-lg'>
         <DataTable columns={columns} data={filteredAcademicYear} pagination />
