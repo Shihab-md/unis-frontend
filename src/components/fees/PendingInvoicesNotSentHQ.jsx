@@ -2,6 +2,8 @@ import React, { useEffect, useMemo, useState } from "react";
 import DataTable from "react-data-table-component";
 
 import { fetchPendingInvoicesHQNotSent } from "../../api/feesApi";
+import { useAuth } from "../../context/AuthContext";
+import { PERMISSIONS } from "../../auth/permissions";
 import { getAcademicYearsFromCache } from "../../utils/AcademicYearHelper";
 import { getSchoolsFromCache } from "../../utils/SchoolHelper";
 import { showSwalAlert, LinkIcon, getPrcessing } from "../../utils/CommonHelper";
@@ -66,6 +68,8 @@ const StatCard = ({ title, value, loading, colorClass, icon, sub, isCurrency = f
 };
 
 export default function PendingInvoicesNotSentHQ() {
+  const { can } = useAuth();
+  const canViewPending = can(PERMISSIONS.ACCOUNTS_HQ_PENDING_INVOICES_VIEW);
   const role = localStorage.getItem("role");
   const isHQ = role === "superadmin" || role === "hquser";
 
@@ -83,6 +87,7 @@ export default function PendingInvoicesNotSentHQ() {
 
   // Load dropdowns
   useEffect(() => {
+    if (!canViewPending) return;
     const load = async () => {
       try {
         const years = await getAcademicYearsFromCache();
@@ -110,9 +115,10 @@ export default function PendingInvoicesNotSentHQ() {
     };
 
     load();
-  }, [isHQ]);
+  }, [isHQ, canViewPending]);
 
   const runSearch = async () => {
+    if (!canViewPending) return;
     const missing = [];
     if (!acYear) missing.push("Academic Year");
     if (!schoolId && !isHQ) missing.push("Niswan");
@@ -142,7 +148,7 @@ export default function PendingInvoicesNotSentHQ() {
 
   // auto search when ready
   useEffect(() => {
-    if (acYear && (isHQ ? true : !!schoolId)) runSearch();
+    if (canViewPending && acYear && (isHQ ? true : !!schoolId)) runSearch();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [acYear, schoolId]);
 
@@ -332,6 +338,18 @@ export default function PendingInvoicesNotSentHQ() {
     }),
     []
   );
+
+
+  if (!canViewPending) {
+    return (
+      <div className="p-4 max-w-7xl mx-auto">
+        <div className="mb-4">{LinkIcon("/dashboard/accountsPage", "Back")}</div>
+        <div className="rounded-md border border-rose-200 bg-rose-50 p-4 text-center text-sm text-rose-700">
+          You do not have permission to view pending HQ invoices.
+        </div>
+      </div>
+    );
+  }
 
   if (!isHQ) {
     return (

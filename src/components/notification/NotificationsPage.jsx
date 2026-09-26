@@ -7,6 +7,7 @@ import { getSchoolsFromCache } from "../../utils/SchoolHelper";
 import { LinkIcon } from "../../utils/CommonHelper";
 import { refreshNotificationBadge } from "./NotificationBell";
 import { useLanguage } from "../../i18n/LanguageContext";
+import { PERMISSIONS } from "../../auth/permissions";
 
 const safePath = (path) =>
   typeof path === "string" &&
@@ -199,12 +200,15 @@ const selectClass = "mt-1 w-full rounded-md border border-slate-300 bg-white px-
 const inputClass = "mt-1 w-full rounded-md border border-slate-300 bg-white px-2 py-2 text-xs text-slate-700 focus:border-teal-500 focus:outline-none";
 
 export default function NotificationsPage() {
-  const { user } = useAuth();
+  const { user, can } = useAuth();
   const navigate = useNavigate();
   const { tr, direction, fontFamily } = useLanguage();
 
   const userRole = String(user?.role || "").toLowerCase();
   const isSuperAdmin = userRole === "superadmin";
+  const canViewNotifications = can(PERMISSIONS.NOTIFICATIONS_VIEW);
+  const canViewSent = can(PERMISSIONS.NOTIFICATIONS_SENT_HISTORY_VIEW);
+  const canSendNotifications = can(PERMISSIONS.NOTIFICATIONS_SEND);
 
   const [items, setItems] = useState([]);
   const [broadcasts, setBroadcasts] = useState([]);
@@ -240,7 +244,7 @@ export default function NotificationsPage() {
     : countActiveReceivedFilters(receivedFilters, debouncedSearchText);
 
   const loadReceived = useCallback(async (pageToLoad = receivedPage) => {
-    if (isSuperAdmin) {
+    if (!canViewNotifications || isSuperAdmin) {
       setItems([]);
       setUnreadCount(0);
       setAllCount(0);
@@ -275,10 +279,15 @@ export default function NotificationsPage() {
     } finally {
       setReceivedLoading(false);
     }
-  }, [debouncedSearchText, isSuperAdmin, receivedFilters, receivedPage, tr]);
+  }, [canViewNotifications, debouncedSearchText, isSuperAdmin, receivedFilters, receivedPage, tr]);
 
   const loadSent = useCallback(async (pageToLoad = sentPage) => {
-    if (!isSuperAdmin) return;
+    if (!isSuperAdmin || !canViewSent) {
+      setBroadcasts([]);
+      setSentTotal(0);
+      setSentLoading(false);
+      return;
+    }
 
     setSentLoading(true);
 
@@ -304,7 +313,7 @@ export default function NotificationsPage() {
     } finally {
       setSentLoading(false);
     }
-  }, [debouncedSearchText, isSuperAdmin, sentFilters, sentPage, tr]);
+  }, [canViewSent, debouncedSearchText, isSuperAdmin, sentFilters, sentPage, tr]);
 
   useEffect(() => {
     setReceivedPage(1);
@@ -321,15 +330,18 @@ export default function NotificationsPage() {
   useEffect(() => {
     if (isSuperAdmin) {
       setActiveTab("sent");
-      loadSent();
+      if (canViewSent) loadSent();
     } else {
       setActiveTab("received");
     }
-  }, [isSuperAdmin, loadSent]);
+  }, [canViewSent, isSuperAdmin, loadSent]);
 
   useEffect(() => {
     const loadSchools = async () => {
-      if (!isSuperAdmin) return;
+      if (!isSuperAdmin || !canSendNotifications) {
+        setSchools([]);
+        return;
+      }
 
       try {
         const schoolData = await getSchoolsFromCache();
@@ -340,7 +352,7 @@ export default function NotificationsPage() {
     };
 
     loadSchools();
-  }, [isSuperAdmin]);
+  }, [canSendNotifications, isSuperAdmin]);
 
   const selectedRoleCount = targetRoles.length;
 
@@ -353,6 +365,7 @@ export default function NotificationsPage() {
   }, [targetRoles, tr]);
 
   const openItem = async (item) => {
+    if (!canViewNotifications) return;
     if (!item.readAt) {
       await notificationApi.markRead(item._id).catch(() => null);
       refreshNotificationBadge();
@@ -363,7 +376,7 @@ export default function NotificationsPage() {
   };
 
   const markAll = async () => {
-    if (isSuperAdmin) return;
+    if (isSuperAdmin || !canViewNotifications) return;
 
     setBusy(true);
     setMessage("");
@@ -439,7 +452,7 @@ export default function NotificationsPage() {
   const handleSendNotification = async (event) => {
     event.preventDefault();
 
-    if (!isSuperAdmin || busy) return;
+    if (!isSuperAdmin || !canSendNotifications || busy) return;
 
     const title = sendTitle.trim();
     const body = sendMessage.trim();
@@ -526,7 +539,7 @@ export default function NotificationsPage() {
     }
   };
 
-  const receivedFilterPanel = !isSuperAdmin ? (
+  const receivedFilterPanel = !isSuperAdmin && canViewNotifications ? (
     <div className="mb-4 rounded-xl border border-teal-100 bg-white/90 p-3 shadow-lg">
       <div className="mb-3 flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
         <p className="text-xs font-bold text-teal-700">
@@ -611,7 +624,7 @@ export default function NotificationsPage() {
     </div>
   ) : null;
 
-  const sentFilterPanel = isSuperAdmin ? (
+  const sentFilterPanel = isSuperAdmin && canViewSent ? (
     <div className="mb-4 rounded-xl border border-pink-100 bg-white/90 p-3 shadow-lg">
       <div className="mb-3 flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
         <p className="text-xs font-bold text-pink-700">
@@ -701,6 +714,18 @@ export default function NotificationsPage() {
     </div>
   ) : null;
 
+  if (!canViewNotifications) {
+    return (
+      <div className="p-3 lg:p-5 bg-repeat mt-3" dir={direction} style={{ fontFamily }}>
+        <div className="mx-auto mt-8 max-w-2xl rounded-xl border border-amber-200 bg-amber-50 p-5 text-center shadow-lg">
+          <h3 className="text-base font-bold text-amber-800">{tr("Notifications are not available for this role.")}</h3>
+          <p className="mt-2 text-xs text-amber-700">{tr("Please contact SuperAdmin if notification access is required.")}</p>
+          <div className="mt-4 flex justify-center">{LinkIcon("/dashboard", tr("Back"))}</div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="p-3 lg:p-5 bg-repeat mt-3" dir={direction} style={{ fontFamily }}>
       <div className="text-center">
@@ -724,7 +749,7 @@ export default function NotificationsPage() {
             />
 
 
-            {isSuperAdmin ? (
+            {isSuperAdmin && canSendNotifications ? (
               <div
                 className="ml-1"
                 onClick={(event) => {
@@ -749,7 +774,7 @@ export default function NotificationsPage() {
         {receivedFilterPanel}
         {sentFilterPanel}
 
-        {isSuperAdmin && showSendForm ? (
+        {isSuperAdmin && canSendNotifications && showSendForm ? (
           <form
             onSubmit={handleSendNotification}
             className="mb-5 rounded-xl border border-pink-200 bg-white/95 p-4 shadow-lg"
@@ -910,7 +935,7 @@ export default function NotificationsPage() {
           </form>
         ) : null}
 
-        {!isSuperAdmin && activeTab === "received" ? (
+        {!isSuperAdmin && canViewNotifications && activeTab === "received" ? (
           <>
             <div className="mb-3 flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
               <div className="flex flex-wrap items-center gap-2">
@@ -1025,7 +1050,7 @@ export default function NotificationsPage() {
           </>
         ) : null}
 
-        {isSuperAdmin ? (
+        {isSuperAdmin && canViewSent ? (
           <div className="rounded-xl border border-slate-200 bg-white/90 shadow-lg overflow-hidden">
             <div className="bg-gray-100 px-4 py-3 text-sm font-bold text-pink-700">
               {tr("Sent Notification Details")}

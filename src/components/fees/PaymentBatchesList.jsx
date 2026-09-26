@@ -3,8 +3,12 @@ import { showSwalAlert, LinkIcon, getPrcessing } from "../../utils/CommonHelper"
 import { fetchSentBatches } from "../../api/feesBatchesApi";
 import { getAcademicYearsFromCache } from "../../utils/AcademicYearHelper";
 import { getSchoolsFromCache } from "../../utils/SchoolHelper";
+import { useAuth } from "../../context/AuthContext";
+import { PERMISSIONS } from "../../auth/permissions";
 
 export default function PaymentBatchesList() {
+  const { can } = useAuth();
+  const canViewHistory = can(PERMISSIONS.ACCOUNTS_BATCH_HISTORY_VIEW);
   const role = localStorage.getItem("role");
   const isHQ = role === "superadmin" || role === "hquser";
 
@@ -22,6 +26,7 @@ export default function PaymentBatchesList() {
   const [openId, setOpenId] = useState(null);
 
   useEffect(() => {
+    if (!canViewHistory) return;
     const load = async () => {
       try {
         const years = await getAcademicYearsFromCache();
@@ -47,7 +52,7 @@ export default function PaymentBatchesList() {
       }
     };
     load();
-  }, [isHQ]);
+  }, [isHQ, canViewHistory]);
 
   const schoolOptions = useMemo(() => {
     return (schools || []).sort((a, b) => String(a.code || "").localeCompare(String(b.code || "")));
@@ -65,6 +70,7 @@ export default function PaymentBatchesList() {
   }, [batches]);
 
   const runSearch = async () => {
+    if (!canViewHistory) return;
     const missing = [];
     if (!acYear) missing.push("Academic Year");
     if (!schoolId && !isHQ) missing.push("Niswan");
@@ -93,7 +99,7 @@ export default function PaymentBatchesList() {
   };
 
   useEffect(() => {
-    if (acYear && (isHQ ? true : !!schoolId)) runSearch();
+    if (canViewHistory && acYear && (isHQ ? true : !!schoolId)) runSearch();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [acYear, schoolId, status]);
 
@@ -316,6 +322,18 @@ export default function PaymentBatchesList() {
       </>
     );
   };
+
+
+  if (!canViewHistory) {
+    return (
+      <div className="p-4 max-w-7xl mx-auto">
+        <div className="mb-4">{LinkIcon("/dashboard/accountsPage", "Back")}</div>
+        <div className="rounded-md border border-rose-200 bg-rose-50 p-4 text-center text-sm text-rose-700">
+          You do not have permission to view payment-batch history.
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="p-4 max-w-7xl mx-auto">

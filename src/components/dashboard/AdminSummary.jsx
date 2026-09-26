@@ -34,6 +34,9 @@ const AdminSummary = () => {
   const canOpenExams = canViewExamQuestions || canViewMarksheet;
   const canViewInspections = can(PERMISSIONS.INSPECTION_VIEW);
   const canViewCertificates = can(PERMISSIONS.CERTIFICATE_VIEW);
+  const canOpenAccounts = can(PERMISSIONS.ACCOUNTS_VIEW);
+  const canViewReports = can(PERMISSIONS.REPORTS_VIEW);
+  const canViewHelpDesk = can(PERMISSIONS.HELP_DESK_VIEW);
 
   // Payroll remains on the legacy Attendance scope until its dedicated permission phase.
   // Attendance/Leave/Reports are permission-controlled in Phase 2.2.
@@ -171,7 +174,7 @@ const AdminSummary = () => {
             />
           </Link> : null}
 
-        {user.role === "superadmin" || user.role === "hquser" || user.role === "admin" ?
+        {canOpenAccounts && (user.role === "superadmin" || user.role === "hquser" || user.role === "admin") ?
           <Link to="/dashboard/accountsPage" >
             <SummaryCard
               icon={<FaRupeeSign />}
@@ -191,7 +194,7 @@ const AdminSummary = () => {
             />
           </Link> : null}
 
-        {user.role === "superadmin" || user.role === "hquser" || user.role === "supervisor" || user.role === "admin" || user.role === "guest" ?
+        {canViewReports ?
           <Link to="/dashboard/reports" >
             <SummaryCard
               icon={<FaFileContract />}
@@ -219,14 +222,16 @@ const AdminSummary = () => {
           />
         </Link>
 
-        <Link to="/dashboard/help-desk" >
-          <SummaryCard
-            icon={<FaHeadset />}
-            text={tr("Help Desk")}
-            number="*"
-            color="bg-indigo-600"
-          />
-        </Link>
+        {canViewHelpDesk ? (
+          <Link to="/dashboard/help-desk" >
+            <SummaryCard
+              icon={<FaHeadset />}
+              text={tr("Help Desk")}
+              number="*"
+              color="bg-indigo-600"
+            />
+          </Link>
+        ) : null}
 
       </div>
     </div>

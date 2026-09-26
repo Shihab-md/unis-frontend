@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { notificationApi } from "../../api/notificationApi";
 import { useAuth } from "../../context/AuthContext";
 import { useLanguage } from "../../i18n/LanguageContext";
+import { PERMISSIONS } from "../../auth/permissions";
 
 export const NOTIFICATION_BADGE_REFRESH_EVENT = "unis:notification-badge-refresh";
 
@@ -17,13 +18,19 @@ export const refreshNotificationBadge = () => {
 
 export default function NotificationBell() {
   const navigate = useNavigate();
-  const { user } = useAuth();
+  const { user, can } = useAuth();
   const { tr } = useLanguage();
   const userRole = String(user?.role || "").toLowerCase();
   const isSuperAdmin = userRole === "superadmin";
+  const canViewNotifications = can(PERMISSIONS.NOTIFICATIONS_VIEW);
   const [unread, setUnread] = useState(0);
 
   const loadCount = useCallback(async () => {
+    if (!canViewNotifications) {
+      setUnread(0);
+      return;
+    }
+
     if (isSuperAdmin) {
       setUnread(0);
       return;
@@ -35,7 +42,7 @@ export default function NotificationBell() {
     } catch {
       // keep navbar working even if notification count fails
     }
-  }, [isSuperAdmin]);
+  }, [isSuperAdmin, canViewNotifications]);
 
   useEffect(() => {
     loadCount();
@@ -57,6 +64,8 @@ export default function NotificationBell() {
       document.removeEventListener("visibilitychange", onVisibilityChange);
     };
   }, [loadCount]);
+
+  if (!canViewNotifications) return null;
 
   return (
     <div className="relative z-[70]">

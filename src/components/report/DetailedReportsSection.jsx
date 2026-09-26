@@ -47,7 +47,7 @@ const money = (value) => `₹ ${Number(value || 0).toLocaleString("en-IN")}`;
 
 const defaultPaging = { page: 1, limit: 50, total: 0, pages: 1 };
 
-export default function DetailedReportsSection({ meta, studentQueryString = "" }) {
+export default function DetailedReportsSection({ meta, studentQueryString = "", canExport = false }) {
   const { tr, direction, fontFamily } = useLanguage();
   const [active, setActive] = useState("students");
   const [rows, setRows] = useState([]);
@@ -113,6 +113,7 @@ export default function DetailedReportsSection({ meta, studentQueryString = "" }
   };
 
   const exportData = async (format) => {
+    if (!canExport) return;
     try {
       await downloadReport(buildPath(1, format), `${active}_report_${Date.now()}.${format}`);
     } catch (err) {
@@ -133,10 +134,12 @@ export default function DetailedReportsSection({ meta, studentQueryString = "" }
           <h2 className="text-lg md:text-xl font-semibold text-slate-800">{tr("Detailed Reports")}</h2>
           <p className="text-xs sm:text-sm text-slate-500 mt-1">{tr("Current Student, Employee and Supervisor data with the latest profile fields.")}</p>
         </div>
-        <div className="flex gap-2 flex-wrap">
-          <button type="button" className="px-3 py-2 rounded-lg border bg-white hover:bg-slate-50 text-xs sm:text-sm" onClick={() => exportData("csv")}>{tr("Export CSV")}</button>
-          <button type="button" className="px-3 py-2 rounded-lg border bg-white hover:bg-slate-50 text-xs sm:text-sm" onClick={() => exportData("xlsx")}>{tr("Export XLSX")}</button>
-        </div>
+        {canExport ? (
+          <div className="flex gap-2 flex-wrap">
+            <button type="button" className="px-3 py-2 rounded-lg border bg-white hover:bg-slate-50 text-xs sm:text-sm" onClick={() => exportData("csv")}>{tr("Export CSV")}</button>
+            <button type="button" className="px-3 py-2 rounded-lg border bg-white hover:bg-slate-50 text-xs sm:text-sm" onClick={() => exportData("xlsx")}>{tr("Export XLSX")}</button>
+          </div>
+        ) : null}
       </div>
 
       <div className="flex gap-2 mt-4 overflow-x-auto pb-1">

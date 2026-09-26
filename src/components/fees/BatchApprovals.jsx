@@ -6,8 +6,15 @@ import {
   rejectBatch,
 } from "../../api/feesApi.js";
 import { showSwalAlert, LinkIcon } from "../../utils/CommonHelper";
+import { useAuth } from "../../context/AuthContext";
+import { PERMISSIONS } from "../../auth/permissions";
 
 export default function BatchApprovals() {
+  const { can } = useAuth();
+  const canView = can(PERMISSIONS.ACCOUNTS_HQ_REVIEW_VIEW);
+  const canApprove = can(PERMISSIONS.ACCOUNTS_HQ_APPROVE);
+  const canReject = can(PERMISSIONS.ACCOUNTS_HQ_REJECT);
+
   const [batches, setBatches] = useState([]);
   const [selectedBatch, setSelectedBatch] = useState(null);
   const [details, setDetails] = useState(null);
@@ -24,6 +31,10 @@ export default function BatchApprovals() {
   const [filterPaidDate, setFilterPaidDate] = useState("");
 
   const load = async () => {
+    if (!canView) {
+      setBatches([]);
+      return;
+    }
     try {
       setListLoading(true);
       const data = await fetchPendingBatches({});
@@ -37,7 +48,7 @@ export default function BatchApprovals() {
 
   useEffect(() => {
     load();
-  }, []);
+  }, [canView]);
 
   const openBatch = async (b) => {
     setSelectedBatch(b);
@@ -55,6 +66,10 @@ export default function BatchApprovals() {
   };
 
   const doApprove = async () => {
+    if (!canApprove) {
+      showSwalAlert("Error!", "You do not have permission to approve payment batches.", "error");
+      return;
+    }
     if (!selectedBatch) return;
 
     setProcessing(true);
@@ -80,6 +95,10 @@ export default function BatchApprovals() {
   };
 
   const doReject = async () => {
+    if (!canReject) {
+      showSwalAlert("Error!", "You do not have permission to reject payment batches.", "error");
+      return;
+    }
     if (!selectedBatch) return;
 
     const reason = window.prompt("Reject reason?");
@@ -164,6 +183,20 @@ export default function BatchApprovals() {
 
   const batchInfo = details?.batch || selectedBatch;
   const groupedItems = Array.isArray(details?.items) ? details.items : [];
+
+  if (!canView) {
+    return (
+      <div className="p-4 max-w-6xl mx-auto">
+        <div className="flex items-center gap-3 mb-5">
+          <div>{LinkIcon("/dashboard/accountsPage", "Back")}</div>
+          <h3 className="pl-2 text-lg font-semibold text-left">HQ Payment Batch Approvals</h3>
+        </div>
+        <div className="rounded-md border border-rose-200 bg-rose-50 p-4 text-center text-sm text-rose-700">
+          You do not have permission to view payment batches for approval.
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="p-4 max-w-6xl mx-auto">
@@ -381,22 +414,32 @@ export default function BatchApprovals() {
                 <div className="mt-3 text-xs text-gray-600">No items found for this batch.</div>
               )}
 
-              <div className="mt-4 flex gap-2">
-                <button
-                  disabled={processing}
-                  onClick={doApprove}
-                  className="flex-1 bg-green-600 text-white p-2 rounded hover:bg-green-700 disabled:opacity-60 hover:-translate-y-0.5"
-                >
-                  {processing ? "Working..." : "Approve"}
-                </button>
-                <button
-                  disabled={processing}
-                  onClick={doReject}
-                  className="flex-1 bg-red-600 text-white p-2 rounded hover:bg-red-700 disabled:opacity-60 hover:-translate-y-0.5"
-                >
-                  {processing ? "Working..." : "Reject"}
-                </button>
-              </div>
+              {canApprove || canReject ? (
+                <div className="mt-4 flex gap-2">
+                  {canApprove ? (
+                    <button
+                      disabled={processing}
+                      onClick={doApprove}
+                      className="flex-1 bg-green-600 text-white p-2 rounded hover:bg-green-700 disabled:opacity-60 hover:-translate-y-0.5"
+                    >
+                      {processing ? "Working..." : "Approve"}
+                    </button>
+                  ) : null}
+                  {canReject ? (
+                    <button
+                      disabled={processing}
+                      onClick={doReject}
+                      className="flex-1 bg-red-600 text-white p-2 rounded hover:bg-red-700 disabled:opacity-60 hover:-translate-y-0.5"
+                    >
+                      {processing ? "Working..." : "Reject"}
+                    </button>
+                  ) : null}
+                </div>
+              ) : (
+                <div className="mt-4 rounded-md border border-amber-200 bg-amber-50 p-3 text-center text-xs text-amber-800">
+                  Read-only access: you can review batch details but cannot approve or reject them.
+                </div>
+              )}
             </div>
           )}
         </div>

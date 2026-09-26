@@ -18,6 +18,8 @@ import ReportsFiltersDrawer from "./ReportsFiltersDrawer.jsx";
 import NiswanReportTable from "./NiswanReportTable.jsx";
 import DetailedReportsSection from "./DetailedReportsSection.jsx";
 import { useLanguage } from "../../i18n/LanguageContext.jsx";
+import { useAuth } from "../../context/AuthContext.jsx";
+import { PERMISSIONS } from "../../auth/permissions.js";
 
 const MySwal = withReactContent(Swal);
 
@@ -75,6 +77,9 @@ const formatCurrency = (value) => `₹ ${Number(value || 0).toLocaleString()}`;
 
 export default function ReportsHome() {
   const { tr, direction, fontFamily } = useLanguage();
+  const { can } = useAuth();
+  const canViewReports = can(PERMISSIONS.REPORTS_VIEW);
+  const canExportReports = can(PERMISSIONS.REPORTS_EXPORT);
   const [loading, setLoading] = useState(true);
   const [metaLoading, setMetaLoading] = useState(true);
   const [filters, setFilters] = useState(defaultFilters);
@@ -170,6 +175,7 @@ export default function ReportsHome() {
   }, [filters, meta, tr]);
 
   const loadMeta = async () => {
+    if (!canViewReports) return;
     setMetaLoading(true);
     try {
       const data = await apiGet(`report/meta`);
@@ -205,6 +211,7 @@ export default function ReportsHome() {
   };
 
   const loadHome = async () => {
+    if (!canViewReports) return;
     setLoading(true);
     try {
       const data = await apiGet(`report/home?${queryString}`);
@@ -267,6 +274,7 @@ export default function ReportsHome() {
   };
 
   const loadNiswanReport = async () => {
+    if (!canViewReports) return;
     try {
       const data = await apiGet(`report/niswan?${queryString}`);
       setNiswanRows(Array.isArray(data?.rows) ? data.rows : []);
@@ -302,31 +310,44 @@ export default function ReportsHome() {
   };
 
   useEffect(() => {
-    loadMeta();
+    if (canViewReports) loadMeta();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [canViewReports]);
 
   useEffect(() => {
+    if (!canViewReports) return;
     (async () => {
       await loadHome();
       await loadNiswanReport();
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [queryString]);
+  }, [queryString, canViewReports]);
 
   const onApplyFilters = (next) => setFilters(next);
 
   const exportHome = async (format) => {
+    if (!canExportReports) return;
     const filename = `ReportsHome_${Date.now()}.${format}`;
     await downloadFile(`report/home/export?${queryString}&format=${format}`, filename);
   };
 
   const exportNiswan = async (format) => {
+    if (!canExportReports) return;
     const filename = `Niswan_Report_${Date.now()}.${format}`;
     await downloadFile(`report/niswan/export?${queryString}&format=${format}`, filename);
   };
 
   const clearAllFilters = () => setFilters(defaultFilters);
+
+  if (!canViewReports) {
+    return (
+      <div className="p-3 md:p-6 bg-slate-50 min-h-screen" dir={direction} style={{ fontFamily }}>
+        <div className="mx-auto mt-10 max-w-xl rounded-md border border-rose-200 bg-rose-50 p-4 text-center text-sm text-rose-700">
+          {tr("Reports are not available for this role.")}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="p-3 md:p-6 bg-slate-50 min-h-screen" dir={direction} style={{ fontFamily }}>
@@ -352,12 +373,14 @@ export default function ReportsHome() {
             >
               {tr("Clear Filters")}
             </button>
-            <button
-              className="px-3 py-2 rounded-lg bg-white text-sky-700 hover:bg-sky-50 text-sm font-medium"
-              onClick={() => exportHome("xlsx")}
-            >
-              {tr("Export Home")}
-            </button>
+            {canExportReports ? (
+              <button
+                className="px-3 py-2 rounded-lg bg-white text-sky-700 hover:bg-sky-50 text-sm font-medium"
+                onClick={() => exportHome("xlsx")}
+              >
+                {tr("Export Home")}
+              </button>
+            ) : null}
           </div>
         </div>
 
@@ -447,7 +470,7 @@ export default function ReportsHome() {
         />
       </div>
 
-      <DetailedReportsSection meta={meta} studentQueryString={queryString} />
+      <DetailedReportsSection meta={meta} studentQueryString={queryString} canExport={canExportReports} />
 
       <div className="mt-6 rounded-xl bg-white border border-slate-200 shadow-xl hover:shadow-2xl transition hover:-translate-y-0.5 p-4 md:p-5">
         <div className="flex items-start justify-between gap-4 flex-wrap">
@@ -457,20 +480,22 @@ export default function ReportsHome() {
               {tr("Niswan-wise overall student, fees and status summary.")}
             </p>
           </div>
-          <div className="flex gap-2 flex-wrap">
-            <button
-              className="px-3 py-2 rounded-lg border bg-white hover:bg-slate-50 text-sm"
-              onClick={() => exportNiswan("csv")}
-            >
-              {tr("Export CSV")}
-            </button>
-            <button
-              className="px-3 py-2 rounded-lg border bg-white hover:bg-slate-50 text-sm"
-              onClick={() => exportNiswan("xlsx")}
-            >
-              {tr("Export XLSX")}
-            </button>
-          </div>
+          {canExportReports ? (
+            <div className="flex gap-2 flex-wrap">
+              <button
+                className="px-3 py-2 rounded-lg border bg-white hover:bg-slate-50 text-sm"
+                onClick={() => exportNiswan("csv")}
+              >
+                {tr("Export CSV")}
+              </button>
+              <button
+                className="px-3 py-2 rounded-lg border bg-white hover:bg-slate-50 text-sm"
+                onClick={() => exportNiswan("xlsx")}
+              >
+                {tr("Export XLSX")}
+              </button>
+            </div>
+          ) : null}
         </div>
 
         <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-3 mt-4">

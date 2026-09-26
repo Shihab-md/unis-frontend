@@ -56,6 +56,28 @@ export const PERMISSIONS = Object.freeze({
   INSPECTION_VIEW: "inspection.view",
   INSPECTION_CREATE: "inspection.create",
 
+  ACCOUNTS_VIEW: "accounts.view",
+  ACCOUNTS_SCHOOL_INVOICES_VIEW: "accounts.school_invoices.view",
+  ACCOUNTS_PAYMENT_BATCH_SUBMIT: "accounts.payment_batch.submit",
+  ACCOUNTS_BATCH_HISTORY_VIEW: "accounts.payment_batch.history.view",
+  ACCOUNTS_HQ_REVIEW_VIEW: "accounts.hq_review.view",
+  ACCOUNTS_HQ_APPROVE: "accounts.hq_review.approve",
+  ACCOUNTS_HQ_REJECT: "accounts.hq_review.reject",
+  ACCOUNTS_HQ_PENDING_INVOICES_VIEW: "accounts.hq_pending_invoices.view",
+  ACCOUNTS_HQ_MIGRATION_RUN: "accounts.hq_migration.run",
+
+  REPORTS_VIEW: "reports.view",
+  REPORTS_EXPORT: "reports.export",
+
+  NOTIFICATIONS_VIEW: "notifications.view",
+  NOTIFICATIONS_SEND: "notifications.send",
+  NOTIFICATIONS_SENT_HISTORY_VIEW: "notifications.sent_history.view",
+
+  HELP_DESK_VIEW: "helpdesk.view",
+  HELP_DESK_CREATE: "helpdesk.create",
+  HELP_DESK_REPLY: "helpdesk.reply",
+  HELP_DESK_STATUS_MANAGE: "helpdesk.status.manage",
+
   MARKSHEET_VIEW: "marksheet.view",
   MARKSHEET_ENTER: "marksheet.enter",
   MARKSHEET_FINALIZE: "marksheet.finalize",

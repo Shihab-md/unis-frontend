@@ -3,20 +3,29 @@ import { FaComments } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { helpDeskApi } from "../../api/helpDeskApi";
 import { useLanguage } from "../../i18n/LanguageContext";
+import { useAuth } from "../../context/AuthContext";
+import { PERMISSIONS } from "../../auth/permissions";
 
 export default function HelpDeskIcon() {
   const navigate = useNavigate();
   const { tr } = useLanguage();
+  const { can } = useAuth();
+  const canViewHelpDesk = can(PERMISSIONS.HELP_DESK_VIEW);
   const [unread, setUnread] = useState(0);
 
   const loadCount = useCallback(async () => {
+    if (!canViewHelpDesk) {
+      setUnread(0);
+      return;
+    }
+
     try {
       const data = await helpDeskApi.unreadCount();
       setUnread(Number(data?.unreadCount || 0));
     } catch {
       // keep navbar working even if Help Desk count fails
     }
-  }, []);
+  }, [canViewHelpDesk]);
 
   useEffect(() => {
     loadCount();
@@ -34,6 +43,8 @@ export default function HelpDeskIcon() {
       window.removeEventListener("unis:helpdesk-count-refresh", onRefresh);
     };
   }, [loadCount]);
+
+  if (!canViewHelpDesk) return null;
 
   return (
     <div className="relative z-[70]">

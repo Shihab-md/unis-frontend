@@ -3,6 +3,7 @@ import SummaryCard from "./SummaryCard";
 import CommonHeader from "./CommonHeader";
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext'
+import { PERMISSIONS } from '../../auth/permissions'
 import { getBaseUrl, handleRightClickAndFullScreen, getSpinner, LinkIcon, showSwalAlert } from '../../utils/CommonHelper'
 import { FaCalculator, FaRegMoneyBillAlt, FaCheck, FaRegClock, FaRegListAlt, FaPlayCircle } from "react-icons/fa";
 import axios from 'axios'
@@ -17,14 +18,28 @@ const AccountsPage = () => {
 
   const [summary, setSummary] = useState(null)
   const navigate = useNavigate()
-  const { user } = useAuth()
+  const { user, can } = useAuth()
+
+  const role = String(user?.role || "").toLowerCase();
+  const canOpenAccounts = can(PERMISSIONS.ACCOUNTS_VIEW);
+
+  if (!canOpenAccounts) {
+    return (
+      <div className="p-7 pt-3">
+        <CommonHeader userName={user?.name || ""} title="Accounts" />
+        <div className="mx-auto mt-8 max-w-xl rounded-md border border-rose-200 bg-rose-50 p-4 text-center text-sm text-rose-700">
+          Accounts are not available for this role.
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="p-7 pt-3 items-center justify-center rounded-lg h-9/10">
       <CommonHeader userName={user?.name || ""} title="Accounts" />
       <div className="content-center rounded-lg grid grid-cols-1 md:grid-cols-4 lg:grid-cols-4 gap-10 lg:gap-14 mt-7 lg:mt-16 flex rounded-lg">
 
-        {user.role === "admin" ?
+        {role === "admin" && can(PERMISSIONS.ACCOUNTS_SCHOOL_INVOICES_VIEW) ?
           <Link to="/dashboard/fees" >
             <SummaryCard
               icon={<FaRegMoneyBillAlt />}
@@ -34,7 +49,7 @@ const AccountsPage = () => {
             />
           </Link> : null}
 
-        {user.role === "superadmin" || user.role === "hquser" ?
+        {(role === "superadmin" || role === "hquser") && can(PERMISSIONS.ACCOUNTS_HQ_REVIEW_VIEW) ?
           <Link to="/dashboard/hq/fees" >
             <SummaryCard
               icon={<FaCheck />}
@@ -44,17 +59,17 @@ const AccountsPage = () => {
             />
           </Link> : null}
 
-        {user.role === "superadmin" || user.role === "hquser" || user.role === "admin" ?
+        {(role === "superadmin" || role === "hquser" || role === "admin") && can(PERMISSIONS.ACCOUNTS_BATCH_HISTORY_VIEW) ?
           <Link to="/dashboard/fees/sent-to-hq" >
             <SummaryCard
               icon={<FaRegListAlt />}
-              text={user.role === "superadmin" || user.role === "hquser" ? "Received Batches" : "Sent Batches"}
+              text={role === "superadmin" || role === "hquser" ? "Received Batches" : "Sent Batches"}
               number="*"
               color="bg-teal-500"
             />
           </Link> : null}
 
-        {user.role === "superadmin" || user.role === "hquser" ?
+        {(role === "superadmin" || role === "hquser") && can(PERMISSIONS.ACCOUNTS_HQ_PENDING_INVOICES_VIEW) ?
           <Link to="/dashboard/hq/pending-invoices" >
             <SummaryCard
               icon={<FaRegClock />}
@@ -64,7 +79,7 @@ const AccountsPage = () => {
             />
           </Link> : null}
 
-        {user.role === "superadmin" || user.role === "hquser" ?
+        {role === "superadmin" || role === "hquser" ?
           <Link to="#" >
             <SummaryCard
               icon={<FaCalculator />}
@@ -74,7 +89,7 @@ const AccountsPage = () => {
             />
           </Link> : null}
         {/*
-        {user.role === "superadmin" || user.role === "hquser" ?
+        {(role === "superadmin" || role === "hquser") && can(PERMISSIONS.ACCOUNTS_HQ_MIGRATION_RUN) ?
           <Link to="/dashboard/hq/fees/migration" >
             <SummaryCard
               icon={<FaPlayCircle />}

@@ -6,8 +6,12 @@ import { FaRegTimesCircle, FaPlay, FaCheckCircle, FaExclamationTriangle } from "
 import { createMigrationBatchesFromInvoicesAll } from "../../api/feesApi";
 import { getAcademicYearsFromCache } from "../../utils/AcademicYearHelper";
 import { showSwalAlert, getPrcessing } from "../../utils/CommonHelper";
+import { useAuth } from "../../context/AuthContext";
+import { PERMISSIONS } from "../../auth/permissions";
 
 export default function MigrationBatchesFromInvoicesAll() {
+  const { can } = useAuth();
+  const canRunMigration = can(PERMISSIONS.ACCOUNTS_HQ_MIGRATION_RUN);
   const [academicYears, setAcademicYears] = useState([]);
   const [acYear, setAcYear] = useState("");
   const [paidDate, setPaidDate] = useState(() => new Date().toISOString().slice(0, 10));
@@ -19,6 +23,7 @@ export default function MigrationBatchesFromInvoicesAll() {
   const [result, setResult] = useState(null);
 
   useEffect(() => {
+    if (!canRunMigration) return undefined;
     let alive = true;
 
     const loadAcademicYears = async () => {
@@ -50,7 +55,7 @@ export default function MigrationBatchesFromInvoicesAll() {
     return () => {
       alive = false;
     };
-  }, []);
+  }, [canRunMigration]);
 
   const selectedAcYearLabel = useMemo(() => {
     const found = academicYears.find((x) => String(x._id) === String(acYear));
@@ -58,6 +63,10 @@ export default function MigrationBatchesFromInvoicesAll() {
   }, [academicYears, acYear]);
 
   const handleRunMigration = async () => {
+    if (!canRunMigration) {
+      showSwalAlert("Error!", "You do not have permission to run the invoice-batch migration.", "error");
+      return;
+    }
     if (!acYear) {
       showSwalAlert("Info", "Please select academic year", "info");
       return;
@@ -120,6 +129,16 @@ export default function MigrationBatchesFromInvoicesAll() {
       setProcessing(false);
     }
   };
+
+  if (!canRunMigration) {
+    return (
+      <div className="p-3 sm:p-4">
+        <div className="mx-auto max-w-6xl mt-3 rounded-lg border border-rose-200 bg-rose-50 p-4 text-center text-sm text-rose-700">
+          You do not have permission to run the invoice-batch migration.
+        </div>
+      </div>
+    );
+  }
 
   if (processing) {
     return getPrcessing();
