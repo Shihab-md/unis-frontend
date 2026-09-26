@@ -55,6 +55,7 @@ export const PERMISSIONS = Object.freeze({
   CERTIFICATE_REPRINT: "certificate.reprint",
   CERTIFICATE_DUPLICATE_PRINT: "certificate.duplicate_print",
   CERTIFICATE_BULK_IHS: "certificate.bulk_ihs",
+  TEMP_SCHOOL_MARKSHEET_CREATE: "marksheet.temp_school.create",
 
   INSPECTION_VIEW: "inspection.view",
   INSPECTION_CREATE: "inspection.create",
@@ -177,6 +178,7 @@ export const SCREEN_PERMISSION_MAP = Object.freeze({
   certificateEdit: PERMISSIONS.CERTIFICATE_REPRINT,
   certificateDuplicatePrint: PERMISSIONS.CERTIFICATE_DUPLICATE_PRINT,
   certificateBulkIhs: PERMISSIONS.CERTIFICATE_BULK_IHS,
+  tempSchoolMarksheet: PERMISSIONS.TEMP_SCHOOL_MARKSHEET_CREATE,
 
   inspectionReportList: PERMISSIONS.INSPECTION_VIEW,
   inspectionReportView: PERMISSIONS.INSPECTION_VIEW,

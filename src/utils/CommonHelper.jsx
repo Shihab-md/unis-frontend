@@ -55,6 +55,16 @@ const authorizedScreensFor_ADMIN_Role = [
   "settings", "profile"
 ];
 
+const HQ_SCHOOL_CODE = "UN-00-00001";
+const HQ_ADMIN_SCOPED_SCREENS = new Set(["certificateBulkIhs", "tempSchoolMarksheet"]);
+
+export const isHqAdminSession = (
+  role = localStorage.getItem("role"),
+  schoolName = localStorage.getItem("schoolName")
+) =>
+  String(role || "").trim().toLowerCase() === "admin" &&
+  String(schoolName || "").trim().startsWith(HQ_SCHOOL_CODE);
+
 export function checkAuth(screenName) {
 
   const role = localStorage.getItem("role")
@@ -68,8 +78,11 @@ export function checkAuth(screenName) {
       // Permission is necessary, but a normal Niswan Admin still does not receive
       // the Add Student screen unless it is the existing special HQ-Niswan Admin.
       if (screenName === "studentAdd" && role === "admin") {
-        const loggedInSchoolName = String(localStorage.getItem("schoolName") || "").trim();
-        return loggedInSchoolName.startsWith("UN-00-00001") ? "OK" : "NO";
+        return isHqAdminSession(role) ? "OK" : "NO";
+      }
+
+      if (role === "admin" && HQ_ADMIN_SCOPED_SCREENS.has(screenName)) {
+        return isHqAdminSession(role) ? "OK" : "NO";
       }
 
       return "OK";
@@ -86,13 +99,7 @@ export function checkAuth(screenName) {
 
   } else if (role === "admin" && authorizedScreensFor_ADMIN_Role.includes(screenName)) {
     if (screenName === "studentAdd") {
-      const loggedInSchoolName = String(localStorage.getItem("schoolName") || "").trim();
-
-      if (loggedInSchoolName.startsWith("UN-00-00001")) {
-        return "OK";
-      }
-
-      return "NO";
+      return isHqAdminSession(role) ? "OK" : "NO";
     }
 
     return "OK";

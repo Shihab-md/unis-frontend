@@ -4,7 +4,7 @@ import CommonHeader from "./CommonHeader";
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext'
 import { PERMISSIONS } from '../../auth/permissions'
-import { getBaseUrl, handleRightClickAndFullScreen, getSpinner, LinkIcon, showSwalAlert } from '../../utils/CommonHelper'
+import { getBaseUrl, handleRightClickAndFullScreen, getSpinner, LinkIcon, showSwalAlert, isHqAdminSession } from '../../utils/CommonHelper'
 import {
   FaUniversity, FaWpforms, FaClipboardList, FaCalendarAlt, FaUserCog, FaMapMarkerAlt, FaGoogleDrive, FaRedo, FaCentos, FaMedal, FaFileExcel, FaUserShield
 } from "react-icons/fa";
@@ -21,6 +21,8 @@ const Masters = () => {
   const [summary, setSummary] = useState(null)
   const navigate = useNavigate()
   const { user, can } = useAuth()
+  const hasHqUtilityScope = ["superadmin", "hquser"].includes(String(user?.role || "").toLowerCase()) ||
+    isHqAdminSession(user?.role, user?.schoolName)
 
   useEffect(() => {
 
@@ -142,7 +144,7 @@ const Masters = () => {
             />
           </Link> : null}
 
-        {can(PERMISSIONS.CERTIFICATE_BULK_IHS) ?
+        {hasHqUtilityScope && can(PERMISSIONS.CERTIFICATE_BULK_IHS) ?
           <Link to="/dashboard/certificate-bulk-ihs" >
             <SummaryCard
               icon={<FaCentos />}
@@ -152,7 +154,7 @@ const Masters = () => {
             />
           </Link> : null}
 
-        {user.role === "superadmin" || user.role === "hquser" ?
+        {hasHqUtilityScope && can(PERMISSIONS.TEMP_SCHOOL_MARKSHEET_CREATE) ?
           <Link to="/dashboard/temp-school-marksheets" >
             <SummaryCard
               icon={<FaFileExcel />}

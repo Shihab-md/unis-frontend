@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext'
 import { PERMISSIONS } from "../../auth/permissions";
 import { useLanguage } from '../../i18n/LanguageContext'
-import { getBaseUrl, handleRightClickAndFullScreen, getSpinner, showSwalAlert, removeLocalStorage } from '../../utils/CommonHelper'
+import { getBaseUrl, handleRightClickAndFullScreen, getSpinner, showSwalAlert, removeLocalStorage, isHqAdminSession } from '../../utils/CommonHelper'
 import {
   FaMosque, FaUserFriends, FaCoins, FaGraduationCap,
   FaUsers, FaHouseUser, FaClipboardList, FaTasks,
@@ -37,6 +37,10 @@ const AdminSummary = () => {
   const canOpenAccounts = can(PERMISSIONS.ACCOUNTS_VIEW);
   const canViewReports = can(PERMISSIONS.REPORTS_VIEW);
   const canViewHelpDesk = can(PERMISSIONS.HELP_DESK_VIEW);
+  const isHqAdmin = isHqAdminSession(user?.role, user?.schoolName);
+  const canOpenHqMasterUtilities =
+    isHqAdmin &&
+    (can(PERMISSIONS.CERTIFICATE_BULK_IHS) || can(PERMISSIONS.TEMP_SCHOOL_MARKSHEET_CREATE));
 
   // Payroll remains on the legacy Attendance scope until its dedicated permission phase.
   // Attendance/Leave/Reports are permission-controlled in Phase 2.2.
@@ -184,7 +188,7 @@ const AdminSummary = () => {
             />
           </Link> : null}
 
-        {user.role === "superadmin" || user.role === "hquser" || user.role === "guest" ?
+        {user.role === "superadmin" || user.role === "hquser" || user.role === "guest" || canOpenHqMasterUtilities ?
           <Link to="/dashboard/masters" >
             <SummaryCard
               icon={<FaCoins />}
