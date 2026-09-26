@@ -7,6 +7,7 @@ const AUTH_STORAGE_KEYS = [
   "schoolName",
   "schoolIds",
   "schools",
+  "permissions",
   "preferredLanguage",
 ];
 
@@ -127,6 +128,12 @@ export const persistAuthSession = ({ token, user }) => {
     if (user?.role) localStorage.setItem("role", user.role);
     if (user?.preferredLanguage) {
       localStorage.setItem("preferredLanguage", String(user.preferredLanguage).toLowerCase());
+    }
+
+    if (Array.isArray(user?.permissions)) {
+      localStorage.setItem("permissions", JSON.stringify(user.permissions));
+    } else {
+      localStorage.removeItem("permissions");
     }
 
     if (user?.schoolId) {

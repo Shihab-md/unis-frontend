@@ -2,7 +2,6 @@ import React, { useEffect, useMemo, useState } from "react";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import { FaArrowAltCircleLeft, FaCommentDots, FaDownload, FaEdit, FaPrint, FaSave, FaSearch } from "react-icons/fa";
-import { useAuth } from "../../context/AuthContext";
 import {
   checkAuth,
   getPrcessing,
@@ -188,7 +187,6 @@ const MarksheetPage = () => {
   }, []);
 
   const navigate = useNavigate();
-  const { user } = useAuth();
 
   const [loading, setLoading] = useState(true);
   const [processing, setProcessing] = useState(false);
@@ -706,9 +704,11 @@ const MarksheetPage = () => {
   if (loading) return getSpinner();
   if (processing) return getPrcessing();
 
-  const canFinalize = user?.role === "superadmin" || (user?.role === "admin" && filters.examType !== "Annual");
+  const canEnter = Boolean(access?.canEnter);
+  const canFinalize = Boolean(access?.canFinalize);
+  const canUseOfficialPdf = Boolean(access?.canPdf);
   const isCurrentExamFinalized = currentExam?.status === "Finalized";
-  const canEditCurrentExam = !isCurrentExamFinalized;
+  const canEditCurrentExam = canEnter && !isCurrentExamFinalized;
 
   const openRemarksEditor = async (studentIndex) => {
     const student = students[studentIndex];
@@ -847,10 +847,14 @@ const MarksheetPage = () => {
             {currentExam?.status ? (
               <p className={`text-xs font-semibold ${isCurrentExamFinalized ? "text-emerald-700" : "text-blue-600"}`}>
                 Current Status: {currentExam.status}
-                {isCurrentExamFinalized ? " - locked for editing" : " - draft can be edited"}
+                {isCurrentExamFinalized
+                  ? " - locked for editing"
+                  : canEditCurrentExam
+                    ? " - draft can be edited"
+                    : " - read only"}
               </p>
             ) : null}
-            {gradeRules.length === 0 && !isCurrentExamFinalized ? (
+            {gradeRules.length === 0 && canEditCurrentExam ? (
               <p className="mt-1 text-xs font-semibold text-amber-600">
                 Grade Master is not configured. Draft can be saved, but finalization requires at least one Active Grade rule.
               </p>
@@ -998,7 +1002,9 @@ const MarksheetPage = () => {
               </>
             ) : (
               <div className="rounded-md border border-emerald-200 bg-emerald-50 px-3 py-2 text-xs font-semibold text-emerald-700">
-                This marksheet is finalized. Draft marksheets only can be edited.
+                {isCurrentExamFinalized
+                  ? "This marksheet is finalized. Draft marksheets only can be edited."
+                  : "You have view-only access to this marksheet."}
               </div>
             )}
           </div>
@@ -1057,21 +1063,23 @@ const MarksheetPage = () => {
                     <td className="border px-2 py-1 text-center">
                       <div className="flex flex-wrap justify-center gap-1">
                         <button type="button" onClick={() => viewExam(exam._id)} className="rounded bg-blue-600 px-2 py-1 text-white" title="View marksheet" aria-label="View marksheet">View</button>
-                        {exam.status === "Draft" ? (
+                        {exam.status === "Draft" && canEnter ? (
                           <button type="button" onClick={() => editDraftExam(exam)} className="inline-flex items-center rounded bg-amber-500 px-2 py-1 text-white" title="Edit draft marksheet" aria-label="Edit draft marksheet">
                             <FaEdit className="mr-1" /> Edit
                           </button>
                         ) : null}
-                        <button
-                          type="button"
-                          onClick={() => downloadExamPdf(exam)}
-                          disabled={exam.status !== "Finalized" || !exam.marksheetPdf?.templateReady}
-                          className={`inline-flex items-center rounded px-2 py-1 text-white ${exam.status === "Finalized" && exam.marksheetPdf?.templateReady ? "bg-emerald-600 hover:bg-emerald-700" : "cursor-not-allowed bg-slate-300"}`}
-                          title={exam.status !== "Finalized" ? "Finalize marksheet before PDF generation" : exam.marksheetPdf?.templateReady ? "Generate / download official PDF" : "Upload Normal marksheet template first"}
-                          aria-label="Generate or download official marksheet PDF"
-                        >
-                          <FaDownload className="mr-1" /> {isOfficialPdfTemplateOutdated(exam.marksheetPdf || {}) ? "Regenerate PDF" : clean(exam.marksheetPdf?.status) === "Generated" ? "PDF" : clean(exam.marksheetPdf?.status) === "Failed" ? "Retry PDF" : "Generate PDF"}
-                        </button>
+                        {canUseOfficialPdf ? (
+                          <button
+                            type="button"
+                            onClick={() => downloadExamPdf(exam)}
+                            disabled={exam.status !== "Finalized" || !exam.marksheetPdf?.templateReady}
+                            className={`inline-flex items-center rounded px-2 py-1 text-white ${exam.status === "Finalized" && exam.marksheetPdf?.templateReady ? "bg-emerald-600 hover:bg-emerald-700" : "cursor-not-allowed bg-slate-300"}`}
+                            title={exam.status !== "Finalized" ? "Finalize marksheet before PDF generation" : exam.marksheetPdf?.templateReady ? "Generate / download official PDF" : "Upload Normal marksheet template first"}
+                            aria-label="Generate or download official marksheet PDF"
+                          >
+                            <FaDownload className="mr-1" /> {isOfficialPdfTemplateOutdated(exam.marksheetPdf || {}) ? "Regenerate PDF" : clean(exam.marksheetPdf?.status) === "Generated" ? "PDF" : clean(exam.marksheetPdf?.status) === "Failed" ? "Retry PDF" : "Generate PDF"}
+                          </button>
+                        ) : null}
                       </div>
                     </td>
                   </tr>
@@ -1084,19 +1092,21 @@ const MarksheetPage = () => {
 
       {activeTab === "view" && viewData ? (
         <>
-          <div className="print:hidden mb-3 flex justify-center">
-            <button
-              type="button"
-              onClick={() => downloadExamPdf(viewData?.exam)}
-              disabled={viewData?.exam?.status !== "Finalized" || !viewData?.exam?.marksheetPdf?.templateReady}
-              className={`inline-flex items-center rounded-md px-4 py-2 text-xs font-bold text-white shadow ${viewData?.exam?.status === "Finalized" && viewData?.exam?.marksheetPdf?.templateReady ? "bg-emerald-600 hover:bg-emerald-700" : "cursor-not-allowed bg-slate-300"}`}
-              title={viewData?.exam?.status !== "Finalized" ? "Finalize marksheet before PDF generation" : viewData?.exam?.marksheetPdf?.templateReady ? "Generate / download official marksheet PDF" : "Upload Normal marksheet template first"}
-              aria-label="Generate or download official marksheet PDF"
-            >
-              <FaDownload className="mr-1" /> {isOfficialPdfTemplateOutdated(viewData?.exam?.marksheetPdf || {}) ? "Regenerate Official PDF" : clean(viewData?.exam?.marksheetPdf?.status) === "Generated" ? "Download Official PDF" : clean(viewData?.exam?.marksheetPdf?.status) === "Failed" ? "Retry Official PDF" : "Generate Official PDF"}
-            </button>
-          </div>
-          <SingleMarksheetView data={viewData} onDownloadStudentPdf={downloadStudentPdf} />
+          {canUseOfficialPdf ? (
+            <div className="print:hidden mb-3 flex justify-center">
+              <button
+                type="button"
+                onClick={() => downloadExamPdf(viewData?.exam)}
+                disabled={viewData?.exam?.status !== "Finalized" || !viewData?.exam?.marksheetPdf?.templateReady}
+                className={`inline-flex items-center rounded-md px-4 py-2 text-xs font-bold text-white shadow ${viewData?.exam?.status === "Finalized" && viewData?.exam?.marksheetPdf?.templateReady ? "bg-emerald-600 hover:bg-emerald-700" : "cursor-not-allowed bg-slate-300"}`}
+                title={viewData?.exam?.status !== "Finalized" ? "Finalize marksheet before PDF generation" : viewData?.exam?.marksheetPdf?.templateReady ? "Generate / download official marksheet PDF" : "Upload Normal marksheet template first"}
+                aria-label="Generate or download official marksheet PDF"
+              >
+                <FaDownload className="mr-1" /> {isOfficialPdfTemplateOutdated(viewData?.exam?.marksheetPdf || {}) ? "Regenerate Official PDF" : clean(viewData?.exam?.marksheetPdf?.status) === "Generated" ? "Download Official PDF" : clean(viewData?.exam?.marksheetPdf?.status) === "Failed" ? "Retry Official PDF" : "Generate Official PDF"}
+              </button>
+            </div>
+          ) : null}
+          <SingleMarksheetView data={viewData} onDownloadStudentPdf={downloadStudentPdf} canDownloadPdf={canUseOfficialPdf} />
         </>
       ) : null}
 
@@ -1138,7 +1148,7 @@ const MarksheetPage = () => {
   );
 };
 
-const SingleMarksheetView = ({ data, onDownloadStudentPdf }) => {
+const SingleMarksheetView = ({ data, onDownloadStudentPdf, canDownloadPdf = false }) => {
   const exam = data?.exam || {};
   const records = Array.isArray(data?.records) ? data.records : [];
   const school = exam.schoolId || {};
@@ -1157,18 +1167,20 @@ const SingleMarksheetView = ({ data, onDownloadStudentPdf }) => {
         const student = record.studentId || {};
         return (
           <div key={record._id} className="mt-5 page-break-after border rounded p-3">
-            <div className="print:hidden mb-2 flex justify-end">
-              <button
-                type="button"
-                onClick={() => onDownloadStudentPdf?.(exam, record)}
-                disabled={exam.status !== "Finalized" || !exam.marksheetPdf?.templateReady}
-                className={`inline-flex items-center rounded px-3 py-1.5 text-xs font-bold text-white ${exam.status === "Finalized" && exam.marksheetPdf?.templateReady ? "bg-emerald-600 hover:bg-emerald-700" : "cursor-not-allowed bg-slate-300"}`}
-                title={exam.status !== "Finalized" ? "Finalize marksheet first" : exam.marksheetPdf?.templateReady ? "Generate / download this student's official Muballiga marksheet PDF" : "Upload Normal marksheet template first"}
-                aria-label="Download individual official marksheet PDF"
-              >
-                <FaDownload className="mr-1" /> Individual PDF
-              </button>
-            </div>
+            {canDownloadPdf ? (
+              <div className="print:hidden mb-2 flex justify-end">
+                <button
+                  type="button"
+                  onClick={() => onDownloadStudentPdf?.(exam, record)}
+                  disabled={exam.status !== "Finalized" || !exam.marksheetPdf?.templateReady}
+                  className={`inline-flex items-center rounded px-3 py-1.5 text-xs font-bold text-white ${exam.status === "Finalized" && exam.marksheetPdf?.templateReady ? "bg-emerald-600 hover:bg-emerald-700" : "cursor-not-allowed bg-slate-300"}`}
+                  title={exam.status !== "Finalized" ? "Finalize marksheet first" : exam.marksheetPdf?.templateReady ? "Generate / download this student's official Muballiga marksheet PDF" : "Upload Normal marksheet template first"}
+                  aria-label="Download individual official marksheet PDF"
+                >
+                  <FaDownload className="mr-1" /> Individual PDF
+                </button>
+              </div>
+            ) : null}
             <div className="grid grid-cols-2 gap-2 text-xs mb-3">
               <div><b>Name of the Student:</b> {student.userId?.name || "-"}</div>
               <div><b>Register Number:</b> {student.rollNumber || "-"}</div>

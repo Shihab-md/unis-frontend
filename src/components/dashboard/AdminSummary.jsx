@@ -3,6 +3,7 @@ import SummaryCard from "./SummaryCard";
 import CommonHeader from "./CommonHeader";
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext'
+import { PERMISSIONS } from "../../auth/permissions";
 import { useLanguage } from '../../i18n/LanguageContext'
 import { getBaseUrl, handleRightClickAndFullScreen, getSpinner, showSwalAlert, removeLocalStorage } from '../../utils/CommonHelper'
 import {
@@ -22,7 +23,7 @@ const AdminSummary = () => {
 
   const [summary, setSummary] = useState(null)
   const navigate = useNavigate()
-  const { user } = useAuth()
+  const { user, can } = useAuth()
   const { t, tr, direction, fontFamily } = useLanguage()
 
   const userRole = String(user?.role || "").toLowerCase();
@@ -34,6 +35,8 @@ const AdminSummary = () => {
 
   const canViewExam =
     userRole === "superadmin" || userRole === "hquser" || isHqAdmin;
+  const canViewMarksheet = can(PERMISSIONS.MARKSHEET_VIEW);
+  const canOpenExams = canViewExam || canViewMarksheet;
 
   useEffect(() => {
 
@@ -131,8 +134,8 @@ const AdminSummary = () => {
             />
           </Link> : null}
 
-        {user.role === "superadmin" || user.role === "hquser" || user.role === "admin" || user.role === "guest" ?
-          <Link to={canViewExam ? "/dashboard/exams" : "#"} >
+        {canOpenExams || user.role === "guest" ?
+          <Link to={canOpenExams ? "/dashboard/exams" : "#"} >
             <SummaryCard
               icon={<FaClipboardList />}
               text={t("dashboard.exams")}

@@ -4,6 +4,7 @@ import React, {
   useCallback,
   useContext,
   useEffect,
+  useMemo,
   useRef,
   useState,
 } from "react";
@@ -246,6 +247,7 @@ const AuthContext = ({ children }) => {
         );
 
         if (response.data.success) {
+          persistAuthSession({ token, user: response.data.user });
           setUser(response.data.user);
           if (response.data.user?.preferredLanguage) {
             localStorage.setItem("preferredLanguage", String(response.data.user.preferredLanguage).toLowerCase());
@@ -315,6 +317,7 @@ const AuthContext = ({ children }) => {
   const login = (loggedInUser) => {
     redirectingRef.current = false;
     lastActivityAtRef.current = Date.now();
+    persistAuthSession({ user: loggedInUser });
     if (loggedInUser?.preferredLanguage) {
       localStorage.setItem("preferredLanguage", String(loggedInUser.preferredLanguage).toLowerCase());
     }
@@ -341,8 +344,20 @@ const AuthContext = ({ children }) => {
     }
   };
 
+  const permissions = useMemo(
+    () => (Array.isArray(user?.permissions) ? user.permissions.map(String) : []),
+    [user?.permissions]
+  );
+
+  const permissionSet = useMemo(() => new Set(permissions), [permissions]);
+  const can = useCallback((permission) => permissionSet.has(String(permission || "")), [permissionSet]);
+  const canAny = useCallback(
+    (required = []) => (Array.isArray(required) ? required : [required]).some((permission) => can(permission)),
+    [can]
+  );
+
   return (
-    <userContext.Provider value={{ user, login, logout, loading }}>
+    <userContext.Provider value={{ user, login, logout, loading, permissions, can, canAny }}>
       {children}
     </userContext.Provider>
   );

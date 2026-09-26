@@ -3,14 +3,15 @@ import { Link, useNavigate } from "react-router-dom";
 import { FaArrowAltCircleLeft, FaClipboardCheck, FaFilePdf } from "react-icons/fa";
 import { useAuth } from "../../context/AuthContext";
 import { AutoText, useLanguage } from "../../i18n/LanguageContext";
+import { PERMISSIONS } from "../../auth/permissions";
 
 const ExamsHome = () => {
-  const { user } = useAuth();
+  const { user, can } = useAuth();
   const { t, direction, fontFamily } = useLanguage();
   const navigate = useNavigate();
   const role = String(user?.role || "").toLowerCase();
   const canQuestions = ["superadmin", "hquser", "admin"].includes(role);
-  const canResults = ["superadmin", "admin"].includes(role);
+  const canResults = can(PERMISSIONS.MARKSHEET_VIEW);
 
   return (
     <div className="min-h-[70vh] px-2 py-3 md:px-4" dir={direction} style={{ fontFamily }}>

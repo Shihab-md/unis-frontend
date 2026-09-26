@@ -7,6 +7,7 @@ import {
 import Swal from 'sweetalert2';
 import { translateUiPhrase } from '../i18n/uiPhrases';
 import { getApiBaseUrl } from './frontendEnvironment';
+import { SCREEN_PERMISSION_MAP, hasStoredPermission } from '../auth/permissions';
 
 const authorizedScreensFor_SA_HQ_Role = [
   "supervisorsList", "supervisorAdd", "supervisorEdit", "supervisorView",
@@ -43,6 +44,7 @@ const authorizedScreensFor_SUP_Role = [
   "employeesList", "employeeView", "employeeAdd", "employeeEdit",
   "studentsList", "studentView",
   "inspectionReportList", "inspectionReportAdd", "inspectionReportView",
+  "marksheetList",
   "settings", "profile"
 ];
 
@@ -54,6 +56,14 @@ const authorizedScreensFor_ADMIN_Role = [
 ];
 
 export function checkAuth(screenName) {
+
+  const permission = SCREEN_PERMISSION_MAP[screenName];
+  if (permission) {
+    const allowed = hasStoredPermission(permission);
+    if (allowed !== null) return allowed ? "OK" : "NO";
+    // Compatibility fallback for sessions created before the permission release.
+    // A normal page refresh/login refreshes permissions from the server.
+  }
 
   const role = localStorage.getItem("role")
 
@@ -192,7 +202,7 @@ export const getBaseUrl = async () => {
 
 export function handleRightClickAndFullScreen() {
   const isDisableRightClick = true;
-  const isOpenFullScreen = true;
+  const isOpenFullScreen = false;
 
   // -------- Right click disable (mostly desktop feature; keep only if you want) --------
   const handleRightClick = (e) => e.preventDefault();

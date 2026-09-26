@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext'
 import { getBaseUrl, handleRightClickAndFullScreen, getSpinner, LinkIcon, showSwalAlert } from '../../utils/CommonHelper'
 import {
-  FaUniversity, FaWpforms, FaClipboardList, FaCalendarAlt, FaUserCog, FaMapMarkerAlt, FaGoogleDrive, FaRedo, FaCentos, FaMedal, FaFileExcel
+  FaUniversity, FaWpforms, FaClipboardList, FaCalendarAlt, FaUserCog, FaMapMarkerAlt, FaGoogleDrive, FaRedo, FaCentos, FaMedal, FaFileExcel, FaUserShield
 } from "react-icons/fa";
 import axios from 'axios'
 import { useNavigate } from "react-router-dom";
@@ -108,6 +108,16 @@ const Masters = () => {
               text="Grades"
               number={summary.totalGrades || 0}
               color="bg-indigo-600"
+            />
+          </Link> : null}
+
+        {user.role === "superadmin" ?
+          <Link to="/dashboard/role-permissions" >
+            <SummaryCard
+              icon={<FaUserShield />}
+              text="Role Permissions"
+              number="*"
+              color="bg-slate-700"
             />
           </Link> : null}
 

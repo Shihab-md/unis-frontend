@@ -82,6 +82,7 @@ import PaymentBatchesList from "./components/fees/PaymentBatchesList";
 import PendingInvoicesNotSentHQ from "./components/fees/PendingInvoicesNotSentHQ";
 
 import ConnectDriveHidden from "./components/admin/ConnectDriveHidden";
+import RolePermissionsPage from "./components/admin/RolePermissionsPage";
 
 import MigrationBatchesFromInvoicesAll from "./components/fees/MigrationBatchesFromInvoicesAll";
 
@@ -208,6 +209,7 @@ function App() {
           <Route path="/dashboard/hq/fees/migration" element={<MigrationBatchesFromInvoicesAll />}></Route>
 
           <Route path="/dashboard/admin/connect-drive" element={<ConnectDriveHidden />} />
+          <Route path="/dashboard/role-permissions" element={<RolePermissionsPage />} />
 
         </Route>
 
