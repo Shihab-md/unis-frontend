@@ -1,6 +1,8 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { attendanceGet, attendancePost } from "../../api/attendanceApi";
 import { useLanguage } from "../../i18n/LanguageContext";
+import { useAuth } from "../../context/AuthContext";
+import { PERMISSIONS } from "../../auth/permissions";
 import { showConfirmationSwalAlert, showSwalAlert } from "../../utils/CommonHelper";
 import {
   AttendancePanel,
@@ -26,7 +28,11 @@ const StudentAttendanceTab = ({
   setDateKey,
 }) => {
   const { tr } = useLanguage();
+  const { can } = useAuth();
   const access = meta.access;
+  const canView = can(PERMISSIONS.STUDENT_ATTENDANCE_VIEW);
+  const canEnter = canView && can(PERMISSIONS.STUDENT_ATTENDANCE_ENTER);
+  const canFinalize = canEnter && can(PERMISSIONS.STUDENT_ATTENDANCE_FINALIZE);
   const activeAcademicYear =
     meta.academicYears.find((year) => year.active === "Active") || meta.academicYears[0];
 
@@ -98,7 +104,7 @@ const StudentAttendanceTab = ({
   const isSheetFinalized = sheetFinalized || rows.some((row) => Boolean(row.attendance?.isFinalized));
 
   const updateRow = (index, field, value) => {
-    if (isSheetFinalized) return;
+    if (!canEnter || isSheetFinalized) return;
     setRows((current) =>
       current.map((row, rowIndex) =>
         rowIndex === index ? { ...row, [field]: value } : row
@@ -107,7 +113,7 @@ const StudentAttendanceTab = ({
   };
 
   const markAllPresent = () => {
-    if (isSheetFinalized) return;
+    if (!canEnter || isSheetFinalized) return;
     setRows((current) =>
       current.map((row) =>
         row.approvedLeave ? row : { ...row, status: "Present" }
@@ -117,6 +123,10 @@ const StudentAttendanceTab = ({
 
   const saveAttendance = async (finalize) => {
     if (!rows.length) return;
+    if (!canEnter || (finalize && !canFinalize)) {
+      showSwalAlert("Error!", "You do not have permission for this attendance action.", "error");
+      return;
+    }
     if (isSheetFinalized) {
       showSwalAlert("Info!", "Finalized student attendance is locked and cannot be edited.", "info");
       return;
@@ -173,7 +183,7 @@ const StudentAttendanceTab = ({
   const renderStatusSelect = (row, index) => (
     <SelectInput
       value={row.status}
-      disabled={isSheetFinalized || Boolean(row.approvedLeave)}
+      disabled={!canEnter || isSheetFinalized || Boolean(row.approvedLeave)}
       onChange={(e) => updateRow(index, "status", e.target.value)}
       className="min-w-[115px]"
     >
@@ -242,7 +252,7 @@ const StudentAttendanceTab = ({
           <PrimaryButton onClick={loadRoster} disabled={!canLoad || loading}>
             {loading ? tr("Loading...") : tr("Load Students")}
           </PrimaryButton>
-          <SecondaryButton onClick={markAllPresent} disabled={!rows.length || isSheetFinalized}>
+          <SecondaryButton onClick={markAllPresent} disabled={!canEnter || !rows.length || isSheetFinalized}>
             {tr("Mark All Present")}
           </SecondaryButton>
         </div>
@@ -299,7 +309,7 @@ const StudentAttendanceTab = ({
                       <td className="px-2 py-2">
                         <Input
                           value={row.remarks || ""}
-                          disabled={isSheetFinalized}
+                          disabled={!canEnter || isSheetFinalized}
                           onChange={(e) => updateRow(index, "remarks", e.target.value)}
                           maxLength={500}
                         />
@@ -337,7 +347,7 @@ const StudentAttendanceTab = ({
                     <Input
                       placeholder={tr("Remarks")}
                       value={row.remarks || ""}
-                      disabled={isSheetFinalized}
+                      disabled={!canEnter || isSheetFinalized}
                       onChange={(e) => updateRow(index, "remarks", e.target.value)}
                       maxLength={500}
                     />
@@ -350,14 +360,20 @@ const StudentAttendanceTab = ({
               <div className="mt-4 rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm font-semibold text-emerald-800">
                 {tr("Finalized attendance is locked and cannot be edited.")}
               </div>
-            ) : (
+            ) : canEnter ? (
               <div className="mt-4 flex flex-wrap justify-end gap-2">
                 <SecondaryButton onClick={() => saveAttendance(false)} disabled={saving}>
                   {saving ? tr("Saving...") : tr("Save Draft")}
                 </SecondaryButton>
-                <PrimaryButton onClick={() => saveAttendance(true)} disabled={saving}>
-                  {saving ? tr("Saving...") : tr("Finalize")}
-                </PrimaryButton>
+                {canFinalize ? (
+                  <PrimaryButton onClick={() => saveAttendance(true)} disabled={saving}>
+                    {saving ? tr("Saving...") : tr("Finalize")}
+                  </PrimaryButton>
+                ) : null}
+              </div>
+            ) : (
+              <div className="mt-4 rounded-lg border border-blue-200 bg-blue-50 px-4 py-3 text-xs font-semibold text-blue-800">
+                {tr("View-only access. Attendance changes are disabled.")}
               </div>
             )}
           </>

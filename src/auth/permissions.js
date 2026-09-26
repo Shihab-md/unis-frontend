@@ -23,6 +23,24 @@ export const PERMISSIONS = Object.freeze({
   STUDENT_DELETE: "student.delete",
   STUDENT_PROMOTE: "student.promote",
 
+  STUDENT_ATTENDANCE_VIEW: "attendance.student.view",
+  STUDENT_ATTENDANCE_ENTER: "attendance.student.enter",
+  STUDENT_ATTENDANCE_FINALIZE: "attendance.student.finalize",
+
+  STAFF_ATTENDANCE_SELF_VIEW: "attendance.staff.self.view",
+  STAFF_ATTENDANCE_VIEW: "attendance.staff.view",
+  STAFF_ATTENDANCE_ENTER: "attendance.staff.enter",
+  STAFF_ATTENDANCE_FINALIZE: "attendance.staff.finalize",
+
+  STUDENT_LEAVE_VIEW: "leave.student.view",
+  STUDENT_LEAVE_MANAGE: "leave.student.manage",
+  STAFF_LEAVE_SELF_VIEW: "leave.staff.self.view",
+  STAFF_LEAVE_SELF_APPLY: "leave.staff.self.apply",
+  STAFF_LEAVE_APPROVE: "leave.staff.approve",
+
+  STUDENT_ATTENDANCE_REPORT_VIEW: "attendance.student.report.view",
+  STAFF_ATTENDANCE_REPORT_VIEW: "attendance.staff.report.view",
+
   MARKSHEET_VIEW: "marksheet.view",
   MARKSHEET_ENTER: "marksheet.enter",
   MARKSHEET_FINALIZE: "marksheet.finalize",

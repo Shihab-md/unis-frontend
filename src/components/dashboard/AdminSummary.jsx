@@ -23,7 +23,7 @@ const AdminSummary = () => {
 
   const [summary, setSummary] = useState(null)
   const navigate = useNavigate()
-  const { user, can } = useAuth()
+  const { user, can, canAny } = useAuth()
   const { t, tr, direction, fontFamily } = useLanguage()
 
   const userRole = String(user?.role || "").toLowerCase();
@@ -37,6 +37,28 @@ const AdminSummary = () => {
     userRole === "superadmin" || userRole === "hquser" || isHqAdmin;
   const canViewMarksheet = can(PERMISSIONS.MARKSHEET_VIEW);
   const canOpenExams = canViewExam || canViewMarksheet;
+
+  // Payroll remains on the legacy Attendance scope until its dedicated permission phase.
+  // Attendance/Leave/Reports are permission-controlled in Phase 2.2.
+  const legacyPayrollAccess = ["superadmin", "hquser", "admin"].includes(userRole);
+  const canOpenAttendance =
+    legacyPayrollAccess ||
+    canAny([
+      PERMISSIONS.STUDENT_ATTENDANCE_VIEW,
+      PERMISSIONS.STUDENT_ATTENDANCE_ENTER,
+      PERMISSIONS.STUDENT_ATTENDANCE_FINALIZE,
+      PERMISSIONS.STAFF_ATTENDANCE_SELF_VIEW,
+      PERMISSIONS.STAFF_ATTENDANCE_VIEW,
+      PERMISSIONS.STAFF_ATTENDANCE_ENTER,
+      PERMISSIONS.STAFF_ATTENDANCE_FINALIZE,
+      PERMISSIONS.STUDENT_LEAVE_VIEW,
+      PERMISSIONS.STUDENT_LEAVE_MANAGE,
+      PERMISSIONS.STAFF_LEAVE_SELF_VIEW,
+      PERMISSIONS.STAFF_LEAVE_SELF_APPLY,
+      PERMISSIONS.STAFF_LEAVE_APPROVE,
+      PERMISSIONS.STUDENT_ATTENDANCE_REPORT_VIEW,
+      PERMISSIONS.STAFF_ATTENDANCE_REPORT_VIEW,
+    ]);
 
   useEffect(() => {
 
@@ -122,10 +144,8 @@ const AdminSummary = () => {
             />
           </Link> : null}
 
-        {user.role === "superadmin" || user.role === "hquser" || user.role === "admin"
-          || user.role === "teacher" || user.role === "usthadh" || user.role === "supervisor"
-          || user.role === "employee" || user.role === "warden" || user.role === "staff" ?
-          <Link to={canViewExam ? "/dashboard/attendance" : "#"} >
+        {canOpenAttendance ?
+          <Link to="/dashboard/attendance" >
             <SummaryCard
               icon={<FaTasks />}
               text={t("dashboard.attendance")}

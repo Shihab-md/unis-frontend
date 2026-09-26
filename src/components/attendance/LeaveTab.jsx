@@ -1,6 +1,8 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { attendanceGet, attendancePatch, attendancePost } from "../../api/attendanceApi";
 import { useLanguage } from "../../i18n/LanguageContext";
+import { useAuth } from "../../context/AuthContext";
+import { PERMISSIONS } from "../../auth/permissions";
 import { showConfirmationSwalAlert, showSwalAlert } from "../../utils/CommonHelper";
 import {
   AttendancePanel,
@@ -18,6 +20,7 @@ import {
 
 const StaffLeaveSection = ({ meta, staffScopeType, selectedSchoolId }) => {
   const { tr } = useLanguage();
+  const { can } = useAuth();
   const access = meta.access;
   const [leaveType, setLeaveType] = useState("Casual Leave");
   const [dayType, setDayType] = useState("Full Day");
@@ -30,11 +33,15 @@ const StaffLeaveSection = ({ meta, staffScopeType, selectedSchoolId }) => {
   const [loadingApprovals, setLoadingApprovals] = useState(false);
   const [saving, setSaving] = useState(false);
 
-  const canApprove =
+  const hasOwnStaffScope = Boolean(access.canApplyOwnStaffLeave);
+  const hasApprovalScope =
     access.isSuperAdmin || access.canManageHqStaff || access.canManageOwnNiswanStaff;
+  const canViewMine = hasOwnStaffScope && can(PERMISSIONS.STAFF_LEAVE_SELF_VIEW);
+  const canApplyOwn = hasOwnStaffScope && can(PERMISSIONS.STAFF_LEAVE_SELF_APPLY);
+  const canApprove = hasApprovalScope && can(PERMISSIONS.STAFF_LEAVE_APPROVE);
 
   const loadMine = async () => {
-    if (!access.canApplyOwnStaffLeave) return;
+    if (!canViewMine) return;
     setLoadingMine(true);
     try {
       const response = await attendanceGet("staff-leaves/mine");
@@ -64,8 +71,12 @@ const StaffLeaveSection = ({ meta, staffScopeType, selectedSchoolId }) => {
   };
 
   useEffect(() => {
+    if (!canViewMine) {
+      setMyLeaves([]);
+      return;
+    }
     loadMine();
-  }, [access.canApplyOwnStaffLeave]);
+  }, [canViewMine]);
 
   useEffect(() => {
     if (!canApprove) return;
@@ -77,6 +88,10 @@ const StaffLeaveSection = ({ meta, staffScopeType, selectedSchoolId }) => {
   }, [access.isSuperAdmin, canApprove, selectedSchoolId, staffScopeType]);
 
   const applyLeave = async () => {
+    if (!canApplyOwn) {
+      showSwalAlert("Error!", "You do not have permission to apply for staff leave.", "error");
+      return;
+    }
     if (!leaveType || !fromDateKey || !toDateKey || !reason.trim()) {
       showSwalAlert("Info!", "Leave Type, dates and Reason are required.", "info");
       return;
@@ -132,11 +147,17 @@ const StaffLeaveSection = ({ meta, staffScopeType, selectedSchoolId }) => {
 
   return (
     <div className="space-y-4">
-      {access.canApplyOwnStaffLeave ? (
+      {canViewMine ? (
         <AttendancePanel
           title="My Leave"
-          subtitle="Apply for your own leave. Paid/unpaid treatment is decided by the approver."
+          subtitle={
+            canApplyOwn
+              ? "Apply for your own leave. Paid/unpaid treatment is decided by the approver."
+              : "View your own leave history. Applying and cancelling leave are disabled for this role permission."
+          }
         >
+          {canApplyOwn ? (
+            <>
           <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-5">
             <div>
               <FieldLabel>{tr("Leave Type")}</FieldLabel>
@@ -187,6 +208,9 @@ const StaffLeaveSection = ({ meta, staffScopeType, selectedSchoolId }) => {
             </PrimaryButton>
           </div>
 
+            </>
+          ) : null}
+
           <div className="mt-5">
             <div className="mb-2 text-xs font-semibold text-slate-700">{tr("My Leave History")}</div>
             {loadingMine ? <LoadingBlock /> : null}
@@ -219,7 +243,7 @@ const StaffLeaveSection = ({ meta, staffScopeType, selectedSchoolId }) => {
                         </td>
                         <td className="px-2 py-2">{leave.reason}</td>
                         <td className="px-2 py-2">
-                          {leave.status === "Pending" || leave.status === "Approved" ? (
+                          {canApplyOwn && (leave.status === "Pending" || leave.status === "Approved") ? (
                             <SecondaryButton onClick={() => changeLeaveStatus(leave._id, "Cancelled", leave.isPaid)}>
                               {tr("Cancel")}
                             </SecondaryButton>
@@ -294,7 +318,10 @@ const StaffLeaveSection = ({ meta, staffScopeType, selectedSchoolId }) => {
 
 const StudentLeaveSection = ({ meta, selectedSchoolId, setSelectedSchoolId, dateKey }) => {
   const { tr } = useLanguage();
+  const { can } = useAuth();
   const access = meta.access;
+  const canView = can(PERMISSIONS.STUDENT_LEAVE_VIEW);
+  const canManage = canView && can(PERMISSIONS.STUDENT_LEAVE_MANAGE);
   const activeAcademicYear =
     meta.academicYears.find((year) => year.active === "Active") || meta.academicYears[0];
   const [academicYearId, setAcademicYearId] = useState(activeAcademicYear?._id || "");
@@ -322,6 +349,7 @@ const StudentLeaveSection = ({ meta, selectedSchoolId, setSelectedSchoolId, date
   const effectiveSchoolId = access.isSuperAdmin ? selectedSchoolId : access.actorSchoolId || "";
 
   const loadStudents = async () => {
+    if (!canManage) return;
     if (!effectiveSchoolId || !academicYearId || !courseId) {
       showSwalAlert("Info!", "Please select Niswan, Academic Year and Course.", "info");
       return;
@@ -344,7 +372,7 @@ const StudentLeaveSection = ({ meta, selectedSchoolId, setSelectedSchoolId, date
   };
 
   const loadLeaves = async () => {
-    if (!effectiveSchoolId) {
+    if (!canView || !effectiveSchoolId) {
       setLeaves([]);
       return;
     }
@@ -361,9 +389,13 @@ const StudentLeaveSection = ({ meta, selectedSchoolId, setSelectedSchoolId, date
 
   useEffect(() => {
     loadLeaves();
-  }, [effectiveSchoolId]);
+  }, [canView, effectiveSchoolId]);
 
   const recordLeave = async () => {
+    if (!canManage) {
+      showSwalAlert("Error!", "You do not have permission to manage Student leave.", "error");
+      return;
+    }
     if (!studentId || !fromDateKey || !toDateKey || !reason.trim()) {
       showSwalAlert("Info!", "Student, dates and Reason are required.", "info");
       return;
@@ -387,6 +419,10 @@ const StudentLeaveSection = ({ meta, selectedSchoolId, setSelectedSchoolId, date
   };
 
   const cancelStudentLeave = async (id) => {
+    if (!canManage) {
+      showSwalAlert("Error!", "You do not have permission to manage Student leave.", "error");
+      return;
+    }
     const result = await showConfirmationSwalAlert("Cancel Student Leave?", "", "question");
     if (!result.isConfirmed) return;
     try {
@@ -401,83 +437,89 @@ const StudentLeaveSection = ({ meta, selectedSchoolId, setSelectedSchoolId, date
   return (
     <AttendancePanel
       title="Student Leave"
-      subtitle="Admin/Usthadh can record student leave. Approved leave is automatically protected in daily attendance."
+      subtitle={
+        canManage
+          ? "Record Student leave within your existing Niswan scope. Approved leave is protected in daily attendance."
+          : "View Student leave records within your existing Niswan scope."
+      }
     >
-      <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-6">
-        {access.isSuperAdmin ? (
-          <div className="lg:col-span-2">
-            <FieldLabel>{tr("Select Niswan")}</FieldLabel>
-            <SelectInput value={selectedSchoolId} onChange={(e) => setSelectedSchoolId(e.target.value)}>
-              <option value="">{tr("Select Niswan")}</option>
-              {meta.schools
-                //.filter((school) => school.code !== meta.hqSchool?.code)
-                .map((school) => (
-                  <option key={school._id} value={school._id}>
-                    {school.code} : {school.nameEnglish}
-                  </option>
-                ))}
-            </SelectInput>
-          </div>
-        ) : null}
-
-        <div>
-          <FieldLabel>{tr("Academic Year")}</FieldLabel>
-          <SelectInput value={academicYearId} onChange={(e) => setAcademicYearId(e.target.value)}>
-            <option value="">{tr("Select Academic Year")}</option>
-            {meta.academicYears.map((year) => (
-              <option key={year._id} value={year._id}>{year.acYear}</option>
-            ))}
-          </SelectInput>
-        </div>
-
-        <div>
-          <FieldLabel>{tr("Course")}</FieldLabel>
-          <SelectInput value={courseId} onChange={(e) => setCourseId(e.target.value)}>
-            <option value="">{tr("Select Course")}</option>
-            {courses.map((course) => (
-              <option key={course._id} value={course._id}>{course.code} : {course.name}</option>
-            ))}
-          </SelectInput>
-        </div>
-
-        <div className="flex items-end">
-          <SecondaryButton onClick={loadStudents} disabled={loading}>
-            {loading ? tr("Loading...") : tr("Load Students")}
-          </SecondaryButton>
-        </div>
-      </div>
-
-      <div className="mt-4 grid gap-3 md:grid-cols-2 lg:grid-cols-5">
-        <div className="lg:col-span-2">
-          <FieldLabel>{tr("Student")}</FieldLabel>
-          <SelectInput value={studentId} onChange={(e) => setStudentId(e.target.value)}>
-            <option value="">{tr("Select Student")}</option>
-            {students.map((student) => (
-              <option key={student.studentId} value={student.studentId}>
-                {student.rollNumber} : {student.name}
+      {access.isSuperAdmin ? (
+        <div className="mb-4 max-w-xl">
+          <FieldLabel>{tr("Select Niswan")}</FieldLabel>
+          <SelectInput value={selectedSchoolId} onChange={(e) => setSelectedSchoolId(e.target.value)}>
+            <option value="">{tr("Select Niswan")}</option>
+            {meta.schools.map((school) => (
+              <option key={school._id} value={school._id}>
+                {school.code} : {school.nameEnglish}
               </option>
             ))}
           </SelectInput>
         </div>
-        <div>
-          <FieldLabel>{tr("From Date")}</FieldLabel>
-          <Input type="date" value={fromDateKey} onChange={(e) => setFromDateKey(e.target.value)} />
-        </div>
-        <div>
-          <FieldLabel>{tr("To Date")}</FieldLabel>
-          <Input type="date" value={toDateKey} onChange={(e) => setToDateKey(e.target.value)} />
-        </div>
-        <div>
-          <FieldLabel>{tr("Reason")}</FieldLabel>
-          <Input value={reason} onChange={(e) => setReason(e.target.value)} maxLength={1000} />
-        </div>
-      </div>
+      ) : null}
 
-      <div className="mt-3">
-        <PrimaryButton onClick={recordLeave} disabled={saving}>
-          {saving ? tr("Saving...") : tr("Record Student Leave")}
-        </PrimaryButton>
-      </div>
+      {canManage ? (
+        <>
+          <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-6">
+            <div>
+              <FieldLabel>{tr("Academic Year")}</FieldLabel>
+              <SelectInput value={academicYearId} onChange={(e) => setAcademicYearId(e.target.value)}>
+                <option value="">{tr("Select Academic Year")}</option>
+                {meta.academicYears.map((year) => (
+                  <option key={year._id} value={year._id}>{year.acYear}</option>
+                ))}
+              </SelectInput>
+            </div>
+
+            <div>
+              <FieldLabel>{tr("Course")}</FieldLabel>
+              <SelectInput value={courseId} onChange={(e) => setCourseId(e.target.value)}>
+                <option value="">{tr("Select Course")}</option>
+                {courses.map((course) => (
+                  <option key={course._id} value={course._id}>{course.code} : {course.name}</option>
+                ))}
+              </SelectInput>
+            </div>
+
+            <div className="flex items-end">
+              <SecondaryButton onClick={loadStudents} disabled={loading}>
+                {loading ? tr("Loading...") : tr("Load Students")}
+              </SecondaryButton>
+            </div>
+          </div>
+
+          <div className="mt-4 grid gap-3 md:grid-cols-2 lg:grid-cols-5">
+            <div className="lg:col-span-2">
+              <FieldLabel>{tr("Student")}</FieldLabel>
+              <SelectInput value={studentId} onChange={(e) => setStudentId(e.target.value)}>
+                <option value="">{tr("Select Student")}</option>
+                {students.map((student) => (
+                  <option key={student.studentId} value={student.studentId}>
+                    {student.rollNumber} : {student.name}
+                  </option>
+                ))}
+              </SelectInput>
+            </div>
+            <div>
+              <FieldLabel>{tr("From Date")}</FieldLabel>
+              <Input type="date" value={fromDateKey} onChange={(e) => setFromDateKey(e.target.value)} />
+            </div>
+            <div>
+              <FieldLabel>{tr("To Date")}</FieldLabel>
+              <Input type="date" value={toDateKey} onChange={(e) => setToDateKey(e.target.value)} />
+            </div>
+            <div>
+              <FieldLabel>{tr("Reason")}</FieldLabel>
+              <Input value={reason} onChange={(e) => setReason(e.target.value)} maxLength={1000} />
+            </div>
+          </div>
+
+          <div className="mt-3">
+            <PrimaryButton onClick={recordLeave} disabled={saving}>
+              {saving ? tr("Saving...") : tr("Record Student Leave")}
+            </PrimaryButton>
+          </div>
+        </>
+      ) : null}
 
       <div className="mt-5">
         <div className="mb-2 text-xs font-semibold text-slate-700">{tr("Recent Student Leave")}</div>
@@ -505,7 +547,7 @@ const StudentLeaveSection = ({ meta, selectedSchoolId, setSelectedSchoolId, date
                     <td className="px-2 py-2">{leave.reason}</td>
                     <td className="px-2 py-2"><StatusBadge status={leave.status} /></td>
                     <td className="px-2 py-2">
-                      {leave.status === "Approved" || leave.status === "Pending" ? (
+                      {canManage && (leave.status === "Approved" || leave.status === "Pending") ? (
                         <SecondaryButton onClick={() => cancelStudentLeave(leave._id)}>
                           {tr("Cancel")}
                         </SecondaryButton>
@@ -530,14 +572,16 @@ const LeaveTab = ({
   dateKey,
 }) => {
   const { tr } = useLanguage();
+  const { can } = useAuth();
   const access = meta.access;
-  const canStudentLeave =
+  const hasStudentScope =
     access.isSuperAdmin || access.canManageAnyStudents || access.canManageOwnNiswanStudents;
+  const hasStaffApprovalScope =
+    access.isSuperAdmin || access.canManageHqStaff || access.canManageOwnNiswanStaff;
+  const canStudentLeave = hasStudentScope && can(PERMISSIONS.STUDENT_LEAVE_VIEW);
   const canStaffLeave =
-    access.canApplyOwnStaffLeave ||
-    access.isSuperAdmin ||
-    access.canManageHqStaff ||
-    access.canManageOwnNiswanStaff;
+    (access.canApplyOwnStaffLeave && can(PERMISSIONS.STAFF_LEAVE_SELF_VIEW)) ||
+    (hasStaffApprovalScope && can(PERMISSIONS.STAFF_LEAVE_APPROVE));
 
   const [mode, setMode] = useState(canStaffLeave ? "staff" : "student");
 

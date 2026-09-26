@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import CommonHeader from "../dashboard/CommonHeader";
 import { useAuth } from "../../context/AuthContext";
+import { PERMISSIONS } from "../../auth/permissions";
 import { AutoText, useLanguage } from "../../i18n/LanguageContext";
 import { attendanceGet } from "../../api/attendanceApi";
 import { showSwalAlert } from "../../utils/CommonHelper";
@@ -13,7 +14,7 @@ import PayrollTab from "./PayrollTab";
 import AttendanceReportsTab from "./AttendanceReportsTab";
 
 const AttendancePage = () => {
-  const { user } = useAuth();
+  const { user, can } = useAuth();
   const { tr, direction, fontFamily } = useLanguage();
   const [meta, setMeta] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -49,48 +50,33 @@ const AttendancePage = () => {
     if (!meta?.access) return [];
     const access = meta.access;
     const rows = [{ id: "overview", label: "Overview" }];
+    const hasStudentScope =
+      access.isSuperAdmin || access.canManageAnyStudents || access.canManageOwnNiswanStudents;
+    const hasStaffManageScope =
+      access.isSuperAdmin || access.canManageHqStaff || access.canManageOwnNiswanStaff;
+    const canViewStudentAttendance = hasStudentScope && can(PERMISSIONS.STUDENT_ATTENDANCE_VIEW);
+    const canViewStaffAttendance =
+      (hasStaffManageScope && can(PERMISSIONS.STAFF_ATTENDANCE_VIEW)) ||
+      (access.canViewOwnStaffAttendance && can(PERMISSIONS.STAFF_ATTENDANCE_SELF_VIEW));
+    const canUseStudentLeave = hasStudentScope && can(PERMISSIONS.STUDENT_LEAVE_VIEW);
+    const canUseStaffLeave =
+      (access.canApplyOwnStaffLeave && can(PERMISSIONS.STAFF_LEAVE_SELF_VIEW)) ||
+      (hasStaffManageScope && can(PERMISSIONS.STAFF_LEAVE_APPROVE));
+    const canViewReports =
+      (hasStudentScope && can(PERMISSIONS.STUDENT_ATTENDANCE_REPORT_VIEW)) ||
+      (hasStaffManageScope && can(PERMISSIONS.STAFF_ATTENDANCE_REPORT_VIEW));
 
-    if (
-      access.isSuperAdmin ||
-      access.canManageAnyStudents ||
-      access.canManageOwnNiswanStudents
-    ) {
-      rows.push({ id: "students", label: "Students" });
-    }
+    if (canViewStudentAttendance) rows.push({ id: "students", label: "Students" });
+    if (canViewStaffAttendance) rows.push({ id: "staff", label: "Staff" });
+    if (canUseStudentLeave || canUseStaffLeave) rows.push({ id: "leave", label: "Leave" });
 
-    if (
-      access.isSuperAdmin ||
-      access.canManageHqStaff ||
-      access.canManageOwnNiswanStaff ||
-      access.canViewOwnStaffAttendance
-    ) {
-      rows.push({ id: "staff", label: "Staff" });
-    }
-
-    if (
-      access.canApplyOwnStaffLeave ||
-      access.isSuperAdmin ||
-      access.canManageHqStaff ||
-      access.canManageOwnNiswanStaff ||
-      access.canManageAnyStudents ||
-      access.canManageOwnNiswanStudents
-    ) {
-      rows.push({ id: "leave", label: "Leave" });
-    }
-
-    if (
-      access.isSuperAdmin ||
-      access.canManageHqStaff ||
-      access.canManageOwnNiswanStaff
-    ) {
-      rows.push({ id: "payroll", label: "Payroll" });
-      rows.push({ id: "reports", label: "Reports" });
-    } else if (access.canManageAnyStudents || access.canManageOwnNiswanStudents) {
-      rows.push({ id: "reports", label: "Reports" });
-    }
+    // Payroll is intentionally still controlled by the pre-existing Attendance scope
+    // until the dedicated Payroll permission phase. Phase 2.2 must not change it.
+    if (hasStaffManageScope) rows.push({ id: "payroll", label: "Payroll" });
+    if (canViewReports) rows.push({ id: "reports", label: "Reports" });
 
     return rows;
-  }, [meta]);
+  }, [meta, can]);
 
   useEffect(() => {
     if (tabs.length && !tabs.some((tab) => tab.id === activeTab)) {
