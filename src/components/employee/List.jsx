@@ -473,7 +473,7 @@ const List = () => {
 
         {can(PERMISSIONS.EMPLOYEE_CREATE) ?
           LinkIcon("/dashboard/add-employee", "Add") : null}
-        {user.role === "superadmin" ?
+        {can(PERMISSIONS.EMPLOYEE_IMPORT) ?
           <div className="hidden lg:block" onClick={handleImport}>{LinkIcon("#", "Import")}</div> : null}
       </div>
 

@@ -16,12 +16,15 @@ export const PERMISSIONS = Object.freeze({
   EMPLOYEE_CREATE: "employee.create",
   EMPLOYEE_EDIT: "employee.edit",
   EMPLOYEE_DELETE: "employee.delete",
+  EMPLOYEE_IMPORT: "employee.import",
 
   STUDENT_VIEW: "student.view",
   STUDENT_CREATE: "student.create",
   STUDENT_EDIT: "student.edit",
   STUDENT_DELETE: "student.delete",
   STUDENT_PROMOTE: "student.promote",
+  STUDENT_IMPORT: "student.import",
+  STUDENT_CLEANUP: "student.cleanup",
 
   STUDENT_ATTENDANCE_VIEW: "attendance.student.view",
   STUDENT_ATTENDANCE_ENTER: "attendance.student.enter",

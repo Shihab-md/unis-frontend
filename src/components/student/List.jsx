@@ -1379,13 +1379,13 @@ const List = () => {
           </div>
         ) : null}
 
-        {user.role === "superadmin" || user.role === "hquser" ? (
+        {can(PERMISSIONS.STUDENT_CLEANUP) ? (
           <div className="block ml-1 mr-1" onClick={handleRemoveStudents}>
             {LinkIcon("#", "RemoveStudents")}
           </div>
         ) : null}
 
-        {user.role === "superadmin" || user.role === "hquser" ? (
+        {can(PERMISSIONS.STUDENT_IMPORT) ? (
           <div
             className={`block ${importingStudents || processing ? "pointer-events-none opacity-50" : ""}`}
             onClick={handleImport}
