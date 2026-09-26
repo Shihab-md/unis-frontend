@@ -41,6 +41,21 @@ export const PERMISSIONS = Object.freeze({
   STUDENT_ATTENDANCE_REPORT_VIEW: "attendance.student.report.view",
   STAFF_ATTENDANCE_REPORT_VIEW: "attendance.staff.report.view",
 
+  EXAM_QUESTION_VIEW: "exam.question.view",
+  EXAM_QUESTION_CREATE: "exam.question.create",
+  EXAM_QUESTION_EDIT: "exam.question.edit",
+  EXAM_QUESTION_DELETE: "exam.question.delete",
+  EXAM_QUESTION_DOWNLOAD_TRACKING_VIEW: "exam.question.download_tracking.view",
+
+  CERTIFICATE_VIEW: "certificate.view",
+  CERTIFICATE_GENERATE: "certificate.generate",
+  CERTIFICATE_REPRINT: "certificate.reprint",
+  CERTIFICATE_DUPLICATE_PRINT: "certificate.duplicate_print",
+  CERTIFICATE_BULK_IHS: "certificate.bulk_ihs",
+
+  INSPECTION_VIEW: "inspection.view",
+  INSPECTION_CREATE: "inspection.create",
+
   MARKSHEET_VIEW: "marksheet.view",
   MARKSHEET_ENTER: "marksheet.enter",
   MARKSHEET_FINALIZE: "marksheet.finalize",
@@ -70,6 +85,17 @@ export const SCREEN_PERMISSION_MAP = Object.freeze({
   studentAdd: PERMISSIONS.STUDENT_CREATE,
   studentEdit: PERMISSIONS.STUDENT_EDIT,
   studentPromote: PERMISSIONS.STUDENT_PROMOTE,
+
+  certificatesList: PERMISSIONS.CERTIFICATE_VIEW,
+  certificateView: PERMISSIONS.CERTIFICATE_VIEW,
+  certificateAdd: PERMISSIONS.CERTIFICATE_GENERATE,
+  certificateEdit: PERMISSIONS.CERTIFICATE_REPRINT,
+  certificateDuplicatePrint: PERMISSIONS.CERTIFICATE_DUPLICATE_PRINT,
+  certificateBulkIhs: PERMISSIONS.CERTIFICATE_BULK_IHS,
+
+  inspectionReportList: PERMISSIONS.INSPECTION_VIEW,
+  inspectionReportView: PERMISSIONS.INSPECTION_VIEW,
+  inspectionReportAdd: PERMISSIONS.INSPECTION_CREATE,
 
   marksheetList: PERMISSIONS.MARKSHEET_VIEW,
   rolePermissions: PERMISSIONS.ROLE_PERMISSIONS_MANAGE,

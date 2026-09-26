@@ -218,7 +218,7 @@ const TempSchoolMarksheets = () => {
   }, []);
 
   useEffect(() => {
-    if (checkAuth("certificateAdd") === "NO") {
+    if (checkAuth("tempSchoolMarksheet") === "NO") {
       showSwalAlert("Error!", "User Authorization Failed!", "error");
       navigate("/login");
     }

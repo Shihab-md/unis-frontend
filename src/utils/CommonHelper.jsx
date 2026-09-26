@@ -17,9 +17,9 @@ const authorizedScreensFor_SA_HQ_Role = [
   "institutesList", "instituteAdd", "instituteEdit", "instituteView",
   "coursesList", "courseAdd", "courseEdit", "courseView",
   "acYearsList", "acYearAdd", "acYearEdit", "acYearView",
-  "certificatesList", "certificateAdd", "certificateEdit", "certificateView",
+  "certificatesList", "certificateAdd", "certificateEdit", "certificateDuplicatePrint", "certificateBulkIhs", "certificateView",
   "templatesList", "templateAdd", "templateEdit", "templateView",
-  "settings", "profile", "marksheetList",
+  "settings", "profile", "marksheetList", "tempSchoolMarksheet",
   "districtStateAdd", "districtStateEdit", "districtStateView", "districtStateList",
   "gradesList", "gradeAdd", "gradeEdit", "gradeView"
 ];

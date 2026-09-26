@@ -26,6 +26,7 @@ import {
   updateExamQuestion,
 } from "../../api/examQuestionApi";
 import { getSpinner, showSwalAlert } from "../../utils/CommonHelper";
+import { PERMISSIONS } from "../../auth/permissions";
 
 const clean = (value) => (value === undefined || value === null ? "" : String(value).trim());
 const emptyFilters = { academicYearId: "", courseId: "", studyingYear: "", examType: "", status: "", search: "" };
@@ -93,10 +94,13 @@ const triggerBlob = (blob, { fileName, preview = false }) => {
 };
 
 const QuestionPapersPage = () => {
-  const { user } = useAuth();
+  const { can } = useAuth();
   const navigate = useNavigate();
-  const role = String(user?.role || "").toLowerCase();
-  const canManage = ["superadmin", "hquser"].includes(role);
+  const canView = can(PERMISSIONS.EXAM_QUESTION_VIEW);
+  const canCreate = can(PERMISSIONS.EXAM_QUESTION_CREATE);
+  const canEdit = can(PERMISSIONS.EXAM_QUESTION_EDIT);
+  const canDelete = can(PERMISSIONS.EXAM_QUESTION_DELETE);
+  const canTrackDownloads = can(PERMISSIONS.EXAM_QUESTION_DOWNLOAD_TRACKING_VIEW);
 
   const [options, setOptions] = useState({ academicYears: [], courses: [], schools: [], examTypes: [] });
   const [filters, setFilters] = useState(emptyFilters);
@@ -112,6 +116,7 @@ const QuestionPapersPage = () => {
   const [tracking, setTracking] = useState(null);
   const [trackingPaper, setTrackingPaper] = useState(null);
 
+  const managerScope = Boolean(options?.access?.canManage);
   const safeAcademicYears = Array.isArray(options.academicYears) ? options.academicYears : [];
   const safeCourses = useMemo(
     () => [...(Array.isArray(options.courses) ? options.courses : [])].sort((a, b) =>
@@ -197,12 +202,13 @@ const QuestionPapersPage = () => {
   }, [filters]);
 
   useEffect(() => {
-    loadOptions();
-  }, [loadOptions]);
+    if (canView) loadOptions();
+    else setLoading(false);
+  }, [canView, loadOptions]);
 
   useEffect(() => {
-    if (!loading) loadPapers();
-  }, [loading, loadPapers]);
+    if (!loading && canView) loadPapers();
+  }, [canView, loading, loadPapers]);
 
   const resetForm = () => {
     setForm(emptyForm);
@@ -213,6 +219,7 @@ const QuestionPapersPage = () => {
   };
 
   const openAdd = () => {
+    if (!canCreate) return;
     resetForm();
     const activeYear = safeAcademicYears.find((item) => item.active === "Active") || safeAcademicYears[0];
     setForm({ ...emptyForm, academicYearId: activeYear?._id || "" });
@@ -220,6 +227,7 @@ const QuestionPapersPage = () => {
   };
 
   const openEdit = (paper) => {
+    if (!canEdit) return;
     setEditingId(paper._id);
     setEditingPaper(paper);
     setPdfFile(null);
@@ -302,6 +310,8 @@ const QuestionPapersPage = () => {
 
   const savePaper = async (event) => {
     event.preventDefault();
+    if (editingId && !canEdit) return showSwalAlert("Error!", "You do not have permission to edit Question Papers.", "error");
+    if (!editingId && !canCreate) return showSwalAlert("Error!", "You do not have permission to create Question Papers.", "error");
     const validation = validateForm();
     if (validation) return showSwalAlert("Error!", validation, "error");
 
@@ -327,6 +337,7 @@ const QuestionPapersPage = () => {
   };
 
   const removePaper = async (paper) => {
+    if (!canDelete) return;
     const result = await Swal.fire({
       title: "Delete Question Paper?",
       text: `${paper.subjectCode} - ${paper.subjectName}`,
@@ -353,7 +364,7 @@ const QuestionPapersPage = () => {
       setBusy(true);
       const response = await fetchExamQuestionFile(paper._id, preview ? "inline" : "download");
       triggerBlob(response.data, { fileName: getDownloadName(paper), preview });
-      if (!preview && !canManage) await loadPapers();
+      if (!preview && !managerScope) await loadPapers();
     } catch (error) {
       showSwalAlert("Error!", error.message || "Unable to download Question Paper.", "error");
     } finally {
@@ -362,6 +373,7 @@ const QuestionPapersPage = () => {
   };
 
   const openTracking = async (paper) => {
+    if (!canTrackDownloads) return;
     try {
       setBusy(true);
       const data = await fetchExamQuestionDownloads(paper._id);
@@ -375,6 +387,16 @@ const QuestionPapersPage = () => {
   };
 
   if (loading) return getSpinner();
+
+  if (!canView) {
+    return (
+      <div className="px-2 py-3 md:px-4">
+        <div className="mx-auto max-w-xl rounded-md border border-rose-200 bg-rose-50 p-4 text-center text-sm text-rose-700">
+          You do not have permission to view Exam Question Papers.
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="px-2 py-3 md:px-4">
@@ -393,7 +415,7 @@ const QuestionPapersPage = () => {
           <p className="text-[11px] text-slate-500">Question Paper PDFs • Release times are in IST</p>
         </div>
         <div className="flex justify-end">
-          {canManage ? (
+          {canCreate ? (
             <button type="button" onClick={openAdd} className="inline-flex items-center rounded-md bg-blue-600 px-3 py-2 text-xs font-bold text-white shadow hover:bg-blue-700">
               <FaPlus className="mr-1" /> Add
             </button>
@@ -401,7 +423,7 @@ const QuestionPapersPage = () => {
         </div>
       </div>
 
-      {showForm && canManage ? (
+      {showForm && (editingId ? canEdit : canCreate) ? (
         <form onSubmit={savePaper} className="mb-4 rounded-lg border border-blue-100 bg-white p-3 shadow-lg">
           <div className="mb-3 flex items-center justify-between border-b pb-2">
             <div>
@@ -544,7 +566,7 @@ const QuestionPapersPage = () => {
             <option value="">All Exams</option>
             {(options.examTypes || []).map((item) => <option key={item} value={item}>{item}</option>)}
           </select>
-          {canManage ? (
+          {managerScope ? (
             <select value={filters.status} onChange={(e) => setFilters((prev) => ({ ...prev, status: e.target.value }))} className="rounded-md border px-2 py-2 text-xs">
               <option value="">All Status</option><option>Draft</option><option>Published</option><option>Closed</option>
             </select>
@@ -564,7 +586,7 @@ const QuestionPapersPage = () => {
       ) : (
         <div className="grid grid-cols-1 gap-3 xl:grid-cols-2">
           {safePapers.map((paper) => {
-            const downloadable = canManage || paper.effectiveStatus === "Released";
+            const downloadable = managerScope || paper.effectiveStatus === "Released";
             return (
               <div key={paper._id} className="rounded-lg border border-slate-200 bg-white p-3 shadow-lg">
                 <div className="flex items-start justify-between gap-3">
@@ -588,15 +610,15 @@ const QuestionPapersPage = () => {
                   <div><div className="text-slate-400">PDF</div><div className="truncate font-semibold text-slate-700" title={paper.originalFileName}>{paper.originalFileName}</div></div>
                 </div>
 
-                {!canManage && paper.effectiveStatus === "Scheduled" ? (
+                {!managerScope && paper.effectiveStatus === "Scheduled" ? (
                   <div className="mt-3 flex items-center rounded-md border border-blue-100 bg-blue-50 px-3 py-2 text-[11px] font-semibold text-blue-700"><FaClock className="mr-2" /> Available from {formatIst(paper.releaseDate, paper.releaseTime)}</div>
                 ) : null}
-                {!canManage && paper.effectiveStatus === "Closed" ? (
+                {!managerScope && paper.effectiveStatus === "Closed" ? (
                   <div className="mt-3 rounded-md border border-rose-100 bg-rose-50 px-3 py-2 text-[11px] font-semibold text-rose-700">Question Paper download is closed.</div>
                 ) : null}
                 {paper.instructions ? <div className="mt-3 rounded-md bg-slate-50 px-3 py-2 text-[11px] text-slate-600"><b>Instructions:</b> {paper.instructions}</div> : null}
 
-                {canManage ? (
+                {managerScope ? (
                   <div className="mt-3 flex flex-wrap items-center justify-between gap-2 border-t pt-3">
                     <div className="text-[11px] text-slate-500">
                       <b>{paper.downloadedSchoolCount || 0}</b> / <b>{paper.targetCount || 0}</b> Niswans downloaded
@@ -605,9 +627,9 @@ const QuestionPapersPage = () => {
                     <div className="flex flex-wrap gap-1.5">
                       <button type="button" onClick={() => openFile(paper, true)} className="inline-flex items-center rounded-md bg-slate-100 px-2 py-1.5 text-[11px] font-semibold text-slate-700 hover:bg-slate-200"><FaEye className="mr-1" /> Preview</button>
                       <button type="button" onClick={() => openFile(paper, false)} className="inline-flex items-center rounded-md bg-blue-50 px-2 py-1.5 text-[11px] font-semibold text-blue-700 hover:bg-blue-100"><FaDownload className="mr-1" /> PDF</button>
-                      <button type="button" onClick={() => openTracking(paper)} className="inline-flex items-center rounded-md bg-amber-50 px-2 py-1.5 text-[11px] font-semibold text-amber-700 hover:bg-amber-100"><FaHistory className="mr-1" /> Downloads</button>
-                      <button type="button" onClick={() => openEdit(paper)} className="inline-flex items-center rounded-md bg-emerald-50 px-2 py-1.5 text-[11px] font-semibold text-emerald-700 hover:bg-emerald-100"><FaEdit className="mr-1" /> Edit</button>
-                      {paper.publicationStatus === "Draft" && Number(paper.totalDownloads || 0) === 0 ? <button type="button" onClick={() => removePaper(paper)} className="inline-flex items-center rounded-md bg-rose-50 px-2 py-1.5 text-[11px] font-semibold text-rose-700 hover:bg-rose-100"><FaTrash className="mr-1" /> Delete</button> : null}
+                      {canTrackDownloads ? <button type="button" onClick={() => openTracking(paper)} className="inline-flex items-center rounded-md bg-amber-50 px-2 py-1.5 text-[11px] font-semibold text-amber-700 hover:bg-amber-100"><FaHistory className="mr-1" /> Downloads</button> : null}
+                      {canEdit ? <button type="button" onClick={() => openEdit(paper)} className="inline-flex items-center rounded-md bg-emerald-50 px-2 py-1.5 text-[11px] font-semibold text-emerald-700 hover:bg-emerald-100"><FaEdit className="mr-1" /> Edit</button> : null}
+                      {canDelete && paper.publicationStatus === "Draft" && Number(paper.totalDownloads || 0) === 0 ? <button type="button" onClick={() => removePaper(paper)} className="inline-flex items-center rounded-md bg-rose-50 px-2 py-1.5 text-[11px] font-semibold text-rose-700 hover:bg-rose-100"><FaTrash className="mr-1" /> Delete</button> : null}
                     </div>
                   </div>
                 ) : (

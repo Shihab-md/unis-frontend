@@ -350,7 +350,7 @@ const List = () => {
 
         <div className="mr-3" onClick={openFilterPopup}>{LinkIcon("#", "Filter")}</div>
 
-        {LinkIcon("/dashboard/add-certificate", "Add")}
+        {checkAuth("certificateAdd") !== "NO" ? LinkIcon("/dashboard/add-certificate", "Add") : null}
       </div>
 
       {(localStorage.getItem('certSchoolId') != null && localStorage.getItem('certSchoolId') != 'null')

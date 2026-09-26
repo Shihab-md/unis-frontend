@@ -28,15 +28,12 @@ const AdminSummary = () => {
 
   const userRole = String(user?.role || "").toLowerCase();
 
-  const loggedInSchoolName = String(localStorage.getItem("schoolName") || "").trim();
 
-  const isHqAdmin =
-    userRole === "admin" && loggedInSchoolName.startsWith("UN-00-00001");
-
-  const canViewExam =
-    userRole === "superadmin" || userRole === "hquser" || isHqAdmin;
+  const canViewExamQuestions = can(PERMISSIONS.EXAM_QUESTION_VIEW);
   const canViewMarksheet = can(PERMISSIONS.MARKSHEET_VIEW);
-  const canOpenExams = canViewExam || canViewMarksheet;
+  const canOpenExams = canViewExamQuestions || canViewMarksheet;
+  const canViewInspections = can(PERMISSIONS.INSPECTION_VIEW);
+  const canViewCertificates = can(PERMISSIONS.CERTIFICATE_VIEW);
 
   // Payroll remains on the legacy Attendance scope until its dedicated permission phase.
   // Attendance/Leave/Reports are permission-controlled in Phase 2.2.
@@ -134,7 +131,7 @@ const AdminSummary = () => {
             />
           </Link> : null}
 
-        {user.role === "superadmin" || user.role === "hquser" || user.role === "supervisor" || user.role === "guest" ?
+        {canViewInspections ?
           <Link to="/dashboard/inspection-reports" >
             <SummaryCard
               icon={<FaFileSignature />}
@@ -154,8 +151,8 @@ const AdminSummary = () => {
             />
           </Link> : null}
 
-        {canOpenExams || user.role === "guest" ?
-          <Link to={canOpenExams ? "/dashboard/exams" : "#"} >
+        {canOpenExams ?
+          <Link to="/dashboard/exams" >
             <SummaryCard
               icon={<FaClipboardList />}
               text={t("dashboard.exams")}
@@ -164,7 +161,7 @@ const AdminSummary = () => {
             />
           </Link> : null}
 
-        {user.role === "superadmin" || user.role === "hquser" || user.role === "guest" ?
+        {canViewCertificates ?
           <Link to="/dashboard/certificates" >
             <SummaryCard
               icon={<FaMedal />}

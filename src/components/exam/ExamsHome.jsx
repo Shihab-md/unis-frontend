@@ -6,11 +6,10 @@ import { AutoText, useLanguage } from "../../i18n/LanguageContext";
 import { PERMISSIONS } from "../../auth/permissions";
 
 const ExamsHome = () => {
-  const { user, can } = useAuth();
+  const { can } = useAuth();
   const { t, direction, fontFamily } = useLanguage();
   const navigate = useNavigate();
-  const role = String(user?.role || "").toLowerCase();
-  const canQuestions = ["superadmin", "hquser", "admin"].includes(role);
+  const canQuestions = can(PERMISSIONS.EXAM_QUESTION_VIEW);
   const canResults = can(PERMISSIONS.MARKSHEET_VIEW);
 
   return (

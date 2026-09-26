@@ -12,15 +12,8 @@ import {
   getFilterGif, getButtonStyle,
 } from "../../utils/CommonHelper";
 import { useAuth } from "../../context/AuthContext";
+import { PERMISSIONS } from "../../auth/permissions";
 import { AutoText, useLanguage } from "../../i18n/LanguageContext";
-
-const getUserFromLocal = () => {
-  try {
-    return JSON.parse(localStorage.getItem("user") || "{}");
-  } catch {
-    return {};
-  }
-};
 
 const formatDate = (value) => {
   if (!value) return "-";
@@ -116,9 +109,8 @@ function InspectionReportCard({ row, index, navigate, user, tr, direction, fontF
 
 export default function InspectionReportList() {
   const navigate = useNavigate();
-  const { user } = useAuth();
+  const { user, can } = useAuth();
   const { tr, direction, fontFamily } = useLanguage();
-  const localUser = getUserFromLocal();
 
   const [rows, setRows] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -318,7 +310,7 @@ export default function InspectionReportList() {
           {LinkIcon("#", "Filter")}
         </div>
 
-        {String(user?.role || localUser?.role || "").toLowerCase() === "supervisor"
+        {can(PERMISSIONS.INSPECTION_CREATE)
           ? LinkIcon("/dashboard/add-inspection-report", "Add")
           : null}
       </div>

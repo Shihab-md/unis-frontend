@@ -87,7 +87,7 @@ const BulkIhsExcel = () => {
   const [processing, setProcessing] = useState(false);
 
   useEffect(() => {
-    if (checkAuth("certificateAdd") === "NO") {
+    if (checkAuth("certificateBulkIhs") === "NO") {
       showSwalAlert("Error!", "User Authorization Failed!", "error");
       navigate("/login");
     }

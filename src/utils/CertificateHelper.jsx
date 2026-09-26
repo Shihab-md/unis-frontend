@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { getBaseUrl, showSwalAlert, showConfirmationSwalAlert, getButtonStyle } from '../utils/CommonHelper';
 import { FaEye, FaRedo, FaRegCopy } from "react-icons/fa";
 import { useAuth } from '../context/AuthContext'
+import { PERMISSIONS } from '../auth/permissions'
 
 export const columns = [
   {
@@ -164,7 +165,7 @@ export const CertificateButtons = ({ Id, onCertificateDelete }) => {
     }
   };
 
-  const { user } = useAuth();
+  const { can } = useAuth();
 
   return (
     <div className="flex space-x-3 rounded-sm">
@@ -176,7 +177,7 @@ export const CertificateButtons = ({ Id, onCertificateDelete }) => {
       >
         <FaEye title="View Details" aria-label="View Details" className="m-1" />
       </button>
-      {(user?.role === "superadmin" || user?.role === "hquser") && (<>
+      {can(PERMISSIONS.CERTIFICATE_REPRINT) ? (
         <button
           className={getButtonStyle('Reprint')}
           title="Reprint Certificate"
@@ -185,6 +186,8 @@ export const CertificateButtons = ({ Id, onCertificateDelete }) => {
         >
           <FaRedo title="Reprint" aria-label="Reprint" className="m-1" />
         </button>
+      ) : null}
+      {can(PERMISSIONS.CERTIFICATE_DUPLICATE_PRINT) ? (
         <button
           className={getButtonStyle('DuplicatePrint')}
           title="Duplicate Print"
@@ -193,7 +196,7 @@ export const CertificateButtons = ({ Id, onCertificateDelete }) => {
         >
           <FaRegCopy title="Duplicate Print" aria-label="Duplicate Print" className="m-1" />
         </button>
-      </>)}
+      ) : null}
     </div>
   );
 };
