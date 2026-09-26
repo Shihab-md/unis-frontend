@@ -544,10 +544,9 @@ export default function PaymentBatchesList() {
                       <div className="hidden md:grid grid-cols-12 p-2 font-bold text-[11px] bg-gray-50">
                         <div className="col-span-2">Invoice #</div>
                         <div className="col-span-3">Student</div>
-                        <div className="col-span-2">Course</div>
+                        <div className="col-span-4">Course</div>
                         <div className="col-span-2">AC Year</div>
-                        <div className="col-span-2">Amount</div>
-                        <div className="col-span-1">Status</div>
+                        <div className="col-span-1 text-right">Amount</div>
                       </div>
 
                       {(b.items || []).map((it) => {
@@ -558,7 +557,7 @@ export default function PaymentBatchesList() {
                         const source = it.invoiceId?.source || "-";
                         const acYear = it.invoiceId?.acYear?.acYear || "-";
                         const amount = `₹ ${Number(it.amount || 0).toLocaleString("en-IN")}`;
-                        const badge = it.status === "PENDING_APPROVAL" ? "P" : it.status === "APPLIED" ? "A" : "F";
+                        const itemFailed = it.status === "FAILED";
 
                         return (
                           <div key={it._id} className="border-t">
@@ -587,10 +586,11 @@ export default function PaymentBatchesList() {
                                 <span className="font-bold">{acYear}</span>
                               </div>
 
-                              <div className="mt-1 text-[10px] text-slate-600">
-                                <span className="font-semibold text-slate-500">Item: </span>
-                                <span className="font-bold">{badge}</span>
-                              </div>
+                              {itemFailed && (
+                                <div className="mt-1 text-[10px] font-semibold text-red-600">
+                                  Processing failed: {it.error || "Unable to apply this payment item"}
+                                </div>
+                              )}
                             </div>
 
                             {/* Desktop row */}
@@ -600,16 +600,21 @@ export default function PaymentBatchesList() {
                                 {studentName}{" "}
                                 <span className="text-[10px] text-gray-500">({roll})</span>
                               </div>
-                              <div className="col-span-2">
+                              <div className="col-span-4">
                                 {courseName}{" "}
                                 <span className="text-[10px] text-gray-500">
                                   {source ? `(${source})` : ""}
                                 </span>
                               </div>
                               <div className="col-span-2 font-semibold">{acYear}</div>
-                              <div className="col-span-2 font-semibold">{amount}</div>
-                              <div className="col-span-1 text-[10px]">{badge}</div>
+                              <div className="col-span-1 font-semibold text-right">{amount}</div>
                             </div>
+
+                            {itemFailed && (
+                              <div className="hidden md:block px-2 pb-2 text-[10px] font-semibold text-red-600">
+                                Processing failed: {it.error || "Unable to apply this payment item"}
+                              </div>
+                            )}
                           </div>
                         );
                       })}
