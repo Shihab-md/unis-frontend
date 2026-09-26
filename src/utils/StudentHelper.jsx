@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { getBaseUrl, showSwalAlert, showConfirmationSwalAlert, getButtonStyle, getButtonTooltip } from '../utils/CommonHelper';
 import { FaEye, FaEdit, FaTrashAlt, FaExchangeAlt } from "react-icons/fa";
 import { useAuth } from '../context/AuthContext'
+import { PERMISSIONS } from '../auth/permissions';
 import { UiText, useLanguage } from '../i18n/LanguageContext';
 import { translateUiPhrase } from '../i18n/uiPhrases';
 import { formatCompactAge, formatCompactDuration } from './studentProfileUtils';
@@ -1050,12 +1051,12 @@ export const StudentButtons = ({ Id, onStudentDelete, student = {} }) => {
     }
   };
 
-  const { user } = useAuth();
+  const { user, can } = useAuth();
 
   const completedForAction = isStudentCompletedForEdit(student);
   const readOnlyStudentRole = ["guest", "supervisor"].includes(String(user?.role || "").toLowerCase());
 
-  const editDisabled = readOnlyStudentRole || completedForAction;
+  const editDisabled = readOnlyStudentRole || completedForAction || !can(PERMISSIONS.STUDENT_EDIT);
   const editTooltip = translateUiPhrase(
     completedForAction ? "Completed student cannot be edited" : "Edit"
   );
@@ -1080,14 +1081,16 @@ export const StudentButtons = ({ Id, onStudentDelete, student = {} }) => {
 
   return (
     <div className="flex space-x-3">
-      <button
-        className={getButtonStyle('View')}
-        title={getButtonTooltip("View")}
-        aria-label={getButtonTooltip("View")}
-        onClick={() => navigate(`/dashboard/students/${Id}`)}
-      >
-        <FaEye title={getButtonTooltip("View")} aria-label={getButtonTooltip("View")} className="m-1" />
-      </button>
+      {can(PERMISSIONS.STUDENT_VIEW) ? (
+        <button
+          className={getButtonStyle('View')}
+          title={getButtonTooltip("View")}
+          aria-label={getButtonTooltip("View")}
+          onClick={() => navigate(`/dashboard/students/${Id}`)}
+        >
+          <FaEye title={getButtonTooltip("View")} aria-label={getButtonTooltip("View")} className="m-1" />
+        </button>
+      ) : null}
       <button
         className={`${getButtonStyle('Edit')}${disabledActionClass(editDisabled)}`}
         title={editTooltip}
@@ -1120,10 +1123,10 @@ export const StudentButtons = ({ Id, onStudentDelete, student = {} }) => {
             <FaExchangeAlt title={transferTooltip} aria-label={transferTooltip} className="m-1" />
           </button> </div> : null}
       <button
-        className={`${getButtonStyle('Delete')}${disabledActionClass(readOnlyStudentRole)}`}
+        className={`${getButtonStyle('Delete')}${disabledActionClass(readOnlyStudentRole || !can(PERMISSIONS.STUDENT_DELETE))}`}
         title={getButtonTooltip("Delete")}
         aria-label={getButtonTooltip("Delete")}
-        disabled={readOnlyStudentRole}
+        disabled={readOnlyStudentRole || !can(PERMISSIONS.STUDENT_DELETE)}
         onClick={() => handleDelete(Id)}
       >
         <FaTrashAlt title={getButtonTooltip("Delete")} aria-label={getButtonTooltip("Delete")} className="m-1" />

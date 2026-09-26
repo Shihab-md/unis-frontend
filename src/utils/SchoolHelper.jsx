@@ -8,6 +8,7 @@ import {
   getButtonTooltip,
 } from '../utils/CommonHelper';
 import { useAuth } from '../context/AuthContext'
+import { PERMISSIONS } from '../auth/permissions';
 import {
   FaEye,
   FaEdit,
@@ -418,20 +419,22 @@ export const SchoolButtons = ({ Id, onSchoolDelete }) => {
     }
   };
 
-  const { user } = useAuth();
+  const { can } = useAuth();
 
   return (
     <div className="flex space-x-3 lg:flex-col lg:space-x-0 lg:space-y-3 items-center">
-      <button
-        className={getButtonStyle('View')}
-        title={getButtonTooltip("View")}
-        aria-label={getButtonTooltip("View")}
-        onClick={() => navigate(`/dashboard/schools/${Id}`)}
-      >
-        <FaEye title={getButtonTooltip("View")} aria-label={getButtonTooltip("View")} className="m-1" />
-      </button>
+      {can(PERMISSIONS.NISWAN_VIEW) ? (
+        <button
+          className={getButtonStyle('View')}
+          title={getButtonTooltip("View")}
+          aria-label={getButtonTooltip("View")}
+          onClick={() => navigate(`/dashboard/schools/${Id}`)}
+        >
+          <FaEye title={getButtonTooltip("View")} aria-label={getButtonTooltip("View")} className="m-1" />
+        </button>
+      ) : null}
 
-      {user.role === "superadmin" || user.role === "hquser" ? (
+      {can(PERMISSIONS.NISWAN_EDIT) ? (
         <div className="flex space-x-3">
           <button
             className={getButtonStyle('Edit')}
@@ -445,7 +448,7 @@ export const SchoolButtons = ({ Id, onSchoolDelete }) => {
         </div>
       ) : null}
 
-      {user.role === "superadmin" || user.role === "hquser" ? (
+      {can(PERMISSIONS.NISWAN_DELETE) ? (
         <div className="flex space-x-3">
           <button
             className={getButtonStyle('Delete')}

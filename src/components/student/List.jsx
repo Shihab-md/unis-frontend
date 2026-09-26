@@ -17,6 +17,7 @@ import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import Select from 'react-select';
 import { useAuth } from '../../context/AuthContext'
+import { PERMISSIONS } from '../../auth/permissions'
 import { AutoText, useLanguage } from '../../i18n/LanguageContext';
 import { getSchools, getSchoolsFromCache } from '../../utils/SchoolHelper';
 import { getCoursesFromCache } from '../../utils/CourseHelper';
@@ -47,7 +48,7 @@ const List = () => {
   const [institutes, setInstitutes] = useState([]);
 
   const navigate = useNavigate();
-  const { user } = useAuth();
+  const { user, can } = useAuth();
 
   const userRole = String(user?.role || "").toLowerCase();
 
@@ -57,7 +58,8 @@ const List = () => {
     userRole === "admin" && loggedInSchoolName.startsWith("UN-00-00001");
 
   const canAddStudent =
-    userRole === "superadmin" || userRole === "hquser" || isHqAdmin;
+    can(PERMISSIONS.STUDENT_CREATE) &&
+    (userRole === "superadmin" || userRole === "hquser" || isHqAdmin);
 
   let schoolId;
   let schoolName;
@@ -1371,7 +1373,7 @@ const List = () => {
           </div>
         ) : null}
 
-        {user.role === "superadmin" || user.role === "hquser" || user.role === "admin" ? (
+        {(user.role === "superadmin" || user.role === "hquser" || user.role === "admin") && can(PERMISSIONS.STUDENT_PROMOTE) ? (
           <div className="ml-1" onClick={() => navigate(`/dashboard/students/bulkpromote`)}>
             {LinkIcon("#", "Promote")}
           </div>

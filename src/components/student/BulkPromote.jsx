@@ -7,6 +7,8 @@ import { showSwalAlert } from "../../utils/CommonHelper";
 import { getCoursesFromCache } from "../../utils/CourseHelper";
 import { getAcademicYearsFromCache } from "../../utils/AcademicYearHelper";
 import { AutoText, useLanguage } from "../../i18n/LanguageContext";
+import { useAuth } from "../../context/AuthContext";
+import { PERMISSIONS } from "../../auth/permissions";
 
 const BULK_PROMOTE_SCHOOL_ID_BACKUP_KEY = "bulkPromoteSchoolId";
 const BULK_PROMOTE_SCHOOL_NAME_BACKUP_KEY = "bulkPromoteSchoolName";
@@ -31,6 +33,14 @@ const getBulkPromoteSchoolContext = () => {
 export default function BulkPromote() {
   const navigate = useNavigate();
   const { tr, direction, fontFamily } = useLanguage();
+  const { can } = useAuth();
+
+  useEffect(() => {
+    if (!can(PERMISSIONS.STUDENT_PROMOTE)) {
+      showSwalAlert("Error!", "User Authorization Failed!", "error");
+      navigate("/dashboard/students", { replace: true });
+    }
+  }, [can, navigate]);
 
   // Keep the selected Niswan stable while this page is open.
   // Some dashboard/shared cleanup can remove localStorage schoolId/schoolName for HQ roles,

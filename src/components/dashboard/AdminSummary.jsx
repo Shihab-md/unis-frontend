@@ -72,7 +72,7 @@ const AdminSummary = () => {
       <CommonHeader userName={user?.name || ""} title={t("common.dashboard")} />
       <div className="content-center rounded-lg grid grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-7 lg:gap-14 mt-7 lg:mt-16 flex rounded-lg">
 
-        {user.role === "superadmin" || user.role === "hquser" || user.role === "supervisor" || user.role === "guest" ?
+        {can(PERMISSIONS.SUPERVISOR_LIST) ?
           <Link to="/dashboard/supervisors" >
             <SummaryCard
               icon={<FaUserFriends />}
@@ -82,7 +82,7 @@ const AdminSummary = () => {
             />
           </Link> : null}
 
-        {user.role === "superadmin" || user.role === "hquser" || user.role === "supervisor" || user.role === "admin" || user.role === "guest" ?
+        {can(PERMISSIONS.NISWAN_VIEW) ?
           <Link to="/dashboard/schools" >
             <SummaryCard
               icon={<FaMosque />}
@@ -92,7 +92,7 @@ const AdminSummary = () => {
             />
           </Link> : null}
 
-        {user.role === "superadmin" || user.role === "hquser" || user.role === "supervisor" || user.role === "admin" || user.role === "guest" ?
+        {can(PERMISSIONS.EMPLOYEE_VIEW) ?
           <Link to="/dashboard/employees" >
             <SummaryCard
               icon={<FaHouseUser />}
@@ -102,7 +102,7 @@ const AdminSummary = () => {
             />
           </Link> : null}
 
-        {user.role === "superadmin" || user.role === "hquser" || user.role === "supervisor" || user.role === "admin" || user.role === "guest" ?
+        {can(PERMISSIONS.STUDENT_VIEW) ?
           <Link to="/dashboard/students"  >
             <SummaryCard
               icon={<FaUsers />}

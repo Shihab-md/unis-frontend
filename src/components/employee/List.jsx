@@ -12,6 +12,7 @@ import {
   LinkIcon, showSwalAlert, toCamelCase, getFilterGif
 } from '../../utils/CommonHelper';
 import { useAuth } from '../../context/AuthContext'
+import { PERMISSIONS } from '../../auth/permissions'
 import { AutoText, useLanguage } from '../../i18n/LanguageContext';
 import 'animate.css';
 import * as XLSX from 'xlsx';
@@ -33,7 +34,7 @@ const List = () => {
   const [processing, setProcessing] = useState(null)
 
   const navigate = useNavigate()
-  const { user } = useAuth();
+  const { user, can } = useAuth();
 
   const MySwal = withReactContent(Swal);
 
@@ -470,7 +471,7 @@ const List = () => {
           <div className="mr-3" onClick={openFilterPopup}>{LinkIcon("#", "Filter")}</div>
           : null}
 
-        {user.role === "superadmin" || user.role === "hquser" || user.role === "supervisor" || user.role === "admin" ?
+        {can(PERMISSIONS.EMPLOYEE_CREATE) ?
           LinkIcon("/dashboard/add-employee", "Add") : null}
         {user.role === "superadmin" ?
           <div className="hidden lg:block" onClick={handleImport}>{LinkIcon("#", "Import")}</div> : null}

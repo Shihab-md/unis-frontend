@@ -4,6 +4,7 @@ import { columns, SupervisorButtons, SupervisorCard, conditionalRowStyles } from
 import { getBaseUrl, handleRightClickAndFullScreen, getSpinner, checkAuth, LinkIcon, showSwalAlert, getFilterGif } from '../../utils/CommonHelper';
 import DataTable from 'react-data-table-component'
 import { useAuth } from '../../context/AuthContext'
+import { PERMISSIONS } from '../../auth/permissions'
 import axios from 'axios'
 import { getSchoolsFromCache } from '../../utils/SchoolHelper';
 import Swal from 'sweetalert2';
@@ -13,7 +14,7 @@ import { AutoText, useLanguage } from '../../i18n/LanguageContext';
 
 const List = () => {
   const { tr, direction, fontFamily } = useLanguage();
-  const { user } = useAuth();
+  const { user, can } = useAuth();
 
   // To prevent right-click AND For FULL screen view.
   useEffect(() => {
@@ -370,7 +371,7 @@ const List = () => {
           <div className="mr-3" onClick={openFilterPopup}>{LinkIcon("#", "Filter")}</div>
           : null}
 
-        {user.role === "superadmin" || user.role === "hquser" ?
+        {can(PERMISSIONS.SUPERVISOR_CREATE) ?
           LinkIcon("/dashboard/add-supervisor", "Add") : null}
       </div>
 

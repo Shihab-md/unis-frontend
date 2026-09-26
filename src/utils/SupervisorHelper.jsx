@@ -7,6 +7,7 @@ import {
   getButtonStyle,
 } from '../utils/CommonHelper';
 import { useAuth } from '../context/AuthContext';
+import { PERMISSIONS } from '../auth/permissions';
 import { UiText, useLanguage } from '../i18n/LanguageContext';
 import { translateUiPhrase } from '../i18n/uiPhrases';
 import { formatAge, formatWorkingExperience } from './supervisorProfileUtils';
@@ -507,40 +508,46 @@ export const SupervisorButtons = ({ Id, onSupervisorDelete }) => {
     }
   };
 
-  const { user } = useAuth();
+  const { user, can } = useAuth();
 
   return (
     <div className="flex space-x-3 rounded-sm">
-      {user.role === "superadmin" || user.role === "hquser" ? (
+      {(user.role === "superadmin" || user.role === "hquser") && (can(PERMISSIONS.SUPERVISOR_VIEW) || can(PERMISSIONS.SUPERVISOR_EDIT) || can(PERMISSIONS.SUPERVISOR_DELETE)) ? (
         <div className="flex space-x-3 lg:flex-col lg:space-x-0 lg:space-y-3 items-center">
-          <button
-            className={getButtonStyle('View')}
-            title={translateUiPhrase("View Details")}
-            aria-label={translateUiPhrase("View Details")}
-            onClick={() => navigate(`/dashboard/supervisors/${Id}`)}
-          >
-            <FaEye title={translateUiPhrase("View Details")} aria-label={translateUiPhrase("View Details")} className="m-1" />
-          </button>
+          {can(PERMISSIONS.SUPERVISOR_VIEW) ? (
+            <button
+              className={getButtonStyle('View')}
+              title={translateUiPhrase("View Details")}
+              aria-label={translateUiPhrase("View Details")}
+              onClick={() => navigate(`/dashboard/supervisors/${Id}`)}
+            >
+              <FaEye title={translateUiPhrase("View Details")} aria-label={translateUiPhrase("View Details")} className="m-1" />
+            </button>
+          ) : null}
 
-          <button
-            className={getButtonStyle('Edit')}
-            title={translateUiPhrase("Edit")}
-            aria-label={translateUiPhrase("Edit")}
-            disabled={user?.role === "guest"}
-            onClick={() => navigate(`/dashboard/supervisors/edit/${Id}`)}
-          >
-            <FaEdit title={translateUiPhrase("Edit")} aria-label={translateUiPhrase("Edit")} className="m-1" />
-          </button>
+          {can(PERMISSIONS.SUPERVISOR_EDIT) ? (
+            <button
+              className={getButtonStyle('Edit')}
+              title={translateUiPhrase("Edit")}
+              aria-label={translateUiPhrase("Edit")}
+              disabled={user?.role === "guest"}
+              onClick={() => navigate(`/dashboard/supervisors/edit/${Id}`)}
+            >
+              <FaEdit title={translateUiPhrase("Edit")} aria-label={translateUiPhrase("Edit")} className="m-1" />
+            </button>
+          ) : null}
 
-          <button
-            className={getButtonStyle('Delete')}
-            title={translateUiPhrase("Delete")}
-            aria-label={translateUiPhrase("Delete")}
-            disabled={user?.role === "guest"}
-            onClick={() => handleDelete(Id)}
-          >
-            <FaTrashAlt title={translateUiPhrase("Delete")} aria-label={translateUiPhrase("Delete")} className="m-1" />
-          </button>
+          {can(PERMISSIONS.SUPERVISOR_DELETE) ? (
+            <button
+              className={getButtonStyle('Delete')}
+              title={translateUiPhrase("Delete")}
+              aria-label={translateUiPhrase("Delete")}
+              disabled={user?.role === "guest"}
+              onClick={() => handleDelete(Id)}
+            >
+              <FaTrashAlt title={translateUiPhrase("Delete")} aria-label={translateUiPhrase("Delete")} className="m-1" />
+            </button>
+          ) : null}
         </div>
       ) : null}
     </div>

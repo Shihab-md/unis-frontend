@@ -7,6 +7,7 @@ import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import Select from 'react-select';
 import { useAuth } from '../../context/AuthContext'
+import { PERMISSIONS } from '../../auth/permissions'
 import { AutoText, useLanguage } from '../../i18n/LanguageContext';
 import { getSupervisorsFromCache } from '../../utils/SupervisorHelper';
 import { getDistrictStatesFromCache } from '../../utils/DistrictStateHelper';
@@ -67,7 +68,7 @@ const List = () => {
         : null);
   }*/}
 
-  const { user } = useAuth();
+  const { user, can } = useAuth();
 
   const openFilterPopup = async () => {
     let selectedSupervisor;
@@ -401,7 +402,7 @@ const List = () => {
           <div className="mr-3" onClick={openFilterPopup}>{LinkIcon("#", "Filter")}</div>
           : null}
 
-        {user.role === "superadmin" || user.role === "hquser" ?
+        {can(PERMISSIONS.NISWAN_CREATE) ?
           LinkIcon("/dashboard/add-school", "Add")
           : null}
       </div>

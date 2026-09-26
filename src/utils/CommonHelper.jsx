@@ -57,15 +57,26 @@ const authorizedScreensFor_ADMIN_Role = [
 
 export function checkAuth(screenName) {
 
+  const role = localStorage.getItem("role")
   const permission = SCREEN_PERMISSION_MAP[screenName];
   if (permission) {
     const allowed = hasStoredPermission(permission);
-    if (allowed !== null) return allowed ? "OK" : "NO";
+    if (allowed !== null) {
+      if (!allowed) return "NO";
+
+      // Preserve the existing production Student Add UI rule during Phase 2.1.
+      // Permission is necessary, but a normal Niswan Admin still does not receive
+      // the Add Student screen unless it is the existing special HQ-Niswan Admin.
+      if (screenName === "studentAdd" && role === "admin") {
+        const loggedInSchoolName = String(localStorage.getItem("schoolName") || "").trim();
+        return loggedInSchoolName.startsWith("UN-00-00001") ? "OK" : "NO";
+      }
+
+      return "OK";
+    }
     // Compatibility fallback for sessions created before the permission release.
     // A normal page refresh/login refreshes permissions from the server.
   }
-
-  const role = localStorage.getItem("role")
 
   if (role === "superadmin" || role === "hquser") {
     return "OK";
