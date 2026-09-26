@@ -1373,7 +1373,7 @@ const List = () => {
           </div>
         ) : null}
 
-        {(user.role === "superadmin" || user.role === "hquser" || user.role === "admin") && can(PERMISSIONS.STUDENT_PROMOTE) ? (
+        {can(PERMISSIONS.STUDENT_PROMOTE) ? (
           <div className="ml-1" onClick={() => navigate(`/dashboard/students/bulkpromote`)}>
             {LinkIcon("#", "Promote")}
           </div>

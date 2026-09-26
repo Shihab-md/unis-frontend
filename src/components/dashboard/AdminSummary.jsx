@@ -38,9 +38,19 @@ const AdminSummary = () => {
   const canViewReports = can(PERMISSIONS.REPORTS_VIEW);
   const canViewHelpDesk = can(PERMISSIONS.HELP_DESK_VIEW);
   const isHqAdmin = isHqAdminSession(user?.role, user?.schoolName);
+  const hasHqMasterUtilityPermission =
+    can(PERMISSIONS.CERTIFICATE_BULK_IHS) || can(PERMISSIONS.TEMP_SCHOOL_MARKSHEET_CREATE);
   const canOpenHqMasterUtilities =
-    isHqAdmin &&
-    (can(PERMISSIONS.CERTIFICATE_BULK_IHS) || can(PERMISSIONS.TEMP_SCHOOL_MARKSHEET_CREATE));
+    hasHqMasterUtilityPermission && (userRole !== "admin" || isHqAdmin);
+  const canOpenMasters =
+    canAny([
+      PERMISSIONS.MASTER_INSTITUTE_VIEW,
+      PERMISSIONS.MASTER_COURSE_VIEW,
+      PERMISSIONS.MASTER_ACADEMIC_YEAR_VIEW,
+      PERMISSIONS.MASTER_TEMPLATE_VIEW,
+      PERMISSIONS.MASTER_DISTRICT_STATE_VIEW,
+      PERMISSIONS.MASTER_GRADE_VIEW,
+    ]) || canOpenHqMasterUtilities;
 
   // Payroll remains on the legacy Attendance scope until its dedicated permission phase.
   // Attendance/Leave/Reports are permission-controlled in Phase 2.2.
@@ -178,7 +188,7 @@ const AdminSummary = () => {
             />
           </Link> : null}
 
-        {canOpenAccounts && (user.role === "superadmin" || user.role === "hquser" || user.role === "admin") ?
+        {canOpenAccounts ?
           <Link to="/dashboard/accountsPage" >
             <SummaryCard
               icon={<FaRupeeSign />}
@@ -188,7 +198,7 @@ const AdminSummary = () => {
             />
           </Link> : null}
 
-        {user.role === "superadmin" || user.role === "hquser" || user.role === "guest" || canOpenHqMasterUtilities ?
+        {canOpenMasters ?
           <Link to="/dashboard/masters" >
             <SummaryCard
               icon={<FaCoins />}

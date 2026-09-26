@@ -5,7 +5,6 @@ import AdminDashboard from "./pages/AdminDashboard";
 import GoToTopButton from "./utils/GoToTopButton";
 
 import PrivateRoutes from "./utils/PrivateRoutes";
-import RoleBaseRoutes from "./utils/RoleBaseRoutes";
 import AdminSummary from "./components/dashboard/AdminSummary";
 import Masters from "./components/dashboard/Masters";
 import ChangePassword from "./components/dashboard/ChangePassword";
@@ -112,9 +111,7 @@ function App() {
         <Route path="/dashboard"
           element={
             <PrivateRoutes>
-              <RoleBaseRoutes requiredRole={["admin"]}>
-                <AdminDashboard />
-              </RoleBaseRoutes>
+              <AdminDashboard />
             </PrivateRoutes>
           }
         >

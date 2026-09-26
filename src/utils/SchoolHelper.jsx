@@ -440,7 +440,6 @@ export const SchoolButtons = ({ Id, onSchoolDelete }) => {
             className={getButtonStyle('Edit')}
             title={getButtonTooltip("Edit")}
             aria-label={getButtonTooltip("Edit")}
-            disabled={user?.role === "guest"}
             onClick={() => navigate(`/dashboard/schools/edit/${Id}`)}
           >
             <FaEdit title={getButtonTooltip("Edit")} aria-label={getButtonTooltip("Edit")} className="m-1" />
@@ -454,7 +453,6 @@ export const SchoolButtons = ({ Id, onSchoolDelete }) => {
             className={getButtonStyle('Delete')}
             title={getButtonTooltip("Delete")}
             aria-label={getButtonTooltip("Delete")}
-            disabled={user?.role === "guest"}
             onClick={() => handleDelete(Id)}
           >
             <FaTrashAlt title={getButtonTooltip("Delete")} aria-label={getButtonTooltip("Delete")} className="m-1" />

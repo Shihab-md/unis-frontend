@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { getBaseUrl, showSwalAlert, showConfirmationSwalAlert, getButtonStyle, getButtonTooltip } from '../utils/CommonHelper';
-import { FaEye, FaEdit, FaTrashAlt, FaExchangeAlt } from "react-icons/fa";
+import { FaEye, FaEdit, FaTrashAlt } from "react-icons/fa";
 import { useAuth } from '../context/AuthContext'
 import { PERMISSIONS } from '../auth/permissions';
 import { UiText, useLanguage } from '../i18n/LanguageContext';
@@ -1051,19 +1051,12 @@ export const StudentButtons = ({ Id, onStudentDelete, student = {} }) => {
     }
   };
 
-  const { user, can } = useAuth();
+  const { can } = useAuth();
 
   const completedForAction = isStudentCompletedForEdit(student);
-  const readOnlyStudentRole = ["guest", "supervisor"].includes(String(user?.role || "").toLowerCase());
-
-  const editDisabled = readOnlyStudentRole || completedForAction || !can(PERMISSIONS.STUDENT_EDIT);
+  const editDisabled = completedForAction;
   const editTooltip = translateUiPhrase(
     completedForAction ? "Completed student cannot be edited" : "Edit"
-  );
-
-  const transferDisabled = readOnlyStudentRole || completedForAction;
-  const transferTooltip = translateUiPhrase(
-    completedForAction ? "Completed student cannot be transferred" : "Transfer Student"
   );
 
   const disabledActionClass = (disabled) =>
@@ -1072,11 +1065,6 @@ export const StudentButtons = ({ Id, onStudentDelete, student = {} }) => {
   const handleEditClick = () => {
     if (editDisabled) return;
     navigate(`/dashboard/students/edit/${Id}`);
-  };
-
-  const handleTransferClick = () => {
-    if (transferDisabled) return;
-    navigate(`#`);
   };
 
   return (
@@ -1091,46 +1079,27 @@ export const StudentButtons = ({ Id, onStudentDelete, student = {} }) => {
           <FaEye title={getButtonTooltip("View")} aria-label={getButtonTooltip("View")} className="m-1" />
         </button>
       ) : null}
-      <button
-        className={`${getButtonStyle('Edit')}${disabledActionClass(editDisabled)}`}
-        title={editTooltip}
-        aria-label={editTooltip}
-        disabled={editDisabled}
-        onClick={handleEditClick}
-      >
-        <FaEdit title={editTooltip} aria-label={editTooltip} className="m-1" />
-      </button>
-      {/*{user.role === "superadmin" || user.role === "hquser" || user.role === "admin" ?
-        <div className="flex space-x-3">
-          <button
-            className={getButtonStyle('Promote')}
-            title="Promote / Complete"
-            aria-label="Promote / Complete"
-            disabled={user?.role === "guest"}
-            onClick={() => navigate(`/dashboard/students/promote/${Id}`)}
-          >
-            <FaUserCheck title="Promote / Complete" aria-label="Promote / Complete" className="m-1" />
-          </button> </div> : null}*/}
-      {user.role === "superadmin" || user.role === "hquser" ?
-        <div className="flex space-x-3">
-          <button
-            className={`${getButtonStyle('Transfer')}${disabledActionClass(transferDisabled)}`}
-            title={transferTooltip}
-            aria-label={transferTooltip}
-            disabled={transferDisabled}
-            onClick={handleTransferClick}
-          >
-            <FaExchangeAlt title={transferTooltip} aria-label={transferTooltip} className="m-1" />
-          </button> </div> : null}
-      <button
-        className={`${getButtonStyle('Delete')}${disabledActionClass(readOnlyStudentRole || !can(PERMISSIONS.STUDENT_DELETE))}`}
-        title={getButtonTooltip("Delete")}
-        aria-label={getButtonTooltip("Delete")}
-        disabled={readOnlyStudentRole || !can(PERMISSIONS.STUDENT_DELETE)}
-        onClick={() => handleDelete(Id)}
-      >
-        <FaTrashAlt title={getButtonTooltip("Delete")} aria-label={getButtonTooltip("Delete")} className="m-1" />
-      </button>
+      {can(PERMISSIONS.STUDENT_EDIT) ? (
+        <button
+          className={`${getButtonStyle('Edit')}${disabledActionClass(editDisabled)}`}
+          title={editTooltip}
+          aria-label={editTooltip}
+          disabled={editDisabled}
+          onClick={handleEditClick}
+        >
+          <FaEdit title={editTooltip} aria-label={editTooltip} className="m-1" />
+        </button>
+      ) : null}
+      {can(PERMISSIONS.STUDENT_DELETE) ? (
+        <button
+          className={getButtonStyle('Delete')}
+          title={getButtonTooltip("Delete")}
+          aria-label={getButtonTooltip("Delete")}
+          onClick={() => handleDelete(Id)}
+        >
+          <FaTrashAlt title={getButtonTooltip("Delete")} aria-label={getButtonTooltip("Delete")} className="m-1" />
+        </button>
+      ) : null}
     </div>
   );
 };

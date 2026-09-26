@@ -9,52 +9,6 @@ import { translateUiPhrase } from '../i18n/uiPhrases';
 import { getApiBaseUrl } from './frontendEnvironment';
 import { SCREEN_PERMISSION_MAP, hasStoredPermission } from '../auth/permissions';
 
-const authorizedScreensFor_SA_HQ_Role = [
-  "supervisorsList", "supervisorAdd", "supervisorEdit", "supervisorView",
-  "schoolsList", "schoolAdd", "schoolEdit", "schoolView",
-  "employeesList", "employeeAdd", "employeeEdit", "employeeView",
-  "studentsList", "studentAdd", "studentEdit", "studentPromote", "studentView",
-  "institutesList", "instituteAdd", "instituteEdit", "instituteView",
-  "coursesList", "courseAdd", "courseEdit", "courseView",
-  "acYearsList", "acYearAdd", "acYearEdit", "acYearView",
-  "certificatesList", "certificateAdd", "certificateEdit", "certificateDuplicatePrint", "certificateBulkIhs", "certificateView",
-  "templatesList", "templateAdd", "templateEdit", "templateView",
-  "settings", "profile", "marksheetList", "tempSchoolMarksheet",
-  "districtStateAdd", "districtStateEdit", "districtStateView", "districtStateList",
-  "gradesList", "gradeAdd", "gradeEdit", "gradeView"
-];
-
-const authorizedScreensFor_GUEST_Role = [
-  "supervisorsList", "supervisorView",
-  "schoolsList", "schoolView",
-  "employeesList", "employeeView",
-  "studentsList", "studentView",
-  "institutesList", "instituteView",
-  "coursesList", "courseView",
-  "acYearsList", "acYearView",
-  "certificatesList", "certificateView",
-  "templatesList", "templateView",
-  "districtStateList", "districtStateView",
-  "gradesList", "gradeView"
-];
-
-const authorizedScreensFor_SUP_Role = [
-  "supervisorsList",
-  "schoolsList", "schoolView",
-  "employeesList", "employeeView", "employeeAdd", "employeeEdit",
-  "studentsList", "studentView",
-  "inspectionReportList", "inspectionReportAdd", "inspectionReportView",
-  "marksheetList",
-  "settings", "profile"
-];
-
-const authorizedScreensFor_ADMIN_Role = [
-  "schoolsList", "schoolView",
-  "employeesList", "employeeAdd", "employeeEdit", "employeeView",
-  "studentsList", "studentAdd", "studentEdit", "studentPromote", "studentView", "marksheetList",
-  "settings", "profile"
-];
-
 const HQ_SCHOOL_CODE = "UN-00-00001";
 const HQ_ADMIN_SCOPED_SCREENS = new Set(["certificateBulkIhs", "tempSchoolMarksheet"]);
 
@@ -66,62 +20,31 @@ export const isHqAdminSession = (
   String(schoolName || "").trim().startsWith(HQ_SCHOOL_CODE);
 
 export function checkAuth(screenName) {
-
-  const role = localStorage.getItem("role")
+  const role = localStorage.getItem("role");
   const permission = SCREEN_PERMISSION_MAP[screenName];
-  if (permission) {
-    const allowed = hasStoredPermission(permission);
-    if (allowed !== null) {
-      if (!allowed) return "NO";
 
-      // Preserve the existing production Student Add UI rule during Phase 2.1.
-      // Permission is necessary, but a normal Niswan Admin still does not receive
-      // the Add Student screen unless it is the existing special HQ-Niswan Admin.
-      if (screenName === "studentAdd" && role === "admin") {
-        return isHqAdminSession(role) ? "OK" : "NO";
-      }
+  // Every current checkAuth caller is mapped to the central permission catalog.
+  // Fail closed when the session has no permission snapshot instead of falling
+  // back to duplicated role lists. A normal login/verify refresh persists the
+  // current server-resolved permissions.
+  if (!permission) return "NO";
 
-      if (role === "admin" && HQ_ADMIN_SCOPED_SCREENS.has(screenName)) {
-        return isHqAdminSession(role) ? "OK" : "NO";
-      }
+  const allowed = hasStoredPermission(permission);
+  if (allowed !== true) return "NO";
 
-      return "OK";
-    }
-    // Compatibility fallback for sessions created before the permission release.
-    // A normal page refresh/login refreshes permissions from the server.
+  // Preserve the existing Student Add business/UI scope: the Admin role can open
+  // this screen only for the special HQ-linked Admin account.
+  if (screenName === "studentAdd" && role === "admin") {
+    return isHqAdminSession(role) ? "OK" : "NO";
   }
 
-  if (role === "superadmin" || role === "hquser") {
-    return "OK";
-
-  } else if (role === "supervisor" && authorizedScreensFor_SUP_Role.includes(screenName)) {
-    return "OK";
-
-  } else if (role === "admin" && authorizedScreensFor_ADMIN_Role.includes(screenName)) {
-    if (screenName === "studentAdd") {
-      return isHqAdminSession(role) ? "OK" : "NO";
-    }
-
-    return "OK";
-
-  } else if (role === "employee") {
-
-  } else if (role === "teacher") {
-
-  } else if (role === "student") {
-
-  } else if (role === "parent") {
-
-  } else if (role === "guest" && authorizedScreensFor_GUEST_Role.includes(screenName)) {
-    return "OK";
+  // HQ Admin shares the normal Admin role, so these two HQ utilities still need
+  // the independent HQ-session scope in addition to their permissions.
+  if (role === "admin" && HQ_ADMIN_SCOPED_SCREENS.has(screenName)) {
+    return isHqAdminSession(role) ? "OK" : "NO";
   }
 
-  return "NO";
-
-  // Supervisors
-  //if (authorizedScreensFor_SA_HQ_Roles.includes(screenName)) {
-  //  return ['superadmin', 'hquser'];
-  //}
+  return "OK";
 };
 
 export const getYearLabel = (value) => {

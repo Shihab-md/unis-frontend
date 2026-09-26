@@ -508,11 +508,11 @@ export const SupervisorButtons = ({ Id, onSupervisorDelete }) => {
     }
   };
 
-  const { user, can } = useAuth();
+  const { can } = useAuth();
 
   return (
     <div className="flex space-x-3 rounded-sm">
-      {(user.role === "superadmin" || user.role === "hquser") && (can(PERMISSIONS.SUPERVISOR_VIEW) || can(PERMISSIONS.SUPERVISOR_EDIT) || can(PERMISSIONS.SUPERVISOR_DELETE)) ? (
+      {(can(PERMISSIONS.SUPERVISOR_VIEW) || can(PERMISSIONS.SUPERVISOR_EDIT) || can(PERMISSIONS.SUPERVISOR_DELETE)) ? (
         <div className="flex space-x-3 lg:flex-col lg:space-x-0 lg:space-y-3 items-center">
           {can(PERMISSIONS.SUPERVISOR_VIEW) ? (
             <button
@@ -530,7 +530,6 @@ export const SupervisorButtons = ({ Id, onSupervisorDelete }) => {
               className={getButtonStyle('Edit')}
               title={translateUiPhrase("Edit")}
               aria-label={translateUiPhrase("Edit")}
-              disabled={user?.role === "guest"}
               onClick={() => navigate(`/dashboard/supervisors/edit/${Id}`)}
             >
               <FaEdit title={translateUiPhrase("Edit")} aria-label={translateUiPhrase("Edit")} className="m-1" />
@@ -542,7 +541,6 @@ export const SupervisorButtons = ({ Id, onSupervisorDelete }) => {
               className={getButtonStyle('Delete')}
               title={translateUiPhrase("Delete")}
               aria-label={translateUiPhrase("Delete")}
-              disabled={user?.role === "guest"}
               onClick={() => handleDelete(Id)}
             >
               <FaTrashAlt title={translateUiPhrase("Delete")} aria-label={translateUiPhrase("Delete")} className="m-1" />
