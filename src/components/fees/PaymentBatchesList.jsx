@@ -448,6 +448,8 @@ export default function PaymentBatchesList() {
 
             const paidDate = b.paidDate ? new Date(b.paidDate).toLocaleDateString() : "-";
             const totalAmount = `₹ ${Number(b.totalAmount || 0).toLocaleString("en-IN")}`;
+            const niswanLabel =
+              [b?.schoolId?.code, b?.schoolId?.nameEnglish].filter(Boolean).join(" : ") || "-";
 
             return (
               <div key={b._id} className="border-t">
@@ -523,8 +525,17 @@ export default function PaymentBatchesList() {
                 {/* ✅ Expanded details (same for all sizes) */}
                 {open && (
                   <div className="p-2 bg-white">
-                    <div className="text-xs text-gray-600 mb-2">
-                      Ref: <b>{b.referenceNo || "-"}</b> &nbsp; | &nbsp; Proof: {renderProof(b)}
+                    <div className="flex flex-wrap items-center gap-y-1 text-xs text-gray-600 mb-2">
+                      <span>
+                        Ref: <b>{b.referenceNo || "-"}</b> &nbsp; | &nbsp; Proof: {renderProof(b)}
+                      </span>
+                      {isHQ && (
+                        <span>
+                          &nbsp; | &nbsp;
+                          <span className="font-semibold text-slate-700">Niswan:</span>{" "}
+                          <span className="font-semibold text-blue-700">{niswanLabel}</span>
+                        </span>
+                      )}
                     </div>
 
                     {/* ✅ Make items list responsive too */}
