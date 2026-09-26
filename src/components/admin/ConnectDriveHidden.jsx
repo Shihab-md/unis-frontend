@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
 import Swal from "sweetalert2";
 
 import { getDriveAuthUrl, getDriveStatus, disconnectDrive } from "../../api/integrationsApi";
 import { LinkIcon, showSwalAlert, getPrcessing } from "../../utils/CommonHelper";
 
 export default function ConnectDriveHidden() {
-  const role = localStorage.getItem("role");
-  const isHQ = role === "superadmin" || role === "hquser";
+  const { user } = useAuth();
+  const isSuperAdmin = String(user?.role || "").toLowerCase() === "superadmin";
 
   const location = useLocation();
 
@@ -33,14 +34,16 @@ export default function ConnectDriveHidden() {
     }
   };
 
-  // initial load
+  // initial load - system integration status is SuperAdmin-only.
   useEffect(() => {
+    if (!isSuperAdmin) return;
     loadStatus();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [isSuperAdmin]);
 
   // handle silent redirect query params
   useEffect(() => {
+    if (!isSuperAdmin) return;
     const q = new URLSearchParams(location.search);
     const status = q.get("status");
     const reason = q.get("reason");
@@ -55,7 +58,7 @@ export default function ConnectDriveHidden() {
       window.history.replaceState({}, "", location.pathname);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [location.search]);
+  }, [location.search, isSuperAdmin]);
 
   const connect = async () => {
     try {
@@ -105,11 +108,11 @@ export default function ConnectDriveHidden() {
     }
   };
 
-  if (!isHQ) {
+  if (!isSuperAdmin) {
     return (
       <div className="p-4 max-w-3xl mx-auto">
         <div className="flex items-center gap-3 mb-4">{LinkIcon("/dashboard/accountsPage", "Back")}</div>
-        <div className="p-4 border rounded text-sm text-red-700 bg-red-50">Forbidden: HQ only</div>
+        <div className="p-4 border rounded text-sm text-red-700 bg-red-50">Forbidden: SuperAdmin only</div>
       </div>
     );
   }

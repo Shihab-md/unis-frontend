@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
 import axios from "axios";
 import { getBaseUrl, showSwalAlert } from "../../utils/CommonHelper";
 import { FaRegTimesCircle } from "react-icons/fa";
@@ -13,6 +14,9 @@ const isStrongPassword = (password) => {
 };
 
 const ResetPassword = () => {
+  const { user } = useAuth();
+  const isSuperAdmin = String(user?.role || "").toLowerCase() === "superadmin";
+
   const [loginId, setLoginId] = useState("");
   const [matchedUser, setMatchedUser] = useState(null);
   const [newPassword, setNewPassword] = useState("");
@@ -147,6 +151,17 @@ const ResetPassword = () => {
       setSubmitLoading(false);
     }
   };
+
+  if (!isSuperAdmin) {
+    return (
+      <div className="p-4 max-w-3xl mx-auto">
+        <div className="flex items-center gap-3 mb-4">
+          <Link to="/dashboard" className="text-blue-700 underline">Back</Link>
+        </div>
+        <div className="p-4 border rounded text-sm text-red-700 bg-red-50">Forbidden: SuperAdmin only</div>
+      </div>
+    );
+  }
 
   return (
     <div className="p-3 sm:p-4">
