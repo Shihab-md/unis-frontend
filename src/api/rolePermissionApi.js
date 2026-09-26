@@ -20,12 +20,3 @@ export const saveRolePermissions = async (role, permissions, expectedRevision) =
   );
   return res.data;
 };
-
-export const resetRolePermissions = async (role, expectedRevision) => {
-  const base = await getBaseUrl();
-  const res = await axios.delete(`${base}role-permissions/${encodeURIComponent(role)}`, {
-    ...authConfig(),
-    params: { expectedRevision },
-  });
-  return res.data;
-};
