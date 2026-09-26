@@ -482,9 +482,11 @@ export default function PaymentBatchesList() {
                         {statusBadge(b.status)}
                         <span className="text-[10px] text-gray-500">Items: {b.itemCount || 0}</span>
                       </div>
-                      <div className="mt-1 flex items-center justify-end gap-2">
-                        <span className="text-[10px] text-gray-500">Reason: {b.rejectedReason || "-"}</span>
-                      </div>
+                      {b.status === "REJECTED" && (
+                        <div className="mt-1 text-right text-[11px] font-semibold text-red-500">
+                          Reason: {b.rejectedReason || "-"}
+                        </div>
+                      )}
                     </div>
                   </div>
                 </button>
