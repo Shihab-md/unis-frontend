@@ -74,8 +74,13 @@ const List = () => {
       role: sup.userId?.role,
       contactNumber: sup.contactNumber,
       email: sup.userId?.email,
-      schoolCode: sup.schoolId?.code,
-      schoolName: sup.schoolId?.nameEnglish,
+      organizationType: sup.organizationType || "NISWAN",
+      schoolCode: String(sup.organizationType || "").toUpperCase() === "HQ"
+        ? (localStorage.getItem("organizationCode") || "HQ")
+        : sup.schoolId?.code,
+      schoolName: String(sup.organizationType || "").toUpperCase() === "HQ"
+        ? (localStorage.getItem("organizationName") || "UNIS Headquarters")
+        : sup.schoolId?.nameEnglish,
       designation: sup.designation,
       active: sup.active,
       address: sup.schoolId?.address,

@@ -9,15 +9,14 @@ import { translateUiPhrase } from '../i18n/uiPhrases';
 import { getApiBaseUrl } from './frontendEnvironment';
 import { SCREEN_PERMISSION_MAP, hasStoredPermission } from '../auth/permissions';
 
-const HQ_SCHOOL_CODE = "UN-00-00001";
 const HQ_ADMIN_SCOPED_SCREENS = new Set(["certificateBulkIhs", "tempSchoolMarksheet"]);
 
 export const isHqAdminSession = (
   role = localStorage.getItem("role"),
-  schoolName = localStorage.getItem("schoolName")
+  organizationType = localStorage.getItem("organizationType")
 ) =>
   String(role || "").trim().toLowerCase() === "admin" &&
-  String(schoolName || "").trim().startsWith(HQ_SCHOOL_CODE);
+  String(organizationType || "").trim().toUpperCase() === "HQ";
 
 export function checkAuth(screenName) {
   const role = localStorage.getItem("role");
@@ -32,13 +31,12 @@ export function checkAuth(screenName) {
   const allowed = hasStoredPermission(permission);
   if (allowed !== true) return "NO";
 
-  // Preserve the existing Student Add business/UI scope: the Admin role can open
-  // this screen only for the special HQ-linked Admin account.
-  if (screenName === "studentAdd" && role === "admin") {
-    return isHqAdminSession(role) ? "OK" : "NO";
-  }
+  // Phase 4 introduced the explicit HQ Admin role. The legacy `admin` + HQ
+  // compatibility account is intentionally limited to the two approved HQ utilities
+  // below and must not regain global Student-create access through UI fallback logic.
+  if (screenName === "studentAdd" && role === "admin") return "NO";
 
-  // HQ Admin shares the normal Admin role, so these two HQ utilities still need
+  // Legacy HQ Admin shares the normal Admin role, so these two HQ utilities still need
   // the independent HQ-session scope in addition to their permissions.
   if (role === "admin" && HQ_ADMIN_SCOPED_SCREENS.has(screenName)) {
     return isHqAdminSession(role) ? "OK" : "NO";

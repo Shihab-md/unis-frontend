@@ -15,6 +15,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import { getBusinessTodayDate } from "../../utils/dateRules";
 import { AutoText, useLanguage } from "../../i18n/LanguageContext";
 import { formatAge, formatWorkingExperience } from "../../utils/employeeProfileUtils";
+import { isHqEmployeeRole } from "../../auth/roles";
 
 const SHOW_EXTENDED_EMPLOYEE_FIELDS = false;
 
@@ -114,7 +115,8 @@ const Edit = () => {
             name: employee.userId.name,
             email: employee.userId.email,
             role: employee.userId.role,
-            schoolId: employee.schoolId._id,
+            organizationType: employee.organizationType || (isHqEmployeeRole(employee.userId.role) ? "HQ" : "NISWAN"),
+            schoolId: employee.schoolId?._id || "",
             employeeId: employee.employeeId,
             contactNumber: employee.contactNumber,
             address: employee.address,
@@ -207,6 +209,8 @@ const Edit = () => {
     }
   };
 
+  const employeeIsHq = String(employee.organizationType || "").toUpperCase() === "HQ";
+
   if (processing) {
     return getPrcessing();
   }
@@ -226,26 +230,36 @@ const Edit = () => {
             <div className="py-2 px-4 border mt-5 mb-3 items-center justify-center rounded-lg shadow-lg bg-white">
               <div className="grid mt-3 grid-cols-1 md:grid-cols-2 gap-5 mb-3">
 
-                {/* School */}
+                {/* Organization / Niswan */}
                 <div className='md:col-span-2'>
                   <label className="block mt-2 text-xs sm:text-sm font-medium text-slate-500">
-                    {tr("Select Niswan")} <span className="text-red-700">*</span>
+                    {employeeIsHq ? tr("Organization") : tr("Select Niswan")}
+                    {!employeeIsHq ? <span className="text-red-700">*</span> : null}
                   </label>
-                  <select
-                    name="schoolId"
-                    value={employee.schoolId}
-                    onChange={handleChange}
-                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-                    required
-                    disabled={true}
-                  >
-                    <option value=""></option>
-                    {schools.map((school) => (
-                      <option key={school._id} value={school._id}>
-                        {school.code + " : " + school.nameEnglish}
-                      </option>
-                    ))}
-                  </select>
+                  {employeeIsHq ? (
+                    <input
+                      type="text"
+                      value={localStorage.getItem("organizationName") || "UNIS Headquarters"}
+                      readOnly
+                      className="mt-1 p-2 block w-full border border-gray-300 rounded-md bg-slate-50 text-slate-600"
+                    />
+                  ) : (
+                    <select
+                      name="schoolId"
+                      value={employee.schoolId || ""}
+                      onChange={handleChange}
+                      className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                      required
+                      disabled={true}
+                    >
+                      <option value=""></option>
+                      {schools.map((school) => (
+                        <option key={school._id} value={school._id}>
+                          {school.code + " : " + school.nameEnglish}
+                        </option>
+                      ))}
+                    </select>
+                  )}
                 </div>
 
                 {/* Name */}

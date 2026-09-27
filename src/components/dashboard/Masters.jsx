@@ -23,7 +23,7 @@ const Masters = () => {
   const navigate = useNavigate()
   const { user, can } = useAuth()
   const hasHqUtilityScope = ["superadmin", "hqadmin", "hquser"].includes(normalizeRole(user?.role)) ||
-    isHqAdminSession(user?.role, user?.schoolName)
+    isHqAdminSession(user?.role, user?.organizationType)
 
   useEffect(() => {
 

@@ -44,7 +44,7 @@ const PayrollTab = ({
       : "NISWAN";
   const effectiveSchoolId =
     effectiveScopeType === "HQ"
-      ? meta.hqSchool?._id || ""
+      ? ""
       : access.isSuperAdmin
         ? selectedSchoolId
         : access.actorSchoolId || "";
@@ -208,8 +208,7 @@ const PayrollTab = ({
               <SelectInput value={selectedSchoolId} onChange={(e) => setSelectedSchoolId(e.target.value)}>
                 <option value="">{tr("Select Niswan")}</option>
                 {meta.schools
-                  //.filter((school) => school.code !== meta.hqSchool?.code)
-                  .map((school) => (
+                                    .map((school) => (
                     <option key={school._id} value={school._id}>
                       {school.code} : {school.nameEnglish}
                     </option>

@@ -10,7 +10,11 @@ import { isGlobalHqReadRole, isHqEmployeeRole } from "../../auth/roles";
 const Navbar = () => {
   const { user, logout } = useAuth();
   const { t } = useLanguage();
-  const isHQ = isGlobalHqReadRole(user?.role) || isHqEmployeeRole(user?.role) || user?.role === "supervisor";
+  const isHQ =
+    String(user?.organizationType || "").toUpperCase() === "HQ" ||
+    isGlobalHqReadRole(user?.role) ||
+    isHqEmployeeRole(user?.role) ||
+    user?.role === "supervisor";
   const roleKey = String(user?.role || "").toLowerCase();
   const roleLabel = roleKey ? t(`roles.${roleKey}`, roleKey.charAt(0).toUpperCase() + roleKey.slice(1)) : "";
 

@@ -52,7 +52,7 @@ const List = () => {
           <div className='grid'>
             <span className='text-sm mb-1 text-start text-blue-500'>{tr("Niswan")}</span>
             <Select className='text-sm text-start mb-3'
-              options={schools.filter(school => school.code !== 'UN-00-00001').map(option => ({
+              options={schools.map(option => ({
                 value: option._id, label: option.code + " : " + option.nameEnglish
               }))}
 

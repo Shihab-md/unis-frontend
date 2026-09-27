@@ -104,8 +104,7 @@ const AttendanceOverview = ({
               <SelectInput value={selectedSchoolId} onChange={(e) => setSelectedSchoolId(e.target.value)}>
                 <option value="">{tr("Select Niswan")}</option>
                 {meta.schools
-                  //.filter((school) => school.code !== meta.hqSchool?.code)
-                  .map((school) => (
+                                    .map((school) => (
                     <option key={school._id} value={school._id}>
                       {school.code} : {school.nameEnglish}
                     </option>
@@ -118,9 +117,7 @@ const AttendanceOverview = ({
             <div className="md:col-span-2">
               <FieldLabel>{tr("Niswan")}</FieldLabel>
               <div className="rounded-md border border-slate-200 bg-slate-50 px-3 py-2 text-xs text-slate-700 md:text-sm">
-                {meta.hqSchool?._id === access.actorSchoolId
-                  ? `${meta.hqSchool.code} : ${meta.hqSchool.nameEnglish}`
-                  : tr("Your Niswan")}
+                {tr("Your Niswan")}
               </div>
             </div>
           ) : null}

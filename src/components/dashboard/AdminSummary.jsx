@@ -38,7 +38,7 @@ const AdminSummary = () => {
   const canOpenAccounts = can(PERMISSIONS.ACCOUNTS_VIEW);
   const canViewReports = can(PERMISSIONS.REPORTS_VIEW);
   const canViewHelpDesk = can(PERMISSIONS.HELP_DESK_VIEW);
-  const isHqAdmin = isHqAdminSession(user?.role, user?.schoolName);
+  const isHqAdmin = isHqAdminSession(user?.role, user?.organizationType);
   const hasHqMasterUtilityPermission =
     can(PERMISSIONS.CERTIFICATE_BULK_IHS) || can(PERMISSIONS.TEMP_SCHOOL_MARKSHEET_CREATE);
   const canOpenHqMasterUtilities =

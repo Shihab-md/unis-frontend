@@ -53,14 +53,9 @@ const List = () => {
 
   const userRole = String(user?.role || "").toLowerCase();
 
-  const loggedInSchoolName = String(localStorage.getItem("schoolName") || "").trim();
-
-  const isHqAdmin =
-    userRole === "admin" && loggedInSchoolName.startsWith("UN-00-00001");
-
   const canAddStudent =
     can(PERMISSIONS.STUDENT_CREATE) &&
-    (userRole === "superadmin" || userRole === "hqadmin" || isHqAdmin);
+    (userRole === "superadmin" || userRole === "hqadmin");
 
   let schoolId;
   let schoolName;
@@ -1177,7 +1172,7 @@ const List = () => {
               </div>
               <Select
                 className='text-sm text-start'
-                //options={schools.filter((school) => school.code !== 'UN-00-00001' && school.active === 'Active')
+                //options={schools.filter((school) => school.active === 'Active')
                 options={schools.filter((school) => school.active === 'Active')
                   .map(option => ({
                     value: option._id, label: option.code + " : " + option.nameEnglish

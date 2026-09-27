@@ -2,16 +2,22 @@ import React, { useEffect, useMemo, useRef, useState } from "react";
 import { fetchDueInvoices, createPaymentBatch } from "../../api/feesApi.js";
 import { uploadPaymentProofToDrive } from "../../api/integrationsApi.js";
 import { getAcademicYearsFromCache } from "../../utils/AcademicYearHelper";
+import { getSchoolsFromCache } from "../../utils/SchoolHelper";
 import { showSwalAlert, LinkIcon, getFormattedDate } from "../../utils/CommonHelper";
 import { useAuth } from "../../context/AuthContext";
 import { PERMISSIONS } from "../../auth/permissions";
+import { isHqAccountsRole } from "../../auth/roles";
 
 export default function BulkPaymentCreate() {
-  const schoolId = localStorage.getItem("schoolId");
-  const { can } = useAuth();
+  const { user, can } = useAuth();
+  const role = String(user?.role || "").toLowerCase();
+  const isHqAccounts = isHqAccountsRole(role);
+  const fixedSchoolId = localStorage.getItem("schoolId") || "";
   const canViewInvoices = can(PERMISSIONS.ACCOUNTS_SCHOOL_INVOICES_VIEW);
   const canSubmitBatch = can(PERMISSIONS.ACCOUNTS_PAYMENT_BATCH_SUBMIT);
 
+  const [schools, setSchools] = useState([]);
+  const [schoolId, setSchoolId] = useState(isHqAccounts ? "" : fixedSchoolId);
   const [academicYears, setAcademicYears] = useState([]);
   const [selectedAcYear, setSelectedAcYear] = useState("");
 
@@ -76,6 +82,37 @@ export default function BulkPaymentCreate() {
       alive = false;
     };
   }, []);
+
+  // HQ Accounts users no longer carry a fake HQ Niswan schoolId in Phase 5.
+  // Let them explicitly choose the real Niswan whose invoices they are working on.
+  useEffect(() => {
+    let alive = true;
+
+    if (!isHqAccounts) {
+      setSchoolId(fixedSchoolId);
+      setSchools([]);
+      return () => {
+        alive = false;
+      };
+    }
+
+    const loadSchools = async () => {
+      try {
+        const result = await getSchoolsFromCache();
+        if (!alive) return;
+        const list = Array.isArray(result) ? result : result?.schools || [];
+        setSchools((list || []).filter((school) => String(school?.active) === "Active"));
+      } catch (error) {
+        console.log(error);
+        if (alive) setSchools([]);
+      }
+    };
+
+    loadSchools();
+    return () => {
+      alive = false;
+    };
+  }, [isHqAccounts, fixedSchoolId]);
 
   // ----------------------------------------------------
   // Load due invoices by school + selected academic year
@@ -248,6 +285,11 @@ export default function BulkPaymentCreate() {
       return;
     }
 
+    if (!schoolId) {
+      showSwalAlert("Info", "Please select Niswan", "info");
+      return;
+    }
+
     if (!selectedAcYear) {
       showSwalAlert("Info", "Please select academic year", "info");
       return;
@@ -342,6 +384,32 @@ export default function BulkPaymentCreate() {
       {!canSubmitBatch ? (
         <div className="mb-4 rounded-md border border-amber-200 bg-amber-50 p-3 text-sm text-amber-800">
           Read-only access: you can view due invoices, but you cannot upload proof or submit a payment batch.
+        </div>
+      ) : null}
+
+      {isHqAccounts ? (
+        <div className="mb-4 rounded-md border border-sky-200 bg-sky-50 p-4">
+          <label className="mb-1 block text-xs font-semibold text-slate-700">Niswan</label>
+          <select
+            className="w-full rounded border border-slate-300 bg-white p-2 text-sm text-slate-900"
+            value={schoolId}
+            onChange={(event) => {
+              setSchoolId(event.target.value);
+              setSelected({});
+              setInvoices([]);
+              setProofUrl("");
+              setProofDrive(null);
+            }}
+          >
+            <option value="">Select Niswan</option>
+            {[...(schools || [])]
+              .sort((a, b) => String(a?.code || "").localeCompare(String(b?.code || "")))
+              .map((school) => (
+                <option key={school._id} value={school._id}>
+                  {school.code ? `${school.code} - ` : ""}{school.nameEnglish || school.name || "Niswan"}
+                </option>
+              ))}
+          </select>
         </div>
       ) : null}
 
@@ -654,15 +722,17 @@ export default function BulkPaymentCreate() {
       )}
 
       <button
-        disabled={!canSubmitBatch || processing || uploadingProof || !proofAttached || !selectedAcYear}
+        disabled={!canSubmitBatch || processing || uploadingProof || !proofAttached || !schoolId || !selectedAcYear}
         onClick={submit}
-        className={`mt-4 w-full text-white p-2 rounded hover:-translate-y-0.5 ${!canSubmitBatch || processing || uploadingProof || !proofAttached || !selectedAcYear
+        className={`mt-4 w-full text-white p-2 rounded hover:-translate-y-0.5 ${!canSubmitBatch || processing || uploadingProof || !proofAttached || !schoolId || !selectedAcYear
             ? "bg-gray-400 cursor-not-allowed"
             : "bg-teal-600 hover:bg-teal-700"
           }`}
         title={
           !canSubmitBatch
             ? "You do not have permission to submit payment batches"
+            : !schoolId
+              ? "Select Niswan"
             : !selectedAcYear
               ? "Select academic year"
             : !proofAttached

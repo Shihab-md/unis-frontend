@@ -146,6 +146,7 @@ const Add = () => {
   }, [roleOptions, user?.role]);
 
   const password = formData.password || "";
+  const targetIsHq = isHqEmployeeRole(formData.role);
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
@@ -170,10 +171,7 @@ const Add = () => {
       setFormData((prevData) => ({ ...prevData, [name]: value }));
 
       if (name === "role" && isHqEmployeeRole(value)) {
-        const hq = schools.find((school) => String(school?.code || "").trim() === "UN-00-00001");
-        if (hq?._id) {
-          setSchoolId({ value: hq._id, label: `${hq.code} : ${hq.nameEnglish}` });
-        }
+        setSchoolId(null);
       }
     }
 
@@ -207,12 +205,14 @@ const Add = () => {
       if (selectedDOBDate) formDataObj.append("dob", selectedDOBDate);
       if (selectedDOJDate) formDataObj.append("doj", selectedDOJDate);
 
-      //alert(user?.role)
-      // School selection
-      if (["superadmin", "hqadmin", "supervisor"].includes(normalizeRole(user?.role)) && schoolId?.value) {
-        formDataObj.append("schoolId", schoolId.value);
-      } else {
-        formDataObj.append("schoolId", localStorage.getItem("schoolId"));
+      // HQ Employees belong directly to the HQ organization and do not use a Niswan schoolId.
+      if (!targetIsHq) {
+        if (["superadmin", "hqadmin", "supervisor"].includes(normalizeRole(user?.role)) && schoolId?.value) {
+          formDataObj.append("schoolId", schoolId.value);
+        } else {
+          const ownSchoolId = localStorage.getItem("schoolId");
+          if (ownSchoolId) formDataObj.append("schoolId", ownSchoolId);
+        }
       }
 
       const headers = {
@@ -260,24 +260,34 @@ const Add = () => {
         <form onSubmit={handleSubmit} autoComplete="off">
           <div className="py-2 px-4 border mt-5 mb-3 items-center justify-center rounded-lg shadow-lg bg-white">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-3">
-              {/* School */}
+              {/* Organization / Niswan */}
               <div className="md:col-span-2">
                 <label className="block mt-2 text-xs sm:text-sm font-medium text-slate-500">
-                  {tr("Select Niswan")} <span className="text-red-700">*</span>
+                  {targetIsHq ? tr("Organization") : tr("Select Niswan")}
+                  {!targetIsHq ? <span className="text-red-700">*</span> : null}
                 </label>
 
-                <Select
-                  className="mt-1 p-1 text-sm text-start"
-                  name="schoolId"
-                  options={schools.map((s) => ({
-                    value: s._id,
-                    label: `${s.code} : ${s.nameEnglish}`,
-                  }))}
-                  value={schoolId}
-                  onChange={handleSchChange}
-                  maxMenuHeight={210}
-                  isDisabled={!["superadmin", "hqadmin", "supervisor"].includes(normalizeRole(user?.role)) || isHqEmployeeRole(formData.role)}
-                />
+                {targetIsHq ? (
+                  <input
+                    type="text"
+                    value={localStorage.getItem("organizationName") || "UNIS Headquarters"}
+                    readOnly
+                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md bg-slate-50 text-slate-600"
+                  />
+                ) : (
+                  <Select
+                    className="mt-1 p-1 text-sm text-start"
+                    name="schoolId"
+                    options={schools.map((s) => ({
+                      value: s._id,
+                      label: `${s.code} : ${s.nameEnglish}`,
+                    }))}
+                    value={schoolId}
+                    onChange={handleSchChange}
+                    maxMenuHeight={210}
+                    isDisabled={!(["superadmin", "hqadmin", "supervisor"].includes(normalizeRole(user?.role)))}
+                  />
+                )}
               </div>
 
               {/* Name */}
