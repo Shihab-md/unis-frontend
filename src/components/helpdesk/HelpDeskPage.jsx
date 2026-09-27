@@ -35,7 +35,10 @@ const STATUS_UPDATE_OPTIONS = STATUS_OPTIONS.filter((item) => item !== "All");
 
 const ROLE_OPTIONS = [
   "All",
+  "hqadmin",
+  "accountant",
   "hquser",
+  "hqstaff",
   "supervisor",
   "admin",
   "teacher",
@@ -81,7 +84,10 @@ const formatDateTime = (value) => {
 const getRoleLabel = (role = "", tr = (value) => value) => {
   const value = String(role || "").trim();
   if (!value) return "-";
+  if (value === "hqadmin") return tr("HQ Admin");
+  if (value === "accountant") return tr("Accountant");
   if (value === "hquser") return tr("HQ User");
+  if (value === "hqstaff") return tr("HQ Staff");
   if (value === "superadmin") return tr("Superadmin");
   if (value === "usthadh") return tr("Usthadh");
   return tr(value.charAt(0).toUpperCase() + value.slice(1));
@@ -234,7 +240,7 @@ function PaginationBar({ page, total, hasMore, loading, onPrevious, onNext }) {
   );
 }
 
-function QueryCard({ query, selected, onOpen, isSuperAdmin }) {
+function QueryCard({ query, selected, onOpen, isHelpDeskManager }) {
   const { tr } = useLanguage();
   return (
     <button
@@ -279,7 +285,7 @@ function QueryCard({ query, selected, onOpen, isSuperAdmin }) {
         </div>
 
         <div className="shrink-0 text-[11px] font-semibold text-slate-500 md:text-right">
-          {isSuperAdmin ? (
+          {isHelpDeskManager ? (
             <>
               <p>{query?.createdByName || "-"}</p>
               <p>{getRoleLabel(query?.createdByRole, tr)}</p>
@@ -392,7 +398,7 @@ function NewQueryForm({ busy, onCancel, onSubmit }) {
   );
 }
 
-function QueryDetail({ query, isSuperAdmin, canReply, canManageStatus, busy, onReply, onStatusChange, onCloseDetail }) {
+function QueryDetail({ query, isHelpDeskManager, canReply, canManageStatus, busy, onReply, onStatusChange, onCloseDetail }) {
   const { tr } = useLanguage();
   const [replyMessage, setReplyMessage] = useState("");
   const [statusValue, setStatusValue] = useState(query?.status || "Open");
@@ -441,7 +447,7 @@ function QueryDetail({ query, isSuperAdmin, canReply, canManageStatus, busy, onR
         </button>
       </div>
 
-      {isSuperAdmin ? (
+      {isHelpDeskManager ? (
         <div className="mb-4 rounded-lg bg-slate-50 p-3 text-[11px] font-semibold text-slate-600">
           <p>{tr("From")}: <span className="text-slate-800">{query.createdByName || "-"}</span></p>
           <p>{tr("Role")}: <span className="text-slate-800">{getRoleLabel(query.createdByRole, tr)}</span></p>
@@ -478,7 +484,7 @@ function QueryDetail({ query, isSuperAdmin, canReply, canManageStatus, busy, onR
         })}
       </div>
 
-      {isSuperAdmin && canManageStatus ? (
+      {isHelpDeskManager && canManageStatus ? (
         <div className="mt-4 rounded-lg border border-slate-200 bg-white/90 p-3">
           <label className="grid gap-1 text-xs font-semibold text-slate-600 md:max-w-xs">
             <span>{tr("Update Status")}</span>
@@ -507,14 +513,14 @@ function QueryDetail({ query, isSuperAdmin, canReply, canManageStatus, busy, onR
       {canReply ? (
       <form onSubmit={submitReply} className="mt-4 rounded-lg border border-slate-200 bg-white/90 p-3">
         <label className="grid gap-1 text-xs font-semibold text-slate-600">
-          <span>{isSuperAdmin ? tr("Reply to User") : tr("Add Follow-up")}</span>
+          <span>{isHelpDeskManager ? tr("Reply to User") : tr("Add Follow-up")}</span>
           <textarea
             value={replyMessage}
             onChange={(event) => setReplyMessage(event.target.value)}
             maxLength={2500}
             rows={4}
             className="rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-teal-500 focus:outline-none"
-            placeholder={isSuperAdmin ? tr("Type superadmin reply here...") : tr("Add more details or reply to superadmin...")}
+            placeholder={isHelpDeskManager ? tr("Type HQ reply here...") : tr("Add more details or reply to HQ...")}
           />
           <span className="text-[10px] text-slate-400">{replyMessage.length}/2500</span>
         </label>
@@ -541,7 +547,7 @@ export default function HelpDeskPage() {
   const { tr, direction, fontFamily } = useLanguage();
 
   const userRole = String(user?.role || "").toLowerCase();
-  const isSuperAdmin = userRole === "superadmin";
+  const isHelpDeskManager = ["superadmin", "hqadmin"].includes(userRole);
   const canViewHelpDesk = can(PERMISSIONS.HELP_DESK_VIEW);
   const canCreateHelpDesk = can(PERMISSIONS.HELP_DESK_CREATE);
   const canReplyHelpDesk = can(PERMISSIONS.HELP_DESK_REPLY);
@@ -571,7 +577,7 @@ export default function HelpDeskPage() {
   const [updatedTo, setUpdatedTo] = useState("");
   const [schools, setSchools] = useState([]);
 
-  const title = tr(isSuperAdmin ? "HQ Help Desk - Received Queries" : "HQ Help Desk - My Queries");
+  const title = tr(isHelpDeskManager ? "HQ Help Desk - Received Queries" : "HQ Help Desk - My Queries");
   const safeSchools = Array.isArray(schools) ? schools : [];
 
   const loadQueries = useCallback(async () => {
@@ -595,8 +601,8 @@ export default function HelpDeskPage() {
         priority: priorityFilter,
         search: appliedSearch,
         unreadOnly,
-        role: isSuperAdmin ? roleFilter : "",
-        schoolId: isSuperAdmin ? schoolFilter : "",
+        role: isHelpDeskManager ? roleFilter : "",
+        schoolId: isHelpDeskManager ? schoolFilter : "",
         updatedFrom,
         updatedTo,
       });
@@ -617,7 +623,7 @@ export default function HelpDeskPage() {
     priorityFilter,
     appliedSearch,
     unreadOnly,
-    isSuperAdmin,
+    isHelpDeskManager,
     roleFilter,
     schoolFilter,
     updatedFrom,
@@ -651,7 +657,7 @@ export default function HelpDeskPage() {
 
   useEffect(() => {
     const loadSchools = async () => {
-      if (!isSuperAdmin) {
+      if (!isHelpDeskManager) {
         setSchools([]);
         return;
       }
@@ -665,7 +671,7 @@ export default function HelpDeskPage() {
     };
 
     loadSchools();
-  }, [isSuperAdmin]);
+  }, [isHelpDeskManager]);
 
   useEffect(() => {
     const queryId = new URLSearchParams(location.search).get("queryId");
@@ -705,7 +711,7 @@ export default function HelpDeskPage() {
   };
 
   const createQuery = async (payload) => {
-    if (isSuperAdmin || !canCreateHelpDesk) return;
+    if (isHelpDeskManager || !canCreateHelpDesk) return;
 
     setBusy(true);
     setMessage("");
@@ -763,7 +769,7 @@ export default function HelpDeskPage() {
   };
 
   const updateStatus = async (status) => {
-    if (!isSuperAdmin || !canManageHelpDeskStatus) return;
+    if (!isHelpDeskManager || !canManageHelpDeskStatus) return;
 
     const id = selectedQuery?._id;
     if (!id || !status) return;
@@ -784,8 +790,8 @@ export default function HelpDeskPage() {
     }
   };
 
-  const listTitle = tr(isSuperAdmin ? "Received Queries" : "My Queries");
-  const emptyText = tr(isSuperAdmin ? "No received Help Desk queries found." : "No Help Desk queries found.");
+  const listTitle = tr(isHelpDeskManager ? "Received Queries" : "My Queries");
+  const emptyText = tr(isHelpDeskManager ? "No received Help Desk queries found." : "No Help Desk queries found.");
 
   const selectedId = selectedQuery?._id || selectedQueryId;
 
@@ -796,8 +802,8 @@ export default function HelpDeskPage() {
     statusFilter,
     categoryFilter,
     priorityFilter,
-    isSuperAdmin ? roleFilter : "",
-    isSuperAdmin ? schoolFilter : "",
+    isHelpDeskManager ? roleFilter : "",
+    isHelpDeskManager ? schoolFilter : "",
     unreadOnly ? "unread" : "",
     updatedFrom,
     updatedTo,
@@ -829,7 +835,7 @@ export default function HelpDeskPage() {
           <div>
             <p className="text-sm font-bold text-slate-700">{listTitle}</p>
             <p className="text-[11px] font-semibold text-slate-500">
-              {isSuperAdmin
+              {isHelpDeskManager
                 ? tr("Read, reply, and close queries received from users.")
                 : tr("Ask questions, report issues, or follow up with superadmin.")}
             </p>
@@ -847,7 +853,7 @@ export default function HelpDeskPage() {
               {LinkIcon("#", tr("Back"))}
             </div>
 
-            {!isSuperAdmin && canCreateHelpDesk ? (
+            {!isHelpDeskManager && canCreateHelpDesk ? (
               <div
                 className="ml-1"
                 onClick={(event) => {
@@ -914,7 +920,7 @@ export default function HelpDeskPage() {
             <SelectFilter label={tr("Category")} value={categoryFilter} onChange={handleFilterChange(setCategoryFilter)} options={CATEGORY_OPTIONS} />
             <SelectFilter label={tr("Priority")} value={priorityFilter} onChange={handleFilterChange(setPriorityFilter)} options={PRIORITY_OPTIONS} />
 
-            {isSuperAdmin ? (
+            {isHelpDeskManager ? (
               <SelectFilter
                 label={tr("Role")}
                 value={roleFilter}
@@ -924,7 +930,7 @@ export default function HelpDeskPage() {
               />
             ) : null}
 
-            {isSuperAdmin ? (
+            {isHelpDeskManager ? (
               <SchoolFilter
                 value={schoolFilter}
                 onChange={handleFilterChange(setSchoolFilter)}
@@ -951,7 +957,7 @@ export default function HelpDeskPage() {
           </div>
         </div>
 
-        {!isSuperAdmin && canCreateHelpDesk && showNewForm ? (
+        {!isHelpDeskManager && canCreateHelpDesk && showNewForm ? (
           <NewQueryForm busy={busy} onCancel={() => setShowNewForm(false)} onSubmit={createQuery} />
         ) : null}
 
@@ -982,7 +988,7 @@ export default function HelpDeskPage() {
                   query={query}
                   selected={selectedId === query?._id}
                   onOpen={openQueryDetail}
-                  isSuperAdmin={isSuperAdmin}
+                  isHelpDeskManager={isHelpDeskManager}
                 />
               ))}
             </div>
@@ -1005,7 +1011,7 @@ export default function HelpDeskPage() {
             ) : (
               <QueryDetail
                 query={selectedQuery}
-                isSuperAdmin={isSuperAdmin}
+                isHelpDeskManager={isHelpDeskManager}
                 canReply={canReplyHelpDesk}
                 canManageStatus={canManageHelpDeskStatus}
                 busy={busy}

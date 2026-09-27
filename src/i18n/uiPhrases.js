@@ -3696,7 +3696,10 @@ export const translateUiPhrase = (value, language = getCurrentUiLanguage(), para
 
   const roleAliases = {
     superadmin: "SuperAdmin",
+    hqadmin: "HQ Admin",
+    accountant: "Accountant",
     hquser: "HQUser",
+    hqstaff: "HQ Staff",
     supervisor: "Supervisor",
     admin: "Admin",
     employee: "Employee",

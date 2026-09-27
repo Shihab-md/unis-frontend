@@ -55,6 +55,7 @@ export default function DetailedReportsSection({ meta, studentQueryString = "", 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [canViewSensitive, setCanViewSensitive] = useState(false);
+  const [canViewFinancial, setCanViewFinancial] = useState(true);
   const [employeeFilters, setEmployeeFilters] = useState({ schoolId: "", search: "", status: "" });
   const [employeeAppliedFilters, setEmployeeAppliedFilters] = useState({ schoolId: "", search: "", status: "" });
   const [supervisorFilters, setSupervisorFilters] = useState({ search: "", status: "", jobType: "" });
@@ -93,6 +94,7 @@ export default function DetailedReportsSection({ meta, studentQueryString = "", 
       setRows(Array.isArray(data?.rows) ? data.rows : []);
       setPaging(data?.pagination || defaultPaging);
       setCanViewSensitive(Boolean(data?.canViewSensitive));
+      setCanViewFinancial(data?.canViewFinancial !== false);
     } catch (err) {
       setRows([]);
       setPaging(defaultPaging);
@@ -198,7 +200,7 @@ export default function DetailedReportsSection({ meta, studentQueryString = "", 
         ) : rows.length === 0 ? (
           <div className="py-10 text-center text-slate-400 text-sm">{tr("No data")}</div>
         ) : active === "students" ? (
-          <StudentsTable rows={rows} tr={tr} canViewSensitive={canViewSensitive} />
+          <StudentsTable rows={rows} tr={tr} canViewSensitive={canViewSensitive} canViewFinancial={canViewFinancial} />
         ) : active === "employees" ? (
           <EmployeesTable rows={rows} tr={tr} canViewSensitive={canViewSensitive} />
         ) : (
@@ -215,14 +217,14 @@ function DateDuration({ date, duration }) {
   return <div className="leading-relaxed"><div>{formatDate(date)}</div><div className="text-[10px] text-slate-500">({duration})</div></div>;
 }
 
-function StudentsTable({ rows, tr, canViewSensitive }) {
+function StudentsTable({ rows, tr, canViewSensitive, canViewFinancial }) {
   if (!canViewSensitive) {
     return (
       <div className="overflow-auto border rounded-lg" dir="ltr">
         <table className="min-w-[1450px] w-full text-xs">
           <thead className="bg-slate-50 text-slate-700">
             <tr>
-              <Th>{tr("Roll Number")}</Th><Th>{tr("Student Name")}</Th><Th>{tr("Niswan")}</Th><Th>{tr("Date of Birth")} / {tr("Age")}</Th><Th>{tr("Admission Date")} / {tr("Admission Duration")}</Th><Th>{tr("Gender")}</Th><Th>{tr("Course")}</Th><Th>{tr("Status")}</Th><Th>{tr("Hostel")}</Th><Th>{tr("Fees Status")}</Th>
+              <Th>{tr("Roll Number")}</Th><Th>{tr("Student Name")}</Th><Th>{tr("Niswan")}</Th><Th>{tr("Date of Birth")} / {tr("Age")}</Th><Th>{tr("Admission Date")} / {tr("Admission Duration")}</Th><Th>{tr("Gender")}</Th><Th>{tr("Course")}</Th><Th>{tr("Status")}</Th><Th>{tr("Hostel")}</Th>{canViewFinancial ? <Th>{tr("Fees Status")}</Th> : null}
             </tr>
           </thead>
           <tbody>{rows.map((row) => (
@@ -230,7 +232,7 @@ function StudentsTable({ rows, tr, canViewSensitive }) {
               <Td>{row.rollNumber}</Td><Td className="font-medium">{row.name}</Td><Td>{row.schoolCode}<br /><span className="text-slate-500">{row.schoolName}</span></Td>
               <Td><DateDuration date={row.dob} duration={formatCompactAge(row.dob, tr)} /></Td>
               <Td><DateDuration date={row.admissionDate} duration={formatStudentDuration(row.admissionDate, tr)} /></Td>
-              <Td>{tr(row.gender)}</Td><Td>{row.courses}</Td><Td>{tr(row.status)}</Td><Td>{tr(row.hostel)}</Td><Td>{tr(row.feesStatus)}</Td>
+              <Td>{tr(row.gender)}</Td><Td>{row.courses}</Td><Td>{tr(row.status)}</Td><Td>{tr(row.hostel)}</Td>{canViewFinancial ? <Td>{tr(row.feesStatus)}</Td> : null}
             </tr>
           ))}</tbody>
         </table>
@@ -252,7 +254,7 @@ function StudentsTable({ rows, tr, canViewSensitive }) {
             <Th>{tr("Family / Guardian")}</Th>
             <Th>{tr("Course")}</Th>
             <Th>{tr("Address Details")}</Th>
-            <Th>{tr("Hostel / Fees")}</Th>
+            <Th>{tr(canViewFinancial ? "Hostel / Fees" : "Hostel")}</Th>
             <Th>{tr("Status")} / {tr("Remarks")}</Th>
           </tr>
         </thead>
@@ -303,10 +305,14 @@ function StudentsTable({ rows, tr, canViewSensitive }) {
             <Td className="min-w-[230px]">
               <ReportLine label={tr("Hostel Admission")} value={tr(row.hostel)} />
               <ReportLine label={tr("Hostel Reference")} value={row.hostelRefNumber} />
-              <ReportLine label={tr("Hostel Monthly Fees")} value={money(row.hostelFees)} />
-              <ReportLine label={tr("Discount")} value={money(row.hostelDiscount)} />
-              <ReportLine label={tr("Final Fees")} value={money(row.hostelFinalFees)} />
-              <ReportLine label={tr("Fees Status")} value={tr(row.feesStatus)} />
+              {canViewFinancial ? (
+                <>
+                  <ReportLine label={tr("Hostel Monthly Fees")} value={money(row.hostelFees)} />
+                  <ReportLine label={tr("Discount")} value={money(row.hostelDiscount)} />
+                  <ReportLine label={tr("Final Fees")} value={money(row.hostelFinalFees)} />
+                  <ReportLine label={tr("Fees Status")} value={tr(row.feesStatus)} />
+                </>
+              ) : null}
             </Td>
             <Td className="min-w-[190px]">
               <ReportLine label={tr("Status")} value={tr(row.status)} />

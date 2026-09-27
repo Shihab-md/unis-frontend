@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import DataTable from "react-data-table-component";
+import { isHqAccountsRole } from "../../auth/roles";
 
 import { fetchPendingInvoicesHQNotSent } from "../../api/feesApi";
 import { useAuth } from "../../context/AuthContext";
@@ -71,7 +72,7 @@ export default function PendingInvoicesNotSentHQ() {
   const { can } = useAuth();
   const canViewPending = can(PERMISSIONS.ACCOUNTS_HQ_PENDING_INVOICES_VIEW);
   const role = localStorage.getItem("role");
-  const isHQ = role === "superadmin" || role === "hquser";
+  const isHQ = isHqAccountsRole(role);
 
   const fixedSchoolId = localStorage.getItem("schoolId");
 

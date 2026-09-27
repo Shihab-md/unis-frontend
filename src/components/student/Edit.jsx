@@ -239,7 +239,7 @@ const Edit = () => {
     fees5: hasValue(s.fees5),
   });
 
-  const UNLOCKED_FIELDS = new Set(["superadmin", "hquser"]);
+  const UNLOCKED_FIELDS = new Set(["superadmin", "hqadmin"]);
 
   const navigate = useNavigate();
   const { user } = useAuth();

@@ -15,7 +15,7 @@ const getDefaultDraft = () => ({
   months: 12,
 });
 
-export default function ReportsFiltersDrawer({ meta, value, onApply, loading }) {
+export default function ReportsFiltersDrawer({ meta, value, onApply, loading, showFeesFilter = true }) {
   const { tr, direction, fontFamily } = useLanguage();
   const [open, setOpen] = useState(false);
   const [draft, setDraft] = useState({ ...getDefaultDraft(), ...(value || {}) });
@@ -222,20 +222,22 @@ export default function ReportsFiltersDrawer({ meta, value, onApply, loading }) 
                     </select>
                   </Field>
 
-                  <Field label={tr("Fees Status")}>
-                    <select
-                      className="w-full border rounded-lg p-2.5"
-                      value={draft.feesStatus || ""}
-                      onChange={(e) => setDraft((d) => ({ ...d, feesStatus: e.target.value }))}
-                    >
-                      <option value="">{tr("All")}</option>
-                      {feeStatuses.map((s) => (
-                        <option key={s} value={s}>
-                          {tr(s)}
-                        </option>
-                      ))}
-                    </select>
-                  </Field>
+                  {showFeesFilter ? (
+                    <Field label={tr("Fees Status")}>
+                      <select
+                        className="w-full border rounded-lg p-2.5"
+                        value={draft.feesStatus || ""}
+                        onChange={(e) => setDraft((d) => ({ ...d, feesStatus: e.target.value }))}
+                      >
+                        <option value="">{tr("All")}</option>
+                        {feeStatuses.map((s) => (
+                          <option key={s} value={s}>
+                            {tr(s)}
+                          </option>
+                        ))}
+                      </select>
+                    </Field>
+                  ) : null}
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">

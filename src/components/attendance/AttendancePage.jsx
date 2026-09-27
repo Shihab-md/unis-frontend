@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import CommonHeader from "../dashboard/CommonHeader";
 import { useAuth } from "../../context/AuthContext";
 import { PERMISSIONS } from "../../auth/permissions";
+import { hasLegacyPayrollRole } from "../../auth/roles";
 import { AutoText, useLanguage } from "../../i18n/LanguageContext";
 import { attendanceGet } from "../../api/attendanceApi";
 import { showSwalAlert } from "../../utils/CommonHelper";
@@ -72,11 +73,11 @@ const AttendancePage = () => {
 
     // Payroll is intentionally still controlled by the pre-existing Attendance scope
     // until the dedicated Payroll permission phase. Phase 2.2 must not change it.
-    if (hasStaffManageScope) rows.push({ id: "payroll", label: "Payroll" });
+    if (hasStaffManageScope && hasLegacyPayrollRole(user?.role)) rows.push({ id: "payroll", label: "Payroll" });
     if (canViewReports) rows.push({ id: "reports", label: "Reports" });
 
     return rows;
-  }, [meta, can]);
+  }, [meta, can, user?.role]);
 
   useEffect(() => {
     if (tabs.length && !tabs.some((tab) => tab.id === activeTab)) {

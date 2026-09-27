@@ -4,6 +4,7 @@ import CommonHeader from "./CommonHeader";
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext'
 import { PERMISSIONS } from '../../auth/permissions'
+import { isHqAccountsRole } from '../../auth/roles'
 import { getBaseUrl, handleRightClickAndFullScreen, getSpinner, LinkIcon, showSwalAlert } from '../../utils/CommonHelper'
 import { FaCalculator, FaRegMoneyBillAlt, FaCheck, FaRegClock, FaRegListAlt, FaPlayCircle } from "react-icons/fa";
 import axios from 'axios'
@@ -22,6 +23,7 @@ const AccountsPage = () => {
 
   const role = String(user?.role || "").toLowerCase();
   const canOpenAccounts = can(PERMISSIONS.ACCOUNTS_VIEW);
+  const isHqAccounts = isHqAccountsRole(role);
 
   if (!canOpenAccounts) {
     return (
@@ -39,7 +41,7 @@ const AccountsPage = () => {
       <CommonHeader userName={user?.name || ""} title="Accounts" />
       <div className="content-center rounded-lg grid grid-cols-1 md:grid-cols-4 lg:grid-cols-4 gap-10 lg:gap-14 mt-7 lg:mt-16 flex rounded-lg">
 
-        {role === "admin" && can(PERMISSIONS.ACCOUNTS_SCHOOL_INVOICES_VIEW) ?
+        {can(PERMISSIONS.ACCOUNTS_SCHOOL_INVOICES_VIEW) ?
           <Link to="/dashboard/fees" >
             <SummaryCard
               icon={<FaRegMoneyBillAlt />}
@@ -49,7 +51,7 @@ const AccountsPage = () => {
             />
           </Link> : null}
 
-        {(role === "superadmin" || role === "hquser") && can(PERMISSIONS.ACCOUNTS_HQ_REVIEW_VIEW) ?
+        {can(PERMISSIONS.ACCOUNTS_HQ_REVIEW_VIEW) ?
           <Link to="/dashboard/hq/fees" >
             <SummaryCard
               icon={<FaCheck />}
@@ -59,17 +61,17 @@ const AccountsPage = () => {
             />
           </Link> : null}
 
-        {(role === "superadmin" || role === "hquser" || role === "admin") && can(PERMISSIONS.ACCOUNTS_BATCH_HISTORY_VIEW) ?
+        {can(PERMISSIONS.ACCOUNTS_BATCH_HISTORY_VIEW) ?
           <Link to="/dashboard/fees/sent-to-hq" >
             <SummaryCard
               icon={<FaRegListAlt />}
-              text={role === "superadmin" || role === "hquser" ? "Received Batches" : "Sent Batches"}
+              text={isHqAccounts ? "Received Batches" : "Sent Batches"}
               number="*"
               color="bg-teal-500"
             />
           </Link> : null}
 
-        {(role === "superadmin" || role === "hquser") && can(PERMISSIONS.ACCOUNTS_HQ_PENDING_INVOICES_VIEW) ?
+        {can(PERMISSIONS.ACCOUNTS_HQ_PENDING_INVOICES_VIEW) ?
           <Link to="/dashboard/hq/pending-invoices" >
             <SummaryCard
               icon={<FaRegClock />}
@@ -79,7 +81,7 @@ const AccountsPage = () => {
             />
           </Link> : null}
 
-        {role === "superadmin" || role === "hquser" ?
+        {["superadmin", "hquser"].includes(role) ?
           <Link to="#" >
             <SummaryCard
               icon={<FaCalculator />}

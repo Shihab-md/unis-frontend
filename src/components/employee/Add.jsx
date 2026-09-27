@@ -20,6 +20,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import { getBusinessTodayDate } from "../../utils/dateRules";
 import { AutoText, useLanguage } from "../../i18n/LanguageContext";
 import { formatAge, formatWorkingExperience } from "../../utils/employeeProfileUtils";
+import { isHqEmployeeRole, normalizeRole } from "../../auth/roles";
 
 const SHOW_EXTENDED_EMPLOYEE_FIELDS = false;
 
@@ -114,11 +115,15 @@ const Add = () => {
   const roleOptions = useMemo(
     () => [
       { value: "superadmin", label: t("roles.superadmin", "SuperAdmin") },
-      { value: "hquser", label: t("roles.hquser", "HQUser") },
+      { value: "hqadmin", label: t("roles.hqadmin", "HQ Admin") },
+      { value: "accountant", label: t("roles.accountant", "Accountant") },
+      { value: "hquser", label: t("roles.hquser", "HQ User") },
+      { value: "hqstaff", label: t("roles.hqstaff", "HQ Staff") },
       { value: "admin", label: t("roles.admin", "Admin") },
       { value: "teacher", label: t("roles.teacher", "Teacher") },
       { value: "usthadh", label: t("roles.usthadh", "Usthadh") },
-      { value: "warden", label: t("roles.warden", "Warden") }
+      { value: "warden", label: t("roles.warden", "Warden") },
+      { value: "staff", label: t("roles.staff", "Staff") }
     ],
     [t]
   );
@@ -127,8 +132,8 @@ const Add = () => {
     const role = String(user?.role || "").toLowerCase();
 
     const allowedByRole = {
-      superadmin: null, // null = all
-      hquser: ["admin", "teacher"],
+      superadmin: null, // null = all supported Employee roles
+      hqadmin: ["accountant", "hquser", "hqstaff", "admin", "teacher", "usthadh", "warden", "staff"],
       supervisor: ["admin"],
       admin: ["usthadh", "warden"],
     };
@@ -163,6 +168,13 @@ const Add = () => {
       setFormData((prevData) => ({ ...prevData, [name]: file }));
     } else {
       setFormData((prevData) => ({ ...prevData, [name]: value }));
+
+      if (name === "role" && isHqEmployeeRole(value)) {
+        const hq = schools.find((school) => String(school?.code || "").trim() === "UN-00-00001");
+        if (hq?._id) {
+          setSchoolId({ value: hq._id, label: `${hq.code} : ${hq.nameEnglish}` });
+        }
+      }
     }
 
     if (name === "password") {
@@ -197,7 +209,7 @@ const Add = () => {
 
       //alert(user?.role)
       // School selection
-      if (["superadmin", "hquser", "supervisor"].includes(user?.role) && schoolId?.value) {
+      if (["superadmin", "hqadmin", "supervisor"].includes(normalizeRole(user?.role)) && schoolId?.value) {
         formDataObj.append("schoolId", schoolId.value);
       } else {
         formDataObj.append("schoolId", localStorage.getItem("schoolId"));
@@ -264,7 +276,7 @@ const Add = () => {
                   value={schoolId}
                   onChange={handleSchChange}
                   maxMenuHeight={210}
-                  isDisabled={!(user.role === "superadmin" || user.role === "hquser" || user.role === "supervisor")}
+                  isDisabled={!["superadmin", "hqadmin", "supervisor"].includes(normalizeRole(user?.role)) || isHqEmployeeRole(formData.role)}
                 />
               </div>
 

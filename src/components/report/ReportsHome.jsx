@@ -20,6 +20,7 @@ import DetailedReportsSection from "./DetailedReportsSection.jsx";
 import { useLanguage } from "../../i18n/LanguageContext.jsx";
 import { useAuth } from "../../context/AuthContext.jsx";
 import { PERMISSIONS } from "../../auth/permissions.js";
+import { normalizeRole } from "../../auth/roles.js";
 
 const MySwal = withReactContent(Swal);
 
@@ -77,8 +78,9 @@ const formatCurrency = (value) => `₹ ${Number(value || 0).toLocaleString()}`;
 
 export default function ReportsHome() {
   const { tr, direction, fontFamily } = useLanguage();
-  const { can } = useAuth();
+  const { user, can } = useAuth();
   const canViewReports = can(PERMISSIONS.REPORTS_VIEW);
+  const canViewFinancialReports = normalizeRole(user?.role) !== "hquser";
   const canExportReports = can(PERMISSIONS.REPORTS_EXPORT);
   const [loading, setLoading] = useState(true);
   const [metaLoading, setMetaLoading] = useState(true);
@@ -134,11 +136,11 @@ export default function ReportsHome() {
     if (filters.acYear) qs.set("acYear", filters.acYear);
     if (filters.year) qs.set("year", filters.year);
     if (filters.status) qs.set("status", filters.status);
-    if (filters.feesStatus) qs.set("feesStatus", filters.feesStatus);
+    if (canViewFinancialReports && filters.feesStatus) qs.set("feesStatus", filters.feesStatus);
     if (filters.hostel) qs.set("hostel", filters.hostel);
     qs.set("months", String(filters.months || 12));
     return qs.toString();
-  }, [filters]);
+  }, [filters, canViewFinancialReports]);
 
   const selectedFilterChips = useMemo(() => {
     const chips = [];
@@ -168,11 +170,11 @@ export default function ReportsHome() {
       chips.push(`${tr("Studying Year")}: ${filters.year}`);
     }
     if (filters.status) chips.push(`${tr("Status")}: ${tr(filters.status)}`);
-    if (filters.feesStatus) chips.push(`${tr("Fees")}: ${tr(filters.feesStatus)}`);
+    if (canViewFinancialReports && filters.feesStatus) chips.push(`${tr("Fees")}: ${tr(filters.feesStatus)}`);
     if (filters.hostel) chips.push(`${tr("Hostel")}: ${tr(filters.hostel)}`);
     chips.push(`${tr("Months")}: ${filters.months}`);
     return chips;
-  }, [filters, meta, tr]);
+  }, [filters, meta, tr, canViewFinancialReports]);
 
   const loadMeta = async () => {
     if (!canViewReports) return;
@@ -366,6 +368,7 @@ export default function ReportsHome() {
               value={filters}
               loading={metaLoading}
               onApply={onApplyFilters}
+              showFeesFilter={canViewFinancialReports}
             />
             <button
               className="px-3 py-2 rounded-lg bg-white/10 border border-white/20 hover:bg-white/20 text-sm"
@@ -398,8 +401,8 @@ export default function ReportsHome() {
 
       <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-3 mt-5">
         <ColorStatCard title={tr("Total Students")} value={formatNumber(kpis.totalStudents)} loading={loading} tone="blue" />
-        <ColorStatCard title={tr("Fees Paid")} value={formatNumber(kpis.feesPaid)} loading={loading} tone="green" />
-        <ColorStatCard title={tr("Fees Unpaid")} value={formatNumber(kpis.feesUnpaid)} loading={loading} tone="red" />
+        {canViewFinancialReports ? <ColorStatCard title={tr("Fees Paid")} value={formatNumber(kpis.feesPaid)} loading={loading} tone="green" /> : null}
+        {canViewFinancialReports ? <ColorStatCard title={tr("Fees Unpaid")} value={formatNumber(kpis.feesUnpaid)} loading={loading} tone="red" /> : null}
         <ColorStatCard title={tr("Active")} value={formatNumber(kpis.active)} loading={loading} tone="sky" />
         <ColorStatCard title={tr("Graduated")} value={formatNumber(kpis.graduated)} loading={loading} tone="violet" />
         <ColorStatCard title={tr("Niswans Covered")} value={formatNumber(kpis.niswansCovered)} loading={loading} tone="amber" />
@@ -407,7 +410,7 @@ export default function ReportsHome() {
 
       <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-3 mt-3">
         <ColorStatCard title={tr("This Month Admissions")} value={formatNumber(kpis.thisMonthAdmissions)} loading={loading} tone="teal" small />
-        <ColorStatCard title={tr("This Month Fees")} value={formatCurrency(kpis.thisMonthFeesCollection)} loading={loading} tone="emerald" small />
+        {canViewFinancialReports ? <ColorStatCard title={tr("This Month Fees")} value={formatCurrency(kpis.thisMonthFeesCollection)} loading={loading} tone="emerald" small /> : null}
         <ColorStatCard title={tr("Hostel Yes")} value={formatNumber(kpis.hostelYes)} loading={loading} tone="pink" small />
         <ColorStatCard title={tr("Hostel No")} value={formatNumber(kpis.hostelNo)} loading={loading} tone="indigo" small />
         <ColorStatCard title={tr("Transferred")} value={formatNumber(kpis.transferred)} loading={loading} tone="orange" small />
@@ -415,6 +418,7 @@ export default function ReportsHome() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mt-5">
+        <div className={canViewFinancialReports ? "" : "lg:col-span-2"}>
         <ChartCard title={tr("Admissions per month")} subtitle={`${tr("Last")} ${filters.months} ${tr("months")}`}>
           <ResponsiveContainer width="100%" height="100%">
             <LineChart data={trendAdmissions}>
@@ -427,8 +431,9 @@ export default function ReportsHome() {
             </LineChart>
           </ResponsiveContainer>
         </ChartCard>
+        </div>
 
-        <ChartCard title={tr("Fees collection")} subtitle={`${tr("Last")} ${filters.months} ${tr("months")}`}>
+        {canViewFinancialReports ? <ChartCard title={tr("Fees collection")} subtitle={`${tr("Last")} ${filters.months} ${tr("months")}`}>
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={trendFees}>
               <CartesianGrid strokeDasharray="3 3" />
@@ -439,11 +444,11 @@ export default function ReportsHome() {
               <Bar dataKey="amount" name={tr("Fees")} radius={[6, 6, 0, 0]} />
             </BarChart>
           </ResponsiveContainer>
-        </ChartCard>
+        </ChartCard> : null}
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mt-5">
-        <PreviewTable
+        {canViewFinancialReports ? <PreviewTable
           title={tr("Latest Unpaid Students")}
           subtitle={tr("Recent students whose fees are still unpaid")}
           rows={latestUnpaid}
@@ -454,8 +459,9 @@ export default function ReportsHome() {
             { key: "status", label: tr("Status"), type: "status" },
             { key: "feesStatus", label: tr("Fees"), type: "feesStatus" },
           ]}
-        />
+        /> : null}
 
+        <div className={canViewFinancialReports ? "" : "lg:col-span-2"}>
         <PreviewTable
           title={tr("Latest Admissions")}
           subtitle={tr("Recently admitted students in the filtered scope")}
@@ -468,6 +474,7 @@ export default function ReportsHome() {
             { key: "hostel", label: tr("Hostel"), type: "hostel" },
           ]}
         />
+        </div>
       </div>
 
       <DetailedReportsSection meta={meta} studentQueryString={queryString} canExport={canExportReports} />
@@ -477,7 +484,7 @@ export default function ReportsHome() {
           <div>
             <h2 className="text-lg md:text-xl font-semibold text-slate-800">{tr("Niswan Report")}</h2>
             <p className="text-sm text-slate-500 mt-1">
-              {tr("Niswan-wise overall student, fees and status summary.")}
+              {tr(canViewFinancialReports ? "Niswan-wise overall student, fees and status summary." : "Niswan-wise overall student and status summary.")}
             </p>
           </div>
           {canExportReports ? (
@@ -501,14 +508,14 @@ export default function ReportsHome() {
         <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-3 mt-4">
           <MiniSummaryCard title={tr("Niswans")} value={formatNumber(niswanSummary.totalNiswans)} />
           <MiniSummaryCard title={tr("Students")} value={formatNumber(niswanSummary.totalStudents)} />
-          <MiniSummaryCard title={tr("Fees Paid")} value={formatNumber(niswanSummary.totalFeesPaid)} tone="green" />
-          <MiniSummaryCard title={tr("Unpaid")} value={formatNumber(niswanSummary.totalUnpaid)} tone="red" />
+          {canViewFinancialReports ? <MiniSummaryCard title={tr("Fees Paid")} value={formatNumber(niswanSummary.totalFeesPaid)} tone="green" /> : null}
+          {canViewFinancialReports ? <MiniSummaryCard title={tr("Unpaid")} value={formatNumber(niswanSummary.totalUnpaid)} tone="red" /> : null}
           <MiniSummaryCard title={tr("Active")} value={formatNumber(niswanSummary.totalActive)} tone="sky" />
           <MiniSummaryCard title={tr("Graduated")} value={formatNumber(niswanSummary.totalGraduated)} tone="violet" />
         </div>
 
         <div className="mt-4">
-          <NiswanReportTable rows={niswanRows} />
+          <NiswanReportTable rows={niswanRows} showFinancial={canViewFinancialReports} />
         </div>
       </div>
     </div>

@@ -11,7 +11,10 @@ import {
 import { translateDemoTutorialMessage } from "./translateMessage";
 
 const ROLE_VALUES = [
+  "hqadmin",
+  "accountant",
   "hquser",
+  "hqstaff",
   "supervisor",
   "admin",
   "employee",

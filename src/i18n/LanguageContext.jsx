@@ -86,6 +86,9 @@ const translations = {
     },
     roles: {
       superadmin: "SuperAdmin",
+      hqadmin: "HQ Admin",
+      accountant: "Accountant",
+      hqstaff: "HQ Staff",
       hquser: "HQ User",
       supervisor: "Supervisor",
       admin: "Admin",
@@ -170,6 +173,9 @@ const translations = {
     },
     roles: {
       superadmin: "சூப்பர் அட்மின்",
+      hqadmin: "HQ Admin",
+      accountant: "Accountant",
+      hqstaff: "HQ Staff",
       hquser: "HQ பயனர்",
       supervisor: "முஆவின்",
       admin: "அட்மின்",
@@ -254,6 +260,9 @@ const translations = {
     },
     roles: {
       superadmin: "سپر ایڈمن",
+      hqadmin: "HQ Admin",
+      accountant: "Accountant",
+      hqstaff: "HQ Staff",
       hquser: "HQ صارف",
       supervisor: "معاون",
       admin: "ایڈمن",
@@ -338,6 +347,9 @@ const translations = {
     },
     roles: {
       superadmin: "المشرف العام",
+      hqadmin: "HQ Admin",
+      accountant: "Accountant",
+      hqstaff: "HQ Staff",
       hquser: "مستخدم المقر الرئيسي",
       supervisor: "معاون",
       admin: "مسؤول",
@@ -422,6 +434,9 @@ const translations = {
     },
     roles: {
       superadmin: "സൂപ്പർ അഡ്മിൻ",
+      hqadmin: "HQ Admin",
+      accountant: "Accountant",
+      hqstaff: "HQ Staff",
       hquser: "HQ ഉപയോക്താവ്",
       supervisor: "മുആവിൻ",
       admin: "അഡ്മിൻ",
@@ -506,6 +521,9 @@ const translations = {
     },
     roles: {
       superadmin: "ಸೂಪರ್ ಅಡ್ಮಿನ್",
+      hqadmin: "HQ Admin",
+      accountant: "Accountant",
+      hqstaff: "HQ Staff",
       hquser: "HQ ಬಳಕೆದಾರ",
       supervisor: "ಮುಆವಿನ್",
       admin: "ಅಡ್ಮಿನ್",
@@ -590,6 +608,9 @@ const translations = {
     },
     roles: {
       superadmin: "సూపర్ అడ్మిన్",
+      hqadmin: "HQ Admin",
+      accountant: "Accountant",
+      hqstaff: "HQ Staff",
       hquser: "HQ వినియోగదారు",
       supervisor: "ముఆవిన్",
       admin: "అడ్మిన్",

@@ -59,42 +59,23 @@ const Edit = () => {
 
   const roleOptions = [
     { value: "superadmin", label: t("roles.superadmin", "SuperAdmin") },
-    { value: "hquser", label: t("roles.hquser", "HQUser") },
+    { value: "hqadmin", label: t("roles.hqadmin", "HQ Admin") },
+    { value: "accountant", label: t("roles.accountant", "Accountant") },
+    { value: "hquser", label: t("roles.hquser", "HQ User") },
+    { value: "hqstaff", label: t("roles.hqstaff", "HQ Staff") },
     { value: "admin", label: t("roles.admin", "Admin") },
+    { value: "employee", label: t("roles.employee", "Employee") },
     { value: "teacher", label: t("roles.teacher", "Teacher") },
     { value: "usthadh", label: t("roles.usthadh", "Usthadh") },
-    { value: "warden", label: t("roles.warden", "Warden") }
+    { value: "warden", label: t("roles.warden", "Warden") },
+    { value: "staff", label: t("roles.staff", "Staff") }
   ];
 
-  const getAllowedRoleValues = (loginRole) => {
-    const r = String(loginRole || "").toLowerCase();
-
-    if (r === "superadmin") {
-      return roleOptions.map((o) => o.value); // all
-    }
-
-    if (r === "hquser") {
-      return roleOptions
-        .filter((o) => o.value !== "superadmin") // all except superadmin
-        .map((o) => o.value);
-    }
-
-    if (r === "supervisor") {
-      return ["admin"];
-    }
-
-    if (r === "admin") {
-      return ["usthadh", "warden", "staff"];
-    }
-
-    return []; // safe default
-  };
-
-  const allowed = new Set(getAllowedRoleValues(user?.role));
-
-  const sortedRoleOptions = roleOptions
-    .filter((o) => allowed.has(o.value))
-    .sort((a, b) => a.label.localeCompare(b.label, undefined, { sensitivity: "base" }));
+  // Role changes are a SuperAdmin-only operation. Other editors still need the
+  // complete option list so the employee's current role renders correctly in the disabled control.
+  const sortedRoleOptions = [...roleOptions].sort((a, b) =>
+    a.label.localeCompare(b.label, undefined, { sensitivity: "base" })
+  );
 
   useEffect(() => {
 

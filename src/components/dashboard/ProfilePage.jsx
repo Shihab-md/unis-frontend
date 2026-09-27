@@ -38,7 +38,10 @@ const roleLabel = (role) => {
     const r = String(role || "").toLowerCase();
     const map = {
         superadmin: "SuperAdmin",
-        hquser: "HQUser",
+        hqadmin: "HQ Admin",
+        accountant: "Accountant",
+        hquser: "HQ User",
+        hqstaff: "HQ Staff",
         supervisor: "Supervisor",
         admin: "Admin",
         student: "Student",

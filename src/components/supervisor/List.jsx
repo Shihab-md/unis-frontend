@@ -4,6 +4,7 @@ import { columns, SupervisorButtons, SupervisorCard, conditionalRowStyles } from
 import { getBaseUrl, handleRightClickAndFullScreen, getSpinner, checkAuth, LinkIcon, showSwalAlert, getFilterGif } from '../../utils/CommonHelper';
 import DataTable from 'react-data-table-component'
 import { useAuth } from '../../context/AuthContext'
+import { isGlobalHqReadRole } from "../../auth/roles";
 import { PERMISSIONS } from '../../auth/permissions'
 import axios from 'axios'
 import { getSchoolsFromCache } from '../../utils/SchoolHelper';
@@ -367,7 +368,7 @@ const List = () => {
           </div>
         </div>
 
-        {user.role === "superadmin" || user.role === "hquser" ?
+        {isGlobalHqReadRole(user.role) ?
           <div className="mr-3" onClick={openFilterPopup}>{LinkIcon("#", "Filter")}</div>
           : null}
 

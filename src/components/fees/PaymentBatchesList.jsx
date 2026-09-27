@@ -5,12 +5,13 @@ import { getAcademicYearsFromCache } from "../../utils/AcademicYearHelper";
 import { getSchoolsFromCache } from "../../utils/SchoolHelper";
 import { useAuth } from "../../context/AuthContext";
 import { PERMISSIONS } from "../../auth/permissions";
+import { isHqAccountsRole } from "../../auth/roles";
 
 export default function PaymentBatchesList() {
   const { can } = useAuth();
   const canViewHistory = can(PERMISSIONS.ACCOUNTS_BATCH_HISTORY_VIEW);
   const role = localStorage.getItem("role");
-  const isHQ = role === "superadmin" || role === "hquser";
+  const isHQ = isHqAccountsRole(role);
 
   const fixedSchoolId = localStorage.getItem("schoolId");
 

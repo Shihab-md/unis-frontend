@@ -141,7 +141,7 @@ export const EmployeeCard = ({ row, onEmployeeDelete }) => {
 
   const roleText = (() => {
     const r = String(row?.role || "").trim().toLowerCase();
-    const roleLabels = { superadmin: "SuperAdmin", hquser: "HQUser", admin: "Admin", teacher: "Teacher", usthadh: "Usthadh", warden: "Warden", staff: "Staff", supervisor: "Supervisor" };
+    const roleLabels = { superadmin: "SuperAdmin", hqadmin: "HQ Admin", accountant: "Accountant", hquser: "HQ User", hqstaff: "HQ Staff", admin: "Admin", employee: "Employee", teacher: "Teacher", usthadh: "Usthadh", warden: "Warden", staff: "Staff", supervisor: "Supervisor" };
     return roleLabels[r] || r || "-";
   })();
 

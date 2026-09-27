@@ -4,6 +4,7 @@ import CommonHeader from "./CommonHeader";
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext'
 import { PERMISSIONS } from '../../auth/permissions'
+import { normalizeRole } from '../../auth/roles'
 import { getBaseUrl, handleRightClickAndFullScreen, getSpinner, LinkIcon, showSwalAlert, isHqAdminSession } from '../../utils/CommonHelper'
 import {
   FaUniversity, FaWpforms, FaClipboardList, FaCalendarAlt, FaUserCog, FaMapMarkerAlt, FaGoogleDrive, FaRedo, FaCentos, FaMedal, FaFileExcel, FaUserShield
@@ -21,7 +22,7 @@ const Masters = () => {
   const [summary, setSummary] = useState(null)
   const navigate = useNavigate()
   const { user, can } = useAuth()
-  const hasHqUtilityScope = ["superadmin", "hquser"].includes(String(user?.role || "").toLowerCase()) ||
+  const hasHqUtilityScope = ["superadmin", "hqadmin", "hquser"].includes(normalizeRole(user?.role)) ||
     isHqAdminSession(user?.role, user?.schoolName)
 
   useEffect(() => {

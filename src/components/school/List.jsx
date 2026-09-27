@@ -7,6 +7,7 @@ import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import Select from 'react-select';
 import { useAuth } from '../../context/AuthContext'
+import { isGlobalHqReadRole } from "../../auth/roles";
 import { PERMISSIONS } from '../../auth/permissions'
 import { AutoText, useLanguage } from '../../i18n/LanguageContext';
 import { getSupervisorsFromCache } from '../../utils/SupervisorHelper';
@@ -398,7 +399,7 @@ const List = () => {
           </div>
         </div>
 
-        {user.role === "superadmin" || user.role === "hquser" ?
+        {isGlobalHqReadRole(user.role) ?
           <div className="mr-3" onClick={openFilterPopup}>{LinkIcon("#", "Filter")}</div>
           : null}
 

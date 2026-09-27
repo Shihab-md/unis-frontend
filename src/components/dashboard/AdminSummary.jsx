@@ -4,6 +4,7 @@ import CommonHeader from "./CommonHeader";
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext'
 import { PERMISSIONS } from "../../auth/permissions";
+import { hasLegacyPayrollRole, isGlobalHqReadRole } from "../../auth/roles";
 import { useLanguage } from '../../i18n/LanguageContext'
 import { getBaseUrl, handleRightClickAndFullScreen, getSpinner, showSwalAlert, removeLocalStorage, isHqAdminSession } from '../../utils/CommonHelper'
 import {
@@ -54,7 +55,7 @@ const AdminSummary = () => {
 
   // Payroll remains on the legacy Attendance scope until its dedicated permission phase.
   // Attendance/Leave/Reports are permission-controlled in Phase 2.2.
-  const legacyPayrollAccess = ["superadmin", "hquser", "admin"].includes(userRole);
+  const legacyPayrollAccess = hasLegacyPayrollRole(userRole);
   const canOpenAttendance =
     legacyPayrollAccess ||
     canAny([
@@ -76,7 +77,7 @@ const AdminSummary = () => {
 
   useEffect(() => {
 
-    if (user.role === "superadmin" || user.role === "hquser" || user.role === "supervisor" || user.role === "guest") {
+    if (isGlobalHqReadRole(user.role) || user.role === "supervisor" || user.role === "guest") {
       removeLocalStorage();
     }
 
@@ -122,7 +123,7 @@ const AdminSummary = () => {
           <Link to="/dashboard/schools" >
             <SummaryCard
               icon={<FaMosque />}
-              text={user.role === "superadmin" || user.role === "hquser" || user.role === "supervisor" ? t("dashboard.niswans") : t("dashboard.niswan")}
+              text={isGlobalHqReadRole(user.role) || user.role === "supervisor" ? t("dashboard.niswans") : t("dashboard.niswan")}
               number={user.role === "admin" || user.role === "guest" ? "*" : summary.totalSchools}
               color="bg-pink-600"
             />

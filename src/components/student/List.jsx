@@ -18,6 +18,7 @@ import withReactContent from 'sweetalert2-react-content';
 import Select from 'react-select';
 import { useAuth } from '../../context/AuthContext'
 import { PERMISSIONS } from '../../auth/permissions'
+import { isGlobalHqReadRole } from "../../auth/roles";
 import { AutoText, useLanguage } from '../../i18n/LanguageContext';
 import { getSchools, getSchoolsFromCache } from '../../utils/SchoolHelper';
 import { getCoursesFromCache } from '../../utils/CourseHelper';
@@ -59,7 +60,7 @@ const List = () => {
 
   const canAddStudent =
     can(PERMISSIONS.STUDENT_CREATE) &&
-    (userRole === "superadmin" || userRole === "hquser" || isHqAdmin);
+    (userRole === "superadmin" || userRole === "hqadmin" || isHqAdmin);
 
   let schoolId;
   let schoolName;
@@ -1336,7 +1337,7 @@ const List = () => {
     <div dir={direction} style={{ fontFamily }} className="p-3 lg:p-5 bg-repeat mt-3">
       <div className="text-center">
         <AutoText as="h3" text={tr("Manage Students")} variant="heading" className="font-bold px-5 py-0 text-gray-600" />
-        {user.role === "superadmin" || user.role === "hquser" ? (
+        {isGlobalHqReadRole(user.role) ? (
           <div className="text-xs md:text-base font-semibold text-slate-500" dir="auto">
             {localStorage.getItem("schoolName") || "-"}
           </div>

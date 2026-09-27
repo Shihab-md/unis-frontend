@@ -13,6 +13,7 @@ import {
 } from '../../utils/CommonHelper';
 import { useAuth } from '../../context/AuthContext'
 import { PERMISSIONS } from '../../auth/permissions'
+import { isGlobalHqReadRole } from '../../auth/roles'
 import { AutoText, useLanguage } from '../../i18n/LanguageContext';
 import 'animate.css';
 import * as XLSX from 'xlsx';
@@ -133,11 +134,16 @@ const List = () => {
             <Select className='text-sm text-start mb-3'
               options={
                 [{ value: 'superadmin', label: t('roles.superadmin', 'SuperAdmin') },
-                { value: 'hquser', label: t('roles.hquser', 'HQUser') },
+                { value: 'hqadmin', label: t('roles.hqadmin', 'HQ Admin') },
+                { value: 'accountant', label: t('roles.accountant', 'Accountant') },
+                { value: 'hquser', label: t('roles.hquser', 'HQ User') },
+                { value: 'hqstaff', label: t('roles.hqstaff', 'HQ Staff') },
                 { value: 'admin', label: t('roles.admin', 'Admin') },
+                { value: 'employee', label: t('roles.employee', 'Employee') },
                 { value: 'teacher', label: t('roles.teacher', 'Teacher') },
                 { value: 'usthadh', label: t('roles.usthadh', 'Usthadh') },
-                { value: 'warden', label: t('roles.warden', 'Warden') }]
+                { value: 'warden', label: t('roles.warden', 'Warden') },
+                { value: 'staff', label: t('roles.staff', 'Staff') }]
               }
 
               onChange={(selectedOption) => {
@@ -467,7 +473,7 @@ const List = () => {
           </div>
         </div>
 
-        {user.role === "superadmin" || user.role === "hquser" ?
+        {isGlobalHqReadRole(user.role) ?
           <div className="mr-3" onClick={openFilterPopup}>{LinkIcon("#", "Filter")}</div>
           : null}
 

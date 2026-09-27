@@ -10,7 +10,7 @@ const formatDate = (value) => {
   return d.toLocaleDateString("en-GB");
 };
 
-export default function NiswanReportTable({ rows }) {
+export default function NiswanReportTable({ rows, showFinancial = true }) {
   const { tr, direction, fontFamily } = useLanguage();
   const list = useMemo(() => (Array.isArray(rows) ? rows : []), [rows]);
 
@@ -23,9 +23,9 @@ export default function NiswanReportTable({ rows }) {
               <Th>{tr("Code")}</Th>
               <Th>{tr("Niswan")}</Th>
               <Th className="text-right">{tr("Total")}</Th>
-              <Th className="text-right">{tr("Paid")}</Th>
-              <Th className="text-right">{tr("Unpaid")}</Th>
-              <Th className="text-right">{tr("Paid %")}</Th>
+              {showFinancial ? <Th className="text-right">{tr("Paid")}</Th> : null}
+              {showFinancial ? <Th className="text-right">{tr("Unpaid")}</Th> : null}
+              {showFinancial ? <Th className="text-right">{tr("Paid %")}</Th> : null}
               <Th className="text-right">{tr("Active")}</Th>
               <Th className="text-right">{tr("Graduated")}</Th>
               <Th className="text-right">{tr("Hostel")}</Th>
@@ -35,7 +35,7 @@ export default function NiswanReportTable({ rows }) {
           <tbody>
             {list.length === 0 ? (
               <tr>
-                <td colSpan={10} className="px-3 py-6 text-slate-400 text-center">
+                <td colSpan={showFinancial ? 10 : 7} className="px-3 py-6 text-slate-400 text-center">
                   {tr("No data")}
                 </td>
               </tr>
@@ -45,9 +45,9 @@ export default function NiswanReportTable({ rows }) {
                   <Td>{r.code || "-"}</Td>
                   <Td className="font-medium text-slate-800">{r.nameEnglish || "-"}</Td>
                   <Td className="text-right">{formatNumber(r.totalStudents)}</Td>
-                  <Td className="text-right text-emerald-700 font-medium">{formatNumber(r.feesPaid)}</Td>
-                  <Td className="text-right text-rose-700 font-medium">{formatNumber(r.unpaid)}</Td>
-                  <Td className="text-right">{formatPercent(r.paidPercent)}</Td>
+                  {showFinancial ? <Td className="text-right text-emerald-700 font-medium">{formatNumber(r.feesPaid)}</Td> : null}
+                  {showFinancial ? <Td className="text-right text-rose-700 font-medium">{formatNumber(r.unpaid)}</Td> : null}
+                  {showFinancial ? <Td className="text-right">{formatPercent(r.paidPercent)}</Td> : null}
                   <Td className="text-right text-sky-700 font-medium">{formatNumber(r.activeStudents)}</Td>
                   <Td className="text-right text-violet-700 font-medium">{formatNumber(r.graduatedStudents)}</Td>
                   <Td className="text-right">{formatNumber(r.hostelYes)}</Td>
@@ -76,16 +76,18 @@ export default function NiswanReportTable({ rows }) {
               </div>
 
               <div className="grid grid-cols-2 gap-2 mt-3 text-xs">
-                <MiniStat label={tr("Paid")} value={formatNumber(r.feesPaid)} className="bg-emerald-50 text-emerald-700" />
-                <MiniStat label={tr("Unpaid")} value={formatNumber(r.unpaid)} className="bg-rose-50 text-rose-700" />
+                {showFinancial ? <MiniStat label={tr("Paid")} value={formatNumber(r.feesPaid)} className="bg-emerald-50 text-emerald-700" /> : null}
+                {showFinancial ? <MiniStat label={tr("Unpaid")} value={formatNumber(r.unpaid)} className="bg-rose-50 text-rose-700" /> : null}
                 <MiniStat label={tr("Active")} value={formatNumber(r.activeStudents)} className="bg-sky-50 text-sky-700" />
                 <MiniStat label={tr("Graduated")} value={formatNumber(r.graduatedStudents)} className="bg-violet-50 text-violet-700" />
               </div>
 
               <div className="grid grid-cols-2 gap-3 mt-3 text-xs text-slate-600">
-                <div>
-                  <span className="font-medium">{tr("Paid %")}:</span> {formatPercent(r.paidPercent)}
-                </div>
+                {showFinancial ? (
+                  <div>
+                    <span className="font-medium">{tr("Paid %")}:</span> {formatPercent(r.paidPercent)}
+                  </div>
+                ) : null}
                 <div>
                   <span className="font-medium">{tr("Hostel")}:</span> {formatNumber(r.hostelYes)}
                 </div>

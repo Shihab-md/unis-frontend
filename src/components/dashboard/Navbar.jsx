@@ -5,11 +5,12 @@ import { FaHome, FaPowerOff } from "react-icons/fa";
 import NotificationBell from '../notification/NotificationBell';
 import { AutoText, useLanguage } from '../../i18n/LanguageContext';
 import EnvironmentBadge from '../common/EnvironmentBadge';
+import { isGlobalHqReadRole, isHqEmployeeRole } from "../../auth/roles";
 
 const Navbar = () => {
   const { user, logout } = useAuth();
   const { t } = useLanguage();
-  const isHQ = user?.role === "superadmin" || user?.role === "hquser" || user?.role === "supervisor";
+  const isHQ = isGlobalHqReadRole(user?.role) || isHqEmployeeRole(user?.role) || user?.role === "supervisor";
   const roleKey = String(user?.role || "").toLowerCase();
   const roleLabel = roleKey ? t(`roles.${roleKey}`, roleKey.charAt(0).toUpperCase() + roleKey.slice(1)) : "";
 
