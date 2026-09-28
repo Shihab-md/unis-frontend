@@ -1,5 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { attendanceGet, attendancePatch, attendancePost } from "../../api/attendanceApi";
+import { useAuth } from "../../context/AuthContext";
+import { PERMISSIONS } from "../../auth/permissions";
 import { useLanguage } from "../../i18n/LanguageContext";
 import { showConfirmationSwalAlert, showSwalAlert } from "../../utils/CommonHelper";
 import {
@@ -22,10 +24,9 @@ const PayrollTab = ({
   meta,
   selectedSchoolId,
   setSelectedSchoolId,
-  staffScopeType,
-  setStaffScopeType,
 }) => {
   const { tr } = useLanguage();
+  const { can } = useAuth();
   const access = meta.access;
   const [monthKey, setMonthKey] = useState(currentMonthKey());
   const [workingDays, setWorkingDays] = useState(26);
@@ -36,16 +37,21 @@ const PayrollTab = ({
   const [paymentMethod, setPaymentMethod] = useState("Bank Transfer");
   const [paymentReference, setPaymentReference] = useState("");
   const [payrollRemarks, setPayrollRemarks] = useState("");
+  const [payrollScopeType, setPayrollScopeType] = useState(
+    access.canManagePayrollGlobally && !access.isSuperAdmin ? "HQ" : "NISWAN"
+  );
 
-  const effectiveScopeType = access.isSuperAdmin
-    ? staffScopeType
-    : access.canManageHqStaff
-      ? "HQ"
-      : "NISWAN";
+  const canGenerate = can(PERMISSIONS.PAYROLL_GENERATE);
+  const canAdjust = can(PERMISSIONS.PAYROLL_ADJUST);
+  const canReview = can(PERMISSIONS.PAYROLL_REVIEW);
+  const canFinalize = can(PERMISSIONS.PAYROLL_FINALIZE);
+  const canPay = can(PERMISSIONS.PAYROLL_PAY);
+
+  const effectiveScopeType = access.canManagePayrollGlobally ? payrollScopeType : "NISWAN";
   const effectiveSchoolId =
     effectiveScopeType === "HQ"
       ? ""
-      : access.isSuperAdmin
+      : access.canManagePayrollGlobally
         ? selectedSchoolId
         : access.actorSchoolId || "";
 
@@ -183,7 +189,12 @@ const PayrollTab = ({
     return result;
   }, [run]);
 
-  const editable = run && !["Finalized", "Paid"].includes(run.status);
+  const editable = run && canAdjust && !["Finalized", "Paid"].includes(run.status);
+  const canEditWorkflowRemarks =
+    run &&
+    ((run.status === "Draft" && canReview) ||
+      (run.status === "Reviewed" && canFinalize) ||
+      (run.status === "Finalized" && canPay));
 
   return (
     <div className="space-y-4">
@@ -192,17 +203,17 @@ const PayrollTab = ({
         subtitle="Payroll uses staff salary, explicit absence/half-day and approved unpaid leave. Missing attendance is never silently deducted."
       >
         <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-6">
-          {access.isSuperAdmin ? (
+          {access.canManagePayrollGlobally ? (
             <div>
-              <FieldLabel>{tr("Staff Scope")}</FieldLabel>
-              <SelectInput value={staffScopeType} onChange={(e) => setStaffScopeType(e.target.value)}>
+              <FieldLabel>{tr("Payroll Scope")}</FieldLabel>
+              <SelectInput value={payrollScopeType} onChange={(e) => setPayrollScopeType(e.target.value)}>
                 <option value="HQ">{tr("HQ")}</option>
                 <option value="NISWAN">{tr("Niswan")}</option>
               </SelectInput>
             </div>
           ) : null}
 
-          {access.isSuperAdmin && effectiveScopeType === "NISWAN" ? (
+          {access.canManagePayrollGlobally && effectiveScopeType === "NISWAN" ? (
             <div className="lg:col-span-2">
               <FieldLabel>{tr("Select Niswan")}</FieldLabel>
               <SelectInput value={selectedSchoolId} onChange={(e) => setSelectedSchoolId(e.target.value)}>
@@ -229,14 +240,17 @@ const PayrollTab = ({
               min="1"
               max="31"
               value={workingDays}
+              disabled={!canGenerate}
               onChange={(e) => setWorkingDays(e.target.value)}
             />
           </div>
 
           <div className="flex items-end">
-            <PrimaryButton onClick={generate} disabled={!canQuery || generating}>
-              {generating ? tr("Generating...") : tr("Generate / Recalculate")}
-            </PrimaryButton>
+            {canGenerate ? (
+              <PrimaryButton onClick={generate} disabled={!canQuery || generating}>
+                {generating ? tr("Generating...") : tr("Generate / Recalculate")}
+              </PrimaryButton>
+            ) : null}
           </div>
         </div>
       </AttendancePanel>
@@ -365,13 +379,18 @@ const PayrollTab = ({
             <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-4">
               <div className="lg:col-span-2">
                 <FieldLabel>{tr("Payroll Remarks")}</FieldLabel>
-                <TextArea rows={2} value={payrollRemarks} onChange={(e) => setPayrollRemarks(e.target.value)} />
+                <TextArea
+                  rows={2}
+                  value={payrollRemarks}
+                  disabled={!canEditWorkflowRemarks}
+                  onChange={(e) => setPayrollRemarks(e.target.value)}
+                />
               </div>
               {run.status === "Finalized" || run.status === "Paid" ? (
                 <>
                   <div>
                     <FieldLabel>{tr("Payment Method")}</FieldLabel>
-                    <SelectInput value={paymentMethod} onChange={(e) => setPaymentMethod(e.target.value)} disabled={run.status === "Paid"}>
+                    <SelectInput value={paymentMethod} onChange={(e) => setPaymentMethod(e.target.value)} disabled={run.status === "Paid" || !canPay}>
                       {["Bank Transfer", "Cash", "Other"].map((method) => (
                         <option key={method} value={method}>{tr(method)}</option>
                       ))}
@@ -379,20 +398,20 @@ const PayrollTab = ({
                   </div>
                   <div>
                     <FieldLabel>{tr("Payment Reference")}</FieldLabel>
-                    <Input value={paymentReference} onChange={(e) => setPaymentReference(e.target.value)} disabled={run.status === "Paid"} />
+                    <Input value={paymentReference} onChange={(e) => setPaymentReference(e.target.value)} disabled={run.status === "Paid" || !canPay} />
                   </div>
                 </>
               ) : null}
             </div>
 
             <div className="mt-3 flex flex-wrap gap-2">
-              {run.status === "Draft" ? (
+              {run.status === "Draft" && canReview ? (
                 <SecondaryButton onClick={() => updateStatus("Reviewed")}>{tr("Mark Reviewed")}</SecondaryButton>
               ) : null}
-              {run.status === "Reviewed" ? (
+              {run.status === "Reviewed" && canFinalize ? (
                 <PrimaryButton onClick={() => updateStatus("Finalized")}>{tr("Finalize Payroll")}</PrimaryButton>
               ) : null}
-              {run.status === "Finalized" ? (
+              {run.status === "Finalized" && canPay ? (
                 <PrimaryButton onClick={() => updateStatus("Paid")}>{tr("Mark Paid")}</PrimaryButton>
               ) : null}
               {run.status === "Paid" ? <StatusBadge status="Paid" /> : null}

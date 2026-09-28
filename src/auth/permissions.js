@@ -44,6 +44,14 @@ export const PERMISSIONS = Object.freeze({
   STUDENT_ATTENDANCE_REPORT_VIEW: "attendance.student.report.view",
   STAFF_ATTENDANCE_REPORT_VIEW: "attendance.staff.report.view",
 
+  PAYROLL_VIEW: "payroll.view",
+  PAYROLL_GENERATE: "payroll.generate",
+  PAYROLL_ADJUST: "payroll.adjust",
+  PAYROLL_REVIEW: "payroll.review",
+  PAYROLL_FINALIZE: "payroll.finalize",
+  PAYROLL_PAY: "payroll.pay",
+  PAYSLIP_SELF_VIEW: "payslip.self.view",
+
   EXAM_QUESTION_VIEW: "exam.question.view",
   EXAM_QUESTION_CREATE: "exam.question.create",
   EXAM_QUESTION_EDIT: "exam.question.edit",

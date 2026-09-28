@@ -45,17 +45,8 @@ export const HQ_EMPLOYEE_ROLES = Object.freeze([
 ]);
 export const HQ_EMPLOYEE_ROLE_SET = new Set(HQ_EMPLOYEE_ROLES);
 
-// Payroll permissions are deliberately deferred to Phase 6. Preserve the exact
-// pre-Phase-4 access boundary until then instead of inheriting access from HQ scope.
-export const LEGACY_PAYROLL_ROLE_SET = new Set([
-  ROLES.SUPERADMIN,
-  ROLES.HQ_USER,
-  ROLES.ADMIN,
-]);
-
 export const normalizeRole = (role) => String(role || "").trim().toLowerCase();
 export const isGlobalHqReadRole = (role) => GLOBAL_HQ_READ_ROLE_SET.has(normalizeRole(role));
 export const isHqOperationalRole = (role) => HQ_OPERATIONAL_ROLE_SET.has(normalizeRole(role));
 export const isHqAccountsRole = (role) => HQ_ACCOUNTS_ROLE_SET.has(normalizeRole(role));
 export const isHqEmployeeRole = (role) => HQ_EMPLOYEE_ROLE_SET.has(normalizeRole(role));
-export const hasLegacyPayrollRole = (role) => LEGACY_PAYROLL_ROLE_SET.has(normalizeRole(role));

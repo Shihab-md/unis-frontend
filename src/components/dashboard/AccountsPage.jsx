@@ -81,8 +81,8 @@ const AccountsPage = () => {
             />
           </Link> : null}
 
-        {["superadmin", "hquser"].includes(role) ?
-          <Link to="#" >
+        {can(PERMISSIONS.PAYROLL_VIEW) ?
+          <Link to="/dashboard/attendance?tab=payroll" >
             <SummaryCard
               icon={<FaCalculator />}
               text="Payroll"

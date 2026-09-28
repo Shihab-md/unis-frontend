@@ -1,8 +1,8 @@
 import React, { useEffect, useMemo, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import CommonHeader from "../dashboard/CommonHeader";
 import { useAuth } from "../../context/AuthContext";
 import { PERMISSIONS } from "../../auth/permissions";
-import { hasLegacyPayrollRole } from "../../auth/roles";
 import { AutoText, useLanguage } from "../../i18n/LanguageContext";
 import { attendanceGet } from "../../api/attendanceApi";
 import { showSwalAlert } from "../../utils/CommonHelper";
@@ -12,14 +12,17 @@ import StudentAttendanceTab from "./StudentAttendanceTab";
 import StaffAttendanceTab from "./StaffAttendanceTab";
 import LeaveTab from "./LeaveTab";
 import PayrollTab from "./PayrollTab";
+import MyPayslipsTab from "./MyPayslipsTab";
 import AttendanceReportsTab from "./AttendanceReportsTab";
 
 const AttendancePage = () => {
-  const { user, can } = useAuth();
+  const { can } = useAuth();
   const { tr, direction, fontFamily } = useLanguage();
   const [meta, setMeta] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState("overview");
+  const [searchParams] = useSearchParams();
+  const requestedTab = String(searchParams.get("tab") || "").trim().toLowerCase();
+  const [activeTab, setActiveTab] = useState(requestedTab || "overview");
   const [selectedSchoolId, setSelectedSchoolId] = useState("");
   const [staffScopeType, setStaffScopeType] = useState("NISWAN");
   const [dateKey, setDateKey] = useState(todayKey());
@@ -71,19 +74,27 @@ const AttendancePage = () => {
     if (canViewStaffAttendance) rows.push({ id: "staff", label: "Staff" });
     if (canUseStudentLeave || canUseStaffLeave) rows.push({ id: "leave", label: "Leave" });
 
-    // Payroll is intentionally still controlled by the pre-existing Attendance scope
-    // until the dedicated Payroll permission phase. Phase 2.2 must not change it.
-    if (hasStaffManageScope && hasLegacyPayrollRole(user?.role)) rows.push({ id: "payroll", label: "Payroll" });
+    const canManagePayroll =
+      (access.canManagePayrollGlobally || access.canManageOwnNiswanPayroll) &&
+      can(PERMISSIONS.PAYROLL_VIEW);
+    const canViewOwnPayslip = access.canViewOwnPayslip && can(PERMISSIONS.PAYSLIP_SELF_VIEW);
+
+    if (canManagePayroll) rows.push({ id: "payroll", label: "Payroll" });
+    if (canViewOwnPayslip) rows.push({ id: "payslips", label: "My Payslips" });
     if (canViewReports) rows.push({ id: "reports", label: "Reports" });
 
     return rows;
-  }, [meta, can, user?.role]);
+  }, [meta, can]);
 
   useEffect(() => {
+    if (requestedTab && tabs.some((tab) => tab.id === requestedTab)) {
+      setActiveTab(requestedTab);
+      return;
+    }
     if (tabs.length && !tabs.some((tab) => tab.id === activeTab)) {
       setActiveTab(tabs[0].id);
     }
-  }, [tabs, activeTab]);
+  }, [tabs, activeTab, requestedTab]);
 
   if (loading) {
     return (
@@ -150,6 +161,7 @@ const AttendancePage = () => {
       {activeTab === "staff" ? <StaffAttendanceTab {...commonProps} /> : null}
       {activeTab === "leave" ? <LeaveTab {...commonProps} /> : null}
       {activeTab === "payroll" ? <PayrollTab {...commonProps} /> : null}
+      {activeTab === "payslips" ? <MyPayslipsTab /> : null}
       {activeTab === "reports" ? <AttendanceReportsTab {...commonProps} /> : null}
     </div>
   );

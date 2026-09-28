@@ -4,7 +4,7 @@ import CommonHeader from "./CommonHeader";
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext'
 import { PERMISSIONS } from "../../auth/permissions";
-import { hasLegacyPayrollRole, isGlobalHqReadRole } from "../../auth/roles";
+import { isGlobalHqReadRole } from "../../auth/roles";
 import { useLanguage } from '../../i18n/LanguageContext'
 import { getBaseUrl, handleRightClickAndFullScreen, getSpinner, showSwalAlert, removeLocalStorage, isHqAdminSession } from '../../utils/CommonHelper'
 import {
@@ -53,11 +53,7 @@ const AdminSummary = () => {
       PERMISSIONS.MASTER_GRADE_VIEW,
     ]) || canOpenHqMasterUtilities;
 
-  // Payroll remains on the legacy Attendance scope until its dedicated permission phase.
-  // Attendance/Leave/Reports are permission-controlled in Phase 2.2.
-  const legacyPayrollAccess = hasLegacyPayrollRole(userRole);
   const canOpenAttendance =
-    legacyPayrollAccess ||
     canAny([
       PERMISSIONS.STUDENT_ATTENDANCE_VIEW,
       PERMISSIONS.STUDENT_ATTENDANCE_ENTER,
@@ -73,6 +69,8 @@ const AdminSummary = () => {
       PERMISSIONS.STAFF_LEAVE_APPROVE,
       PERMISSIONS.STUDENT_ATTENDANCE_REPORT_VIEW,
       PERMISSIONS.STAFF_ATTENDANCE_REPORT_VIEW,
+      PERMISSIONS.PAYROLL_VIEW,
+      PERMISSIONS.PAYSLIP_SELF_VIEW,
     ]);
 
   useEffect(() => {
