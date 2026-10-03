@@ -20,11 +20,7 @@ import {
   getApiError,
 } from "./AttendanceCommon";
 
-const PayrollTab = ({
-  meta,
-  selectedSchoolId,
-  setSelectedSchoolId,
-}) => {
+const PayrollTab = ({ meta }) => {
   const { tr } = useLanguage();
   const { can } = useAuth();
   const access = meta.access;
@@ -37,9 +33,6 @@ const PayrollTab = ({
   const [paymentMethod, setPaymentMethod] = useState("Bank Transfer");
   const [paymentReference, setPaymentReference] = useState("");
   const [payrollRemarks, setPayrollRemarks] = useState("");
-  const [payrollScopeType, setPayrollScopeType] = useState(
-    access.canManagePayrollGlobally && !access.isSuperAdmin ? "HQ" : "NISWAN"
-  );
 
   const canGenerate = can(PERMISSIONS.PAYROLL_GENERATE);
   const canAdjust = can(PERMISSIONS.PAYROLL_ADJUST);
@@ -47,17 +40,9 @@ const PayrollTab = ({
   const canFinalize = can(PERMISSIONS.PAYROLL_FINALIZE);
   const canPay = can(PERMISSIONS.PAYROLL_PAY);
 
-  const effectiveScopeType = access.canManagePayrollGlobally ? payrollScopeType : "NISWAN";
-  const effectiveSchoolId =
-    effectiveScopeType === "HQ"
-      ? ""
-      : access.canManagePayrollGlobally
-        ? selectedSchoolId
-        : access.actorSchoolId || "";
-
-  const canQuery =
-    Boolean(monthKey) &&
-    (effectiveScopeType === "HQ" || Boolean(effectiveSchoolId));
+  const effectiveScopeType = "HQ";
+  const effectiveSchoolId = "";
+  const canQuery = Boolean(monthKey) && access.canManagePayrollGlobally;
 
   const loadRun = async () => {
     if (!canQuery) {
@@ -90,7 +75,7 @@ const PayrollTab = ({
 
   const generate = async () => {
     if (!canQuery || !workingDays) {
-      showSwalAlert("Info!", "Select payroll scope, month and working days.", "info");
+      showSwalAlert("Info!", "Select month and working days.", "info");
       return;
     }
 
@@ -200,33 +185,15 @@ const PayrollTab = ({
     <div className="space-y-4">
       <AttendancePanel
         title="Payroll"
-        subtitle="Payroll uses staff salary, explicit absence/half-day and approved unpaid leave. Missing attendance is never silently deducted."
+        subtitle="HQ-only Payroll uses HQ staff salary, explicit absence/half-day and approved unpaid leave. Niswan Payroll is not enabled."
       >
         <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-6">
-          {access.canManagePayrollGlobally ? (
-            <div>
-              <FieldLabel>{tr("Payroll Scope")}</FieldLabel>
-              <SelectInput value={payrollScopeType} onChange={(e) => setPayrollScopeType(e.target.value)}>
-                <option value="HQ">{tr("HQ")}</option>
-                <option value="NISWAN">{tr("Niswan")}</option>
-              </SelectInput>
+          <div>
+            <FieldLabel>{tr("Payroll Scope")}</FieldLabel>
+            <div className="rounded-md border border-slate-200 bg-slate-50 px-3 py-2 text-sm font-semibold text-slate-700">
+              {tr("HQ Only")}
             </div>
-          ) : null}
-
-          {access.canManagePayrollGlobally && effectiveScopeType === "NISWAN" ? (
-            <div className="lg:col-span-2">
-              <FieldLabel>{tr("Select Niswan")}</FieldLabel>
-              <SelectInput value={selectedSchoolId} onChange={(e) => setSelectedSchoolId(e.target.value)}>
-                <option value="">{tr("Select Niswan")}</option>
-                {meta.schools
-                                    .map((school) => (
-                    <option key={school._id} value={school._id}>
-                      {school.code} : {school.nameEnglish}
-                    </option>
-                  ))}
-              </SelectInput>
-            </div>
-          ) : null}
+          </div>
 
           <div>
             <FieldLabel>{tr("Month")}</FieldLabel>

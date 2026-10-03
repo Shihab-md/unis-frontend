@@ -75,8 +75,7 @@ const AttendancePage = () => {
     if (canUseStudentLeave || canUseStaffLeave) rows.push({ id: "leave", label: "Leave" });
 
     const canManagePayroll =
-      (access.canManagePayrollGlobally || access.canManageOwnNiswanPayroll) &&
-      can(PERMISSIONS.PAYROLL_VIEW);
+      access.canManagePayrollGlobally && can(PERMISSIONS.PAYROLL_VIEW);
     const canViewOwnPayslip = access.canViewOwnPayslip && can(PERMISSIONS.PAYSLIP_SELF_VIEW);
 
     if (canManagePayroll) rows.push({ id: "payroll", label: "Payroll" });
