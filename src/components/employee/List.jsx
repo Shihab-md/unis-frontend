@@ -94,6 +94,7 @@ const List = () => {
       action: (
         <EmployeeButtons
           Id={sup._id}
+          targetRole={sup.userId?.role}
           isSelfRow={isSelfRow}
           onEmployeeDelete={onEmployeeDelete}
         />
@@ -353,6 +354,15 @@ const List = () => {
   }
 
   useEffect(() => {
+
+    // Employee filter cache belongs only to global HQ readers. Clear any stale
+    // HQ filter state before loading a scoped Supervisor/Niswan Employee list.
+    if (!isGlobalHqReadRole(user?.role)) {
+      localStorage.removeItem('employees');
+      localStorage.removeItem('empSchoolId');
+      localStorage.removeItem('empRole');
+      localStorage.removeItem('empStatus');
+    }
 
     // Authenticate the User.
     if (checkAuth("employeesList") === "NO") {

@@ -233,6 +233,7 @@ export const EmployeeCard = ({ row, onEmployeeDelete }) => {
           {row.action || (
             <EmployeeButtons
               Id={row._id}
+              targetRole={row.role}
               isSelfRow={row.isSelfRow}
               onEmployeeDelete={onEmployeeDelete}
             />
@@ -243,7 +244,7 @@ export const EmployeeCard = ({ row, onEmployeeDelete }) => {
   );
 };
 
-export const EmployeeButtons = ({ Id, isSelfRow = false, onEmployeeDelete }) => {
+export const EmployeeButtons = ({ Id, targetRole, isSelfRow = false, onEmployeeDelete }) => {
   const navigate = useNavigate();
 
   const handleDelete = async (id) => {
@@ -279,7 +280,15 @@ export const EmployeeButtons = ({ Id, isSelfRow = false, onEmployeeDelete }) => 
     }
   };
 
-  const { can } = useAuth();
+  const { can, user } = useAuth();
+
+  const actorRole = String(user?.role || "").trim().toLowerCase();
+  const normalizedTargetRole = String(targetRole || "").trim().toLowerCase();
+
+  // Muavin can view every Employee inside assigned Niswans, but Employee mutation
+  // remains intentionally limited to assigned-Niswan Admin records.
+  const canManageTarget =
+    actorRole !== "supervisor" || normalizedTargetRole === "admin";
 
   const disableEditDelete = isSelfRow;
   const disabledTitle = isSelfRow
@@ -301,7 +310,7 @@ export const EmployeeButtons = ({ Id, isSelfRow = false, onEmployeeDelete }) => 
         </div>
       ) : null}
 
-      {(can(PERMISSIONS.EMPLOYEE_EDIT) || can(PERMISSIONS.EMPLOYEE_DELETE)) ? (
+      {canManageTarget && (can(PERMISSIONS.EMPLOYEE_EDIT) || can(PERMISSIONS.EMPLOYEE_DELETE)) ? (
         <div className="flex space-x-4">
           {can(PERMISSIONS.EMPLOYEE_EDIT) ? (
             <button
