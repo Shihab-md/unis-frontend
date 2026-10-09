@@ -377,8 +377,10 @@ const TempSchoolMarksheets = () => {
             <p className="mt-2">
               Excel values are printed in CAPITAL LETTERS. Blank cells stay blank.
               Each subject keeps its original position; marks can contain numbers or letters.
-              Total Subjects, Total Marks and Percentage print from the optional
-              totalSubjects, totalMarks and percentage columns. They stay blank when omitted.
+              Total Subjects, Total Marks and Percentage are calculated automatically:
+              each populated subject counts out of 100; numeric marks are added.
+              Letter marks print unchanged and contribute zero to the total.
+              Grade prints from Excel and stays blank when omitted.
               Existing Google Drive files with the same student name are replaced;
               blank names use unique filenames.
             </p>

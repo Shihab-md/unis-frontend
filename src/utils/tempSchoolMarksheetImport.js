@@ -7,7 +7,6 @@ export const TEMP_SCHOOL_MARKSHEET_HEADERS = [
   "subName3", "mark3", "result3", "subName4", "mark4", "result4",
   "subName5", "mark5", "result5", "subName6", "mark6", "result6",
   "day", "month", "year", "grade", "remarks",
-  "totalSubjects", "totalMarks", "percentage",
 ];
 
 const headerKey = (value) => String(value ?? "").trim().toLowerCase();
