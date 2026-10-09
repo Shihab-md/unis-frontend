@@ -15,43 +15,12 @@ import {
   getTempSchoolMarksheetTemplateInfo,
 } from "../../api/tempSchoolMarksheetApi";
 
-const SHEET_NAME = "School_Marksheet_Template";
+import {
+  parseTempSchoolMarksheetWorkbook,
+  TEMP_SCHOOL_MARKSHEET_SHEET_NAME as SHEET_NAME,
+} from "../../utils/tempSchoolMarksheetImport";
 const IMPORT_CHUNK_SIZE = 15;
 const CHUNK_DELAY_MS = 750;
-
-const EXPECTED_HEADERS = [
-  "exam",
-  "acYear",
-  "regNumber",
-  "name",
-  "course",
-  "niswanCode",
-  "niswanName",
-  "address",
-  "subName1",
-  "mark1",
-  "result1",
-  "subName2",
-  "mark2",
-  "result2",
-  "subName3",
-  "mark3",
-  "result3",
-  "subName4",
-  "mark4",
-  "result4",
-  "subName5",
-  "mark5",
-  "result5",
-  "subName6",
-  "mark6",
-  "result6",
-  "day",
-  "month",
-  "year",
-  "grade",
-  "remarks",
-];
 
 const chunkArray = (items = [], size = IMPORT_CHUNK_SIZE) => {
   const chunks = [];
@@ -62,61 +31,6 @@ const chunkArray = (items = [], size = IMPORT_CHUNK_SIZE) => {
 };
 
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-
-const isBlankRow = (row = {}) =>
-  EXPECTED_HEADERS.every((header) => String(row?.[header] ?? "").trim() === "");
-
-const normalizeRow = (row = {}, sourceRowNumber) => {
-  const normalized = { sourceRowNumber };
-  EXPECTED_HEADERS.forEach((header) => {
-    normalized[header] = row?.[header] ?? "";
-  });
-  return normalized;
-};
-
-const validateWorkbook = (workbook) => {
-  if (!workbook?.SheetNames?.includes(SHEET_NAME)) {
-    throw new Error(`Required sheet "${SHEET_NAME}" was not found.`);
-  }
-
-  const worksheet = workbook.Sheets[SHEET_NAME];
-  const matrix = XLSX.utils.sheet_to_json(worksheet, {
-    header: 1,
-    defval: "",
-    raw: true,
-  });
-
-  const headerRow = Array.isArray(matrix?.[0])
-    ? matrix[0].map((value) => String(value ?? "").trim())
-    : [];
-  const headerSet = new Set(headerRow);
-  const missing = EXPECTED_HEADERS.filter((header) => !headerSet.has(header));
-
-  if (missing.length > 0) {
-    throw new Error(`Missing required Excel column(s): ${missing.join(", ")}`);
-  }
-
-  const duplicateHeaders = EXPECTED_HEADERS.filter(
-    (header) => headerRow.filter((value) => value === header).length > 1
-  );
-  if (duplicateHeaders.length > 0) {
-    throw new Error(`Duplicate Excel column(s): ${duplicateHeaders.join(", ")}`);
-  }
-
-  const rows = [];
-  for (let matrixIndex = 1; matrixIndex < matrix.length; matrixIndex += 1) {
-    const values = Array.isArray(matrix[matrixIndex]) ? matrix[matrixIndex] : [];
-    const rawRow = {};
-    headerRow.forEach((header, columnIndex) => {
-      if (header) rawRow[header] = values[columnIndex] ?? "";
-    });
-
-    const normalized = normalizeRow(rawRow, matrixIndex + 1);
-    if (!isBlankRow(normalized)) rows.push(normalized);
-  }
-
-  return rows;
-};
 
 const downloadReportWorkbook = ({
   rows,
@@ -136,7 +50,6 @@ const downloadReportWorkbook = ({
     ["SUCCESS", Number(summary.success || 0)],
     ["CREATED", Number(summary.created || 0)],
     ["REPLACED", Number(summary.replaced || 0)],
-    ["INVALID", Number(summary.invalid || 0)],
     ["FAILED", Number(summary.failed || 0)],
     ["CHUNK SIZE", IMPORT_CHUNK_SIZE],
     ["CHUNKS COMPLETED", `${completedChunks}/${totalChunks || 0}`],
@@ -241,7 +154,6 @@ const TempSchoolMarksheets = () => {
       success: 0,
       created: 0,
       replaced: 0,
-      invalid: 0,
       failed: 0,
     };
 
@@ -263,7 +175,7 @@ const TempSchoolMarksheets = () => {
 
       const buffer = await file.arrayBuffer();
       const workbook = XLSX.read(buffer, { type: "array" });
-      const rows = validateWorkbook(workbook);
+      const rows = parseTempSchoolMarksheetWorkbook(workbook, XLSX);
 
       if (!rows.length) {
         setProcessing(false);
@@ -291,7 +203,7 @@ const TempSchoolMarksheets = () => {
         html: `
           <b>Total Rows: ${rows.length}</b><br/><br/>
           PDFs will be processed in chunks of ${IMPORT_CHUNK_SIZE}.<br/>
-          Existing files with the same REGISTER NUMBER - NAME will be replaced in Google Drive.<br/><br/>
+          Existing files with the same student NAME will be replaced in Google Drive. Blank names use unique filenames.<br/><br/>
           <b>Template:</b> ${templateInfo.courseCode} - ${templateInfo.courseName}<br/>
           <b>Type:</b> ${templateInfo.templateModule} / ${templateInfo.marksheetType} &nbsp; <b>Version:</b> ${templateInfo.version}<br/>
           <span style="font-size:12px;color:#666;">The uploaded Template-module PDF is used directly; text is overlaid as real selectable PDF text.</span><br/><br/>
@@ -335,8 +247,8 @@ const TempSchoolMarksheets = () => {
             html: `
               <div style="font-weight:bold;">Chunk ${i + 1} / ${totalChunks}</div>
               <div style="margin-top:8px;">Excel Rows ${firstExcelRow} - ${lastExcelRow}</div>
-              <div style="margin-top:8px;">Created: ${summary.created}, Replaced: ${summary.replaced}, Invalid: ${summary.invalid}, Failed: ${summary.failed}</div>
-              <div style="margin-top:8px; font-size:12px; color:#666;">Validation errors are recorded and processing continues.</div>
+              <div style="margin-top:8px;">Created: ${summary.created}, Replaced: ${summary.replaced}, Failed: ${summary.failed}</div>
+              <div style="margin-top:8px; font-size:12px; color:#666;">PDF or upload failures are recorded and processing continues.</div>
             `,
           });
         }
@@ -370,7 +282,6 @@ const TempSchoolMarksheets = () => {
         resultRows = resultRows.concat(response?.rows || []);
         summary.created += Number(response?.summary?.created || 0);
         summary.replaced += Number(response?.summary?.replaced || 0);
-        summary.invalid += Number(response?.summary?.invalid || 0);
         summary.failed += Number(response?.summary?.failed || 0);
         summary.success += Number(response?.summary?.success || 0);
 
@@ -391,10 +302,10 @@ const TempSchoolMarksheets = () => {
       await Swal.fire({
         title: "Completed!",
         html: `
-          <b>Success: ${summary.success}, Created: ${summary.created}, Replaced: ${summary.replaced}, Invalid: ${summary.invalid}, Failed: ${summary.failed}, Total: ${totalRows}</b><br/><br/>
+          <b>Success: ${summary.success}, Created: ${summary.created}, Replaced: ${summary.replaced}, Failed: ${summary.failed}, Total: ${totalRows}</b><br/><br/>
           Final report downloaded:<br/>${reportName}
         `,
-        icon: summary.failed || summary.invalid ? "warning" : "success",
+        icon: summary.failed ? "warning" : "success",
         showConfirmButton: true,
         background: "url(/bg_card.png)",
       });
@@ -464,10 +375,12 @@ const TempSchoolMarksheets = () => {
               The PDF artwork is loaded from Templates: SE-02 - 7TH STANDARD / Normal Marksheet.
             </p>
             <p className="mt-2">
-              All printable text is converted to CAPITAL LETTERS. Total Subjects,
-              Total Marks and Percentage are calculated automatically. Existing Google
-              Drive files with the same name are replaced. The original uploaded PDF page is
-              preserved and data is overlaid as real selectable/searchable PDF text (not an image).
+              Excel values are printed in CAPITAL LETTERS. Blank cells stay blank.
+              Each subject keeps its original position; marks can contain numbers or letters.
+              Total Subjects, Total Marks and Percentage print from the optional
+              totalSubjects, totalMarks and percentage columns. They stay blank when omitted.
+              Existing Google Drive files with the same student name are replaced;
+              blank names use unique filenames.
             </p>
             <p className="mt-2 font-medium text-slate-800">
               Google Drive: UNIS/Marksheets/Temp-School
