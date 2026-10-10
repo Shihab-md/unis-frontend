@@ -7,6 +7,7 @@ import GoToTopButton from "./utils/GoToTopButton";
 import PrivateRoutes from "./utils/PrivateRoutes";
 import AdminSummary from "./components/dashboard/AdminSummary";
 import Masters from "./components/dashboard/Masters";
+import DatabaseBackup from "./components/databaseBackup/DatabaseBackup";
 import ChangePassword from "./components/dashboard/ChangePassword";
 import ResetPassword from "./components/dashboard/ResetPassword";
 import ProfilePage from "./components/dashboard/ProfilePage";
@@ -182,6 +183,7 @@ function App() {
           <Route path="/dashboard/grades/edit/:id" element={<GradeEdit />}></Route>
 
           <Route path="/dashboard/masters" element={<Masters />}></Route>
+          <Route path="/dashboard/database-backup" element={<DatabaseBackup />} />
           <Route path="/dashboard/profile" element={<ProfilePage />}></Route>
           <Route path="/dashboard/notifications" element={<NotificationsPage />}></Route>
           <Route path="/dashboard/help-desk" element={<HelpDeskPage />}></Route>

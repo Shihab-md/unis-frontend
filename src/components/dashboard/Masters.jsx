@@ -7,7 +7,7 @@ import { PERMISSIONS } from '../../auth/permissions'
 import { normalizeRole } from '../../auth/roles'
 import { getBaseUrl, handleRightClickAndFullScreen, getSpinner, LinkIcon, showSwalAlert, isHqAdminSession } from '../../utils/CommonHelper'
 import {
-  FaUniversity, FaWpforms, FaClipboardList, FaCalendarAlt, FaUserCog, FaMapMarkerAlt, FaGoogleDrive, FaRedo, FaCentos, FaMedal, FaFileExcel, FaUserShield
+  FaDatabase, FaUniversity, FaWpforms, FaClipboardList, FaCalendarAlt, FaUserCog, FaMapMarkerAlt, FaGoogleDrive, FaRedo, FaCentos, FaMedal, FaFileExcel, FaUserShield
 } from "react-icons/fa";
 import axios from 'axios'
 import { useNavigate } from "react-router-dom";
@@ -123,6 +123,11 @@ const Masters = () => {
               number="*"
               color="bg-slate-700"
             />
+          </Link> : null}
+
+        {normalizeRole(user?.role) === "superadmin" ?
+          <Link to="/dashboard/database-backup">
+            <SummaryCard icon={<FaDatabase />} text="Database Backup" number="*" color="bg-teal-700" />
           </Link> : null}
 
         {user.role === "superadmin" ?
