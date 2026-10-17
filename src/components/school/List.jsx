@@ -171,6 +171,8 @@ const List = () => {
     }
   };
 
+  const onSchoolDelete = () => getFilteredSchools();
+
   const getFilteredSchools = async () => {
     setFiltering(true)
     try {
@@ -208,7 +210,7 @@ const List = () => {
           studentCountsByCourse: sch.studentCountsByCourse && sch.studentCountsByCourse?.length > 0 ? sch.studentCountsByCourse : [],
           employeeCount: sch.employeeCount ? sch.employeeCount : 0,
           employeeCountsByRole: sch.employeeCountsByRole && sch.employeeCountsByRole?.length > 0 ? sch.employeeCountsByRole : [],
-          action: (<SchoolButtons Id={sch._id} />),
+          action: (<SchoolButtons Id={sch._id} onSchoolDelete={onSchoolDelete} />),
         }));
         setSchools(data);
         setFilteredSchools(data)
@@ -258,16 +260,6 @@ const List = () => {
 
   const getSchools = async () => {
 
-    const onSchoolDelete = () => {
-      const data = localStorage.getItem('schools');
-      if (data) {
-        console.log("333")
-        getFilteredSchools();
-      } else {
-        console.log("444")
-        getSchools();
-      }
-    }
 
     const data = localStorage.getItem('schools');
     //console.log("Existing Data - " + JSON.parse(data))

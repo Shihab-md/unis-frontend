@@ -14,7 +14,7 @@ import {
   FaEdit,
   FaTrashAlt,
 } from "react-icons/fa";
-import { UiText } from '../i18n/LanguageContext';
+import { UiText, useLanguage } from '../i18n/LanguageContext';
 
 const toNumber = (value) => {
   const numberValue = Number(value);
@@ -384,11 +384,12 @@ export const getSchoolsFromCache = async (id) => {
 };
 
 export const SchoolButtons = ({ Id, onSchoolDelete }) => {
+  const { tr } = useLanguage();
   const navigate = useNavigate();
 
   const handleDelete = async (id) => {
     const result = await showConfirmationSwalAlert(
-      'Are you sure to Delete?',
+      tr("Deactivate this Niswan?"),
       '',
       'question'
     );
@@ -405,7 +406,7 @@ export const SchoolButtons = ({ Id, onSchoolDelete }) => {
         );
 
         if (responnse.data.success) {
-          showSwalAlert("Success!", "Successfully Deleted!", "success");
+          showSwalAlert("Success!", tr("Niswan deactivated successfully."), "success");
 
           if (typeof onSchoolDelete === "function") {
             onSchoolDelete();
@@ -451,11 +452,11 @@ export const SchoolButtons = ({ Id, onSchoolDelete }) => {
         <div className="flex space-x-3">
           <button
             className={getButtonStyle('Delete')}
-            title={getButtonTooltip("Delete")}
-            aria-label={getButtonTooltip("Delete")}
+            title={tr("Deactivate Niswan")}
+            aria-label={tr("Deactivate Niswan")}
             onClick={() => handleDelete(Id)}
           >
-            <FaTrashAlt title={getButtonTooltip("Delete")} aria-label={getButtonTooltip("Delete")} className="m-1" />
+            <FaTrashAlt title={tr("Deactivate Niswan")} aria-label={tr("Deactivate Niswan")} className="m-1" />
           </button>
         </div>
       ) : null}

@@ -1021,6 +1021,7 @@ export const getStudentsBySchoolAndCourse = async (schoolId, templateId) => {
 
 export const StudentButtons = ({ Id, onStudentDelete, student = {} }) => {
   const navigate = useNavigate();
+  const { tr } = useLanguage();
 
   const handleDelete = async (id) => {
 
@@ -1090,6 +1091,10 @@ export const StudentButtons = ({ Id, onStudentDelete, student = {} }) => {
           <FaEdit title={editTooltip} aria-label={editTooltip} className="m-1" />
         </button>
       ) : null}
+      {can(PERMISSIONS.STUDENT_COURSE_CHANGE) ? <button type="button" disabled={completedForAction}
+        className={`${getButtonStyle('Edit')}${disabledActionClass(completedForAction)}`}
+        title={tr("Change Student Course")} aria-label={tr("Change Student Course")}
+        onClick={() => navigate(`/dashboard/students/course-change/${Id}`)}>{tr("Course")}</button> : null}
       {can(PERMISSIONS.STUDENT_DELETE) ? (
         <button
           className={getButtonStyle('Delete')}

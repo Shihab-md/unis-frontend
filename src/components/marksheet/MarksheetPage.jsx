@@ -1,4 +1,5 @@
-import React, { useEffect, useMemo, useState } from "react";
+import { useLanguage } from "../../i18n/LanguageContext";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import { FaArrowAltCircleLeft, FaCommentDots, FaDownload, FaEdit, FaPrint, FaSave, FaSearch } from "react-icons/fa";
@@ -182,6 +183,9 @@ const downloadBlobResponse = (response, fallbackFileName = "marksheet.pdf") => {
 };
 
 const MarksheetPage = () => {
+  const { tr } = useLanguage();
+  const consolidatedRequest = useRef(0);
+  useEffect(() => () => { consolidatedRequest.current += 1; }, []);
   useEffect(() => {
     handleRightClickAndFullScreen();
   }, []);
@@ -211,6 +215,9 @@ const MarksheetPage = () => {
   const [exams, setExams] = useState([]);
   const [viewData, setViewData] = useState(null);
   const [consolidatedCourseId, setConsolidatedCourseId] = useState("");
+  const [consolidatedSchools, setConsolidatedSchools] = useState([]);
+  const [consolidatedSchoolId, setConsolidatedSchoolId] = useState("");
+  const [consolidatedLoading, setConsolidatedLoading] = useState(false);
   const [consolidatedStudents, setConsolidatedStudents] = useState([]);
   const [consolidatedStudentId, setConsolidatedStudentId] = useState("");
   const [consolidatedData, setConsolidatedData] = useState(null);
@@ -260,7 +267,9 @@ const MarksheetPage = () => {
         setCourses(loadedCourses);
         setGradeRules(Array.isArray(data.gradeRules) ? data.gradeRules : []);
         const defaultCourseId = loadedCourses[0]?._id ? String(loadedCourses[0]._id) : "";
-        setConsolidatedCourseId(defaultCourseId);
+        const historySchools = Array.isArray(data.consolidatedSchools) ? data.consolidatedSchools : loadedSchools;
+        setConsolidatedSchools(historySchools);
+        setConsolidatedSchoolId(historySchools.length === 1 ? String(historySchools[0]._id) : "");
         setFilters((prev) => ({
           ...prev,
           schoolId: loadedSchools.length === 1 ? String(loadedSchools[0]._id) : prev.schoolId,
@@ -296,6 +305,7 @@ const MarksheetPage = () => {
   };
 
   const handleConsolidatedCourseChange = (event) => {
+    consolidatedRequest.current += 1;
     setConsolidatedCourseId(event.target.value);
     setConsolidatedStudents([]);
     setConsolidatedStudentId("");
@@ -518,38 +528,22 @@ const MarksheetPage = () => {
     loadExams();
   }, [activeTab, filters.schoolId, filters.acYear, filters.courseId, filters.studyingYear, filters.examType]);
 
-  const loadConsolidatedStudents = async (courseId = consolidatedCourseId) => {
-    if (!courseId) {
-      setConsolidatedStudents([]);
-      setConsolidatedStudentId("");
-      return;
-    }
-
-    try {
-      setProcessing(true);
-      const data = await fetchConsolidatedStudents({ courseId });
-      const loadedStudents = Array.isArray(data.students) ? data.students : [];
-      setConsolidatedStudents(loadedStudents);
-      setConsolidatedStudentId((current) =>
-        loadedStudents.some((student) => String(student.studentId) === String(current)) ? current : ""
-      );
-    } catch (error) {
-      setConsolidatedStudents([]);
-      setConsolidatedStudentId("");
-      showSwalAlert(
-        "Error!",
-        error?.response?.data?.error || error.message || "Load completed students failed.",
-        "error"
-      );
-    } finally {
-      setProcessing(false);
-    }
-  };
-
   useEffect(() => {
-    if (activeTab !== "consolidated" || !access?.canConsolidated) return;
-    loadConsolidatedStudents(consolidatedCourseId);
-  }, [activeTab, consolidatedCourseId, access?.canConsolidated]);
+    const controller = new AbortController();
+    if (activeTab !== "consolidated" || !access?.canConsolidated || !consolidatedSchoolId || !consolidatedCourseId) {
+      setConsolidatedStudents([]); setConsolidatedStudentId(""); setConsolidatedLoading(false); return () => controller.abort();
+    }
+    setConsolidatedLoading(true); setConsolidatedStudents([]); setConsolidatedStudentId(""); setConsolidatedData(null);
+    (async () => {
+      try {
+        const data = await fetchConsolidatedStudents({ schoolId: consolidatedSchoolId, courseId: consolidatedCourseId }, { signal: controller.signal });
+        if (!controller.signal.aborted) setConsolidatedStudents(Array.isArray(data.students) ? data.students : []);
+      } catch (error) {
+        if (!controller.signal.aborted) showSwalAlert("Error!", error?.response?.data?.error || error.message || "Load completed students failed.", "error");
+      } finally { if (!controller.signal.aborted) setConsolidatedLoading(false); }
+    })();
+    return () => controller.abort();
+  }, [activeTab, consolidatedSchoolId, consolidatedCourseId, access?.canConsolidated]);
 
   const viewExam = async (examId) => {
     try {
@@ -667,15 +661,16 @@ const MarksheetPage = () => {
   };
 
   const downloadConsolidatedPdf = async () => {
-    if (!consolidatedStudentId || !consolidatedCourseId) {
+    if (!consolidatedSchoolId || !consolidatedStudentId || !consolidatedCourseId) {
       showSwalAlert("Info!", "Please select completed student and course.", "info");
       return;
     }
 
+    const sequence = ++consolidatedRequest.current;
     try {
       setProcessing(true);
-      const data = await printConsolidatedMarksheetPdf({ studentId: consolidatedStudentId, courseId: consolidatedCourseId });
-      downloadPdfResponse(data, "consolidated_marksheet.pdf");
+      const data = await printConsolidatedMarksheetPdf({ schoolId: consolidatedSchoolId, studentId: consolidatedStudentId, courseId: consolidatedCourseId });
+      if (sequence === consolidatedRequest.current) downloadPdfResponse(data, "consolidated_marksheet.pdf");
     } catch (error) {
       showSwalAlert("Error!", error?.response?.data?.error || error.message || "Download consolidated PDF failed.", "error");
     } finally {
@@ -684,14 +679,16 @@ const MarksheetPage = () => {
   };
 
   const loadConsolidated = async () => {
-    if (!consolidatedStudentId || !consolidatedCourseId) {
+    if (!consolidatedSchoolId || !consolidatedStudentId || !consolidatedCourseId) {
       showSwalAlert("Info!", "Please select completed student and course.", "info");
       return;
     }
 
+    const sequence = ++consolidatedRequest.current;
     try {
       setProcessing(true);
-      const data = await fetchConsolidatedMarksheet({ studentId: consolidatedStudentId, courseId: consolidatedCourseId });
+      const data = await fetchConsolidatedMarksheet({ schoolId: consolidatedSchoolId, studentId: consolidatedStudentId, courseId: consolidatedCourseId });
+      if (sequence !== consolidatedRequest.current) return;
       setConsolidatedData(data);
       setActiveTab("consolidated");
     } catch (error) {
@@ -1112,18 +1109,27 @@ const MarksheetPage = () => {
 
       {activeTab === "consolidated" && access?.canConsolidated ? (
         <div className="rounded-md border bg-white p-3 shadow-lg">
-          <div className="print:hidden mb-4 grid grid-cols-1 md:grid-cols-3 gap-3">
+          <div className="print:hidden mb-4 grid grid-cols-1 md:grid-cols-4 gap-3">
             <div>
-              <label className="block text-xs font-semibold text-slate-500">Course</label>
-              <select value={consolidatedCourseId} onChange={handleConsolidatedCourseChange} className="mt-1 w-full rounded border p-2 text-xs">
-                <option value="">Select Course</option>
+              <label htmlFor="consolidated-niswan" className="block text-xs font-semibold text-slate-500">{tr("Niswan")}</label>
+              <select id="consolidated-niswan" value={consolidatedSchoolId} onChange={(e) => {
+                consolidatedRequest.current += 1; setConsolidatedSchoolId(e.target.value); setConsolidatedStudents([]); setConsolidatedStudentId(""); setConsolidatedData(null);
+              }} className="mt-1 w-full rounded border p-2 text-xs">
+                <option value="">{tr("Select Niswan")}</option>
+                {consolidatedSchools.map((school) => <option key={school._id} value={school._id}>{school.code} - {school.nameEnglish}{school.active !== "Active" ? ` (${tr("In-Active")})` : ""}</option>)}
+              </select>
+            </div>
+            <div>
+              <label htmlFor="consolidated-course" className="block text-xs font-semibold text-slate-500">{tr("Course")}</label>
+              <select id="consolidated-course" disabled={!consolidatedSchoolId} value={consolidatedCourseId} onChange={handleConsolidatedCourseChange} className="mt-1 w-full rounded border p-2 text-xs">
+                <option value="">{tr("Select Course")}</option>
                 {safeCourses.map((course) => <option key={course._id} value={course._id}>{course.code} - {course.name}</option>)}
               </select>
             </div>
             <div>
-              <label className="block text-xs font-semibold text-slate-500">Completed Student</label>
-              <select value={consolidatedStudentId} onChange={(e) => setConsolidatedStudentId(e.target.value)} className="mt-1 w-full rounded border p-2 text-xs">
-                <option value="">Select Student</option>
+              <label htmlFor="consolidated-student" className="block text-xs font-semibold text-slate-500">{tr("Completed Student")}</label>
+              <select id="consolidated-student" disabled={!consolidatedSchoolId || !consolidatedCourseId || consolidatedLoading} value={consolidatedStudentId} onChange={(e) => { consolidatedRequest.current += 1; setConsolidatedStudentId(e.target.value); setConsolidatedData(null); }} className="mt-1 w-full rounded border p-2 text-xs">
+                <option value="">{tr("Select Student")}</option>
                 {safeConsolidatedStudents.map((student) => (
                   <option key={student.studentId} value={student.studentId}>
                     {student.rollNumber} - {student.name}{student.schoolCode ? ` (${student.schoolCode})` : ""}
@@ -1131,14 +1137,15 @@ const MarksheetPage = () => {
                 ))}
               </select>
               <p className="mt-1 text-[11px] text-slate-500">
-                {consolidatedCourseId && safeConsolidatedStudents.length === 0
-                  ? "No completed students found for the selected course."
-                  : "Completed students are loaded automatically from the selected course across Niswans."}
+                {tr(consolidatedLoading ? "Loading..." : !consolidatedSchoolId || !consolidatedCourseId
+                  ? "Select Niswan and Course to load completed students."
+                  : safeConsolidatedStudents.length === 0 ? "No completed students found for the selected Niswan and Course."
+                  : "Select a completed student from this Niswan and Course.")}
               </p>
             </div>
             <div className="flex items-end gap-2">
-              <button type="button" onClick={loadConsolidated} className="w-full rounded bg-indigo-600 px-3 py-2 text-xs font-bold text-white shadow hover:bg-indigo-700" title="Load consolidated marksheet" aria-label="Load consolidated marksheet">Load Consolidated</button>
-              <button type="button" onClick={downloadConsolidatedPdf} className="w-full rounded bg-emerald-600 px-3 py-2 text-xs font-bold text-white shadow hover:bg-emerald-700" title="Download consolidated PDF" aria-label="Download consolidated PDF">PDF</button>
+              <button type="button" disabled={!consolidatedSchoolId || !consolidatedCourseId || !consolidatedStudentId || consolidatedLoading} onClick={loadConsolidated} className="w-full rounded bg-indigo-600 px-3 py-2 text-xs font-bold text-white shadow hover:bg-indigo-700" title="Load consolidated marksheet" aria-label="Load consolidated marksheet">Load Consolidated</button>
+              <button type="button" disabled={!consolidatedSchoolId || !consolidatedCourseId || !consolidatedStudentId || consolidatedLoading} onClick={downloadConsolidatedPdf} className="w-full rounded bg-emerald-600 px-3 py-2 text-xs font-bold text-white shadow hover:bg-emerald-700" title="Download consolidated PDF" aria-label="Download consolidated PDF">PDF</button>
             </div>
           </div>
           {consolidatedData ? <ConsolidatedMarksheetView data={consolidatedData} /> : <p className="text-center text-sm text-slate-500">Select completed student and load consolidated marksheet.</p>}

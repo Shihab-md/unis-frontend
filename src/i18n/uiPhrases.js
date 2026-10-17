@@ -1,3 +1,4 @@
+import { STUDENT_SCHOOL_PHRASES } from "./studentSchoolTranslations.js";
 import { EXAM_QUESTION_PHRASES } from "./examQuestionTranslations.js";
 import { SERVICES_PHRASES } from "./attendanceServicesTranslations.js";
 import { TA_PHRASES } from "./travelAllowanceTranslations.js";
@@ -3691,7 +3692,7 @@ export const translateUiPhrase = (value, language = getCurrentUiLanguage(), para
     return output;
   };
 
-  if (!text || normalizeLanguage(language) === "en") return applyParams(text);
+  if (!text || normalizeLanguage(language) === "en") return applyParams(STUDENT_SCHOOL_PHRASES[text]?.en || text);
 
   const lang = normalizeLanguage(language);
   const exact = PHRASES[lang]?.[text];
@@ -3865,4 +3866,9 @@ for (const [key, values] of Object.entries(SERVICES_PHRASES)) {
 // Question-paper form notices use the application language switch.
 for (const [key, values] of Object.entries(EXAM_QUESTION_PHRASES)) {
   for (const language of ["ta", "ur", "ar", "ml", "kn", "te"]) PHRASES[language][key] = values[language];
+}
+
+for (const [key, values] of Object.entries(STUDENT_SCHOOL_PHRASES)) for (const language of ["ta", "ur", "ar", "ml", "kn", "te"]) {
+  PHRASES[language][key] = values[language];
+  if (key.startsWith("SC_")) PHRASES[language][values.en] = values[language];
 }

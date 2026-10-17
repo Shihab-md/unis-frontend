@@ -34,6 +34,7 @@ import StudentList from "./components/student/List";
 import StudentAdd from "./components/student/Add";
 import StudentView from "./components/student/View";
 import StudentEdit from "./components/student/Edit";
+import StudentCourseChange from "./components/student/CourseChange";
 import StudentPromote from "./components/student/Promote";
 import StudentBulkPromote from "./components/student/BulkPromote";
 
@@ -140,6 +141,7 @@ function App() {
           <Route path="/dashboard/students" element={<StudentList />}></Route>
           <Route path="/dashboard/add-student" element={<StudentAdd />}></Route>
           <Route path="/dashboard/students/:id" element={<StudentView />}></Route>
+          <Route path="/dashboard/students/course-change/:id" element={<StudentCourseChange />}></Route>
           <Route path="/dashboard/students/edit/:id" element={<StudentEdit />}></Route>
           <Route path="/dashboard/students/promote/:id" element={<StudentPromote />}></Route>
           <Route path="/dashboard/students/bulkpromote" element={<StudentBulkPromote />}></Route>
