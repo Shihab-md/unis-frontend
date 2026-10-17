@@ -1,3 +1,4 @@
+import { SERVICES_PHRASES } from "./attendanceServicesTranslations.js";
 import { TA_PHRASES } from "./travelAllowanceTranslations.js";
 const PHRASES = {
   ta: {
@@ -3849,5 +3850,13 @@ for (const [key, values] of Object.entries(TA_PHRASES)) {
     PHRASES[lang] ||= {};
     PHRASES[lang][key] = values[lang];
     if (key.startsWith("TA_")) PHRASES[lang][values.en] = values[lang];
+  }
+}
+
+// Attendance & Services and leave workflow share the existing language switch.
+for (const [key, values] of Object.entries(SERVICES_PHRASES)) {
+  for (const lang of ["ta", "ur", "ar", "ml", "kn", "te"]) {
+    PHRASES[lang][key] = values[lang];
+    PHRASES[lang][values.en] = values[lang];
   }
 }

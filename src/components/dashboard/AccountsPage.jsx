@@ -22,7 +22,11 @@ const AccountsPage = () => {
   const { user, can } = useAuth()
 
   const role = String(user?.role || "").toLowerCase();
-  const canOpenAccounts = can(PERMISSIONS.ACCOUNTS_VIEW);
+  const canAccounts = can(PERMISSIONS.ACCOUNTS_VIEW);
+  const financeRole = ["superadmin", "hqadmin", "accountant"].includes(role);
+  const canPayroll = financeRole && can(PERMISSIONS.PAYROLL_VIEW);
+  const canTaReview = financeRole && can(PERMISSIONS.TA_REVIEW_VIEW);
+  const canOpenAccounts = canAccounts || canPayroll || canTaReview;
   const isHqAccounts = isHqAccountsRole(role);
 
   if (!canOpenAccounts) {
@@ -41,7 +45,7 @@ const AccountsPage = () => {
       <CommonHeader userName={user?.name || ""} title="Accounts" />
       <div className="content-center rounded-lg grid grid-cols-1 md:grid-cols-4 lg:grid-cols-4 gap-10 lg:gap-14 mt-7 lg:mt-16 flex rounded-lg">
 
-        {can(PERMISSIONS.ACCOUNTS_SCHOOL_INVOICES_VIEW) ?
+        {canAccounts && can(PERMISSIONS.ACCOUNTS_SCHOOL_INVOICES_VIEW) ?
           <Link to="/dashboard/fees" >
             <SummaryCard
               icon={<FaRegMoneyBillAlt />}
@@ -51,7 +55,7 @@ const AccountsPage = () => {
             />
           </Link> : null}
 
-        {can(PERMISSIONS.ACCOUNTS_HQ_REVIEW_VIEW) ?
+        {canAccounts && can(PERMISSIONS.ACCOUNTS_HQ_REVIEW_VIEW) ?
           <Link to="/dashboard/hq/fees" >
             <SummaryCard
               icon={<FaCheck />}
@@ -61,7 +65,7 @@ const AccountsPage = () => {
             />
           </Link> : null}
 
-        {can(PERMISSIONS.ACCOUNTS_BATCH_HISTORY_VIEW) ?
+        {canAccounts && can(PERMISSIONS.ACCOUNTS_BATCH_HISTORY_VIEW) ?
           <Link to="/dashboard/fees/sent-to-hq" >
             <SummaryCard
               icon={<FaRegListAlt />}
@@ -71,7 +75,7 @@ const AccountsPage = () => {
             />
           </Link> : null}
 
-        {can(PERMISSIONS.ACCOUNTS_HQ_PENDING_INVOICES_VIEW) ?
+        {canAccounts && can(PERMISSIONS.ACCOUNTS_HQ_PENDING_INVOICES_VIEW) ?
           <Link to="/dashboard/hq/pending-invoices" >
             <SummaryCard
               icon={<FaRegClock />}
@@ -81,14 +85,18 @@ const AccountsPage = () => {
             />
           </Link> : null}
 
-        {can(PERMISSIONS.PAYROLL_VIEW) ?
-          <Link to="/dashboard/attendance?tab=payroll" >
+        {canPayroll ?
+          <Link to="/dashboard/accounts/payroll" >
             <SummaryCard
               icon={<FaCalculator />}
               text="Payroll"
               number="*"
               color="bg-cyan-500"
             />
+          </Link> : null}
+        {canTaReview ?
+          <Link to="/dashboard/accounts/ta-approvals">
+            <SummaryCard icon={<FaCheck />} text="TA Approvals" number="*" color="bg-indigo-500" />
           </Link> : null}
         {/*
         {(role === "superadmin" || role === "hquser") && can(PERMISSIONS.ACCOUNTS_HQ_MIGRATION_RUN) ?

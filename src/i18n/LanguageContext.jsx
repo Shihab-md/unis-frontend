@@ -43,7 +43,7 @@ const translations = {
       employees: "Employees",
       students: "Students",
       inspection: "Inspection",
-      attendance: "Attendance",
+      attendance: "Attendance & Services",
       leaves: "Leaves",
       exams: "Exams",
       certificates: "Certificates",

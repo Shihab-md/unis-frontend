@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { attendanceGet, attendancePatch, attendancePost } from "../../api/attendanceApi";
 import { useLanguage } from "../../i18n/LanguageContext";
 import { useAuth } from "../../context/AuthContext";
@@ -32,6 +32,8 @@ const StaffLeaveSection = ({ meta, staffScopeType, selectedSchoolId }) => {
   const [loadingMine, setLoadingMine] = useState(false);
   const [loadingApprovals, setLoadingApprovals] = useState(false);
   const [saving, setSaving] = useState(false);
+  const [changing, setChanging] = useState(false);
+  const changingRef = useRef(false), applyingRef = useRef(false);
 
   const hasOwnStaffScope = Boolean(access.canApplyOwnStaffLeave);
   const hasApprovalScope =
@@ -88,6 +90,7 @@ const StaffLeaveSection = ({ meta, staffScopeType, selectedSchoolId }) => {
   }, [access.isSuperAdmin, canApprove, selectedSchoolId, staffScopeType]);
 
   const applyLeave = async () => {
+    if (applyingRef.current) return;
     if (!canApplyOwn) {
       showSwalAlert("Error!", "You do not have permission to apply for staff leave.", "error");
       return;
@@ -100,7 +103,7 @@ const StaffLeaveSection = ({ meta, staffScopeType, selectedSchoolId }) => {
       showSwalAlert("Info!", "For Half Day leave, From Date and To Date must be the same.", "info");
       return;
     }
-    setSaving(true);
+    applyingRef.current = true; setSaving(true);
     try {
       const response = await attendancePost("staff-leaves/mine", {
         leaveType,
@@ -116,33 +119,30 @@ const StaffLeaveSection = ({ meta, staffScopeType, selectedSchoolId }) => {
     } catch (error) {
       showSwalAlert("Error!", getApiError(error), "error");
     } finally {
-      setSaving(false);
+      applyingRef.current = false; setSaving(false);
     }
   };
 
-  const changeLeaveStatus = async (leaveId, status, isPaid) => {
-    const result = await showConfirmationSwalAlert(
-      `${status} Leave?`,
-      status === "Approved"
-        ? isPaid
-          ? "This leave will be treated as paid leave."
-          : "This leave will be treated as unpaid leave and can affect payroll."
-        : "",
-      "question"
-    );
-    if (!result.isConfirmed) return;
-
+  const changeLeaveStatus = async (leave, status, isPaid) => {
+    if (changingRef.current) return;
+    changingRef.current = true; setChanging(true);
     try {
-      const response = await attendancePatch(`staff-leaves/${leaveId}/status`, {
-        status,
-        isPaid,
+      const result = await showConfirmationSwalAlert(
+        `${status} Leave?`,
+        status === "Approved" ? isPaid ? "This leave will be treated as paid leave." : "This leave will be treated as unpaid leave and can affect payroll." : "",
+        "question"
+      );
+      if (!result.isConfirmed) return;
+      const response = await attendancePatch(`staff-leaves/${leave._id}/status`, {
+        status, isPaid, revision: Number(leave.revision || 0),
       });
       showSwalAlert("Success!", response.data.message, "success");
-      await loadApprovals();
-      await loadMine();
+      await loadApprovals(); await loadMine();
     } catch (error) {
       showSwalAlert("Error!", getApiError(error), "error");
-    }
+      // A timeout can occur after commit; refresh instead of retrying a write.
+      await loadApprovals(); await loadMine();
+    } finally { changingRef.current = false; setChanging(false); }
   };
 
   return (
@@ -244,7 +244,7 @@ const StaffLeaveSection = ({ meta, staffScopeType, selectedSchoolId }) => {
                         <td className="px-2 py-2">{leave.reason}</td>
                         <td className="px-2 py-2">
                           {canApplyOwn && (leave.status === "Pending" || leave.status === "Approved") ? (
-                            <SecondaryButton onClick={() => changeLeaveStatus(leave._id, "Cancelled", leave.isPaid)}>
+                            <SecondaryButton disabled={changing} onClick={() => changeLeaveStatus(leave, "Cancelled", leave.isPaid)}>
                               {tr("Cancel")}
                             </SecondaryButton>
                           ) : "-"}
@@ -289,15 +289,16 @@ const StaffLeaveSection = ({ meta, staffScopeType, selectedSchoolId }) => {
                       <td className="px-2 py-2">{leave.reason}</td>
                       <td className="px-2 py-2">
                         <div className="flex flex-wrap gap-1.5">
-                          <PrimaryButton onClick={() => changeLeaveStatus(leave._id, "Approved", true)}>
+                          <PrimaryButton disabled={changing} onClick={() => changeLeaveStatus(leave, "Approved", true)}>
                             {tr("Approve Paid")}
                           </PrimaryButton>
-                          <SecondaryButton onClick={() => changeLeaveStatus(leave._id, "Approved", false)}>
+                          <SecondaryButton disabled={changing} onClick={() => changeLeaveStatus(leave, "Approved", false)}>
                             {tr("Approve Unpaid")}
                           </SecondaryButton>
                           <button
                             type="button"
-                            onClick={() => changeLeaveStatus(leave._id, "Rejected", leave.isPaid)}
+                            disabled={changing}
+                            onClick={() => changeLeaveStatus(leave, "Rejected", leave.isPaid)}
                             className="rounded-md bg-rose-600 px-2.5 py-2 text-[11px] font-semibold text-white hover:bg-rose-700"
                           >
                             {tr("Reject")}

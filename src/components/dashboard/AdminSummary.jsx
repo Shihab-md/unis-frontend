@@ -35,7 +35,7 @@ const AdminSummary = () => {
   const canOpenExams = canViewExamQuestions || canViewMarksheet;
   const canViewInspections = can(PERMISSIONS.INSPECTION_VIEW);
   const canViewCertificates = can(PERMISSIONS.CERTIFICATE_VIEW);
-  const canOpenAccounts = can(PERMISSIONS.ACCOUNTS_VIEW);
+  const canOpenAccounts = can(PERMISSIONS.ACCOUNTS_VIEW) || (["superadmin", "hqadmin", "accountant"].includes(userRole) && canAny([PERMISSIONS.PAYROLL_VIEW, PERMISSIONS.TA_REVIEW_VIEW]));
   const canViewReports = can(PERMISSIONS.REPORTS_VIEW);
   const canViewHelpDesk = can(PERMISSIONS.HELP_DESK_VIEW);
   const isHqAdmin = isHqAdminSession(user?.role, user?.organizationType);
@@ -69,9 +69,8 @@ const AdminSummary = () => {
       PERMISSIONS.STAFF_LEAVE_APPROVE,
       PERMISSIONS.STUDENT_ATTENDANCE_REPORT_VIEW,
       PERMISSIONS.STAFF_ATTENDANCE_REPORT_VIEW,
-      PERMISSIONS.PAYROLL_VIEW,
       PERMISSIONS.PAYSLIP_SELF_VIEW,
-      PERMISSIONS.TA_SELF_VIEW, PERMISSIONS.TA_REVIEW_VIEW,
+      PERMISSIONS.TA_SELF_VIEW,
     ]);
 
   useEffect(() => {
@@ -162,7 +161,7 @@ const AdminSummary = () => {
           <Link to="/dashboard/attendance" >
             <SummaryCard
               icon={<FaTasks />}
-              text={t("dashboard.attendance")}
+              text={tr("Attendance & Services")}
               number="*"
               color="bg-purple-700"
             />

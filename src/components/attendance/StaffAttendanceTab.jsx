@@ -379,6 +379,7 @@ const StaffAttendanceTab = ({
         </div>
       ) : null}
 
+      {rows.some((row) => row.requiresReview) && <p role="alert" className="rounded border border-amber-300 bg-amber-50 p-3 text-sm text-amber-900">{tr("Attendance needs review after leave cancellation. Re-mark the affected staff before generating payroll.")}</p>}
       <AttendancePanel title="Daily Staff Attendance Sheet">
         {loading ? <LoadingBlock /> : null}
         {!loading && loaded && !rows.length ? <EmptyBlock text="No active staff found in this Attendance scope" /> : null}

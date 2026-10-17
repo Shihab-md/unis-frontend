@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { attendanceGet, attendancePatch, attendancePost } from "../../api/attendanceApi";
 import { useAuth } from "../../context/AuthContext";
 import { PERMISSIONS } from "../../auth/permissions";
@@ -24,7 +24,10 @@ const PayrollTab = ({ meta }) => {
   const { tr } = useLanguage();
   const { can } = useAuth();
   const access = meta.access;
+  const loadSequence = useRef(0);
   const [monthKey, setMonthKey] = useState(currentMonthKey());
+  const selectedMonth = useRef(monthKey);
+  selectedMonth.current = monthKey;
   const [workingDays, setWorkingDays] = useState(26);
   const [run, setRun] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -45,6 +48,7 @@ const PayrollTab = ({ meta }) => {
   const canQuery = Boolean(monthKey) && access.canManagePayrollGlobally;
 
   const loadRun = async () => {
+    const sequence = ++loadSequence.current;
     if (!canQuery) {
       setRun(null);
       return;
@@ -53,10 +57,10 @@ const PayrollTab = ({ meta }) => {
     try {
       const response = await attendanceGet("payroll", {
         month: monthKey,
-        expectedRevision: run?.monthKey === monthKey ? Number(run?.revision || 0) : 0,
         scopeType: effectiveScopeType,
         schoolId: effectiveSchoolId,
       });
+      if (sequence !== loadSequence.current) return;
       const loadedRun = response.data.run || null;
       setRun(loadedRun);
       if (loadedRun?.workingDays) setWorkingDays(loadedRun.workingDays);
@@ -64,14 +68,15 @@ const PayrollTab = ({ meta }) => {
       setPaymentMethod(loadedRun?.paymentMethod || "Bank Transfer");
       setPaymentReference(loadedRun?.paymentReference || "");
     } catch (error) {
-      showSwalAlert("Error!", getApiError(error), "error");
+      if (sequence === loadSequence.current) showSwalAlert("Error!", getApiError(error), "error");
     } finally {
-      setLoading(false);
+      if (sequence === loadSequence.current) setLoading(false);
     }
   };
 
   useEffect(() => {
     loadRun();
+    return () => { loadSequence.current += 1; };
   }, [monthKey, effectiveScopeType, effectiveSchoolId]);
 
   const generate = async () => {
@@ -96,7 +101,7 @@ const PayrollTab = ({ meta }) => {
         scopeType: effectiveScopeType,
         schoolId: effectiveSchoolId,
       });
-      setRun(response.data.run);
+      if (response.data.run?.monthKey === selectedMonth.current) setRun(response.data.run);
       showSwalAlert("Success!", response.data.message, "success");
     } catch (error) {
       showSwalAlert("Error!", getApiError(error), "error");
@@ -132,7 +137,7 @@ const PayrollTab = ({ meta }) => {
         manualDeduction: Number(item.manualDeduction || 0),
         remarks: item.remarks || "",
       });
-      setRun(response.data.run);
+      if (response.data.run?.monthKey === selectedMonth.current) setRun(response.data.run);
       showSwalAlert("Success!", response.data.message, "success");
     } catch (error) {
       showSwalAlert("Error!", getApiError(error), "error");
@@ -159,7 +164,7 @@ const PayrollTab = ({ meta }) => {
         paymentReference: status === "Paid" ? paymentReference : undefined,
         remarks: payrollRemarks,
       });
-      setRun(response.data.run);
+      if (response.data.run?.monthKey === selectedMonth.current) setRun(response.data.run);
       showSwalAlert("Success!", response.data.message, "success");
     } catch (error) {
       showSwalAlert("Error!", getApiError(error), "error");
@@ -180,11 +185,11 @@ const PayrollTab = ({ meta }) => {
   }, [run]);
 
   const currentRun = run && !loading && run.monthKey === monthKey;
-  const editable = currentRun && run.taPolicyVersion === 1 && canAdjust && !["Finalized", "Paid"].includes(run.status);
+  const editable = currentRun && run.taPolicyVersion === 1 && !run.needsRecalculation && canAdjust && !["Finalized", "Paid"].includes(run.status);
   const canEditWorkflowRemarks =
     currentRun &&
-    ((currentRun && run.status === "Draft" && run.taPolicyVersion === 1 && canReview) ||
-      (currentRun && run.status === "Reviewed" && run.taPolicyVersion === 1 && canFinalize) ||
+    ((currentRun && run.status === "Draft" && run.taPolicyVersion === 1 && !run.needsRecalculation && canReview) ||
+      (currentRun && run.status === "Reviewed" && run.taPolicyVersion === 1 && !run.needsRecalculation && canFinalize) ||
       (currentRun && run.status === "Finalized" && canPay));
 
   return (
@@ -247,6 +252,7 @@ const PayrollTab = ({ meta }) => {
             </div>
 
             {!["Finalized", "Paid"].includes(run.status) && run.taPolicyVersion !== 1 && <p role="alert" className="mb-3 rounded bg-amber-50 p-3 text-sm text-amber-900">{tr("Recalculate payroll and review it again before continuing.")}</p>}
+            {run.needsRecalculation && <p role="alert" className="mb-3 rounded bg-amber-50 p-3 text-sm text-amber-900">{tr("Leave or attendance changed. Recalculate this payroll before review.")}</p>}
             {run.taExcludedClaims?.length > 0 && <div role="alert" className="mb-3 rounded bg-amber-50 p-3 text-sm text-amber-900"><p>{tr("Some approved claims have no active matching payroll staff record. They remain unpaid; review them in TA Approvals.")}</p>{run.taExcludedClaims.map((claim) => <p key={claim.claimId}><bdi>{claim.claimNumber} {claim.name}</bdi></p>)}</div>}
             <div className="grid grid-cols-2 gap-2 md:grid-cols-6">
               {[
@@ -382,10 +388,10 @@ const PayrollTab = ({ meta }) => {
             </div>
 
             <div className="mt-3 flex flex-wrap gap-2">
-              {currentRun && run.status === "Draft" && run.taPolicyVersion === 1 && canReview ? (
+              {currentRun && run.status === "Draft" && run.taPolicyVersion === 1 && !run.needsRecalculation && canReview ? (
                 <SecondaryButton onClick={() => updateStatus("Reviewed")}>{tr("Mark Reviewed")}</SecondaryButton>
               ) : null}
-              {currentRun && run.status === "Reviewed" && run.taPolicyVersion === 1 && canFinalize ? (
+              {currentRun && run.status === "Reviewed" && run.taPolicyVersion === 1 && !run.needsRecalculation && canFinalize ? (
                 <PrimaryButton onClick={() => updateStatus("Finalized")}>{tr("Finalize Payroll")}</PrimaryButton>
               ) : null}
               {currentRun && run.status === "Finalized" && canPay ? (

@@ -93,6 +93,7 @@ import HelpDeskPage from "./components/helpdesk/HelpDeskPage";
 import MarksheetPage from "./components/marksheet/MarksheetPage";
 import ExamsHome from "./components/exam/ExamsHome";
 import QuestionPapersPage from "./components/exam/QuestionPapersPage";
+import AccountsFinancePage from "./components/accounts/AccountsFinancePage";
 import AttendancePage from "./components/attendance/AttendancePage";
 import DemoTutorialList from "./components/demoTutorial/List";
 import DemoTutorialForm from "./components/demoTutorial/Form";
@@ -201,6 +202,8 @@ function App() {
           <Route path="/dashboard/reports" element={<ReportsHome />}></Route>
 
           <Route path="/dashboard/accountsPage" element={<AccountsPage />}></Route>
+          <Route path="/dashboard/accounts/payroll" element={<AccountsFinancePage key="accounts-payroll" section="payroll" />} />
+          <Route path="/dashboard/accounts/ta-approvals" element={<AccountsFinancePage key="accounts-ta" section="ta-approvals" />} />
           <Route path="/dashboard/hq/fees" element={<BatchApprovals />}></Route>
           <Route path="/dashboard/fees" element={<BulkPaymentCreate />}></Route>
           <Route path="/dashboard/fees/sent-to-hq" element={<PaymentBatchesList />}></Route>

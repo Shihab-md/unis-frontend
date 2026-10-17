@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { Navigate, useSearchParams } from "react-router-dom";
 import CommonHeader from "../dashboard/CommonHeader";
 import { useAuth } from "../../context/AuthContext";
 import { PERMISSIONS } from "../../auth/permissions";
@@ -11,7 +11,6 @@ import AttendanceOverview from "./AttendanceOverview";
 import StudentAttendanceTab from "./StudentAttendanceTab";
 import StaffAttendanceTab from "./StaffAttendanceTab";
 import LeaveTab from "./LeaveTab";
-import PayrollTab from "./PayrollTab";
 import TravelClaimsTab from "./TravelClaimsTab";
 import MyPayslipsTab from "./MyPayslipsTab";
 import AttendanceReportsTab from "./AttendanceReportsTab";
@@ -23,12 +22,14 @@ const AttendancePage = () => {
   const [loading, setLoading] = useState(true);
   const [searchParams] = useSearchParams();
   const requestedTab = String(searchParams.get("tab") || "").trim().toLowerCase();
+  const movedRoute = requestedTab === "payroll" ? "/dashboard/accounts/payroll" : requestedTab === "ta-approvals" ? "/dashboard/accounts/ta-approvals" : "";
   const [activeTab, setActiveTab] = useState(requestedTab || "overview");
   const [selectedSchoolId, setSelectedSchoolId] = useState("");
   const [staffScopeType, setStaffScopeType] = useState("NISWAN");
   const [dateKey, setDateKey] = useState(todayKey());
 
   useEffect(() => {
+    if (movedRoute) return;
     let alive = true;
     const load = async () => {
       setLoading(true);
@@ -49,7 +50,7 @@ const AttendancePage = () => {
     return () => {
       alive = false;
     };
-  }, []);
+  }, [movedRoute]);
 
   const tabs = useMemo(() => {
     if (!meta?.access) return [];
@@ -75,13 +76,9 @@ const AttendancePage = () => {
     if (canViewStaffAttendance) rows.push({ id: "staff", label: "Staff" });
     if (canUseStudentLeave || canUseStaffLeave) rows.push({ id: "leave", label: "Leave" });
 
-    const canManagePayroll =
-      access.canManagePayrollGlobally && can(PERMISSIONS.PAYROLL_VIEW);
     const canViewOwnPayslip = access.canViewOwnPayslip && can(PERMISSIONS.PAYSLIP_SELF_VIEW);
 
     if (access.canViewOwnTaClaims && can(PERMISSIONS.TA_SELF_VIEW)) rows.push({ id: "ta", label: "My TA Claims" });
-    if (access.canReviewTaClaims && can(PERMISSIONS.TA_REVIEW_VIEW)) rows.push({ id: "ta-approvals", label: "TA Approvals" });
-    if (canManagePayroll) rows.push({ id: "payroll", label: "Payroll" });
     if (canViewOwnPayslip) rows.push({ id: "payslips", label: "My Payslips" });
     if (canViewReports) rows.push({ id: "reports", label: "Reports" });
 
@@ -98,6 +95,8 @@ const AttendancePage = () => {
     }
   }, [tabs, activeTab, requestedTab]);
 
+  if (movedRoute) return <Navigate to={movedRoute} replace />;
+
   if (loading) {
     return (
       <div className="p-4 md:p-7">
@@ -109,7 +108,7 @@ const AttendancePage = () => {
   if (!meta?.success) {
     return (
       <div className="p-4 md:p-7">
-        <AttendancePanel title="Attendance">
+        <AttendancePanel title="Attendance & Services">
           <div className="text-sm text-rose-600">{tr("Unable to load Attendance module")}</div>
         </AttendancePanel>
       </div>
@@ -135,7 +134,7 @@ const AttendancePage = () => {
       <div className="text-center">
         <AutoText
           as="h5"
-          text={tr("Attendance")}
+          text={tr("Attendance & Services")}
           variant="heading"
           className="mt-1 lg:mt-3 mb-3 font-bold capitalize text-green-600 drop-shadow-lg"
         />
@@ -163,8 +162,6 @@ const AttendancePage = () => {
       {activeTab === "staff" ? <StaffAttendanceTab {...commonProps} /> : null}
       {activeTab === "leave" ? <LeaveTab {...commonProps} /> : null}
       {activeTab === "ta" ? <TravelClaimsTab key="ta-mine" /> : null}
-      {activeTab === "ta-approvals" ? <TravelClaimsTab key="ta-review" review /> : null}
-      {activeTab === "payroll" ? <PayrollTab {...commonProps} /> : null}
       {activeTab === "payslips" ? <MyPayslipsTab /> : null}
       {activeTab === "reports" ? <AttendanceReportsTab {...commonProps} /> : null}
     </div>
