@@ -157,8 +157,6 @@ const View = () => {
                   <ViewCard type="title" text="Hadhiya" />
                   <ViewCard type="data" text={supervisor?.salary} />
 
-                  <ViewCard type="title" text="Travelling Allowance" />
-                  <ViewCard type="data" text={supervisor?.travellingAllowance ?? 0} />
 
                   <ViewCard type="title" text="Activities carried out" />
                   <ViewCard type="data" text={<span className="whitespace-pre-wrap break-words">{supervisor?.activitiesCarriedOut || "-"}</span>} />

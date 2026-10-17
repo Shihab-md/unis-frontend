@@ -558,20 +558,7 @@ const Add = () => {
             {SHOW_EXTENDED_EMPLOYEE_FIELDS && (
               <>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-7">
-                  {/* Travelling Allowance */}
-                  <div>
-                    <label className="block mt-2 text-xs sm:text-sm font-medium text-slate-500">
-                      {tr("Travelling Allowance")}
-                    </label>
-                    <input
-                      type="number"
-                      name="travellingAllowance"
-                      onChange={handleChange}
-                      min="0"
-                      step="0.01"
-                      className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-                    />
-                  </div>
+
 
                   {/* Other Designation */}
                   <div>

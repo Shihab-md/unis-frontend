@@ -160,8 +160,6 @@ const View = () => {
 
                 {SHOW_EXTENDED_EMPLOYEE_FIELDS && (
                   <>
-                    <ViewCard type="title" text="Travelling Allowance" />
-                    <ViewCard type="data" text={employee?.travellingAllowance ?? 0} />
 
                     <ViewCard type="title" text="Activities carried out" />
                     <ViewCard type="data" text={<span className="whitespace-pre-wrap break-words">{employee?.activitiesCarriedOut || "-"}</span>} />

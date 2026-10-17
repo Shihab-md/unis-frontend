@@ -1,4 +1,6 @@
 import React from "react";
+import { taText } from "../../i18n/travelAllowanceTranslations";
+import { getCurrentUiLanguage } from "../../i18n/uiPhrases";
 import { AutoText, useLanguage } from "../../i18n/LanguageContext";
 import { getBusinessTodayKey } from "../../utils/dateRules";
 
@@ -127,4 +129,4 @@ export const todayKey = () => getBusinessTodayKey();
 export const currentMonthKey = () => todayKey().slice(0, 7);
 
 export const getApiError = (error) =>
-  error?.response?.data?.error || error?.message || "Request failed";
+  error?.response?.data?.code?.startsWith("TA_") ? taText(error.response.data.code, getCurrentUiLanguage()) : error?.response?.data?.error || error?.message || "Request failed";

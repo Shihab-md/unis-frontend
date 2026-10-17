@@ -53,6 +53,7 @@ const PayrollTab = ({ meta }) => {
     try {
       const response = await attendanceGet("payroll", {
         month: monthKey,
+        expectedRevision: run?.monthKey === monthKey ? Number(run?.revision || 0) : 0,
         scopeType: effectiveScopeType,
         schoolId: effectiveSchoolId,
       });
@@ -90,6 +91,7 @@ const PayrollTab = ({ meta }) => {
     try {
       const response = await attendancePost("payroll/generate", {
         month: monthKey,
+        expectedRevision: run?.monthKey === monthKey ? Number(run?.revision || 0) : 0,
         workingDays: Number(workingDays),
         scopeType: effectiveScopeType,
         schoolId: effectiveSchoolId,
@@ -109,7 +111,7 @@ const PayrollTab = ({ meta }) => {
       items: (current?.items || []).map((item) => {
         if (item._id !== itemId) return item;
         const next = { ...item, [field]: value };
-        const allowance = Number(next.manualAllowance || 0);
+        const allowance = Number(next.manualAllowance || 0) + Number(next.approvedTaClaims || 0);
         const deduction = Number(next.manualDeduction || 0);
         next.netSalary =
           Number(next.grossSalary || 0) -
@@ -125,6 +127,7 @@ const PayrollTab = ({ meta }) => {
     setSavingItemId(item._id);
     try {
       const response = await attendancePatch(`payroll/${run._id}/items/${item._id}`, {
+        expectedRevision: Number(run.revision || 0),
         manualAllowance: Number(item.manualAllowance || 0),
         manualDeduction: Number(item.manualDeduction || 0),
         remarks: item.remarks || "",
@@ -151,6 +154,7 @@ const PayrollTab = ({ meta }) => {
     try {
       const response = await attendancePatch(`payroll/${run._id}/status`, {
         status,
+        expectedRevision: Number(run.revision || 0),
         paymentMethod: status === "Paid" ? paymentMethod : undefined,
         paymentReference: status === "Paid" ? paymentReference : undefined,
         remarks: payrollRemarks,
@@ -163,8 +167,9 @@ const PayrollTab = ({ meta }) => {
   };
 
   const totals = useMemo(() => {
-    const result = { gross: 0, deduction: 0, allowance: 0, manualDeduction: 0, net: 0 };
+    const result = { ta: 0, gross: 0, deduction: 0, allowance: 0, manualDeduction: 0, net: 0 };
     (run?.items || []).forEach((item) => {
+      result.ta += Number(item.approvedTaClaims || 0);
       result.gross += Number(item.grossSalary || 0);
       result.deduction += Number(item.attendanceDeduction || 0);
       result.allowance += Number(item.manualAllowance || 0);
@@ -174,12 +179,13 @@ const PayrollTab = ({ meta }) => {
     return result;
   }, [run]);
 
-  const editable = run && canAdjust && !["Finalized", "Paid"].includes(run.status);
+  const currentRun = run && !loading && run.monthKey === monthKey;
+  const editable = currentRun && run.taPolicyVersion === 1 && canAdjust && !["Finalized", "Paid"].includes(run.status);
   const canEditWorkflowRemarks =
-    run &&
-    ((run.status === "Draft" && canReview) ||
-      (run.status === "Reviewed" && canFinalize) ||
-      (run.status === "Finalized" && canPay));
+    currentRun &&
+    ((currentRun && run.status === "Draft" && run.taPolicyVersion === 1 && canReview) ||
+      (currentRun && run.status === "Reviewed" && run.taPolicyVersion === 1 && canFinalize) ||
+      (currentRun && run.status === "Finalized" && canPay));
 
   return (
     <div className="space-y-4">
@@ -214,7 +220,7 @@ const PayrollTab = ({ meta }) => {
 
           <div className="flex items-end">
             {canGenerate ? (
-              <PrimaryButton onClick={generate} disabled={!canQuery || generating}>
+              <PrimaryButton onClick={generate} disabled={!canQuery || loading || generating}>
                 {generating ? tr("Generating...") : tr("Generate / Recalculate")}
               </PrimaryButton>
             ) : null}
@@ -240,9 +246,12 @@ const PayrollTab = ({ meta }) => {
               </div>
             </div>
 
-            <div className="grid grid-cols-2 gap-2 md:grid-cols-5">
+            {!["Finalized", "Paid"].includes(run.status) && run.taPolicyVersion !== 1 && <p role="alert" className="mb-3 rounded bg-amber-50 p-3 text-sm text-amber-900">{tr("Recalculate payroll and review it again before continuing.")}</p>}
+            {run.taExcludedClaims?.length > 0 && <div role="alert" className="mb-3 rounded bg-amber-50 p-3 text-sm text-amber-900"><p>{tr("Some approved claims have no active matching payroll staff record. They remain unpaid; review them in TA Approvals.")}</p>{run.taExcludedClaims.map((claim) => <p key={claim.claimId}><bdi>{claim.claimNumber} {claim.name}</bdi></p>)}</div>}
+            <div className="grid grid-cols-2 gap-2 md:grid-cols-6">
               {[
                 ["Gross Salary", totals.gross],
+                ["Approved TA Claims", totals.ta],
                 ["Attendance Deduction", totals.deduction],
                 ["Manual Allowance", totals.allowance],
                 ["Manual Deduction", totals.manualDeduction],
@@ -264,7 +273,7 @@ const PayrollTab = ({ meta }) => {
                     <th className="px-2 py-2">{tr("Staff")}</th>
                     <th className="px-2 py-2">{tr("Role")}</th>
                     <th className="px-2 py-2 text-right">{tr("Salary")}</th>
-                    <th className="px-2 py-2 text-right">{tr("Travel Allowance")}</th>
+                    <th className="px-2 py-2 text-right">{tr(run.taPolicyVersion === 1 ? "Approved TA Claims" : "Travel Allowance")}</th>
                     <th className="px-2 py-2 text-center">{tr("Recorded Days")}</th>
                     <th className="px-2 py-2 text-center">{tr("Absent")}</th>
                     <th className="px-2 py-2 text-center">{tr("Half Day")}</th>
@@ -287,7 +296,8 @@ const PayrollTab = ({ meta }) => {
                       </td>
                       <td className="px-2 py-2">{tr(item.role || "-")}</td>
                       <td className="px-2 py-2 text-right">{formatAmount(item.monthlySalary)}</td>
-                      <td className="px-2 py-2 text-right">{formatAmount(item.travellingAllowance)}</td>
+                      <td className="px-2 py-2 text-right">{formatAmount(run.taPolicyVersion === 1 ? item.approvedTaClaims : item.travellingAllowance)}
+                        {run.taPolicyVersion === 1 && (item.travelClaimItems || []).map((claim) => <div key={claim.claimId} className="mt-1 break-all text-[10px] text-blue-700"><bdi>{claim.claimNumber}</bdi></div>)}</td>
                       <td className={`px-2 py-2 text-center font-semibold ${Number(item.attendanceRecordedDays) < Number(run.workingDays) ? "text-amber-600" : "text-slate-700"}`}>
                         {item.attendanceRecordedDays}
                       </td>
@@ -372,13 +382,13 @@ const PayrollTab = ({ meta }) => {
             </div>
 
             <div className="mt-3 flex flex-wrap gap-2">
-              {run.status === "Draft" && canReview ? (
+              {currentRun && run.status === "Draft" && run.taPolicyVersion === 1 && canReview ? (
                 <SecondaryButton onClick={() => updateStatus("Reviewed")}>{tr("Mark Reviewed")}</SecondaryButton>
               ) : null}
-              {run.status === "Reviewed" && canFinalize ? (
+              {currentRun && run.status === "Reviewed" && run.taPolicyVersion === 1 && canFinalize ? (
                 <PrimaryButton onClick={() => updateStatus("Finalized")}>{tr("Finalize Payroll")}</PrimaryButton>
               ) : null}
-              {run.status === "Finalized" && canPay ? (
+              {currentRun && run.status === "Finalized" && canPay ? (
                 <PrimaryButton onClick={() => updateStatus("Paid")}>{tr("Mark Paid")}</PrimaryButton>
               ) : null}
               {run.status === "Paid" ? <StatusBadge status="Paid" /> : null}

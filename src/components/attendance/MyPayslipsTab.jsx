@@ -67,7 +67,7 @@ const MyPayslipsTab = () => {
                 <div className="mt-3 grid grid-cols-2 gap-2 md:grid-cols-4 lg:grid-cols-6">
                   {[
                     ["Monthly Salary", item.monthlySalary],
-                    ["Travelling Allowance", item.travellingAllowance],
+                    [payslip.taPolicyVersion === 1 ? "Approved TA Claims" : "Travelling Allowance", payslip.taPolicyVersion === 1 ? item.approvedTaClaims : item.travellingAllowance],
                     ["Gross Salary", item.grossSalary],
                     ["Attendance Deduction", item.attendanceDeduction],
                     ["Manual Allowance", item.manualAllowance],
@@ -80,6 +80,7 @@ const MyPayslipsTab = () => {
                   ))}
                 </div>
 
+                {payslip.taPolicyVersion === 1 && item.travelClaimItems?.length > 0 && <div className="mt-3 rounded border bg-white p-3 text-xs"><div className="font-semibold">{tr("Claim References")}</div>{item.travelClaimItems.map((claim) => <div key={claim.claimId} className="mt-1 flex flex-wrap justify-between gap-2"><bdi className="break-all">{claim.claimNumber}</bdi><bdi>{formatAmount(claim.approvedAmountPaise / 100)}</bdi></div>)}</div>}
                 <div className="mt-3 rounded-lg border border-emerald-200 bg-emerald-50 p-3">
                   <div className="text-[10px] font-semibold text-emerald-700">{tr("Net Salary")}</div>
                   <div className="mt-1 text-xl font-bold text-emerald-800">{formatAmount(item.netSalary)}</div>

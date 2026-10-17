@@ -44,6 +44,11 @@ export const PERMISSIONS = Object.freeze({
   STUDENT_ATTENDANCE_REPORT_VIEW: "attendance.student.report.view",
   STAFF_ATTENDANCE_REPORT_VIEW: "attendance.staff.report.view",
 
+  TA_SELF_VIEW: "ta.self.view",
+  TA_SELF_MANAGE: "ta.self.manage",
+  TA_REVIEW_VIEW: "ta.review.view",
+  TA_APPROVE: "ta.review.approve",
+
   PAYROLL_VIEW: "payroll.view",
   PAYROLL_GENERATE: "payroll.generate",
   PAYROLL_ADJUST: "payroll.adjust",

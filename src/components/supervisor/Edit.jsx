@@ -44,7 +44,6 @@ const Edit = () => {
     doj: "",
     designation: "",
     salary: "",
-    travellingAllowance: "",
     otherDesignation: "",
     activitiesCarriedOut: "",
     bankAccountDetails: "",
@@ -91,7 +90,6 @@ const Edit = () => {
             //  doj: supervisor.doj,
             designation: supervisor.designation,
             salary: supervisor.salary,
-            travellingAllowance: supervisor.travellingAllowance ?? 0,
             otherDesignation: supervisor.otherDesignation || "",
             activitiesCarriedOut: supervisor.activitiesCarriedOut || "",
             bankAccountDetails: supervisor.bankAccountDetails || "",
@@ -165,7 +163,6 @@ const Edit = () => {
       formData.append("maritalStatus", supervisor.maritalStatus || "");
       formData.append("designation", supervisor.designation || "");
       formData.append("salary", supervisor.salary || "");
-      formData.append("travellingAllowance", supervisor.travellingAllowance ?? "");
       formData.append("otherDesignation", supervisor.otherDesignation || "");
       formData.append("activitiesCarriedOut", supervisor.activitiesCarriedOut || "");
       formData.append("bankAccountDetails", supervisor.bankAccountDetails || "");
@@ -564,21 +561,7 @@ const Edit = () => {
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mt-7">
-                {/* Travelling Allowance */}
-                <div>
-                  <label className="block mt-2 text-sm font-medium text-slate-500">
-                    {tr("Travelling Allowance")}
-                  </label>
-                  <input
-                    type="number"
-                    name="travellingAllowance"
-                    value={supervisor.travellingAllowance ?? ""}
-                    onChange={handleChange}
-                    min="0"
-                    step="0.01"
-                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-                  />
-                </div>
+
 
                 {/* Other Designation */}
                 <div>

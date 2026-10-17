@@ -12,6 +12,7 @@ import StudentAttendanceTab from "./StudentAttendanceTab";
 import StaffAttendanceTab from "./StaffAttendanceTab";
 import LeaveTab from "./LeaveTab";
 import PayrollTab from "./PayrollTab";
+import TravelClaimsTab from "./TravelClaimsTab";
 import MyPayslipsTab from "./MyPayslipsTab";
 import AttendanceReportsTab from "./AttendanceReportsTab";
 
@@ -78,6 +79,8 @@ const AttendancePage = () => {
       access.canManagePayrollGlobally && can(PERMISSIONS.PAYROLL_VIEW);
     const canViewOwnPayslip = access.canViewOwnPayslip && can(PERMISSIONS.PAYSLIP_SELF_VIEW);
 
+    if (access.canViewOwnTaClaims && can(PERMISSIONS.TA_SELF_VIEW)) rows.push({ id: "ta", label: "My TA Claims" });
+    if (access.canReviewTaClaims && can(PERMISSIONS.TA_REVIEW_VIEW)) rows.push({ id: "ta-approvals", label: "TA Approvals" });
     if (canManagePayroll) rows.push({ id: "payroll", label: "Payroll" });
     if (canViewOwnPayslip) rows.push({ id: "payslips", label: "My Payslips" });
     if (canViewReports) rows.push({ id: "reports", label: "Reports" });
@@ -159,6 +162,8 @@ const AttendancePage = () => {
       {activeTab === "students" ? <StudentAttendanceTab {...commonProps} /> : null}
       {activeTab === "staff" ? <StaffAttendanceTab {...commonProps} /> : null}
       {activeTab === "leave" ? <LeaveTab {...commonProps} /> : null}
+      {activeTab === "ta" ? <TravelClaimsTab key="ta-mine" /> : null}
+      {activeTab === "ta-approvals" ? <TravelClaimsTab key="ta-review" review /> : null}
       {activeTab === "payroll" ? <PayrollTab {...commonProps} /> : null}
       {activeTab === "payslips" ? <MyPayslipsTab /> : null}
       {activeTab === "reports" ? <AttendanceReportsTab {...commonProps} /> : null}
