@@ -1,3 +1,4 @@
+import SchoolReportActions from './SchoolReportActions';
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { columns, SchoolButtons, SchoolCard, conditionalRowStyles } from '../../utils/SchoolHelper'
@@ -22,6 +23,10 @@ const List = () => {
     handleRightClickAndFullScreen();
   }, []);;
 
+  const readReportFilters = () => ({supervisorId:localStorage.getItem('supervisorId')||'',districtStateId:localStorage.getItem('districtStateId')||'',status:localStorage.getItem('schStatus')||''});
+  const [reportFilters,setReportFilters]=useState(readReportFilters);
+  const [searchText,setSearchText]=useState('');
+  const [schoolsLoaded,setSchoolsLoaded]=useState(false);
   const [schools, setSchools] = useState([])
   const [schLoading, setSchLoading] = useState(false)
   const [filtering, setFiltering] = useState(false)
@@ -174,13 +179,14 @@ const List = () => {
   const onSchoolDelete = () => getFilteredSchools();
 
   const getFilteredSchools = async () => {
+    const requestedFilters=readReportFilters();
     setFiltering(true)
     try {
       const responnse = await axios.get(
         (await getBaseUrl()).toString() + "school/bySchFilter/"
-        + localStorage.getItem('supervisorId') + "/"
-        + localStorage.getItem('districtStateId') + "/"
-        + localStorage.getItem('schStatus'),
+        + (requestedFilters.supervisorId||'null') + "/"
+        + (requestedFilters.districtStateId||'null') + "/"
+        + (requestedFilters.status||'null'),
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -213,6 +219,8 @@ const List = () => {
           action: (<SchoolButtons Id={sch._id} onSchoolDelete={onSchoolDelete} />),
         }));
         setSchools(data);
+        setSchoolsLoaded(true);
+        setReportFilters(requestedFilters);
         setFilteredSchools(data)
         localStorage.removeItem('schools');
         localStorage.setItem('schools', JSON.stringify(responnse.data));
@@ -290,6 +298,8 @@ const List = () => {
         action: (<SchoolButtons Id={sch._id} onSchoolDelete={onSchoolDelete} />),
       }));
       setSchools(data1);
+      setSchoolsLoaded(true);
+      setReportFilters(readReportFilters());
       setFilteredSchools(data1);
       console.log("Data from local storage")
 
@@ -332,6 +342,8 @@ const List = () => {
             action: (<SchoolButtons Id={sch._id} onSchoolDelete={onSchoolDelete} />),
           }));
           setSchools(data);
+        setSchoolsLoaded(true);
+          setReportFilters({supervisorId:'',districtStateId:'',status:''});
           setFilteredSchools(data)
           localStorage.removeItem('schools');
           localStorage.setItem('schools', JSON.stringify(responnse.data));
@@ -347,19 +359,12 @@ const List = () => {
     };
   }
 
-  const handleFilter = (e) => {
-    const records = schools.filter((school) => (
-      school.code?.toLowerCase().includes(e.target.value.toLowerCase())
-      || school.name?.toLowerCase().includes(e.target.value.toLowerCase())
-      || school.address?.toLowerCase().includes(e.target.value.toLowerCase())
-      || school.districtState?.toLowerCase().includes(e.target.value.toLowerCase())
-      || school.city?.toLowerCase().includes(e.target.value.toLowerCase())
-      || school.active?.toLowerCase().includes(e.target.value.toLowerCase())
-      || school.supervisorId?.toLowerCase().includes(e.target.value.toLowerCase())
-      || school.supervisorName?.toLowerCase().includes(e.target.value.toLowerCase())
-    ))
-    setFilteredSchools(records)
-  }
+  const handleFilter = e => setSearchText(e.target.value);
+  useEffect(() => {
+    if(!schoolsLoaded)return;
+    const query=searchText.trim().toLowerCase();
+    setFilteredSchools(schools.filter(school => !query || ['code','name','address','districtState','city','active','supervisorId','supervisorName'].some(key => String(school[key]??'').toLowerCase().includes(query))));
+  },[schools,searchText,schoolsLoaded]);
 
   if (!filteredSchool) {
     return getSpinner();
@@ -383,6 +388,7 @@ const List = () => {
               type="text"
               placeholder={tr("Search")}
               className="w-full px-3 py-0.5 border rounded shadow-md justify-center ml-1 lg:ml-0 mr-3 lg:mr-0"
+              value={searchText}
               onChange={handleFilter}
             />
           </div>
@@ -422,6 +428,8 @@ const List = () => {
 
         </div>
         : <div className='flex mt-3 lg:mt-7'></div>}
+
+      <SchoolReportActions filters={{...reportFilters,search:searchText.trim()}} loading={schLoading||filtering} />
 
       {filtering ?
         getFilterGif() :
