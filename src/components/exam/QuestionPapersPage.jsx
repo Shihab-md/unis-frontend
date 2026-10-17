@@ -15,6 +15,7 @@ import {
   FaTimes,
   FaTrash,
 } from "react-icons/fa";
+import { useLanguage } from "../../i18n/LanguageContext";
 import { useAuth } from "../../context/AuthContext";
 import {
   createExamQuestion,
@@ -41,12 +42,9 @@ const emptyForm = {
   examStartTime: "",
   releaseDate: "",
   releaseTime: "",
-  closeDate: "",
-  closeTime: "",
   targetType: "ALL",
   targetSchoolIds: [],
   instructions: "",
-  publicationStatus: "Draft",
 };
 
 const badgeClass = (status) => {
@@ -95,6 +93,8 @@ const triggerBlob = (blob, { fileName, preview = false }) => {
 
 const QuestionPapersPage = () => {
   const { can } = useAuth();
+  const { tr, direction } = useLanguage();
+  const alert = (title, message, type) => showSwalAlert(tr(title), tr(message), type);
   const navigate = useNavigate();
   const canView = can(PERMISSIONS.EXAM_QUESTION_VIEW);
   const canCreate = can(PERMISSIONS.EXAM_QUESTION_CREATE);
@@ -243,12 +243,9 @@ const QuestionPapersPage = () => {
       examStartTime: paper.examStartTime || "",
       releaseDate: paper.releaseDate || "",
       releaseTime: paper.releaseTime || "",
-      closeDate: paper.closeDate || "",
-      closeTime: paper.closeTime || "",
       targetType: paper.targetType || "ALL",
       targetSchoolIds: (paper.targetSchoolIds || []).map((school) => String(school?._id || school)),
       instructions: paper.instructions || "",
-      publicationStatus: paper.publicationStatus || "Draft",
     });
     setShowForm(true);
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -296,24 +293,18 @@ const QuestionPapersPage = () => {
     if (pdfFile && !/\.pdf$/i.test(pdfFile.name || "")) return "Only PDF Question Papers are allowed.";
     if (pdfFile && Number(pdfFile.size || 0) > 15 * 1024 * 1024) return "Question Paper PDF must be 15 MB or smaller.";
     if (form.targetType === "SELECTED" && form.targetSchoolIds.length === 0) return "Please select at least one target Niswan.";
-    if ((form.closeDate && !form.closeTime) || (!form.closeDate && form.closeTime)) return "Please provide both Close Date and Close Time.";
     const examAt = `${form.examDate}T${form.examStartTime}`;
     const releaseAt = `${form.releaseDate}T${form.releaseTime}`;
     if (releaseAt > examAt) return "Question Paper release time cannot be later than the Exam Start Time.";
-    if (form.closeDate && form.closeTime) {
-      const closeAt = `${form.closeDate}T${form.closeTime}`;
-      if (closeAt <= releaseAt) return "Close time must be later than the release time.";
-      if (closeAt <= examAt) return "Close time must be later than the Exam Start Time.";
-    }
     return "";
   };
 
   const savePaper = async (event) => {
     event.preventDefault();
-    if (editingId && !canEdit) return showSwalAlert("Error!", "You do not have permission to edit Question Papers.", "error");
-    if (!editingId && !canCreate) return showSwalAlert("Error!", "You do not have permission to create Question Papers.", "error");
+    if (editingId && !canEdit) return alert("Error!", "You do not have permission to edit Question Papers.", "error");
+    if (!editingId && !canCreate) return alert("Error!", "You do not have permission to create Question Papers.", "error");
     const validation = validateForm();
-    if (validation) return showSwalAlert("Error!", validation, "error");
+    if (validation) return alert("Error!", validation, "error");
 
     try {
       setBusy(true);
@@ -325,12 +316,12 @@ const QuestionPapersPage = () => {
       if (pdfFile) data.append("file", pdfFile);
 
       const response = editingId ? await updateExamQuestion(editingId, data) : await createExamQuestion(data);
-      showSwalAlert("Success!", response?.message || "Question Paper saved successfully.", "success");
+      alert("Success!", response?.message || "Question Paper saved successfully.", "success");
       setShowForm(false);
       resetForm();
       await loadPapers();
     } catch (error) {
-      showSwalAlert("Error!", error?.response?.data?.error || error.message || "Unable to save Question Paper.", "error");
+      alert("Error!", error?.response?.data?.error || error.message || "Unable to save Question Paper.", "error");
     } finally {
       setBusy(false);
     }
@@ -350,10 +341,10 @@ const QuestionPapersPage = () => {
     try {
       setBusy(true);
       const data = await deleteExamQuestion(paper._id);
-      showSwalAlert("Success!", data?.message || "Question Paper deleted.", "success");
+      alert("Success!", data?.message || "Question Paper deleted.", "success");
       await loadPapers();
     } catch (error) {
-      showSwalAlert("Error!", error?.response?.data?.error || error.message || "Unable to delete Question Paper.", "error");
+      alert("Error!", error?.response?.data?.error || error.message || "Unable to delete Question Paper.", "error");
     } finally {
       setBusy(false);
     }
@@ -366,7 +357,7 @@ const QuestionPapersPage = () => {
       triggerBlob(response.data, { fileName: getDownloadName(paper), preview });
       if (!preview && !managerScope) await loadPapers();
     } catch (error) {
-      showSwalAlert("Error!", error.message || "Unable to download Question Paper.", "error");
+      alert("Error!", error.message || "Unable to download Question Paper.", "error");
     } finally {
       setBusy(false);
     }
@@ -380,7 +371,7 @@ const QuestionPapersPage = () => {
       setTracking(data);
       setTrackingPaper(paper);
     } catch (error) {
-      showSwalAlert("Error!", error?.response?.data?.error || error.message || "Unable to load download tracking.", "error");
+      alert("Error!", error?.response?.data?.error || error.message || "Unable to load download tracking.", "error");
     } finally {
       setBusy(false);
     }
@@ -390,7 +381,7 @@ const QuestionPapersPage = () => {
 
   if (!canView) {
     return (
-      <div className="px-2 py-3 md:px-4">
+      <div className="px-2 py-3 md:px-4" dir={direction}>
         <div className="mx-auto max-w-xl rounded-md border border-rose-200 bg-rose-50 p-4 text-center text-sm text-rose-700">
           You do not have permission to view Exam Question Papers.
         </div>
@@ -399,7 +390,7 @@ const QuestionPapersPage = () => {
   }
 
   return (
-    <div className="px-2 py-3 md:px-4">
+    <div className="px-2 py-3 md:px-4" dir={direction}>
       {busy ? <div className="fixed inset-0 z-[80] flex items-center justify-center bg-white/35">{getSpinner()}</div> : null}
 
       <div className="mb-4 grid grid-cols-[80px_1fr_80px] items-center">
@@ -432,9 +423,12 @@ const QuestionPapersPage = () => {
             </div>
             <button type="button" onClick={() => { setShowForm(false); resetForm(); }} className="rounded-full p-2 text-slate-500 hover:bg-slate-100" aria-label="Close form"><FaTimes /></button>
           </div>
+          <p className="mb-3 text-[11px] text-slate-500">{tr(editingId
+            ? "Saved publication and closing settings are retained."
+            : "Question papers are published automatically. Downloads open at the selected release time.")}</p>
           {lockedAfterDownload ? (
             <div className="mb-3 rounded-md border border-amber-200 bg-amber-50 px-3 py-2 text-[11px] font-semibold text-amber-800">
-              This paper has already been downloaded by a Niswan. PDF, exam details, release time and targets are locked. You can still update the title/instructions, optional close time, or close the paper.
+              {tr("This paper has already been downloaded by a Niswan. PDF, exam details, release time and targets are locked. You can still update the title/instructions.")}
             </div>
           ) : null}
 
@@ -485,19 +479,6 @@ const QuestionPapersPage = () => {
             </label>
             <label className="text-xs font-semibold text-slate-600">Available From Time <span className="text-blue-600">(IST)</span>
               <input type="time" value={form.releaseTime} onChange={(e) => onFormChange("releaseTime", e.target.value)} disabled={lockedAfterDownload} className="mt-1 w-full rounded-md border px-2 py-2 font-normal disabled:bg-slate-100" />
-            </label>
-            <label className="text-xs font-semibold text-slate-600">Close Date <span className="font-normal text-slate-400">(Optional)</span>
-              <input type="date" value={form.closeDate} onChange={(e) => onFormChange("closeDate", e.target.value)} className="mt-1 w-full rounded-md border px-2 py-2 font-normal" />
-            </label>
-            <label className="text-xs font-semibold text-slate-600">Close Time <span className="font-normal text-slate-400">(IST, Optional)</span>
-              <input type="time" value={form.closeTime} onChange={(e) => onFormChange("closeTime", e.target.value)} className="mt-1 w-full rounded-md border px-2 py-2 font-normal" />
-            </label>
-            <label className="text-xs font-semibold text-slate-600">Publish Status
-              <select value={form.publicationStatus} onChange={(e) => onFormChange("publicationStatus", e.target.value)} className="mt-1 w-full rounded-md border px-2 py-2 font-normal">
-                <option value="Draft" disabled={lockedAfterDownload}>Draft</option>
-                <option value="Published" disabled={lockedAfterDownload && editingPaper?.publicationStatus === "Closed"}>Published</option>
-                <option value="Closed">Closed</option>
-              </select>
             </label>
             <label className="text-xs font-semibold text-slate-600">Question Paper PDF {editingId ? <span className="font-normal text-slate-400">(Optional replacement)</span> : null}
               <input type="file" accept="application/pdf,.pdf" disabled={lockedAfterDownload} onChange={(e) => setPdfFile(e.target.files?.[0] || null)} className="mt-1 block w-full rounded-md border bg-white px-2 py-1.5 text-[11px] font-normal disabled:bg-slate-100" />

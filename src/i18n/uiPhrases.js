@@ -1,3 +1,4 @@
+import { EXAM_QUESTION_PHRASES } from "./examQuestionTranslations.js";
 import { SERVICES_PHRASES } from "./attendanceServicesTranslations.js";
 import { TA_PHRASES } from "./travelAllowanceTranslations.js";
 const PHRASES = {
@@ -3859,4 +3860,9 @@ for (const [key, values] of Object.entries(SERVICES_PHRASES)) {
     PHRASES[lang][key] = values[lang];
     PHRASES[lang][values.en] = values[lang];
   }
+}
+
+// Question-paper form notices use the application language switch.
+for (const [key, values] of Object.entries(EXAM_QUESTION_PHRASES)) {
+  for (const language of ["ta", "ur", "ar", "ml", "kn", "te"]) PHRASES[language][key] = values[language];
 }
