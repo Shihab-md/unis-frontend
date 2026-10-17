@@ -1,5 +1,7 @@
 export const SCHOOL_REPORT_LANGUAGES=['en','ta','ur','ar','ml','kn','te'];
 const rows=[
+['Download Supervisor PDFs (ZIP)','மேற்பார்வையாளர் வாரியான PDF பதிவிறக்கம் (ZIP)','نگران وار PDF ڈاؤن لوڈ کریں (ZIP)','تنزيل ملفات PDF حسب المشرف (ZIP)','സൂപ്പർവൈസർ തിരിച്ചുള്ള PDF ഡൗൺലോഡ് (ZIP)','ಮೇಲ್ವಿಚಾರಕರ ಪ್ರಕಾರ PDF ಡೌನ್‌ಲೋಡ್ (ZIP)','పర్యవేక్షకుల వారీగా PDF డౌన్‌లోడ్ (ZIP)'],
+['Unassigned Niswans','மேற்பார்வையாளர் ஒதுக்கப்படாத நிஸ்வான்கள்','غیر تفویض شدہ نسواں','مدارس دون مشرف','സൂപ്പർവൈസറെ നിയോഗിക്കാത്ത നിസ്‌വാനുകൾ','ಮೇಲ್ವಿಚಾರಕರನ್ನು ನಿಯೋಜಿಸದ ನಿಸ್ವಾನ್‌ಗಳು','పర్యవేక్షకులను కేటాయించని నిస్వాన్‌లు'],
 ['Download PDF','PDF பதிவிறக்கம்','PDF ڈاؤن لوڈ کریں','تنزيل PDF','PDF ഡൗൺലോഡ്','PDF ಡೌನ್‌ಲೋಡ್','PDF డౌన్‌లోడ్'],
 ['Print','அச்சிடு','پرنٹ کریں','طباعة','പ്രിന്റ് ചെയ്യുക','ಮುದ್ರಿಸಿ','ముద్రించండి'],
 ['Preparing report...','அறிக்கை தயாராகிறது...','رپورٹ تیار ہو رہی ہے...','جارٍ إعداد التقرير...','റിപ്പോർട്ട് തയ്യാറാക്കുന്നു...','ವರದಿ ಸಿದ್ಧಪಡಿಸಲಾಗುತ್ತಿದೆ...','నివేదిక సిద్ధమవుతోంది...'],
@@ -49,5 +51,6 @@ const errors=[
 ['NR_TOO_LONG','A Niswan entry is too long to fit on one report page. Please review its details.','ஒரு நிஸ்வான் பதிவு அறிக்கையின் ஒரு பக்கத்தில் அடங்காத அளவு நீளமாக உள்ளது. அதன் விவரங்களைச் சரிபார்க்கவும்.','ایک نسواں کا اندراج رپورٹ کے ایک صفحے کے لیے بہت طویل ہے۔ تفصیلات کا جائزہ لیں۔','بيانات إحدى المدارس أطول من أن تتسع في صفحة واحدة. راجع تفاصيلها.','ഒരു നിസ്‌വാൻ രേഖ ഒരു പേജിൽ ഉൾക്കൊള്ളാനാവാത്തത്ര നീളമുള്ളതാണ്. വിവരങ്ങൾ പരിശോധിക്കുക.','ಒಂದು ನಿಸ್ವಾನ್ ದಾಖಲೆಯು ವರದಿಯ ಒಂದು ಪುಟಕ್ಕೆ ಹೊಂದದಷ್ಟು ಉದ್ದವಾಗಿದೆ. ವಿವರಗಳನ್ನು ಪರಿಶೀಲಿಸಿ.','ఒక నిస్వాన్ నమోదు ఒక పేజీలో సరిపోనంత పొడవుగా ఉంది. వివరాలను పరిశీలించండి.'],
 ];
 for(const [code,...values]of errors)SCHOOL_REPORT_PHRASES[code]=Object.fromEntries(SCHOOL_REPORT_LANGUAGES.map((lang,i)=>[lang,values[i]]));
+SCHOOL_REPORT_PHRASES.NR_EMPTY=SCHOOL_REPORT_PHRASES['No matching Niswans to export.'];
 // Report-specific labels do not override the rest of the application's wording.
 export function schoolReportText(key,language='en') {return SCHOOL_REPORT_PHRASES[key]?.[language]||SCHOOL_REPORT_PHRASES[key]?.en||key;}

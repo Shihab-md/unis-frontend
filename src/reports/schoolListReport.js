@@ -1,3 +1,4 @@
+import {schoolSupervisorReports,schoolReportFileName} from './schoolSupervisorReports.js';
 // Both actions use these same measured A4 pages. Browser text shaping preserves
 // Indic scripts and Arabic/Urdu; each PDF page is captured separately.
 const esc = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -30,7 +31,7 @@ export function reportDocumentHtml(report, {language='en',tr=x=>x,fontBaseUrl=wi
   const generated=new Intl.DateTimeFormat(locales[language]||'en-IN',{dateStyle:'medium',timeStyle:'short',timeZone:'Asia/Kolkata'}).format(new Date(report.generatedAt));
   const filter=report.filters||{};
   const filterText=[filter.districtStateName?`${tr('District & State')}: ${filter.districtStateName}`:'',`${tr('Status')}: ${tr(filter.status||'All')}`,filter.search?`${tr('Search')}: ${filter.search}`:''].filter(Boolean).join(' · ');
-  const supervisor=report.supervisor?`${tr('Supervisor')}: ${report.supervisor.code} · ${report.supervisor.name}`:tr('All Supervisors');
+  const supervisor=report.supervisor?`${tr('Supervisor')}: ${report.supervisor.code} · ${report.supervisor.name}${report.supervisor.contact?` · ${tr('Contact')}: ${report.supervisor.contact}`:''}`:tr(report.unassigned?'Unassigned Niswans':'All Supervisors');
   const font=name=>esc(new URL(name,fontBaseUrl.endsWith('/')?fontBaseUrl:fontBaseUrl+'/').href);
   return `<!doctype html><html lang="${esc(language)}" dir="${rtl?'rtl':'ltr'}"><head><meta charset="utf-8"><title>${esc(tr('Niswan List'))}</title><style>
 @font-face{font-family:ReportLatin;src:url('${font('arial.ttf')}');font-weight:400;unicode-range:U+0000-024F,U+2000-206F,U+20A0-20CF}
@@ -43,6 +44,7 @@ export function reportDocumentHtml(report, {language='en',tr=x=>x,fontBaseUrl=wi
 table{width:100%;table-layout:fixed;border-collapse:collapse;font-size:12px}th{font-size:11px;font-weight:700;background:#173f59;color:#fff;padding:8px 5px;text-align:start;overflow-wrap:anywhere;line-height:1.55}td{vertical-align:top;border-bottom:1px solid #dce5ec;padding:7px 6px;overflow-wrap:anywhere;line-height:1.6}tr:nth-child(even) td{background:#f2f6fa}.name{font-weight:700}td div+div{margin-top:2px}.contact{color:#475569;font-size:11px}.status{font-size:10px;font-weight:700}.active{color:#166534}.inactive{color:#9a3412}tr{break-inside:avoid}.report-footer{position:absolute;bottom:22px;left:38px;right:38px;border-top:1px solid #cbd5e1;padding-top:7px;font-size:10px;color:#64748b;display:flex;justify-content:space-between}.empty{padding:24px;text-align:center;color:#64748b}
 /* The same five-column portrait layout is used for download and print. */
 td.count-cell{vertical-align:middle}
+.mini-head,.mini-row{align-items:center}
 .report-page{padding:32px 32px 48px}.report-footer{left:32px;right:32px}.brand{font-size:22px}.meta{font-size:10px}.summary{flex-wrap:wrap;gap:6px 24px;padding:9px 12px}
 th{padding:9px 5px}td{padding:10px 6px;font-size:11.5px;line-height:1.45}.school-code{font-size:10px;color:#0e7490;font-weight:700;letter-spacing:.2px}.school-name{font-weight:700;font-size:12px;line-height:1.4}.native-name{font-size:11px}.detail{font-size:10px;color:#64748b;line-height:1.5}.badge{font-size:9px;font-weight:700;margin-top:4px!important}.contact{font-size:10px;margin-top:5px}.place-name{font-weight:700}.incharge-label{font-size:9px;color:#0e7490;margin-top:12px!important;margin-bottom:3px!important}.supervisor-details{border-top:1px solid #dce6ed;margin-top:7px!important;padding-top:5px;font-size:9.5px}.supervisor-label{font-size:8.5px;color:#64748b}.supervisor-code{font-size:10px;font-weight:700;color:#0e7490}.supervisor-details .detail{font-size:9.5px;line-height:1.4}.continuation{font-size:9px;font-weight:700;color:#9a3412}
 .breakdown{border:1px solid #dbe5ed;border-radius:4px;overflow:hidden;background:#fff;font-size:10px;line-height:1.45}.breakdown-total{padding:5px 7px;background:#edf5fb;color:#174d75;font-weight:700}.breakdown-total b{font-size:13px}.mini-head,.mini-row{display:grid;grid-template-columns:minmax(0,1fr) minmax(24px,27%);gap:4px;padding:5px 6px}.mini-head{background:#f3f5f8;color:#64748b;font-size:8px;font-weight:700}.mini-row{border-top:1px solid #e7edf2;margin-top:0!important}.mini-row b,.mini-head span:last-child{text-align:end}.mini-row b{color:#174d75}.employees .breakdown-total{background:#eaf6f1;color:#166534}
@@ -103,29 +105,88 @@ async function loadCaptureFonts() {
   })().catch(()=>{captureFonts=null;throw Error('NR_FONTS');});
   return captureFonts;
 }
-export async function outputSchoolReport(report,{mode='download',language='en',tr=x=>x,signal,onProgress=()=>{}}={}) {
+async function prepareSchoolReport(report,{language,tr,signal}) {
   abort(signal);const frame=document.createElement('iframe');frame.title=tr('Niswan List');frame.setAttribute('aria-hidden','true');frame.setAttribute('sandbox','allow-same-origin allow-modals');frame.style.cssText='position:fixed;left:-15000px;top:0;width:793px;height:1122px;border:0;';
-  let keepForPrint=false,timer;
+  let timer;
   try {
     const loaded=new Promise((resolve,reject)=>{frame.onload=resolve;frame.onerror=()=>reject(Error('NR_UNAVAILABLE'));});
     frame.srcdoc=reportDocumentHtml(report,{language,tr});document.body.appendChild(frame);
     const timeout=new Promise((_,reject)=>{timer=setTimeout(()=>reject(Error('NR_FONTS')),25000);});
     await Promise.race([loaded,timeout]);
-    const pages=await Promise.race([paginateSchoolReport(frame.contentDocument,report,{tr,signal}),timeout]);clearTimeout(timer);abort(signal);
-    if(mode==='print') {
-      keepForPrint=true;const close=()=>frame.remove();frame.contentWindow.addEventListener('afterprint',close,{once:true});setTimeout(close,300000);
-      frame.contentWindow.focus();frame.contentWindow.print();return;
+    const pages=await Promise.race([paginateSchoolReport(frame.contentDocument,report,{tr,signal}),timeout]);abort(signal);
+    return {frame,pages};
+  } catch(error) {frame.remove();throw error;}
+  finally {clearTimeout(timer);}
+}
+async function schoolReportPdf(report,pages,{tr,signal,onProgress}) {
+  let timer;
+  try {
+    await Promise.race([loadCaptureFonts(),new Promise((_,reject)=>{timer=setTimeout(()=>reject(Error('NR_FONTS')),25000);})]);
+  } finally {clearTimeout(timer);}
+  abort(signal);
+  const [{default:html2canvas},{jsPDF}]=await Promise.all([import('html2canvas'),import('jspdf')]);
+  const pdf=new jsPDF({orientation:'portrait',unit:'mm',format:'a4',compress:true});
+  pdf.setProperties({title:tr('Niswan List'),author:'UNIS Academy',subject:report.supervisor?`${report.supervisor.code} - ${report.supervisor.name}`:tr(report.unassigned?'Unassigned Niswans':'All Supervisors')});
+  for(let i=0;i<pages.length;i++) {
+    abort(signal);onProgress(i+1,pages.length);
+    const canvas=await html2canvas(pages[i],{scale:2,backgroundColor:'#ffffff',logging:false,width:793,height:1122,windowWidth:793,windowHeight:1122,scrollX:0,scrollY:0});
+    try {abort(signal);if(i)pdf.addPage('a4','portrait');pdf.addImage(canvas.toDataURL('image/jpeg',0.96),'JPEG',0,0,210,297,undefined,'FAST');}
+    finally {canvas.width=0;canvas.height=0;}
+    await new Promise(resolve=>setTimeout(resolve,0));
+  }
+  abort(signal);return pdf;
+}
+function saveReportBlob(blob,fileName) {
+  const url=URL.createObjectURL(blob),link=document.createElement('a');
+  link.href=url;link.download=fileName;link.style.display='none';document.body.appendChild(link);
+  try {link.click();} finally {link.remove();setTimeout(()=>URL.revokeObjectURL(url),60000);}
+}
+export async function outputSchoolReport(report,{mode='download',groupBySupervisor=false,language='en',tr=x=>x,signal,onProgress=()=>{}}={}) {
+  abort(signal);
+  // Supervisor accounts always retain their own, server-scoped single report.
+  const grouped=groupBySupervisor&&report.showSupervisorDetails===true;
+  const reports=grouped?schoolSupervisorReports(report):[report];
+  if(!reports.length)throw Error('NR_EMPTY');
+  if(mode==='print') {
+    let first;
+    try {
+      for(let i=0;i<reports.length;i++) {
+        const prepared=await prepareSchoolReport(reports[i],{language,tr,signal});
+        if(!first)first=prepared;
+        else {
+          try {for(const page of prepared.pages)first.frame.contentDocument.body.appendChild(first.frame.contentDocument.importNode(page,true));}
+          finally {prepared.frame.remove();}
+        }
+        onProgress(i+1,reports.length);
+      }
+      abort(signal);
+      const frame=first.frame,close=()=>frame.remove();frame.contentWindow.addEventListener('afterprint',close,{once:true});
+      setTimeout(close,300000);frame.contentWindow.focus();frame.contentWindow.print();first=null;
+    } finally {first?.frame.remove();}
+    return;
+  }
+  let zip,chunks,zipError,zipFinished=false,ZipPassThrough;
+  try {
+    if(grouped) {
+      const lib=await import('fflate');ZipPassThrough=lib.ZipPassThrough;chunks=[];
+      zip=new lib.Zip((error,data,final)=>{if(error)zipError=error;else chunks.push(data);if(final)zipFinished=true;});
     }
-    await Promise.race([loadCaptureFonts(),new Promise((_,reject)=>{timer=setTimeout(()=>reject(Error('NR_FONTS')),25000);})]);clearTimeout(timer);abort(signal);
-    const [{default:html2canvas},{jsPDF}]=await Promise.all([import('html2canvas'),import('jspdf')]);
-    const pdf=new jsPDF({orientation:'portrait',unit:'mm',format:'a4',compress:true});pdf.setProperties({title:tr('Niswan List'),author:'UNIS Academy',subject:report.supervisor?`${report.supervisor.code} - ${report.supervisor.name}`:tr('All Supervisors')});
-    for(let i=0;i<pages.length;i++) {
-      abort(signal);onProgress(i+1,pages.length);
-      const canvas=await html2canvas(pages[i],{scale:2,backgroundColor:'#ffffff',logging:false,width:793,height:1122,windowWidth:793,windowHeight:1122,scrollX:0,scrollY:0});
-      try {abort(signal);if(i)pdf.addPage('a4','portrait');pdf.addImage(canvas.toDataURL('image/jpeg',0.96),'JPEG',0,0,210,297,undefined,'FAST');}
-      finally {canvas.width=0;canvas.height=0;}
-      await new Promise(resolve=>setTimeout(resolve,0));
+    for(let i=0;i<reports.length;i++) {
+      abort(signal);const current=reports[i],prepared=await prepareSchoolReport(current,{language,tr,signal});
+      try {
+        const pdf=await schoolReportPdf(current,prepared.pages,{tr,signal,onProgress:grouped?()=>{}:onProgress});
+        abort(signal);
+        if(grouped) {
+          const file=new ZipPassThrough(schoolReportFileName(current,i));zip.add(file);
+          file.push(new Uint8Array(pdf.output('arraybuffer')),true);if(zipError)throw zipError;
+          onProgress(i+1,reports.length);
+        } else pdf.save(schoolReportFileName(current));
+      } finally {prepared.frame.remove();}
     }
-    abort(signal);const stamp=new Date(report.generatedAt).toISOString().slice(0,10);pdf.save(`UNIS-Niswan-List-${stamp}.pdf`);
-  } finally {clearTimeout(timer);if(!keepForPrint)frame.remove();}
+    if(grouped) {
+      abort(signal);zip.end();if(zipError||!zipFinished)throw zipError||Error('NR_UNAVAILABLE');
+      const stamp=new Date(report.generatedAt).toISOString().slice(0,10);
+      saveReportBlob(new Blob(chunks,{type:'application/zip'}),`UNIS-Niswans-By-Supervisor-${stamp}.zip`);
+    }
+  } finally {zip?.terminate();}
 }

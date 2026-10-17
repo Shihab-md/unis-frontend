@@ -7,6 +7,7 @@ import {mkdtemp} from 'node:fs/promises';
 import {tmpdir} from 'node:os';
 import {schoolReportText,SCHOOL_REPORT_PHRASES,SCHOOL_REPORT_LANGUAGES} from '../src/i18n/schoolReportTranslations.js';
 import {reportDocumentHtml,reportRowHtml} from '../src/reports/schoolListReport.js';
+import {schoolSupervisorReports,schoolReportFileName} from '../src/reports/schoolSupervisorReports.js';
 const require=createRequire(import.meta.url),{JSDOM}=require('jsdom'),esbuild=require('esbuild');
 const dom=new JSDOM('<!doctype html><html><body></body></html>',{url:'https://local.test'});Object.assign(globalThis,{window:dom.window,document:dom.window.document,HTMLElement:dom.window.HTMLElement,MutationObserver:dom.window.MutationObserver});Object.defineProperty(globalThis,'navigator',{value:dom.window.navigator,configurable:true});globalThis.IS_REACT_ACT_ENVIRONMENT=true;globalThis.localStorage=window.localStorage;
 const React=require('react'),{render,screen,fireEvent,waitFor,cleanup,act}=require('@testing-library/react');
@@ -32,6 +33,43 @@ test('all user text is escaped, not executed, and zero counts remain zero',()=>{
 test('both report audiences keep five portrait columns and the requested headings',()=>{for(const show of [false,true]){const report={...fixture(),showSupervisorDetails:show};const d=new JSDOM(reportDocumentHtml(report,{fontBaseUrl:'https://local.test'})).window.document;assert.deepEqual([...d.querySelectorAll('th')].map(h=>h.textContent),['No.','Niswan Details','Place / In-charge','Students','Employees']);}});
 test('Supervisor details are per Niswan for HQ and absent from Supervisor rows',()=>{const row={...fixture().rows[0],supervisorCode:'SUP-001',supervisorName:'Supervisor தமிழ்',supervisorContact:'98765'};for(const show of [true,false]){const d=new JSDOM('<table><tbody>'+reportRowHtml(row,0,show,k=>k)+'</tbody></table>').window.document;assert.equal(d.querySelectorAll('.supervisor-details').length,show?1:0);if(show){assert(d.body.textContent.includes(row.supervisorCode));assert(d.body.textContent.includes(row.supervisorName));assert(d.body.textContent.includes(row.supervisorContact));}}});
 test('course and role breakdowns preserve unique totals, zeros, names and safe text',()=>{const row={...fixture().rows[0],studentCount:3,employeeCount:2,studentCountsByCourse:[{courseName:'தமிழ் / العربية',count:3},{courseName:'<img src=x onerror=alert(1)>',count:2},{courseName:'Zero',count:0}],employeeCountsByRole:[{role:'Teacher',count:1},{role:'Admin',count:1}]};const d=new JSDOM('<table><tbody>'+reportRowHtml(row,0,false,k=>k)+'</tbody></table>').window.document;assert.equal(d.querySelector('.students .breakdown-total b').textContent,'3');assert.equal(d.querySelectorAll('.students .mini-row').length,3);assert(d.body.textContent.includes('தமிழ் / العربية'));assert.equal(d.querySelector('img'),null);assert.equal([...d.querySelectorAll('.students .mini-row b')].map(n=>n.textContent).join(','),'3,2,0');assert.equal(d.querySelector('.employees .breakdown-total b').textContent,'2');assert.equal(d.querySelectorAll('.employees .mini-row').length,2);});
+
+for(const role of ['superadmin','hqadmin'])test(`${role} downloads a ZIP for all Supervisors and a PDF for one Supervisor`,async()=>{
+ setup('ta');globalThis.N_ROLE=role;
+ const view=render(React.createElement(Actions,{filters:{...filters,supervisorId:''}}));
+ fireEvent.click(screen.getByRole('button',{name:schoolReportText('Download Supervisor PDFs (ZIP)','ta')}));
+ await waitFor(()=>assert.equal(globalThis.N_OUTPUT_CALLS.length,1));assert.equal(globalThis.N_OUTPUT_CALLS[0][1].groupBySupervisor,true);assert.equal(globalThis.N_OUTPUT_CALLS[0][1].mode,'download');assert.deepEqual(globalThis.N_FETCH_CALLS[0][0],{...filters,supervisorId:''});
+ await waitFor(()=>assert(!screen.getByRole('button',{name:schoolReportText('Print','ta')}).disabled));
+ view.rerender(React.createElement(Actions,{filters}));fireEvent.click(screen.getByRole('button',{name:schoolReportText('Download PDF','ta')}));
+ await waitFor(()=>assert.equal(globalThis.N_OUTPUT_CALLS.length,2));assert.equal(globalThis.N_OUTPUT_CALLS[1][1].groupBySupervisor,false);assert.deepEqual(globalThis.N_FETCH_CALLS[1][0],filters);
+});
+test('Supervisor export never requests grouped downloads, even without a list filter',async()=>{
+ setup();render(React.createElement(Actions,{filters:{status:'Active',supervisorId:''}}));fireEvent.click(screen.getByRole('button',{name:'Download PDF'}));await waitFor(()=>assert.equal(globalThis.N_OUTPUT_CALLS.length,1));assert.equal(globalThis.N_OUTPUT_CALLS[0][1].groupBySupervisor,false);
+});
+for(const supervisorId of [null,undefined,'null','undefined','  '])test(`HQ treats saved empty Supervisor filter ${String(supervisorId)} as All Supervisors`,async()=>{
+ setup();globalThis.N_ROLE='hqadmin';render(React.createElement(Actions,{filters:{...filters,supervisorId}}));
+ fireEvent.click(screen.getByRole('button',{name:'Download Supervisor PDFs (ZIP)'}));await waitFor(()=>assert.equal(globalThis.N_OUTPUT_CALLS.length,1));assert.equal(globalThis.N_OUTPUT_CALLS[0][1].groupBySupervisor,true);
+});
+test('HQ print requests separate Supervisor sections without changing current filters',async()=>{
+ setup();globalThis.N_ROLE='hqadmin';render(React.createElement(Actions,{filters:{...filters,supervisorId:''}}));fireEvent.click(screen.getByRole('button',{name:'Print'}));await waitFor(()=>assert.equal(globalThis.N_OUTPUT_CALLS.length,1));assert.equal(globalThis.N_OUTPUT_CALLS[0][1].groupBySupervisor,true);assert.equal(globalThis.N_OUTPUT_CALLS[0][1].mode,'print');
+});
+test('grouping keeps duplicate Supervisor codes separate and all unassigned rows, with independent unique totals',()=>{
+ const row=fixture().rows[0],report={...fixture(),showSupervisorDetails:true,rows:[
+  {...row,code:'A',supervisorRecordId:'record-a',supervisorCode:'S-001',supervisorName:'தமிழ்',supervisorContact:'123',studentCount:3,employeeCount:1,studentCountsByCourse:[{courseName:'A',count:3},{courseName:'B',count:2}]},
+  {...row,code:'B',supervisorRecordId:'record-b',supervisorCode:'S-001',supervisorName:'العربية',studentCount:7,employeeCount:2},
+  {...row,code:'C',supervisorRecordId:'record-a',supervisorCode:'S-001',studentCount:2,employeeCount:3},
+  {...row,code:'D',supervisorRecordId:'',studentCount:4,employeeCount:0},
+  {...row,code:'E',supervisorRecordId:null,studentCount:0,employeeCount:0},
+ ]};const before=JSON.stringify(report),groups=schoolSupervisorReports(report);
+ assert.equal(JSON.stringify(report),before);assert.equal(groups.length,3);assert.deepEqual(groups.flatMap(g=>g.rows.map(r=>r.code)).sort(),['A','B','C','D','E']);
+ const a=groups.find(g=>g.supervisor?.recordId==='record-a');assert.deepEqual(a.rows.map(r=>r.code),['A','C']);assert.equal(a.totalNiswans,2);assert.equal(a.totalStudents,5);assert.equal(a.totalStaff,4);assert.equal(a.supervisor.contact,'123');assert.equal(a.filters.search,report.filters.search);assert.equal(a.filters.status,report.filters.status);assert.equal(a.showSupervisorDetails,true);
+ const unassigned=groups.at(-1);assert(unassigned.unassigned);assert.equal(unassigned.supervisor,null);assert.equal(unassigned.totalNiswans,2);assert.equal(unassigned.totalStudents,4);assert.equal(unassigned.filters.supervisorId,'');
+ const html=reportDocumentHtml(unassigned,{fontBaseUrl:'https://local.test'});assert(html.includes('Unassigned Niswans'));assert(!html.includes('All Supervisors'));
+ assert.equal(new Set(groups.map((g,i)=>schoolReportFileName(g,i))).size,3);
+});
+test('PDF names cannot introduce archive paths or overwrite duplicate display codes',()=>{
+ const report={...fixture(),supervisor:{code:'../SUP/\\evil:<script>.. '}};const name=schoolReportFileName(report,0);assert(!/[\\/:*?"<>|]/.test(name));assert(name.startsWith('UNIS-Niswan-List-001-'));assert(name.endsWith('-2026-10-17.pdf'));assert.notEqual(name,schoolReportFileName(report,1));
+});
 
 
 const listOutput=join(tmp,'list.cjs');
