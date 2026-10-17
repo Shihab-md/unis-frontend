@@ -1,3 +1,4 @@
+import { MONTHLY_TA_PHRASES } from "./monthlyTravelAllowanceTranslations.js";
 // Explicit UTF-8 translations. User-entered names, journeys and evidence are
 // never passed through translation or normalization.
 export const TA_LANGUAGES = ["en", "ta", "ur", "ar", "ml", "kn", "te"];
@@ -120,3 +121,6 @@ const permissions = [
 ["Approve, reject or return another staff member's claim. Self-approval is blocked.","மற்றொரு பணியாளரின் கோரிக்கையை ஒப்புதல் அளிக்கவும், நிராகரிக்கவும் அல்லது திருப்பவும். சொந்த கோரிக்கைக்கு நீங்களே ஒப்புதல் அளிக்க முடியாது.","دوسرے ملازم کا دعویٰ منظور، مسترد یا واپس کریں۔ اپنے دعوے کی منظوری ممنوع ہے۔","اعتماد مطالبة موظف آخر أو رفضها أو إعادتها. لا يُسمح بالاعتماد الذاتي.","മറ്റൊരു ജീവനക്കാരന്റെ അപേക്ഷ അംഗീകരിക്കുക, നിരസിക്കുക അല്ലെങ്കിൽ മടക്കുക. സ്വന്തം അപേക്ഷ അംഗീകരിക്കാനാവില്ല.","ಮತ್ತೊಬ್ಬ ಸಿಬ್ಬಂದಿಯ ಅರ್ಜಿಯನ್ನು ಅನುಮೋದಿಸಿ, ತಿರಸ್ಕರಿಸಿ ಅಥವಾ ಹಿಂದಿರುಗಿಸಿ. ಸ್ವಂತ ಅರ್ಜಿಯನ್ನು ಅನುಮೋದಿಸಲು ಸಾಧ್ಯವಿಲ್ಲ.","మరొక సిబ్బంది అభ్యర్థనను ఆమోదించండి, తిరస్కరించండి లేదా తిరిగి పంపండి. స్వంత అభ్యర్థనను ఆమోదించలేరు."],
 ];
 for (const row of permissions) TA_PHRASES[row[0]] = Object.fromEntries(TA_LANGUAGES.map((lang, i) => [lang, row[i]]));
+
+Object.assign(TA_PHRASES, MONTHLY_TA_PHRASES);
+for (const [key, values] of Object.entries(MONTHLY_TA_PHRASES)) if (key.startsWith("TA_")) TA_ERRORS[key] = values.en;

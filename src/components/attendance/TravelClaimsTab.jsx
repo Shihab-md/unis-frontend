@@ -1,3 +1,4 @@
+import * as XLSX from "xlsx";
 import React, { useEffect, useRef, useState } from "react";
 import { useAuth } from "../../context/AuthContext";
 import { useLanguage } from "../../i18n/LanguageContext";
@@ -5,174 +6,154 @@ import { taText, TA_PHRASES } from "../../i18n/travelAllowanceTranslations";
 import { taRequest } from "../../api/travelClaimApi";
 import { AttendancePanel, PrimaryButton, SecondaryButton, DangerButton, Input, TextArea, currentMonthKey } from "./AttendanceCommon";
 
-const empty = () => ({ fromDateKey: "", toDateKey: "", fromPlace: "", toPlace: "", purpose: "", transport: "", expenses: [{ description: "", amount: "" }] });
-const toForm = (claim) => ({ ...claim, expenses: claim.expenses.map((e) => ({ description: e.description, amount: (e.amountPaise / 100).toFixed(2) })) });
-const statuses = ["Draft", "Submitted", "Returned", "Approved", "PayrollReserved", "Paid", "Rejected", "Cancelled"];
+const statuses = ["Submitted", "Approved", "Rejected"];
 const locales = { en: "en-IN", ta: "ta-IN", ur: "ur-IN", ar: "ar", ml: "ml-IN", kn: "kn-IN", te: "te-IN" };
+const blank = (monthKey) => ({ monthKey, amount: "", description: "" });
 
 export default function TravelClaimsTab({ review = false }) {
   const { user } = useAuth();
   const { language, tr, direction } = useLanguage();
-  const tt = (key) => TA_PHRASES[key] ? taText(key, language) : tr(key);
+  const tt = (key) => {
+    const label = ({ hqadmin: "HQ Admin", hquser: "HQ User", hqstaff: "HQ Staff", accountant: "Accountant", supervisor: "Supervisor" })[key] || key;
+    return TA_PHRASES[label] ? taText(label, language) : tr(label);
+  };
   const money = (paise) => new Intl.NumberFormat(locales[language] || "en-IN", { style: "currency", currency: "INR" }).format(Number(paise || 0) / 100);
-  const [meta, setMeta] = useState(null), [claims, setClaims] = useState([]), [claim, setClaim] = useState(null);
-  const [form, setForm] = useState(empty), [editing, setEditing] = useState(false), [busy, setBusy] = useState(false), [loading, setLoading] = useState(true);
-  const [error, setError] = useState(""), [message, setMessage] = useState(""), [status, setStatus] = useState(review ? "Submitted" : "");
-  const [cursor, setCursor] = useState(""), [nextCursor, setNextCursor] = useState(null), [previous, setPrevious] = useState([]), [reload, setReload] = useState(0);
-  const [decision, setDecision] = useState({ approvedAmount: "", settlementMonth: currentMonthKey(), reason: "" });
-  const [confirmation, setConfirmation] = useState(null);
-  const requestKey = useRef(""), working = useRef(false), detailsRequest = useRef(0), alive = useRef(true);
-  const fileInput = useRef(null);
+  const [meta, setMeta] = useState(null), [claims, setClaims] = useState([]), [claim, setClaim] = useState(null), [report, setReport] = useState(null);
+  const [monthKey, setMonth] = useState(currentMonthKey), [status, setStatus] = useState(""), [category, setCategory] = useState(""), [search, setSearch] = useState("");
+  const [view, setView] = useState("requests"), [page, setPage] = useState(1), [cursor, setCursor] = useState(""), [previous, setPrevious] = useState([]), [nextCursor, setNextCursor] = useState(null);
+  const [form, setForm] = useState(() => blank(currentMonthKey())), [editing, setEditing] = useState(false), [files, setFiles] = useState([]), [kept, setKept] = useState([]);
+  const [busy, setBusy] = useState(false), [loading, setLoading] = useState(true), [error, setError] = useState(""), [message, setMessage] = useState(""), [reload, setReload] = useState(0);
+  const [reason, setReason] = useState(""), [confirmation, setConfirmation] = useState(null);
+  const working = useRef(false), alive = useRef(true), detailsRequest = useRef(0), upload = useRef(null), requestKey = useRef("");
+  const blocked = busy || Boolean(confirmation);
   const reportError = (failure) => setError((failure?.response?.data?.code?.startsWith("TA_") ? failure.response.data.code : null) || ({ 401: "Session expired. Please login again.", 403: "TA_FORBIDDEN", 404: "TA_NOT_FOUND", 413: "TA_INVALID_FILE" }[failure?.response?.status]) || "TA_UNAVAILABLE");
   useEffect(() => { alive.current = true; return () => { alive.current = false; detailsRequest.current += 1; }; }, []);
   useEffect(() => {
-    const controller = new AbortController();
-    setLoading(true); setError("");
+    const controller = new AbortController(); setLoading(true); setError(""); setClaims([]); setReport(null);
     (async () => {
       try {
         const access = await taRequest("GET", "/meta", undefined, { signal: controller.signal });
         if (!alive.current || controller.signal.aborted) return;
         setMeta(access.data);
-        if (review ? !access.data.canReview : !access.data.canViewOwn) { setClaims([]); return; }
-        const data = await taRequest("GET", review ? "/review" : "/mine", undefined, { params: { status, before: cursor }, signal: controller.signal });
+        if (review ? !access.data.canReview : !access.data.canViewOwn) return;
+        const params = { monthKey, status: status === "Not submitted" ? "" : status, category, search, before: cursor };
+        const [records, monthly] = await Promise.all([
+          taRequest("GET", review ? "/review" : "/mine", undefined, { params, signal: controller.signal }),
+          review ? taRequest("GET", "/monthly-report", undefined, { params: { monthKey, status, category, search, page }, signal: controller.signal }) : Promise.resolve(null),
+        ]);
         if (!alive.current || controller.signal.aborted) return;
-        setClaims(data.data.claims); setNextCursor(data.data.nextCursor);
+        setClaims(records.data.claims); setNextCursor(records.data.nextCursor); setReport(monthly?.data || null);
       } catch (failure) { if (!controller.signal.aborted && alive.current) reportError(failure); }
       finally { if (!controller.signal.aborted && alive.current) setLoading(false); }
-    })();
-    return () => controller.abort();
-  }, [review, status, cursor, reload]);
-  useEffect(() => { setClaim(null); setEditing(false); setConfirmation(null); setCursor(""); setPrevious([]); setStatus(review ? "Submitted" : ""); }, [review]);
-
+    })(); return () => controller.abort();
+  }, [review, monthKey, status, category, search, cursor, page, reload]);
+  useEffect(() => { setClaim(null); setEditing(false); setConfirmation(null); setView("requests"); setStatus(""); }, [review]);
+  const resetPages = () => { setCursor(""); setPrevious([]); setPage(1); setClaim(null); detailsRequest.current += 1; };
   const choose = async (record) => {
     if (working.current) return;
-    const sequence = ++detailsRequest.current;
-    setClaim(null); setEditing(false); setConfirmation(null); setError(""); setMessage(""); setBusy(true);
+    const sequence = ++detailsRequest.current; setBusy(true); setClaim(null); setError(""); setMessage(""); setReason("");
     try {
-      const data = await taRequest("GET", `/${record._id}`);
-      if (!alive.current || sequence !== detailsRequest.current) return;
-      setClaim(data.data.claim); setDecision({ approvedAmount: (data.data.claim.requestedAmountPaise / 100).toFixed(2), settlementMonth: currentMonthKey(), reason: "" });
+      const result = await taRequest("GET", `/${record.claimId || record._id}`);
+      if (alive.current && sequence === detailsRequest.current) setClaim(result.data.claim);
     } catch (failure) { if (alive.current && sequence === detailsRequest.current) reportError(failure); }
     finally { if (alive.current && sequence === detailsRequest.current) setBusy(false); }
   };
-  const perform = async (method, path, data) => {
+  const start = (existing = null) => {
+    detailsRequest.current += 1; setClaim(existing); setForm(existing ? { monthKey: existing.monthKey, amount: (existing.requestedAmountPaise / 100).toFixed(2), description: existing.description } : blank(monthKey));
+    setKept(existing?.evidence || []); setFiles([]); setEditing(true); setError(""); setMessage(""); upload.current = null; requestKey.current = window.crypto.randomUUID();
+  };
+  const finish = (record) => { setClaim(record); setEditing(false); setConfirmation(null); setMessage("TA changes saved."); setReload((n) => n + 1); };
+  const execute = async (action) => {
     if (working.current) return;
     working.current = true; setBusy(true); setError(""); setMessage(""); setConfirmation(null);
-    try {
-      const result = await taRequest(method, path, data);
-      if (!alive.current) return;
-      setClaim(result.data.claim); setEditing(false); setMessage("TA changes saved."); setReload((n) => n + 1);
-    } catch (failure) { if (alive.current) reportError(failure); }
+    try { await action(); } catch (failure) { if (alive.current) reportError(failure); }
     finally { working.current = false; if (alive.current) setBusy(false); }
   };
-  const ask = (callback, label = "Confirm TA action?") => setConfirmation({ run: callback, label });
+  const submit = () => execute(async () => {
+    // Preparation is idempotent and also reconciles an upload/submit timeout.
+    const prepared = await taRequest("POST", "/uploads", { requestKey: requestKey.current, monthKey: form.monthKey, ...(claim ? { claimId: claim._id } : {}) });
+    upload.current = prepared.data.upload;
+    if (upload.current.submittedClaimId) {
+      const saved = await taRequest("GET", `/${upload.current.submittedClaimId}`); if (alive.current) finish(saved.data.claim); return;
+    }
+    const desired = new Set(files.map((entry) => entry.key));
+    for (const staged of upload.current.files) if (!desired.has(staged.uploadKey)) {
+      const result = await taRequest("DELETE", `/uploads/${upload.current._id}/files/${staged._id}`, { revision: upload.current.revision }); upload.current = result.data.upload;
+    }
+    for (const entry of files) if (!upload.current.files.some((file) => file.uploadKey === entry.key)) {
+      const data = new FormData(); data.append("file", entry.file); data.append("uploadKey", entry.key); data.append("revision", String(upload.current.revision)); data.append("originalName", entry.file.name);
+      const result = await taRequest("POST", `/uploads/${upload.current._id}/files`, data); upload.current = result.data.upload;
+    }
+    const result = await taRequest("POST", "/submit", { ...form, uploadSessionId: upload.current._id, requestKey: requestKey.current,
+      sessionRevision: upload.current.revision, fileKeys: files.map((entry) => entry.key), keptEvidenceIds: kept.map((file) => file._id), ...(claim ? { claimRevision: claim.revision } : {}) });
+    if (alive.current) finish(result.data.claim);
+  });
+  const decide = (decision) => execute(async () => {
+    const result = await taRequest("POST", `/${claim._id}/decision`, { revision: claim.revision, decision, reason }); if (alive.current) finish(result.data.claim);
+  });
+  const selectFiles = (event) => {
+    const additions = Array.from(event.target.files || []); event.target.value = "";
+    if (files.length + kept.length + additions.length > 5) { setError("TA_EVIDENCE_LIMIT"); return; }
+    if (additions.some((file) => file.size <= 0 || file.size > 3 * 1024 * 1024 || !["application/pdf", "image/jpeg", "image/png"].includes(file.type))) { setError("TA_INVALID_FILE"); return; }
+    setFiles((value) => [...value, ...additions.map((file) => ({ key: window.crypto.randomUUID(), file }))]); setError("");
+  };
+  const download = (file) => execute(async () => {
+    const result = await taRequest("GET", `/${claim._id}/evidence/${file._id}`, undefined, { responseType: "blob" });
+    const url = URL.createObjectURL(result.data), link = document.createElement("a"); link.href = url; link.download = file.name; document.body.appendChild(link); link.click(); link.remove(); setTimeout(() => URL.revokeObjectURL(url), 1000);
+  });
+  const exportReport = () => execute(async () => {
+    const result = await taRequest("GET", "/monthly-report/export", undefined, { params: { monthKey, status, category, search } });
+    const columns = ["Month", "Name", "Employee ID", "Supervisor ID", "Role", "Status", "Requested Amount", "Approved Amount", "Claim Count"];
+    const data = result.data.rows.map((row) => [row.monthKey, row.name, row.employeeId, row.supervisorId, tt(row.role), tt(row.status), row.requestedAmountPaise / 100, row.approvedAmountPaise / 100, row.claimCount]);
+    // aoa_to_sheet stores text as string cells, including names starting with '='.
+    const sheet = XLSX.utils.aoa_to_sheet([columns.map(tt), ...data]); const book = XLSX.utils.book_new(); XLSX.utils.book_append_sheet(book, sheet, "TA"); XLSX.writeFile(book, `TA-${monthKey}.xlsx`);
+  });
   const own = claim && String(claim.userId) === String(user?._id);
-  const editable = own && meta?.canManageOwn && ["Draft", "Returned"].includes(claim.status);
   const canDecide = review && meta?.canApprove && claim?.status === "Submitted" && !own;
-  const field = (key, label, type = "text", maxLength = 200) => (
-    <label className="block text-xs text-slate-600" key={key}>{tt(label)}
-      <Input aria-label={tt(label)} type={type} maxLength={maxLength} value={form[key]} disabled={busy || Boolean(confirmation)}
-        onChange={(e) => setForm((f) => ({ ...f, [key]: e.target.value }))} dir={type === "date" ? "ltr" : "auto"} />
-    </label>
-  );
-
-  const uploadEvidence = async (file) => {
-    if (!file || busy || !claim) return;
-    if (file.size > 3 * 1024 * 1024 || !["application/pdf", "image/jpeg", "image/png"].includes(file.type)) { setError("TA_INVALID_FILE"); return; }
-    const data = new FormData(); data.append("file", file); data.append("uploadKey", window.crypto.randomUUID()); data.append("revision", String(claim.revision)); data.append("originalName", file.name);
-    await perform("POST", `/${claim._id}/evidence`, data);
-  };
-  const downloadEvidence = async (file) => {
-    if (working.current) return;
-    working.current = true; setBusy(true); setError("");
-    try {
-      const result = await taRequest("GET", `/${claim._id}/evidence/${file._id}`, undefined, { responseType: "blob" });
-      const url = URL.createObjectURL(result.data); const link = document.createElement("a"); link.href = url; link.download = file.name;
-      document.body.appendChild(link); link.click(); link.remove(); setTimeout(() => URL.revokeObjectURL(url), 1000);
-    } catch (failure) {
-      if (alive.current) {
-        try { const body = JSON.parse(await failure.response.data.text()); setError(body.code || "TA_UNAVAILABLE"); }
-        catch { setError("TA_UNAVAILABLE"); }
-      }
-    } finally { working.current = false; if (alive.current) setBusy(false); }
-  };
-
+  const askSubmit = (event) => { event.preventDefault(); if (!kept.length && !files.length) { setError("TA_EVIDENCE_REQUIRED"); return; } setConfirmation({ run: submit }); };
+  const fieldDisabled = blocked || Boolean(upload.current); // A started upload is bound to its month.
+  const showRoster = review && (view === "register" || status === "Not submitted");
   return <div className="space-y-4" dir={direction}>
-    <AttendancePanel title={tt(review ? "TA Approvals" : "My TA Claims")} subtitle={tt("Approved claims are paid once through payroll. Fixed TA is no longer added.")}>
+    <AttendancePanel title={tt(review ? "TA Approvals" : "My TA Claims")} subtitle={tt("Monthly TA is paid once through payroll after approval.")}>
       <div className="flex flex-wrap items-end gap-3">
-        <label className="text-xs text-slate-600">{tr("Status")}
-          <select aria-label={tr("Status")} value={status} disabled={busy || editing || Boolean(confirmation)} className="block rounded border p-2" onChange={(e) => { setConfirmation(null); setStatus(e.target.value); setCursor(""); setPrevious([]); }}>
-            <option value="">{tr("All")}</option>{statuses.map((value) => <option key={value} value={value}>{tt(value) === value ? tr(value) : tt(value)}</option>)}
-          </select>
-        </label>
-        <SecondaryButton disabled={busy || editing || Boolean(confirmation) || loading} onClick={() => { setClaim(null); setEditing(false); setConfirmation(null); setReload((n) => n + 1); }}>{tr("Refresh")}</SecondaryButton>
-        {!review && meta?.canManageOwn && <PrimaryButton disabled={busy || editing || Boolean(confirmation)} onClick={() => { detailsRequest.current += 1; setClaim(null); setForm(empty()); setEditing(true); setError(""); setMessage(""); requestKey.current = window.crypto.randomUUID(); }}>{tt("New TA Claim")}</PrimaryButton>}
+        <label>{tt("Month")}<Input aria-label={tt("Filter Month")} type="month" value={monthKey} disabled={blocked || editing} onChange={(e) => { setMonth(e.target.value); resetPages(); }} dir="ltr" /></label>
+        <label>{tt("Status")}<select aria-label={tt("Status")} className="block rounded border p-2" value={status} disabled={blocked || editing} onChange={(e) => { setStatus(e.target.value); resetPages(); }}><option value="">{tt("All")}</option>{[...statuses, ...(review ? ["Not submitted"] : [])].map((value) => <option key={value} value={value}>{tt(value)}</option>)}</select></label>
+        {review && <><label>{tt("Category")}<select aria-label={tt("Category")} className="block rounded border p-2" value={category} disabled={blocked || editing} onChange={(e) => { setCategory(e.target.value); resetPages(); }}><option value="">{tt("All")}</option>{["Employee", "Supervisor"].map((value) => <option key={value} value={value}>{tt(value)}</option>)}</select></label>
+          <label>{tt("Search")}<Input aria-label={tt("Search")} value={search} maxLength={100} disabled={blocked || editing} onChange={(e) => { setSearch(e.target.value); resetPages(); }} /></label>
+          <SecondaryButton type="button" disabled={blocked || editing || loading} onClick={() => { setView((value) => value === "requests" ? "register" : "requests"); resetPages(); }}>{tt(showRoster ? "TA Requests" : "Monthly Register")}</SecondaryButton>
+          <SecondaryButton type="button" disabled={blocked || editing || loading || !meta?.canReview} onClick={exportReport}>{tt("Export Excel")}</SecondaryButton></>}
+        <SecondaryButton type="button" disabled={blocked || editing || loading} onClick={() => { resetPages(); setReload((n) => n + 1); }}>{tt("Refresh")}</SecondaryButton>
+        {!review && meta?.canManageOwn && <PrimaryButton disabled={blocked || editing || loading} onClick={() => start()}>{tt("New TA Claim")}</PrimaryButton>}
       </div>
-      {loading && <p role="status" className="mt-3">{tr("Loading...")}</p>}
-      {!loading && meta && (review ? !meta.canReview : !meta.canViewOwn) && <p role="alert" className="mt-3 text-red-700">{tt("TA_FORBIDDEN")}</p>}
-      {!loading && claims.length === 0 && <p className="mt-3 text-slate-500">{tt("No TA claims found.")}</p>}
-      <div className="mt-4 grid gap-3 md:grid-cols-2 xl:grid-cols-3">{claims.map((record) => <button type="button" key={record._id} onClick={() => choose(record)} disabled={busy || editing || Boolean(confirmation)}
-        className="min-w-0 rounded-lg border bg-slate-50 p-3 text-start hover:border-blue-600 disabled:opacity-60">
-        <div className="break-all text-xs font-semibold text-blue-700"><bdi>{record.claimNumber}</bdi></div>
-        {review && <div className="mt-1 font-semibold"><bdi>{record.name}</bdi> <bdi className="text-xs text-slate-500">{record.staffCode}</bdi></div>}
-        <div className="mt-2 text-xs">{tt(record.status) === record.status ? tr(record.status) : tt(record.status)}</div>
-        <div className="mt-2 font-bold">{money(record.requestedAmountPaise)}</div>
-        <div className="mt-1 text-xs text-slate-500"><bdi>{record.fromDateKey}</bdi> / <bdi>{record.toDateKey}</bdi></div>
-      </button>)}</div>
-      <div className="mt-4 flex gap-2">
-        <SecondaryButton disabled={busy || editing || Boolean(confirmation) || !previous.length} onClick={() => { setCursor(previous.at(-1)); setPrevious((rows) => rows.slice(0, -1)); }}>{tr("Previous")}</SecondaryButton>
-        <SecondaryButton disabled={busy || editing || Boolean(confirmation) || !nextCursor} onClick={() => { setPrevious((rows) => [...rows, cursor]); setCursor(nextCursor); }}>{tr("Next")}</SecondaryButton>
-      </div>
+      {review && report && <><div className="my-4 flex flex-wrap gap-4" aria-label={tt("Monthly Summary")}>{[["Eligible Staff", "eligible"], ["Submitted", "submitted"], ["Approved", "approved"], ["Rejected", "rejected"], ["Not submitted", "notSubmitted"]].map(([label, key]) => <span key={key}>{tt(label)}: <strong>{report.summary[key]}</strong></span>)}</div><p className="text-xs text-slate-500">{tt("Register counts use current active eligible HQ staff.")}</p></>}
+      {loading && <p role="status">{tt("Loading...")}</p>}
+      {!loading && meta && (review ? !meta.canReview : !meta.canViewOwn) && <p role="alert">{tt("TA_FORBIDDEN")}</p>}
+      {!loading && showRoster && report && <div className="mt-3 overflow-x-auto"><table className="w-full text-start text-sm"><thead><tr>{["Name", "Employee ID", "Supervisor ID", "Role", "Status", "Requested Amount", "Approved Amount"].map((label) => <th className="p-2 text-start" key={label}>{tt(label)}</th>)}</tr></thead><tbody>{report.rows.map((row) => <tr key={`${row.staffType}:${row.staffId}`} className="border-t"><td className="p-2">{row.claimId ? <button disabled={blocked || editing} type="button" onClick={() => choose(row)} className="text-blue-700 underline"><bdi>{row.name}</bdi></button> : <bdi>{row.name}</bdi>}</td><td><bdi>{row.employeeId || "—"}</bdi></td><td><bdi>{row.supervisorId || "—"}</bdi></td><td>{tt(row.role)}</td><td>{tt(row.status)}</td><td>{money(row.requestedAmountPaise)}</td><td>{money(row.approvedAmountPaise)}</td></tr>)}</tbody></table>{report.rows.length === 0 && <p>{tt("No TA claims found.")}</p>}</div>}
+      {!loading && !showRoster && <div className="mt-4 grid gap-3 md:grid-cols-2">{claims.map((record) => <button type="button" disabled={blocked || editing} key={record._id} onClick={() => choose(record)} className="rounded border p-3 text-start disabled:opacity-60"><bdi className="break-all text-xs text-blue-700">{record.claimNumber}</bdi>{review && <><div><bdi>{record.name}</bdi></div><div className="text-xs">{tt("Employee ID")}: <bdi>{record.employeeId || "—"}</bdi> · {tt("Supervisor ID")}: <bdi>{record.supervisorId || "—"}</bdi></div><div>{tt(record.role || record.staffType)}</div></>}<div><bdi>{record.monthKey}</bdi> · {tt(record.status)} · {money(record.requestedAmountPaise)}</div><div className="text-xs">{tt("Submitted On")}: <bdi>{record.submittedAt ? new Date(record.submittedAt).toLocaleDateString(locales[language] || "en-IN") : "—"}</bdi></div></button>)}{claims.length === 0 && <p>{tt("No TA claims found.")}</p>}</div>}
+      <div className="mt-3 flex gap-2"><SecondaryButton type="button" disabled={blocked || editing || loading || (showRoster ? page <= 1 : previous.length === 0)} onClick={() => { setClaim(null); if (showRoster) setPage((n) => n - 1); else { setCursor(previous.at(-1)); setPrevious((value) => value.slice(0, -1)); } }}>{tt("Previous")}</SecondaryButton><SecondaryButton type="button" disabled={blocked || editing || loading || (showRoster ? !report || page * 25 >= report.total : !nextCursor)} onClick={() => { setClaim(null); if (showRoster) setPage((n) => n + 1); else { setPrevious((value) => [...value, cursor]); setCursor(nextCursor); } }}>{tt("Next")}</SecondaryButton></div>
     </AttendancePanel>
-    {error && <p role="alert" className="rounded border border-red-200 bg-red-50 p-3 text-sm text-red-800">{tt(error)}</p>}
-    {message && <p role="status" className="rounded bg-green-50 p-3 text-sm text-green-800">{tt(message)}</p>}
-    {editing && <AttendancePanel title={tt(claim ? "Edit" : "New TA Claim")}>
-      <form noValidate onSubmit={(e) => { e.preventDefault(); perform(claim ? "PATCH" : "POST", claim ? `/${claim._id}` : "/", { ...form, revision: claim?.revision, requestKey: requestKey.current }); }}>
-        <fieldset disabled={busy || Boolean(confirmation)} className="space-y-4">
-          <div className="grid gap-3 sm:grid-cols-2">{field("fromDateKey", "Journey Start", "date")}{field("toDateKey", "Journey End", "date")}{field("fromPlace", "From Place")}{field("toPlace", "To Place")}{field("transport", "Transport Mode", "text", 100)}</div>
-          <label className="block text-xs text-slate-600">{tt("Travel Purpose")}<TextArea aria-label={tt("Travel Purpose")} dir="auto" maxLength={1000} value={form.purpose} onChange={(e) => setForm((f) => ({ ...f, purpose: e.target.value }))} /></label>
-          {form.expenses.map((expense, index) => <div className="grid gap-2 sm:grid-cols-[1fr_140px_auto] items-end" key={index}>
-            <label className="text-xs text-slate-600">{tt("Expense Description")}<Input dir="auto" aria-label={`${tt("Expense Description")} ${index + 1}`} maxLength={200} value={expense.description} onChange={(e) => setForm((f) => ({ ...f, expenses: f.expenses.map((row, i) => i === index ? { ...row, description: e.target.value } : row) }))} /></label>
-            <label className="text-xs text-slate-600">{tr("Amount")} (INR)<Input dir="ltr" aria-label={`${tr("Amount")} ${index + 1}`} inputMode="decimal" maxLength={11} value={expense.amount} onChange={(e) => setForm((f) => ({ ...f, expenses: f.expenses.map((row, i) => i === index ? { ...row, amount: e.target.value } : row) }))} /></label>
-            <DangerButton type="button" disabled={form.expenses.length === 1} onClick={() => setForm((f) => ({ ...f, expenses: f.expenses.filter((_, i) => i !== index) }))}>{tt("Remove Expense")}</DangerButton>
-          </div>)}
-          <SecondaryButton type="button" disabled={form.expenses.length >= 20} onClick={() => setForm((f) => ({ ...f, expenses: [...f.expenses, { description: "", amount: "" }] }))}>{tt("Add Expense")}</SecondaryButton>
-          <div className="flex flex-wrap gap-2"><PrimaryButton type="submit">{tt("Save Draft")}</PrimaryButton><SecondaryButton type="button" onClick={() => setEditing(false)}>{tr("Cancel")}</SecondaryButton></div>
-        </fieldset>
-      </form>
+    {error && <p role="alert" className="rounded border border-red-300 bg-red-50 p-3 text-red-800">{tt(error)}</p>}
+    {message && <p role="status" className="text-green-700">{tt(message)}</p>}
+    {editing && <AttendancePanel title={tt(claim ? "Resubmit Claim" : "New TA Claim")}><form onSubmit={askSubmit} className="space-y-3">
+      <div><bdi>{meta?.actor?.name || user?.name}</bdi> · {tt("Employee ID")}: <bdi>{meta?.actor?.employeeId || "—"}</bdi> · {tt("Supervisor ID")}: <bdi>{meta?.actor?.supervisorId || "—"}</bdi></div>
+      <label className="block">{tt("Month")}<Input aria-label={tt("Claim Month")} required type="month" value={form.monthKey} disabled={fieldDisabled || Boolean(claim)} onChange={(e) => setForm((value) => ({ ...value, monthKey: e.target.value }))} dir="ltr" /></label>
+      <label className="block">{tt("TA Amount (INR)")}<Input aria-label={tt("TA Amount (INR)")} required type="number" step="0.01" min="0.01" max="10000000" value={form.amount} disabled={blocked} onChange={(e) => setForm((value) => ({ ...value, amount: e.target.value }))} dir="ltr" /></label>
+      <label className="block">{tt("Description")}<TextArea aria-label={tt("Description")} required maxLength={2000} value={form.description} disabled={blocked} onChange={(e) => setForm((value) => ({ ...value, description: e.target.value }))} dir="auto" /></label>
+      <label className="block">{tt("Supporting Evidence")}<input aria-label={tt("Upload Evidence")} type="file" accept="application/pdf,image/jpeg,image/png" multiple disabled={blocked} onChange={selectFiles} className="block" /></label><p className="text-xs">{tt("PDF, JPG or PNG; up to 3 MiB each, 5 active files per claim.")}</p>
+      {[...kept.map((file) => ({ id: file._id, name: file.name, retained: true })), ...files.map((entry) => ({ id: entry.key, name: entry.file.name }))].map((file) => <div className="flex items-center gap-3" key={file.id}><bdi>{file.name}</bdi><SecondaryButton type="button" disabled={blocked} onClick={() => file.retained ? setKept((value) => value.filter((item) => item._id !== file.id)) : setFiles((value) => value.filter((item) => item.key !== file.id))}>{tt("Remove")}</SecondaryButton></div>)}
+      <div className="flex gap-3"><PrimaryButton type="submit" disabled={blocked}>{tt(claim ? "Resubmit Claim" : "Submit Claim")}</PrimaryButton><SecondaryButton type="button" disabled={blocked} onClick={() => { setEditing(false); setFiles([]); upload.current = null; }}>{tt("Cancel")}</SecondaryButton></div>
+    </form></AttendancePanel>}
+    {claim && !editing && <AttendancePanel title={tt("Claim Number")} subtitle={claim.claimNumber}>
+      <div><bdi>{claim.name}</bdi> · {tt("Employee ID")}: <bdi>{claim.employeeId || "—"}</bdi> · {tt("Supervisor ID")}: <bdi>{claim.supervisorId || "—"}</bdi> · {tt(claim.role || claim.staffType)}</div>
+      <p><bdi>{claim.monthKey}</bdi> · {tt(claim.status)} · {money(claim.requestedAmountPaise)}</p><p className="whitespace-pre-wrap" dir="auto">{claim.description}</p>
+      {claim.decisionReason && <p className="mt-2 whitespace-pre-wrap" dir="auto">{tt("Decision Reason")}: {claim.decisionReason}</p>}
+      {claim.payrollMonth && <p>{tt("Payroll Month")}: <bdi>{claim.payrollMonth}</bdi></p>}{claim.paidAt && <p>{tt("Payment Date")}: <bdi>{new Date(claim.paidAt).toLocaleDateString(locales[language] || "en-IN")}</bdi></p>}
+      <h3 className="mt-3 font-semibold">{tt("Supporting Evidence")}</h3>{claim.evidence.map((file) => <div key={file._id} className="flex gap-3"><bdi>{file.name}</bdi><SecondaryButton type="button" disabled={blocked} onClick={() => download(file)}>{tt("Download")}</SecondaryButton></div>)}
+      {!review && own && meta?.canManageOwn && claim.status === "Rejected" && claim.claimVersion === 2 && <SecondaryButton type="button" disabled={blocked} onClick={() => start(claim)}>{tt("Resubmit Claim")}</SecondaryButton>}
+      {review && own && claim.status === "Submitted" && <p>{tt("TA_SELF_APPROVAL")}</p>}
+      {canDecide && <div className="mt-3 space-y-3"><label className="block">{tt("Decision Reason")}<TextArea aria-label={tt("Decision Reason")} maxLength={1000} value={reason} disabled={blocked} onChange={(e) => setReason(e.target.value)} dir="auto" /></label><div className="flex gap-3"><PrimaryButton disabled={blocked} onClick={() => setConfirmation({ run: () => decide("Approved") })}>{tt("Approve Claim")}</PrimaryButton><DangerButton disabled={blocked} onClick={() => reason.trim() ? setConfirmation({ run: () => decide("Rejected") }) : setError("TA_REJECTION_REASON")}>{tt("Reject Claim")}</DangerButton></div></div>}
+      <h3 className="mt-4 font-semibold">{tt("Claim History")}</h3><ul>{claim.history.map((event, index) => <li key={index}><bdi>{new Date(event.at).toLocaleString(locales[language] || "en-IN")}</bdi> · {tt(event.action)}{event.reason && <span dir="auto"> · {event.reason}</span>}</li>)}</ul>
     </AttendancePanel>}
-    {claim && !editing && <>
-      <AttendancePanel title={tt("Claim Number")}>
-        <div className="break-all font-semibold text-blue-700"><bdi>{claim.claimNumber}</bdi></div>
-        <div className="mt-2"><bdi>{claim.name}</bdi> <bdi>{claim.staffCode}</bdi></div>
-        <div className="mt-3 grid gap-3 text-sm sm:grid-cols-2">
-          {[["Status", tt(claim.status) === claim.status ? tr(claim.status) : tt(claim.status)], ["Journey Start", claim.fromDateKey], ["Journey End", claim.toDateKey], ["From Place", claim.fromPlace], ["To Place", claim.toPlace], ["Transport Mode", claim.transport], ["Requested Amount", money(claim.requestedAmountPaise)], ["Approved Amount", money(claim.approvedAmountPaise)], ["Settlement Month", claim.settlementMonth || "-"]].map(([label, value]) => <div key={label}><div className="text-xs text-slate-500">{tt(label) === label ? tr(label) : tt(label)}</div><bdi>{value}</bdi></div>)}
-        </div>
-        <div className="mt-3 text-xs text-slate-500">{tt("Travel Purpose")}</div><p dir="auto" className="whitespace-pre-wrap break-words">{claim.purpose}</p>
-        <ul className="mt-3 divide-y">{claim.expenses.map((row, i) => <li key={i} className="flex justify-between gap-3 py-2 text-sm"><bdi>{row.description}</bdi><bdi>{money(row.amountPaise)}</bdi></li>)}</ul>
-        {claim.decisionReason && <div className="mt-3"><div className="text-xs text-slate-500">{tt("Decision Reason")}</div><p dir="auto" className="whitespace-pre-wrap break-words">{claim.decisionReason}</p></div>}
-        {claim.payrollMonth && <p className="mt-3 text-sm">{tr("Payroll")}: <bdi>{claim.payrollMonth}</bdi></p>}
-        <div className="mt-4 flex flex-wrap gap-2">
-          {editable && <SecondaryButton disabled={busy || Boolean(confirmation)} onClick={() => { setForm(toForm(claim)); setEditing(true); }}>{tr("Edit")}</SecondaryButton>}
-          {editable && <PrimaryButton disabled={busy || Boolean(confirmation) || !claim.evidence.length} onClick={() => ask(() => perform("POST", `/${claim._id}/status`, { action: "Submit", revision: claim.revision }), "Submit Claim")}>{tt("Submit Claim")}</PrimaryButton>}
-          {own && meta?.canManageOwn && ["Draft", "Returned", "Submitted"].includes(claim.status) && <DangerButton disabled={busy || Boolean(confirmation)} onClick={() => ask(() => perform("POST", `/${claim._id}/status`, { action: "Cancel", revision: claim.revision }), "Cancel Claim")}>{tt("Cancel Claim")}</DangerButton>}
-        </div>
-      </AttendancePanel>
-      <AttendancePanel title={tt("Supporting Evidence")} subtitle={tt("PDF, JPG or PNG; up to 3 MiB each, 5 active files per claim.")}>
-        {claim.evidence.map((file) => <div key={file._id} className="flex flex-wrap items-center justify-between gap-2 border-b py-2 text-sm"><bdi className="break-all">{file.name}</bdi><div className="flex gap-2"><SecondaryButton disabled={busy || Boolean(confirmation)} onClick={() => downloadEvidence(file)}>{tr("Download")}</SecondaryButton>{editable && <DangerButton disabled={busy || Boolean(confirmation)} onClick={() => ask(() => perform("DELETE", `/${claim._id}/evidence/${file._id}`, { revision: claim.revision }))}>{tr("Remove")}</DangerButton>}</div></div>)}
-        {editable && <div className="mt-3"><input hidden ref={fileInput} type="file" accept="application/pdf,image/jpeg,image/png" onChange={(e) => { const file = e.target.files?.[0]; e.target.value = ""; uploadEvidence(file); }} /><SecondaryButton disabled={busy || Boolean(confirmation) || claim.evidence.length >= 5} onClick={() => fileInput.current?.click()}>{tt("Upload Evidence")}</SecondaryButton></div>}
-      </AttendancePanel>
-      {canDecide && <AttendancePanel title={tt("TA Approvals")}>
-        <div className="grid gap-3 sm:grid-cols-2">
-          <label className="text-xs text-slate-600">{tt("Approved Amount")} (INR)<Input aria-label={tt("Approved Amount")} dir="ltr" inputMode="decimal" disabled={busy || Boolean(confirmation)} value={decision.approvedAmount} onChange={(e) => setDecision((d) => ({ ...d, approvedAmount: e.target.value }))} /></label>
-          <label className="text-xs text-slate-600">{tt("Settlement Month")}<Input aria-label={tt("Settlement Month")} type="month" dir="ltr" disabled={busy || Boolean(confirmation)} value={decision.settlementMonth} onChange={(e) => setDecision((d) => ({ ...d, settlementMonth: e.target.value }))} /></label>
-          <label className="text-xs text-slate-600 sm:col-span-2">{tt("Decision Reason")}<TextArea aria-label={tt("Decision Reason")} dir="auto" maxLength={1000} disabled={busy || Boolean(confirmation)} value={decision.reason} onChange={(e) => setDecision((d) => ({ ...d, reason: e.target.value }))} /></label>
-        </div>
-        <div className="mt-4 flex flex-wrap gap-2">{[["Approved", "Approve Claim"], ["Returned", "Return for Correction"], ["Rejected", "Reject Claim"]].map(([value, label]) => <SecondaryButton key={value} disabled={busy || Boolean(confirmation)} onClick={() => ask(() => perform("POST", `/${claim._id}/decision`, { ...decision, decision: value, revision: claim.revision }), label)}>{tt(label)}</SecondaryButton>)}</div>
-      </AttendancePanel>}
-      {review && own && claim.status === "Submitted" && <p className="rounded bg-amber-50 p-3 text-sm">{tt("TA_SELF_APPROVAL")}</p>}
-      <AttendancePanel title={tt("Claim History")}><ol className="space-y-2">{claim.history.map((event, index) => <li key={index} className="rounded border p-2 text-xs"><span className="font-semibold">{tt(event.action) === event.action ? tr(event.action) : tt(event.action)}</span> <bdi>{new Date(event.at).toLocaleString(locales[language] || "en-IN", { timeZone: "Asia/Kolkata" })}</bdi>{event.amountPaise > 0 && <span> {money(event.amountPaise)}</span>}{event.reason && <p dir="auto" className="mt-1 break-words whitespace-pre-wrap">{event.reason}</p>}</li>)}</ol></AttendancePanel>
-    </>}
-    {confirmation && <section role="dialog" aria-modal="false" aria-label={tt("Confirm TA action?")} className="sticky bottom-4 z-10 rounded-xl border-2 border-blue-600 bg-white p-4 shadow-xl"><p className="mb-2 font-semibold">{tt(confirmation.label)}</p><p className="mb-3 break-all text-sm"><bdi>{claim?.claimNumber}</bdi></p><div className="flex gap-2"><PrimaryButton disabled={busy} onClick={() => confirmation.run()}>{tr("Confirm")}</PrimaryButton><SecondaryButton disabled={busy} onClick={() => setConfirmation(null)}>{tr("Cancel")}</SecondaryButton></div></section>}
+    {confirmation && <div role="dialog" aria-modal="true" aria-label={tt("Confirm TA action?")} className="rounded border border-blue-300 bg-blue-50 p-4"><p>{tt("Confirm TA action?")}</p><div className="mt-3 flex gap-3"><PrimaryButton disabled={busy} onClick={confirmation.run}>{tt("Confirm")}</PrimaryButton><SecondaryButton type="button" disabled={busy} onClick={() => setConfirmation(null)}>{tt("Cancel")}</SecondaryButton></div></div>}
   </div>;
 }

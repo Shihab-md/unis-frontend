@@ -19,16 +19,19 @@ globalThis.IS_REACT_ACT_ENVIRONMENT = true;
 const React = require("react"); const { render, screen, fireEvent, waitFor, cleanup } = require("@testing-library/react");
 const esbuild = require("esbuild");
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
+globalThis.UI_XLSX = createRequire(join(root,"package.json"))("xlsx");
 const temporary = await mkdtemp(join(tmpdir(), "unis-ta-ui-"));
 const bundle = join(temporary, "components.cjs");
 await esbuild.build({ stdin: { contents: `export {default as AccountsFinancePage} from './src/components/accounts/AccountsFinancePage.jsx'; export {default as AccountsPage} from './src/components/dashboard/AccountsPage.jsx'; export {default as AttendancePage} from './src/components/attendance/AttendancePage.jsx'; export {default as LeaveTab} from './src/components/attendance/LeaveTab.jsx'; export {default as TravelClaimsTab} from './src/components/attendance/TravelClaimsTab.jsx'; export {default as PayrollTab} from './src/components/attendance/PayrollTab.jsx'; export {default as MyPayslipsTab} from './src/components/attendance/MyPayslipsTab.jsx';`, resolveDir: root, loader: "jsx" },
   outfile: bundle, define: { "import.meta.env": JSON.stringify({ VITE_UNIS_TIMEZONE: "Asia/Kolkata" }) }, bundle: true, platform: "node", format: "cjs", jsx: "transform", plugins: [{ name: "isolated-adapters", setup(build) {
+    build.onResolve({ filter: /^xlsx$/ }, () => ({ path: "xlsx", namespace: "test-adapter" }));
     build.onResolve({ filter: /^react-router-dom$/ }, () => ({ path: "router", namespace: "test-adapter" }));
     build.onResolve({ filter: /(?:^|\/)(?:CommonHeader|AttendanceOverview)$/ }, (args) => ({ path: args.path.split("/").at(-1), namespace: "test-adapter" }));
     build.onResolve({ filter: /^react(?:\/.*)?$/ }, (args) => ({ path: require.resolve(args.path), external: true }));
     build.onResolve({ filter: /(?:context\/AuthContext|i18n\/LanguageContext|api\/travelClaimApi|api\/attendanceApi|utils\/CommonHelper)$/ }, (args) => ({ path: args.path.split("/").at(-1), namespace: "test-adapter" }));
     build.onLoad({ filter: /.*/, namespace: "test-adapter" }, ({ path }) => {
       const source = {
+        xlsx: `export const utils=globalThis.UI_XLSX.utils; export const writeFile=(...args)=>globalThis.UI_EXPORT(...args);`,
         router: `import React from 'react'; export const Link=({to,children,...props})=>React.createElement('a',{...props,href:to},children); export const Navigate=({to})=>{globalThis.UI_REDIRECT=to;return React.createElement('div',{'data-redirect':to});}; export const useNavigate=()=>()=>{}; export const useSearchParams=()=>[new URLSearchParams(globalThis.UI_SEARCH||'')];`,
         CommonHeader: `export default ()=>null;`,
         AttendanceOverview: `export default ()=>null;`,
@@ -44,15 +47,17 @@ await esbuild.build({ stdin: { contents: `export {default as AccountsFinancePage
 const { TravelClaimsTab, PayrollTab, MyPayslipsTab, AccountsFinancePage, AccountsPage, AttendancePage, LeaveTab } = require(bundle);
 afterEach(() => cleanup()); after(() => dom.window.close());
 function setup(role = "supervisor", language = "en") {
+  globalThis.UI_EXPORT = ()=>{};
   globalThis.UI_ALERTS = []; globalThis.UI_SEARCH = ""; globalThis.UI_REDIRECT = "";
   globalThis.UI_LANGUAGE = language; window.localStorage.setItem("preferredLanguage", language);
   globalThis.UI_AUTH = { user: { _id: "user-self", role }, can: () => true };
   globalThis.UI_META = { success: true, canViewOwn: true, canManageOwn: true, canReview: ["accountant","hqadmin","superadmin"].includes(role), canApprove: ["accountant","hqadmin","superadmin"].includes(role) };
-  globalThis.UI_RECORD = { _id:"507f1f77bcf86cd799439011", claimNumber:"TA-507F1F77BCF86CD799439011",userId:"user-self",name:"தமிழ் العربية",staffCode:"SUP-1",status:"Draft",revision:1,
+  globalThis.UI_RECORD = { _id:"507f1f77bcf86cd799439011", claimNumber:"TA-507F1F77BCF86CD799439011",userId:"user-self",name:"தமிழ் العربية",staffCode:"SUP-1",status:"Submitted",claimVersion:2,monthKey:"2026-10",description:"பள்ளி ஆய்வு / سفر",employeeId:"",supervisorId:"TEST-SUP",role:"supervisor",submittedAt:"2026-10-03T00:00:00Z",revision:1,
     fromDateKey:"2026-10-01",toDateKey:"2026-10-02",fromPlace:"மதுரை",toPlace:"مدرسة",purpose:"பள்ளி ஆய்வு",transport:"Bus",requestedAmountPaise:120025,approvedAmountPaise:0,
     expenses:[{description:"சீட்டு",amountPaise:120025}],evidence:[],history:[{action:"Created",at:"2026-10-03T00:00:00Z"}] };
   globalThis.UI_LIST = [];
-  globalThis.UI_API = async (method,path) => ({ data: path==="/meta" ? globalThis.UI_META : ["/mine","/review"].includes(path) ? {claims:globalThis.UI_LIST,nextCursor:null} : {claim:globalThis.UI_RECORD} });
+  globalThis.UI_REPORT={summary:{eligible:5,submitted:1,approved:1,rejected:1,notSubmitted:2},rows:[],total:0,page:1,pageSize:25};
+  globalThis.UI_API = async (method,path) => ({ data: path==="/meta" ? globalThis.UI_META : path.startsWith("/monthly-report") ? globalThis.UI_REPORT : ["/mine","/review"].includes(path) ? {claims:globalThis.UI_LIST,nextCursor:null} : {claim:globalThis.UI_RECORD} });
 }
 
 test("every new TA phrase and error has explicit UTF-8 text for all seven languages", () => {
@@ -65,47 +70,57 @@ for(const language of TA_LANGUAGES)test(`TA self-service renders translated cont
   assert.equal(view.container.firstElementChild.dir,["ar","ur"].includes(language)?"rtl":"ltr");
   assert(screen.getByText(taText("My TA Claims",language)));
 });
-test("TA form preserves multilingual journey text and sends a stable request key", async () => {
-  setup("supervisor","ta");let submitted;
-  globalThis.UI_API=async(method,path,data)=>{if(method==="POST"){submitted=data;return{data:{claim:globalThis.UI_RECORD}};}return{data:path==="/meta"?globalThis.UI_META:{claims:[],nextCursor:null}};};
-  render(React.createElement(TravelClaimsTab));fireEvent.click(await screen.findByRole("button",{name:taText("New TA Claim","ta")}));
-  for(const [label,value]of [["Journey Start","2026-10-01"],["Journey End","2026-10-02"],["From Place","மதுரை"],["To Place","مدرسة"],["Transport Mode","Bus"],["Travel Purpose","பள்ளி ஆய்வு"]])fireEvent.change(screen.getByLabelText(taText(label,"ta")),{target:{value}});
-  fireEvent.change(screen.getByLabelText(`${taText("Expense Description","ta")} 1`),{target:{value:"பயணச்சீட்டு"}});
-  fireEvent.change(screen.getByLabelText(`${taText("Amount","ta")} 1`),{target:{value:"1200.25"}});
-  fireEvent.click(screen.getByRole("button",{name:taText("Save Draft","ta")}));
-  await waitFor(()=>assert(submitted));assert.equal(submitted.fromPlace,"மதுரை");assert.equal(submitted.toPlace,"مدرسة");assert.equal(submitted.expenses[0].description,"பயணச்சீட்டு");assert.match(submitted.requestKey,/^[0-9a-f-]{36}$/);
+async function openMonthlyForm(language="en") {
+  render(React.createElement(TravelClaimsTab)); fireEvent.click(await screen.findByRole("button",{name:taText("New TA Claim",language)}));
+  const form=document.querySelector("form");
+  fireEvent.change(form.querySelector('input[type="month"]'),{target:{value:"2026-10"}});
+  fireEvent.change(form.querySelector('input[type="number"]'),{target:{value:"1200.25"}});
+  fireEvent.change(form.querySelector("textarea"),{target:{value:"பள்ளி ஆய்வு / سفر"}});
+  fireEvent.change(form.querySelector('input[type="file"]'),{target:{files:[new File(["%PDF-1.7"],"சான்று.pdf",{type:"application/pdf"})]}});
+  return form;
+}
+function uploadApi({failUpload=false}={}) {
+  const calls=[]; let staged={_id:"507f1f77bcf86cd799439099",requestKey:"",revision:0,files:[]}; const fallback=globalThis.UI_API;
+  globalThis.UI_API=async(method,path,data,...rest)=>{
+    calls.push({method,path,data});
+    if(path==="/uploads"){staged.requestKey=data.requestKey;return{data:{upload:staged}};}
+    if(path.endsWith("/files")&&method==="POST"){
+      if(failUpload)throw{response:{status:503,data:{code:"TA_UPLOAD_FAILED"}}};
+      staged={...staged,revision:staged.revision+1,files:[{_id:"507f1f77bcf86cd799439088",uploadKey:data.get("uploadKey"),name:data.get("originalName")}]};return{data:{upload:staged}};
+    }
+    if(path==="/submit")return{data:{claim:{...globalThis.UI_RECORD,evidence:[{_id:"file",name:"சான்று.pdf"}],status:"Submitted"}}};
+    return fallback(method,path,data,...rest);
+  };return calls;
+}
+test("monthly form has no draft, journey, expense rows or cancel-claim workflow",async()=>{setup();const form=await openMonthlyForm();assert.equal(form.querySelectorAll('input[type="month"]').length,1);assert.equal(form.querySelectorAll('input[type="number"]').length,1);assert.equal(screen.queryByRole("button",{name:"Save Draft"}),null);assert.equal(screen.queryByLabelText("Journey Start"),null);assert.equal(screen.queryByRole("button",{name:"Cancel Claim"}),null);const statuses=[...screen.getByLabelText("Status").options].map(o=>o.value);assert.deepEqual(statuses,["","Submitted","Approved","Rejected"]);});
+test("monthly submission uploads first and preserves Unicode description and filename",async()=>{setup("supervisor","ta");const calls=uploadApi();const form=await openMonthlyForm("ta");fireEvent.submit(form);assert.equal(calls.filter(c=>c.method==="POST").length,0);fireEvent.click(screen.getByRole("button",{name:taText("Confirm","ta")}));await screen.findByText(taText("TA changes saved.","ta"));const posted=calls.filter(c=>c.method==="POST");assert.deepEqual(posted.map(c=>c.path),["/uploads","/uploads/507f1f77bcf86cd799439099/files","/submit"]);assert.equal(posted[1].data.get("originalName"),"சான்று.pdf");assert.equal(posted[2].data.description,"பள்ளி ஆய்வு / سفر");assert.equal(posted[2].data.amount,"1200.25");assert.equal(posted[2].data.requestKey,posted[0].data.requestKey);assert.match(posted[2].data.requestKey,/^[0-9a-f-]{36}$/);});
+test("upload failure keeps the form and never sends a submitted claim",async()=>{setup();const calls=uploadApi({failUpload:true});const form=await openMonthlyForm();fireEvent.submit(form);fireEvent.click(screen.getByRole("button",{name:"Confirm"}));await screen.findByRole("alert");assert(document.querySelector("form"));assert.equal(calls.filter(c=>c.path==="/submit").length,0);assert.equal(document.querySelector("textarea").value,"பள்ளி ஆய்வு / سفر");});
+test("removing a local file does not submit the form",async()=>{setup();const calls=uploadApi();await openMonthlyForm();fireEvent.click(screen.getByRole("button",{name:"Remove"}));assert.equal(screen.queryByRole("dialog"),null);assert.equal(calls.filter(c=>c.method==="POST").length,0);assert.equal(screen.queryByText("சான்று.pdf"),null);});
+test("cancel closes the local form without creating any request",async()=>{setup();const calls=uploadApi();await openMonthlyForm();fireEvent.click(screen.getByRole("button",{name:"Cancel"}));assert.equal(document.querySelector("form"),null);assert.equal(calls.filter(c=>c.method==="POST").length,0);});
+test("missing evidence is reported before any upload session",async()=>{setup();const calls=uploadApi();const form=await openMonthlyForm();fireEvent.click(screen.getByRole("button",{name:"Remove"}));fireEvent.submit(form);await screen.findByText(taText("TA_EVIDENCE_REQUIRED","en"));assert.equal(calls.filter(c=>c.method==="POST").length,0);});
+test("duplicate confirmation clicks send a single submit sequence",async()=>{setup();let calls=0,release;const fallback=globalThis.UI_API;globalThis.UI_API=async(method,path,data,...rest)=>{if(path==="/uploads"){calls++;await new Promise(r=>{release=r});return{data:{upload:{submittedClaimId:globalThis.UI_RECORD._id}}};}return fallback(method,path,data,...rest);};const form=await openMonthlyForm();fireEvent.submit(form);const button=screen.getByRole("button",{name:"Confirm"});fireEvent.click(button);fireEvent.click(button);assert.equal(calls,1);release();await screen.findByText("TA changes saved.");});
+test("an uncertain successful submit is reconciled without resubmitting files",async()=>{setup();let uploads=0;const fallback=globalThis.UI_API;globalThis.UI_API=async(method,path,data,...rest)=>{if(path==="/uploads")return{data:{upload:{submittedClaimId:globalThis.UI_RECORD._id}}};if(method==="POST")uploads++;return fallback(method,path,data,...rest);};const form=await openMonthlyForm();fireEvent.submit(form);fireEvent.click(screen.getByRole("button",{name:"Confirm"}));await screen.findByText("TA changes saved.");assert.equal(uploads,0);});
+test("reviewer sees employee and supervisor IDs and only approve/reject controls",async()=>{setup("accountant");globalThis.UI_RECORD.userId="another-user";globalThis.UI_LIST=[globalThis.UI_RECORD];render(React.createElement(TravelClaimsTab,{review:true}));fireEvent.click(await screen.findByRole("button",{name:new RegExp(globalThis.UI_RECORD.claimNumber)}));await screen.findByText("Claim History");assert(screen.getAllByText(/TEST-SUP/).length);assert.equal(screen.queryByRole("button",{name:"Return for Correction"}),null);assert.equal(screen.queryByLabelText("Approved Amount"),null);assert(screen.getByRole("button",{name:"Approve Claim"}));assert(screen.getByRole("button",{name:"Reject Claim"}));});
+test("approval sends only the decision and current revision after confirmation",async()=>{setup("accountant","ar");globalThis.UI_RECORD.userId="other";globalThis.UI_LIST=[globalThis.UI_RECORD];let posted;const fallback=globalThis.UI_API;globalThis.UI_API=async(method,path,data,...rest)=>{if(method==="POST"){posted=data;return{data:{claim:{...globalThis.UI_RECORD,status:"Approved"}}};}return fallback(method,path,data,...rest);};render(React.createElement(TravelClaimsTab,{review:true}));fireEvent.click(await screen.findByRole("button",{name:new RegExp(globalThis.UI_RECORD.claimNumber)}));fireEvent.click(await screen.findByRole("button",{name:taText("Approve Claim","ar")}));assert.equal(posted,undefined);fireEvent.click(screen.getByRole("button",{name:taText("Confirm","ar")}));await waitFor(()=>assert(posted));assert.deepEqual(posted,{decision:"Approved",reason:"",revision:1});});
+test("reviewer must provide a rejection reason",async()=>{setup("accountant");globalThis.UI_RECORD.userId="other";globalThis.UI_LIST=[globalThis.UI_RECORD];render(React.createElement(TravelClaimsTab,{review:true}));fireEvent.click(await screen.findByRole("button",{name:new RegExp(globalThis.UI_RECORD.claimNumber)}));fireEvent.click(await screen.findByRole("button",{name:"Reject Claim"}));await screen.findByText(taText("TA_REJECTION_REASON","en"));assert.equal(screen.queryByRole("dialog"),null);});
+test("self-approval stays blocked for an Accountant",async()=>{setup("accountant","ur");globalThis.UI_LIST=[globalThis.UI_RECORD];render(React.createElement(TravelClaimsTab,{review:true}));fireEvent.click(await screen.findByRole("button",{name:new RegExp(globalThis.UI_RECORD.claimNumber)}));await screen.findByText(taText("Claim History","ur"));assert.equal(screen.queryByRole("button",{name:taText("Approve Claim","ur")}),null);assert(screen.getByText(taText("TA_SELF_APPROVAL","ur")));});
+test("rejected monthly request opens the same month with retained evidence",async()=>{setup();globalThis.UI_RECORD.status="Rejected";globalThis.UI_RECORD.evidence=[{_id:"file",name:"old.pdf"}];globalThis.UI_LIST=[globalThis.UI_RECORD];render(React.createElement(TravelClaimsTab));fireEvent.click(await screen.findByRole("button",{name:new RegExp(globalThis.UI_RECORD.claimNumber)}));fireEvent.click(await screen.findByRole("button",{name:"Resubmit Claim"}));const form=document.querySelector("form");assert.equal(form.querySelector('input[type="month"]').value,"2026-10");assert(form.querySelector('input[type="month"]').disabled);assert(screen.getByText("old.pdf"));assert.equal(screen.queryByRole("button",{name:"Save Draft"}),null);});
+test("monthly summary and non-submitted register show eligible people with IDs",async()=>{setup("accountant");globalThis.UI_REPORT.rows=[{staffType:"Employee",staffId:"emp",name:"Non-submitted person",employeeId:"EMP-99",supervisorId:"",role:"hquser",status:"Not submitted",requestedAmountPaise:0,approvedAmountPaise:0}];globalThis.UI_REPORT.total=1;render(React.createElement(TravelClaimsTab,{review:true}));await screen.findByText("Register counts use current active eligible HQ staff.");fireEvent.change(screen.getByLabelText("Status"),{target:{value:"Not submitted"}});await screen.findByText("Non-submitted person");assert(screen.getByText("EMP-99"));assert(screen.getByRole("button",{name:"Export Excel"}));});
+test("Excel export uses the selected filters and preserves Unicode and literal formula-like names",async()=>{
+  setup("accountant","ta");let workbook,filename,query;
+  globalThis.UI_EXPORT=(book,name)=>{workbook=book;filename=name;};
+  const fallback=globalThis.UI_API;globalThis.UI_API=async(method,path,data,options)=>{
+    if(path==="/monthly-report/export"){query=options.params;return{data:{rows:[{monthKey:"2026-10",name:"=1+1 தமிழ் العربية",employeeId:"EMP-01",supervisorId:"",role:"hquser",status:"Not submitted",requestedAmountPaise:0,approvedAmountPaise:0,claimCount:0}]}};}
+    return fallback(method,path,data,options);
+  };
+  render(React.createElement(TravelClaimsTab,{review:true}));await screen.findByText(taText("Register counts use current active eligible HQ staff.","ta"));
+  fireEvent.change(screen.getByLabelText(taText("Filter Month","ta")),{target:{value:"2026-10"}});
+  const button=await screen.findByRole("button",{name:taText("Export Excel","ta")});await waitFor(()=>assert(!button.disabled));fireEvent.click(button);
+  await waitFor(()=>assert(workbook));assert.equal(filename,"TA-2026-10.xlsx");assert.equal(query.monthKey,"2026-10");
+  const bytes=globalThis.UI_XLSX.write(workbook,{type:"buffer",bookType:"xlsx"});const reloaded=globalThis.UI_XLSX.read(bytes,{type:"buffer"});const sheet=reloaded.Sheets.TA;
+  assert.equal(sheet.B2.v,"=1+1 தமிழ் العربية");assert.equal(sheet.B2.t,"s");assert.equal(sheet.B2.f,undefined);assert.equal(sheet.C2.v,"EMP-01");assert.equal(sheet.G2.t,"n");
 });
-test("evidence upload sends the original Unicode filename as an explicit UTF-8 field", async () => {
-  setup();globalThis.UI_LIST=[globalThis.UI_RECORD];let captured;
-  const fallback=globalThis.UI_API;globalThis.UI_API=async(method,path,data)=>{if(method==="POST"&&path.endsWith("/evidence")){captured=data;return{data:{claim:globalThis.UI_RECORD}};}return fallback(method,path,data);};
-  const view=render(React.createElement(TravelClaimsTab));fireEvent.click(await screen.findByRole("button",{name:new RegExp(globalThis.UI_RECORD.claimNumber)}));
-  await screen.findByText("Claim History");fireEvent.change(view.container.querySelector('input[type="file"]'),{target:{files:[new File(["%PDF-1.7"],"சான்று.pdf",{type:"application/pdf"})]}});
-  await waitFor(()=>assert(captured));assert.equal(captured.get("originalName"),"சான்று.pdf");assert.equal(captured.get("revision"),"1");
-});
-test("an Accountant sees their own claim without self-approval controls", async () => {
-  setup("accountant","ur");globalThis.UI_RECORD.status="Submitted";globalThis.UI_LIST=[globalThis.UI_RECORD];
-  render(React.createElement(TravelClaimsTab,{review:true}));fireEvent.click(await screen.findByRole("button",{name:new RegExp(globalThis.UI_RECORD.claimNumber)}));
-  await screen.findByText(taText("Claim History","ur"));assert.equal(screen.queryByRole("button",{name:taText("Approve Claim","ur")}),null);assert(screen.getByText(taText("TA_SELF_APPROVAL","ur")));
-});
-test("an authorized reviewer can act on another claimant and confirms the action", async () => {
-  setup("accountant","ar");globalThis.UI_RECORD.status="Submitted";globalThis.UI_RECORD.userId="other-user";globalThis.UI_LIST=[globalThis.UI_RECORD];let posted;
-  const fallback=globalThis.UI_API;globalThis.UI_API=async(method,path,data)=>{if(method==="POST"){posted=data;return{data:{claim:{...globalThis.UI_RECORD,status:"Approved"}}};}return fallback(method,path,data);};
-  render(React.createElement(TravelClaimsTab,{review:true}));fireEvent.click(await screen.findByRole("button",{name:new RegExp(globalThis.UI_RECORD.claimNumber)}));
-  fireEvent.click(await screen.findByRole("button",{name:taText("Approve Claim","ar")}));
-  assert.equal(posted,undefined);fireEvent.click(screen.getByRole("button",{name:taText("Confirm","ar")}));await waitFor(()=>assert(posted));assert.equal(posted.decision,"Approved");assert.equal(posted.revision,1);
-});
-test("duplicate confirmation clicks dispatch only one submit request", async () => {
-  setup();globalThis.UI_RECORD.evidence=[{_id:"evidence",name:"receipt.pdf",size:30}];globalThis.UI_LIST=[globalThis.UI_RECORD];let count=0,release;
-  const fallback=globalThis.UI_API;globalThis.UI_API=async(method,path,data)=>{if(method==="POST"){count++;await new Promise(r=>{release=r;});return{data:{claim:{...globalThis.UI_RECORD,status:"Submitted"}}};}return fallback(method,path,data);};
-  render(React.createElement(TravelClaimsTab));fireEvent.click(await screen.findByRole("button",{name:new RegExp(globalThis.UI_RECORD.claimNumber)}));
-  fireEvent.click(await screen.findByRole("button",{name:"Submit Claim"}));const confirm=screen.getByRole("button",{name:"Confirm"});fireEvent.click(confirm);fireEvent.click(confirm);assert.equal(count,1);release();await screen.findByText("TA changes saved.");
-});
-test("localized stale-claim error appears without an automatic POST retry", async () => {
-  setup("supervisor","kn");globalThis.UI_LIST=[globalThis.UI_RECORD];globalThis.UI_RECORD.evidence=[{_id:"file",name:"receipt.pdf"}];let count=0;
-  const fallback=globalThis.UI_API;globalThis.UI_API=async(method,path,data)=>{if(method==="POST"){count++;throw{response:{status:409,data:{code:"TA_STALE"}}};}return fallback(method,path,data);};
-  render(React.createElement(TravelClaimsTab));fireEvent.click(await screen.findByRole("button",{name:new RegExp(globalThis.UI_RECORD.claimNumber)}));fireEvent.click(await screen.findByRole("button",{name:taText("Submit Claim","kn")}));fireEvent.click(screen.getByRole("button",{name:taText("Confirm","kn")}));
-  await screen.findByText(taText("TA_STALE","kn"));assert.equal(count,1);
-});
+test("a stale decision is translated without automatic POST retry",async()=>{setup("accountant","kn");globalThis.UI_RECORD.userId="other";globalThis.UI_LIST=[globalThis.UI_RECORD];let writes=0;const fallback=globalThis.UI_API;globalThis.UI_API=async(method,path,data,...rest)=>{if(method==="POST"){writes++;throw{response:{status:409,data:{code:"TA_STALE"}}};}return fallback(method,path,data,...rest);};render(React.createElement(TravelClaimsTab,{review:true}));fireEvent.click(await screen.findByRole("button",{name:new RegExp(globalThis.UI_RECORD.claimNumber)}));fireEvent.click(await screen.findByRole("button",{name:taText("Approve Claim","kn")}));fireEvent.click(screen.getByRole("button",{name:taText("Confirm","kn")}));await screen.findByText(taText("TA_STALE","kn"));assert.equal(writes,1);});
 test("payroll preview retains approved TA while changing a manual allowance", async () => {
   setup("accountant");const run={_id:"payroll",monthKey:new Intl.DateTimeFormat("en-CA",{timeZone:"Asia/Kolkata",year:"numeric",month:"2-digit"}).format(new Date()),taPolicyVersion:1,revision:2,status:"Draft",workingDays:20,items:[{_id:"row",name:"Example",staffCode:"E1",role:"hquser",monthlySalary:10000,grossSalary:10000,approvedTaClaims:1200,travellingAllowance:0,attendanceDeduction:500,manualAllowance:0,manualDeduction:0,netSalary:10700,travelClaimItems:[]}]};
   // The app's month helper uses the same India business date.
