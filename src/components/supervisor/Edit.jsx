@@ -12,6 +12,7 @@ import {
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { getBusinessTodayDate } from "../../utils/dateRules";
+import { formatAge, formatWorkingExperience } from "../../utils/supervisorProfileUtils";
 import { AutoText, useLanguage } from '../../i18n/LanguageContext';
 
 const Edit = () => {
