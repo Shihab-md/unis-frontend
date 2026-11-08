@@ -1,12 +1,11 @@
+import { openPreservedFilterPopup } from '../common/PreservedFilterPopup';
+import { readPopupFilters, savePopupFilters, loadPopupOptions, popupFilterValue } from '../../utils/popupFilterStorage';
 import SchoolReportActions from './SchoolReportActions';
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { columns, SchoolButtons, SchoolCard, conditionalRowStyles } from '../../utils/SchoolHelper'
 import DataTable from 'react-data-table-component'
 import axios from 'axios'
-import Swal from 'sweetalert2';
-import withReactContent from 'sweetalert2-react-content';
-import Select from 'react-select';
 import { useAuth } from '../../context/AuthContext'
 import { isGlobalHqReadRole } from "../../auth/roles";
 import { PERMISSIONS } from '../../auth/permissions'
@@ -14,6 +13,8 @@ import { AutoText, useLanguage } from '../../i18n/LanguageContext';
 import { getSupervisorsFromCache } from '../../utils/SupervisorHelper';
 import { getDistrictStatesFromCache } from '../../utils/DistrictStateHelper';
 import { getBaseUrl, handleRightClickAndFullScreen, getSpinner, checkAuth, LinkIcon, showSwalAlert, getFilterGif } from '../../utils/CommonHelper'
+
+const POPUP_KEYS = {'supervisorId': 'supervisorId', 'districtStateId': 'districtStateId', 'status': 'schStatus', 'q': 'popupFilter:school:search'};
 
 const List = () => {
   const { tr, direction, fontFamily } = useLanguage();
@@ -23,9 +24,9 @@ const List = () => {
     handleRightClickAndFullScreen();
   }, []);;
 
-  const readReportFilters = () => ({supervisorId:localStorage.getItem('supervisorId')||'',districtStateId:localStorage.getItem('districtStateId')||'',status:localStorage.getItem('schStatus')||''});
+  const readReportFilters = () => ({supervisorId:popupFilterValue('supervisorId'),districtStateId:popupFilterValue('districtStateId'),status:popupFilterValue('schStatus')});
   const [reportFilters,setReportFilters]=useState(readReportFilters);
-  const [searchText,setSearchText]=useState('');
+  const [searchText,setSearchText]=useState(() => readPopupFilters(POPUP_KEYS).q);
   const [schoolsLoaded,setSchoolsLoaded]=useState(false);
   const [schools, setSchools] = useState([])
   const [schLoading, setSchLoading] = useState(false)
@@ -36,7 +37,7 @@ const List = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const navigate = useNavigate()
 
-  const MySwal = withReactContent(Swal);
+  const requestRef=useRef(0);
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
@@ -45,7 +46,7 @@ const List = () => {
   useEffect(() => {
     const getSupervisorsMap = async (id) => {
       const supervisors = await getSupervisorsFromCache(id);
-      setSupervisors(supervisors);
+      setSupervisors(Array.isArray(supervisors) ? supervisors : []);
     };
     getSupervisorsMap();
   }, []);
@@ -53,7 +54,7 @@ const List = () => {
   useEffect(() => {
     const getDistrictStatesMap = async (id) => {
       const districtStates = await getDistrictStatesFromCache(id);
-      setDistrictStates(districtStates);
+      setDistrictStates(Array.isArray(districtStates) ? districtStates : []);
     };
     getDistrictStatesMap();
   }, []);
@@ -77,108 +78,31 @@ const List = () => {
   const { user, can } = useAuth();
 
   const openFilterPopup = async () => {
-    let selectedSupervisor;
-    let selectedDistrictState;
-    let selectedStatus;
-    const { value: formValues } = await MySwal.fire({
-      //  title: 'Filters',
-      background: "url(/bg_card.png)",
-      html: (
-        <div className="mb-2 h-80 w-full">
-          <div className='text-xl font-bold mb-1 text-green-600 text-center'>{tr("Filter")}</div>
-          <div className='grid'>
-            <span className='text-sm mb-1 text-start text-blue-500'>{tr("Supervisor")}</span>
-            <Select className='text-sm text-start mb-3'
-              options={supervisors.map(option => ({
-                value: option._id, label: option.supervisorId + " : " + option.userId.name
-              }))}
-
-              onChange={(selectedOption) => {
-                selectedSupervisor = selectedOption.value;
-              }}
-              maxMenuHeight={210}
-              placeholder=''
-            />
-          </div>
-
-          <div className='grid'>
-            <span className='text-sm mb-1 text-start text-blue-500'>{tr("District & State")}</span>
-            <Select className='text-sm text-start mb-3'
-              options={districtStates.map(option => ({
-                value: option._id, label: option.district + ", " + option.state
-              }))}
-
-              onChange={(selectedOption) => {
-                selectedDistrictState = selectedOption.value;
-              }}
-              maxMenuHeight={210}
-              placeholder=''
-            />
-          </div>
-
-          <div className='grid'>
-            <span className='text-sm mb-1 text-start text-blue-500'>{tr("Status")}</span>
-            <Select className='text-sm text-start mb-3'
-              options={
-                [{ value: 'Active', label: tr('Active') },
-                { value: 'In-Active', label: tr('In-Active') }]
-              }
-              // defaultValue={selectedStatus}
-              onChange={(selectedOption) => {
-                selectedStatus = selectedOption.value;
-              }}
-              maxMenuHeight={140}
-              placeholder=''
-            />
-          </div>
-        </div>
-      ),
-      focusConfirm: false,
-      showCancelButton: true,
-      confirmButtonText: tr("Apply"),
-      cancelButtonText: tr("Cancel"),
-      preConfirm: () => {
-        const select1 = selectedSupervisor ? selectedSupervisor : null;
-        const select2 = selectedDistrictState ? selectedDistrictState : null;
-        const select3 = selectedStatus ? selectedStatus : null;
-
-        return [select1, select2, select3];
-      }
-    });
-
-    if (formValues) {
-      if (formValues[0] || formValues[1] || formValues[2]) {
-
-        //console.log('Selected values:', formValues);
-        const supervisorId = formValues[0] ? formValues[0] : null;
-        const districtStateId = formValues[1] ? formValues[1] : null;
-        const schStatus = formValues[2] ? formValues[2] : null;
-
-        //console.log('Selected supervisorId:', formValues[0]);
-        //console.log('Selected districtStateId:', formValues[1]);
-        //console.log('Selected schStatus:', formValues[2]);
-
-        localStorage.setItem('supervisorId', supervisorId);
-        localStorage.setItem('districtStateId', districtStateId);
-        localStorage.setItem('schStatus', schStatus);
-
-        getFilteredSchools();
-
-      } else {
-
-        localStorage.removeItem('schools');
-        localStorage.removeItem('supervisorId');
-        localStorage.removeItem('districtStateId');
-        localStorage.removeItem('schStatus');
-
-        getSchools();
-      }
+    try {
+      const [supervisors, locations] = await loadPopupOptions(getSupervisorsFromCache, getDistrictStatesFromCache);
+      const values = {...readPopupFilters(POPUP_KEYS),q:searchText};
+      const choices=labels=>labels.map(label=>({value:label,label:tr(label)}));
+      const next = await openPreservedFilterPopup({
+        fields:[
+        {key:'supervisorId',label:'Supervisor',options:supervisors.map(item=>({value:String(item._id),label:`${item.supervisorId} : ${item.userId?.name || ''}`}))},
+        {key:'districtStateId',label:'District & State',options:locations.map(item=>({value:String(item._id),label:`${item.district}, ${item.state}`}))},
+        {key:'status',label:'Status',options:choices(['Active','In-Active'])},
+        ],values,defaults:Object.fromEntries(Object.keys(POPUP_KEYS).map(key=>[key,''])),tr,direction,fontFamily,
+      });
+      if(!next)return;
+      savePopupFilters(POPUP_KEYS,next,'schools');
+      setSearchText(next.q);
+      if(Object.keys(POPUP_KEYS).some(key=>key!=='q' && next[key]))await getFilteredSchools();
+      else await getSchools();
+    } catch(error) {
+      showSwalAlert('Error!',error?.response?.data?.error || tr('Error!'),'error');
     }
   };
 
   const onSchoolDelete = () => getFilteredSchools();
 
   const getFilteredSchools = async () => {
+    const request=++requestRef.current;
     const requestedFilters=readReportFilters();
     setFiltering(true)
     try {
@@ -193,6 +117,7 @@ const List = () => {
           },
         }
       );
+      if (request!==requestRef.current)return;
       if (responnse.data.success) {
         let sno = 1;
         //const data = await responnse.data.schools.map((sch) => ({
@@ -233,7 +158,7 @@ const List = () => {
         //  navigate("/dashboard");
       }
     } finally {
-      setFiltering(false)
+      if(request===requestRef.current){setFiltering(false);setSchLoading(false);}
     }
   }
 
@@ -253,9 +178,7 @@ const List = () => {
       setSchLoading(true)
 
       const data = localStorage.getItem('schools');
-      if (data && (localStorage.getItem('supervisorId')
-        || localStorage.getItem('districtStateId')
-        || localStorage.getItem('schStatus'))) {
+      if (['supervisorId','districtStateId','schStatus'].some(popupFilterValue)) {
         console.log("111")
         getFilteredSchools();
       } else {
@@ -267,13 +190,12 @@ const List = () => {
   }, []);
 
   const getSchools = async () => {
+    const request=++requestRef.current;
 
 
     const data = localStorage.getItem('schools');
     //console.log("Existing Data - " + JSON.parse(data))
-    if (data && (localStorage.getItem('supervisorId')
-      || localStorage.getItem('districtStateId')
-      || localStorage.getItem('schStatus'))) {
+    if (data && ['supervisorId','districtStateId','schStatus'].some(popupFilterValue)) {
       let sno = 1;
       const data1 = JSON.parse(data).schools.map((sch) => ({
         _id: sch._id,
@@ -317,7 +239,8 @@ const List = () => {
             },
           }
         );
-        if (responnse.data.success) {
+        if (request!==requestRef.current)return;
+      if (responnse.data.success) {
           let sno = 1;
           const data = await responnse.data.schools.map((sch) => ({
             _id: sch._id,
@@ -354,12 +277,12 @@ const List = () => {
           navigate("/dashboard");
         }
       } finally {
-        setSchLoading(false)
+        if(request===requestRef.current){setSchLoading(false);setFiltering(false);}
       }
     };
   }
 
-  const handleFilter = e => setSearchText(e.target.value);
+  const handleFilter = event => { const q=event.target.value;setSearchText(q);savePopupFilters({q:POPUP_KEYS.q},{q}); };
   useEffect(() => {
     if(!schoolsLoaded)return;
     const query=searchText.trim().toLowerCase();

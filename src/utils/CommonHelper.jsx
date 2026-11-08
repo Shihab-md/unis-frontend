@@ -420,6 +420,7 @@ export function getButtonStyle(buttonType) {
 }
 
 export function removeLocalStorage() {
+  Object.keys(localStorage).filter(key=>key.startsWith('popupFilter:')).forEach(key=>localStorage.removeItem(key));
 
   localStorage.removeItem("schoolId");
   localStorage.removeItem("schoolName");

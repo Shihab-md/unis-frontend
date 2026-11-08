@@ -1,3 +1,6 @@
+import { useLanguage } from '../../i18n/LanguageContext';
+import { openPreservedFilterPopup } from '../common/PreservedFilterPopup';
+import { readPopupFilters, savePopupFilters } from '../../utils/popupFilterStorage';
 import React, { useEffect, useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { columns, CourseButtons, CourseCard, getCourseSubjects } from '../../utils/CourseHelper';
@@ -11,24 +14,24 @@ import {
   showSwalAlert
 } from '../../utils/CommonHelper';
 import axios from 'axios';
-import Swal from 'sweetalert2';
-import withReactContent from 'sweetalert2-react-content';
 import { useAuth } from '../../context/AuthContext';
 import { PERMISSIONS } from '../../auth/permissions'
 
+const POPUP_KEYS={courseType:'popupFilter:course:type',q:'popupFilter:course:search'};
+
 const List = () => {
+  const {tr,direction,fontFamily}=useLanguage();
   useEffect(() => {
     handleRightClickAndFullScreen();
   }, []);
 
   const [courses, setCourses] = useState([]);
   const [supLoading, setSupLoading] = useState(false);
-  const [filterCourseType, setFilterCourseType] = useState("");
-  const [searchText, setSearchText] = useState("");
+  const [filterCourseType, setFilterCourseType] = useState(() => readPopupFilters(POPUP_KEYS).courseType);
+  const [searchText, setSearchText] = useState(() => readPopupFilters(POPUP_KEYS).q);
 
   const navigate = useNavigate();
   const { can } = useAuth();
-  const MySwal = withReactContent(Swal);
 
   const fetchCourses = async () => {
     setSupLoading(true);
@@ -121,58 +124,14 @@ const List = () => {
   }, [courses, searchText, filterCourseType]);
 
   const openFilterPopup = async () => {
-    const result = await MySwal.fire({
-      background: "url(/bg_card.png)",
-      html: (
-        <div className="mb-2 w-full">
-          <div className="text-xl font-bold mb-5 text-green-600 text-center">
-            Filter
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-8 mt-5 p-7 items-center gap-2">
-            <span className="lg:col-span-1"></span>
-
-            <span className="lg:col-span-2 text-sm mb-1 text-start text-blue-500">
-              Course Type
-            </span>
-
-            <select
-              id="swal-course-type"
-              defaultValue={filterCourseType || ""}
-              className="lg:col-span-4 w-full rounded border p-2 text-sm"
-            >
-              <option value="">All</option>
-              <option value="Deeniyath Education">Deeniyath Education</option>
-              <option value="Islamic Home Science">Islamic Home Science</option>
-              <option value="School Education">School Education</option>
-              <option value="College Education">College Education</option>
-              <option value="Vocational Courses">Vocational Courses</option>
-              <option value="Teacher Training">Teacher Training</option>
-            </select>
-
-            <span className="lg:col-span-1"></span>
-          </div>
-        </div>
-      ),
-      focusConfirm: false,
-      showCancelButton: true,
-      showDenyButton: true,
-      confirmButtonText: "Apply",
-      denyButtonText: "Clear",
-      cancelButtonText: "Cancel",
-      preConfirm: () => {
-        const selectedCourseType =
-          document.getElementById("swal-course-type")?.value || "";
-
-        return selectedCourseType;
-      },
+    const next=await openPreservedFilterPopup({
+      fields:[{key:'courseType',label:'Course Type',options:['Deeniyath Education','Islamic Home Science','School Education','College Education','Vocational Courses','Teacher Training'].map(label=>({value:label,label:tr(label)}))},
+        {key:'q',label:'Search',type:'text'}],
+      values:{courseType:filterCourseType,q:searchText},defaults:{courseType:'',q:''},tr,direction,fontFamily,
     });
-
-    if (result.isConfirmed) {
-      setFilterCourseType(result.value || "");
-    } else if (result.isDenied) {
-      setFilterCourseType("");
-    }
+    if(!next)return;
+    savePopupFilters(POPUP_KEYS,next);
+    setFilterCourseType(next.courseType);setSearchText(next.q);
   };
 
   if (supLoading) {
@@ -180,7 +139,7 @@ const List = () => {
   }
 
   return (
-    <div className="p-3 lg:p-5 bg-repeat mt-1 lg:mt-5">
+    <div dir={direction} style={{fontFamily}} className="p-3 lg:p-5 bg-repeat mt-1 lg:mt-5">
       <div className="text-center">
         <h3 className="text-base lg:text-2xl font-bold px-5 py-0 text-gray-600">
           Manage Courses
@@ -197,10 +156,10 @@ const List = () => {
           <div className="w-full text-md flex justify-center items-center pl-2 rounded-l-md">
             <input
               type="text"
-              placeholder="Search"
+              placeholder={tr("Search")}
               className="w-full px-3 py-0.5 border rounded shadow-md justify-center ml-1 lg:ml-0 mr-3 lg:mr-0"
               value={searchText}
-              onChange={(e) => setSearchText(e.target.value)}
+              onChange={(e) => {setSearchText(e.target.value);savePopupFilters({q:POPUP_KEYS.q},{q:e.target.value});}}
             />
           </div>
 
@@ -213,7 +172,7 @@ const List = () => {
           <div className="mr-3 flex items-center gap-2">
             {filterCourseType ? (
               <span className="hidden md:inline-flex max-w-[220px] truncate rounded-full bg-sky-100 px-3 py-1 text-xs font-semibold text-sky-700 border border-sky-200">
-                Course Type: {filterCourseType}
+                {tr('Course Type')}: {tr(filterCourseType)}
               </span>
             ) : null}
 

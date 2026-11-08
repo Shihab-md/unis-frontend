@@ -1,4 +1,6 @@
-import React, { useEffect, useState } from 'react'
+import { openPreservedFilterPopup } from '../common/PreservedFilterPopup';
+import { readPopupFilters, savePopupFilters, loadPopupOptions, popupFilterValue } from '../../utils/popupFilterStorage';
+import React, { useEffect, useState, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { columns, SupervisorButtons, SupervisorCard, conditionalRowStyles } from '../../utils/SupervisorHelper'
 import { getBaseUrl, handleRightClickAndFullScreen, getSpinner, checkAuth, LinkIcon, showSwalAlert, getFilterGif } from '../../utils/CommonHelper';
@@ -8,10 +10,9 @@ import { isGlobalHqReadRole } from "../../auth/roles";
 import { PERMISSIONS } from '../../auth/permissions'
 import axios from 'axios'
 import { getSchoolsFromCache } from '../../utils/SchoolHelper';
-import Swal from 'sweetalert2';
-import withReactContent from 'sweetalert2-react-content';
-import Select from 'react-select';
 import { AutoText, useLanguage } from '../../i18n/LanguageContext';
+
+const POPUP_KEYS = {'schoolId': 'supSchoolId', 'status': 'supStatus', 'jobType': 'supType', 'q': 'popupFilter:supervisor:search'};
 
 const List = () => {
   const { tr, direction, fontFamily } = useLanguage();
@@ -22,6 +23,9 @@ const List = () => {
     handleRightClickAndFullScreen();
   }, []);
 
+  const [searchText, setSearchText] = useState(() => readPopupFilters(POPUP_KEYS).q);
+  const [listDataLoaded, setListDataLoaded] = useState(false);
+
   const navigate = useNavigate()
   const [supervisors, setSupervisors] = useState([])
   const [supLoading, setSupLoading] = useState(false)
@@ -29,118 +33,40 @@ const List = () => {
   const [schools, setSchools] = useState([])
   const [filtering, setFiltering] = useState(false)
 
-  const MySwal = withReactContent(Swal);
+  const requestRef=useRef(0);
 
   useEffect(() => {
     const getSchoolsMap = async (id) => {
       const schools = await getSchoolsFromCache(id);
-      setSchools(schools);
+      setSchools(Array.isArray(schools) ? schools : []);
     };
     getSchoolsMap();
   }, []);
 
   const openFilterPopup = async () => {
-    let selectedSchool;
-    let selectedStatus;
-    let selectedType;
-    const { value: formValues } = await MySwal.fire({
-      //  title: 'Filters',
-      background: "url(/bg_card.png)",
-      html: (
-        <div className="mb-2 h-80 w-full">
-          <div className='text-xl font-bold mb-1 text-green-600 text-center'>{tr("Filter")}</div>
-          <div className='grid'>
-            <span className='text-sm mb-1 text-start text-blue-500'>{tr("Niswan")}</span>
-            <Select className='text-sm text-start mb-3'
-              options={schools.map(option => ({
-                value: option._id, label: option.code + " : " + option.nameEnglish
-              }))}
-
-              onChange={(selectedOption) => {
-                selectedSchool = selectedOption.value;
-              }}
-              maxMenuHeight={210}
-              placeholder=''
-            />
-          </div>
-
-          <div className='grid'>
-            <span className='text-sm mb-1 text-start text-blue-500'>{tr("Status")}</span>
-            <Select className='text-sm text-start mb-3'
-              options={
-                [{ value: 'Active', label: tr('Active') },
-                { value: 'In-Active', label: tr('In-Active') }]
-              }
-              // defaultValue={selectedStatus}
-              onChange={(selectedOption) => {
-                selectedStatus = selectedOption.value;
-              }}
-              maxMenuHeight={140}
-              placeholder=''
-            />
-          </div>
-
-          <div className='grid'>
-            <span className='text-sm mb-1 text-start text-blue-500'>{tr("Job Type")}</span>
-            <Select className='text-sm text-start mb-3'
-              options={
-                [{ value: 'Full-Time', label: tr('Full-Time') },
-                { value: 'Part-Time', label: tr('Part-Time') }]
-              }
-
-              onChange={(selectedOption) => {
-                selectedType = selectedOption.value;
-              }}
-              maxMenuHeight={210}
-              placeholder=''
-            />
-          </div>
-        </div>
-      ),
-      focusConfirm: false,
-      showCancelButton: true,
-      confirmButtonText: tr("Apply"),
-      cancelButtonText: tr("Cancel"),
-      preConfirm: () => {
-        const select1 = selectedSchool ? selectedSchool : null;
-        const select2 = selectedStatus ? selectedStatus : null;
-        const select3 = selectedType ? selectedType : null;
-
-        return [select1, select2, select3];
-      }
-    });
-
-    if (formValues) {
-      if (formValues[0] || formValues[1] || formValues[2]) {
-
-        console.log('Selected values:', formValues);
-        const supSchoolId = formValues[0] ? formValues[0] : null;
-        const supStatus = formValues[1] ? formValues[1] : null;
-        const supType = formValues[2] ? formValues[2] : null;
-
-        console.log('Selected supSchoolId:', formValues[0]);
-        console.log('Selected supStatus:', formValues[1]);
-        console.log('Selected supType:', formValues[2]);
-
-        localStorage.setItem('supSchoolId', supSchoolId);
-        localStorage.setItem('supStatus', supStatus);
-        localStorage.setItem('supType', supType);
-
-        getFilteredSupervisors();
-
-      } else {
-
-        localStorage.removeItem('supervisors');
-        localStorage.removeItem('supSchoolId');
-        localStorage.removeItem('supStatus');
-        localStorage.removeItem('supType');
-
-        getSupervisors();
-      }
+    try {
+      const [availableSchools] = await loadPopupOptions(getSchoolsFromCache);
+      const values = {...readPopupFilters(POPUP_KEYS),q:searchText};
+      const choices=labels=>labels.map(label=>({value:label,label:tr(label)}));
+      const next = await openPreservedFilterPopup({
+        fields:[
+        {key:'schoolId',label:'Niswan',options:availableSchools.map(item=>({value:String(item._id),label:`${item.code} : ${item.nameEnglish}`}))},
+        {key:'status',label:'Status',options:choices(['Active','In-Active'])},
+        {key:'jobType',label:'Job Type',options:choices(['Full-Time','Part-Time'])},
+        ],values,defaults:Object.fromEntries(Object.keys(POPUP_KEYS).map(key=>[key,''])),tr,direction,fontFamily,
+      });
+      if(!next)return;
+      savePopupFilters(POPUP_KEYS,next,'supervisors');
+      setSearchText(next.q);
+      if(Object.keys(POPUP_KEYS).some(key=>key!=='q' && next[key]))await getFilteredSupervisors();
+      else await getSupervisors();
+    } catch(error) {
+      showSwalAlert('Error!',error?.response?.data?.error || tr('Error!'),'error');
     }
   };
 
   const getFilteredSupervisors = async () => {
+    const request=++requestRef.current;
     setFiltering(true)
     try {
       const responnse = await axios.get(
@@ -154,6 +80,7 @@ const List = () => {
           },
         }
       );
+      if (request!==requestRef.current)return;
       if (responnse.data.success) {
         let sno = 1;
         const data = await responnse.data.supervisors.map((sup) => ({
@@ -181,6 +108,7 @@ const List = () => {
           action: (<SupervisorButtons Id={sup._id} />),
         }));
         setSupervisors(data);
+      setListDataLoaded(true);
         setFilteredSupervisors(data)
         localStorage.removeItem('supervisors');
         localStorage.setItem('supervisors', JSON.stringify(responnse.data));
@@ -193,7 +121,7 @@ const List = () => {
         //  navigate("/dashboard");
       }
     } finally {
-      setFiltering(false)
+      if(request===requestRef.current){setFiltering(false);setSupLoading(false);}
     }
   }
 
@@ -209,9 +137,7 @@ const List = () => {
       setSupLoading(true)
 
       const data = localStorage.getItem('supervisors');
-      if (data && (localStorage.getItem('supSchoolId')
-        || localStorage.getItem('supStatus')
-        || localStorage.getItem('supType'))) {
+      if (['supSchoolId','supStatus','supType'].some(popupFilterValue)) {
         console.log("111")
         getFilteredSupervisors();
       } else {
@@ -224,6 +150,7 @@ const List = () => {
   }, []);
 
   const getSupervisors = async () => {
+    const request=++requestRef.current;
 
     const onSupervisorDelete = () => {
       const data = localStorage.getItem('supervisors');
@@ -238,9 +165,7 @@ const List = () => {
 
     const data = localStorage.getItem('supervisors');
     console.log("Existing Data - " + JSON.parse(data))
-    if (data && (localStorage.getItem('supSchoolId')
-      || localStorage.getItem('supStatus')
-      || localStorage.getItem('supType'))) {
+    if (data && ['supSchoolId','supStatus','supType'].some(popupFilterValue)) {
       let sno = 1;
       const data1 = JSON.parse(data).supervisors.map((sup) => ({
         _id: sup._id,
@@ -268,6 +193,7 @@ const List = () => {
         action: (<SupervisorButtons Id={sup._id} onSupervisorDelete={onSupervisorDelete} />),
       }));
       setSupervisors(data1);
+      setListDataLoaded(true);
       setFilteredSupervisors(data1);
       console.log("Data from local storage")
 
@@ -283,7 +209,8 @@ const List = () => {
             },
           }
         );
-        if (responnse.data.success) {
+        if (request!==requestRef.current)return;
+      if (responnse.data.success) {
           let sno = 1;
           const data = await responnse.data.supervisors.map((sup) => ({
             _id: sup._id,
@@ -311,6 +238,7 @@ const List = () => {
             action: (<SupervisorButtons Id={sup._id} onSupervisorDelete={onSupervisorDelete} />),
           }));
           setSupervisors(data);
+      setListDataLoaded(true);
           setFilteredSupervisors(data)
           localStorage.removeItem('supervisors');
           localStorage.setItem('supervisors', JSON.stringify(responnse.data));
@@ -323,21 +251,26 @@ const List = () => {
           navigate("/dashboard");
         }
       } finally {
-        setSupLoading(false)
+        if(request===requestRef.current){setSupLoading(false);setFiltering(false);}
       }
     };
   }
 
-  const handleFilter = (e) => {
-    const records = supervisors.filter((sup) => (
-      sup.supId?.toLowerCase().includes(e.target.value.toLowerCase())
-      || sup.name?.toLowerCase().includes(e.target.value.toLowerCase())
-      || sup.active?.toLowerCase().includes(e.target.value.toLowerCase())
-      || sup.jobType?.toLowerCase().includes(e.target.value.toLowerCase())
-      || sup.contactNumber?.toString().toLowerCase().includes(e.target.value.toLowerCase())
-    ))
-    setFilteredSupervisors(records)
-  }
+  const handleFilter = (event) => {
+    const q=event.target.value;
+    setSearchText(q);
+    savePopupFilters({q:POPUP_KEYS.q},{q});
+  };
+  useEffect(() => {
+    if(!listDataLoaded)return;
+    setFilteredSupervisors(supervisors.filter((sup) => !searchText || (
+      sup.supId?.toLowerCase().includes(searchText.toLowerCase())
+      || sup.name?.toLowerCase().includes(searchText.toLowerCase())
+      || sup.active?.toLowerCase().includes(searchText.toLowerCase())
+      || sup.jobType?.toLowerCase().includes(searchText.toLowerCase())
+      || sup.contactNumber?.toString().toLowerCase().includes(searchText.toLowerCase())
+    )));
+  },[supervisors,searchText,listDataLoaded]);
 
   if (!filteredSupervisor) {
     return getSpinner();
@@ -360,6 +293,7 @@ const List = () => {
               type="text"
               placeholder={tr("Search")}
               className="w-full px-3 py-0.5 border rounded shadow-md justify-center ml-1 lg:ml-0 mr-3 lg:mr-0"
+              value={searchText}
               onChange={handleFilter}
             />
           </div>

@@ -1,4 +1,6 @@
-import React, { useEffect, useMemo, useState } from "react";
+import { openPreservedFilterPopup } from '../common/PreservedFilterPopup';
+import { readPopupFilters, savePopupFilters } from '../../utils/popupFilterStorage';
+import React, { useEffect, useMemo, useState, useRef } from "react";
 import DataTable from "react-data-table-component";
 import { useNavigate } from "react-router-dom";
 import { FaEye } from "react-icons/fa";
@@ -107,6 +109,8 @@ function InspectionReportCard({ row, index, navigate, user, tr, direction, fontF
   );
 }
 
+const POPUP_KEYS={q:'popupFilter:inspection:search',fromDate:'popupFilter:inspection:from',toDate:'popupFilter:inspection:to'};
+
 export default function InspectionReportList() {
   const navigate = useNavigate();
   const { user, can } = useAuth();
@@ -115,13 +119,8 @@ export default function InspectionReportList() {
   const [rows, setRows] = useState([]);
   const [loading, setLoading] = useState(false);
   const [filtering, setFiltering] = useState(false);
-  const [showFilterPopup, setShowFilterPopup] = useState(false);
-
-  const [filters, setFilters] = useState({
-    q: "",
-    fromDate: "",
-    toDate: "",
-  });
+  const [filters,setFilters]=useState(() => readPopupFilters(POPUP_KEYS));
+  const requestRef=useRef(0);
 
   useEffect(() => {
     handleRightClickAndFullScreen();
@@ -136,13 +135,15 @@ export default function InspectionReportList() {
     loadInspectionReports();
   }, []);
 
-  const loadInspectionReports = async () => {
+  const loadInspectionReports = async (applied=filters) => {
+    const request=++requestRef.current;
     try {
       setLoading(true);
       setFiltering(true);
-      const res = await fetchInspectionReports(filters);
-      setRows(res?.data || []);
+      const res = await fetchInspectionReports(applied);
+      if(request===requestRef.current)setRows(res?.data || []);
     } catch (error) {
+      if(request!==requestRef.current)return;
       showSwalAlert(
         tr("Error!"),
         error?.response?.data?.message ||
@@ -151,62 +152,21 @@ export default function InspectionReportList() {
         "error"
       );
     } finally {
-      setLoading(false);
-      setFiltering(false);
+      if(request===requestRef.current){setLoading(false);setFiltering(false);}
     }
   };
 
-  const handleSearch = (e) => {
-    const searchValue = e.target.value;
-    setFilters((prev) => ({ ...prev, q: searchValue }));
-
-    const lowered = searchValue.toLowerCase();
-    const filtered = (rows || []).filter((row) =>
-      row.title?.toLowerCase().includes(lowered) ||
-      row.supervisorName?.toLowerCase().includes(lowered) ||
-      row.supervisorId?.toLowerCase().includes(lowered) ||
-      row.schoolCode?.toLowerCase().includes(lowered) ||
-      row.schoolName?.toLowerCase().includes(lowered)
-    );
-
-    if (!searchValue.trim()) {
-      loadInspectionReports();
-    } else {
-      setRows(filtered);
-    }
+  const handleSearch = (event) => {
+    const next={...filters,q:event.target.value};
+    setFilters(next);savePopupFilters(POPUP_KEYS,next);loadInspectionReports(next);
   };
-
-  const applyFilters = async () => {
-    setShowFilterPopup(false);
-    await loadInspectionReports();
-  };
-
-  const resetFilters = async () => {
-    const emptyFilters = {
-      q: "",
-      fromDate: "",
-      toDate: "",
-    };
-    setFilters(emptyFilters);
-    setShowFilterPopup(false);
-
-    try {
-      setLoading(true);
-      setFiltering(true);
-      const res = await fetchInspectionReports(emptyFilters);
-      setRows(res?.data || []);
-    } catch (error) {
-      showSwalAlert(
-        tr("Error!"),
-        error?.response?.data?.message ||
-        error.message ||
-        tr("Failed to load inspection reports."),
-        "error"
-      );
-    } finally {
-      setLoading(false);
-      setFiltering(false);
-    }
+  const openFilterPopup=async()=>{
+    const next=await openPreservedFilterPopup({
+      fields:[{key:'fromDate',label:'From Date',type:'date'},{key:'toDate',label:'To Date',type:'date'},{key:'q',label:'Search',type:'text'}],
+      values:filters,defaults:{q:'',fromDate:'',toDate:''},tr,direction,fontFamily,
+    });
+    if(!next)return;
+    setFilters(next);savePopupFilters(POPUP_KEYS,next);await loadInspectionReports(next);
   };
 
   const columns = useMemo(
@@ -298,6 +258,7 @@ export default function InspectionReportList() {
               type="text"
               placeholder={tr("Search")}
               className="w-full px-3 py-0.5 border rounded shadow-md justify-center ml-1 lg:ml-0 mr-3 lg:mr-0"
+              value={filters.q}
               onChange={handleSearch}
             />
           </div>
@@ -306,7 +267,7 @@ export default function InspectionReportList() {
           </div>
         </div>
 
-        <div className="" onClick={() => setShowFilterPopup(true)}>
+        <div className="" onClick={openFilterPopup}>
           {LinkIcon("#", "Filter")}
         </div>
 
@@ -374,76 +335,8 @@ export default function InspectionReportList() {
         </>
       )}
 
-      {showFilterPopup ? (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-3"
-          onClick={() => setShowFilterPopup(false)}
-        >
-          <div
-            className="w-full max-w-2xl rounded-xl bg-white p-4 shadow-2xl bg-[url(/bg_card.png)]"
-            dir={direction}
-            style={{ fontFamily }}
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="mb-3 flex items-center justify-between">
-              <h3 className="text-lg font-semibold text-green-800">{tr("Filter Inspection Reports")}</h3>
-              <button
-                type="button"
-                onClick={() => setShowFilterPopup(false)}
-                className="rounded px-2 py-1 text-sm font-semibold text-slate-500 hover:bg-slate-100"
-              >
-                ✕
-              </button>
-            </div>
 
-            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-              <Field label={tr("From Date")}>
-                <input
-                  type="date"
-                  value={filters.fromDate}
-                  onChange={(e) => setFilters((prev) => ({ ...prev, fromDate: e.target.value }))}
-                  className="w-full rounded-xl border bg-slate-50 px-3 py-3 text-sm outline-none"
-                />
-              </Field>
-
-              <Field label={tr("To Date")}>
-                <input
-                  type="date"
-                  value={filters.toDate}
-                  onChange={(e) => setFilters((prev) => ({ ...prev, toDate: e.target.value }))}
-                  className="w-full rounded-xl border bg-slate-50 px-3 py-3 text-sm outline-none"
-                />
-              </Field>
-            </div>
-
-            <div className="mt-4 flex justify-end gap-2">
-              <button
-                type="button"
-                onClick={resetFilters}
-                className="rounded-xl border px-4 py-2 text-sm font-semibold text-slate-700"
-              >
-                {tr("Reset")}
-              </button>
-              <button
-                type="button"
-                onClick={applyFilters}
-                className="rounded-xl bg-blue-600 px-4 py-2 text-sm font-semibold text-white"
-              >
-                {tr("Apply")}
-              </button>
-            </div>
-          </div>
-        </div>
-      ) : null}
     </div>
   );
 }
 
-function Field({ label, children }) {
-  return (
-    <label className="block">
-      <span className="mb-1 block text-sm font-semibold text-slate-700">{label}</span>
-      {children}
-    </label>
-  );
-}

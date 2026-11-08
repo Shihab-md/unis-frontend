@@ -1,17 +1,22 @@
-import React, { useEffect, useState } from 'react'
+import { useLanguage } from '../../i18n/LanguageContext';
+import { useAuth } from '../../context/AuthContext';
+import { openPreservedFilterPopup } from '../common/PreservedFilterPopup';
+import { readPopupFilters, savePopupFilters, loadPopupOptions, popupFilterValue, fixedPopupSchoolId, hasFixedPopupSchool } from '../../utils/popupFilterStorage';
+import React, { useEffect, useState, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { columns, CertificateButtons, CertificateCard } from '../../utils/CertificateHelper'
 import { getBaseUrl, handleRightClickAndFullScreen, getSpinner, checkAuth, LinkIcon, showSwalAlert, getFilterGif } from '../../utils/CommonHelper';
 import DataTable from 'react-data-table-component'
 import axios from 'axios'
-import Swal from 'sweetalert2';
-import withReactContent from 'sweetalert2-react-content';
-import Select from 'react-select';
 import { getSchoolsFromCache } from '../../utils/SchoolHelper';
 import { getCoursesFromCache } from '../../utils/CourseHelper';
 import { getAcademicYearsFromCache } from '../../utils/AcademicYearHelper';
 
+const POPUP_KEYS = {'schoolId': 'certSchoolId', 'courseId': 'certCourseId', 'acYear': 'certACYearId', 'q': 'popupFilter:certificate:search'};
+
 const List = () => {
+  const { tr, direction, fontFamily } = useLanguage();
+  const { user } = useAuth();
 
   // To prevent right-click AND For FULL screen view.
   useEffect(() => {
@@ -26,16 +31,19 @@ const List = () => {
   const [courses, setCourses] = useState([]);
   const [academicYears, setAcademicYears] = useState([]);
 
+  const [searchText, setSearchText] = useState(() => readPopupFilters(POPUP_KEYS).q);
+  const [listDataLoaded, setListDataLoaded] = useState(false);
+
   const navigate = useNavigate()
 
   const [currentPage, setCurrentPage] = useState(1);
 
-  const MySwal = withReactContent(Swal);
+  const requestRef=useRef(0);
 
   useEffect(() => {
     const getSchoolsMap = async (id) => {
       const schools = await getSchoolsFromCache(id);
-      setSchools(schools);
+      setSchools(Array.isArray(schools) ? schools : []);
     };
     getSchoolsMap();
   }, []);
@@ -43,7 +51,7 @@ const List = () => {
   useEffect(() => {
     const getCoursesMap = async (id) => {
       const courses = await getCoursesFromCache(id);
-      setCourses(courses);
+      setCourses(Array.isArray(courses) ? courses : []);
     };
     getCoursesMap();
   }, []);
@@ -51,110 +59,43 @@ const List = () => {
   useEffect(() => {
     const getAcademicYearsMap = async (id) => {
       const academicYears = await getAcademicYearsFromCache(id);
-      setAcademicYears(academicYears);
+      setAcademicYears(Array.isArray(academicYears) ? academicYears : []);
     };
     getAcademicYearsMap();
   }, []);
 
   const openFilterPopup = async () => {
-
-    let selectedSchoolId;
-    let selectedCourseId;
-    let selectedACYearId;
-    const { value: formValues } = await MySwal.fire({
-      //  title: 'Filters',
-      background: "url(/bg_card.png)",
-      html: (
-        <div className="mb-2 h-80 w-full">
-          <div className='text-xl font-bold mb-1 text-green-600 text-center'>Filter</div>
-          <div className='grid'>
-            <span className='text-sm mb-1 text-start text-blue-500'>Niswan</span>
-            <Select className='text-sm text-start mb-3'
-              options={schools.map(option => ({
-                value: option._id, label: option.code + " : " + option.nameEnglish
-              }))}
-
-              onChange={(selectedOption) => {
-                selectedSchoolId = selectedOption.value;
-              }}
-              maxMenuHeight={210}
-              placeholder=''
-            />
-          </div>
-
-          <div className='grid'>
-            <span className='text-sm mb-1 text-start text-blue-500'>Course</span>
-            <Select className='text-sm text-start mb-3'
-              options={courses.map(option => ({
-                value: option._id, label: option.name
-              }))}
-
-              onChange={(selectedOption) => {
-                selectedCourseId = selectedOption.value;
-              }}
-              maxMenuHeight={210}
-              placeholder=''
-            />
-          </div>
-
-          <div className='grid'>
-            <span className='text-sm mb-1 text-start text-blue-500'>AC Year</span>
-            <Select className='text-sm text-start mb-2'
-              options={academicYears.map(option => ({
-                value: option._id, label: option.acYear
-              }))}
-
-              onChange={(selectedOption) => {
-                selectedACYearId = selectedOption.value;
-              }}
-              maxMenuHeight={210}
-              placeholder=''
-            />
-          </div>
-        </div>
-      ),
-      focusConfirm: false,
-      showCancelButton: true,
-      preConfirm: () => {
-        const select1 = selectedSchoolId ? selectedSchoolId : null;
-        const select2 = selectedCourseId ? selectedCourseId : null;
-        const select3 = selectedACYearId ? selectedACYearId : null;
-
-        return [select1, select2, select3];
-      }
-    });
-
-    if (formValues) {
-      if (formValues[0] || formValues[1] || formValues[2]) {
-
-        console.log('Selected values:', formValues);
-        const certSchoolId = formValues[0] ? formValues[0] : null;
-        const certCourseId = formValues[1] ? formValues[1] : null;
-        const certACYearId = formValues[2] ? formValues[2] : null;
-
-        console.log('Selected certSchoolId:', formValues[0]);
-        console.log('Selected certCourseId:', formValues[1]);
-        console.log('Selected certACYearId:', formValues[2]);
-
-        localStorage.setItem('certSchoolId', certSchoolId);
-        localStorage.setItem('certCourseId', certCourseId);
-        localStorage.setItem('certACYearId', certACYearId);
-
-        getFilteredCertificates();
-
-      } else {
-
-        localStorage.removeItem('certificates');
-        localStorage.removeItem('certSchoolId');
-        localStorage.removeItem('certCourseId');
-        localStorage.removeItem('certACYearId');
-
-        getCertificates();
-      }
+    try {
+      const [availableSchools, availableCourses, availableYears] = await loadPopupOptions(getSchoolsFromCache, getCoursesFromCache, getAcademicYearsFromCache);
+      const values = {...readPopupFilters(POPUP_KEYS),q:searchText};
+      const fixedId = fixedPopupSchoolId(user);
+      const fixedNiswan = hasFixedPopupSchool(user);
+      const schoolOptions = (fixedNiswan ? availableSchools.filter(item=>String(item._id)===fixedId) : availableSchools).map(item=>({value:String(item._id),label:`${item.code} : ${item.nameEnglish}`}));
+      if(fixedId && !schoolOptions.length)schoolOptions.push({value:fixedId,label:localStorage.getItem('schoolName') || tr('Niswan')});
+      if(fixedNiswan)values.schoolId=fixedId;
+      const activeYear=availableYears.find(year=>year.active==='Active');
+      if(!availableYears.some(year=>String(year._id)===values.acYear))values.acYear=activeYear?String(activeYear._id):'';
+      const next = await openPreservedFilterPopup({
+        fields:[
+        {key:'schoolId',label:'Niswan',disabled:fixedNiswan,options:schoolOptions},
+        {key:'courseId',label:'Course',options:availableCourses.map(item=>({value:String(item._id),label:item.name}))},
+        {key:'acYear',label:'Academic Year',options:availableYears.map(item=>({value:String(item._id),label:item.acYear}))},
+        ],values,defaults:{schoolId:fixedNiswan?fixedId:'',courseId:'',acYear:activeYear?String(activeYear._id):'',q:''},tr,direction,fontFamily,
+      });
+      if(!next)return;
+      savePopupFilters(POPUP_KEYS,next,'certificates');
+      setSearchText(next.q);
+      if(Object.keys(POPUP_KEYS).some(key=>key!=='q' && next[key]))await getFilteredCertificates();
+      else await getCertificates();
+    } catch(error) {
+      showSwalAlert('Error!',error?.response?.data?.error || tr('Error!'),'error');
     }
   };
 
   const getFilteredCertificates = async () => {
+    const request=++requestRef.current;
+    const fixedId=fixedPopupSchoolId(user);
+    if(fixedId)localStorage.setItem('certSchoolId',fixedId);
     setFiltering(true)
     try {
       const responnse = await axios.get(
@@ -168,6 +109,7 @@ const List = () => {
           },
         }
       );
+      if (request!==requestRef.current)return;
       if (responnse.data.success) {
         let sno = 1;
         const data = await responnse.data.certificates.map((sup) => ({
@@ -182,6 +124,7 @@ const List = () => {
           action: (<CertificateButtons Id={sup._id} />),
         }));
         setCertificates(data);
+      setListDataLoaded(true);
         setFilteredCertificates(data)
         localStorage.removeItem('certificates');
         localStorage.setItem('certificates', JSON.stringify(responnse.data));
@@ -194,7 +137,7 @@ const List = () => {
         //  navigate("/dashboard");
       }
     } finally {
-      setFiltering(false)
+      if(request===requestRef.current){setFiltering(false);setSupLoading(false);}
     }
   }
 
@@ -210,9 +153,7 @@ const List = () => {
       setSupLoading(true)
 
       const data = localStorage.getItem('certificates');
-      if (data && (localStorage.getItem('certSchoolId')
-        || localStorage.getItem('certCourseId')
-        || localStorage.getItem('certACYearId'))) {
+      if (['certSchoolId','certCourseId','certACYearId'].some(popupFilterValue)) {
         console.log("111")
         getFilteredCertificates();
       } else {
@@ -225,6 +166,7 @@ const List = () => {
   }, []);
 
   const getCertificates = async () => {
+    const request=++requestRef.current;
 
     const onCertificateDelete = () => {
       const data = localStorage.getItem('certificates');
@@ -239,9 +181,7 @@ const List = () => {
 
     const data = localStorage.getItem('certificates');
     console.log("Existing Data - " + JSON.parse(data))
-    if (data && (localStorage.getItem('certSchoolId')
-      || localStorage.getItem('certCourseId')
-      || localStorage.getItem('certACYearId'))) {
+    if (data && ['certSchoolId','certCourseId','certACYearId'].some(popupFilterValue)) {
       let sno = 1;
       const data1 = JSON.parse(data).certificates.map((sup) => ({
         _id: sup._id,
@@ -255,6 +195,7 @@ const List = () => {
         action: (<CertificateButtons Id={sup._id} onCertificateDelete={onCertificateDelete} />),
       }));
       setCertificates(data1);
+      setListDataLoaded(true);
       setFilteredCertificates(data1)
       console.log("Data from local storage")
 
@@ -270,7 +211,8 @@ const List = () => {
             },
           }
         );
-        if (responnse.data.success) {
+        if (request!==requestRef.current)return;
+      if (responnse.data.success) {
           let sno = 1;
           const data = await responnse.data.certificates.map((sup) => ({
             _id: sup._id,
@@ -291,6 +233,7 @@ const List = () => {
             action: (<CertificateButtons Id={sup._id} onCertificateDelete={onCertificateDelete} />),
           }));
           setCertificates(data);
+      setListDataLoaded(true);
           setFilteredCertificates(data);
           localStorage.removeItem('certificates');
           localStorage.setItem('certificates', JSON.stringify(responnse.data));
@@ -302,28 +245,33 @@ const List = () => {
           navigate("/dashboard");
         }
       } finally {
-        setSupLoading(false)
+        if(request===requestRef.current){setSupLoading(false);setFiltering(false);}
       }
     };
   }
 
-  const handleFilter = (e) => {
-    const records = certificates.filter((sup) => (
-      sup.sanadhNo?.toLowerCase().includes(e.target.value.toLowerCase())
-      || sup.studentName?.toLowerCase().includes(e.target.value.toLowerCase())
-      || sup.rollNumber?.toLowerCase().includes(e.target.value.toLowerCase())
-      || sup.sanadhName?.toLowerCase().includes(e.target.value.toLowerCase())
-      || sup.niswanCode?.toLowerCase().includes(e.target.value.toLowerCase())
-    ))
-    setFilteredCertificates(records)
-  }
+  const handleFilter = (event) => {
+    const q=event.target.value;
+    setSearchText(q);
+    savePopupFilters({q:POPUP_KEYS.q},{q});
+  };
+  useEffect(() => {
+    if(!listDataLoaded)return;
+    setFilteredCertificates(certificates.filter((sup) => !searchText || (
+      sup.sanadhNo?.toLowerCase().includes(searchText.toLowerCase())
+      || sup.studentName?.toLowerCase().includes(searchText.toLowerCase())
+      || sup.rollNumber?.toLowerCase().includes(searchText.toLowerCase())
+      || sup.sanadhName?.toLowerCase().includes(searchText.toLowerCase())
+      || sup.niswanCode?.toLowerCase().includes(searchText.toLowerCase())
+    )));
+  },[certificates,searchText,listDataLoaded]);
 
   if (!filteredCertificate) {
     return getSpinner();
   }
 
   return (
-    <div className="p-3 lg:p-5 bg-repeat mt-3 lg:mt-5">
+    <div dir={direction} style={{fontFamily}} className="p-3 lg:p-5 bg-repeat mt-3 lg:mt-5">
       <div className="text-center">
         <h3 className="text-base lg:text-2xl font-bold px-5 py-0 text-shadow-lg text-gray-600">Manage Certificates
           <p className='flex md:grid text-sm md:text-base justify-center text-rose-700'>
@@ -337,8 +285,9 @@ const List = () => {
           <div className={`w-full text-md flex justify-center items-center pl-2 rounded-l-md`}>
             <input
               type="text"
-              placeholder="Search"
-              class="w-full px-3 py-0.5 border rounded shadow-md justify-center ml-1 lg:ml-0 mr-3 lg:mr-0"
+              placeholder={tr("Search")}
+              className="w-full px-3 py-0.5 border rounded shadow-md justify-center ml-1 lg:ml-0 mr-3 lg:mr-0"
+              value={searchText}
               onChange={handleFilter}
             />
           </div>
