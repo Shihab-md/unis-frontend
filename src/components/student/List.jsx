@@ -321,7 +321,7 @@ const List = () => {
           direction={direction}
           fontFamily={fontFamily}
           initialValues={draft}
-          getResetValues={() => getStudentResetFilters(options.academicYears, localStorage)}
+          getResetValues={() => getStudentResetFilters(options.academicYears)}
           onChange={(next) => { draft = next; }}
         />,
         focusConfirm: false,
@@ -1094,7 +1094,7 @@ const List = () => {
   const handleResetFilters = async () => {
     try {
       const options = await loadFilterOptions();
-      saveStudentFilters(getStudentResetFilters(options.academicYears, localStorage), localStorage);
+      saveStudentFilters(getStudentResetFilters(options.academicYears), localStorage);
       if (hasStudentFilterApplied()) await getFilteredStudents();
       else await getStudents();
     } catch (error) {

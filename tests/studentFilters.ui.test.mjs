@@ -105,25 +105,24 @@ test('Cancel after edits preserves both storage and the applied results',async()
 });
 test('popup Reset only changes draft fields and Cancel restores all previously applied filters',async()=>{
   setup();await ready();const before=saved(),calls=globalThis.F_CALLS.length;await open();await resetDraft();
-  assert.equal(selected('acYear'),'2025-2026');for(const key of Object.keys(allFilters))if(key!=='acYear')assert.equal(selected(key),'',key);
+  assert.equal(selected('acYear'),'2026-2027');for(const key of Object.keys(allFilters))if(key!=='acYear')assert.equal(selected(key),'',key);
   assert.equal(saved(),before);assert.equal(globalThis.F_CALLS.length,calls);await close();assert.equal(saved(),before);
   await open();assert.equal(selected('year'),'0');assert.equal(selected('acYear'),'2025-2026');
 });
-test('popup Reset reads the saved year rather than the draft year and Apply uses that year',async()=>{
-  setup();await ready();await open();await choose('acYear','2026-2027');assert.equal(selected('acYear'),'2026-2027');
-  await resetDraft();assert.equal(selected('acYear'),'2025-2026');await close('apply');
-  await waitFor(()=>assert.equal(globalThis.F_CALLS.length,2));assert.equal(localStorage.getItem('acYear'),'old-year');
+test('popup Reset uses the page default instead of the stored filter year',async()=>{
+  setup();await ready();await open();await resetDraft();assert.equal(selected('acYear'),'2026-2027');await close('apply');
+  await waitFor(()=>assert.equal(globalThis.F_CALLS.length,2));assert.equal(localStorage.getItem('acYear'),'current-year');
   for(const key of Object.keys(allFilters))if(key!=='acYear')assert.equal(localStorage.getItem(key),null,key);
   assert.equal(localStorage.getItem('schoolId'),'niswan');assert.equal(localStorage.getItem('schoolName'),'N-001: Selected Niswan');
-  assert.equal(globalThis.F_CALLS.at(-1)[0],'/offline/student/byFilter/niswan/null/null/old-year/null/null/null/null/null');
+  assert.equal(globalThis.F_CALLS.at(-1)[0],'/offline/student/byFilter/niswan/null/null/current-year/null/null/null/null/null');
 });
-test('list Reset immediately clears other filters, keeps Niswan and reloads saved academic year',async()=>{
+test('list Reset immediately clears other filters, keeps Niswan and reloads the default academic year',async()=>{
   setup();await ready();fireEvent.click(screen.getByRole('button',{name:text('Reset'),exact:true}));
-  await waitFor(()=>assert.equal(globalThis.F_CALLS.length,2));assert.equal(localStorage.getItem('acYear'),'old-year');
+  await waitFor(()=>assert.equal(globalThis.F_CALLS.length,2));assert.equal(localStorage.getItem('acYear'),'current-year');
   for(const key of Object.keys(allFilters))if(key!=='acYear')assert.equal(localStorage.getItem(key),null,key);
   assert.equal(localStorage.getItem('schoolId'),'niswan');assert.equal(localStorage.getItem('schoolName'),'N-001: Selected Niswan');
-  assert.equal(globalThis.F_CALLS.at(-1)[0],'/offline/student/byFilter/niswan/null/null/old-year/null/null/null/null/null');
-  await open();assert.equal(selected('acYear'),'2025-2026');assert.equal(selected('status'),'');
+  assert.equal(globalThis.F_CALLS.at(-1)[0],'/offline/student/byFilter/niswan/null/null/current-year/null/null/null/null/null');
+  await open();assert.equal(selected('acYear'),'2026-2027');assert.equal(selected('status'),'');
 });
 for(const value of [undefined,'','null','undefined','deleted-year'])test(`missing/invalid stored academic year (${String(value)}) falls back to the configured Active year`,async()=>{
   setup();if(value===undefined)localStorage.removeItem('acYear');else localStorage.setItem('acYear',value);
@@ -148,11 +147,51 @@ test('failed option loading cannot erase applied filters and the next attempt ca
 test('storage helpers preserve numeric zero, remove empty keys and invalidate cached student rows',()=>{
   setup();localStorage.setItem('students','stale');saveStudentFilters({...allFilters,year:0,status:''},localStorage);
   assert.equal(localStorage.getItem('year'),'0');assert.equal(localStorage.getItem('status'),null);assert.equal(localStorage.getItem('students'),null);
-  assert.equal(readStudentFilters(localStorage).year,'0');assert.equal(getStudentResetFilters(globalThis.F_OPTIONS.academicYears,localStorage).acYear,'old-year');
+  assert.equal(readStudentFilters(localStorage).year,'0');assert.equal(getStudentResetFilters(globalThis.F_OPTIONS.academicYears).acYear,'current-year');
 });
 for(const language of ['en','ta','ur','ar','ml','kn','te'])test(`real popup retains translated fields/buttons and direction in ${language}`,async()=>{
   setup(language);await ready();await open();assert.equal(document.getElementById('student-filter-courseId').closest('[dir]').dir,['ar','ur'].includes(language)?'rtl':'ltr');
   assert.equal(Swal.getConfirmButton().textContent,text('Apply'));assert.equal(Swal.getCancelButton().textContent,text('Cancel'));assert(Swal.getDenyButton().textContent.includes(text('Reset')));
   assert.equal(selected('status'),text('Active'));assert.equal(selected('acYear'),'2025-2026');assert.equal(selected('year'),'0');
-  assert(!Swal.getHtmlContainer().textContent.includes('\ufffd'));await resetDraft();assert.equal(selected('acYear'),'2025-2026');
+  assert(!Swal.getHtmlContainer().textContent.includes('\ufffd'));await resetDraft();assert.equal(selected('acYear'),'2026-2027');
+});
+
+function useReportedYears() {
+  globalThis.F_OPTIONS.academicYears=[
+    {_id:'old-year',acYear:'2025-2026',active:'Active'},
+    {_id:'current-year',acYear:'2026-2027',active:'In-Active'},
+  ];
+}
+test('reported case: default 2025-2026, apply 2026-2027, list Reset returns to 2025-2026',async()=>{
+  setup('en',{});useReportedYears();await ready();await open();assert.equal(selected('acYear'),'2025-2026');
+  await choose('acYear','2026-2027');await close('apply');assert.equal(localStorage.getItem('acYear'),'current-year');
+  await open();assert.equal(selected('acYear'),'2026-2027');await close();
+  fireEvent.click(screen.getByRole('button',{name:'Reset',exact:true}));
+  await waitFor(()=>assert.equal(localStorage.getItem('acYear'),'old-year'));
+  await waitFor(()=>assert.equal(globalThis.F_CALLS.length,3));
+  assert.equal(globalThis.F_CALLS.at(-1)[0],'/offline/student/byFilter/niswan/null/null/old-year/null/null/null/null/null');
+  assert.equal(localStorage.getItem('schoolId'),'niswan');await open();assert.equal(selected('acYear'),'2025-2026');
+});
+test('reported case: popup Reset drafts 2025-2026; Cancel retains 2026-2027 and Apply commits 2025-2026',async()=>{
+  setup('en',{});useReportedYears();await ready();await open();await choose('acYear','2026-2027');await close('apply');
+  await open();await resetDraft();assert.equal(selected('acYear'),'2025-2026');assert.equal(localStorage.getItem('acYear'),'current-year');
+  await close();assert.equal(localStorage.getItem('acYear'),'current-year');
+  await open();assert.equal(selected('acYear'),'2026-2027');await resetDraft();await close('apply');
+  assert.equal(localStorage.getItem('acYear'),'old-year');
+  assert.equal(globalThis.F_CALLS.at(-1)[0],'/offline/student/byFilter/niswan/null/null/old-year/null/null/null/null/null');
+});
+test('reported case: returning or refreshing retains the 2026-2027 filter but Reset still restores 2025-2026',async()=>{
+  setup('en',{});useReportedYears();const page=await ready();await open();await choose('acYear','2026-2027');await close('apply');page.unmount();
+  await ready();await open();assert.equal(selected('acYear'),'2026-2027');await resetDraft();assert.equal(selected('acYear'),'2025-2026');
+  await close('apply');assert.equal(localStorage.getItem('acYear'),'old-year');
+});
+test('an academic-year selection already saved by the previous patch resets correctly without clearing browser storage',async()=>{
+  setup('en',{...allFilters,acYear:'current-year'});useReportedYears();await ready();
+  fireEvent.click(screen.getByRole('button',{name:'Reset',exact:true}));
+  await waitFor(()=>assert.equal(localStorage.getItem('acYear'),'old-year'));
+  assert.equal(localStorage.getItem('schoolId'),'niswan');assert.equal(localStorage.getItem('schoolName'),'N-001: Selected Niswan');
+});
+test('reset defaults do not invent a year from saved filters when no Active academic year is configured',()=>{
+  setup();const years=globalThis.F_OPTIONS.academicYears.map(year=>({...year,active:'In-Active'}));
+  assert.equal(getStudentResetFilters(years).acYear,'');
 });
