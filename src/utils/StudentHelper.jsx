@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { getBaseUrl, showSwalAlert, showConfirmationSwalAlert, getButtonStyle, getButtonTooltip } from '../utils/CommonHelper';
-import { FaEye, FaEdit, FaTrashAlt } from "react-icons/fa";
+import { FaEye, FaEdit, FaTrashAlt, FaExchangeAlt } from "react-icons/fa";
 import { useAuth } from '../context/AuthContext'
 import { PERMISSIONS } from '../auth/permissions';
 import { UiText, useLanguage } from '../i18n/LanguageContext';
@@ -1091,10 +1091,17 @@ export const StudentButtons = ({ Id, onStudentDelete, student = {} }) => {
           <FaEdit title={editTooltip} aria-label={editTooltip} className="m-1" />
         </button>
       ) : null}
-      {can(PERMISSIONS.STUDENT_COURSE_CHANGE) ? <button type="button" disabled={completedForAction}
-        className={`${getButtonStyle('Edit')}${disabledActionClass(completedForAction)}`}
-        title={tr("Change Student Course")} aria-label={tr("Change Student Course")}
-        onClick={() => navigate(`/dashboard/students/course-change/${Id}`)}>{tr("Course")}</button> : null}
+      {can(PERMISSIONS.STUDENT_EDIT) ? (
+        <button
+          type="button"
+          disabled
+          className={`${getButtonStyle('Transfer')}${disabledActionClass(true)}`}
+          title={tr("Transfer Student")}
+          aria-label={tr("Transfer Student")}
+        >
+          <FaExchangeAlt aria-hidden="true" className="m-1" />
+        </button>
+      ) : null}
       {can(PERMISSIONS.STUDENT_DELETE) ? (
         <button
           className={getButtonStyle('Delete')}

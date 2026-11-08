@@ -245,7 +245,7 @@ const Edit = () => {
   const navigate = useNavigate();
   const { user, can } = useAuth();
 
-  const isLocked = (name) => /^(courseId|instituteId|fees|discount)[1-5]$/.test(name) || (!UNLOCKED_FIELDS.has(user?.role) && fieldLocks?.[name] === true);
+  const isLocked = (name) => /^(courseId|instituteId|year|fees|discount)[1-5]$/.test(name) || (!UNLOCKED_FIELDS.has(user?.role) && fieldLocks?.[name] === true);
 
   const canModifySection = (fields = []) => {
     if (UNLOCKED_FIELDS.has(user?.role)) return true;
@@ -551,7 +551,7 @@ const Edit = () => {
             instituteId1: academics?.[0]?.instituteId1?._id || "",
             courseId1: academics?.[0]?.courseId1?._id || "",
             refNumber1: academics?.[0]?.refNumber1 || "",
-            year1: academics?.[0]?.year1 ? String(academics[0].year1) : "",
+            year1: academics?.[0]?.year1 == null ? "" : String(academics[0].year1),
             status1: academics?.[0]?.status1 || "",
             fees1: academics?.[0]?.fees1 || "",
             discount1: academics?.[0]?.discount1 || "",
@@ -629,7 +629,7 @@ const Edit = () => {
   };
 
   const handleChange = (e) => {
-    if (/^(courseId|instituteId|fees|discount)[1-5]$/.test(e.target.name)) return;
+    if (/^(courseId|instituteId|year|fees|discount)[1-5]$/.test(e.target.name)) return;
     const { name, value, files } = e.target;
 
     if (name === "file") {

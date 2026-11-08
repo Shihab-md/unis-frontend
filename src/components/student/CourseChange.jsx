@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Link, useParams } from "react-router-dom";
+import { FaRegTimesCircle } from "react-icons/fa";
 import { useAuth } from "../../context/AuthContext";
 import { useLanguage } from "../../i18n/LanguageContext";
 import { PERMISSIONS } from "../../auth/permissions";
@@ -72,8 +73,12 @@ export default function StudentCourseChange() {
   const disabled = busy || Boolean(preview) || completed || needsRefresh;
   if(!allowed)return <div role="alert" className="p-4 text-red-700" dir={direction}>{tr("SC_FORBIDDEN")}</div>;
   return <div className="mx-auto max-w-5xl space-y-4 p-4" dir={direction}>
-    <Link className="text-blue-700 underline" to={`/dashboard/students/${id}`}>{tr("Back to Student")}</Link>
-    <h2 className="text-xl font-bold">{tr("Change Student Course")}</h2>
+    <div className="flex items-center justify-between gap-3">
+      <h2 className="text-xl font-bold">{tr("Change Student Course")}</h2>
+      <Link to="/dashboard/students" title={`${tr("Back")}: ${tr("Students")}`} aria-label={`${tr("Back")}: ${tr("Students")}`}>
+        <FaRegTimesCircle aria-hidden="true" className="text-2xl text-red-700 bg-gray-200 rounded-xl shadow-md" />
+      </Link>
+    </div>
     <p className="text-sm text-slate-600">{tr("Review the old and new fees before saving. Existing invoices and payments are retained.")}</p>
     {loading&&<p role="status">{tr("Loading...")}</p>}
     {error&&<p role="alert" className="rounded border bg-red-50 p-3 text-red-800">{tr(error)}</p>}
@@ -81,13 +86,14 @@ export default function StudentCourseChange() {
     {options&&<>
       <p><bdi>{options.student.name}</bdi> · <bdi>{options.student.rollNumber}</bdi> · <bdi>{options.student.school.code} - {options.student.school.nameEnglish}</bdi></p>
       <form onSubmit={review} className="space-y-4 rounded border bg-white p-4">
-        <div className="grid gap-4 md:grid-cols-3">
+        <div className="grid gap-4 md:grid-cols-2">
           <label>{tr("Academic Year")}<select aria-label={tr("Academic Year")} className={style} value={form.academicId} disabled={busy||Boolean(preview)||needsRefresh} required onChange={(e)=>setSlot(options,e.target.value,form.slot)}><option value="">{tr("Select")}</option>{options.academics.map((a)=><option key={a._id} value={a._id}>{a.acYear?.acYear||"—"}</option>)}</select></label>
           <label>{tr("Course Slot")}<select aria-label={tr("Course Slot")} className={style} value={form.slot} disabled={busy||Boolean(preview)||needsRefresh} onChange={(e)=>setSlot(options,form.academicId,Number(e.target.value))}>{[1,2,3,4,5].map((i)=><option key={i} value={i}>{i} · {tr(slotTypes[i][0])}</option>)}</select></label>
+        </div>
+        <div className="grid gap-4 md:grid-cols-3">
           <label>{tr("Course")}<select aria-label={tr("Course")} className={style} value={form.courseId} disabled={disabled||!academic} required={form.slot===1} onChange={(e)=>changeField("courseId",e.target.value)}><option value="">{tr(form.slot===1?"Select Course":"No course")}</option>{options.courses.filter((c)=>slotTypes[form.slot].includes(c.type)).map((c)=><option key={c._id} value={c._id}>{c.code} - {c.name}</option>)}</select></label>
           <label>{tr("Institute")}<select aria-label={tr("Institute")} className={style} value={form.instituteId} disabled={disabled||!form.courseId} required={Boolean(form.courseId)} onChange={(e)=>changeField("instituteId",e.target.value)}><option value="">{tr("Select")}</option>{options.institutes.filter((i)=>i.type===(form.slot===1?"Deeniyath Education":slotTypes[form.slot][0])).map((i)=><option key={i._id} value={i._id}>{i.iCode} - {i.name}</option>)}</select></label>
           <label>{tr("Year of Study")}<select aria-label={tr("Year of Study")} className={style} value={form.year} disabled={disabled||!form.courseId} required={Boolean(form.courseId)} onChange={(e)=>changeField("year",e.target.value)}><option value="">{tr("Select")}</option>{(course?.allowedYears||[]).map((year)=><option key={year} value={year}>{year}</option>)}</select></label>
-          <label>{tr("Discount")}<input aria-label={tr("Discount")} className={style} type="number" min="0" step="0.01" max={course?.fees||0} required={Boolean(form.courseId)} value={form.discount} disabled={disabled||!form.courseId} onChange={(e)=>changeField("discount",e.target.value)}/></label>
         </div>
         {course&&<p>{tr("Course Fees")}: {money(Number(course.fees||0)*100)}</p>}
         <label className="block">{tr("Reason (Optional)")}<textarea aria-label={tr("Reason (Optional)")} className={style} value={form.reason} maxLength={500} disabled={disabled} onChange={(e)=>changeField("reason",e.target.value)} dir="auto"/></label>
