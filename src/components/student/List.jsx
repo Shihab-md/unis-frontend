@@ -16,6 +16,12 @@ import {
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import Select from 'react-select';
+import { FaUndo } from 'react-icons/fa';
+import StudentFilterPopup from './StudentFilterPopup';
+import {
+  STUDENT_FILTER_KEYS, cleanStudentFilterValue, getStudentPopupFilters,
+  getStudentResetFilters, saveStudentFilters,
+} from '../../utils/studentFilterUtils';
 import { useAuth } from '../../context/AuthContext'
 import { PERMISSIONS } from '../../auth/permissions'
 import { isGlobalHqReadRole } from "../../auth/roles";
@@ -69,6 +75,7 @@ const List = () => {
 
   const [importingStudents, setImportingStudents] = useState(false);
   const importLockRef = useRef(false);
+  const filterOptionsPromiseRef = useRef(null);
 
   const ExpandedComponent = ({ data }) => {
     console.log("About : " + data.about)
@@ -86,35 +93,12 @@ const List = () => {
 
   const MySwal = withReactContent(Swal);
 
-  const STUDENT_FILTER_KEYS = [
-    "courseId",
-    "status",
-    "acYear",
-    "maritalStatus",
-    "hosteller",
-    "year",
-    "instituteId",
-    "courseStatus",
-  ];
-
   const getCleanStorageValue = (key) => {
-    const value = localStorage.getItem(key);
-    const text = String(value ?? "").trim();
-
-    if (!text || text === "null" || text === "undefined") {
-      return "";
-    }
-
-    return text;
+    return cleanStudentFilterValue(localStorage.getItem(key));
   };
 
   const hasStudentFilterApplied = () => {
     return STUDENT_FILTER_KEYS.some((key) => getCleanStorageValue(key));
-  };
-
-  const clearStudentFiltersFromStorage = () => {
-    localStorage.removeItem('students');
-    STUDENT_FILTER_KEYS.forEach((key) => localStorage.removeItem(key));
   };
 
   const getFilterPathValue = (key) => {
@@ -277,28 +261,33 @@ const List = () => {
     });
   };
 
-  useEffect(() => {
-    const getCoursesMap = async () => {
-      const courses = await getCoursesFromCache();
-      setCourses(courses);
-    };
-    getCoursesMap();
-  }, []);
+  const loadFilterOptions = () => {
+    if (!filterOptionsPromiseRef.current) {
+      filterOptionsPromiseRef.current = Promise.all([
+        getCoursesFromCache(), getInstitutesFromCache(), getAcademicYearsFromCache(),
+      ]).then(([loadedCourses, loadedInstitutes, loadedAcademicYears]) => {
+        if (![loadedCourses, loadedInstitutes, loadedAcademicYears].every(Array.isArray)) {
+          throw new Error("Filter options could not be loaded");
+        }
+        const options = {
+          courses: Array.isArray(loadedCourses) ? loadedCourses : [],
+          institutes: Array.isArray(loadedInstitutes) ? loadedInstitutes : [],
+          academicYears: Array.isArray(loadedAcademicYears) ? loadedAcademicYears : [],
+        };
+        setCourses(options.courses);
+        setInstitutes(options.institutes);
+        setAcademicYears(options.academicYears);
+        return options;
+      }).catch((error) => {
+        filterOptionsPromiseRef.current = null;
+        throw error;
+      });
+    }
+    return filterOptionsPromiseRef.current;
+  };
 
   useEffect(() => {
-    const getInstitutesMap = async () => {
-      const institutes = await getInstitutesFromCache();
-      setInstitutes(institutes);
-    };
-    getInstitutesMap();
-  }, []);
-
-  useEffect(() => {
-    const getAcademicYearsMap = async () => {
-      const academicYears = await getAcademicYearsFromCache();
-      setAcademicYears(academicYears);
-    };
-    getAcademicYearsMap();
+    loadFilterOptions().catch(() => {});
   }, []);
 
   function NiswanSelect({ options, onChange, selectedValues }) {
@@ -319,221 +308,41 @@ const List = () => {
   };
 
   const openFilterPopup = async () => {
-    let selectedCourse = null;
-    let selectedYear = null;
-    let selectedCourseStatus = null;
-    let selectedStatus = null;
-    let selectedMaritalStatus = null;
-    let selectedHosteller = null;
-    let selectedInstitute = null;
-
-    const activeACYearOption =
-      academicYears
-        .filter((x) => x.active === "Active")
-        .map((x) => ({ value: x._id, label: x.acYear }))[0] || null;
-
-    // very important: set default selected value here also
-    let selectedACYear = activeACYearOption?.value || null;
-
-    const { value: formValues } = await MySwal.fire({
-      background: "url(/bg_card.png)",
-      html: (
-        <div className="mb-2 h-80 w-full">
-          <div className='text-xl font-bold md:mb-1 text-green-600 text-center'>{tr("Filter")}</div>
-
-          <div className='grid grid-cols-4 md:grid-cols-6 gap-x-3 lg:gap-x-3'>
-            <span className='col-span-2 md:col-span-3 text-sm mb-1 text-start text-blue-500'>{tr("Course")}</span>
-            <span className='text-sm mb-1 text-start text-blue-500'>{tr("Year")}</span>
-            <span className='md:col-span-2 text-sm mb-1 text-start text-blue-500'>{tr("Course Status")}</span>
-
-            <Select
-              className='col-span-2 md:col-span-3 text-sm text-start mb-3'
-              options={courses.map(option => ({
-                value: option._id, label: option.name
-              }))}
-              onChange={(selectedOption) => {
-                selectedCourse = selectedOption?.value || null;
-              }}
-              maxMenuHeight={210}
-              placeholder=''
-            />
-
-            <Select
-              className='text-sm text-start mb-3'
-              options={[
-                { value: '0', label: '0' },
-                { value: '1', label: '1' },
-                { value: '2', label: '2' },
-                { value: '3', label: '3' },
-                { value: '4', label: '4' },
-                { value: '5', label: '5' },
-                { value: '6', label: '6' },
-                { value: '7', label: '7' },
-                { value: '8', label: '8' },
-                { value: '9', label: '9' },
-                { value: '10', label: '10' },
-                { value: '11', label: '11' },
-                { value: '12', label: '12' }
-              ]}
-              onChange={(selectedOption) => {
-                selectedYear = selectedOption?.value || null;
-              }}
-              maxMenuHeight={140}
-              placeholder=''
-            />
-
-            <Select
-              className='md:col-span-2 text-sm text-start mb-3'
-              options={[
-                { value: 'Admission', label: tr('Admission') },
-                { value: 'Promoted', label: tr('Promoted') },
-                { value: 'Completed', label: tr('Completed') },
-                { value: 'Not-Promoted', label: tr('Not-Promoted') }
-              ]}
-              onChange={(selectedOption) => {
-                selectedCourseStatus = selectedOption?.value || null;
-              }}
-              maxMenuHeight={160}
-              placeholder=''
-            />
-          </div>
-
-          <div className='grid grid-cols-3 gap-x-3 lg:gap-x-5'>
-            <span className='col-span-2 text-sm mb-1 text-start text-blue-500'>{tr("Institute")}</span>
-            <span className='text-sm mb-1 text-start text-blue-500'>{tr("AC year")}</span>
-
-            <Select
-              className='col-span-2 text-sm text-start mb-3'
-              options={institutes.map(option => ({
-                value: option._id, label: option.name
-              }))}
-              onChange={(selectedOption) => {
-                selectedInstitute = selectedOption?.value || null;
-              }}
-              maxMenuHeight={140}
-              placeholder=''
-            />
-
-            <Select
-              className="text-sm text-start mb-2"
-              options={academicYears.map((option) => ({
-                value: option._id,
-                label: option.acYear,
-              }))}
-              defaultValue={activeACYearOption}
-              onChange={(selectedOption) => {
-                selectedACYear = selectedOption?.value || null;
-              }}
-              maxMenuHeight={210}
-              placeholder=""
-            />
-          </div>
-
-          <div className='grid grid-cols-3 gap-x-2 lg:gap-x-5'>
-            <span className='text-sm mb-1 text-start text-blue-500'>{tr("Status")}</span>
-            <span className='text-sm mb-1 text-start text-blue-500'>{tr("Marital Status")}</span>
-            <span className='text-sm mb-1 text-start text-blue-500'>{tr("Hosteller")}</span>
-
-            <Select
-              className='text-sm text-start mb-3'
-              options={[
-                { value: 'Active', label: tr('Active') },
-                { value: 'Alumni', label: tr('Alumni') },
-                { value: 'In-Active', label: tr('In-Active') },
-                { value: 'Transferred', label: tr('Transferred') },
-                { value: 'Graduated', label: tr('Graduated') },
-                { value: 'Discontinued', label: tr('Discontinued') }
-              ]}
-              onChange={(selectedOption) => {
-                selectedStatus = selectedOption?.value || null;
-              }}
-              maxMenuHeight={160}
-              placeholder=''
-            />
-
-            <Select
-              className='text-sm text-start mb-3'
-              options={[
-                { value: 'Married', label: tr('Married') },
-                { value: 'Single', label: tr('Single') }
-              ]}
-              onChange={(selectedOption) => {
-                selectedMaritalStatus = selectedOption?.value || null;
-              }}
-              maxMenuHeight={160}
-              placeholder=''
-            />
-
-            <Select
-              className='text-sm text-start mb-3'
-              options={[
-                { value: 'Yes', label: tr('Yes') },
-                { value: 'No', label: tr('No') }
-              ]}
-              onChange={(selectedOption) => {
-                selectedHosteller = selectedOption?.value || null;
-              }}
-              maxMenuHeight={160}
-              placeholder=''
-            />
-          </div>
-        </div>
-      ),
-      focusConfirm: false,
-      showCancelButton: true,
-      confirmButtonText: tr("Apply"),
-      cancelButtonText: tr("Cancel"),
-      preConfirm: () => {
-        const select1 = selectedCourse || null;
-        const select2 = selectedStatus || null;
-        const select3 = selectedACYear || null;
-        const select4 = selectedMaritalStatus || null;
-        const select5 = selectedHosteller || null;
-        const select6 = selectedYear || null;
-        const select7 = selectedInstitute || null;
-        const select8 = selectedCourseStatus || null;
-
-        return [select1, select2, select3, select4, select5, select6, select7, select8];
-      }
-    });
-
-    if (formValues) {
-      if (
-        formValues[0] || formValues[1] || formValues[2] || formValues[3]
-        || formValues[4] || formValues[5] || formValues[6] || formValues[7]
-      ) {
-        console.log('Selected values:', formValues);
-
-        const courseId = formValues[0] ? formValues[0] : null;
-        const status = formValues[1] ? formValues[1] : null;
-        const acYear = formValues[2] ? formValues[2] : null;
-        const maritalStatus = formValues[3] ? formValues[3] : null;
-        const hosteller = formValues[4] ? formValues[4] : null;
-        const year = formValues[5] ? formValues[5] : null;
-        const instituteId = formValues[6] ? formValues[6] : null;
-        const courseStatus = formValues[7] ? formValues[7] : null;
-
-        console.log(
-          'Selected Values : ' + 'courseId:', formValues[0] + ', '
-        + 'status:', formValues[1] + ', ' + 'acYear:', formValues[2] + ', '
-        + 'maritalStatus:', formValues[3] + ', ' + 'hosteller:', formValues[4] + ', '
-        + 'year:', formValues[5] + ', ' + 'instituteId:', formValues[6] + ', ' + 'courseStatus:', formValues[7]
-        );
-
-        localStorage.setItem('courseId', courseId);
-        localStorage.setItem('status', status);
-        localStorage.setItem('acYear', acYear);
-        localStorage.setItem('maritalStatus', maritalStatus);
-        localStorage.setItem('hosteller', hosteller);
-        localStorage.setItem('year', year);
-        localStorage.setItem('instituteId', instituteId);
-        localStorage.setItem('courseStatus', courseStatus);
-
-        getFilteredStudents();
-      } else {
-        clearStudentFiltersFromStorage();
-        getStudents();
-      }
+    try {
+      const options = await loadFilterOptions();
+      let draft = getStudentPopupFilters(options.academicYears, localStorage);
+      const formRef = React.createRef();
+      const { isConfirmed, value: values } = await MySwal.fire({
+        background: "url(/bg_card.png)",
+        html: <StudentFilterPopup
+          ref={formRef}
+          {...options}
+          tr={tr}
+          direction={direction}
+          fontFamily={fontFamily}
+          initialValues={draft}
+          getResetValues={() => getStudentResetFilters(options.academicYears, localStorage)}
+          onChange={(next) => { draft = next; }}
+        />,
+        focusConfirm: false,
+        showCancelButton: true,
+        showDenyButton: true,
+        confirmButtonText: tr("Apply"),
+        cancelButtonText: tr("Cancel"),
+        denyButtonText: `&#8634; ${tr("Reset")}`,
+        denyButtonColor: "#64748b",
+        preDeny: () => {
+          formRef.current?.reset();
+          return false;
+        },
+        preConfirm: () => draft,
+      });
+      if (!isConfirmed || !values) return;
+      saveStudentFilters(values, localStorage);
+      if (hasStudentFilterApplied()) await getFilteredStudents();
+      else await getStudents();
+    } catch (error) {
+      showSwalAlert("Error!", error?.response?.data?.error || tr("Error!"), "error");
     }
   };
 
@@ -1283,8 +1092,14 @@ const List = () => {
   };
 
   const handleResetFilters = async () => {
-    clearStudentFiltersFromStorage();
-    await getStudents();
+    try {
+      const options = await loadFilterOptions();
+      saveStudentFilters(getStudentResetFilters(options.academicYears, localStorage), localStorage);
+      if (hasStudentFilterApplied()) await getFilteredStudents();
+      else await getStudents();
+    } catch (error) {
+      showSwalAlert("Error!", error?.response?.data?.error || tr("Error!"), "error");
+    }
   };
 
   const handleSearch = (e) => {
@@ -1400,9 +1215,11 @@ const List = () => {
                 type="button"
                 onClick={handleResetFilters}
                 className="rounded-full border border-rose-200 bg-rose-50 px-2 py-0.5 text-[11px] font-semibold text-rose-600 hover:bg-rose-100"
-                title={tr("Reset filters and show active academic year students")}
-                aria-label={tr("Reset filters and show active academic year students")}
+                title={tr("Reset")}
+                aria-label={tr("Reset")}
+                disabled={filtering}
               >
+                <FaUndo aria-hidden="true" className="mr-1 inline" />
                 {tr("Reset")}
               </button>
             </div>
