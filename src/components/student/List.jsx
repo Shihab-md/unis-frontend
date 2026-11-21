@@ -61,7 +61,7 @@ const List = () => {
 
   const canAddStudent =
     can(PERMISSIONS.STUDENT_CREATE) &&
-    (userRole === "superadmin" || userRole === "hqadmin");
+    (userRole === "superadmin" || userRole === "hqadmin" || userRole === "admin");
 
   let schoolId;
   let schoolName;

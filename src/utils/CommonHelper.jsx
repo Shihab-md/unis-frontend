@@ -34,7 +34,9 @@ export function checkAuth(screenName) {
   // Phase 4 introduced the explicit HQ Admin role. The legacy `admin` + HQ
   // compatibility account is intentionally limited to the two approved HQ utilities
   // below and must not regain global Student-create access through UI fallback logic.
-  if (screenName === "studentAdd" && role === "admin") return "NO";
+  if (screenName === "studentAdd" && isHqAdminSession(role)) {
+    return "NO";
+  }
 
   // Legacy HQ Admin shares the normal Admin role, so these two HQ utilities still need
   // the independent HQ-session scope in addition to their permissions.
@@ -420,7 +422,7 @@ export function getButtonStyle(buttonType) {
 }
 
 export function removeLocalStorage() {
-  Object.keys(localStorage).filter(key=>key.startsWith('popupFilter:')).forEach(key=>localStorage.removeItem(key));
+  Object.keys(localStorage).filter(key => key.startsWith('popupFilter:')).forEach(key => localStorage.removeItem(key));
 
   localStorage.removeItem("schoolId");
   localStorage.removeItem("schoolName");
