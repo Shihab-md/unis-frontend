@@ -8,7 +8,7 @@ import { fetchStudentYearEndReport, fetchStudentYearEndStudents, downloadStudent
 import { translateStudentYearEnd, yearEndStatusText, YEAR_END_REASON_TEXT } from "../../i18n/studentYearEndReportText";
 
 const initialFilters = { supervisorId: "", schoolId: "", courseId: "", status: "" };
-const statuses = ["DONE", "PENDING", "NEEDS_REVIEW", "NO_STUDENTS"];
+const statuses = ["DONE", "PENDING", "NEEDS_REVIEW"];
 const decisions = ["UNRESOLVED", "PROMOTED", "NOT_PROMOTED", "COMPLETED", "PENDING", "NEEDS_REVIEW"];
 const numberText = (value) => Number(value || 0).toLocaleString("en-IN");
 const badgeStyle = (status) => status === "DONE" || status === "COMPLETED" || status === "PROMOTED"
@@ -63,7 +63,7 @@ export default function StudentYearEndReport() {
     setDetails(null); setDetailError(""); setDetailBusy(true);
     (async () => {
       try {
-        const result = await fetchStudentYearEndStudents({ ...filters, schoolId: detailSchool, decision, page: String(page), limit: "50" },
+        const result = await fetchStudentYearEndStudents({ schoolId: detailSchool, courseId: filters.courseId, decision, page: String(page), limit: "50" },
           { signal: abort.signal, expectedYear: report.academicYear._id });
         if (abort.signal.aborted || request !== detailRequest.current) return;
         if (!result?.success || result?.academicYear?._id !== report.academicYear._id) throw new Error("Academic year changed");
@@ -114,7 +114,10 @@ export default function StudentYearEndReport() {
   const exportReport = async (detailOnly = false) => {
     if (!canExport || !report) return;
     setExportBusy(true); setError("");
-    try { await downloadStudentYearEndReport({ ...filters, ...(detailOnly && detailSchool ? { schoolId: detailSchool, decision } : {}) }, report.academicYear._id); }
+    try {
+      const exportFilters = detailOnly && detailSchool ? { schoolId: detailSchool, courseId: filters.courseId, decision } : filters;
+      await downloadStudentYearEndReport(exportFilters, report.academicYear._id);
+    }
     catch (err) { setError(await studentYearEndError(err, "Unable to export the report.")); }
     finally { setExportBusy(false); }
   };
@@ -157,7 +160,7 @@ export default function StudentYearEndReport() {
     {report && <>
       <div className={`mt-4 rounded-xl border p-4 ${global.ready ? "border-emerald-300 bg-emerald-50" : "border-amber-300 bg-amber-50"}`}>
         <p className="text-xs font-bold uppercase tracking-wide">{t("All Niswans / All Courses")}</p>
-        <p className="mt-1 font-bold">{t(global.ready ? "Year-end decisions are complete." : "Year-end decisions still need attention.")}</p>
+        <p className="mt-1 font-bold">{t(global.totalStudents === 0 ? "No Niswans with students found for this report." : global.ready ? "Year-end decisions are complete." : "Year-end decisions still need attention.")}</p>
         <p className="mt-1 text-sm">{t("Filters do not change this overall readiness result.")}</p>
         {report.warnings.includes("NEXT_YEAR_MISSING") && <p className="mt-2 text-sm">{t("The next academic year is not configured.")}</p>}
         {!!global.unassignedStudentCount && <p className="mt-2 text-sm">{t("Students with missing Niswan or student records")}: <strong>{numberText(global.unassignedStudentCount)}</strong></p>}
@@ -175,6 +178,7 @@ export default function StudentYearEndReport() {
       ].map(([label, value]) => <div key={label} className="rounded-lg border bg-white p-3 shadow-sm"><p className="text-xs text-slate-600">{t(label)}</p><strong className="mt-1 block text-xl">{numberText(value)}</strong></div>)}</div>
       <div className="mt-4 rounded-xl border bg-white p-4">
         <h2 className="font-bold">{t("Niswan Summary")}</h2>
+        <p className="mt-1 text-xs text-slate-500">{t("Niswans with no students in the report are excluded from the list, totals and exports.")}</p>
         <p className="mt-1 text-sm text-slate-600">{t("Filtered results")}: {numberText(report.summary.totalNiswans)} {t("Niswans")} | {numberText(report.summary.totalStudents)} {t("Students")} | {t("Pending Students")}: {numberText(report.summary.pendingStudents)}</p>
         <p className="mt-1 text-xs text-slate-500">{t("Student counts are unique. Needs Review students are included in Pending Students. Final-year counts refer to course decisions.")}</p>
         <div className="year-end-table-wrap mt-3 overflow-x-auto"><table className="w-full text-left text-sm">
