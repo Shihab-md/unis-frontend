@@ -1,5 +1,6 @@
 const languages = ["en", "ta", "ur", "ar", "ml", "kn", "te"];
 const rows = [
+  ["Next-year admissions excluded", "அடுத்த கல்வியாண்டு புதிய சேர்க்கைகள் விலக்கப்பட்டுள்ளன", "اگلے تعلیمی سال کے نئے داخلے خارج ہیں", "تم استبعاد المقبولين الجدد للعام القادم", "അടുത്ത അധ്യയന വർഷത്തെ പുതിയ പ്രവേശനങ്ങൾ ഒഴിവാക്കി", "ಮುಂದಿನ ಶೈಕ್ಷಣಿಕ ವರ್ಷದ ಹೊಸ ಪ್ರವೇಶಗಳನ್ನು ಹೊರತುಪಡಿಸಲಾಗಿದೆ", "తదుపరి విద్యా సంవత్సరం కొత్త ప్రవేశాలు మినహాయించబడ్డాయి"],
   ["Student Promotion & Year-End Status", "மாணவர் வகுப்பு உயர்வு மற்றும் கல்வியாண்டு இறுதி நிலை", "طلبہ کی ترقی اور تعلیمی سال کے اختتام کی صورتحال", "ترفيع الطلاب وحالة نهاية العام الدراسي", "വിദ്യാർത്ഥി സ്ഥാനക്കയറ്റവും അധ്യയന വർഷാവസാന നിലയും", "ವಿದ್ಯಾರ್ಥಿಗಳ ಬಡ್ತಿ ಮತ್ತು ಶೈಕ್ಷಣಿಕ ವರ್ಷದ ಅಂತ್ಯದ ಸ್ಥಿತಿ", "విద్యార్థుల ప్రమోషన్ మరియు విద్యా సంవత్సరాంత స్థితి"],
   ["Current Academic Year", "தற்போதைய கல்வியாண்டு", "موجودہ تعلیمی سال", "العام الدراسي الحالي", "നിലവിലെ അധ്യയന വർഷം", "ಪ್ರಸ್ತುತ ಶೈಕ್ಷಣಿಕ ವರ್ಷ", "ప్రస్తుత విద్యా సంవత్సరం"],
   ["Next Academic Year", "அடுத்த கல்வியாண்டு", "اگلا تعلیمی سال", "العام الدراسي القادم", "അടുത്ത അധ്യയന വർഷം", "ಮುಂದಿನ ಶೈಕ್ಷಣಿಕ ವರ್ಷ", "తదుపరి విద్యా సంవత్సరం"],
@@ -41,4 +42,5 @@ export const YEAR_END_REASON_TEXT = Object.freeze({
   PENDING_FEE_INVOICE: "An unpaid fee invoice is blocking the decision.", FINAL_DECISION_PENDING: "The final-year completion or repeat decision is pending.",
   DECISION_PENDING: "The promotion or repeat decision is pending.", SOURCE_COURSES_MISSING: "The current academic record has no course entries.",
   SOURCE_ACADEMIC_MISSING: "The current academic-year record is missing.",
+  NEXT_ADMISSION_UNVERIFIED: "The next-year record could not be confirmed as a new admission. Check the enrolment history.",
 });
