@@ -1,5 +1,6 @@
 const languages = ["en", "ta", "ur", "ar", "ml", "kn", "te"];
 const rows = [
+  ["Students excluded by status", "நிலையின் அடிப்படையில் விலக்கப்பட்ட மாணவர்கள்", "حیثیت کی بنیاد پر خارج طلبہ", "الطلاب المستبعدون حسب الحالة", "സ്ഥിതി അനുസരിച്ച് ഒഴിവാക്കിയ വിദ്യാർത്ഥികൾ", "ಸ್ಥಿತಿಯ ಆಧಾರದ ಮೇಲೆ ಹೊರತುಪಡಿಸಿದ ವಿದ್ಯಾರ್ಥಿಗಳು", "స్థితి ఆధారంగా మినహాయించిన విద్యార్థులు"],
   ["Next-year admissions excluded", "அடுத்த கல்வியாண்டு புதிய சேர்க்கைகள் விலக்கப்பட்டுள்ளன", "اگلے تعلیمی سال کے نئے داخلے خارج ہیں", "تم استبعاد المقبولين الجدد للعام القادم", "അടുത്ത അധ്യയന വർഷത്തെ പുതിയ പ്രവേശനങ്ങൾ ഒഴിവാക്കി", "ಮುಂದಿನ ಶೈಕ್ಷಣಿಕ ವರ್ಷದ ಹೊಸ ಪ್ರವೇಶಗಳನ್ನು ಹೊರತುಪಡಿಸಲಾಗಿದೆ", "తదుపరి విద్యా సంవత్సరం కొత్త ప్రవేశాలు మినహాయించబడ్డాయి"],
   ["Student Promotion & Year-End Status", "மாணவர் வகுப்பு உயர்வு மற்றும் கல்வியாண்டு இறுதி நிலை", "طلبہ کی ترقی اور تعلیمی سال کے اختتام کی صورتحال", "ترفيع الطلاب وحالة نهاية العام الدراسي", "വിദ്യാർത്ഥി സ്ഥാനക്കയറ്റവും അധ്യയന വർഷാവസാന നിലയും", "ವಿದ್ಯಾರ್ಥಿಗಳ ಬಡ್ತಿ ಮತ್ತು ಶೈಕ್ಷಣಿಕ ವರ್ಷದ ಅಂತ್ಯದ ಸ್ಥಿತಿ", "విద్యార్థుల ప్రమోషన్ మరియు విద్యా సంవత్సరాంత స్థితి"],
   ["Current Academic Year", "தற்போதைய கல்வியாண்டு", "موجودہ تعلیمی سال", "العام الدراسي الحالي", "നിലവിലെ അധ്യയന വർഷം", "ಪ್ರಸ್ತುತ ಶೈಕ್ಷಣಿಕ ವರ್ಷ", "ప్రస్తుత విద్యా సంవత్సరం"],
@@ -32,8 +33,10 @@ export const YEAR_END_REASON_TEXT = Object.freeze({
   STUDENT_RECORD_MISSING: "The academic record refers to a missing student.",
   NISWAN_RECORD_MISSING: "The student refers to a missing Niswan.",
   COURSE_MISSING: "Course details are missing.", COURSE_ORDER_INVALID: "School course progression is not configured.",
-  COURSE_ORDER_AMBIGUOUS: "More than one school course has the same progression order.",
-  COURSE_ORDER_GAP: "The next school course is missing or ambiguous.", COURSE_DURATION_INVALID: "Course duration is not configured.",
+  SCHOOL_PATH_UNDEFINED: "The school-course path cannot be identified reliably from the recorded course and institute.",
+  SCHOOL_NEXT_AMBIGUOUS: "More than one next course is configured within this school-course path.",
+  SCHOOL_TARGET_PATH_CONFLICT: "The next-year school course or institute does not match this school-course path.",
+  COURSE_ORDER_GAP: "A progression step is missing within this school-course path.", COURSE_DURATION_INVALID: "Course duration is not configured.",
   SOURCE_DUPLICATE: "More than one source academic record or course entry needs review.", STUDY_YEAR_INVALID: "The student's study year is missing or invalid.",
   NON_FINAL_COMPLETED: "A non-final course year is marked Completed.", COMPLETION_TARGET_CONFLICT: "A completed course also has a next-year entry.",
   TARGET_DUPLICATE: "More than one matching next-year course entry needs review.", TARGET_DECISION_MISSING: "A next-year record exists without an explicit promotion decision.",

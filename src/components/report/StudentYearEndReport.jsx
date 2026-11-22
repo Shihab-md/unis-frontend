@@ -163,6 +163,8 @@ export default function StudentYearEndReport() {
         <p className="mt-1 font-bold">{t(global.totalStudents === 0 ? "No Niswans with students found for this report." : global.ready ? "Year-end decisions are complete." : "Year-end decisions still need attention.")}</p>
         <p className="mt-1 text-sm">{t("Filters do not change this overall readiness result.")}</p>
         <p className="mt-2 text-sm">{t("Next-year admissions excluded")}: <strong>{numberText(global.nextYearAdmissionsExcluded)}</strong></p>
+        <p className="mt-2 text-sm">{t("Students excluded by status")}: <strong>{numberText(global.statusExcludedStudents)}</strong></p>
+        <p className="mt-1 text-xs">{t("Verified year-end decisions are retained. Status exclusions are listed separately in Excel. A student with different course outcomes can appear in both counts.")}</p>
         {report.warnings.includes("NEXT_YEAR_MISSING") && <p className="mt-2 text-sm">{t("The next academic year is not configured.")}</p>}
         {!!global.unassignedStudentCount && <p className="mt-2 text-sm">{t("Students with missing Niswan or student records")}: <strong>{numberText(global.unassignedStudentCount)}</strong></p>}
       </div>
