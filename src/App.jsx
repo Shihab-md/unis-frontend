@@ -75,6 +75,7 @@ import GradeView from "./components/grade/View";
 import GradeEdit from "./components/grade/Edit";
 
 import ReportsHome from "./components/report/ReportsHome";
+import StudentYearEndReport from "./components/report/StudentYearEndReport";
 
 import AccountsPage from "./components/dashboard/AccountsPage";
 import BatchApprovals from "./components/fees/BatchApprovals";
@@ -202,6 +203,7 @@ function App() {
           <Route path="/dashboard/reset-password" element={<ResetPassword />} />
 
           <Route path="/dashboard/reports" element={<ReportsHome />}></Route>
+          <Route path="/dashboard/reports/student-year-end" element={<StudentYearEndReport />} />
 
           <Route path="/dashboard/accountsPage" element={<AccountsPage />}></Route>
           <Route path="/dashboard/accounts/payroll" element={<AccountsFinancePage key="accounts-payroll" section="payroll" />} />

@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+import { translateStudentYearEnd } from "../../i18n/studentYearEndReportText";
 import React, { useEffect, useMemo, useState } from "react";
 import {
   LineChart,
@@ -77,7 +79,7 @@ const formatNumber = (value) => Number(value || 0).toLocaleString();
 const formatCurrency = (value) => `₹ ${Number(value || 0).toLocaleString()}`;
 
 export default function ReportsHome() {
-  const { tr, direction, fontFamily } = useLanguage();
+  const { tr, direction, fontFamily, language } = useLanguage();
   const { user, can } = useAuth();
   const canViewReports = can(PERMISSIONS.REPORTS_VIEW);
   const canViewFinancialReports = normalizeRole(user?.role) !== "hquser";
@@ -363,6 +365,10 @@ export default function ReportsHome() {
           </div>
 
           <div className="flex gap-2 flex-wrap">
+            {["superadmin", "hqadmin"].includes(normalizeRole(user?.role)) && <Link
+              to="/dashboard/reports/student-year-end"
+              className="px-3 py-2 rounded-lg bg-white text-sky-900 font-semibold text-sm"
+            >{translateStudentYearEnd("Student Promotion & Year-End Status", language, tr)}</Link>}
             <ReportsFiltersDrawer
               meta={meta}
               value={filters}
