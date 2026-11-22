@@ -203,6 +203,8 @@ function App() {
           <Route path="/dashboard/reset-password" element={<ResetPassword />} />
 
           <Route path="/dashboard/reports" element={<ReportsHome />}></Route>
+          <Route path="/dashboard/reports/:category" element={<ReportsHome />} />
+          <Route path="/dashboard/reports/:category/:reportId" element={<ReportsHome />} />
           <Route path="/dashboard/reports/student-year-end" element={<StudentYearEndReport />} />
 
           <Route path="/dashboard/accountsPage" element={<AccountsPage />}></Route>

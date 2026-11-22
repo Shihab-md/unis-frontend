@@ -1,216 +1,100 @@
-import React, { useEffect, useMemo, useState } from "react";
-import { getBaseUrl } from "../../utils/CommonHelper.jsx";
-import { useLanguage } from "../../i18n/LanguageContext.jsx";
-import { formatCompactAge, formatCompactDuration as formatStudentDuration } from "../../utils/studentProfileUtils.js";
-import { formatAge as formatEmployeeAge, formatWorkingExperience as formatEmployeeExperience } from "../../utils/employeeProfileUtils.js";
-import { formatAge as formatSupervisorAge, formatWorkingExperience as formatSupervisorExperience } from "../../utils/supervisorProfileUtils.js";
-
-const authHeaders = () => ({
-  Authorization: `Bearer ${localStorage.getItem("token")}`,
-  Accept: "application/json",
-});
-
-async function apiGet(path) {
-  const base = await getBaseUrl();
-  const response = await fetch(`${base}${path}`, { headers: authHeaders() });
-  const data = await response.json().catch(() => ({}));
-  if (!response.ok || data?.success === false) throw new Error(data?.error || `Request failed (${response.status})`);
-  return data;
-}
-
-async function downloadReport(path, filename) {
-  const base = await getBaseUrl();
-  const response = await fetch(`${base}${path}`, { headers: authHeaders() });
-  if (!response.ok) {
-    const data = await response.json().catch(() => ({}));
-    throw new Error(data?.error || `Download failed (${response.status})`);
-  }
-  const blob = await response.blob();
-  const url = window.URL.createObjectURL(blob);
-  const anchor = document.createElement("a");
-  anchor.href = url;
-  anchor.download = filename;
-  document.body.appendChild(anchor);
-  anchor.click();
-  anchor.remove();
-  window.URL.revokeObjectURL(url);
-}
-
+/* eslint-disable react/prop-types */
+import { useEffect, useMemo, useRef, useState } from "react";
+import { useLanguage } from "../../i18n/LanguageContext";
+import { useAuth } from "../../context/AuthContext";
+import { normalizeRole } from "../../auth/roles";
+import { canUseReports } from "../../reports/reportCatalog";
+import useReportFilters, { DEFAULT_EMPLOYEE_FILTERS, DEFAULT_SUPERVISOR_FILTERS } from "../../reports/useReportFilters";
+import { fetchReport, downloadReport } from "../../api/reportApi";
+import { formatCompactAge, formatCompactDuration as formatStudentDuration } from "../../utils/studentProfileUtils";
+import { formatAge as formatEmployeeAge, formatWorkingExperience as formatEmployeeExperience } from "../../utils/employeeProfileUtils";
+import { formatAge as formatSupervisorAge, formatWorkingExperience as formatSupervisorExperience } from "../../utils/supervisorProfileUtils";
 const formatDate = (value) => {
   if (!value) return "-";
   const date = new Date(value);
-  if (Number.isNaN(date.getTime())) return "-";
-  return date.toLocaleDateString("en-GB");
+  return Number.isNaN(date.getTime()) ? "-" : date.toLocaleDateString("en-GB");
 };
-
 const money = (value) => `₹ ${Number(value || 0).toLocaleString("en-IN")}`;
-
 const defaultPaging = { page: 1, limit: 50, total: 0, pages: 1 };
 
-export default function DetailedReportsSection({ meta, studentQueryString = "", canExport = false }) {
+export default function DetailedReportsSection({ meta, entity = "students", studentQueryString = "", canExport = false, refresh = 0 }) {
   const { tr, direction, fontFamily } = useLanguage();
-  const [active, setActive] = useState("students");
-  const [rows, setRows] = useState([]);
-  const [paging, setPaging] = useState(defaultPaging);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
-  const [canViewSensitive, setCanViewSensitive] = useState(false);
-  const [canViewFinancial, setCanViewFinancial] = useState(true);
-  const [employeeFilters, setEmployeeFilters] = useState({ schoolId: "", search: "", status: "" });
-  const [employeeAppliedFilters, setEmployeeAppliedFilters] = useState({ schoolId: "", search: "", status: "" });
-  const [supervisorFilters, setSupervisorFilters] = useState({ search: "", status: "", jobType: "" });
-  const [supervisorAppliedFilters, setSupervisorAppliedFilters] = useState({ search: "", status: "", jobType: "" });
-
-  const schools = useMemo(() => (Array.isArray(meta?.schools) ? meta.schools : []), [meta]);
-
-  const buildPath = (page = 1, exportFormat = "") => {
+  const { user, can } = useAuth();
+  const active = ["students", "employees", "supervisors"].includes(entity) ? entity : "";
+  const allowed = Boolean(active) && canUseReports(user, can);
+  const accessKey = `${user?._id || user?.id || ""}:${user?.role || ""}`;
+  const [rows, setRows] = useState([]), [paging, setPaging] = useState(defaultPaging), [loading, setLoading] = useState(true), [error, setError] = useState("");
+  const [canViewSensitive, setCanViewSensitive] = useState(false), [canViewFinancial, setCanViewFinancial] = useState(false);
+  const [exportBusy, setExportBusy] = useState(false), [exportError, setExportError] = useState("");
+  const exportRequest = useRef(null);
+  const defaults = active === "supervisors" ? DEFAULT_SUPERVISOR_FILTERS : DEFAULT_EMPLOYEE_FILTERS;
+  const [appliedFilters, applyFilters, resetFilters] = useReportFilters(user, `details:${active}`, defaults);
+  const [draft, setDraft] = useState(appliedFilters);
+  const [pagingScope, setPagingScope] = useState({ key: "", page: 1 });
+  const schools = useMemo(() => Array.isArray(meta?.schools) ? meta.schools : [], [meta]);
+  const queryString = useMemo(() => {
+    if (active === "students") return studentQueryString;
     const qs = new URLSearchParams();
-    if (active === "students") {
-      const baseQs = new URLSearchParams(studentQueryString || "");
-      baseQs.forEach((value, key) => qs.set(key, value));
-    } else if (active === "employees") {
-      if (employeeAppliedFilters.schoolId) qs.set("schoolId", employeeAppliedFilters.schoolId);
-      if (employeeAppliedFilters.search) qs.set("search", employeeAppliedFilters.search);
-      if (employeeAppliedFilters.status) qs.set("status", employeeAppliedFilters.status);
-    } else {
-      if (supervisorAppliedFilters.search) qs.set("search", supervisorAppliedFilters.search);
-      if (supervisorAppliedFilters.status) qs.set("status", supervisorAppliedFilters.status);
-      if (supervisorAppliedFilters.jobType) qs.set("jobType", supervisorAppliedFilters.jobType);
-    }
-
-    if (exportFormat) qs.set("format", exportFormat);
-    else {
-      qs.set("page", String(page));
-      qs.set("limit", "50");
-    }
-    return `report/${active}${exportFormat ? "/export" : ""}?${qs.toString()}`;
+    Object.entries(appliedFilters).forEach(([key, value]) => { if (value) qs.set(key, value); });
+    return qs.toString();
+  }, [active, studentQueryString, appliedFilters]);
+  const queryKey = `${active}?${queryString}`;
+  const page = pagingScope.key === queryKey ? pagingScope.page : 1;
+  const buildPath = (format = "") => {
+    const qs = new URLSearchParams(queryString);
+    if (format) qs.set("format", format);
+    else { qs.set("page", String(page)); qs.set("limit", "50"); }
+    return `report/${active}${format ? "/export" : ""}?${qs}`;
   };
-
-  const load = async (page = 1) => {
-    setLoading(true);
-    setError("");
-    try {
-      const data = await apiGet(buildPath(page));
-      setRows(Array.isArray(data?.rows) ? data.rows : []);
-      setPaging(data?.pagination || defaultPaging);
-      setCanViewSensitive(Boolean(data?.canViewSensitive));
-      setCanViewFinancial(data?.canViewFinancial !== false);
-    } catch (err) {
-      setRows([]);
-      setPaging(defaultPaging);
-      setError(err?.message || tr("Failed to load detailed report"));
-    } finally {
-      setLoading(false);
-    }
-  };
-
   useEffect(() => {
-    load(1);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [active, studentQueryString, employeeAppliedFilters, supervisorAppliedFilters]);
-
-  const applyEntityFilters = () => {
-    if (active === "employees") setEmployeeAppliedFilters({ ...employeeFilters });
-    if (active === "supervisors") setSupervisorAppliedFilters({ ...supervisorFilters });
-  };
-
+    if (!allowed) return;
+    const abort = new AbortController();
+    setRows([]); setPaging(defaultPaging); setLoading(true); setError(""); setCanViewSensitive(false); setCanViewFinancial(false);
+    (async () => {
+      try {
+        const qs = new URLSearchParams(queryString); qs.set("page", String(page)); qs.set("limit", "50");
+        const data = await fetchReport(`report/${active}?${qs}`, { signal: abort.signal });
+        if (abort.signal.aborted) return;
+        if (!Array.isArray(data.rows) || !data.pagination || !Number.isInteger(data.pagination.page) || !Number.isInteger(data.pagination.total) || data.pagination.total < 0 || data.pagination.page < 1 || !Number.isInteger(data.pagination.pages) || data.pagination.pages < 1) throw new Error("Invalid detailed report response");
+        setRows(data.rows); setPaging(data.pagination); setCanViewSensitive(data.canViewSensitive === true && ["superadmin", "hqadmin", "accountant"].includes(normalizeRole(user?.role))); setCanViewFinancial(data.canViewFinancial !== false && normalizeRole(user?.role) !== "hquser");
+      } catch (err) { if (!abort.signal.aborted) setError(err?.message || "Failed to load detailed report"); }
+      finally { if (!abort.signal.aborted) setLoading(false); }
+    })();
+    return () => abort.abort();
+  }, [allowed, active, accessKey, user?.role, queryString, page, refresh]);
+  useEffect(() => {
+    setExportBusy(false); setExportError("");
+    return () => exportRequest.current?.abort();
+  }, [queryString, accessKey]);
   const exportData = async (format) => {
-    if (!canExport) return;
-    try {
-      await downloadReport(buildPath(1, format), `${active}_report_${Date.now()}.${format}`);
-    } catch (err) {
-      setError(err?.message || tr("Failed to export report"));
-    }
+    if (!allowed || !canExport || loading || exportBusy || error) return;
+    const abort = new AbortController(); exportRequest.current = abort;
+    setExportBusy(true); setExportError("");
+    try { await downloadReport(buildPath(format), `${active}_report_${Date.now()}.${format}`, { signal: abort.signal }); }
+    catch (err) { if (!abort.signal.aborted) setExportError(err?.message || "Failed to export report"); }
+    finally { if (!abort.signal.aborted) setExportBusy(false); }
   };
-
-  const tabs = [
-    ["students", tr("Students")],
-    ["employees", tr("Employees")],
-    ["supervisors", tr("Supervisors")],
-  ];
-
-  return (
-    <section className="mt-6 rounded-xl bg-white border border-slate-200 shadow-xl p-4 md:p-5" dir={direction} style={{ fontFamily }}>
-      <div className="flex items-start justify-between gap-4 flex-wrap">
-        <div>
-          <h2 className="text-lg md:text-xl font-semibold text-slate-800">{tr("Detailed Reports")}</h2>
-          <p className="text-xs sm:text-sm text-slate-500 mt-1">{tr("Current Student, Employee and Supervisor data with the latest profile fields.")}</p>
-        </div>
-        {canExport ? (
-          <div className="flex gap-2 flex-wrap">
-            <button type="button" className="px-3 py-2 rounded-lg border bg-white hover:bg-slate-50 text-xs sm:text-sm" onClick={() => exportData("csv")}>{tr("Export CSV")}</button>
-            <button type="button" className="px-3 py-2 rounded-lg border bg-white hover:bg-slate-50 text-xs sm:text-sm" onClick={() => exportData("xlsx")}>{tr("Export XLSX")}</button>
-          </div>
-        ) : null}
-      </div>
-
-      <div className="flex gap-2 mt-4 overflow-x-auto pb-1">
-        {tabs.map(([key, label]) => (
-          <button
-            key={key}
-            type="button"
-            onClick={() => { setActive(key); setRows([]); setPaging(defaultPaging); setError(""); }}
-            className={`px-4 py-2 rounded-lg text-xs sm:text-sm font-medium whitespace-nowrap border ${active === key ? "bg-blue-700 text-white border-blue-700" : "bg-white text-slate-700 border-slate-200 hover:bg-slate-50"}`}
-          >
-            {label}
-          </button>
-        ))}
-      </div>
-
-      {active === "students" ? (
-        <div className="mt-3 rounded-lg bg-blue-50 border border-blue-100 px-3 py-2 text-xs text-blue-800">
-          {tr("Student detailed report uses the main Report Filters above.")}
-        </div>
-      ) : active === "employees" ? (
-        <div className="mt-3 grid grid-cols-1 md:grid-cols-4 gap-2">
-          <select className="border rounded-lg px-2 py-2 text-sm" value={employeeFilters.schoolId} onChange={(e) => setEmployeeFilters((prev) => ({ ...prev, schoolId: e.target.value }))}>
-            <option value="">{tr("All Niswans")}</option>
-            {schools.map((school) => <option key={school._id} value={school._id}>{school.code ? `${school.code} - ` : ""}{school.nameEnglish || ""}</option>)}
-          </select>
-          <input className="border rounded-lg px-3 py-2 text-sm" placeholder={tr("Search name, email or employee ID")} value={employeeFilters.search} onChange={(e) => setEmployeeFilters((prev) => ({ ...prev, search: e.target.value }))} />
-          <select className="border rounded-lg px-2 py-2 text-sm" value={employeeFilters.status} onChange={(e) => setEmployeeFilters((prev) => ({ ...prev, status: e.target.value }))}>
-            <option value="">{tr("All Statuses")}</option>
-            <option value="Active">{tr("Active")}</option>
-            <option value="In-Active">{tr("In-Active")}</option>
-          </select>
-          <button type="button" className="rounded-lg bg-blue-700 text-white px-3 py-2 text-sm hover:bg-blue-800" onClick={applyEntityFilters}>{tr("Apply")}</button>
-        </div>
-      ) : (
-        <div className="mt-3 grid grid-cols-1 md:grid-cols-4 gap-2">
-          <input className="border rounded-lg px-3 py-2 text-sm" placeholder={tr("Search name, email or supervisor ID")} value={supervisorFilters.search} onChange={(e) => setSupervisorFilters((prev) => ({ ...prev, search: e.target.value }))} />
-          <select className="border rounded-lg px-2 py-2 text-sm" value={supervisorFilters.status} onChange={(e) => setSupervisorFilters((prev) => ({ ...prev, status: e.target.value }))}>
-            <option value="">{tr("All Statuses")}</option>
-            <option value="Active">{tr("Active")}</option>
-            <option value="In-Active">{tr("In-Active")}</option>
-          </select>
-          <select className="border rounded-lg px-2 py-2 text-sm" value={supervisorFilters.jobType} onChange={(e) => setSupervisorFilters((prev) => ({ ...prev, jobType: e.target.value }))}>
-            <option value="">{tr("All Job Types")}</option>
-            <option value="Full-Time">{tr("Full-Time")}</option>
-            <option value="Part-Time">{tr("Part-Time")}</option>
-          </select>
-          <button type="button" className="rounded-lg bg-blue-700 text-white px-3 py-2 text-sm hover:bg-blue-800" onClick={applyEntityFilters}>{tr("Apply")}</button>
-        </div>
-      )}
-
-      {error ? <div className="mt-3 rounded-lg border border-rose-200 bg-rose-50 text-rose-700 px-3 py-2 text-sm">{error}</div> : null}
-
-      <div className="mt-4">
-        {loading ? (
-          <div className="py-10 text-center text-slate-500 text-sm">{tr("Loading...")}</div>
-        ) : rows.length === 0 ? (
-          <div className="py-10 text-center text-slate-400 text-sm">{tr("No data")}</div>
-        ) : active === "students" ? (
-          <StudentsTable rows={rows} tr={tr} canViewSensitive={canViewSensitive} canViewFinancial={canViewFinancial} />
-        ) : active === "employees" ? (
-          <EmployeesTable rows={rows} tr={tr} canViewSensitive={canViewSensitive} />
-        ) : (
-          <SupervisorsTable rows={rows} tr={tr} canViewSensitive={canViewSensitive} />
-        )}
-      </div>
-
-      <Pagination paging={paging} onPage={load} tr={tr} loading={loading} />
-    </section>
-  );
+  const reset = () => { setDraft({ ...defaults }); resetFilters(); };
+  if (!allowed) return <p role="alert">{tr("Reports are not available for this role.")}</p>;
+  return <section className="mt-5 rounded-xl border border-slate-200 bg-white p-4 shadow-lg md:p-5" dir={direction} style={{ fontFamily }}>
+    <div className="flex flex-wrap items-start justify-between gap-3">
+      <p className="text-sm text-slate-600">{tr(active === "students" ? "Use Report Filters to select the student records. Exports include all matching pages." : "Apply filters to select records. Exports include all matching pages.")}</p>
+      {canExport && <div className="flex flex-wrap gap-2"><button type="button" className="rounded border px-3 py-2 text-sm disabled:opacity-50" disabled={loading || exportBusy || !!error} onClick={() => exportData("csv")}>{tr("Export CSV")}</button><button type="button" className="rounded border px-3 py-2 text-sm disabled:opacity-50" disabled={loading || exportBusy || !!error} onClick={() => exportData("xlsx")}>{tr("Export XLSX")}</button></div>}
+    </div>
+    {active !== "students" && <div className="mt-4 grid grid-cols-1 gap-2 md:grid-cols-5">
+      {active === "employees" && <label className="text-sm"><span className="mb-1 block">{tr("Niswan")}</span><select className="w-full rounded border p-2" value={draft.schoolId} onChange={(event) => setDraft((value) => ({ ...value, schoolId: event.target.value }))}><option value="">{tr("All Niswans")}</option>{schools.map((school) => <option key={school._id} value={school._id}>{[school.code, school.nameEnglish].filter(Boolean).join(" - ")}</option>)}</select></label>}
+      <label className="text-sm"><span className="mb-1 block">{tr("Search")}</span><input className="w-full rounded border p-2" value={draft.search} placeholder={tr(active === "employees" ? "Search name, email or employee ID" : "Search name, email or supervisor ID")} onChange={(event) => setDraft((value) => ({ ...value, search: event.target.value }))} /></label>
+      <label className="text-sm"><span className="mb-1 block">{tr("Status")}</span><select className="w-full rounded border p-2" value={draft.status} onChange={(event) => setDraft((value) => ({ ...value, status: event.target.value }))}><option value="">{tr("All Statuses")}</option><option value="Active">{tr("Active")}</option><option value="In-Active">{tr("In-Active")}</option></select></label>
+      {active === "supervisors" && <label className="text-sm"><span className="mb-1 block">{tr("Job Type")}</span><select className="w-full rounded border p-2" value={draft.jobType} onChange={(event) => setDraft((value) => ({ ...value, jobType: event.target.value }))}><option value="">{tr("All Job Types")}</option><option value="Full-Time">{tr("Full-Time")}</option><option value="Part-Time">{tr("Part-Time")}</option></select></label>}
+      <button type="button" className="self-end rounded bg-blue-700 p-2 text-sm text-white" onClick={() => applyFilters(draft)}>{tr("Apply")}</button><button type="button" className="self-end rounded border p-2 text-sm" onClick={reset}>{tr("Reset Filters")}</button>
+    </div>}
+    {error && <p role="alert" className="mt-3 rounded border border-rose-200 bg-rose-50 p-3 text-rose-800">{tr(error)}</p>}
+    {exportError && <p role="alert" className="mt-3 rounded border border-rose-200 bg-rose-50 p-3 text-rose-800">{tr(exportError)}</p>}
+    <div className="mt-4">
+      {loading ? <p role="status" className="p-8 text-center">{tr("Loading...")}</p> : error ? null : rows.length === 0 ? <p className="p-8 text-center text-slate-500">{tr("No data")}</p> : active === "students" ? <StudentsTable rows={rows} tr={tr} canViewSensitive={canViewSensitive} canViewFinancial={canViewFinancial} /> : active === "employees" ? <EmployeesTable rows={rows} tr={tr} canViewSensitive={canViewSensitive} /> : <SupervisorsTable rows={rows} tr={tr} canViewSensitive={canViewSensitive} />}
+    </div>
+    {!error && <Pagination paging={paging} onPage={(next) => setPagingScope({ key: queryKey, page: next })} tr={tr} loading={loading} />}
+  </section>;
 }
 
 function DateDuration({ date, duration }) {

@@ -1,5 +1,5 @@
+import ReportsBreadcrumbs from "./ReportsBreadcrumbs";
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { useLanguage } from "../../i18n/LanguageContext";
 import { PERMISSIONS } from "../../auth/permissions";
@@ -136,7 +136,7 @@ export default function StudentYearEndReport() {
   return <section className="year-end-print-root min-h-screen bg-slate-50 p-3 md:p-6 text-slate-800" dir={direction} style={{ fontFamily }}>
     <style>{`@media print { body { overflow: visible !important; } body * { visibility: hidden; } .year-end-print-root, .year-end-print-root * { visibility: visible; } .year-end-print-root { position: absolute; inset: 0; width: 100%; padding: 0; background: white; } .year-end-no-print { display: none !important; } .year-end-table-wrap { overflow: visible !important; } .year-end-print-root table { font-size: 9px; width: 100%; border-collapse: collapse; } .year-end-print-root th, .year-end-print-root td { border: 1px solid #aaa; padding: 4px; } .year-end-detail-overlay { position: static !important; display: block !important; overflow: visible !important; padding: 0 !important; background: white !important; } .year-end-detail-panel { max-height: none !important; overflow: visible !important; box-shadow: none !important; } .year-end-detail-header { position: static !important; } .year-end-print-root thead { display: table-header-group; } .year-end-print-root tr { break-inside: avoid; } }`}</style>
     <div className="flex flex-wrap items-start justify-between gap-3 rounded-xl bg-gradient-to-r from-sky-800 to-teal-700 p-5 text-white shadow">
-      <div><Link className="year-end-no-print text-sm underline" to="/dashboard/reports">{t("Back to Reports")}</Link>
+      <div><div className="year-end-no-print"><ReportsBreadcrumbs categoryId="students" title="Student Promotion & Year-End Status" inverse /></div>
         <h1 className="mt-2 text-xl font-bold md:text-2xl">{t("Student Promotion & Year-End Status")}</h1>
         <p className="mt-2 text-sm">{t("Current Academic Year")}: <strong>{report?.academicYear?.label || "-"}</strong>
           {" | "}{t("Next Academic Year")}: <strong>{report?.nextAcademicYear?.label || "-"}</strong></p>
