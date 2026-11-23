@@ -3,8 +3,10 @@ import SummaryCard from "./SummaryCard";
 import CommonHeader from "./CommonHeader";
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext'
+import { PERMISSIONS } from "../../auth/permissions";
+import { isGlobalHqReadRole } from "../../auth/roles";
 import { useLanguage } from '../../i18n/LanguageContext'
-import { getBaseUrl, handleRightClickAndFullScreen, getSpinner, showSwalAlert, removeLocalStorage } from '../../utils/CommonHelper'
+import { getBaseUrl, handleRightClickAndFullScreen, getSpinner, showSwalAlert, removeLocalStorage, isHqAdminSession } from '../../utils/CommonHelper'
 import {
   FaMosque, FaUserFriends, FaCoins, FaGraduationCap,
   FaUsers, FaHouseUser, FaClipboardList, FaTasks,
@@ -22,22 +24,58 @@ const AdminSummary = () => {
 
   const [summary, setSummary] = useState(null)
   const navigate = useNavigate()
-  const { user } = useAuth()
+  const { user, can, canAny } = useAuth()
   const { t, tr, direction, fontFamily } = useLanguage()
 
   const userRole = String(user?.role || "").toLowerCase();
 
-  const loggedInSchoolName = String(localStorage.getItem("schoolName") || "").trim();
 
-  const isHqAdmin =
-    userRole === "admin" && loggedInSchoolName.startsWith("UN-00-00001");
+  const canViewExamQuestions = can(PERMISSIONS.EXAM_QUESTION_VIEW);
+  const canViewMarksheet = can(PERMISSIONS.MARKSHEET_VIEW);
+  const canOpenExams = canViewExamQuestions || canViewMarksheet;
+  const canViewInspections = can(PERMISSIONS.INSPECTION_VIEW);
+  const canViewCertificates = can(PERMISSIONS.CERTIFICATE_VIEW);
+  const canOpenAccounts = can(PERMISSIONS.ACCOUNTS_VIEW) || (["superadmin", "hqadmin", "accountant"].includes(userRole) && canAny([PERMISSIONS.PAYROLL_VIEW, PERMISSIONS.TA_REVIEW_VIEW]));
+  const canViewReports = can(PERMISSIONS.REPORTS_VIEW);
+  const canViewHelpDesk = can(PERMISSIONS.HELP_DESK_VIEW);
+  const isHqAdmin = isHqAdminSession(user?.role, user?.organizationType);
+  const hasHqMasterUtilityPermission =
+    can(PERMISSIONS.CERTIFICATE_BULK_IHS) || can(PERMISSIONS.TEMP_SCHOOL_MARKSHEET_CREATE);
+  const canOpenHqMasterUtilities =
+    hasHqMasterUtilityPermission && (userRole !== "admin" || isHqAdmin);
+  const canOpenMasters =
+    canAny([
+      PERMISSIONS.MASTER_INSTITUTE_VIEW,
+      PERMISSIONS.MASTER_COURSE_VIEW,
+      PERMISSIONS.MASTER_ACADEMIC_YEAR_VIEW,
+      PERMISSIONS.MASTER_TEMPLATE_VIEW,
+      PERMISSIONS.MASTER_DISTRICT_STATE_VIEW,
+      PERMISSIONS.MASTER_GRADE_VIEW,
+    ]) || canOpenHqMasterUtilities;
 
-  const canViewExam =
-    userRole === "superadmin" || userRole === "hquser" || isHqAdmin;
+  const canOpenAttendance =
+    canAny([
+      PERMISSIONS.STUDENT_ATTENDANCE_VIEW,
+      PERMISSIONS.STUDENT_ATTENDANCE_ENTER,
+      PERMISSIONS.STUDENT_ATTENDANCE_FINALIZE,
+      PERMISSIONS.STAFF_ATTENDANCE_SELF_VIEW,
+      PERMISSIONS.STAFF_ATTENDANCE_VIEW,
+      PERMISSIONS.STAFF_ATTENDANCE_ENTER,
+      PERMISSIONS.STAFF_ATTENDANCE_FINALIZE,
+      PERMISSIONS.STUDENT_LEAVE_VIEW,
+      PERMISSIONS.STUDENT_LEAVE_MANAGE,
+      PERMISSIONS.STAFF_LEAVE_SELF_VIEW,
+      PERMISSIONS.STAFF_LEAVE_SELF_APPLY,
+      PERMISSIONS.STAFF_LEAVE_APPROVE,
+      PERMISSIONS.STUDENT_ATTENDANCE_REPORT_VIEW,
+      PERMISSIONS.STAFF_ATTENDANCE_REPORT_VIEW,
+      PERMISSIONS.PAYSLIP_SELF_VIEW,
+      PERMISSIONS.TA_SELF_VIEW,
+    ]);
 
   useEffect(() => {
 
-    if (user.role === "superadmin" || user.role === "hquser" || user.role === "supervisor" || user.role === "guest") {
+    if (isGlobalHqReadRole(user.role) || user.role === "supervisor" || user.role === "guest") {
       removeLocalStorage();
     }
 
@@ -69,7 +107,7 @@ const AdminSummary = () => {
       <CommonHeader userName={user?.name || ""} title={t("common.dashboard")} />
       <div className="content-center rounded-lg grid grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-7 lg:gap-14 mt-7 lg:mt-16 flex rounded-lg">
 
-        {user.role === "superadmin" || user.role === "hquser" || user.role === "supervisor" || user.role === "guest" ?
+        {can(PERMISSIONS.SUPERVISOR_LIST) ?
           <Link to="/dashboard/supervisors" >
             <SummaryCard
               icon={<FaUserFriends />}
@@ -79,17 +117,17 @@ const AdminSummary = () => {
             />
           </Link> : null}
 
-        {user.role === "superadmin" || user.role === "hquser" || user.role === "supervisor" || user.role === "admin" || user.role === "guest" ?
+        {can(PERMISSIONS.NISWAN_VIEW) ?
           <Link to="/dashboard/schools" >
             <SummaryCard
               icon={<FaMosque />}
-              text={user.role === "superadmin" || user.role === "hquser" || user.role === "supervisor" ? t("dashboard.niswans") : t("dashboard.niswan")}
+              text={isGlobalHqReadRole(user.role) || user.role === "supervisor" ? t("dashboard.niswans") : t("dashboard.niswan")}
               number={user.role === "admin" || user.role === "guest" ? "*" : summary.totalSchools}
               color="bg-pink-600"
             />
           </Link> : null}
 
-        {user.role === "superadmin" || user.role === "hquser" || user.role === "supervisor" || user.role === "admin" || user.role === "guest" ?
+        {can(PERMISSIONS.EMPLOYEE_VIEW) ?
           <Link to="/dashboard/employees" >
             <SummaryCard
               icon={<FaHouseUser />}
@@ -99,7 +137,7 @@ const AdminSummary = () => {
             />
           </Link> : null}
 
-        {user.role === "superadmin" || user.role === "hquser" || user.role === "supervisor" || user.role === "admin" || user.role === "guest" ?
+        {can(PERMISSIONS.STUDENT_VIEW) ?
           <Link to="/dashboard/students"  >
             <SummaryCard
               icon={<FaUsers />}
@@ -109,7 +147,7 @@ const AdminSummary = () => {
             />
           </Link> : null}
 
-        {user.role === "superadmin" || user.role === "hquser" || user.role === "supervisor" || user.role === "guest" ?
+        {canViewInspections ?
           <Link to="/dashboard/inspection-reports" >
             <SummaryCard
               icon={<FaFileSignature />}
@@ -119,20 +157,18 @@ const AdminSummary = () => {
             />
           </Link> : null}
 
-        {user.role === "superadmin" || user.role === "hquser" || user.role === "admin"
-          || user.role === "teacher" || user.role === "usthadh" || user.role === "supervisor"
-          || user.role === "employee" || user.role === "warden" || user.role === "staff" ?
-          <Link to={canViewExam ? "/dashboard/attendance" : "#"} >
+        {canOpenAttendance ?
+          <Link to="/dashboard/attendance" >
             <SummaryCard
               icon={<FaTasks />}
-              text={t("dashboard.attendance")}
+              text={tr("Attendance & Services")}
               number="*"
               color="bg-purple-700"
             />
           </Link> : null}
 
-        {user.role === "superadmin" || user.role === "hquser" || user.role === "admin" || user.role === "guest" ?
-          <Link to={canViewExam ? "/dashboard/exams" : "#"} >
+        {canOpenExams ?
+          <Link to="/dashboard/exams" >
             <SummaryCard
               icon={<FaClipboardList />}
               text={t("dashboard.exams")}
@@ -141,7 +177,7 @@ const AdminSummary = () => {
             />
           </Link> : null}
 
-        {user.role === "superadmin" || user.role === "hquser" || user.role === "guest" ?
+        {canViewCertificates ?
           <Link to="/dashboard/certificates" >
             <SummaryCard
               icon={<FaMedal />}
@@ -151,7 +187,7 @@ const AdminSummary = () => {
             />
           </Link> : null}
 
-        {user.role === "superadmin" || user.role === "hquser" || user.role === "admin" ?
+        {canOpenAccounts ?
           <Link to="/dashboard/accountsPage" >
             <SummaryCard
               icon={<FaRupeeSign />}
@@ -161,7 +197,7 @@ const AdminSummary = () => {
             />
           </Link> : null}
 
-        {user.role === "superadmin" || user.role === "hquser" || user.role === "guest" ?
+        {canOpenMasters ?
           <Link to="/dashboard/masters" >
             <SummaryCard
               icon={<FaCoins />}
@@ -171,7 +207,7 @@ const AdminSummary = () => {
             />
           </Link> : null}
 
-        {user.role === "superadmin" || user.role === "hquser" || user.role === "supervisor" || user.role === "admin" || user.role === "guest" ?
+        {canViewReports ?
           <Link to="/dashboard/reports" >
             <SummaryCard
               icon={<FaFileContract />}
@@ -199,14 +235,16 @@ const AdminSummary = () => {
           />
         </Link>
 
-        <Link to="/dashboard/help-desk" >
-          <SummaryCard
-            icon={<FaHeadset />}
-            text={tr("Help Desk")}
-            number="*"
-            color="bg-indigo-600"
-          />
-        </Link>
+        {canViewHelpDesk ? (
+          <Link to="/dashboard/help-desk" >
+            <SummaryCard
+              icon={<FaHeadset />}
+              text={tr("Help Desk")}
+              number="*"
+              color="bg-indigo-600"
+            />
+          </Link>
+        ) : null}
 
       </div>
     </div>

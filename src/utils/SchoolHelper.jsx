@@ -8,12 +8,13 @@ import {
   getButtonTooltip,
 } from '../utils/CommonHelper';
 import { useAuth } from '../context/AuthContext'
+import { PERMISSIONS } from '../auth/permissions';
 import {
   FaEye,
   FaEdit,
   FaTrashAlt,
 } from "react-icons/fa";
-import { UiText } from '../i18n/LanguageContext';
+import { UiText, useLanguage } from '../i18n/LanguageContext';
 
 const toNumber = (value) => {
   const numberValue = Number(value);
@@ -383,11 +384,12 @@ export const getSchoolsFromCache = async (id) => {
 };
 
 export const SchoolButtons = ({ Id, onSchoolDelete }) => {
+  const { tr } = useLanguage();
   const navigate = useNavigate();
 
   const handleDelete = async (id) => {
     const result = await showConfirmationSwalAlert(
-      'Are you sure to Delete?',
+      tr("Deactivate this Niswan?"),
       '',
       'question'
     );
@@ -404,7 +406,7 @@ export const SchoolButtons = ({ Id, onSchoolDelete }) => {
         );
 
         if (responnse.data.success) {
-          showSwalAlert("Success!", "Successfully Deleted!", "success");
+          showSwalAlert("Success!", tr("Niswan deactivated successfully."), "success");
 
           if (typeof onSchoolDelete === "function") {
             onSchoolDelete();
@@ -418,26 +420,27 @@ export const SchoolButtons = ({ Id, onSchoolDelete }) => {
     }
   };
 
-  const { user } = useAuth();
+  const { can } = useAuth();
 
   return (
     <div className="flex space-x-3 lg:flex-col lg:space-x-0 lg:space-y-3 items-center">
-      <button
-        className={getButtonStyle('View')}
-        title={getButtonTooltip("View")}
-        aria-label={getButtonTooltip("View")}
-        onClick={() => navigate(`/dashboard/schools/${Id}`)}
-      >
-        <FaEye title={getButtonTooltip("View")} aria-label={getButtonTooltip("View")} className="m-1" />
-      </button>
+      {can(PERMISSIONS.NISWAN_VIEW) ? (
+        <button
+          className={getButtonStyle('View')}
+          title={getButtonTooltip("View")}
+          aria-label={getButtonTooltip("View")}
+          onClick={() => navigate(`/dashboard/schools/${Id}`)}
+        >
+          <FaEye title={getButtonTooltip("View")} aria-label={getButtonTooltip("View")} className="m-1" />
+        </button>
+      ) : null}
 
-      {user.role === "superadmin" || user.role === "hquser" ? (
+      {can(PERMISSIONS.NISWAN_EDIT) ? (
         <div className="flex space-x-3">
           <button
             className={getButtonStyle('Edit')}
             title={getButtonTooltip("Edit")}
             aria-label={getButtonTooltip("Edit")}
-            disabled={user?.role === "guest"}
             onClick={() => navigate(`/dashboard/schools/edit/${Id}`)}
           >
             <FaEdit title={getButtonTooltip("Edit")} aria-label={getButtonTooltip("Edit")} className="m-1" />
@@ -445,16 +448,15 @@ export const SchoolButtons = ({ Id, onSchoolDelete }) => {
         </div>
       ) : null}
 
-      {user.role === "superadmin" || user.role === "hquser" ? (
+      {can(PERMISSIONS.NISWAN_DELETE) ? (
         <div className="flex space-x-3">
           <button
             className={getButtonStyle('Delete')}
-            title={getButtonTooltip("Delete")}
-            aria-label={getButtonTooltip("Delete")}
-            disabled={user?.role === "guest"}
+            title={tr("Deactivate Niswan")}
+            aria-label={tr("Deactivate Niswan")}
             onClick={() => handleDelete(Id)}
           >
-            <FaTrashAlt title={getButtonTooltip("Delete")} aria-label={getButtonTooltip("Delete")} className="m-1" />
+            <FaTrashAlt title={tr("Deactivate Niswan")} aria-label={tr("Deactivate Niswan")} className="m-1" />
           </button>
         </div>
       ) : null}

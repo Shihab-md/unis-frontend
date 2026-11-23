@@ -313,7 +313,7 @@ const Promote = () => {
                 <div className="hidden lg:block flex space-x-3 mb-5" />
               </div>
 
-              {user.role === "superadmin" || user.role === "admin" ?
+              {["superadmin", "hqadmin", "admin"].includes(user.role) ?
                 <div>
                   <div className="grid mt-10 grid-cols-1 gap-5 mb-3">
                     <ViewCard type="header" text="Deeniyath Education" />
@@ -434,7 +434,7 @@ const Promote = () => {
                     </div> : null}
                 </div> : null}
 
-              {user.role === "superadmin" || user.role === "hquser" ?
+              {["superadmin", "hqadmin"].includes(user.role) ?
                 <div>
                   {student.instituteId2 && student.courseId2 ?
                     <div>

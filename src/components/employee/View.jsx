@@ -108,8 +108,15 @@ const View = () => {
                 <ViewCard type="title" text="Employee ID" />
                 <ViewCard type="data" text={employee?.employeeId} />
 
-                <ViewCard type="title" text="Niswan Name" />
-                <ViewCard type="data" text={employee?.schoolId?.nameEnglish} />
+                <ViewCard type="title" text={String(employee?.organizationType || "").toUpperCase() === "HQ" ? "Organization" : "Niswan Name"} />
+                <ViewCard
+                  type="data"
+                  text={
+                    String(employee?.organizationType || "").toUpperCase() === "HQ"
+                      ? (localStorage.getItem("organizationName") || "UNIS Headquarters")
+                      : employee?.schoolId?.nameEnglish
+                  }
+                />
 
                 <ViewCard type="title" text="Contact Number" />
                 <ViewCard type="data" text={employee?.contactNumber} />
@@ -153,8 +160,6 @@ const View = () => {
 
                 {SHOW_EXTENDED_EMPLOYEE_FIELDS && (
                   <>
-                    <ViewCard type="title" text="Travelling Allowance" />
-                    <ViewCard type="data" text={employee?.travellingAllowance ?? 0} />
 
                     <ViewCard type="title" text="Activities carried out" />
                     <ViewCard type="data" text={<span className="whitespace-pre-wrap break-words">{employee?.activitiesCarriedOut || "-"}</span>} />

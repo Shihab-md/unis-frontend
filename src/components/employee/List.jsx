@@ -1,20 +1,24 @@
-import React, { useEffect, useState } from 'react'
+import { openPreservedFilterPopup } from '../common/PreservedFilterPopup';
+import { readPopupFilters, savePopupFilters, loadPopupOptions, popupFilterValue } from '../../utils/popupFilterStorage';
+import React, { useEffect, useState, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { columns, EmployeeButtons, EmployeeCard, conditionalRowStyles } from '../../utils/EmployeeHelper'
 import DataTable from 'react-data-table-component'
 import axios from 'axios'
 import { getSchoolsFromCache } from '../../utils/SchoolHelper';
 import Swal from 'sweetalert2';
-import withReactContent from 'sweetalert2-react-content';
-import Select from 'react-select';
 import {
   getBaseUrl, handleRightClickAndFullScreen, getSpinner, getPrcessing, checkAuth,
   LinkIcon, showSwalAlert, toCamelCase, getFilterGif
 } from '../../utils/CommonHelper';
 import { useAuth } from '../../context/AuthContext'
+import { PERMISSIONS } from '../../auth/permissions'
+import { isGlobalHqReadRole } from '../../auth/roles'
 import { AutoText, useLanguage } from '../../i18n/LanguageContext';
 import 'animate.css';
 import * as XLSX from 'xlsx';
+
+const POPUP_KEYS = {'schoolId': 'empSchoolId', 'role': 'empRole', 'status': 'empStatus', 'q': 'popupFilter:employee:search'};
 
 const List = () => {
   const { tr, t, direction, fontFamily } = useLanguage();
@@ -32,10 +36,13 @@ const List = () => {
 
   const [processing, setProcessing] = useState(null)
 
-  const navigate = useNavigate()
-  const { user } = useAuth();
+  const [searchText, setSearchText] = useState(() => readPopupFilters(POPUP_KEYS).q);
+  const [listDataLoaded, setListDataLoaded] = useState(false);
 
-  const MySwal = withReactContent(Swal);
+  const navigate = useNavigate()
+  const { user, can } = useAuth();
+
+  const requestRef=useRef(0);
 
   const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
@@ -72,8 +79,13 @@ const List = () => {
       role: sup.userId?.role,
       contactNumber: sup.contactNumber,
       email: sup.userId?.email,
-      schoolCode: sup.schoolId?.code,
-      schoolName: sup.schoolId?.nameEnglish,
+      organizationType: sup.organizationType || "NISWAN",
+      schoolCode: String(sup.organizationType || "").toUpperCase() === "HQ"
+        ? (localStorage.getItem("organizationCode") || "HQ")
+        : sup.schoolId?.code,
+      schoolName: String(sup.organizationType || "").toUpperCase() === "HQ"
+        ? (localStorage.getItem("organizationName") || "UNIS Headquarters")
+        : sup.schoolId?.nameEnglish,
       designation: sup.designation,
       active: sup.active,
       address: sup.schoolId?.address,
@@ -87,6 +99,7 @@ const List = () => {
       action: (
         <EmployeeButtons
           Id={sup._id}
+          targetRole={sup.userId?.role}
           isSelfRow={isSelfRow}
           onEmployeeDelete={onEmployeeDelete}
         />
@@ -97,117 +110,35 @@ const List = () => {
   useEffect(() => {
     const getSchoolsMap = async (id) => {
       const schools = await getSchoolsFromCache(id);
-      setSchools(schools);
+      setSchools(Array.isArray(schools) ? schools : []);
     };
     getSchoolsMap();
   }, []);
 
   const openFilterPopup = async () => {
-    let selectedSchool;
-    let selectedRole;
-    let selectedStatus;
-    const { value: formValues } = await MySwal.fire({
-      //  title: 'Filters',
-      background: "url(/bg_card.png)",
-      html: (
-        <div className="mb-2 h-80 w-full">
-          <div className='text-xl font-bold mb-1 text-green-600 text-center'>{tr("Filter")}</div>
-          <div className='grid'>
-            <span className='text-sm mb-1 text-start text-blue-500'>{tr("Niswan")}</span>
-            <Select className='text-sm text-start mb-3'
-              options={schools.map(option => ({
-                value: option._id, label: option.code + " : " + option.nameEnglish
-              }))}
-
-              onChange={(selectedOption) => {
-                selectedSchool = selectedOption.value;
-              }}
-              maxMenuHeight={210}
-              placeholder=''
-            />
-          </div>
-
-          <div className='grid'>
-            <span className='text-sm mb-1 text-start text-blue-500'>{tr("Role")}</span>
-            <Select className='text-sm text-start mb-3'
-              options={
-                [{ value: 'superadmin', label: t('roles.superadmin', 'SuperAdmin') },
-                { value: 'hquser', label: t('roles.hquser', 'HQUser') },
-                { value: 'admin', label: t('roles.admin', 'Admin') },
-                { value: 'teacher', label: t('roles.teacher', 'Teacher') },
-                { value: 'usthadh', label: t('roles.usthadh', 'Usthadh') },
-                { value: 'warden', label: t('roles.warden', 'Warden') }]
-              }
-
-              onChange={(selectedOption) => {
-                selectedRole = selectedOption.value;
-              }}
-              maxMenuHeight={210}
-              placeholder=''
-            />
-          </div>
-
-          <div className='grid'>
-            <span className='text-sm mb-1 text-start text-blue-500'>{tr("Status")}</span>
-            <Select className='text-sm text-start mb-3'
-              options={
-                [{ value: 'Active', label: tr('Active') },
-                { value: 'In-Active', label: tr('In-Active') }]
-              }
-              // defaultValue={selectedStatus}
-              onChange={(selectedOption) => {
-                selectedStatus = selectedOption.value;
-              }}
-              maxMenuHeight={140}
-              placeholder=''
-            />
-          </div>
-        </div>
-      ),
-      focusConfirm: false,
-      showCancelButton: true,
-      confirmButtonText: tr("Apply"),
-      cancelButtonText: tr("Cancel"),
-      preConfirm: () => {
-        const select1 = selectedSchool ? selectedSchool : null;
-        const select2 = selectedRole ? selectedRole : null;
-        const select3 = selectedStatus ? selectedStatus : null;
-
-        return [select1, select2, select3];
-      }
-    });
-
-    if (formValues) {
-      if (formValues[0] || formValues[1] || formValues[2]) {
-
-        console.log('Selected values:', formValues);
-        const empSchoolId = formValues[0] ? formValues[0] : null;
-        const empRole = formValues[1] ? formValues[1] : null;
-        const empStatus = formValues[2] ? formValues[2] : null;
-
-        console.log('Selected empSchoolId:', formValues[0]);
-        console.log('Selected empRole:', formValues[1]);
-        console.log('Selected empStatus:', formValues[2]);
-
-        localStorage.setItem('empSchoolId', empSchoolId);
-        localStorage.setItem('empRole', empRole);
-        localStorage.setItem('empStatus', empStatus);
-
-        getFilteredEmployees();
-
-      } else {
-
-        localStorage.removeItem('employees');
-        localStorage.removeItem('empSchoolId');
-        localStorage.removeItem('empRole');
-        localStorage.removeItem('empStatus');
-
-        getEmployees();
-      }
+    try {
+      const [availableSchools] = await loadPopupOptions(getSchoolsFromCache);
+      const values = {...readPopupFilters(POPUP_KEYS),q:searchText};
+      const choices=labels=>labels.map(label=>({value:label,label:tr(label)}));
+      const next = await openPreservedFilterPopup({
+        fields:[
+        {key:'schoolId',label:'Niswan',options:availableSchools.map(item=>({value:String(item._id),label:`${item.code} : ${item.nameEnglish}`}))},
+        {key:'role',label:'Role',options:[['superadmin','SuperAdmin'],['hqadmin','HQ Admin'],['accountant','Accountant'],['hquser','HQ User'],['hqstaff','HQ Staff'],['admin','Admin'],['employee','Employee'],['teacher','Teacher'],['usthadh','Usthadh'],['warden','Warden'],['staff','Staff']].map(([role,label])=>({value:role,label:t(`roles.${role}`,label)}))},
+        {key:'status',label:'Status',options:choices(['Active','In-Active'])},
+        ],values,defaults:Object.fromEntries(Object.keys(POPUP_KEYS).map(key=>[key,''])),tr,direction,fontFamily,
+      });
+      if(!next)return;
+      savePopupFilters(POPUP_KEYS,next,'employees');
+      setSearchText(next.q);
+      if(Object.keys(POPUP_KEYS).some(key=>key!=='q' && next[key]))await getFilteredEmployees();
+      else await getEmployees();
+    } catch(error) {
+      showSwalAlert('Error!',error?.response?.data?.error || tr('Error!'),'error');
     }
   };
 
     const getFilteredEmployees = async () => {
+    const request=++requestRef.current;
     setFiltering(true)
     try {
       const responnse = await axios.get(
@@ -222,6 +153,7 @@ const List = () => {
         }
       );
 
+      if (request!==requestRef.current)return;
       if (responnse.data.success) {
         let sno = 1;
 
@@ -230,6 +162,7 @@ const List = () => {
         );
 
         setEmployees(data);
+      setListDataLoaded(true);
         setFilteredEmployees(data)
         localStorage.removeItem('employees');
         localStorage.setItem('employees', JSON.stringify(responnse.data));
@@ -241,7 +174,7 @@ const List = () => {
         showSwalAlert("Error!", error.response.data.error, "error");
       }
     } finally {
-      setFiltering(false)
+      if(request===requestRef.current){setFiltering(false);setSupLoading(false);}
     }
   }
 
@@ -342,6 +275,15 @@ const List = () => {
 
   useEffect(() => {
 
+    // Employee filter cache belongs only to global HQ readers. Clear any stale
+    // HQ filter state before loading a scoped Supervisor/Niswan Employee list.
+    if (!isGlobalHqReadRole(user?.role)) {
+      localStorage.removeItem('employees');
+      localStorage.removeItem('empSchoolId');
+      localStorage.removeItem('empRole');
+      localStorage.removeItem('empStatus');
+    }
+
     // Authenticate the User.
     if (checkAuth("employeesList") === "NO") {
       showSwalAlert("Error!", "User Authorization Failed!", "error");
@@ -352,9 +294,7 @@ const List = () => {
       setSupLoading(true)
 
       const data = localStorage.getItem('employees');
-      if (data && (localStorage.getItem('empSchoolId')
-        || localStorage.getItem('empRole')
-        || localStorage.getItem('empStatus'))) {
+      if (['empSchoolId','empRole','empStatus'].some(popupFilterValue)) {
         console.log("111")
         getFilteredEmployees();
       } else {
@@ -366,12 +306,11 @@ const List = () => {
   }, []);
 
   const getEmployees = async () => {
+    const request=++requestRef.current;
 
     const data = localStorage.getItem('employees');
 
-    if (data && (localStorage.getItem('empSchoolId')
-      || localStorage.getItem('empRole')
-      || localStorage.getItem('empStatus'))) {
+    if (data && ['empSchoolId','empRole','empStatus'].some(popupFilterValue)) {
 
       let sno = 1;
 
@@ -380,6 +319,7 @@ const List = () => {
       );
 
       setEmployees(data1);
+      setListDataLoaded(true);
       setFilteredEmployees(data1);
       console.log("Data from local storage")
 
@@ -396,7 +336,8 @@ const List = () => {
           }
         );
 
-        if (responnse.data.success) {
+        if (request!==requestRef.current)return;
+      if (responnse.data.success) {
           let sno = 1;
 
           const data = responnse.data.employees.map((sup) =>
@@ -404,6 +345,7 @@ const List = () => {
           );
 
           setEmployees(data);
+      setListDataLoaded(true);
           setFilteredEmployees(data);
           localStorage.removeItem('employees');
           localStorage.setItem('employees', JSON.stringify(responnse.data));
@@ -415,23 +357,28 @@ const List = () => {
           navigate("/dashboard");
         }
       } finally {
-        setSupLoading(false)
+        if(request===requestRef.current){setSupLoading(false);setFiltering(false);}
       }
     };
   }
 
-  const handleFilter = (e) => {
-    const records = employees.filter((sup) => (
-      sup.name?.toLowerCase().includes(e.target.value.toLowerCase())
-      || sup.empId?.toLowerCase().includes(e.target.value.toLowerCase())
-      || sup.role?.toLowerCase().includes(e.target.value.toLowerCase())
-      || sup.schoolCode?.toLowerCase().includes(e.target.value.toLowerCase())
-      || sup.designation?.toLowerCase().includes(e.target.value.toLowerCase())
-      || sup.active?.toLowerCase().includes(e.target.value.toLowerCase())
-      || sup.contactNumber?.toString().toLowerCase().includes(e.target.value.toLowerCase())
-    ))
-    setFilteredEmployees(records)
-  }
+  const handleFilter = (event) => {
+    const q=event.target.value;
+    setSearchText(q);
+    savePopupFilters({q:POPUP_KEYS.q},{q});
+  };
+  useEffect(() => {
+    if(!listDataLoaded)return;
+    setFilteredEmployees(employees.filter((sup) => !searchText || (
+      sup.name?.toLowerCase().includes(searchText.toLowerCase())
+      || sup.empId?.toLowerCase().includes(searchText.toLowerCase())
+      || sup.role?.toLowerCase().includes(searchText.toLowerCase())
+      || sup.schoolCode?.toLowerCase().includes(searchText.toLowerCase())
+      || sup.designation?.toLowerCase().includes(searchText.toLowerCase())
+      || sup.active?.toLowerCase().includes(searchText.toLowerCase())
+      || sup.contactNumber?.toString().toLowerCase().includes(searchText.toLowerCase())
+    )));
+  },[employees,searchText,listDataLoaded]);
 
   if (!filteredEmployee) {
     return getSpinner();
@@ -458,6 +405,7 @@ const List = () => {
               type="text"
               placeholder={tr("Search")}
               className="w-full px-3 py-0.5 border rounded shadow-md justify-center ml-1 lg:ml-0 mr-3 lg:mr-0"
+              value={searchText}
               onChange={handleFilter}
             />
           </div>
@@ -466,13 +414,13 @@ const List = () => {
           </div>
         </div>
 
-        {user.role === "superadmin" || user.role === "hquser" ?
+        {isGlobalHqReadRole(user.role) ?
           <div className="mr-3" onClick={openFilterPopup}>{LinkIcon("#", "Filter")}</div>
           : null}
 
-        {user.role === "superadmin" || user.role === "hquser" || user.role === "supervisor" || user.role === "admin" ?
+        {can(PERMISSIONS.EMPLOYEE_CREATE) ?
           LinkIcon("/dashboard/add-employee", "Add") : null}
-        {user.role === "superadmin" ?
+        {can(PERMISSIONS.EMPLOYEE_IMPORT) ?
           <div className="hidden lg:block" onClick={handleImport}>{LinkIcon("#", "Import")}</div> : null}
       </div>
 

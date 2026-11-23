@@ -1,5 +1,7 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { attendanceGet, attendancePatch, attendancePost } from "../../api/attendanceApi";
+import { useAuth } from "../../context/AuthContext";
+import { PERMISSIONS } from "../../auth/permissions";
 import { useLanguage } from "../../i18n/LanguageContext";
 import { showConfirmationSwalAlert, showSwalAlert } from "../../utils/CommonHelper";
 import {
@@ -18,16 +20,14 @@ import {
   getApiError,
 } from "./AttendanceCommon";
 
-const PayrollTab = ({
-  meta,
-  selectedSchoolId,
-  setSelectedSchoolId,
-  staffScopeType,
-  setStaffScopeType,
-}) => {
+const PayrollTab = ({ meta }) => {
   const { tr } = useLanguage();
+  const { can } = useAuth();
   const access = meta.access;
+  const loadSequence = useRef(0);
   const [monthKey, setMonthKey] = useState(currentMonthKey());
+  const selectedMonth = useRef(monthKey);
+  selectedMonth.current = monthKey;
   const [workingDays, setWorkingDays] = useState(26);
   const [run, setRun] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -37,23 +37,18 @@ const PayrollTab = ({
   const [paymentReference, setPaymentReference] = useState("");
   const [payrollRemarks, setPayrollRemarks] = useState("");
 
-  const effectiveScopeType = access.isSuperAdmin
-    ? staffScopeType
-    : access.canManageHqStaff
-      ? "HQ"
-      : "NISWAN";
-  const effectiveSchoolId =
-    effectiveScopeType === "HQ"
-      ? meta.hqSchool?._id || ""
-      : access.isSuperAdmin
-        ? selectedSchoolId
-        : access.actorSchoolId || "";
+  const canGenerate = can(PERMISSIONS.PAYROLL_GENERATE);
+  const canAdjust = can(PERMISSIONS.PAYROLL_ADJUST);
+  const canReview = can(PERMISSIONS.PAYROLL_REVIEW);
+  const canFinalize = can(PERMISSIONS.PAYROLL_FINALIZE);
+  const canPay = can(PERMISSIONS.PAYROLL_PAY);
 
-  const canQuery =
-    Boolean(monthKey) &&
-    (effectiveScopeType === "HQ" || Boolean(effectiveSchoolId));
+  const effectiveScopeType = "HQ";
+  const effectiveSchoolId = "";
+  const canQuery = Boolean(monthKey) && access.canManagePayrollGlobally;
 
   const loadRun = async () => {
+    const sequence = ++loadSequence.current;
     if (!canQuery) {
       setRun(null);
       return;
@@ -65,6 +60,7 @@ const PayrollTab = ({
         scopeType: effectiveScopeType,
         schoolId: effectiveSchoolId,
       });
+      if (sequence !== loadSequence.current) return;
       const loadedRun = response.data.run || null;
       setRun(loadedRun);
       if (loadedRun?.workingDays) setWorkingDays(loadedRun.workingDays);
@@ -72,19 +68,20 @@ const PayrollTab = ({
       setPaymentMethod(loadedRun?.paymentMethod || "Bank Transfer");
       setPaymentReference(loadedRun?.paymentReference || "");
     } catch (error) {
-      showSwalAlert("Error!", getApiError(error), "error");
+      if (sequence === loadSequence.current) showSwalAlert("Error!", getApiError(error), "error");
     } finally {
-      setLoading(false);
+      if (sequence === loadSequence.current) setLoading(false);
     }
   };
 
   useEffect(() => {
     loadRun();
+    return () => { loadSequence.current += 1; };
   }, [monthKey, effectiveScopeType, effectiveSchoolId]);
 
   const generate = async () => {
     if (!canQuery || !workingDays) {
-      showSwalAlert("Info!", "Select payroll scope, month and working days.", "info");
+      showSwalAlert("Info!", "Select month and working days.", "info");
       return;
     }
 
@@ -99,11 +96,12 @@ const PayrollTab = ({
     try {
       const response = await attendancePost("payroll/generate", {
         month: monthKey,
+        expectedRevision: run?.monthKey === monthKey ? Number(run?.revision || 0) : 0,
         workingDays: Number(workingDays),
         scopeType: effectiveScopeType,
         schoolId: effectiveSchoolId,
       });
-      setRun(response.data.run);
+      if (response.data.run?.monthKey === selectedMonth.current) setRun(response.data.run);
       showSwalAlert("Success!", response.data.message, "success");
     } catch (error) {
       showSwalAlert("Error!", getApiError(error), "error");
@@ -118,7 +116,7 @@ const PayrollTab = ({
       items: (current?.items || []).map((item) => {
         if (item._id !== itemId) return item;
         const next = { ...item, [field]: value };
-        const allowance = Number(next.manualAllowance || 0);
+        const allowance = Number(next.manualAllowance || 0) + Number(next.approvedTaClaims || 0);
         const deduction = Number(next.manualDeduction || 0);
         next.netSalary =
           Number(next.grossSalary || 0) -
@@ -134,11 +132,12 @@ const PayrollTab = ({
     setSavingItemId(item._id);
     try {
       const response = await attendancePatch(`payroll/${run._id}/items/${item._id}`, {
+        expectedRevision: Number(run.revision || 0),
         manualAllowance: Number(item.manualAllowance || 0),
         manualDeduction: Number(item.manualDeduction || 0),
         remarks: item.remarks || "",
       });
-      setRun(response.data.run);
+      if (response.data.run?.monthKey === selectedMonth.current) setRun(response.data.run);
       showSwalAlert("Success!", response.data.message, "success");
     } catch (error) {
       showSwalAlert("Error!", getApiError(error), "error");
@@ -160,11 +159,12 @@ const PayrollTab = ({
     try {
       const response = await attendancePatch(`payroll/${run._id}/status`, {
         status,
+        expectedRevision: Number(run.revision || 0),
         paymentMethod: status === "Paid" ? paymentMethod : undefined,
         paymentReference: status === "Paid" ? paymentReference : undefined,
         remarks: payrollRemarks,
       });
-      setRun(response.data.run);
+      if (response.data.run?.monthKey === selectedMonth.current) setRun(response.data.run);
       showSwalAlert("Success!", response.data.message, "success");
     } catch (error) {
       showSwalAlert("Error!", getApiError(error), "error");
@@ -172,8 +172,9 @@ const PayrollTab = ({
   };
 
   const totals = useMemo(() => {
-    const result = { gross: 0, deduction: 0, allowance: 0, manualDeduction: 0, net: 0 };
+    const result = { ta: 0, gross: 0, deduction: 0, allowance: 0, manualDeduction: 0, net: 0 };
     (run?.items || []).forEach((item) => {
+      result.ta += Number(item.approvedTaClaims || 0);
       result.gross += Number(item.grossSalary || 0);
       result.deduction += Number(item.attendanceDeduction || 0);
       result.allowance += Number(item.manualAllowance || 0);
@@ -183,40 +184,27 @@ const PayrollTab = ({
     return result;
   }, [run]);
 
-  const editable = run && !["Finalized", "Paid"].includes(run.status);
+  const currentRun = run && !loading && run.monthKey === monthKey;
+  const editable = currentRun && run.taPolicyVersion === 1 && !run.needsRecalculation && canAdjust && !["Finalized", "Paid"].includes(run.status);
+  const canEditWorkflowRemarks =
+    currentRun &&
+    ((currentRun && run.status === "Draft" && run.taPolicyVersion === 1 && !run.needsRecalculation && canReview) ||
+      (currentRun && run.status === "Reviewed" && run.taPolicyVersion === 1 && !run.needsRecalculation && canFinalize) ||
+      (currentRun && run.status === "Finalized" && canPay));
 
   return (
     <div className="space-y-4">
       <AttendancePanel
         title="Payroll"
-        subtitle="Payroll uses staff salary, explicit absence/half-day and approved unpaid leave. Missing attendance is never silently deducted."
+        subtitle="HQ-only Payroll uses HQ staff salary, explicit absence/half-day and approved unpaid leave. Niswan Payroll is not enabled."
       >
         <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-6">
-          {access.isSuperAdmin ? (
-            <div>
-              <FieldLabel>{tr("Staff Scope")}</FieldLabel>
-              <SelectInput value={staffScopeType} onChange={(e) => setStaffScopeType(e.target.value)}>
-                <option value="HQ">{tr("HQ")}</option>
-                <option value="NISWAN">{tr("Niswan")}</option>
-              </SelectInput>
+          <div>
+            <FieldLabel>{tr("Payroll Scope")}</FieldLabel>
+            <div className="rounded-md border border-slate-200 bg-slate-50 px-3 py-2 text-sm font-semibold text-slate-700">
+              {tr("HQ Only")}
             </div>
-          ) : null}
-
-          {access.isSuperAdmin && effectiveScopeType === "NISWAN" ? (
-            <div className="lg:col-span-2">
-              <FieldLabel>{tr("Select Niswan")}</FieldLabel>
-              <SelectInput value={selectedSchoolId} onChange={(e) => setSelectedSchoolId(e.target.value)}>
-                <option value="">{tr("Select Niswan")}</option>
-                {meta.schools
-                  //.filter((school) => school.code !== meta.hqSchool?.code)
-                  .map((school) => (
-                    <option key={school._id} value={school._id}>
-                      {school.code} : {school.nameEnglish}
-                    </option>
-                  ))}
-              </SelectInput>
-            </div>
-          ) : null}
+          </div>
 
           <div>
             <FieldLabel>{tr("Month")}</FieldLabel>
@@ -230,14 +218,17 @@ const PayrollTab = ({
               min="1"
               max="31"
               value={workingDays}
+              disabled={!canGenerate}
               onChange={(e) => setWorkingDays(e.target.value)}
             />
           </div>
 
           <div className="flex items-end">
-            <PrimaryButton onClick={generate} disabled={!canQuery || generating}>
-              {generating ? tr("Generating...") : tr("Generate / Recalculate")}
-            </PrimaryButton>
+            {canGenerate ? (
+              <PrimaryButton onClick={generate} disabled={!canQuery || loading || generating}>
+                {generating ? tr("Generating...") : tr("Generate / Recalculate")}
+              </PrimaryButton>
+            ) : null}
           </div>
         </div>
       </AttendancePanel>
@@ -260,9 +251,13 @@ const PayrollTab = ({
               </div>
             </div>
 
-            <div className="grid grid-cols-2 gap-2 md:grid-cols-5">
+            {!["Finalized", "Paid"].includes(run.status) && run.taPolicyVersion !== 1 && <p role="alert" className="mb-3 rounded bg-amber-50 p-3 text-sm text-amber-900">{tr("Recalculate payroll and review it again before continuing.")}</p>}
+            {run.needsRecalculation && <p role="alert" className="mb-3 rounded bg-amber-50 p-3 text-sm text-amber-900">{tr("Leave or attendance changed. Recalculate this payroll before review.")}</p>}
+            {run.taExcludedClaims?.length > 0 && <div role="alert" className="mb-3 rounded bg-amber-50 p-3 text-sm text-amber-900"><p>{tr("Some approved claims have no active matching payroll staff record. They remain unpaid; review them in TA Approvals.")}</p>{run.taExcludedClaims.map((claim) => <p key={claim.claimId}><bdi>{claim.claimNumber} {claim.name}</bdi></p>)}</div>}
+            <div className="grid grid-cols-2 gap-2 md:grid-cols-6">
               {[
                 ["Gross Salary", totals.gross],
+                ["Approved TA Claims", totals.ta],
                 ["Attendance Deduction", totals.deduction],
                 ["Manual Allowance", totals.allowance],
                 ["Manual Deduction", totals.manualDeduction],
@@ -284,7 +279,7 @@ const PayrollTab = ({
                     <th className="px-2 py-2">{tr("Staff")}</th>
                     <th className="px-2 py-2">{tr("Role")}</th>
                     <th className="px-2 py-2 text-right">{tr("Salary")}</th>
-                    <th className="px-2 py-2 text-right">{tr("Travel Allowance")}</th>
+                    <th className="px-2 py-2 text-right">{tr(run.taPolicyVersion === 1 ? "Approved TA Claims" : "Travel Allowance")}</th>
                     <th className="px-2 py-2 text-center">{tr("Recorded Days")}</th>
                     <th className="px-2 py-2 text-center">{tr("Absent")}</th>
                     <th className="px-2 py-2 text-center">{tr("Half Day")}</th>
@@ -307,7 +302,8 @@ const PayrollTab = ({
                       </td>
                       <td className="px-2 py-2">{tr(item.role || "-")}</td>
                       <td className="px-2 py-2 text-right">{formatAmount(item.monthlySalary)}</td>
-                      <td className="px-2 py-2 text-right">{formatAmount(item.travellingAllowance)}</td>
+                      <td className="px-2 py-2 text-right">{formatAmount(run.taPolicyVersion === 1 ? item.approvedTaClaims : item.travellingAllowance)}
+                        {run.taPolicyVersion === 1 && (item.travelClaimItems || []).map((claim) => <div key={claim.claimId} className="mt-1 break-all text-[10px] text-blue-700"><bdi>{claim.claimNumber}</bdi></div>)}</td>
                       <td className={`px-2 py-2 text-center font-semibold ${Number(item.attendanceRecordedDays) < Number(run.workingDays) ? "text-amber-600" : "text-slate-700"}`}>
                         {item.attendanceRecordedDays}
                       </td>
@@ -366,13 +362,18 @@ const PayrollTab = ({
             <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-4">
               <div className="lg:col-span-2">
                 <FieldLabel>{tr("Payroll Remarks")}</FieldLabel>
-                <TextArea rows={2} value={payrollRemarks} onChange={(e) => setPayrollRemarks(e.target.value)} />
+                <TextArea
+                  rows={2}
+                  value={payrollRemarks}
+                  disabled={!canEditWorkflowRemarks}
+                  onChange={(e) => setPayrollRemarks(e.target.value)}
+                />
               </div>
               {run.status === "Finalized" || run.status === "Paid" ? (
                 <>
                   <div>
                     <FieldLabel>{tr("Payment Method")}</FieldLabel>
-                    <SelectInput value={paymentMethod} onChange={(e) => setPaymentMethod(e.target.value)} disabled={run.status === "Paid"}>
+                    <SelectInput value={paymentMethod} onChange={(e) => setPaymentMethod(e.target.value)} disabled={run.status === "Paid" || !canPay}>
                       {["Bank Transfer", "Cash", "Other"].map((method) => (
                         <option key={method} value={method}>{tr(method)}</option>
                       ))}
@@ -380,20 +381,20 @@ const PayrollTab = ({
                   </div>
                   <div>
                     <FieldLabel>{tr("Payment Reference")}</FieldLabel>
-                    <Input value={paymentReference} onChange={(e) => setPaymentReference(e.target.value)} disabled={run.status === "Paid"} />
+                    <Input value={paymentReference} onChange={(e) => setPaymentReference(e.target.value)} disabled={run.status === "Paid" || !canPay} />
                   </div>
                 </>
               ) : null}
             </div>
 
             <div className="mt-3 flex flex-wrap gap-2">
-              {run.status === "Draft" ? (
+              {currentRun && run.status === "Draft" && run.taPolicyVersion === 1 && !run.needsRecalculation && canReview ? (
                 <SecondaryButton onClick={() => updateStatus("Reviewed")}>{tr("Mark Reviewed")}</SecondaryButton>
               ) : null}
-              {run.status === "Reviewed" ? (
+              {currentRun && run.status === "Reviewed" && run.taPolicyVersion === 1 && !run.needsRecalculation && canFinalize ? (
                 <PrimaryButton onClick={() => updateStatus("Finalized")}>{tr("Finalize Payroll")}</PrimaryButton>
               ) : null}
-              {run.status === "Finalized" ? (
+              {currentRun && run.status === "Finalized" && canPay ? (
                 <PrimaryButton onClick={() => updateStatus("Paid")}>{tr("Mark Paid")}</PrimaryButton>
               ) : null}
               {run.status === "Paid" ? <StatusBadge status="Paid" /> : null}

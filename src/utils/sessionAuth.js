@@ -5,8 +5,12 @@ const AUTH_STORAGE_KEYS = [
   "userId",
   "schoolId",
   "schoolName",
+  "organizationType",
+  "organizationCode",
+  "organizationName",
   "schoolIds",
   "schools",
+  "permissions",
   "preferredLanguage",
 ];
 
@@ -129,6 +133,12 @@ export const persistAuthSession = ({ token, user }) => {
       localStorage.setItem("preferredLanguage", String(user.preferredLanguage).toLowerCase());
     }
 
+    if (Array.isArray(user?.permissions)) {
+      localStorage.setItem("permissions", JSON.stringify(user.permissions));
+    } else {
+      localStorage.removeItem("permissions");
+    }
+
     if (user?.schoolId) {
       localStorage.setItem("schoolId", user.schoolId);
     } else {
@@ -139,6 +149,22 @@ export const persistAuthSession = ({ token, user }) => {
       localStorage.setItem("schoolName", user.schoolName);
     } else {
       localStorage.removeItem("schoolName");
+    }
+
+    if (user?.organizationType) {
+      localStorage.setItem("organizationType", String(user.organizationType).toUpperCase());
+    } else {
+      localStorage.removeItem("organizationType");
+    }
+    if (user?.organizationCode) {
+      localStorage.setItem("organizationCode", user.organizationCode);
+    } else {
+      localStorage.removeItem("organizationCode");
+    }
+    if (user?.organizationName) {
+      localStorage.setItem("organizationName", user.organizationName);
+    } else {
+      localStorage.removeItem("organizationName");
     }
 
     if (String(user?.role || "").toLowerCase() === "supervisor") {

@@ -2,6 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { FaEdit, FaEye, FaTrashAlt } from "react-icons/fa";
 import { useAuth } from "../context/AuthContext";
+import { PERMISSIONS } from '../auth/permissions'
 import { deleteGrade } from "../api/gradeApi";
 import { getButtonStyle, showConfirmationSwalAlert, showSwalAlert } from "./CommonHelper";
 
@@ -18,8 +19,9 @@ export const gradeColumns = [
 
 export const GradeButtons = ({ Id, onGradeDelete }) => {
   const navigate = useNavigate();
-  const { user } = useAuth();
-  const isGuest = user?.role === "guest";
+  const { can } = useAuth();
+  const canEdit = can(PERMISSIONS.MASTER_GRADE_EDIT);
+  const canDelete = can(PERMISSIONS.MASTER_GRADE_DELETE);
 
   const handleDelete = async () => {
     const result = await showConfirmationSwalAlert("Are you sure to Delete?", "", "question");
@@ -41,10 +43,10 @@ export const GradeButtons = ({ Id, onGradeDelete }) => {
       <button className={getButtonStyle("View")} title="View Grade" aria-label="View Grade" onClick={() => navigate(`/dashboard/grades/${Id}`)}>
         <FaEye className="m-1" />
       </button>
-      <button className={getButtonStyle("Edit")} title="Edit Grade" aria-label="Edit Grade" disabled={isGuest} onClick={() => navigate(`/dashboard/grades/edit/${Id}`)}>
+      <button className={getButtonStyle("Edit")} title="Edit Grade" aria-label="Edit Grade" disabled={!canEdit} onClick={() => navigate(`/dashboard/grades/edit/${Id}`)}>
         <FaEdit className="m-1" />
       </button>
-      <button className={getButtonStyle("Delete")} title="Delete Grade" aria-label="Delete Grade" disabled={isGuest} onClick={handleDelete}>
+      <button className={getButtonStyle("Delete")} title="Delete Grade" aria-label="Delete Grade" disabled={!canDelete} onClick={handleDelete}>
         <FaTrashAlt className="m-1" />
       </button>
     </div>

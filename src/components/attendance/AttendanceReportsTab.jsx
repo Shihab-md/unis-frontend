@@ -1,6 +1,8 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { attendanceGet } from "../../api/attendanceApi";
 import { useLanguage } from "../../i18n/LanguageContext";
+import { useAuth } from "../../context/AuthContext";
+import { PERMISSIONS } from "../../auth/permissions";
 import { showSwalAlert } from "../../utils/CommonHelper";
 import {
   AttendancePanel,
@@ -22,17 +24,27 @@ const AttendanceReportsTab = ({
   setStaffScopeType,
 }) => {
   const { tr } = useLanguage();
+  const { can } = useAuth();
   const access = meta.access;
-  const canStudent =
+  const hasStudentScope =
     access.isSuperAdmin || access.canManageAnyStudents || access.canManageOwnNiswanStudents;
-  const canStaff =
+  const hasStaffScope =
     access.isSuperAdmin || access.canManageHqStaff || access.canManageOwnNiswanStaff;
+  const canStudent =
+    hasStudentScope && can(PERMISSIONS.STUDENT_ATTENDANCE_REPORT_VIEW);
+  const canStaff =
+    hasStaffScope && can(PERMISSIONS.STAFF_ATTENDANCE_REPORT_VIEW);
 
   const [kind, setKind] = useState(canStaff ? "staff" : "student");
   const [monthKey, setMonthKey] = useState(currentMonthKey());
   const [rows, setRows] = useState([]);
   const [context, setContext] = useState(null);
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (kind === "staff" && !canStaff && canStudent) setKind("student");
+    if (kind === "student" && !canStudent && canStaff) setKind("staff");
+  }, [kind, canStaff, canStudent]);
 
   useEffect(() => {
     setRows([]);
@@ -46,7 +58,7 @@ const AttendanceReportsTab = ({
       : "NISWAN";
   const effectiveStaffSchoolId =
     effectiveStaffScope === "HQ"
-      ? meta.hqSchool?._id || ""
+      ? ""
       : access.isSuperAdmin
         ? selectedSchoolId
         : access.actorSchoolId || "";
@@ -56,8 +68,8 @@ const AttendanceReportsTab = ({
 
   const canLoad =
     kind === "student"
-      ? Boolean(effectiveStudentSchoolId)
-      : effectiveStaffScope === "HQ" || Boolean(effectiveStaffSchoolId);
+      ? canStudent && Boolean(effectiveStudentSchoolId)
+      : canStaff && (effectiveStaffScope === "HQ" || Boolean(effectiveStaffSchoolId));
 
   const loadReport = async () => {
     if (!canLoad) {
@@ -126,8 +138,7 @@ const AttendanceReportsTab = ({
               <SelectInput value={selectedSchoolId} onChange={(e) => setSelectedSchoolId(e.target.value)}>
                 <option value="">{tr("Select Niswan")}</option>
                 {meta.schools
-                  //.filter((school) => school.code !== meta.hqSchool?.code)
-                  .map((school) => (
+                                    .map((school) => (
                     <option key={school._id} value={school._id}>
                       {school.code} : {school.nameEnglish}
                     </option>

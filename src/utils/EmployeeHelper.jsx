@@ -2,6 +2,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { getBaseUrl, showSwalAlert, showConfirmationSwalAlert, getButtonStyle, getButtonTooltip } from '../utils/CommonHelper';
 import { useAuth } from '../context/AuthContext'
+import { PERMISSIONS } from '../auth/permissions';
 import {
   FaEye,
   FaEdit,
@@ -140,7 +141,7 @@ export const EmployeeCard = ({ row, onEmployeeDelete }) => {
 
   const roleText = (() => {
     const r = String(row?.role || "").trim().toLowerCase();
-    const roleLabels = { superadmin: "SuperAdmin", hquser: "HQUser", admin: "Admin", teacher: "Teacher", usthadh: "Usthadh", warden: "Warden", staff: "Staff", supervisor: "Supervisor" };
+    const roleLabels = { superadmin: "SuperAdmin", hqadmin: "HQ Admin", accountant: "Accountant", hquser: "HQ User", hqstaff: "HQ Staff", admin: "Admin", employee: "Employee", teacher: "Teacher", usthadh: "Usthadh", warden: "Warden", staff: "Staff", supervisor: "Supervisor" };
     return roleLabels[r] || r || "-";
   })();
 
@@ -232,6 +233,7 @@ export const EmployeeCard = ({ row, onEmployeeDelete }) => {
           {row.action || (
             <EmployeeButtons
               Id={row._id}
+              targetRole={row.role}
               isSelfRow={row.isSelfRow}
               onEmployeeDelete={onEmployeeDelete}
             />
@@ -242,7 +244,7 @@ export const EmployeeCard = ({ row, onEmployeeDelete }) => {
   );
 };
 
-export const EmployeeButtons = ({ Id, isSelfRow = false, onEmployeeDelete }) => {
+export const EmployeeButtons = ({ Id, targetRole, isSelfRow = false, onEmployeeDelete }) => {
   const navigate = useNavigate();
 
   const handleDelete = async (id) => {
@@ -278,22 +280,24 @@ export const EmployeeButtons = ({ Id, isSelfRow = false, onEmployeeDelete }) => 
     }
   };
 
-  const { user } = useAuth();
+  const { can, user } = useAuth();
 
-  const disableEditDelete = user?.role === "guest" || isSelfRow;
+  const actorRole = String(user?.role || "").trim().toLowerCase();
+  const normalizedTargetRole = String(targetRole || "").trim().toLowerCase();
 
+  // Muavin can view every Employee inside assigned Niswans, but Employee mutation
+  // remains intentionally limited to assigned-Niswan Admin records.
+  const canManageTarget =
+    actorRole !== "supervisor" || normalizedTargetRole === "admin";
+
+  const disableEditDelete = isSelfRow;
   const disabledTitle = isSelfRow
     ? translateUiPhrase("You cannot edit or delete your own employee record.")
-    : user?.role === "guest"
-      ? translateUiPhrase("Guest user cannot edit or delete.")
-      : "";
+    : "";
 
   return (
     <div className="flex space-x-3">
-      {user?.role === "superadmin" ||
-        user?.role === "hquser" ||
-        user?.role === "supervisor" ||
-        user?.role === "admin" ? (
+      {can(PERMISSIONS.EMPLOYEE_VIEW) ? (
         <div className="flex space-x-3">
           <button
             className={getButtonStyle('View')}
@@ -306,29 +310,31 @@ export const EmployeeButtons = ({ Id, isSelfRow = false, onEmployeeDelete }) => 
         </div>
       ) : null}
 
-      {user?.role === "superadmin" ||
-        user?.role === "supervisor" ||
-        user?.role === "admin" ? (
+      {canManageTarget && (can(PERMISSIONS.EMPLOYEE_EDIT) || can(PERMISSIONS.EMPLOYEE_DELETE)) ? (
         <div className="flex space-x-4">
-          <button
-            className={`${getButtonStyle('Edit')} disabled:cursor-not-allowed disabled:opacity-50`}
-            disabled={disableEditDelete}
-            title={disabledTitle || getButtonTooltip("Edit")}
-            aria-label={getButtonTooltip("Edit")}
-            onClick={() => navigate(`/dashboard/employees/edit/${Id}`)}
-          >
-            <FaEdit title={getButtonTooltip("Edit")} aria-label={getButtonTooltip("Edit")} className="m-1" />
-          </button>
+          {can(PERMISSIONS.EMPLOYEE_EDIT) ? (
+            <button
+              className={`${getButtonStyle('Edit')} disabled:cursor-not-allowed disabled:opacity-50`}
+              disabled={disableEditDelete}
+              title={disabledTitle || getButtonTooltip("Edit")}
+              aria-label={getButtonTooltip("Edit")}
+              onClick={() => navigate(`/dashboard/employees/edit/${Id}`)}
+            >
+              <FaEdit title={getButtonTooltip("Edit")} aria-label={getButtonTooltip("Edit")} className="m-1" />
+            </button>
+          ) : null}
 
-          <button
-            className={`${getButtonStyle('Delete')} disabled:cursor-not-allowed disabled:opacity-50`}
-            disabled={disableEditDelete}
-            title={disabledTitle || getButtonTooltip("Delete")}
-            aria-label={getButtonTooltip("Delete")}
-            onClick={() => handleDelete(Id)}
-          >
-            <FaTrashAlt title={getButtonTooltip("Delete")} aria-label={getButtonTooltip("Delete")} className="m-1" />
-          </button>
+          {can(PERMISSIONS.EMPLOYEE_DELETE) ? (
+            <button
+              className={`${getButtonStyle('Delete')} disabled:cursor-not-allowed disabled:opacity-50`}
+              disabled={disableEditDelete}
+              title={disabledTitle || getButtonTooltip("Delete")}
+              aria-label={getButtonTooltip("Delete")}
+              onClick={() => handleDelete(Id)}
+            >
+              <FaTrashAlt title={getButtonTooltip("Delete")} aria-label={getButtonTooltip("Delete")} className="m-1" />
+            </button>
+          ) : null}
         </div>
       ) : null}
     </div>

@@ -5,9 +5,9 @@ import AdminDashboard from "./pages/AdminDashboard";
 import GoToTopButton from "./utils/GoToTopButton";
 
 import PrivateRoutes from "./utils/PrivateRoutes";
-import RoleBaseRoutes from "./utils/RoleBaseRoutes";
 import AdminSummary from "./components/dashboard/AdminSummary";
 import Masters from "./components/dashboard/Masters";
+import DatabaseBackup from "./components/databaseBackup/DatabaseBackup";
 import ChangePassword from "./components/dashboard/ChangePassword";
 import ResetPassword from "./components/dashboard/ResetPassword";
 import ProfilePage from "./components/dashboard/ProfilePage";
@@ -34,6 +34,7 @@ import StudentList from "./components/student/List";
 import StudentAdd from "./components/student/Add";
 import StudentView from "./components/student/View";
 import StudentEdit from "./components/student/Edit";
+import StudentCourseChange from "./components/student/CourseChange";
 import StudentPromote from "./components/student/Promote";
 import StudentBulkPromote from "./components/student/BulkPromote";
 
@@ -74,6 +75,7 @@ import GradeView from "./components/grade/View";
 import GradeEdit from "./components/grade/Edit";
 
 import ReportsHome from "./components/report/ReportsHome";
+import StudentYearEndReport from "./components/report/StudentYearEndReport";
 
 import AccountsPage from "./components/dashboard/AccountsPage";
 import BatchApprovals from "./components/fees/BatchApprovals";
@@ -82,6 +84,7 @@ import PaymentBatchesList from "./components/fees/PaymentBatchesList";
 import PendingInvoicesNotSentHQ from "./components/fees/PendingInvoicesNotSentHQ";
 
 import ConnectDriveHidden from "./components/admin/ConnectDriveHidden";
+import RolePermissionsPage from "./components/admin/RolePermissionsPage";
 
 import MigrationBatchesFromInvoicesAll from "./components/fees/MigrationBatchesFromInvoicesAll";
 
@@ -92,6 +95,7 @@ import HelpDeskPage from "./components/helpdesk/HelpDeskPage";
 import MarksheetPage from "./components/marksheet/MarksheetPage";
 import ExamsHome from "./components/exam/ExamsHome";
 import QuestionPapersPage from "./components/exam/QuestionPapersPage";
+import AccountsFinancePage from "./components/accounts/AccountsFinancePage";
 import AttendancePage from "./components/attendance/AttendancePage";
 import DemoTutorialList from "./components/demoTutorial/List";
 import DemoTutorialForm from "./components/demoTutorial/Form";
@@ -111,9 +115,7 @@ function App() {
         <Route path="/dashboard"
           element={
             <PrivateRoutes>
-              <RoleBaseRoutes requiredRole={["admin"]}>
-                <AdminDashboard />
-              </RoleBaseRoutes>
+              <AdminDashboard />
             </PrivateRoutes>
           }
         >
@@ -140,6 +142,7 @@ function App() {
           <Route path="/dashboard/students" element={<StudentList />}></Route>
           <Route path="/dashboard/add-student" element={<StudentAdd />}></Route>
           <Route path="/dashboard/students/:id" element={<StudentView />}></Route>
+          <Route path="/dashboard/students/course-change/:id" element={<StudentCourseChange />}></Route>
           <Route path="/dashboard/students/edit/:id" element={<StudentEdit />}></Route>
           <Route path="/dashboard/students/promote/:id" element={<StudentPromote />}></Route>
           <Route path="/dashboard/students/bulkpromote" element={<StudentBulkPromote />}></Route>
@@ -184,6 +187,7 @@ function App() {
           <Route path="/dashboard/grades/edit/:id" element={<GradeEdit />}></Route>
 
           <Route path="/dashboard/masters" element={<Masters />}></Route>
+          <Route path="/dashboard/database-backup" element={<DatabaseBackup />} />
           <Route path="/dashboard/profile" element={<ProfilePage />}></Route>
           <Route path="/dashboard/notifications" element={<NotificationsPage />}></Route>
           <Route path="/dashboard/help-desk" element={<HelpDeskPage />}></Route>
@@ -199,8 +203,13 @@ function App() {
           <Route path="/dashboard/reset-password" element={<ResetPassword />} />
 
           <Route path="/dashboard/reports" element={<ReportsHome />}></Route>
+          <Route path="/dashboard/reports/:category" element={<ReportsHome />} />
+          <Route path="/dashboard/reports/:category/:reportId" element={<ReportsHome />} />
+          <Route path="/dashboard/reports/student-year-end" element={<StudentYearEndReport />} />
 
           <Route path="/dashboard/accountsPage" element={<AccountsPage />}></Route>
+          <Route path="/dashboard/accounts/payroll" element={<AccountsFinancePage key="accounts-payroll" section="payroll" />} />
+          <Route path="/dashboard/accounts/ta-approvals" element={<AccountsFinancePage key="accounts-ta" section="ta-approvals" />} />
           <Route path="/dashboard/hq/fees" element={<BatchApprovals />}></Route>
           <Route path="/dashboard/fees" element={<BulkPaymentCreate />}></Route>
           <Route path="/dashboard/fees/sent-to-hq" element={<PaymentBatchesList />}></Route>
@@ -208,6 +217,7 @@ function App() {
           <Route path="/dashboard/hq/fees/migration" element={<MigrationBatchesFromInvoicesAll />}></Route>
 
           <Route path="/dashboard/admin/connect-drive" element={<ConnectDriveHidden />} />
+          <Route path="/dashboard/role-permissions" element={<RolePermissionsPage />} />
 
         </Route>
 

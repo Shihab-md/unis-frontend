@@ -20,6 +20,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import { getBusinessTodayDate } from "../../utils/dateRules";
 import { AutoText, useLanguage } from "../../i18n/LanguageContext";
 import { formatAge, formatWorkingExperience } from "../../utils/employeeProfileUtils";
+import { isHqEmployeeRole, normalizeRole } from "../../auth/roles";
 
 const SHOW_EXTENDED_EMPLOYEE_FIELDS = false;
 
@@ -114,11 +115,15 @@ const Add = () => {
   const roleOptions = useMemo(
     () => [
       { value: "superadmin", label: t("roles.superadmin", "SuperAdmin") },
-      { value: "hquser", label: t("roles.hquser", "HQUser") },
+      { value: "hqadmin", label: t("roles.hqadmin", "HQ Admin") },
+      { value: "accountant", label: t("roles.accountant", "Accountant") },
+      { value: "hquser", label: t("roles.hquser", "HQ User") },
+      { value: "hqstaff", label: t("roles.hqstaff", "HQ Staff") },
       { value: "admin", label: t("roles.admin", "Admin") },
       { value: "teacher", label: t("roles.teacher", "Teacher") },
       { value: "usthadh", label: t("roles.usthadh", "Usthadh") },
-      { value: "warden", label: t("roles.warden", "Warden") }
+      { value: "warden", label: t("roles.warden", "Warden") },
+      { value: "staff", label: t("roles.staff", "Staff") }
     ],
     [t]
   );
@@ -127,8 +132,8 @@ const Add = () => {
     const role = String(user?.role || "").toLowerCase();
 
     const allowedByRole = {
-      superadmin: null, // null = all
-      hquser: ["admin", "teacher"],
+      superadmin: null, // null = all supported Employee roles
+      hqadmin: ["accountant", "hquser", "hqstaff", "admin", "teacher", "usthadh", "warden", "staff"],
       supervisor: ["admin"],
       admin: ["usthadh", "warden"],
     };
@@ -141,6 +146,7 @@ const Add = () => {
   }, [roleOptions, user?.role]);
 
   const password = formData.password || "";
+  const targetIsHq = isHqEmployeeRole(formData.role);
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
@@ -163,6 +169,10 @@ const Add = () => {
       setFormData((prevData) => ({ ...prevData, [name]: file }));
     } else {
       setFormData((prevData) => ({ ...prevData, [name]: value }));
+
+      if (name === "role" && isHqEmployeeRole(value)) {
+        setSchoolId(null);
+      }
     }
 
     if (name === "password") {
@@ -195,12 +205,14 @@ const Add = () => {
       if (selectedDOBDate) formDataObj.append("dob", selectedDOBDate);
       if (selectedDOJDate) formDataObj.append("doj", selectedDOJDate);
 
-      //alert(user?.role)
-      // School selection
-      if (["superadmin", "hquser", "supervisor"].includes(user?.role) && schoolId?.value) {
-        formDataObj.append("schoolId", schoolId.value);
-      } else {
-        formDataObj.append("schoolId", localStorage.getItem("schoolId"));
+      // HQ Employees belong directly to the HQ organization and do not use a Niswan schoolId.
+      if (!targetIsHq) {
+        if (["superadmin", "hqadmin", "supervisor"].includes(normalizeRole(user?.role)) && schoolId?.value) {
+          formDataObj.append("schoolId", schoolId.value);
+        } else {
+          const ownSchoolId = localStorage.getItem("schoolId");
+          if (ownSchoolId) formDataObj.append("schoolId", ownSchoolId);
+        }
       }
 
       const headers = {
@@ -248,24 +260,34 @@ const Add = () => {
         <form onSubmit={handleSubmit} autoComplete="off">
           <div className="py-2 px-4 border mt-5 mb-3 items-center justify-center rounded-lg shadow-lg bg-white">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-3">
-              {/* School */}
+              {/* Organization / Niswan */}
               <div className="md:col-span-2">
                 <label className="block mt-2 text-xs sm:text-sm font-medium text-slate-500">
-                  {tr("Select Niswan")} <span className="text-red-700">*</span>
+                  {targetIsHq ? tr("Organization") : tr("Select Niswan")}
+                  {!targetIsHq ? <span className="text-red-700">*</span> : null}
                 </label>
 
-                <Select
-                  className="mt-1 p-1 text-sm text-start"
-                  name="schoolId"
-                  options={schools.map((s) => ({
-                    value: s._id,
-                    label: `${s.code} : ${s.nameEnglish}`,
-                  }))}
-                  value={schoolId}
-                  onChange={handleSchChange}
-                  maxMenuHeight={210}
-                  isDisabled={!(user.role === "superadmin" || user.role === "hquser" || user.role === "supervisor")}
-                />
+                {targetIsHq ? (
+                  <input
+                    type="text"
+                    value={localStorage.getItem("organizationName") || "UNIS Headquarters"}
+                    readOnly
+                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md bg-slate-50 text-slate-600"
+                  />
+                ) : (
+                  <Select
+                    className="mt-1 p-1 text-sm text-start"
+                    name="schoolId"
+                    options={schools.map((s) => ({
+                      value: s._id,
+                      label: `${s.code} : ${s.nameEnglish}`,
+                    }))}
+                    value={schoolId}
+                    onChange={handleSchChange}
+                    maxMenuHeight={210}
+                    isDisabled={!(["superadmin", "hqadmin", "supervisor"].includes(normalizeRole(user?.role)))}
+                  />
+                )}
               </div>
 
               {/* Name */}
@@ -536,20 +558,7 @@ const Add = () => {
             {SHOW_EXTENDED_EMPLOYEE_FIELDS && (
               <>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-7">
-                  {/* Travelling Allowance */}
-                  <div>
-                    <label className="block mt-2 text-xs sm:text-sm font-medium text-slate-500">
-                      {tr("Travelling Allowance")}
-                    </label>
-                    <input
-                      type="number"
-                      name="travellingAllowance"
-                      onChange={handleChange}
-                      min="0"
-                      step="0.01"
-                      className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-                    />
-                  </div>
+
 
                   {/* Other Designation */}
                   <div>

@@ -15,6 +15,8 @@ import {
   showSwalAlert,
 } from '../../utils/CommonHelper'
 import axios from 'axios'
+import { useAuth } from '../../context/AuthContext'
+import { PERMISSIONS } from '../../auth/permissions'
 
 const List = () => {
   // To prevent right-click AND For FULL screen view.
@@ -26,6 +28,7 @@ const List = () => {
   const [supLoading, setSupLoading] = useState(false)
   const [filteredDistrictState, setFilteredDistrictStates] = useState(null)
   const navigate = useNavigate()
+  const { can } = useAuth()
 
   useEffect(() => {
     // Authenticate the User.
@@ -166,7 +169,7 @@ const List = () => {
           </div>
         </div>
 
-        {LinkIcon('/dashboard/add-districtState', 'Add')}
+        {can(PERMISSIONS.MASTER_DISTRICT_STATE_CREATE) ? LinkIcon("/dashboard/add-districtState", "Add") : <span />}
       </div>
 
       <div className="mt-6">

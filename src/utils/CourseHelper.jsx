@@ -12,6 +12,7 @@ import {
   FaTrashAlt,
 } from "react-icons/fa";
 import { useAuth } from "../context/AuthContext";
+import { PERMISSIONS } from '../auth/permissions'
 
 const toNumber = (value) => {
   const numberValue = Number(value);
@@ -360,7 +361,7 @@ export const CourseButtons = ({ Id, onCourseDelete }) => {
     }
   };
 
-  const { user } = useAuth();
+  const { can } = useAuth();
 
   return (
     <div className="flex space-x-3">
@@ -376,7 +377,7 @@ export const CourseButtons = ({ Id, onCourseDelete }) => {
         className={getButtonStyle("Edit")}
         title="Edit"
         aria-label="Edit"
-        disabled={user?.role === "guest"}
+        disabled={!can(PERMISSIONS.MASTER_COURSE_EDIT)}
         onClick={() => navigate(`/dashboard/courses/edit/${Id}`)}
       >
         <FaEdit title="Edit" aria-label="Edit" className="m-1" />
@@ -385,7 +386,7 @@ export const CourseButtons = ({ Id, onCourseDelete }) => {
         className={getButtonStyle("Delete")}
         title="Delete"
         aria-label="Delete"
-        disabled={user?.role === "guest"}
+        disabled={!can(PERMISSIONS.MASTER_COURSE_DELETE)}
         onClick={() => handleDelete(Id)}
       >
         <FaTrashAlt title="Delete" aria-label="Delete" className="m-1" />

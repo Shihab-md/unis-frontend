@@ -155,7 +155,6 @@ const SupervisorProfilePrint = ({ supervisor }) => {
           { label: tr("Working Experience"), value: formatWorkingExperience(supervisor?.doj, tr) },
           { label: tr("Other Designation"), value: supervisor?.otherDesignation },
           { label: tr("Hadhiya"), value: supervisor?.salary },
-          { label: tr("Travelling Allowance"), value: supervisor?.travellingAllowance ?? 0 },
           { label: tr("Activities carried out"), value: supervisor?.activitiesCarriedOut },
           { label: tr("Bank account details"), value: supervisor?.bankAccountDetails },
           { label: tr("Remarks"), value: supervisor?.remarks },

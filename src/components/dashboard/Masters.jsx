@@ -3,9 +3,11 @@ import SummaryCard from "./SummaryCard";
 import CommonHeader from "./CommonHeader";
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext'
-import { getBaseUrl, handleRightClickAndFullScreen, getSpinner, LinkIcon, showSwalAlert } from '../../utils/CommonHelper'
+import { PERMISSIONS } from '../../auth/permissions'
+import { normalizeRole } from '../../auth/roles'
+import { getBaseUrl, handleRightClickAndFullScreen, getSpinner, LinkIcon, showSwalAlert, isHqAdminSession } from '../../utils/CommonHelper'
 import {
-  FaUniversity, FaWpforms, FaClipboardList, FaCalendarAlt, FaUserCog, FaMapMarkerAlt, FaGoogleDrive, FaRedo, FaCentos, FaMedal, FaFileExcel
+  FaDatabase, FaUniversity, FaWpforms, FaClipboardList, FaCalendarAlt, FaUserCog, FaMapMarkerAlt, FaGoogleDrive, FaRedo, FaCentos, FaMedal, FaFileExcel, FaUserShield
 } from "react-icons/fa";
 import axios from 'axios'
 import { useNavigate } from "react-router-dom";
@@ -19,7 +21,9 @@ const Masters = () => {
 
   const [summary, setSummary] = useState(null)
   const navigate = useNavigate()
-  const { user } = useAuth()
+  const { user, can } = useAuth()
+  const hasHqUtilityScope = ["superadmin", "hqadmin", "hquser"].includes(normalizeRole(user?.role)) ||
+    isHqAdminSession(user?.role, user?.organizationType)
 
   useEffect(() => {
 
@@ -51,7 +55,7 @@ const Masters = () => {
       <CommonHeader userName={user?.name || ""} title="Masters" />
       <div className="content-center rounded-lg grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-7 lg:gap-14 mt-7 lg:mt-16 flex rounded-lg">
 
-        {user.role === "superadmin" || user.role === "guest" ?
+        {can(PERMISSIONS.MASTER_INSTITUTE_VIEW) ?
           <Link to="/dashboard/institutes" >
             <SummaryCard
               icon={<FaUniversity />}
@@ -61,7 +65,7 @@ const Masters = () => {
             />
           </Link> : null}
 
-        {user.role === "superadmin" || user.role === "guest" ?
+        {can(PERMISSIONS.MASTER_COURSE_VIEW) ?
           <Link to="/dashboard/courses" >
             <SummaryCard
               icon={<FaClipboardList />}
@@ -71,7 +75,7 @@ const Masters = () => {
             />
           </Link> : null}
 
-        {user.role === "superadmin" || user.role === "guest" ?
+        {can(PERMISSIONS.MASTER_ACADEMIC_YEAR_VIEW) ?
           <Link to="/dashboard/academicYears" >
             <SummaryCard
               icon={<FaCalendarAlt />}
@@ -81,7 +85,7 @@ const Masters = () => {
             />
           </Link> : null}
 
-        {user.role === "superadmin" || user.role === "guest" ?
+        {can(PERMISSIONS.MASTER_TEMPLATE_VIEW) ?
           <Link to="/dashboard/templates" >
             <SummaryCard
               icon={<FaWpforms />}
@@ -91,7 +95,7 @@ const Masters = () => {
             />
           </Link> : null}
 
-        {user.role === "superadmin" || user.role === "guest" ?
+        {can(PERMISSIONS.MASTER_DISTRICT_STATE_VIEW) ?
           <Link to="/dashboard/districtStates" >
             <SummaryCard
               icon={<FaMapMarkerAlt />}
@@ -101,7 +105,7 @@ const Masters = () => {
             />
           </Link> : null}
 
-        {user.role === "superadmin" || user.role === "hquser" || user.role === "guest" ?
+        {can(PERMISSIONS.MASTER_GRADE_VIEW) ?
           <Link to="/dashboard/grades" >
             <SummaryCard
               icon={<FaMedal />}
@@ -109,6 +113,21 @@ const Masters = () => {
               number={summary.totalGrades || 0}
               color="bg-indigo-600"
             />
+          </Link> : null}
+
+        {user.role === "superadmin" ?
+          <Link to="/dashboard/role-permissions" >
+            <SummaryCard
+              icon={<FaUserShield />}
+              text="Role Permissions"
+              number="*"
+              color="bg-slate-700"
+            />
+          </Link> : null}
+
+        {normalizeRole(user?.role) === "superadmin" ?
+          <Link to="/dashboard/database-backup">
+            <SummaryCard icon={<FaDatabase />} text="Database Backup" number="*" color="bg-teal-700" />
           </Link> : null}
 
         {user.role === "superadmin" ?
@@ -131,7 +150,7 @@ const Masters = () => {
             />
           </Link> : null}
 
-        {user.role === "superadmin" || user.role === "hquser" ?
+        {hasHqUtilityScope && can(PERMISSIONS.CERTIFICATE_BULK_IHS) ?
           <Link to="/dashboard/certificate-bulk-ihs" >
             <SummaryCard
               icon={<FaCentos />}
@@ -141,7 +160,7 @@ const Masters = () => {
             />
           </Link> : null}
 
-        {user.role === "superadmin" || user.role === "hquser" ?
+        {hasHqUtilityScope && can(PERMISSIONS.TEMP_SCHOOL_MARKSHEET_CREATE) ?
           <Link to="/dashboard/temp-school-marksheets" >
             <SummaryCard
               icon={<FaFileExcel />}

@@ -162,7 +162,6 @@ const EmployeeProfilePrint = ({ employee }) => {
           { label: tr("Working Experience"), value: formatWorkingExperience(employee?.doj, tr) },
           { label: tr("Other Designation"), value: employee?.otherDesignation },
           { label: tr("Hadhiya"), value: employee?.salary },
-          { label: tr("Travelling Allowance"), value: employee?.travellingAllowance ?? 0 },
           { label: tr("Activities carried out"), value: employee?.activitiesCarriedOut },
           { label: tr("Bank account details"), value: employee?.bankAccountDetails },
         ]}

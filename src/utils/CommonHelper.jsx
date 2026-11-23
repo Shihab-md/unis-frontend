@@ -7,93 +7,44 @@ import {
 import Swal from 'sweetalert2';
 import { translateUiPhrase } from '../i18n/uiPhrases';
 import { getApiBaseUrl } from './frontendEnvironment';
+import { SCREEN_PERMISSION_MAP, hasStoredPermission } from '../auth/permissions';
 
-const authorizedScreensFor_SA_HQ_Role = [
-  "supervisorsList", "supervisorAdd", "supervisorEdit", "supervisorView",
-  "schoolsList", "schoolAdd", "schoolEdit", "schoolView",
-  "employeesList", "employeeAdd", "employeeEdit", "employeeView",
-  "studentsList", "studentAdd", "studentEdit", "studentPromote", "studentView",
-  "institutesList", "instituteAdd", "instituteEdit", "instituteView",
-  "coursesList", "courseAdd", "courseEdit", "courseView",
-  "acYearsList", "acYearAdd", "acYearEdit", "acYearView",
-  "certificatesList", "certificateAdd", "certificateEdit", "certificateView",
-  "templatesList", "templateAdd", "templateEdit", "templateView",
-  "settings", "profile", "marksheetList",
-  "districtStateAdd", "districtStateEdit", "districtStateView", "districtStateList",
-  "gradesList", "gradeAdd", "gradeEdit", "gradeView"
-];
+const HQ_ADMIN_SCOPED_SCREENS = new Set(["certificateBulkIhs", "tempSchoolMarksheet"]);
 
-const authorizedScreensFor_GUEST_Role = [
-  "supervisorsList", "supervisorView",
-  "schoolsList", "schoolView",
-  "employeesList", "employeeView",
-  "studentsList", "studentView",
-  "institutesList", "instituteView",
-  "coursesList", "courseView",
-  "acYearsList", "acYearView",
-  "certificatesList", "certificateView",
-  "templatesList", "templateView",
-  "districtStateList", "districtStateView",
-  "gradesList", "gradeView"
-];
-
-const authorizedScreensFor_SUP_Role = [
-  "supervisorsList",
-  "schoolsList", "schoolView",
-  "employeesList", "employeeView", "employeeAdd", "employeeEdit",
-  "studentsList", "studentView",
-  "inspectionReportList", "inspectionReportAdd", "inspectionReportView",
-  "settings", "profile"
-];
-
-const authorizedScreensFor_ADMIN_Role = [
-  "schoolsList", "schoolView",
-  "employeesList", "employeeAdd", "employeeEdit", "employeeView",
-  "studentsList", "studentAdd", "studentEdit", "studentPromote", "studentView", "marksheetList",
-  "settings", "profile"
-];
+export const isHqAdminSession = (
+  role = localStorage.getItem("role"),
+  organizationType = localStorage.getItem("organizationType")
+) =>
+  String(role || "").trim().toLowerCase() === "admin" &&
+  String(organizationType || "").trim().toUpperCase() === "HQ";
 
 export function checkAuth(screenName) {
+  const role = localStorage.getItem("role");
+  const permission = SCREEN_PERMISSION_MAP[screenName];
 
-  const role = localStorage.getItem("role")
+  // Every current checkAuth caller is mapped to the central permission catalog.
+  // Fail closed when the session has no permission snapshot instead of falling
+  // back to duplicated role lists. A normal login/verify refresh persists the
+  // current server-resolved permissions.
+  if (!permission) return "NO";
 
-  if (role === "superadmin" || role === "hquser") {
-    return "OK";
+  const allowed = hasStoredPermission(permission);
+  if (allowed !== true) return "NO";
 
-  } else if (role === "supervisor" && authorizedScreensFor_SUP_Role.includes(screenName)) {
-    return "OK";
-
-  } else if (role === "admin" && authorizedScreensFor_ADMIN_Role.includes(screenName)) {
-    if (screenName === "studentAdd") {
-      const loggedInSchoolName = String(localStorage.getItem("schoolName") || "").trim();
-
-      if (loggedInSchoolName.startsWith("UN-00-00001")) {
-        return "OK";
-      }
-
-      return "NO";
-    }
-
-    return "OK";
-
-  } else if (role === "employee") {
-
-  } else if (role === "teacher") {
-
-  } else if (role === "student") {
-
-  } else if (role === "parent") {
-
-  } else if (role === "guest" && authorizedScreensFor_GUEST_Role.includes(screenName)) {
-    return "OK";
+  // Phase 4 introduced the explicit HQ Admin role. The legacy `admin` + HQ
+  // compatibility account is intentionally limited to the two approved HQ utilities
+  // below and must not regain global Student-create access through UI fallback logic.
+  if (screenName === "studentAdd" && isHqAdminSession(role)) {
+    return "NO";
   }
 
-  return "NO";
+  // Legacy HQ Admin shares the normal Admin role, so these two HQ utilities still need
+  // the independent HQ-session scope in addition to their permissions.
+  if (role === "admin" && HQ_ADMIN_SCOPED_SCREENS.has(screenName)) {
+    return isHqAdminSession(role) ? "OK" : "NO";
+  }
 
-  // Supervisors
-  //if (authorizedScreensFor_SA_HQ_Roles.includes(screenName)) {
-  //  return ['superadmin', 'hquser'];
-  //}
+  return "OK";
 };
 
 export const getYearLabel = (value) => {
@@ -192,7 +143,7 @@ export const getBaseUrl = async () => {
 
 export function handleRightClickAndFullScreen() {
   const isDisableRightClick = true;
-  const isOpenFullScreen = true;
+  const isOpenFullScreen = false;
 
   // -------- Right click disable (mostly desktop feature; keep only if you want) --------
   const handleRightClick = (e) => e.preventDefault();
@@ -471,6 +422,7 @@ export function getButtonStyle(buttonType) {
 }
 
 export function removeLocalStorage() {
+  Object.keys(localStorage).filter(key => key.startsWith('popupFilter:')).forEach(key => localStorage.removeItem(key));
 
   localStorage.removeItem("schoolId");
   localStorage.removeItem("schoolName");

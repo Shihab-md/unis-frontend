@@ -21,7 +21,10 @@ import {
 import { translateDemoTutorialMessage } from "./translateMessage";
 
 const ROLE_VALUES = [
+  "hqadmin",
+  "accountant",
   "hquser",
+  "hqstaff",
   "supervisor",
   "admin",
   "employee",
@@ -95,7 +98,10 @@ const List = () => {
 
   const roleLabels = useMemo(
     () => ({
+      hqadmin: t("roles.hqadmin", "HQ Admin"),
+      accountant: t("roles.accountant", "Accountant"),
       hquser: t("roles.hquser", "HQ User"),
+      hqstaff: t("roles.hqstaff", "HQ Staff"),
       supervisor: t("roles.supervisor", "Supervisor"),
       admin: t("roles.admin", "Admin"),
       employee: t("roles.employee", "Employee"),

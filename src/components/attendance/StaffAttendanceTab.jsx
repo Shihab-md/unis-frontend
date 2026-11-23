@@ -1,6 +1,8 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { attendanceGet, attendancePost } from "../../api/attendanceApi";
 import { useLanguage } from "../../i18n/LanguageContext";
+import { useAuth } from "../../context/AuthContext";
+import { PERMISSIONS } from "../../auth/permissions";
 import { showConfirmationSwalAlert, showSwalAlert } from "../../utils/CommonHelper";
 import {
   AttendancePanel,
@@ -29,9 +31,14 @@ const StaffAttendanceTab = ({
   setDateKey,
 }) => {
   const { tr } = useLanguage();
+  const { can } = useAuth();
   const access = meta.access;
-  const canManage =
+  const hasManageScope =
     access.isSuperAdmin || access.canManageHqStaff || access.canManageOwnNiswanStaff;
+  const canManage = hasManageScope && can(PERMISSIONS.STAFF_ATTENDANCE_VIEW);
+  const canEnter = canManage && can(PERMISSIONS.STAFF_ATTENDANCE_ENTER);
+  const canFinalize = canEnter && can(PERMISSIONS.STAFF_ATTENDANCE_FINALIZE);
+  const canViewOwn = access.canViewOwnStaffAttendance && can(PERMISSIONS.STAFF_ATTENDANCE_SELF_VIEW);
 
   const [rows, setRows] = useState([]);
   const [sheetFinalized, setSheetFinalized] = useState(false);
@@ -50,7 +57,7 @@ const StaffAttendanceTab = ({
 
   const effectiveSchoolId =
     effectiveScopeType === "HQ"
-      ? meta.hqSchool?._id || ""
+      ? ""
       : access.isSuperAdmin
         ? selectedSchoolId
         : access.actorSchoolId || "";
@@ -63,7 +70,7 @@ const StaffAttendanceTab = ({
   }, [dateKey, effectiveScopeType, effectiveSchoolId, hqStaffCategory, canManage]);
 
   useEffect(() => {
-    if (canManage || !access.canViewOwnStaffAttendance) return;
+    if (canManage || !canViewOwn) return;
     let alive = true;
     const loadMine = async () => {
       setLoading(true);
@@ -80,7 +87,7 @@ const StaffAttendanceTab = ({
     return () => {
       alive = false;
     };
-  }, [access.canViewOwnStaffAttendance, canManage, monthKey]);
+  }, [canViewOwn, canManage, monthKey]);
 
   const canLoad =
     Boolean(dateKey) &&
@@ -120,7 +127,7 @@ const StaffAttendanceTab = ({
   const isSheetFinalized = sheetFinalized || rows.some((row) => Boolean(row.attendance?.isFinalized));
 
   const updateRow = (index, field, value) => {
-    if (isSheetFinalized) return;
+    if (!canEnter || isSheetFinalized) return;
     setRows((current) =>
       current.map((row, rowIndex) =>
         rowIndex === index ? { ...row, [field]: value } : row
@@ -129,7 +136,7 @@ const StaffAttendanceTab = ({
   };
 
   const markAllPresent = () => {
-    if (isSheetFinalized) return;
+    if (!canEnter || isSheetFinalized) return;
     setRows((current) =>
       current.map((row) =>
         row.approvedLeave ? row : { ...row, status: "Present" }
@@ -139,6 +146,10 @@ const StaffAttendanceTab = ({
 
   const saveAttendance = async (finalize) => {
     if (!rows.length) return;
+    if (!canEnter || (finalize && !canFinalize)) {
+      showSwalAlert("Error!", "You do not have permission for this attendance action.", "error");
+      return;
+    }
     if (isSheetFinalized) {
       showSwalAlert("Info!", "Finalized staff attendance is locked and cannot be edited.", "info");
       return;
@@ -276,7 +287,7 @@ const StaffAttendanceTab = ({
   const renderStatusSelect = (row, index) => (
     <SelectInput
       value={row.status}
-      disabled={isSheetFinalized || Boolean(row.approvedLeave)}
+      disabled={!canEnter || isSheetFinalized || Boolean(row.approvedLeave)}
       onChange={(e) => updateRow(index, "status", e.target.value)}
       className="min-w-[115px]"
     >
@@ -311,8 +322,7 @@ const StaffAttendanceTab = ({
               <SelectInput value={selectedSchoolId} onChange={(e) => setSelectedSchoolId(e.target.value)}>
                 <option value="">{tr("Select Niswan")}</option>
                 {meta.schools
-                  //.filter((school) => school.code !== meta.hqSchool?.code)
-                  .map((school) => (
+                                    .map((school) => (
                     <option key={school._id} value={school._id}>
                       {school.code} : {school.nameEnglish}
                     </option>
@@ -326,7 +336,7 @@ const StaffAttendanceTab = ({
               <FieldLabel>{tr("Attendance Scope")}</FieldLabel>
               <div className="rounded-md border border-slate-200 bg-slate-50 px-3 py-2 text-xs text-slate-700 md:text-sm">
                 {effectiveScopeType === "HQ"
-                  ? `${meta.hqSchool?.code || "HQ"} : ${meta.hqSchool?.nameEnglish || tr("HQ")}`
+                  ? `${meta.hqOrganization?.code || "HQ"} : ${meta.hqOrganization?.nameEnglish || tr("HQ")}`
                   : tr("Your Niswan")}
               </div>
             </div>
@@ -352,7 +362,7 @@ const StaffAttendanceTab = ({
           <PrimaryButton onClick={loadRoster} disabled={!canLoad || loading}>
             {loading ? tr("Loading...") : tr("Load Staff")}
           </PrimaryButton>
-          <SecondaryButton onClick={markAllPresent} disabled={!rows.length || isSheetFinalized}>
+          <SecondaryButton onClick={markAllPresent} disabled={!canEnter || !rows.length || isSheetFinalized}>
             {tr("Mark All Present")}
           </SecondaryButton>
         </div>
@@ -369,6 +379,7 @@ const StaffAttendanceTab = ({
         </div>
       ) : null}
 
+      {rows.some((row) => row.requiresReview) && <p role="alert" className="rounded border border-amber-300 bg-amber-50 p-3 text-sm text-amber-900">{tr("Attendance needs review after leave cancellation. Re-mark the affected staff before generating payroll.")}</p>}
       <AttendancePanel title="Daily Staff Attendance Sheet">
         {loading ? <LoadingBlock /> : null}
         {!loading && loaded && !rows.length ? <EmptyBlock text="No active staff found in this Attendance scope" /> : null}
@@ -407,13 +418,13 @@ const StaffAttendanceTab = ({
                       <td className="px-2 py-2">{tr(row.role || "-")}</td>
                       <td className="px-2 py-2">{renderStatusSelect(row, index)}</td>
                       <td className="px-2 py-2">
-                        <Input type="time" value={row.inTime || ""} disabled={isSheetFinalized} onChange={(e) => updateRow(index, "inTime", e.target.value)} />
+                        <Input type="time" value={row.inTime || ""} disabled={!canEnter || isSheetFinalized} onChange={(e) => updateRow(index, "inTime", e.target.value)} />
                       </td>
                       <td className="px-2 py-2">
-                        <Input type="time" value={row.outTime || ""} disabled={isSheetFinalized} onChange={(e) => updateRow(index, "outTime", e.target.value)} />
+                        <Input type="time" value={row.outTime || ""} disabled={!canEnter || isSheetFinalized} onChange={(e) => updateRow(index, "outTime", e.target.value)} />
                       </td>
                       <td className="px-2 py-2">
-                        <Input value={row.remarks || ""} disabled={isSheetFinalized} onChange={(e) => updateRow(index, "remarks", e.target.value)} maxLength={500} />
+                        <Input value={row.remarks || ""} disabled={!canEnter || isSheetFinalized} onChange={(e) => updateRow(index, "remarks", e.target.value)} maxLength={500} />
                       </td>
                       <td className="px-2 py-2">
                         {row.attendance ? <StatusBadge status={row.attendance.isFinalized ? "Finalized" : "Draft"} /> : "-"}
@@ -443,9 +454,9 @@ const StaffAttendanceTab = ({
                   ) : null}
                   <div className="grid grid-cols-2 gap-2">
                     <div className="col-span-2">{renderStatusSelect(row, index)}</div>
-                    <Input type="time" value={row.inTime || ""} disabled={isSheetFinalized} onChange={(e) => updateRow(index, "inTime", e.target.value)} />
-                    <Input type="time" value={row.outTime || ""} disabled={isSheetFinalized} onChange={(e) => updateRow(index, "outTime", e.target.value)} />
-                    <Input className="col-span-2" placeholder={tr("Remarks")} value={row.remarks || ""} disabled={isSheetFinalized} onChange={(e) => updateRow(index, "remarks", e.target.value)} />
+                    <Input type="time" value={row.inTime || ""} disabled={!canEnter || isSheetFinalized} onChange={(e) => updateRow(index, "inTime", e.target.value)} />
+                    <Input type="time" value={row.outTime || ""} disabled={!canEnter || isSheetFinalized} onChange={(e) => updateRow(index, "outTime", e.target.value)} />
+                    <Input className="col-span-2" placeholder={tr("Remarks")} value={row.remarks || ""} disabled={!canEnter || isSheetFinalized} onChange={(e) => updateRow(index, "remarks", e.target.value)} />
                   </div>
                 </div>
               ))}
@@ -455,14 +466,20 @@ const StaffAttendanceTab = ({
               <div className="mt-4 rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm font-semibold text-emerald-800">
                 {tr("Finalized attendance is locked and cannot be edited.")}
               </div>
-            ) : (
+            ) : canEnter ? (
               <div className="mt-4 flex flex-wrap justify-end gap-2">
                 <SecondaryButton onClick={() => saveAttendance(false)} disabled={saving}>
                   {saving ? tr("Saving...") : tr("Save Draft")}
                 </SecondaryButton>
-                <PrimaryButton onClick={() => saveAttendance(true)} disabled={saving}>
-                  {saving ? tr("Saving...") : tr("Finalize")}
-                </PrimaryButton>
+                {canFinalize ? (
+                  <PrimaryButton onClick={() => saveAttendance(true)} disabled={saving}>
+                    {saving ? tr("Saving...") : tr("Finalize")}
+                  </PrimaryButton>
+                ) : null}
+              </div>
+            ) : (
+              <div className="mt-4 rounded-lg border border-blue-200 bg-blue-50 px-4 py-3 text-xs font-semibold text-blue-800">
+                {tr("View-only access. Attendance changes are disabled.")}
               </div>
             )}
           </>

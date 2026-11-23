@@ -15,6 +15,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import { getBusinessTodayDate } from "../../utils/dateRules";
 import { AutoText, useLanguage } from "../../i18n/LanguageContext";
 import { formatAge, formatWorkingExperience } from "../../utils/employeeProfileUtils";
+import { isHqEmployeeRole } from "../../auth/roles";
 
 const SHOW_EXTENDED_EMPLOYEE_FIELDS = false;
 
@@ -45,7 +46,6 @@ const Edit = () => {
     designation: "",
     fatherGuardianName: "",
     salary: "",
-    travellingAllowance: "",
     otherDesignation: "",
     activitiesCarriedOut: "",
     bankAccountDetails: "",
@@ -59,42 +59,23 @@ const Edit = () => {
 
   const roleOptions = [
     { value: "superadmin", label: t("roles.superadmin", "SuperAdmin") },
-    { value: "hquser", label: t("roles.hquser", "HQUser") },
+    { value: "hqadmin", label: t("roles.hqadmin", "HQ Admin") },
+    { value: "accountant", label: t("roles.accountant", "Accountant") },
+    { value: "hquser", label: t("roles.hquser", "HQ User") },
+    { value: "hqstaff", label: t("roles.hqstaff", "HQ Staff") },
     { value: "admin", label: t("roles.admin", "Admin") },
+    { value: "employee", label: t("roles.employee", "Employee") },
     { value: "teacher", label: t("roles.teacher", "Teacher") },
     { value: "usthadh", label: t("roles.usthadh", "Usthadh") },
-    { value: "warden", label: t("roles.warden", "Warden") }
+    { value: "warden", label: t("roles.warden", "Warden") },
+    { value: "staff", label: t("roles.staff", "Staff") }
   ];
 
-  const getAllowedRoleValues = (loginRole) => {
-    const r = String(loginRole || "").toLowerCase();
-
-    if (r === "superadmin") {
-      return roleOptions.map((o) => o.value); // all
-    }
-
-    if (r === "hquser") {
-      return roleOptions
-        .filter((o) => o.value !== "superadmin") // all except superadmin
-        .map((o) => o.value);
-    }
-
-    if (r === "supervisor") {
-      return ["admin"];
-    }
-
-    if (r === "admin") {
-      return ["usthadh", "warden", "staff"];
-    }
-
-    return []; // safe default
-  };
-
-  const allowed = new Set(getAllowedRoleValues(user?.role));
-
-  const sortedRoleOptions = roleOptions
-    .filter((o) => allowed.has(o.value))
-    .sort((a, b) => a.label.localeCompare(b.label, undefined, { sensitivity: "base" }));
+  // Role changes are a SuperAdmin-only operation. Other editors still need the
+  // complete option list so the employee's current role renders correctly in the disabled control.
+  const sortedRoleOptions = [...roleOptions].sort((a, b) =>
+    a.label.localeCompare(b.label, undefined, { sensitivity: "base" })
+  );
 
   useEffect(() => {
 
@@ -133,7 +114,8 @@ const Edit = () => {
             name: employee.userId.name,
             email: employee.userId.email,
             role: employee.userId.role,
-            schoolId: employee.schoolId._id,
+            organizationType: employee.organizationType || (isHqEmployeeRole(employee.userId.role) ? "HQ" : "NISWAN"),
+            schoolId: employee.schoolId?._id || "",
             employeeId: employee.employeeId,
             contactNumber: employee.contactNumber,
             address: employee.address,
@@ -143,7 +125,6 @@ const Edit = () => {
             gender: employee.gender,
             maritalStatus: employee.maritalStatus,
             salary: employee.salary,
-            travellingAllowance: employee.travellingAllowance ?? 0,
             otherDesignation: employee.otherDesignation || "",
             activitiesCarriedOut: employee.activitiesCarriedOut || "",
             bankAccountDetails: employee.bankAccountDetails || "",
@@ -226,6 +207,8 @@ const Edit = () => {
     }
   };
 
+  const employeeIsHq = String(employee.organizationType || "").toUpperCase() === "HQ";
+
   if (processing) {
     return getPrcessing();
   }
@@ -245,26 +228,36 @@ const Edit = () => {
             <div className="py-2 px-4 border mt-5 mb-3 items-center justify-center rounded-lg shadow-lg bg-white">
               <div className="grid mt-3 grid-cols-1 md:grid-cols-2 gap-5 mb-3">
 
-                {/* School */}
+                {/* Organization / Niswan */}
                 <div className='md:col-span-2'>
                   <label className="block mt-2 text-xs sm:text-sm font-medium text-slate-500">
-                    {tr("Select Niswan")} <span className="text-red-700">*</span>
+                    {employeeIsHq ? tr("Organization") : tr("Select Niswan")}
+                    {!employeeIsHq ? <span className="text-red-700">*</span> : null}
                   </label>
-                  <select
-                    name="schoolId"
-                    value={employee.schoolId}
-                    onChange={handleChange}
-                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-                    required
-                    disabled={true}
-                  >
-                    <option value=""></option>
-                    {schools.map((school) => (
-                      <option key={school._id} value={school._id}>
-                        {school.code + " : " + school.nameEnglish}
-                      </option>
-                    ))}
-                  </select>
+                  {employeeIsHq ? (
+                    <input
+                      type="text"
+                      value={localStorage.getItem("organizationName") || "UNIS Headquarters"}
+                      readOnly
+                      className="mt-1 p-2 block w-full border border-gray-300 rounded-md bg-slate-50 text-slate-600"
+                    />
+                  ) : (
+                    <select
+                      name="schoolId"
+                      value={employee.schoolId || ""}
+                      onChange={handleChange}
+                      className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+                      required
+                      disabled={true}
+                    >
+                      <option value=""></option>
+                      {schools.map((school) => (
+                        <option key={school._id} value={school._id}>
+                          {school.code + " : " + school.nameEnglish}
+                        </option>
+                      ))}
+                    </select>
+                  )}
                 </div>
 
                 {/* Name */}
@@ -592,21 +585,7 @@ const Edit = () => {
               {SHOW_EXTENDED_EMPLOYEE_FIELDS && (
                 <>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-7">
-                    {/* Travelling Allowance */}
-                    <div>
-                      <label className="block mt-2 text-xs sm:text-sm font-medium text-slate-500">
-                        {tr("Travelling Allowance")}
-                      </label>
-                      <input
-                        type="number"
-                        name="travellingAllowance"
-                        value={employee.travellingAllowance ?? ""}
-                        onChange={handleChange}
-                        min="0"
-                        step="0.01"
-                        className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-                      />
-                    </div>
+
 
                     {/* Other Designation */}
                     <div>

@@ -1,4 +1,5 @@
-import React, { useEffect, useMemo, useState } from "react";
+/* eslint-disable react/prop-types */
+import { useEffect, useMemo, useState, useRef, useId } from "react";
 import { createPortal } from "react-dom";
 import { useLanguage } from "../../i18n/LanguageContext.jsx";
 
@@ -15,11 +16,13 @@ const getDefaultDraft = () => ({
   months: 12,
 });
 
-export default function ReportsFiltersDrawer({ meta, value, onApply, loading }) {
+export default function ReportsFiltersDrawer({ meta, value, onApply, loading, showFeesFilter = true, showMonths = true, onReset }) {
   const { tr, direction, fontFamily } = useLanguage();
   const [open, setOpen] = useState(false);
   const [draft, setDraft] = useState({ ...getDefaultDraft(), ...(value || {}) });
   const [mounted, setMounted] = useState(false);
+  const dialogRef = useRef(null), returnFocus = useRef(null);
+  const titleId = useId();
 
   const schools = useMemo(() => (Array.isArray(meta?.schools) ? meta.schools : []), [meta]);
   const courses = useMemo(() => (Array.isArray(meta?.courses) ? meta.courses : []), [meta]);
@@ -53,7 +56,15 @@ export default function ReportsFiltersDrawer({ meta, value, onApply, loading }) 
     const originalOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
 
+    dialogRef.current?.querySelector("button, input, select")?.focus();
     const handleEsc = (e) => {
+      if (e.key === "Tab") {
+        const controls = [...(dialogRef.current?.querySelectorAll('button:not(:disabled), input:not(:disabled), select:not(:disabled), [tabindex="0"]') || [])];
+        const first = controls[0], last = controls[controls.length - 1];
+        if (!first) { e.preventDefault(); return; }
+        if (e.shiftKey && (document.activeElement === first || !dialogRef.current.contains(document.activeElement))) { e.preventDefault(); last.focus(); }
+        else if (!e.shiftKey && (document.activeElement === last || !dialogRef.current.contains(document.activeElement))) { e.preventDefault(); first.focus(); }
+      }
       if (e.key === "Escape") {
         setOpen(false);
       }
@@ -64,10 +75,12 @@ export default function ReportsFiltersDrawer({ meta, value, onApply, loading }) 
     return () => {
       document.body.style.overflow = originalOverflow;
       document.removeEventListener("keydown", handleEsc);
+      if (returnFocus.current?.isConnected) returnFocus.current.focus();
     };
   }, [open]);
 
   const openDrawer = () => {
+    returnFocus.current = document.activeElement;
     setDraft({ ...getDefaultDraft(), ...(value || {}) });
     setOpen(true);
   };
@@ -84,7 +97,8 @@ export default function ReportsFiltersDrawer({ meta, value, onApply, loading }) 
   const reset = () => {
     const cleared = getDefaultDraft();
     setDraft(cleared);
-    onApply?.(cleared);
+    if (onReset) onReset();
+    else onApply?.(cleared);
     setOpen(false);
   };
 
@@ -98,6 +112,8 @@ export default function ReportsFiltersDrawer({ meta, value, onApply, loading }) 
             />
 
             <div
+              ref={dialogRef}
+              role="dialog" aria-modal="true" aria-labelledby={titleId}
               className="absolute right-0 top-0 h-full w-full max-w-md bg-white shadow-2xl overflow-auto"
               dir={direction}
               style={{ fontFamily }}
@@ -106,14 +122,15 @@ export default function ReportsFiltersDrawer({ meta, value, onApply, loading }) 
               <div className="sticky top-0 z-10 bg-gradient-to-r from-sky-700 via-cyan-700 to-teal-700 text-white px-4 py-4 shadow">
                 <div className="flex items-start justify-between gap-3">
                   <div>
-                    <h3 className="text-lg font-semibold">{tr("Report Filters")}</h3>
+                    <h3 id={titleId} className="text-lg font-semibold">{tr("Report Filters")}</h3>
                     <p className="text-sm text-white/80">
-                      {tr("Narrow by Niswan, course, academic year, studying year, status, fees and hostel.")}
+                      {tr(showFeesFilter ? "Narrow by Niswan, course, academic year, studying year, status, fees and hostel." : "Narrow by Niswan, course, academic year, studying year, status and hostel.")}
                     </p>
                   </div>
                   <button
                     type="button"
                     className="px-2 py-1 rounded border border-white/30 hover:bg-white/10"
+                    aria-label={tr("Close")}
                     onClick={closeDrawer}
                   >
                     ✕
@@ -222,20 +239,22 @@ export default function ReportsFiltersDrawer({ meta, value, onApply, loading }) 
                     </select>
                   </Field>
 
-                  <Field label={tr("Fees Status")}>
-                    <select
-                      className="w-full border rounded-lg p-2.5"
-                      value={draft.feesStatus || ""}
-                      onChange={(e) => setDraft((d) => ({ ...d, feesStatus: e.target.value }))}
-                    >
-                      <option value="">{tr("All")}</option>
-                      {feeStatuses.map((s) => (
-                        <option key={s} value={s}>
-                          {tr(s)}
-                        </option>
-                      ))}
-                    </select>
-                  </Field>
+                  {showFeesFilter ? (
+                    <Field label={tr("Fees Status")}>
+                      <select
+                        className="w-full border rounded-lg p-2.5"
+                        value={draft.feesStatus || ""}
+                        onChange={(e) => setDraft((d) => ({ ...d, feesStatus: e.target.value }))}
+                      >
+                        <option value="">{tr("All")}</option>
+                        {feeStatuses.map((s) => (
+                          <option key={s} value={s}>
+                            {tr(s)}
+                          </option>
+                        ))}
+                      </select>
+                    </Field>
+                  ) : null}
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -254,7 +273,7 @@ export default function ReportsFiltersDrawer({ meta, value, onApply, loading }) 
                     </select>
                   </Field>
 
-                  <Field label={tr("Months (Trends)")}>
+                  {showMonths && <Field label={tr("Months (Trends)")}>
                     <select
                       className="w-full border rounded-lg p-2.5"
                       value={draft.months || 12}
@@ -265,11 +284,11 @@ export default function ReportsFiltersDrawer({ meta, value, onApply, loading }) 
                       <option value={18}>18</option>
                       <option value={24}>24</option>
                     </select>
-                  </Field>
+                  </Field>}
                 </div>
 
                 <div className="rounded-xl border border-slate-200 bg-slate-50 p-3 text-xs text-slate-600">
-                  {tr("Filters affect KPI cards, trends and Niswan report together.")}
+                  {tr("Filters apply only to this report.")}
                 </div>
               </div>
 
@@ -313,9 +332,9 @@ export default function ReportsFiltersDrawer({ meta, value, onApply, loading }) 
 
 function Field({ label, children }) {
   return (
-    <div>
-      <label className="block text-sm font-medium text-slate-600 mb-1.5">{label}</label>
+    <label className="block">
+      <span className="block text-sm font-medium text-slate-600 mb-1.5">{label}</span>
       {children}
-    </div>
+    </label>
   );
 }

@@ -11,6 +11,7 @@ import {
 import { useKeyboardAvoidance } from "../utils/useKeyboardAvoidance";
 import Swal from "sweetalert2";
 import EnvironmentBadge from "../components/common/EnvironmentBadge";
+import { persistAuthSession } from "../utils/sessionAuth";
 
 const Login = () => {
   const [loginId, setLoginId] = useState(""); // ✅ employeeId or email
@@ -75,35 +76,8 @@ const Login = () => {
         return;
       }
 
-      // ✅ store token + user info
-      localStorage.setItem("token", response.data.token);
-      localStorage.setItem("role", response.data.user.role);
-      localStorage.setItem("userId", response.data.user._id);
-      if (response.data.user.preferredLanguage) {
-        localStorage.setItem("preferredLanguage", String(response.data.user.preferredLanguage).toLowerCase());
-      }
-
-      if (response.data.user.schoolId) {
-        localStorage.setItem("schoolId", response.data.user.schoolId);
-      } else {
-        localStorage.removeItem("schoolId");
-      }
-
-      if (response.data.user.schoolName) {
-        localStorage.setItem("schoolName", response.data.user.schoolName);
-      } else {
-        localStorage.removeItem("schoolName");
-      }
-
-      // ✅ store schoolIds only for supervisor
-      if (response.data.user?.role === "supervisor") {
-        localStorage.setItem("schoolIds", JSON.stringify(response.data.user.schoolIds || []));
-        // optional: store school list for dropdowns
-        localStorage.setItem("schools", JSON.stringify(response.data.user.schools || []));
-      } else {
-        localStorage.removeItem("schoolIds");
-        localStorage.removeItem("schools");
-      }
+      // Persist the complete authenticated session, including server-resolved permissions.
+      persistAuthSession({ token: response.data.token, user: response.data.user });
 
       login(response.data.user);
       setProcessing(false);

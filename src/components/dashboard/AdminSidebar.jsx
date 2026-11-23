@@ -21,7 +21,7 @@ const AdminSidebar = () => {
     { to: "/dashboard/employees", label: "Employee", icon: <FaUsers /> },
     { to: "/dashboard/departments", label: "Department", icon: <FaBuilding /> },
     { to: "/dashboard/salary/add", label: "Salary", icon: <FaMoneyBillWave /> },
-    { to: "/dashboard/attendance", label: "Attendance", icon: <FaRegCalendarAlt /> },
+    { to: "/dashboard/attendance", label: "Attendance & Services", icon: <FaRegCalendarAlt /> },
     { to: "/dashboard/setting", label: "Settings", icon: <FaCogs /> },
   ];
 

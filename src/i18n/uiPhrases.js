@@ -1,3 +1,7 @@
+import { STUDENT_SCHOOL_PHRASES } from "./studentSchoolTranslations.js";
+import { EXAM_QUESTION_PHRASES } from "./examQuestionTranslations.js";
+import { SERVICES_PHRASES } from "./attendanceServicesTranslations.js";
+import { TA_PHRASES } from "./travelAllowanceTranslations.js";
 const PHRASES = {
   ta: {
     "Add New": "புதியதைச் சேர்", "Back": "பின்செல்", "Import Data": "தரவை இறக்குமதி செய்", "Importing, please wait": "இறக்குமதி நடைபெறுகிறது, காத்திருக்கவும்", "Filter": "தேர்வு செய்க", "Mark Fees as Paid": "கட்டணம் செலுத்தியதாக குறிக்கவும்", "Remove Students": "மாணவர்களை நீக்கு", "Promote / Complete Students": "மாணவர்களை உயர்த்த / முடிக்க", "Inspection Report": "ஆய்வு அறிக்கை", "Search": "தேடல்", "View Details": "விவரங்களைப் பார்க்க", "Edit": "திருத்து", "Delete": "நீக்கு", "Transfer": "மாற்று", "Print": "அச்சிடு", "Download": "பதிவிறக்கு", "Upload": "பதிவேற்று", "Save": "சேமி", "Submit": "சமர்ப்பி", "Cancel": "ரத்து செய்", "Close": "மூடு", "Notifications": "அறிவிப்புகள்", "Help Desk": "உதவி மையம்", "Profile": "சுயவிவரம்", "Logout": "வெளியேறு", "Go to Top": "மேலே செல்", "Action": "செயல்", "Yes": "ஆம்", "No": "இல்லை", "Reset": "மீட்டமை", "Add": "சேர்", "Import": "இறக்குமதி", "Promote": "உயர்த்து",
@@ -3688,7 +3692,7 @@ export const translateUiPhrase = (value, language = getCurrentUiLanguage(), para
     return output;
   };
 
-  if (!text || normalizeLanguage(language) === "en") return applyParams(text);
+  if (!text || normalizeLanguage(language) === "en") return applyParams(STUDENT_SCHOOL_PHRASES[text]?.en || text);
 
   const lang = normalizeLanguage(language);
   const exact = PHRASES[lang]?.[text];
@@ -3696,7 +3700,10 @@ export const translateUiPhrase = (value, language = getCurrentUiLanguage(), para
 
   const roleAliases = {
     superadmin: "SuperAdmin",
+    hqadmin: "HQ Admin",
+    accountant: "Accountant",
     hquser: "HQUser",
+    hqstaff: "HQ Staff",
     supervisor: "Supervisor",
     admin: "Admin",
     employee: "Employee",
@@ -3838,3 +3845,30 @@ const DEMO_TUTORIAL_UX_TRANSLATIONS = {
 Object.entries(DEMO_TUTORIAL_UX_TRANSLATIONS).forEach(([language, phrases]) => {
   if (PHRASES[language]) Object.assign(PHRASES[language], phrases);
 });
+
+// TA workflow phrases share the existing application language switch.
+for (const [key, values] of Object.entries(TA_PHRASES)) {
+  for (const lang of ["ta", "ur", "ar", "ml", "kn", "te"]) {
+    PHRASES[lang] ||= {};
+    PHRASES[lang][key] = values[lang];
+    if (key.startsWith("TA_")) PHRASES[lang][values.en] = values[lang];
+  }
+}
+
+// Attendance & Services and leave workflow share the existing language switch.
+for (const [key, values] of Object.entries(SERVICES_PHRASES)) {
+  for (const lang of ["ta", "ur", "ar", "ml", "kn", "te"]) {
+    PHRASES[lang][key] = values[lang];
+    PHRASES[lang][values.en] = values[lang];
+  }
+}
+
+// Question-paper form notices use the application language switch.
+for (const [key, values] of Object.entries(EXAM_QUESTION_PHRASES)) {
+  for (const language of ["ta", "ur", "ar", "ml", "kn", "te"]) PHRASES[language][key] = values[language];
+}
+
+for (const [key, values] of Object.entries(STUDENT_SCHOOL_PHRASES)) for (const language of ["ta", "ur", "ar", "ml", "kn", "te"]) {
+  PHRASES[language][key] = values[language];
+  if (key.startsWith("SC_")) PHRASES[language][values.en] = values[language];
+}

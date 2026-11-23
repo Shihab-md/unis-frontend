@@ -31,7 +31,7 @@ const DuplicatePrintCertificate = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (checkAuth("certificateEdit") === "NO") {
+        if (checkAuth("certificateDuplicatePrint") === "NO") {
             showSwalAlert("Error!", "User Authorization Failed!", "error");
             navigate("/dashboard/certificates");
             return;

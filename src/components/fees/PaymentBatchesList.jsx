@@ -1,12 +1,19 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { showSwalAlert, LinkIcon, getPrcessing } from "../../utils/CommonHelper";
 import { fetchSentBatches } from "../../api/feesBatchesApi";
 import { getAcademicYearsFromCache } from "../../utils/AcademicYearHelper";
 import { getSchoolsFromCache } from "../../utils/SchoolHelper";
+import { useAuth } from "../../context/AuthContext";
+import { PERMISSIONS } from "../../auth/permissions";
+import { isHqAccountsRole } from "../../auth/roles";
+
+import { yearBatchAmount, yearBatchCount, isAcademicYearResponse, buildBatchYearCsv } from "../../utils/paymentBatchYearView";
 
 export default function PaymentBatchesList() {
+  const { can } = useAuth();
+  const canViewHistory = can(PERMISSIONS.ACCOUNTS_BATCH_HISTORY_VIEW);
   const role = localStorage.getItem("role");
-  const isHQ = role === "superadmin" || role === "hquser";
+  const isHQ = isHqAccountsRole(role);
 
   const fixedSchoolId = localStorage.getItem("schoolId");
 
@@ -20,8 +27,10 @@ export default function PaymentBatchesList() {
   const [loading, setLoading] = useState(false);
   const [batches, setBatches] = useState([]);
   const [openId, setOpenId] = useState(null);
+  const searchSequence = useRef(0);
 
   useEffect(() => {
+    if (!canViewHistory) return;
     const load = async () => {
       try {
         const years = await getAcademicYearsFromCache();
@@ -47,14 +56,17 @@ export default function PaymentBatchesList() {
       }
     };
     load();
-  }, [isHQ]);
+  }, [isHQ, canViewHistory]);
 
   const schoolOptions = useMemo(() => {
-    return (schools || []).sort((a, b) => String(a.code || "").localeCompare(String(b.code || "")));
+    return (schools || []).slice().sort((a, b) => String(a.code || "").localeCompare(String(b.code || "")));
   }, [schools]);
 
   const availableSchools = useMemo(() => {
     const map = new Map(); // schoolId -> { _id, code, nameEnglish }
+    for (const school of schoolOptions) {
+      if (school?._id) map.set(String(school._id), school);
+    }
     for (const b of batches || []) {
       const s = b?.schoolId;
       if (s?._id) map.set(String(s._id), s);
@@ -62,9 +74,10 @@ export default function PaymentBatchesList() {
     return Array.from(map.values()).sort((a, b) =>
       String(a.code || "").localeCompare(String(b.code || ""))
     );
-  }, [batches]);
+  }, [batches, schoolOptions]);
 
   const runSearch = async () => {
+    if (!canViewHistory) return;
     const missing = [];
     if (!acYear) missing.push("Academic Year");
     if (!schoolId && !isHQ) missing.push("Niswan");
@@ -74,28 +87,43 @@ export default function PaymentBatchesList() {
       return;
     }
 
+    const requestId = ++searchSequence.current;
+    setBatches([]);
+    setOpenId(null);
     setLoading(true);
     try {
       const res = await fetchSentBatches({ schoolId, acYear, status });
+      if (requestId !== searchSequence.current) return;
       if (!res?.success) {
         showSwalAlert("Error", res?.error || "Failed to load", "error");
         setBatches([]);
         return;
       }
-      setBatches(res.batches || []);
+      if (!isAcademicYearResponse(res, acYear)) {
+        showSwalAlert("Error", "Academic-year batch data is unavailable. Please contact support.", "error");
+        return;
+      }
+      setBatches(res.batches);
       setOpenId(null);
     } catch (e) {
+      if (requestId !== searchSequence.current) return;
       showSwalAlert("Error", "Failed to load batches", "error");
       setBatches([]);
     } finally {
-      setLoading(false);
+      if (requestId === searchSequence.current) setLoading(false);
     }
   };
 
   useEffect(() => {
-    if (acYear && (isHQ ? true : !!schoolId)) runSearch();
+    if (canViewHistory && acYear && (isHQ ? true : !!schoolId)) runSearch();
+    else {
+      setBatches([]);
+      setOpenId(null);
+      setLoading(false);
+    }
+    return () => { searchSequence.current += 1; };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [acYear, schoolId, status]);
+  }, [acYear, schoolId, status, canViewHistory]);
 
   const statusBadge = (s) => {
     const base = "px-3 py-1 rounded-full text-[10px] font-bold tracking-wide";
@@ -138,14 +166,14 @@ export default function PaymentBatchesList() {
     let cancelled = 0;
 
     for (const b of batches) {
-      totalAmount += Number(b?.totalAmount || 0);
+      totalAmount += Math.round(yearBatchAmount(b) * 100);
       if (b?.status === "PENDING_APPROVAL") pending++;
       else if (b?.status === "APPROVED") approved++;
       else if (b?.status === "REJECTED") rejected++;
       else if (b?.status === "CANCELLED") cancelled++;
     }
 
-    return { totalAmount, pending, approved, rejected, cancelled, total: batches.length };
+    return { totalAmount: totalAmount / 100, pending, approved, rejected, cancelled, total: batches.length };
   }, [batches]);
 
   const exportCsv = () => {
@@ -154,128 +182,9 @@ export default function PaymentBatchesList() {
       return;
     }
 
-    const esc = (v) => {
-      const s = v === null || v === undefined ? "" : String(v);
-      const needs = /[",\n]/.test(s);
-      return needs ? `"${s.replace(/"/g, '""')}"` : s;
-    };
-
-    const rows = [];
-    rows.push(
-      [
-        "BatchNo",
-        "ReceiptNumber",
-        "BatchStatus",
-        "PaidDate",
-        "Mode",
-        "ReferenceNo",
-        "SchoolCode",
-        "SchoolName",
-        "District",
-        "State",
-        "TotalAmount",
-        "ItemCount",
-        "StudentName",
-        "RollNumber",
-        "CourseName",
-        "CourseType",
-        "InvoiceNo",
-        "InvoiceSource",
-        "ItemAmount",
-        "ItemStatus",
-        "ItemError",
-      ]
-        .map(esc)
-        .join(",")
-    );
-
-    for (const b of batches) {
-      const school = b?.schoolId || {};
-      const ds = school?.districtStateId || {};
-      const batchBase = {
-        batchNo: b?.batchNo || "",
-        receiptNumber: b?.receiptNumber || "",
-        batchStatus: b?.status || "",
-        paidDate: b?.paidDate ? new Date(b.paidDate).toISOString().slice(0, 10) : "",
-        mode: b?.mode || "",
-        referenceNo: b?.referenceNo || "",
-        schoolCode: school?.code || "",
-        schoolName: school?.nameEnglish || "",
-        district: ds?.district || "",
-        state: ds?.state || "",
-        totalAmount: b?.totalAmount ?? "",
-        itemCount: b?.itemCount ?? "",
-      };
-
-      const items = Array.isArray(b?.items) ? b.items : [];
-      if (items.length === 0) {
-        rows.push(
-          [
-            batchBase.batchNo,
-            batchBase.receiptNumber,
-            batchBase.batchStatus,
-            batchBase.paidDate,
-            batchBase.mode,
-            batchBase.referenceNo,
-            batchBase.schoolCode,
-            batchBase.schoolName,
-            batchBase.district,
-            batchBase.state,
-            batchBase.totalAmount,
-            batchBase.itemCount,
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-          ]
-            .map(esc)
-            .join(",")
-        );
-        continue;
-      }
-
-      for (const it of items) {
-        const stu = it?.studentId || {};
-        const u = stu?.userId || {};
-        const inv = it?.invoiceId || {};
-        const c = inv?.courseId || {};
-
-        rows.push(
-          [
-            batchBase.batchNo,
-            batchBase.receiptNumber,
-            batchBase.batchStatus,
-            batchBase.paidDate,
-            batchBase.mode,
-            batchBase.referenceNo,
-            batchBase.schoolCode,
-            batchBase.schoolName,
-            batchBase.district,
-            batchBase.state,
-            batchBase.totalAmount,
-            batchBase.itemCount,
-            u?.name || "",
-            stu?.rollNumber || "",
-            c?.name || "",
-            c?.type || "",
-            inv?.invoiceNo || "",
-            inv?.source || "",
-            it?.amount ?? "",
-            it?.status || "",
-            it?.error || "",
-          ]
-            .map(esc)
-            .join(",")
-        );
-      }
-    }
-
-    const blob = new Blob([rows.join("\n")], { type: "text/csv;charset=utf-8;" });
+    const selectedYear = academicYears.find((x) => String(x._id) === String(acYear));
+    const csv = buildBatchYearCsv(batches, selectedYear?.acYear || selectedYear?.year || "");
+    const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
     const url = URL.createObjectURL(blob);
 
     const y = academicYears.find((x) => String(x._id) === String(acYear));
@@ -316,6 +225,18 @@ export default function PaymentBatchesList() {
       </>
     );
   };
+
+
+  if (!canViewHistory) {
+    return (
+      <div className="p-4 max-w-7xl mx-auto">
+        <div className="mb-4">{LinkIcon("/dashboard/accountsPage", "Back")}</div>
+        <div className="rounded-md border border-rose-200 bg-rose-50 p-4 text-center text-sm text-rose-700">
+          You do not have permission to view payment-batch history.
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="p-4 max-w-7xl mx-auto">
@@ -424,13 +345,16 @@ export default function PaymentBatchesList() {
 */}
         <div className="relative overflow-hidden rounded-md border border-white/80 bg-gradient-to-br from-violet-500 to-fuchsia-500 p-4 text-white shadow-lg hover:shadow-2xl transition hover:-translate-y-0.5">
           <div className="pointer-events-none absolute -right-10 -top-10 h-28 w-28 rounded-full bg-white/25 blur-2xl" />
-          <div className="text-[11px] font-semibold text-white/90">Total Amount</div>
+          <div className="text-[11px] font-semibold text-white/90">Selected Year Amount</div>
           <div className="mt-1 text-lg font-bold text-white drop-shadow">
             ₹ {Number(summary.totalAmount || 0).toLocaleString("en-IN")}
           </div>
         </div>
       </div>
 
+      <p className="mb-3 text-xs text-slate-600">
+        Amounts and items shown are for the selected academic year. Status and receipt belong to the full batch.
+      </p>
       {/* List */}
       {!loading ?
         <div className="border rounded">
@@ -438,7 +362,7 @@ export default function PaymentBatchesList() {
           <div className="hidden md:grid grid-cols-12 p-2 font-bold text-xs bg-gradient-to-r from-slate-100 via-white to-slate-100 place-items-center text-center">
             <div className="col-span-3">Batch</div>
             <div className="col-span-2">Date</div>
-            <div className="col-span-2">Total</div>
+            <div className="col-span-2">Selected Year Total</div>
             <div className="col-span-2">Mode</div>
             <div className="col-span-3">Status</div>
           </div>
@@ -447,7 +371,7 @@ export default function PaymentBatchesList() {
             const open = String(openId) === String(b._id);
 
             const paidDate = b.paidDate ? new Date(b.paidDate).toLocaleDateString() : "-";
-            const totalAmount = `₹ ${Number(b.totalAmount || 0).toLocaleString("en-IN")}`;
+            const totalAmount = `₹ ${yearBatchAmount(b).toLocaleString("en-IN")}`;
             const niswanLabel =
               [b?.schoolId?.code, b?.schoolId?.nameEnglish].filter(Boolean).join(" : ") || "-";
 
@@ -480,11 +404,13 @@ export default function PaymentBatchesList() {
                       <div className="font-extrabold text-slate-900">{totalAmount}</div>
                       <div className="mt-1 flex items-center justify-end gap-2">
                         {statusBadge(b.status)}
-                        <span className="text-[10px] text-gray-500">Items: {b.itemCount || 0}</span>
+                        <span className="text-[10px] text-gray-500">Items: {yearBatchCount(b)}</span>
                       </div>
-                      <div className="mt-1 flex items-center justify-end gap-2">
-                        <span className="text-[10px] text-gray-500">Reason: {b.rejectedReason || "-"}</span>
-                      </div>
+                      {b.status === "REJECTED" && (
+                        <div className="mt-1 text-right text-[11px] font-semibold text-red-500">
+                          Reason: {b.rejectedReason || "-"}
+                        </div>
+                      )}
                     </div>
                   </div>
                 </button>
@@ -511,7 +437,7 @@ export default function PaymentBatchesList() {
                   <div className="col-span-3">
                     <div className="flex items-center gap-2">
                       {statusBadge(b.status)}
-                      <span className="text-[10px] text-gray-500">Items: {b.itemCount || 0}</span>
+                      <span className="text-[10px] text-gray-500">Items: {yearBatchCount(b)}</span>
                     </div>
 
                     {b.status === "REJECTED" && (
@@ -522,6 +448,12 @@ export default function PaymentBatchesList() {
                   </div>
                 </button>
 
+                {b.isPartialAcademicYear && (
+                  <div className="px-3 pb-2 text-xs text-slate-600">
+                    Showing selected-year items. Full batch: ₹ {Number(b.totalAmount || 0).toLocaleString("en-IN")}
+                    {" / "}{b.itemCount || 0} items.
+                  </div>
+                )}
                 {/* ✅ Expanded details (same for all sizes) */}
                 {open && (
                   <div className="p-2 bg-white">
@@ -555,7 +487,7 @@ export default function PaymentBatchesList() {
                         const roll = it.studentId?.rollNumber || "-";
                         const courseName = it.invoiceId?.courseNamesText || "-";
                         const source = it.invoiceId?.source || "-";
-                        const acYear = it.invoiceId?.acYear?.acYear || "-";
+                        const acYear = it.invoiceId?.acYear?.acYear || it.acYear?.acYear || "-";
                         const amount = `₹ ${Number(it.amount || 0).toLocaleString("en-IN")}`;
                         const itemFailed = it.status === "FAILED";
 

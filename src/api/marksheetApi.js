@@ -46,9 +46,9 @@ export const fetchMarksheetExam = async (id) => {
   return res.data;
 };
 
-export const fetchConsolidatedStudents = async (params = {}) => {
+export const fetchConsolidatedStudents = async (params = {}, { signal } = {}) => {
   const base = await getBaseUrl();
-  const res = await axios.get(`${base}marksheet/consolidated-students?${toQuery(params)}`, authConfig());
+  const res = await axios.get(`${base}marksheet/consolidated-students?${toQuery(params)}`, { ...authConfig(), signal });
   return res.data;
 };
 

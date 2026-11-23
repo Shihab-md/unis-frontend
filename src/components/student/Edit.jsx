@@ -6,6 +6,7 @@ import { getInstitutesFromCache } from '../../utils/InstituteHelper';
 import { getCoursesFromCache } from '../../utils/CourseHelper';
 import { getDistrictStatesFromCache } from '../../utils/DistrictStateHelper';
 import axios from "axios";
+import { PERMISSIONS } from "../../auth/permissions";
 import { useAuth } from '../../context/AuthContext';
 import { useNavigate, useParams, Link } from "react-router-dom";
 import {
@@ -239,12 +240,12 @@ const Edit = () => {
     fees5: hasValue(s.fees5),
   });
 
-  const UNLOCKED_FIELDS = new Set(["superadmin", "hquser"]);
+  const UNLOCKED_FIELDS = new Set(["superadmin", "hqadmin"]);
 
   const navigate = useNavigate();
-  const { user } = useAuth();
+  const { user, can } = useAuth();
 
-  const isLocked = (name) => !UNLOCKED_FIELDS.has(user?.role) && fieldLocks?.[name] === true;
+  const isLocked = (name) => /^(courseId|instituteId|year|fees|discount)[1-5]$/.test(name) || (!UNLOCKED_FIELDS.has(user?.role) && fieldLocks?.[name] === true);
 
   const canModifySection = (fields = []) => {
     if (UNLOCKED_FIELDS.has(user?.role)) return true;
@@ -550,7 +551,7 @@ const Edit = () => {
             instituteId1: academics?.[0]?.instituteId1?._id || "",
             courseId1: academics?.[0]?.courseId1?._id || "",
             refNumber1: academics?.[0]?.refNumber1 || "",
-            year1: academics?.[0]?.year1 ? String(academics[0].year1) : "",
+            year1: academics?.[0]?.year1 == null ? "" : String(academics[0].year1),
             status1: academics?.[0]?.status1 || "",
             fees1: academics?.[0]?.fees1 || "",
             discount1: academics?.[0]?.discount1 || "",
@@ -628,6 +629,7 @@ const Edit = () => {
   };
 
   const handleChange = (e) => {
+    if (/^(courseId|instituteId|year|fees|discount)[1-5]$/.test(e.target.name)) return;
     const { name, value, files } = e.target;
 
     if (name === "file") {
@@ -1487,6 +1489,10 @@ const Edit = () => {
                 <div className="hidden lg:block flex space-x-3 mb-5" />
 
                 <div className="hidden lg:block flex space-x-3 mb-5" />
+                <div className="col-span-full rounded border bg-blue-50 p-3 text-sm">
+                  <p>{tr("Use Change Student Course to update course assignments and review any fee difference.")}</p>
+                  {can(PERMISSIONS.STUDENT_COURSE_CHANGE) ? <Link className="text-blue-700 underline" to={`/dashboard/students/course-change/${id}`}>{tr("Change Student Course")}</Link> : null}
+                </div>
                 {/* Academic Year */}
                 <div>
                   <label className="block mt-2 text-xs sm:text-sm font-medium text-slate-500">
@@ -1649,6 +1655,7 @@ const Edit = () => {
                   <div className="ml-14 justify-center items-center mb-3">
                     <input
                       type="checkbox"
+                      disabled
                       checked={!!showIslamicStudies}
                       onChange={handleIslamicCheckBox}
                       style={{ transform: "scale(1.25)" }}
@@ -1658,6 +1665,7 @@ const Edit = () => {
                   <div className="ml-14 justify-center items-center mb-3">
                     <input
                       type="checkbox"
+                      disabled
                       checked={!!showSchool}
                       onChange={handleSchoolCheckBox}
                       style={{ transform: "scale(1.25)" }}
@@ -1667,6 +1675,7 @@ const Edit = () => {
                   <div className="ml-14 justify-center items-center mb-3">
                     <input
                       type="checkbox"
+                      disabled
                       checked={!!showCollege}
                       onChange={handleCollegeCheckBox}
                       style={{ transform: "scale(1.25)" }}
@@ -1676,6 +1685,7 @@ const Edit = () => {
                   <div className="ml-14 justify-center items-center mb-3">
                     <input
                       type="checkbox"
+                      disabled
                       checked={!!showVocational}
                       onChange={handleVocationalCheckBox}
                       style={{ transform: "scale(1.25)" }}
@@ -1691,6 +1701,7 @@ const Edit = () => {
                       <input
                         className="ml-5"
                         type="checkbox"
+                      disabled
                         checked={!!showIslamicStudies}
                         onChange={handleIslamicCheckBox}
                         style={{ transform: "scale(1.25)" }}
@@ -1704,6 +1715,7 @@ const Edit = () => {
                       <input
                         className="ml-5"
                         type="checkbox"
+                      disabled
                         checked={!!showSchool}
                         onChange={handleSchoolCheckBox}
                         style={{ transform: "scale(1.25)" }}
@@ -1717,6 +1729,7 @@ const Edit = () => {
                       <input
                         className="ml-5"
                         type="checkbox"
+                      disabled
                         checked={!!showCollege}
                         onChange={handleCollegeCheckBox}
                         style={{ transform: "scale(1.25)" }}
@@ -1730,6 +1743,7 @@ const Edit = () => {
                       <input
                         className="ml-5"
                         type="checkbox"
+                      disabled
                         checked={!!showVocational}
                         onChange={handleVocationalCheckBox}
                         style={{ transform: "scale(1.25)" }}

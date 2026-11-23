@@ -227,7 +227,7 @@ const Add = () => {
   useEffect(() => {
     const getSchoolsMap = async () => {
       const schoolsData = await getSchoolsFromCache();
-      setSchools(Array.isArray(schoolsData) ? schoolsData : []);
+      setSchools(Array.isArray(schoolsData) ? schoolsData.filter((school) => school.active === "Active") : []);
     };
 
     getSchoolsMap();
